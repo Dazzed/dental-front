@@ -14,3 +14,17 @@
   color: #33e0ff;
   background-color: transparent;
 }
+
+.page-header {
+  border: 0;
+  margin: 20px 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+.green {
+  color: $font-color-green;
+}

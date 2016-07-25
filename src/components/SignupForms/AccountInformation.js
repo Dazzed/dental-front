@@ -1,0 +1,112 @@
+import React from 'react';
+
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import Well from 'react-bootstrap/lib/Well';
+import { reduxForm } from 'redux-form';
+
+const fields = [
+  'email',
+  'confirmEmail',
+  'password',
+  'confirmPassword',
+];
+
+
+@reduxForm({
+  form: 'signup',
+  fields,
+})
+class AccountInformation extends React.Component {
+
+  static propTypes = {
+    fields: React.PropTypes.object.isRequired,
+  };
+
+  render() {
+    const { fields:
+      { email, confirmEmail, password, confirmPassword },
+    } = this.props;
+
+    return (
+      <Well>
+        <h3>Account information</h3>
+
+        <div className="row">
+          <div className="col-md-8">
+            <FormGroup
+              controlId="email"
+            >
+              <ControlLabel>Email Address</ControlLabel>
+              <FormControl
+                type="text"
+                placeholder="example@domain.com"
+                {...email}
+              />
+              <FormControl.Feedback />
+              {email.touched && email.error &&
+                <HelpBlock>{email.error}</HelpBlock>}
+            </FormGroup>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-8">
+            <FormGroup
+              controlId="confirmEmail"
+            >
+              <ControlLabel>Confirm Email Address</ControlLabel>
+              <FormControl
+                type="text"
+                placeholder="example@domain.com"
+                {...confirmEmail}
+              />
+              <FormControl.Feedback />
+              {confirmEmail.touched && confirmEmail.error &&
+                <HelpBlock>{confirmEmail.error}</HelpBlock>}
+            </FormGroup>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <FormGroup
+              controlId="password"
+            >
+              <ControlLabel>Password</ControlLabel>
+              <FormControl
+                type="password"
+                {...password}
+              />
+              <FormControl.Feedback />
+              {password.touched && password.error &&
+                <HelpBlock>{password.error}</HelpBlock>}
+            </FormGroup>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <FormGroup
+              controlId="confirmPassword"
+            >
+              <ControlLabel>Confirm Password</ControlLabel>
+              <FormControl
+                type="password"
+                {...confirmPassword}
+              />
+              <FormControl.Feedback />
+              {confirmPassword.touched && confirmPassword.error &&
+                <HelpBlock>{confirmPassword.error}</HelpBlock>}
+            </FormGroup>
+          </div>
+        </div>
+      </Well>
+    );
+  }
+}
+
+
+export default AccountInformation;

@@ -1,0 +1,12 @@
+$page-header-background-color: #26be74;
+$page-header-color: #fff;
+
+.pageHeader {
+  background-color: $page-header-background-color;
+  color: $page-header-color;
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 18px;
+  }
+}
