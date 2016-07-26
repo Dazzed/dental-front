@@ -1,0 +1,41 @@
+@import '../../theme/variables.scss';
+
+.dental-sidenav {
+  padding: 1em 1.5em;
+
+  &.client {
+    background-color: $green;
+
+    .nav-pills > li {
+      margin-bottom: 5px;
+      & > a {
+        background-color: $dark-green;
+        color: $white;
+      }
+    }
+    .nav > li > a {
+      &:hover, &.active {
+        background-color: $white;
+        color: $black;  
+      }
+    }
+  }
+
+  &.dentist {
+    background-color: $cyan;
+
+    .nav-pills > li {
+      margin-bottom: 5px;
+      & > a {
+        background-color: $dark-cyan;
+        color: $white;
+      }
+    }
+    .nav > li > a {
+      &:hover, &.active {
+        background-color: $white;
+        color: $black;  
+      }
+    }
+  }
+}

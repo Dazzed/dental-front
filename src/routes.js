@@ -12,6 +12,7 @@ import {
     Survey,
     NotFound,
     Signup,
+    Dashboard,
   } from 'containers';
 
 export default (store) => {
@@ -43,6 +44,7 @@ export default (store) => {
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
         <Route path="chat" component={Chat}/>
+        <Route path="dashboard" component={Dashboard} />
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
 
