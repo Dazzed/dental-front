@@ -1,5 +1,4 @@
-$page-header-background-color: #26be74;
-$page-header-color: #fff;
+@import '../../theme/variables.scss';
 
 .pageHeader {
   background-color: $page-header-background-color;

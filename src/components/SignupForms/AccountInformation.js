@@ -5,6 +5,8 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Well from 'react-bootstrap/lib/Well';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 import { reduxForm } from 'redux-form';
 
 const fields = [
@@ -34,8 +36,8 @@ class AccountInformation extends React.Component {
       <Well>
         <h3>Account information</h3>
 
-        <div className="row">
-          <div className="col-md-8">
+        <Row>
+          <Col md={8}>
             <FormGroup
               controlId="email"
             >
@@ -49,11 +51,11 @@ class AccountInformation extends React.Component {
               {email.touched && email.error &&
                 <HelpBlock>{email.error}</HelpBlock>}
             </FormGroup>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row">
-          <div className="col-md-8">
+        <Row>
+          <Col md={8}>
             <FormGroup
               controlId="confirmEmail"
             >
@@ -67,42 +69,36 @@ class AccountInformation extends React.Component {
               {confirmEmail.touched && confirmEmail.error &&
                 <HelpBlock>{confirmEmail.error}</HelpBlock>}
             </FormGroup>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row">
-          <div className="col-md-6">
+        <Row>
+          <Col md={6}>
             <FormGroup
               controlId="password"
             >
               <ControlLabel>Password</ControlLabel>
-              <FormControl
-                type="password"
-                {...password}
-              />
+              <FormControl type="password" {...password} />
               <FormControl.Feedback />
               {password.touched && password.error &&
                 <HelpBlock>{password.error}</HelpBlock>}
             </FormGroup>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row">
-          <div className="col-md-6">
+        <Row>
+          <Col md={6}>
             <FormGroup
               controlId="confirmPassword"
             >
               <ControlLabel>Confirm Password</ControlLabel>
-              <FormControl
-                type="password"
-                {...confirmPassword}
-              />
+              <FormControl type="password" {...confirmPassword} />
               <FormControl.Feedback />
               {confirmPassword.touched && confirmPassword.error &&
                 <HelpBlock>{confirmPassword.error}</HelpBlock>}
             </FormGroup>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </Well>
     );
   }

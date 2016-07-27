@@ -28,3 +28,11 @@ h1 {
 .green {
   color: $font-color-green;
 }
+
+.rounded {
+  border-radius: 50px;
+}
+
+.btn.dark-green {
+  background-color: $btn-dark-green-color;
+}

@@ -5,13 +5,19 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Button from 'react-bootstrap/lib/Button';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Well from 'react-bootstrap/lib/Well';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import FontAwesome from 'react-fontawesome';
 import { reduxForm } from 'redux-form';
 
 import { PREFERRED_CONTACT_METHODS } from 'utils/constants';
+
+import style from './ProfileInformation.scss';
+import AvatarField from 'components/AvatarField/AvatarField';
+import DatePicker from 'components/DatePicker/DatePicker';
 
 
 const fields = [
@@ -26,6 +32,9 @@ const fields = [
   'state',
   'zipCode',
   'contactMethod',
+  'accountHolder',
+  'tos',
+  'avatar',
 ];
 
 
@@ -37,18 +46,26 @@ class ProfileInformation extends React.Component {
 
   static propTypes = {
     fields: React.PropTypes.object.isRequired,
+    submitting: React.PropTypes.bool.isRequired,
   };
 
   render() {
     const { fields:
       { firstName, lastName, middleName, birthDate, phone, sex, address,
-        city, state, zipCode, contactMethod,
+        city, state, zipCode, contactMethod, accountHolder, tos, avatar,
       },
+      submitting,
     } = this.props;
 
     return (
       <Well>
         <h3>Profile Infomation</h3>
+
+        <Row>
+          <Col md={4}>
+            <AvatarField {...avatar} form="signup" />
+          </Col>
+        </Row>
 
         <Row>
           <Col md={10}>
@@ -96,11 +113,7 @@ class ProfileInformation extends React.Component {
               controlId="birthDate"
             >
               <ControlLabel>Date of Birth</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="WIP DATE WIDGET"
-                {...birthDate}
-              />
+              <DatePicker {...birthDate} form="signup" />
               <FormControl.Feedback />
               {birthDate.touched && birthDate.error &&
                 <HelpBlock>{birthDate.error}</HelpBlock>}
@@ -210,20 +223,67 @@ class ProfileInformation extends React.Component {
         </Row>
 
         <Row>
-          <Col md={12}>
+          <Col md={6} mdOffset={6}>
             <FormGroup
-              controlId="contactMethod"
-              className="pull-right"
+              controlId="accountHolder"
             >
-              <Checkbox>
+              <Checkbox {...accountHolder} checked={accountHolder.value}>
                 <strong>
                   Will they primary account holder be joining the membership
                 </strong>
               </Checkbox>
               <FormControl.Feedback />
-              {contactMethod.touched && contactMethod.error &&
-                <HelpBlock>{contactMethod.error}</HelpBlock>}
+              {accountHolder.touched && accountHolder.error &&
+                <HelpBlock>{accountHolder.error}</HelpBlock>}
             </FormGroup>
+          </Col>
+          <Col md={6} mdOffset={6}>
+            <FormGroup
+              controlId="tos"
+            >
+              <Checkbox {...tos} checked={tos.value}>
+                <strong>
+                  I have read and accept the Terms of Conditions
+                </strong>
+              </Checkbox>
+              <FormControl.Feedback />
+              {tos.touched && tos.error &&
+                <HelpBlock>{tos.error}</HelpBlock>}
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={12} bsClass={`${style.checkoutInfo} col`}>
+            <Button
+              className="rounded pull-right"
+              bsStyle="default"
+              type="submit"
+              disabled={submitting}
+            >
+              Checkout
+            </Button>
+            <p className="pull-right">Total Amount <span>$300</span></p>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={6} mdOffset={6}>
+            <Button
+              className="rounded dark-green"
+              bsStyle="default"
+              disabled={submitting}
+            >
+              <FontAwesome name="plus" /> Add family members
+            </Button>
+
+            <Button
+              className="rounded pull-right dark-green"
+              bsStyle="default"
+              disabled={submitting}
+            >
+              <FontAwesome name="plus" /> Add custom membership
+            </Button>
           </Col>
         </Row>
       </Well>
