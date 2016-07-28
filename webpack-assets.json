@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-cf2c10ee55e9c5ed28d2.js"
+    "main": "http://localhost:3001/dist/main-bf47b2ed742c564641d9.js"
   },
   "styles": {},
   "assets": {
@@ -70,6 +70,10 @@
     "./src/components/PageHeader/PageHeader.scss": {
       "pageHeader": "pageHeader___2iwYz",
       "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.pageHeader___2iwYz {\n  background-color: #26be74;\n  color: #fff;\n  margin-bottom: 20px;\n}\n\n.pageHeader___2iwYz h1 {\n  font-size: 18px;\n}\n"
+    },
+    "./src/components/SignupForms/FamilyMembers.scss": {
+      "familyMemberItem": "familyMemberItem___1rgFp",
+      "_style": ".familyMemberItem___1rgFp img {\n  display: inline;\n  margin-right: 10px;\n  width: 25px;\n}\n"
     }
   }
 }

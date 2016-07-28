@@ -101,7 +101,7 @@ export default class DatePicker extends React.Component {
           >
             <option value="0">Month</option>
             {moment.months().map((_month, index) =>
-            <option value={index + 1}>{_month}</option>
+            <option value={index + 1} key={index}>{_month}</option>
             )}
           </FormControl>
         </Col>
@@ -113,7 +113,7 @@ export default class DatePicker extends React.Component {
           >
             <option value="0">Day</option>
             {days.map((value) =>
-            <option value={value}>{value}</option>
+            <option value={value} key={value}>{value}</option>
             )}
           </FormControl>
         </Col>
@@ -125,12 +125,11 @@ export default class DatePicker extends React.Component {
           >
             <option value="0">Year</option>
             {YEARS.map((value) =>
-            <option value={value}>{value}</option>
+            <option value={value} key={value}>{value}</option>
             )}
           </FormControl>
         </Col>
       </Row>
     );
   }
-
 }

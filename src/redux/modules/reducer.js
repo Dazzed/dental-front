@@ -8,6 +8,8 @@ import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
+import signup from './signup';
+
 
 export default combineReducers({
   routing: routerReducer,
@@ -20,5 +22,6 @@ export default combineReducers({
     counter3: counter
   }),
   info,
-  widgets
+  widgets,
+  signup,
 });
