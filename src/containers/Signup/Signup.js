@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 
 import AccountInformation from 'components/SignupForms/AccountInformation';
 import ProfileInformation from 'components/SignupForms/ProfileInformation';
+import FamilyMembers from 'components/SignupForms/FamilyMembers';
 import PageHeader from 'components/PageHeader/PageHeader';
 
 
@@ -17,6 +18,7 @@ class Signup extends React.Component {
             <AccountInformation />
             <h1 className="green">Primary Account Holder</h1>
             <ProfileInformation />
+            <FamilyMembers />
           </form>
         </div>
       </div>

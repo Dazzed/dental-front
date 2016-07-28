@@ -11,7 +11,8 @@ import Well from 'react-bootstrap/lib/Well';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FontAwesome from 'react-fontawesome';
-import { reduxForm } from 'redux-form';
+import { reduxForm, addArrayValue } from 'redux-form';
+import { showFamilyMemberForm } from 'redux/modules/signup';
 
 import { PREFERRED_CONTACT_METHODS } from 'utils/constants';
 
@@ -35,19 +36,30 @@ const fields = [
   'accountHolder',
   'tos',
   'avatar',
+  'familyMembers[]',
 ];
 
 
 @reduxForm({
   form: 'signup',
   fields,
+}, undefined, {
+  addValue: addArrayValue,
+  showFamilyMemberForm,
 })
 class ProfileInformation extends React.Component {
 
   static propTypes = {
     fields: React.PropTypes.object.isRequired,
     submitting: React.PropTypes.bool.isRequired,
+    showFamilyMemberForm: React.PropTypes.func.isRequired,
+    addValue: React.PropTypes.func.isRequired,
   };
+
+  handleAddMemberFamily = () => {
+    this.props.addValue('signup', 'familyMembers', {});
+    this.props.showFamilyMemberForm(this.props.fields.familyMembers.length);
+  }
 
   render() {
     const { fields:
@@ -273,6 +285,7 @@ class ProfileInformation extends React.Component {
               className="rounded dark-green"
               bsStyle="default"
               disabled={submitting}
+              onClick={this.handleAddMemberFamily}
             >
               <FontAwesome name="plus" /> Add family members
             </Button>
