@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import StarRating from 'react-star-rating';
+// import StarRating from 'react-star-rating';
 
 export default class Dentist extends Component {
   static propTypes = {
@@ -38,7 +38,7 @@ export default class Dentist extends Component {
           </div>
           <div className="rating">5/5</div>
           <div>
-            <StarRating totalStars={5} rating={5} size={20} />
+            {/* <StarRating totalStars={5} rating={5} size={20} /> */}
           </div>
         </div>
 
