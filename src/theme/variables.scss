@@ -10,6 +10,7 @@
 $humility: #777;
 
 $cyan: #00c0ef;
+$light-cyan: #00c0ef;
 $dark-cyan: #007b9b;
 
 $green: #15bf71;
@@ -17,7 +18,12 @@ $dark-green: #0e7847;
 $light-green: #19e185;
 
 $white: #fff;
-$black: #000;
+$black: #141414;
+$light-black: #343434;
+
+$gray: #a6a6a6;
+$light-gray: #b6b6b6;
+$dark-gray: #545454;
 
 // Bootstrap Variables
 $brand-primary: darken(#428bca, 6.5%);
@@ -33,8 +39,6 @@ $btn-default-color: #fff;
 $btn-dark-green-color: #2b483a;
 
 $text-color: #333;
-$text-color-cyan: #30a6bd;
-$text-color-green: #23b754;
 
 $font-size-base: 14px;
 $font-family-sans-serif: "Helvetica Neue", Helvetica, sans-serif;
