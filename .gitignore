@@ -5,3 +5,8 @@ node_modules
 Session.vim
 codeit.sh
 vim
+
+.npm-debug.log
+webpack-assets.json
+
+static/dist/
