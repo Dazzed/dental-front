@@ -46,5 +46,5 @@ export function register(data) {
   return {
     type: REGISTER_USER,
     data,
-  }
+  };
 }
