@@ -9,6 +9,10 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import { reduxForm } from 'redux-form';
 
+import validate from './accountInformationValidation';
+import { validateState } from 'utils/bootstrap';
+
+
 const fields = [
   'email',
   'confirmEmail',
@@ -20,6 +24,7 @@ const fields = [
 @reduxForm({
   form: 'signup',
   fields,
+  validate,
 })
 class AccountInformation extends React.Component {
 
@@ -40,6 +45,7 @@ class AccountInformation extends React.Component {
           <Col md={8}>
             <FormGroup
               controlId="email"
+              validationState={validateState(email)}
             >
               <ControlLabel>Email Address</ControlLabel>
               <FormControl
@@ -58,6 +64,7 @@ class AccountInformation extends React.Component {
           <Col md={8}>
             <FormGroup
               controlId="confirmEmail"
+              validationState={validateState(confirmEmail)}
             >
               <ControlLabel>Confirm Email Address</ControlLabel>
               <FormControl
@@ -76,6 +83,7 @@ class AccountInformation extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="password"
+              validationState={validateState(password)}
             >
               <ControlLabel>Password</ControlLabel>
               <FormControl type="password" {...password} />
@@ -90,6 +98,7 @@ class AccountInformation extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="confirmPassword"
+              validationState={validateState(confirmPassword)}
             >
               <ControlLabel>Confirm Password</ControlLabel>
               <FormControl type="password" {...confirmPassword} />

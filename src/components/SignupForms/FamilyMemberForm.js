@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -6,15 +7,28 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import DatePicker from 'react-bootstrap-date-picker';
+import DatePicker from 'components/DatePicker/CalendarPicker';
 
 import AvatarField from 'components/AvatarField/AvatarField';
+import { validateState } from 'utils/bootstrap';
+import { touch } from 'redux-form';
 
 
+const mapDispatchToProps = (dispatch) => ({
+  touch: (form, field) => {
+    const action = touch(form, field);
+    dispatch(action);
+  },
+});
+
+
+@connect(() => ({}), mapDispatchToProps)
 export default class FamilyMemberForm extends React.Component {
 
   static propTypes = {
     member: React.PropTypes.object.isRequired,
+    form: React.PropTypes.string.isRequired,
+    touch: React.PropTypes.func.isRequired,
   };
 
   constructor(props, context, updater) {
@@ -40,6 +54,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="firstNameChild"
+              validationState={validateState(firstName)}
             >
               <ControlLabel>First Name</ControlLabel>
               <FormControl type="text" {...firstName} />
@@ -52,6 +67,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="lastNameChild"
+              validationState={validateState(lastName)}
             >
               <ControlLabel>Last Name</ControlLabel>
               <FormControl type="text" {...lastName} />
@@ -66,6 +82,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="relationshipChild"
+              validationState={validateState(relationship)}
             >
               <ControlLabel>Family Relationship</ControlLabel>
               <FormControl type="text" {...relationship} />
@@ -78,6 +95,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="birthDateChild"
+              validationState={validateState(birthDate)}
             >
               <ControlLabel>Birthdate</ControlLabel>
               <DatePicker {...birthDate} />
@@ -92,6 +110,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="phoneChild"
+              validationState={validateState(phone)}
             >
               <ControlLabel>Phone Number</ControlLabel>
               <FormControl type="text" {...phone} />
@@ -104,6 +123,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="emailChild"
+              validationState={validateState(email)}
             >
               <ControlLabel>Email</ControlLabel>
               <FormControl type="text" {...email} />
@@ -118,6 +138,7 @@ export default class FamilyMemberForm extends React.Component {
           <Col md={6}>
             <FormGroup
               controlId="accountTypeChild"
+              validationState={validateState(accountType)}
             >
               <ControlLabel>Account Type</ControlLabel>
               <FormControl type="text" {...accountType} />
