@@ -6,7 +6,7 @@ import lodash from 'lodash';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormControl from 'react-bootstrap/lib/FormControl';
-import { change } from 'redux-form';
+import { change, touch } from 'redux-form';
 
 
 const MIN_YEAR = 1926;
@@ -46,6 +46,10 @@ const mapDispatchToProps = (dispatch) => ({
     const action = change(form, field, data);
     dispatch(action);
   },
+  touch: (form, field) => {
+    const action = touch(form, field);
+    dispatch(action);
+  },
 });
 
 
@@ -55,6 +59,9 @@ export default class DatePicker extends React.Component {
   static propTypes = {
     name: React.PropTypes.string.isRequired,
     update: React.PropTypes.func.isRequired,
+    touch: React.PropTypes.func.isRequired,
+    onFocus: React.PropTypes.func.isRequired,
+    onBlur: React.PropTypes.func.isRequired,
     form: React.PropTypes.string.isRequired,
   };
 
@@ -77,13 +84,36 @@ export default class DatePicker extends React.Component {
 
     this.setState(nextState);
 
+    let date = '';
+
     // if valid date fire change event
     if (isValidDate(nextState.year, nextState.month, nextState.day)) {
-      const date = `${nextState.month}/${nextState.day}/${nextState.year}`;
-      this.props.update(this.props.form, this.props.name, date);
-    } else {
-      this.props.update(this.props.form, this.props.name, '');
+      date = `${nextState.month}/${nextState.day}/${nextState.year}`;
     }
+
+    this.props.update(this.props.form, this.props.name, date);
+    this.props.touch(this.props.form, this.props.name);
+  }
+
+  handleFocus = () => {
+    let date = '';
+
+    if (isValidDate(this.state.year, this.state.month, this.state.day)) {
+      date = `${this.state.month}/${this.state.day}/${this.state.year}`;
+    }
+
+    this.props.update(this.props.form, this.props.name, date);
+  }
+
+  handleBlur = () => {
+    let date = '';
+
+    if (isValidDate(this.state.year, this.state.month, this.state.day)) {
+      date = `${this.state.month}/${this.state.day}/${this.state.year}`;
+    }
+
+    this.props.update(this.props.form, this.props.name, date);
+    this.props.touch(this.props.form, this.props.name);
   }
 
   render() {
@@ -97,6 +127,8 @@ export default class DatePicker extends React.Component {
           <FormControl
             name={`month-${name}`}
             onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
             componentClass="select"
           >
             <option value="0">Month</option>
@@ -109,6 +141,8 @@ export default class DatePicker extends React.Component {
           <FormControl
             name={`day-${name}`}
             onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
             componentClass="select"
           >
             <option value="0">Day</option>
@@ -121,6 +155,8 @@ export default class DatePicker extends React.Component {
           <FormControl
             name={`year-${name}`}
             onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
             componentClass="select"
           >
             <option value="0">Year</option>

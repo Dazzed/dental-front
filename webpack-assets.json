@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-bf47b2ed742c564641d9.js"
+    "main": "http://localhost:3001/dist/main-3037b18347a7677bcb0b.js"
   },
   "styles": {},
   "assets": {
@@ -67,13 +67,13 @@
       "checkoutInfo": "checkoutInfo___2l3uL",
       "_style": ".checkoutInfo___2l3uL p {\n  margin-top: 10px;\n  margin-right: 25px;\n}\n\n.checkoutInfo___2l3uL span {\n  margin-left: 15px;\n  font-weight: bold;\n}\n"
     },
-    "./src/components/PageHeader/PageHeader.scss": {
-      "pageHeader": "pageHeader___2iwYz",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.pageHeader___2iwYz {\n  background-color: #26be74;\n  color: #fff;\n  margin-bottom: 20px;\n}\n\n.pageHeader___2iwYz h1 {\n  font-size: 18px;\n}\n"
-    },
     "./src/components/SignupForms/FamilyMembers.scss": {
       "familyMemberItem": "familyMemberItem___1rgFp",
       "_style": ".familyMemberItem___1rgFp img {\n  display: inline;\n  margin-right: 10px;\n  width: 25px;\n}\n"
+    },
+    "./src/components/PageHeader/PageHeader.scss": {
+      "pageHeader": "pageHeader___2iwYz",
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.pageHeader___2iwYz {\n  background-color: #26be74;\n  color: #fff;\n  margin-bottom: 20px;\n}\n\n.pageHeader___2iwYz h1 {\n  font-size: 18px;\n}\n"
     }
   }
 }

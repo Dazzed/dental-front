@@ -13,6 +13,7 @@ import FontAwesome from 'react-fontawesome';
 import FamilyMemberForm from './FamilyMemberForm';
 
 import style from './FamilyMembers.scss';
+import validate from './familyMembersValidation';
 
 import {
   hideFamilyMemberForm,
@@ -37,6 +38,7 @@ const fields = [
 @reduxForm({
   form: 'signup',
   fields,
+  validate,
 }, state => ({
   isFormVisible: state.signup.showFamilyMemberForm,
   index: state.signup.index,
@@ -69,6 +71,10 @@ export default class FamilyMembers extends React.Component {
     }
   }
 
+  memberHasError(member) {
+    return member.error && Object.keys(member.error).length > 0;
+  }
+
   render() {
     const { fields: { familyMembers }, isFormVisible, index } = this.props;
     const member = familyMembers[index];
@@ -99,49 +105,52 @@ export default class FamilyMembers extends React.Component {
           </Col>
           <Col md={12}>
             <ListGroup>
-              {familyMembers.map((_member, _index) =>
-                <ListGroupItem key={_index}>
-                  <Row>
-                    <Col md={4} className={style.familyMemberItem}>
-                      {_member.avatarImage &&
-                        <Image
-                          className="img-responsive"
-                          src={_member.avatarImage.value.dataUri}
-                          circle
-                        />
-                      }
-                      {_member.firstName.value} {_member.lastName.value}
-                    </Col>
-                    <Col md={3}>
-                      {_member.relationship.value}
-                    </Col>
-                    <Col md={1}>
-                      {_member.birthDate.value &&
-                        moment().diff(_member.birthDate.value, 'year', false)
-                      }
-                    </Col>
-                    <Col md={2}>
-                      {_member.accountType.value}
-                    </Col>
-                    <Col md={2} className="text-center">
-                      <FontAwesome
-                        onClick={this.editMember.bind(this, _index)}
-                        name="pencil"
-                      />
-                      {'  '}|{' '}
-                      <FontAwesome
-                        onClick={this.removeMember.bind(this, _index)}
-                        name="times"
-                      />
-                    </Col>
-                  </Row>
-                </ListGroupItem>)}
+              {familyMembers.map((_member, _index) => {
+                const bsStyle = this.memberHasError(_member) ? 'danger' : null;
+                return (
+                  <ListGroupItem key={_index} bsStyle={bsStyle}>
+                    <Row>
+                      <Col md={4} className={style.familyMemberItem}>
+                        {_member.avatarImage &&
+                          <Image
+                            className="img-responsive"
+                            src={_member.avatarImage.value.dataUri}
+                            circle
+                          />
+                          }
+                          {_member.firstName.value} {_member.lastName.value}
+                        </Col>
+                        <Col md={3}>
+                          {_member.relationship.value}
+                        </Col>
+                        <Col md={1}>
+                          {_member.birthDate.value &&
+                            moment().diff(_member.birthDate.value, 'year', false)
+                          }
+                        </Col>
+                        <Col md={2}>
+                          {_member.accountType.value}
+                        </Col>
+                        <Col md={2} className="text-center">
+                          <FontAwesome
+                            onClick={this.editMember.bind(this, _index)}
+                            name="pencil"
+                          />
+                          {'  '}|{' '}
+                          <FontAwesome
+                            onClick={this.removeMember.bind(this, _index)}
+                            name="times"
+                          />
+                        </Col>
+                      </Row>
+                    </ListGroupItem>);
+              })}
               </ListGroup>
           </Col>
         </Row>
 
         {isFormVisible &&
-          <FamilyMemberForm member={member}/>
+          <FamilyMemberForm member={member} form="signup" />
         }
       </Well>
     );

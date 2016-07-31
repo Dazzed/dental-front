@@ -12,7 +12,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FontAwesome from 'react-fontawesome';
 import { reduxForm, addArrayValue } from 'redux-form';
-import { showFamilyMemberForm } from 'redux/modules/signup';
+import { showFamilyMemberForm, register } from 'redux/modules/signup';
 
 import { PREFERRED_CONTACT_METHODS } from 'utils/constants';
 
@@ -20,8 +20,15 @@ import style from './ProfileInformation.scss';
 import AvatarField from 'components/AvatarField/AvatarField';
 import DatePicker from 'components/DatePicker/DatePicker';
 
+import validate from './profileInformationValidation';
+import { validateState } from 'utils/bootstrap';
+
 
 const fields = [
+  'email',
+  'confirmEmail',
+  'password',
+  'confirmPassword',
   'firstName',
   'middleName',
   'lastName',
@@ -37,12 +44,32 @@ const fields = [
   'tos',
   'avatar',
   'familyMembers[]',
+  'familyMembers[].avatar',
+  'familyMembers[].avatarImage',
+  'familyMembers[].firstName',
+  'familyMembers[].lastName',
+  'familyMembers[].relationship',
+  'familyMembers[].birthDate',
+  'familyMembers[].phone',
+  'familyMembers[].email',
+  'familyMembers[].accountType',
 ];
 
 
+const submit = (values, dispatch) => {
+  const action = register(values);
+  dispatch(action);
+};
+
+
+/**
+ * This is used as a main form to avoid bind on the parent all the events.
+ *
+ */
 @reduxForm({
   form: 'signup',
   fields,
+  validate,
 }, undefined, {
   addValue: addArrayValue,
   showFamilyMemberForm,
@@ -54,6 +81,7 @@ class ProfileInformation extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
     showFamilyMemberForm: React.PropTypes.func.isRequired,
     addValue: React.PropTypes.func.isRequired,
+    handleSubmit: React.PropTypes.func.isRequired,
   };
 
   handleAddMemberFamily = () => {
@@ -66,11 +94,12 @@ class ProfileInformation extends React.Component {
       { firstName, lastName, middleName, birthDate, phone, sex, address,
         city, state, zipCode, contactMethod, accountHolder, tos, avatar,
       },
-      submitting,
+      submitting, handleSubmit,
     } = this.props;
 
     return (
-      <Well>
+      <Well><form method="post" onSubmit={handleSubmit(submit)}>
+
         <h3>Profile Infomation</h3>
 
         <Row>
@@ -85,14 +114,18 @@ class ProfileInformation extends React.Component {
               <ControlLabel>Name</ControlLabel>
               <Row>
                 <Col md={4}>
-                  <FormControl
-                    type="text"
-                    placeholder="First Name"
-                    {...firstName}
-                  />
-                  <FormControl.Feedback />
-                  {firstName.touched && firstName.error &&
-                    <HelpBlock>{firstName.error}</HelpBlock>}
+                  <FormGroup
+                    validationState={validateState(firstName)}
+                  >
+                    <FormControl
+                      type="text"
+                      placeholder="First Name"
+                      {...firstName}
+                    />
+                    <FormControl.Feedback />
+                    {firstName.touched && firstName.error &&
+                      <HelpBlock>{firstName.error}</HelpBlock>}
+                  </FormGroup>
                 </Col>
                 <Col md={4}>
                   <FormControl
@@ -105,14 +138,18 @@ class ProfileInformation extends React.Component {
                     <HelpBlock>{middleName.error}</HelpBlock>}
                 </Col>
                 <Col md={4}>
-                  <FormControl
-                    type="text"
-                    placeholder="Last Name"
-                    {...lastName}
-                  />
-                  <FormControl.Feedback />
-                  {lastName.touched && lastName.error &&
-                    <HelpBlock>{lastName.error}</HelpBlock>}
+                  <FormGroup
+                    validationState={validateState(lastName)}
+                  >
+                    <FormControl
+                      type="text"
+                      placeholder="Last Name"
+                      {...lastName}
+                    />
+                    <FormControl.Feedback />
+                    {lastName.touched && lastName.error &&
+                      <HelpBlock>{lastName.error}</HelpBlock>}
+                  </FormGroup>
                 </Col>
               </Row>
             </FormGroup>
@@ -123,6 +160,7 @@ class ProfileInformation extends React.Component {
           <Col md={5}>
             <FormGroup
               controlId="birthDate"
+              validationState={validateState(birthDate)}
             >
               <ControlLabel>Date of Birth</ControlLabel>
               <DatePicker {...birthDate} form="signup" />
@@ -135,6 +173,7 @@ class ProfileInformation extends React.Component {
           <Col md={5}>
             <FormGroup
               controlId="phone"
+              validationState={validateState(phone)}
             >
               <ControlLabel>Phone Number</ControlLabel>
               <FormControl type="text" {...phone} />
@@ -149,6 +188,7 @@ class ProfileInformation extends React.Component {
           <Col md={2}>
             <FormGroup
               controlId="sex"
+              validationState={validateState(sex)}
             >
               <ControlLabel>Sex</ControlLabel>
               <FormControl componentClass="select" {...sex} >
@@ -167,6 +207,7 @@ class ProfileInformation extends React.Component {
           <Col md={12}>
             <FormGroup
               controlId="address"
+              validationState={validateState(address)}
             >
               <ControlLabel>Address</ControlLabel>
               <FormControl type="text" {...address} />
@@ -181,6 +222,7 @@ class ProfileInformation extends React.Component {
           <Col md={5}>
             <FormGroup
               controlId="city"
+              validationState={validateState(city)}
             >
               <ControlLabel>City</ControlLabel>
               <FormControl type="text" {...city} />
@@ -193,6 +235,7 @@ class ProfileInformation extends React.Component {
           <Col md={5} mdOffset={2}>
             <FormGroup
               controlId="state"
+              validationState={validateState(state)}
             >
               <ControlLabel>State</ControlLabel>
               <FormControl type="text" {...state} />
@@ -207,6 +250,7 @@ class ProfileInformation extends React.Component {
           <Col md={5}>
             <FormGroup
               controlId="zipCode"
+              validationState={validateState(zipCode)}
             >
               <ControlLabel>Zip Code</ControlLabel>
               <FormControl type="text" {...zipCode} />
@@ -252,6 +296,7 @@ class ProfileInformation extends React.Component {
           <Col md={6} mdOffset={6}>
             <FormGroup
               controlId="tos"
+              validationState={validateState(tos)}
             >
               <Checkbox {...tos} checked={tos.value}>
                 <strong>
@@ -299,7 +344,7 @@ class ProfileInformation extends React.Component {
             </Button>
           </Col>
         </Row>
-      </Well>
+      </form></Well>
     );
   }
 }

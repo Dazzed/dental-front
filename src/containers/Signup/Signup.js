@@ -14,12 +14,10 @@ class Signup extends React.Component {
         <PageHeader title="User Account Signup" />
         <Helmet title="Signup"/>
         <div className="container">
-          <form>
-            <AccountInformation />
-            <h1 className="green">Primary Account Holder</h1>
-            <ProfileInformation />
-            <FamilyMembers />
-          </form>
+          <AccountInformation />
+          <h1 className="green">Primary Account Holder</h1>
+          <ProfileInformation />
+          <FamilyMembers />
         </div>
       </div>
     );
