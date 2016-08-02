@@ -39,9 +39,9 @@ export function isLoaded(globalState) {
   return globalState.currentUser && globalState.currentUser.loaded;
 }
 
-export function load(userId) {
+export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get(`/user/load/${userId}`) // params not used, just shown as demonstration
+    promise: (client) => client.get(`/users/me`) // params not used, just shown as demonstration
   };
 }
