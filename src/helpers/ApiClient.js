@@ -1,6 +1,7 @@
 import superagent from 'superagent';
 import config from '../config';
 
+
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
 function formatUrl(path) {
@@ -25,6 +26,10 @@ export default class ApiClient {
 
         if (__SERVER__ && req.get('cookie')) {
           request.set('cookie', req.get('cookie'));
+          if (req.session.user) {
+            // Set JWT token
+            request.set('Authorization', `JWT ${req.session.user}`);
+          }
         }
 
         if (data) {
