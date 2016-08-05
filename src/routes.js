@@ -2,6 +2,11 @@ import React from 'react';
 import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
+  UserDashboard,
+  DentistDashboard
+} from 'components';
+
+import {
     App,
     Home,
     Login,
@@ -46,6 +51,8 @@ export default (store) => {
       { /* Routes */ }
       <Route path="login" component={Login}/>
       <Route path="signup" component={Signup}/>
+      <Route path="userDashboard" component={UserDashboard}/>
+      <Route path="dentistDashboard" component={DentistDashboard}/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
