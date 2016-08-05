@@ -18,8 +18,18 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from './routes';
+import expressSession from 'express-session';
+import cookieParser from 'cookie-parser';
+import Sequelize from 'sequelize';
+import jwt from 'jsonwebtoken';
+import debug from 'debug';
 
-// TODO: update this to the new api url and port
+const logger = debug('dental-ui:server');
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = require(path.join(__dirname, '..', 'config', 'config'))[env];
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+
+const SequelizeStore = require('express-sequelize-session')(expressSession.Store);
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
 const app = new Express();
@@ -34,10 +44,49 @@ app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
+app.use(cookieParser());
+app.use(expressSession({
+  secret: process.env.SECRET_KEY || 'somesecrettokenhere',
+  saveUninitialized: true, // don't create session until something stored
+  resave: false, // don't save session if unmodified
+  store: new SequelizeStore(sequelize),
+}));
+
+// Sync session
+sequelize.sync();
+
+// listen on login request
+proxy.on('proxyRes', (proxyRes, req) => {
+  if (req.originalUrl === '/api/v1/accounts/login' && req.method === 'POST') {
+    // TODO: maybe save JWT instead of id?
+    proxyRes.on('data', (msg) => {
+      const id = JSON.parse(msg.toString()).id;
+      req.session.user = jwt.sign({ id }, process.env.JWT_SECRET);
+      logger('Saving session user ID as JWT token');
+    });
+  }
+
+  if (req.originalUrl === '/api/v1/accounts/logut') {
+    proxyRes.on('finish', () => {
+      logger('Delete session user ID');
+      delete req.session.user;
+    });
+  }
+});
+
+// Setup JWT header
+proxy.on('proxyReq', (proxyReq, req) => {
+  if (req.session.user) {
+    proxyReq.setHeader('Authorization', `JWT ${req.session.user}`);
+  }
+});
+
+
 // Proxy to API server
 app.use('/api', (req, res) => {
   proxy.web(req, res, {target: `${targetUrl}/api`});
 });
+
 
 // app.use('/ws', (req, res) => {
 //   proxy.web(req, res, {target: targetUrl + '/ws'});
