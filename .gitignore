@@ -1,14 +1,10 @@
+# Don't check auto-generated stuff into git
+coverage
+build
 node_modules
+stats.json
 
-.tern-port
-.lvimrc
+# Cruft
 .DS_Store
-.env
-Session.vim
-codeit.sh
-vim
-
-.npm-debug.log
-webpack-assets.json
-
-static/dist/
+npm-debug.log
+.idea
