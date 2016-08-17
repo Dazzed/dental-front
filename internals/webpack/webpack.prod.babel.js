@@ -6,9 +6,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 
 // PostCSS plugins
+const assets = require('postcss-assets');
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
+const precss = require('precss');
 
 module.exports = require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
@@ -31,12 +33,20 @@ module.exports = require('./webpack.base.babel')({
 
   // In production, we minify our CSS with cssnano
   postcssPlugins: [
+    precss(),
     postcssFocus(),
     cssnext({
       browsers: ['last 2 versions', 'IE > 10'],
     }),
     postcssReporter({
       clearMessages: true,
+    }),
+    assets({
+      basePath: path.join(process.cwd(), 'app'),
+      loadPaths: [
+        path.join(process.cwd(), 'app/assets/images'),
+        path.join(process.cwd(), 'app/assets/fonts'),
+      ],
     }),
   ],
   plugins: [

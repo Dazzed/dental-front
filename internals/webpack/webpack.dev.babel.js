@@ -12,9 +12,11 @@ const pkg = require(path.resolve(process.cwd(), 'package.json'));
 const dllPlugin = pkg.dllPlugin;
 
 // PostCSS plugins
+const assets = require('postcss-assets');
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
 const postcssReporter = require('postcss-reporter');
+const precss = require('precss');
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
@@ -43,16 +45,28 @@ module.exports = require('./webpack.base.babel')({
   plugins: dependencyHandlers().concat(plugins), // eslint-disable-line no-use-before-define
 
   // Load the CSS in a style tag in development
-  cssLoaders: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',
+  cssLoaders: [
+    'style?sourceMap',
+    'css?modules&importLoaders=1&sourceMap&localIdentName=[path]--[local]',
+    'postcss',
+  ].join('!'),
 
   // Process the CSS with PostCSS
   postcssPlugins: [
+    precss(),
     postcssFocus(), // Add a :focus to every :hover
     cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
       browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
     }),
     postcssReporter({ // Posts messages from plugins to the terminal
       clearMessages: true,
+    }),
+    assets({
+      basePath: path.join(process.cwd(), 'app'),
+      loadPaths: [
+        path.join(process.cwd(), 'app/assets/images'),
+        path.join(process.cwd(), 'app/assets/fonts'),
+      ],
     }),
   ],
 
