@@ -25,10 +25,8 @@ import configureStore from './store';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
-// Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
-import 'sanitize.css/sanitize.css';
-// Import the bootstrap CSS, which HtmlWebpackPlugin transfers to the build folder
-import 'bootstrap-css-only/css/bootstrap.min.css';
+// Load base styles
+import './assets/styles/app.css';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
