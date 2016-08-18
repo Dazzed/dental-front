@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import expect from 'expect';
 
-import { selectLocationState } from 'containers/App/selectors';
+import { selectLocationState } from 'common/selectors/router.selector';
 
 describe('selectLocationState', () => {
   it('should select the route as a plain JS object', () => {
