@@ -1,6 +1,6 @@
 /* Roboto font definition */
 @font-face {
-  font-family: 'Roboto';
+  font-family: Roboto;
   src: resolve('roboto/Roboto-Bold-webfont.eot');
   src:
     resolve('roboto/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
@@ -12,7 +12,7 @@
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: Roboto;
   src: resolve('roboto/Roboto-Light-webfont.eot');
   src:
     resolve('roboto/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
@@ -24,7 +24,7 @@
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: Roboto;
   src: resolve('roboto/Roboto-Medium-webfont.eot');
   src:
     resolve('roboto/Roboto-Medium-webfont.eot?#iefix') format('embedded-opentype'),
@@ -36,7 +36,7 @@
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: Roboto;
   src: resolve('roboto/Roboto-Regular-webfont.eot');
   src:
     resolve('roboto/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
@@ -48,7 +48,7 @@
 }
 
 @font-face {
-  font-family: 'Roboto';
+  font-family: Roboto;
   src: resolve('roboto/Roboto-Thin-webfont.eot');
   src:
     resolve('roboto/Roboto-Thin-webfont.eot?#iefix') format('embedded-opentype'),
