@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
+const proxy = require('express-http-proxy');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 
 // Dev middleware
@@ -56,11 +57,29 @@ const addProdMiddlewares = (app, options) => {
   app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 };
 
+// Proxy requests to real backend
+const addProxyMiddleware = (app) => {
+  const pxhost = process.env.PROXY_HOST || '127.0.0.1';
+  const pxport = process.env.PROXY_PORT || '8080';
+  const prefix = '/api';
+  const pxURL = `${pxhost}:${pxport}/`;
+
+  // Proxy requests
+  app.use('/api', proxy(pxURL, {
+    forwardPath: (req) => {
+      const reqPath = require('url').parse(req.url).path;
+      return `${prefix}${reqPath}`;
+    },
+  }));
+};
+
 /**
  * Front-end middleware
  */
 module.exports = (app, options) => {
   const isProd = process.env.NODE_ENV === 'production';
+
+  addProxyMiddleware(app);
 
   if (isProd) {
     addProdMiddlewares(app, options);
