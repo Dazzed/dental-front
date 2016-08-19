@@ -2,6 +2,7 @@ import { conformsTo, isEmpty, isFunction, isObject, isString } from 'lodash';
 import invariant from 'invariant';
 import warning from 'warning';
 import createReducer from 'reducers';
+import { selectCurrentUser } from 'containers/App/selectors';
 
 /**
  * Validate the shape of redux store
@@ -59,14 +60,36 @@ export function injectAsyncSagas(store, isValid) {
   };
 }
 
+function redirectToLogin(store) {
+  return (nextState, replace) => {
+    if (!selectCurrentUser(store.getState())) {
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname },
+      });
+    }
+  };
+}
+
+function redirectToDashboard(store) {
+  return (nextState, replace) => {
+    if (selectCurrentUser(store.getState())) {
+      replace('/dashboard');
+    }
+  };
+}
+
+
 /**
  * Helper for creating injectors
  */
-export function getAsyncInjectors(store) {
+export function getHooks(store) {
   checkStore(store);
 
   return {
     injectReducer: injectAsyncReducer(store, true),
     injectSagas: injectAsyncSagas(store, true),
+    redirectToLogin: redirectToLogin(store),
+    redirectToDashboard: redirectToDashboard(store),
   };
 }
