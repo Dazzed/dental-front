@@ -26,7 +26,9 @@ import configureStore from './store';
 import { translationMessages } from './i18n';
 
 // Load base styles
-import './assets/styles/app.css';
+import 'sanitize.css/sanitize.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'assets/styles/app.css';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

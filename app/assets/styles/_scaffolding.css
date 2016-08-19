@@ -1,3 +1,17 @@
-html {
+:global(html),
+:global(body) {
   font-family: $roboto-font-stack;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+:global(body) {
+  padding-top: $nav-height;
+}
+
+:global(#app) {
+  height: 100%;
 }
