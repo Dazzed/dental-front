@@ -4,6 +4,6 @@
  * App container styles
  */
 
-.container {
-  display: block;
+.app-wrapper {
+  height: 100%;
 }

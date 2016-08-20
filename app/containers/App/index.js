@@ -12,8 +12,12 @@
  */
 
 import React from 'react';
+import CSSModules from 'react-css-modules';
 
+import NavBar from 'components/NavBar';
 import styles from './styles.css';
+
+@CSSModules(styles)
 
 export default class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -23,7 +27,8 @@ export default class App extends React.Component { // eslint-disable-line react/
 
   render() {
     return (
-      <div className={styles.container}>
+      <div styleName="app-wrapper">
+        <NavBar />
         {React.Children.toArray(this.props.children)}
       </div>
     );

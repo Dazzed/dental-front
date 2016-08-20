@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 // selectLocationState expects a plain JS object for the routing state
 const selectLocationState = () => {
   let prevRoutingState;
@@ -15,6 +17,28 @@ const selectLocationState = () => {
   };
 };
 
+/**
+ * Direct selector to the app state domain
+ */
+function selectAppDomain(state) {
+  return state.get('app');
+}
+
+/**
+ * Public selectors used by App
+ */
+const selectApp = createSelector(
+  selectAppDomain,
+  (substate) => substate
+);
+
+const selectCurrentUser = createSelector(
+  selectAppDomain,
+  (substate) => substate.get('currentUser')
+);
+
 export {
   selectLocationState,
+  selectApp,
+  selectCurrentUser,
 };

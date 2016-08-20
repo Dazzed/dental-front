@@ -10,16 +10,20 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import CSSModules from 'react-css-modules';
 
+import styles from './styles.css';
+
+@CSSModules(styles)
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <div styleName="homepage-wrapper">
+        <div className="container">
+          <h2>Dental Home</h2>
+        </div>
+      </div>
     );
   }
 }
