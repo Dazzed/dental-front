@@ -8,22 +8,18 @@ import 'babel-polyfill';
 
 /* eslint-disable import/no-unresolved */
 // Load the manifest.json file and the .htaccess file
-import '!file?name=[name].[ext]!./manifest.json';
-import 'file?name=[name].[ext]!./.htaccess';
+// import '!file?name=[name].[ext]!./manifest.json'
+// import 'file?name=[name].[ext]!./.htaccess'
 /* eslint-enable import/no-unresolved */
 
 // Import all the third party stuff
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'react-router-scroll';
-import LanguageProvider from 'containers/LanguageProvider';
 import configureStore from './store';
-
-// Import i18n messages
-import { translationMessages } from './i18n';
 
 // Load base styles
 import 'sanitize.css/sanitize.css';
@@ -34,16 +30,8 @@ import 'assets/styles/app.css';
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
-const initialState = {};
-const store = configureStore(initialState, browserHistory);
-
-// Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), selectLocationState
-// must be provided for resolving how to retrieve the "route" in the state
-import { selectLocationState } from 'common/selectors/router.selector';
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: selectLocationState(),
-});
+const store = configureStore();
+const history = syncHistoryWithStore(browserHistory, store);
 
 // Set up the router, wrapping all Routes in the App component
 import App from 'containers/App';
@@ -53,45 +41,31 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+// Scroll to top when going to a new page, imitating default browser behavior
+function scrollMiddleware () {
+  return useScroll((prevProps, props) => {
+    if (!prevProps || !props) {
+      return true;
+    }
 
-const render = (translatedMessages) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={translatedMessages}>
-        <Router
-          history={history}
-          routes={rootRoute}
-          render={
-            // Scroll to top when going to a new page, imitating default browser
-            // behaviour
-            applyRouterMiddleware(useScroll())
-          }
-        />
-      </LanguageProvider>
-    </Provider>,
-    document.getElementById('app')
-  );
-};
+    if (prevProps.location.pathname !== props.location.pathname) {
+      return [ 0, 0 ];
+    }
 
-
-// Hot reloadable translation json files
-if (module.hot) {
-  // modules.hot.accept does not accept dynamic dependencies,
-  // have to be constants at compile-time
-  module.hot.accept('./i18n', () => {
-    render(translationMessages);
+    return true;
   });
 }
 
-// Chunked polyfill for browsers without Intl support
-if (!window.Intl) {
-  Promise.all([
-    System.import('intl'),
-    System.import('intl/locale-data/jsonp/en.js'),
-  ]).then(() => render(translationMessages));
-} else {
-  render(translationMessages);
-}
+render(
+  <Provider store={store}>
+    <Router
+      history={history}
+      routes={rootRoute}
+      render={applyRouterMiddleware(scrollMiddleware)}
+    />
+  </Provider>,
+  document.getElementById('app')
+);
 
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,

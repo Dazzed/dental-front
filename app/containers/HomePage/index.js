@@ -17,9 +17,9 @@ import styles from './styles.css';
 @CSSModules(styles)
 export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  render() {
+  render () {
     return (
-      <div styleName="homepage-wrapper">
+      <div styleName="wrapper">
         <div className="container">
           <h2>Dental Home</h2>
         </div>

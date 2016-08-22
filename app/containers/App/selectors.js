@@ -1,44 +1,24 @@
 import { createSelector } from 'reselect';
-
-// selectLocationState expects a plain JS object for the routing state
-const selectLocationState = () => {
-  let prevRoutingState;
-  let prevRoutingStateJS;
-
-  return (state) => {
-    const routingState = state.get('route'); // or state.route
-
-    if (!routingState.equals(prevRoutingState)) {
-      prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
-    }
-
-    return prevRoutingStateJS;
-  };
-};
+import { get } from 'lodash';
 
 /**
  * Direct selector to the app state domain
  */
-function selectAppDomain(state) {
-  return state.get('app');
+function selectGlobal (state) {
+  return state.global;
 }
 
-/**
- * Public selectors used by App
- */
-const selectApp = createSelector(
-  selectAppDomain,
-  (substate) => substate
+const selectUserType = createSelector(
+  selectGlobal,
+  (substate) => get(substate, 'authData.userType'),
 );
 
 const selectCurrentUser = createSelector(
-  selectAppDomain,
-  (substate) => substate.get('currentUser')
+  selectGlobal,
+  (substate) => substate.currentUser
 );
 
 export {
-  selectLocationState,
-  selectApp,
+  selectGlobal,
   selectCurrentUser,
 };

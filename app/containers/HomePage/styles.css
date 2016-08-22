@@ -1,6 +1,6 @@
 @import '../../assets/styles/variables';
 
-.homepage-wrapper {
+.wrapper {
   height: 100%;
   background-color: $green;
   color: $white;

@@ -3,21 +3,25 @@
  */
 
 import { createStore, applyMiddleware, compose } from 'redux';
-import { fromJS } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 import createSagaMiddleware from 'redux-saga';
+import { noop } from 'lodash';
+
+import globalSagas from 'common/sagas';
 import createReducer from './reducers';
 
-const sagaMiddleware = createSagaMiddleware();
-const devtools = window.devToolsExtension || (() => noop => noop);
 
-export default function configureStore(initialState = {}, history) {
+const sagaMiddleware = createSagaMiddleware();
+const devtools = window.devToolsExtension || noop;
+
+export default function configureStore (initialState = {}) {
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
+    routerMiddleware(browserHistory),
     sagaMiddleware,
-    routerMiddleware(history),
   ];
 
   const enhancers = [
@@ -27,12 +31,15 @@ export default function configureStore(initialState = {}, history) {
 
   const store = createStore(
     createReducer(),
-    fromJS(initialState),
+    initialState,
     compose(...enhancers)
   );
 
+  // We run the root saga automatically
+  sagaMiddleware.run(...globalSagas);
   // Create hook for async sagas
   store.runSaga = sagaMiddleware.run;
+  store.asyncReducers = {}; // Async reducer registry
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
@@ -45,7 +52,5 @@ export default function configureStore(initialState = {}, history) {
     });
   }
 
-  // Initialize it with no other reducers
-  store.asyncReducers = {};
   return store;
 }
