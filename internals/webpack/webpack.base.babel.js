@@ -12,7 +12,7 @@ module.exports = (options) => ({
     publicPath: '/',
   }, options.output), // Merge with env dependent settings
   module: {
-    loaders: [{
+    loaders: [ {
       test: /\.js$/, // Transform all .js files required somewhere with Babel
       loader: 'babel',
       exclude: /node_modules/,
@@ -30,7 +30,7 @@ module.exports = (options) => ({
       // So, no need for ExtractTextPlugin here.
       test: /\.css$/,
       include: /node_modules/,
-      loaders: ['style-loader', 'css-loader'],
+      loaders: [ 'style-loader', 'css-loader' ],
     }, {
       test: /\.(eot|svg|ttf|woff|woff2)$/,
       loader: 'file-loader',
@@ -49,7 +49,7 @@ module.exports = (options) => ({
     }, {
       test: /\.(mp4|webm)$/,
       loader: 'url-loader?limit=10000',
-    }],
+    } ],
   },
   plugins: options.plugins.concat([
     new webpack.ProvidePlugin({
@@ -68,7 +68,7 @@ module.exports = (options) => ({
   ]),
   postcss: () => options.postcssPlugins,
   resolve: {
-    modules: ['app', 'node_modules'],
+    modules: [ 'app', 'node_modules' ],
     extensions: [
       '',
       '.js',

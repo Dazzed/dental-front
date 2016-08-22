@@ -6,7 +6,7 @@ const componentExists = require('../utils/componentExists');
 
 module.exports = {
   description: 'Add a container component',
-  prompts: [{
+  prompts: [ {
     type: 'input',
     name: 'name',
     message: 'What should it be called?',
@@ -43,10 +43,10 @@ module.exports = {
     name: 'wantMessages',
     default: true,
     message: 'Do you want i18n messages (i.e. will this component use text)?',
-  }],
+  } ],
   actions: data => {
     // Generate index.js and index.test.js
-    const actions = [{
+    const actions = [ {
       type: 'add',
       path: '../../app/containers/{{properCase name}}/index.js',
       templateFile: './container/index.js.hbs',
@@ -56,7 +56,7 @@ module.exports = {
       path: '../../app/containers/{{properCase name}}/tests/index.test.js',
       templateFile: './container/test.js.hbs',
       abortOnFail: true,
-    }];
+    } ];
 
     // If they want a CSS file, add styles.css
     if (data.wantCSS) {

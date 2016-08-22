@@ -13,8 +13,8 @@ module.exports = {
   devtool: 'inline-source-map',
   isparta: {
     babel: {
-      presets: ['es2015', 'react', 'stage-0'],
-      plugins: ['transform-decorators-legacy'],
+      presets: [ 'es2015', 'react', 'stage-0' ],
+      plugins: [ 'transform-decorators-legacy' ],
     },
   },
   module: {
@@ -42,7 +42,7 @@ module.exports = {
       },
       { test: /\.js$/,
         loader: 'babel',
-        exclude: [/node_modules/],
+        exclude: [ /node_modules/ ],
       },
       { test: /\.jpe?g$|\.gif$|\.png$/i,
         loader: 'null-loader',
@@ -59,7 +59,7 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
-    })],
+    }) ],
 
   // Some node_modules pull in Node-specific dependencies.
   // Since we're running in a browser we have to stub them out. See:

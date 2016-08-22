@@ -9,7 +9,7 @@ const pageComponents = fs.readdirSync('app/components');
 const pageContainers = fs.readdirSync('app/containers');
 const components = pageComponents.concat(pageContainers);
 
-function componentExists(comp) {
+function componentExists (comp) {
   return components.indexOf(comp) >= 0;
 }
 

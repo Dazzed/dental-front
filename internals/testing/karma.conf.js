@@ -4,12 +4,12 @@ const path = require('path');
 
 module.exports = (config) => {
   config.set({
-    frameworks: ['mocha'],
-    reporters: ['coverage', 'mocha'],
+    frameworks: [ 'mocha' ],
+    reporters: [ 'coverage', 'mocha' ],
     browsers: process.env.TRAVIS // eslint-disable-line no-nested-ternary
-      ? ['ChromeTravis']
+      ? [ 'ChromeTravis' ]
       : process.env.APPVEYOR
-        ? ['IE'] : ['Chrome'],
+        ? [ 'IE' ] : [ 'Chrome' ],
 
     autoWatch: false,
     singleRun: true,
@@ -30,7 +30,7 @@ module.exports = (config) => {
     ],
 
     preprocessors: {
-      ['./test-bundler.js']: ['webpack', 'sourcemap'], // eslint-disable-line no-useless-computed-key
+      ['./test-bundler.js']: [ 'webpack', 'sourcemap' ], // eslint-disable-line no-useless-computed-key
     },
 
     webpack: webpackConfig,
@@ -44,7 +44,7 @@ module.exports = (config) => {
     customLaunchers: {
       ChromeTravis: {
         base: 'Chrome',
-        flags: ['--no-sandbox'],
+        flags: [ '--no-sandbox' ],
       },
     },
 

@@ -54,7 +54,7 @@ module.exports = require('./webpack.base.babel')({
   postcssPlugins: [
     precss(),
     cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
-      browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
+      browsers: [ 'last 2 versions', 'IE > 10' ], // ...based on this browser list
     }),
     postcssReporter({ // Posts messages from plugins to the terminal
       clearMessages: true,
@@ -69,8 +69,8 @@ module.exports = require('./webpack.base.babel')({
   ],
 
   babelQuery: {
-    presets: ['react-hmre'], // Tell babel that we want to hot-reload
-    plugins: ['transform-decorators-legacy'],
+    presets: [ 'react-hmre' ], // Tell babel that we want to hot-reload
+    plugins: [ 'transform-decorators-legacy' ],
   },
 
   // Emit a source map for easier debugging
@@ -86,7 +86,7 @@ module.exports = require('./webpack.base.babel')({
  * will be used.
  *
  */
-function dependencyHandlers() {
+function dependencyHandlers () {
   // Don't do anything during the DLL Build step
   if (process.env.BUILDING_DLL) { return []; }
 
@@ -151,7 +151,7 @@ function dependencyHandlers() {
  * We dynamically generate the HTML content in development so that the different
  * DLL Javascript files are loaded in script tags and available to our application.
  */
-function templateContent() {
+function templateContent () {
   const html = fs.readFileSync(
     path.resolve(process.cwd(), 'app/index.html')
   ).toString();
@@ -160,7 +160,7 @@ function templateContent() {
 
   const doc = cheerio(html);
   const body = doc.find('body');
-  const dllNames = !dllPlugin.dlls ? ['reactBoilerplateDeps'] : Object.keys(dllPlugin.dlls);
+  const dllNames = !dllPlugin.dlls ? [ 'reactBoilerplateDeps' ] : Object.keys(dllPlugin.dlls);
 
   dllNames.forEach(dllName => body.append(`<script data-dll='true' src='/${dllName}.dll.js'></script>`));
 

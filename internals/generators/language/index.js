@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 
 module.exports = {
   description: 'Add a langauge',
-  prompts: [{
+  prompts: [ {
     type: 'input',
     name: 'language',
     message: 'What is the language you want to add i18n support for (e.g. "fr", "de")?',
@@ -17,7 +17,7 @@ module.exports = {
 
       return '2 character language specifier is required';
     },
-  }],
+  } ],
 
   actions: () => {
     const actions = [];

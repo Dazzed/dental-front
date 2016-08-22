@@ -24,7 +24,7 @@ module.exports = require('./webpack.base.babel')({
   },
 
   babelQuery: {
-    plugins: ['transform-decorators-legacy'],
+    plugins: [ 'transform-decorators-legacy' ],
   },
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
@@ -38,7 +38,7 @@ module.exports = require('./webpack.base.babel')({
   postcssPlugins: [
     precss(),
     cssnext({
-      browsers: ['last 2 versions', 'IE > 10'],
+      browsers: [ 'last 2 versions', 'IE > 10' ],
     }),
     postcssReporter({
       clearMessages: true,
@@ -102,15 +102,15 @@ module.exports = require('./webpack.base.babel')({
 
       // No need to cache .htaccess. See http://mxs.is/googmp,
       // this is applied before any match in `caches` section
-      excludes: ['.htaccess'],
+      excludes: [ '.htaccess' ],
 
       caches: {
-        main: [':rest:'],
+        main: [ ':rest:' ],
 
         // All chunks marked as `additional`, loaded after main section
         // and do not prevent SW to install. Change to `optional` if
         // do not want them to be preloaded at all (cached only when first loaded)
-        additional: ['*.chunk.js'],
+        additional: [ '*.chunk.js' ],
       },
 
       // Removes warning for about `additional` section usage
