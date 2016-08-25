@@ -1,0 +1,13 @@
+:global(.clearfix::before),
+:global(.clearfix::after) {
+  content: ' ';
+  display: table;
+}
+
+:global(.clearfix::after) {
+  clear: both;
+}
+
+:global(.clearfix) {
+  *zoom: 1;
+}

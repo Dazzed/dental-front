@@ -1,0 +1,64 @@
+/** Bootstrap overrides **/
+:global(.navbar-default) {
+  background-color: $white;
+  border: none;
+  margin-bottom: 0;
+}
+
+:global(.navbar-default .container) {
+  height: $nav-height;
+}
+
+:global(.navbar-brand) {
+  position: relative;
+  height: 100%;
+}
+
+:global(.navbar-header) {
+  height: 100%;
+}
+
+:global(.navbar-collapse) {
+  padding-top: 2rem;
+}
+
+:global(button) {
+  height: 2rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  border: none;
+  outline: 0 !important;
+  cursor: pointer;
+  transition: background-color 200ms ease-out, box-shadow 100ms ease-out;
+  padding: 0.35rem 2rem; /* drop shadow changes apparent center of button */
+  &:active { padding-bottom: 0.3rem; }
+}
+
+:global(.btn-bg) {
+  font-size: 1.25rem;
+  height: 2.5rem;
+  padding: 0 2rem;
+  &:active { padding-bottom: 0; }
+}
+
+:global(.btn-round) {
+  border-radius: 1rem;
+}
+
+:global(.btn-outline) {
+  border: 0.2rem solid $white;
+}
+
+:global(.btn-green) {
+  @mixin colored-button $white, $light-green, $green;
+}
+
+:global(.btn-cyan) {
+  @mixin colored-button $white, $light-cyan, $cyan;
+}
