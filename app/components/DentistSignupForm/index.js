@@ -6,12 +6,12 @@ import CSSModules from 'react-css-modules';
 import signupFormValidator from './validator';
 import styles from './styles.css';
 
-const renderField = ({ input, label, type, width, meta: { touched, error } }) => ( // eslint-disable-line react/prop-types
+const renderField = ({ input, label, type, meta: { touched, error }, width }) => ( // eslint-disable-line react/prop-types
   <FormGroup className={touched && error ? 'has-error': ''}>
     <Col sm={12}>
       <ControlLabel>{label}</ControlLabel>
     </Col>
-    <Col sm={width}>
+    <Col sm={width || 12}>
       <FormControl {...input} placeholder={label} type={type} />
       {touched && error && <HelpBlock>{error}</HelpBlock>}
     </Col>
@@ -42,10 +42,10 @@ class DentistSignupForm extends React.Component {
     const { error, handleSubmit, pristine, reset, submitting } = this.props; // eslint-disable-line react/prop-types
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
-        <Field name="email" type="text" component={renderField} label="Email Address" width="12" />
-        <Field name="confirmEmail" type="text" component={renderField} label="Confirm Email Address" width="12" />
-        <Field name="password" type="password" component={renderField} label="Password" width="6" />
-        <Field name="confirmPassword" type="password" component={renderField} label="Confirm Password" width="6" />
+        <Field name="email" type="text" component={renderField} label="Email Address" width={12} />
+        <Field name="confirmEmail" type="text" component={renderField} label="Confirm Email Address" width={12} />
+        <Field name="password" type="password" component={renderField} label="Password" width={6} />
+        <Field name="confirmPassword" type="password" component={renderField} label="Confirm Password" width={6} />
         <FormGroup>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>
@@ -53,8 +53,8 @@ class DentistSignupForm extends React.Component {
           <Field name="firstName" type="text" component={renderName} label="First Name" />
           <Field name="lastName" type="text" component={renderName} label="Last Name" />
         </FormGroup>
-        <Field name="phone" type="text" component={renderField} label="Phone Number" width="5" />
-        <Field name="zipCode" type="text" component={renderField} label="Zip Code" width="3" />
+        <Field name="phone" type="text" component={renderField} label="Phone Number" width={5} />
+        <Field name="zipCode" type="text" component={renderField} label="Zip Code" width={3} />
         <FormGroup>
           <Col sm={12}>
             <Field name="tos" type="checkbox" component="input" styleName="checkbox" />

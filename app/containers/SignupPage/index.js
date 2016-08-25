@@ -31,7 +31,7 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
           <Row>
             <Col md={6}>
               <div styleName="form-header">
-                <h1 styleName="form-heading">Find an All-star Dentist!</h1>
+                <h1>Find an All-star Dentist!</h1>
               </div>
 
               <SignupForm onSubmit={this.onSignupRequest} />
@@ -39,7 +39,7 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
             </Col>
 
             <Col md={6} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
-              <h2>No more toothace,<br /> no more tooth decay</h2>
+              <h2>No more toothache,<br /> no more tooth decay</h2>
               <ul>
                 <li>Basic Dental Cleaning every 6 months</li>
                 <li>Exams and X-rays as needed</li>
