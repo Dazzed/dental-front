@@ -14,24 +14,24 @@ import { Navbar, Nav, NavItem, Image } from 'react-bootstrap';
 import styles from './styles.css';
 import logo from 'assets/images/dental-logo.png';
 
+@connect(null, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-
 class NavBar extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.goToLogin = this.goToLogin.bind(this);
     this.goToSignUp = this.goToSignUp.bind(this);
   }
 
-  goToLogin() {
+  goToLogin () {
     this.props.changeRoute('/login');
   }
 
-  goToSignUp() {
+  goToSignUp () {
     this.props.changeRoute('/signup');
   }
 
-  render() {
+  render () {
     return (
       <Navbar fixedTop>
         <Navbar.Header>
@@ -49,7 +49,7 @@ class NavBar extends React.Component { // eslint-disable-line react/prefer-state
               <button className="btn-green btn-round" onClick={this.goToLogin}>Log In</button>
             </NavItem>
             <NavItem>
-              <button className="btn-cyan btn-round" onClick={this.goToSignUp}>Dentist Portal</button>
+              <button className="btn-cyan btn-round" onClick={this.goToSignUp}>Sign Up</button>
             </NavItem>
           </Nav>
         </Navbar.Collapse>
@@ -62,10 +62,10 @@ NavBar.propTypes = {
   changeRoute: React.PropTypes.func,
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     changeRoute: (url) => dispatch(push(url)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(NavBar);
+export default NavBar;

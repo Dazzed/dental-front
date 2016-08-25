@@ -24,6 +24,7 @@
 
 :global(button) {
   height: 2rem;
+  font-size: 0.875rem;
   font-weight: bold;
   display: inline-flex;
   align-items: center;
@@ -39,8 +40,19 @@
   &:active { padding-bottom: 0.3rem; }
 }
 
+:global(.btn-bg) {
+  font-size: 1.25rem;
+  height: 2.5rem;
+  padding: 0 2rem;
+  &:active { padding-bottom: 0 }
+}
+
 :global(.btn-round) {
   border-radius: 1rem;
+}
+
+:global(.btn-outline) {
+  border: 0.2rem solid $white;
 }
 
 :global(.btn-green) {

@@ -11,26 +11,46 @@
  * the linting exception.
  */
 
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CSSModules from 'react-css-modules';
+import { omit } from 'lodash';
 
+import * as actions from './actions';
 import NavBar from 'components/NavBar';
 import styles from './styles.css';
 
-@CSSModules(styles)
+const mapDispatchToProps = {
+  loadUserFromToken: actions.meFromToken
+};
 
-export default class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
+@connect(null, mapDispatchToProps)
+@CSSModules(styles)
+export default class App extends Component { // eslint-disable-line react/prefer-stateless-function
 
   static propTypes = {
     children: React.PropTypes.node,
   };
 
-  render() {
+  componentWillMount () {
+    // Always load user details from the localStorage Token
+    this.props.loadUserFromToken();
+  }
+
+  render () {
     return (
-      <div styleName="app-wrapper">
+      <div styleName="wrapper">
         <NavBar />
         {React.Children.toArray(this.props.children)}
       </div>
     );
   }
 }
+
+App.propTypes = {
+  children: React.PropTypes.node,
+  loadUserFromToken: React.PropTypes.func,
+};
+
+export default App;

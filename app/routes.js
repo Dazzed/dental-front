@@ -2,7 +2,7 @@
 // They are all wrapped in the App component, which should contain the navbar etc
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
-import { getHooks } from 'utils/hooks';
+import getHooks from 'utils/hooks';
 
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
@@ -12,7 +12,7 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-export default function createRoutes(store) {
+export default function createRoutes (store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const { injectReducer, injectSagas, redirectToLogin, redirectToDashboard } = getHooks(store); // eslint-disable-line no-unused-vars
 
@@ -20,23 +20,64 @@ export default function createRoutes(store) {
     {
       path: '/',
       name: 'home',
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
+      getComponent (nextState, cb) {
+        Promise.all([
           System.import('containers/HomePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/login',
+      name: 'loginPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/LoginPage/sagas'),
+          System.import('containers/LoginPage')
+        ])
+          .then(([ sagas, component ]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/signup',
+      name: 'signupPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/SignupPage/sagas'),
+          System.import('containers/SignupPage')
+        ])
+          .then(([ sagas, component ]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/dentist-signup',
+      name: 'dentistSignupPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/DentistSignupPage/sagas'),
+          System.import('containers/DentistSignupPage')
+        ])
+          .then(([ sagas, component ]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
       },
     }, {
       path: '*',
       name: 'notfound',
-      getComponent(nextState, cb) {
+      getComponent (nextState, cb) {
         System.import('containers/NotFoundPage')
           .then(loadModule(cb))
           .catch(errorLoading);

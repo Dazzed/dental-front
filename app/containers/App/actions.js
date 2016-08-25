@@ -1,9 +1,16 @@
 import {
+  ME_FROM_TOKEN,
   SET_AUTH_DATA,
   SET_USER_DATA,
 } from './constants';
 
-export function setUserData(currentUser) {
+export function meFromToken () {
+  return {
+    type: ME_FROM_TOKEN,
+  };
+}
+
+export function setUserData (currentUser) {
   return {
     type: SET_USER_DATA,
     payload: {
@@ -12,7 +19,7 @@ export function setUserData(currentUser) {
   };
 }
 
-export function setAuthData(authData) {
+export function setAuthData (authData) {
   return {
     type: SET_AUTH_DATA,
     payload: {

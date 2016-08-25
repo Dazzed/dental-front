@@ -1,0 +1,31 @@
+@import '../../assets/styles/variables';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: $green;
+}
+
+.form-wrapper {
+  max-width: 328px;
+  width: 100%;
+  border: 1px solid $very-light-grey;
+  border-radius: 3px;
+  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.5);
+  background-color: #FFF;
+  margin-top: -10rem;
+}
+
+.form-heading {
+  text-align: left;
+  color: $cyan;
+  font-size: 1.5rem;
+  user-select: none;
+}
+
+.form-header {
+  padding: 1rem;
+}
