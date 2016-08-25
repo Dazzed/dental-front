@@ -6,12 +6,12 @@ import CSSModules from 'react-css-modules';
 import signupFormValidator from './validator';
 import styles from './styles.css';
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => ( // eslint-disable-line react/prop-types
+const renderField = ({ input, label, type, meta: { touched, error }, width }) => ( // eslint-disable-line react/prop-types
   <FormGroup className={touched && error ? 'has-error': ''}>
     <Col sm={12}>
       <ControlLabel>{label}</ControlLabel>
     </Col>
-    <Col sm={12}>
+    <Col sm={width || 12}>
       <FormControl {...input} placeholder={label} type={type} />
       {touched && error && <HelpBlock>{error}</HelpBlock>}
     </Col>
@@ -42,10 +42,10 @@ class SignupForm extends React.Component {
     const { error, handleSubmit, pristine, reset, submitting } = this.props; // eslint-disable-line react/prop-types
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
-        <Field name="email" type="text" component={renderField} label="Email Address" />
-        <Field name="confirmEmail" type="text" component={renderField} label="Confirm Email Address" />
-        <Field name="password" type="password" component={renderField} label="Password" />
-        <Field name="confirmPassword" type="password" component={renderField} label="Confirm Password" />
+        <Field name="email" type="text" component={renderField} label="Email Address" width={12} />
+        <Field name="confirmEmail" type="text" component={renderField} label="Confirm Email Address" width={12} />
+        <Field name="password" type="password" component={renderField} label="Password" width={6} />
+        <Field name="confirmPassword" type="password" component={renderField} label="Confirm Password" width={6} />
         <FormGroup>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>

@@ -31,7 +31,7 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
           <Row>
             <Col md={6}>
               <div styleName="form-header">
-                <h1 styleName="form-heading">Find an All-star Dentist!</h1>
+                <h1>Join My Dental Marketplace!</h1>
               </div>
               <DentistSignupForm onSubmit={this.onSignupRequest} />
             </Col>
