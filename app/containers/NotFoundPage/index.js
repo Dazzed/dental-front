@@ -10,12 +10,22 @@
  */
 
 import React from 'react';
+import CSSModules from 'react-css-modules';
 
-export default class NotFound extends React.Component { // eslint-disable-line react/prefer-stateless-function
+import styles from './styles.css';
+
+@CSSModules(styles)
+class NotFound extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   render () {
     return (
-      <h1>This is NotFoundPage component !</h1>
+      <div styleName="wrapper">
+        <div className="container" styleName="container">
+          <h1>Sorry, the page you're looking for doesn't exist!</h1>
+        </div>
+      </div>
     );
   }
 }
+
+export default NotFound;

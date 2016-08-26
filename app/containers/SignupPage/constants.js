@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-spaces */
 
-export const SIGNUP_REQUEST = 'SignupForm/SIGNUP_REQUEST';
-export const SIGNUP_SUCCESS = 'SignupForm/SIGNUP_SUCCESS';
-export const SIGNUP_ERROR   = 'SignupForm/SIGNUP_ERROR';
+export const SIGNUP_REQUEST = 'SignupPage/SIGNUP_REQUEST';
+export const SIGNUP_SUCCESS = 'SignupPage/SIGNUP_SUCCESS';
+export const SIGNUP_ERROR   = 'SignupPage/SIGNUP_ERROR';

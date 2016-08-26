@@ -27,11 +27,7 @@ const mapDispatchToProps = {
 
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
-export default class App extends Component { // eslint-disable-line react/prefer-stateless-function
-
-  static propTypes = {
-    children: React.PropTypes.node,
-  };
+class App extends Component { // eslint-disable-line react/prefer-stateless-function
 
   componentWillMount () {
     // Always load user details from the localStorage Token
