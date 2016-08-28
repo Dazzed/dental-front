@@ -62,7 +62,7 @@ const addProxyMiddleware = (app) => {
   const pxhost = process.env.PROXY_HOST || '127.0.0.1';
   const pxport = process.env.PROXY_PORT || '8080';
   const prefix = '/api';
-  let pxURL = null;
+  var pxURL = null;
   if (process.env.NODE_ENV === 'development') {
     pxURL = `${pxhost}:${pxport}/`;
   } else {
