@@ -12,10 +12,14 @@ import styles from './styles.css';
 import DentistSignupForm from 'components/DentistSignupForm';
 import * as actions from './actions';
 
+
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
-class SignupPage extends Component { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = propTypes;
+export default class SignupPage extends Component {
+
+  static propTypes = {
+    onSignupRequest: React.PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
@@ -40,7 +44,9 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
               <ul>
                 <li>
                   <div>Reach out to your dental patients</div>
-                  <div style={{ marginLeft: '5px' }}>Showcase your dental offices</div>
+                  <div style={{ marginLeft: '5px' }}>
+                    Showcase your dental offices
+                  </div>
                 </li>
                 <li>Display your quality and affordable dental services</li>
                 <li>Give the chance to be heard, seen, and visited</li>
@@ -52,10 +58,6 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
     );
   }
 }
-
-const propTypes = {
-  onSignupRequest: React.PropTypes.func,
-};
 
 function mapDispatchToProps (dispatch) {
   return {
@@ -70,5 +72,3 @@ function mapDispatchToProps (dispatch) {
     }
   };
 }
-
-export default SignupPage;

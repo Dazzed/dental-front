@@ -78,7 +78,7 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToDashboard,
-      path: '/dentist-signup',
+      path: '/accounts/dentist-signup',
       name: 'dentistSignupPage',
       getComponent (nextState, cb) {
         Promise.all([

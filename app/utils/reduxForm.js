@@ -1,3 +1,6 @@
+import validator from 'validate.js';
+import forEach from 'lodash/forEach';
+
 const isEmpty = value => value === undefined || value === null || value === '';
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0/* first error */];
 
@@ -71,6 +74,19 @@ export function createValidator (rules) {
         errors[key] = error;
       }
     });
+    return errors;
+  };
+}
+
+/**
+ * Function used to create validators with Validate.js
+ */
+export function validatorFactory (schema) {
+  return values => {
+    const errors = validator(values, schema);
+    forEach(errors, (item, key) =>
+      errors[key] = item[0]
+    );
     return errors;
   };
 }

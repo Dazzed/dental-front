@@ -14,7 +14,8 @@
   },
   "plugins": [
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "import"
   ],
   "env": {
     "browser": true,
@@ -24,6 +25,7 @@
   },
   "rules": {
     // Stylistic Issues
+    "max-len": ["error", 80],
     "array-bracket-spacing": [2, "always"],
     "camelcase": [2, {"properties": "never"}],
     "computed-property-spacing": [2, "never"],
@@ -82,6 +84,14 @@
     "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 2,
 
+    // import plugin
+    "import/default": 0,
+    "import/no-duplicates": 0,
+    "import/named": 0,
+    "import/namespace": 0,
+    "import/no-unresolved": 0,
+    "import/no-named-as-default": 2,
+
     // Strict Mode
     "strict": 0
   },
@@ -90,6 +100,9 @@
       "webpack": {
         "config": "./internals/webpack/webpack.test.babel.js"
       }
-    }
+    },
+    "import/ignore": [ 
+      ".(scss|less|css)$"
+    ]
   }
 }
