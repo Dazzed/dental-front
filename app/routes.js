@@ -31,6 +31,23 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToDashboard,
+      path: '/accounts/activate/:activationKey',
+      name: 'activationPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/ActivationPage/reducer'),
+          System.import('containers/ActivationPage/sagas'),
+          System.import('containers/ActivationPage')
+        ])
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('activationPage', reducer.default);
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
       path: '/login',
       name: 'loginPage',
       getComponent (nextState, cb) {

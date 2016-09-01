@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
 
-import { getItem } from 'utils/localStorage';
-
 /**
  * Requests a URL, returning a promise
  *
