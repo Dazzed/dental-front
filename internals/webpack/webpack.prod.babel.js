@@ -11,7 +11,7 @@ const cssnext = require('postcss-cssnext');
 const postcssReporter = require('postcss-reporter');
 const precss = require('precss');
 
-module.exports = require('./webpack.base.babel')({
+module.exports = ({
   // In production, we skip all hot-reloading stuff
   entry: [
     path.join(process.cwd(), 'app/app.js'),
