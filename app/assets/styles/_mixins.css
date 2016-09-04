@@ -13,7 +13,7 @@
   &:hover,
   &:focus,
   &:active:focus {
-    background-color: $background;
+    background-color: rgb($background, 10%);
     color: $color;
   }
 }

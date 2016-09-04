@@ -1,41 +1,42 @@
-// /**
-//  *
-//  */
-
-// /* eslint-disable no-constant-condition, consistent-return */
-
-import { take, call, put } from 'redux-saga/effects';
+import { take, call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { SubmissionError } from 'redux-form';
-import { get, omit } from 'lodash';
+import { stopSubmit } from 'redux-form';
+import mapValues from 'lodash/mapValues';
 
 import request from 'utils/request';
-import { signupError } from 'containers/DentistSignupPage/actions';
+
+import {
+  signupError,
+  signupSuccess,
+} from 'containers/DentistSignupPage/actions';
+
 import { DENTIST_SIGNUP_REQUEST } from './constants';
 
 // Bootstrap sagas
 export default [
-  signupFlow
+  signupFlow,
 ];
+
 
 function* signupFlow () {
   while (true) {
 
     // listen for the SIGNUP_REQUEST action dispatched on form submit
-    const { payload: { data, resolve, reject } } = yield take(DENTIST_SIGNUP_REQUEST);
+    const { payload } = yield take(DENTIST_SIGNUP_REQUEST);
 
     // execute the signup task
-    const isSuccess = yield call(signup, data, resolve, reject);
+    const isSuccess = yield call(signup, payload);
 
     if (isSuccess) {
-      alert('You have signed up successfully! Please check your email.');
-      yield put(push('/login'));
+      yield put(signupSuccess({
+        fullName: `${payload.firstName} ${payload.lastName}`
+      }));
     }
 
   }
 }
 
-function* signup (data, resolve, reject) {
+function* signup (data) {
   try {
 
     // send a post request with the desired user details
@@ -44,22 +45,14 @@ function* signup (data, resolve, reject) {
       body: JSON.stringify(data)
     });
 
-    // TODO: do i need this? I will navigate away anyways
-    // resolve(response);
-
-    // indicate successful signup
     return true;
 
   } catch (err) {
 
-    // reject the onSubmit promise of redux-form
-    if (reject) {
-      const errors = Object.keys(get(err, 'errors')).join();
-      reject(new SubmissionError({ _error: `${errors} invalid` }));
-    }
+    const errors = mapValues(err.errors, (value) => value.msg);
 
     // dispatch LOGIN_ERROR action
-    yield put(signupError(err));
+    yield put(stopSubmit('dentist-signup', errors));
 
     return false;
   }

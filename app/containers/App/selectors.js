@@ -15,10 +15,16 @@ const selectUserType = createSelector(
 
 const selectCurrentUser = createSelector(
   selectGlobal,
-  (substate) => substate.currentUser
+  (substate) => substate.get('currentUser')
+);
+
+const selectDentistSpecialties = createSelector(
+  selectGlobal,
+  (substate) => substate.get('dentistSpecialties').toJS()
 );
 
 export {
   selectGlobal,
   selectCurrentUser,
+  selectDentistSpecialties,
 };

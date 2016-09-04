@@ -20,6 +20,7 @@ import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'react-router-scroll';
 import configureStore from './store';
+import getHooks from 'utils/hooks';
 
 // Load base styles
 import 'sanitize.css/sanitize.css';
@@ -37,8 +38,18 @@ const history = syncHistoryWithStore(browserHistory, store);
 import App from 'containers/App';
 import createRoutes from './routes';
 const rootRoute = {
-  component: App,
   childRoutes: createRoutes(store),
+  getComponent (nextState, cb) {
+    // We need to inject sagas after loaded.
+    Promise.all([
+      System.import('containers/App/sagas'),
+    ])
+      .then(([ sagas ]) => {
+        cb(null, App);
+        const { injectSagas } = getHooks(store);
+        injectSagas(sagas.default);
+      });
+  }
 };
 
 // Scroll to top when going to a new page, imitating default browser behavior

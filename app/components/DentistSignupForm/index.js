@@ -5,14 +5,14 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
-import get from 'lodash/get';
 
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
+import { selectDentistSpecialties } from 'containers/App/selectors';
+import { isInvalidNameSelector } from 'containers/DentistSignupPage/selectors';
 import signupFormValidator from './validator';
 import styles from './styles.css';
 
@@ -20,14 +20,15 @@ import styles from './styles.css';
 let TOSCheckbox = ({ input, meta: { touched, error } }) => (
   <Col sm={12}>
     <FormGroup className={touched && error ? 'has-error': ''}>
-      <FormControl {...input} type="checkbox" styleName="checkbox" />
-      <span styleName="checkbox-label">
+      <label styleName="checkbox-label">
+        <FormControl {...input} type="checkbox" styleName="checkbox" />
         I have read and accept the <a href="">Terms of Conditions</a>
-      </span>
-      {touched && error && <HelpBlock>{error}</HelpBlock>}
+        {touched && error && <HelpBlock>{error}</HelpBlock>}
+      </label>
     </FormGroup>
   </Col>
 );
+
 
 TOSCheckbox.propTypes = {
   input: React.PropTypes.object.isRequired,
@@ -37,28 +38,11 @@ TOSCheckbox.propTypes = {
 TOSCheckbox = CSSModules(styles)(TOSCheckbox);
 
 
-const firstNameErrorSelector =
-  state => get(state, 'form.dentist-signup.syncErrors.firstName');
-const lastNameErrorSelector =
-  state => get(state, 'form.dentist-signup.syncErrors.lastName');
-const isFirstNameTouched =
-  state => get(state, 'form.dentist-signup.fields.firstName.touched');
-const isLastNameTouched =
-  state => get(state, 'form.dentist-signup.fields.lastName.touched');
-
-
-const isInvalidNameSelector = createSelector(
-  firstNameErrorSelector,
-  lastNameErrorSelector,
-  isFirstNameTouched,
-  isLastNameTouched,
-  (firstName, lastName, firstNameTouched, lastNameTouched) =>
-    (!!(firstName || lastName) && (firstNameTouched || lastNameTouched))
-);
-
-
 @reduxForm({ form: 'dentist-signup', validate: signupFormValidator })
-@connect(state => ({ isInvalidName: isInvalidNameSelector(state) }))
+@connect(state => ({
+  isInvalidName: isInvalidNameSelector(state),
+  dentistSpecialties: selectDentistSpecialties(state),
+}))
 @CSSModules(styles)
 class DentistSignupForm extends React.Component {
 
@@ -69,11 +53,17 @@ class DentistSignupForm extends React.Component {
     pristine: React.PropTypes.bool.isRequired,
     submitting: React.PropTypes.bool.isRequired,
     isInvalidName: React.PropTypes.bool,
+    dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.number.isRequired,
+      name: React.PropTypes.string.isRequired,
+      createdAt: React.PropTypes.date,
+      updatedAt: React.PropTypes.date,
+    })),
   };
 
   render () {
     const { error, handleSubmit, pristine, reset, submitting } = this.props;
-    const { isInvalidName } = this.props;
+    const { isInvalidName, dentistSpecialties } = this.props;
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -130,6 +120,21 @@ class DentistSignupForm extends React.Component {
             width={5}
           />
         </FormGroup>
+
+        <Field
+          name="specialtyId"
+          type="select"
+          label="Specialty"
+          component={LabeledInput}
+          width={5}
+        >
+          <option value="">Select an Specialty</option>
+          {dentistSpecialties.map((specialty, index) =>
+            (<option value={specialty.id} key={index}>
+              {specialty.name}
+            </option>)
+          )}
+        </Field>
 
         <Field
           name="phone"

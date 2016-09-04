@@ -48,7 +48,7 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToDashboard,
-      path: '/login',
+      path: '/accounts/login',
       name: 'loginPage',
       getComponent (nextState, cb) {
         Promise.all([

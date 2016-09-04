@@ -24,7 +24,7 @@ class NavBar extends React.Component { // eslint-disable-line react/prefer-state
   }
 
   goToLogin () {
-    this.props.changeRoute('/login');
+    this.props.changeRoute('/accounts/login');
   }
 
   goToSignUp () {
