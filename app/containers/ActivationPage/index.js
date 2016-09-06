@@ -34,7 +34,7 @@ class ActivationPage extends Component { // eslint-disable-line react/prefer-sta
           }
           { activated &&
             <h3>
-              Your account has been activated successfully! Please log in <Link to="/login">here</Link>.
+              Your account has been activated successfully! Please log in <Link to="/accounts/login">here</Link>.
             </h3>
           }
           { error &&

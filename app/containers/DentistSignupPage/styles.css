@@ -13,3 +13,18 @@
 .form-header {
   margin-bottom: 2rem;
 }
+
+.modal-background {
+  background-color: #00C0EF;
+  padding: 0;
+
+  .main-content {
+    background-color: #0D7F9A;
+    padding: 35px 20px;
+    color: #FFF;
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+}

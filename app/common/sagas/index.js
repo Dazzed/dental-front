@@ -1,12 +1,18 @@
-import { take, call, put, cancel, cancelled, fork, select } from 'redux-saga/effects';
+import {
+  take, call, put, cancel, cancelled, fork, select,
+} from 'redux-saga/effects';
+
 import { push } from 'react-router-redux';
 
 import request from 'utils/request';
 
-import { ME_FROM_TOKEN } from 'containers/App/constants';
-import { selectCurrentUser } from 'containers/App/selectors';
 import { selectCurrentPath } from 'common/selectors/router.selector';
+import { selectCurrentUser } from 'containers/App/selectors';
+
 import { setAuthData, setUserData } from 'containers/App/actions';
+
+import { ME_FROM_TOKEN } from 'containers/App/constants';
+
 
 function* refreshAuthFlow () {
   while (true) {
@@ -14,6 +20,7 @@ function* refreshAuthFlow () {
     yield call(loadUserFromToken);
   }
 }
+
 
 function* loadUserFromToken () {
   const requestURL = '/api/v1/users/me';
@@ -40,6 +47,7 @@ function* loadUserFromToken () {
   }
 }
 
+
 export default [
-  refreshAuthFlow
+  refreshAuthFlow,
 ];

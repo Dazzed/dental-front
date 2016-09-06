@@ -22,7 +22,7 @@ function redirectToLogin (store) {
   return (nextState, replace) => {
     if (!selectCurrentUser(store.getState())) {
       replace({
-        pathname: '/login',
+        pathname: '/accounts/login',
         state: { nextPathname: nextState.location.pathname },
       });
     }

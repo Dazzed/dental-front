@@ -29,7 +29,7 @@ function* signupFlow () {
 
     if (isSuccess) {
       alert('You have signed up successfully! Please check your email.');
-      yield put(push('/login'));
+      yield put(push('/accounts/login'));
     }
 
   }

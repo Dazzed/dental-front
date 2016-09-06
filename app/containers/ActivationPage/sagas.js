@@ -3,7 +3,12 @@ import { call, put } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import request from 'utils/request';
-import { activateSuccess, activateError } from 'containers/ActivationPage/actions';
+
+import {
+  activateSuccess,
+    activateError
+} from 'containers/ActivationPage/actions';
+
 import { ACTIVATE_REQUEST } from './constants';
 
 // Bootstrap sagas
@@ -11,14 +16,16 @@ export default [
   activateFlow
 ];
 
+
 function* activateFlow () {
   yield* takeEvery(ACTIVATE_REQUEST, activateUser);
 }
 
+
 function* activateUser (action) {
   try {
     // Don't allow logged-in users to activate again.
-    const token = localStorage['jwtToken'];
+    const token = localStorage.jwtToken;
     if (token) {
       yield put(push('/'));
       return;
