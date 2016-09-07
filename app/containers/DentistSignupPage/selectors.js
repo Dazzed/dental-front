@@ -12,6 +12,7 @@ const isLastNameTouched =
   state => get(state, 'form.dentist-signup.fields.lastName.touched');
 
 
+/* eslint-disable import/prefer-default-export */
 export const isInvalidNameSelector = createSelector(
   firstNameErrorSelector,
   lastNameErrorSelector,
@@ -20,4 +21,4 @@ export const isInvalidNameSelector = createSelector(
   (firstName, lastName, firstNameTouched, lastNameTouched) =>
     (!!(firstName || lastName) && (firstNameTouched || lastNameTouched))
 );
-
+/* eslint-enable import/prefer-default-export */

@@ -7,7 +7,7 @@
 import { take, call, put } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
-import { get, omit } from 'lodash';
+import get from 'lodash/get';
 
 import request from 'utils/request';
 import { signupError } from 'containers/SignupPage/actions';
@@ -20,7 +20,6 @@ export default [
 
 function* signupFlow () {
   while (true) {
-
     // listen for the SIGNUP_REQUEST action dispatched on form submit
     const { payload: { data, resolve, reject } } = yield take(SIGNUP_REQUEST);
 
@@ -28,18 +27,16 @@ function* signupFlow () {
     const isSuccess = yield call(signup, data, resolve, reject);
 
     if (isSuccess) {
-      alert('You have signed up successfully! Please check your email.');
       yield put(push('/accounts/login'));
     }
-
   }
 }
 
+
 function* signup (data, resolve, reject) {
   try {
-
     // send a post request with the desired user details
-    const response = yield call(request, '/api/v1/accounts/signup', {
+    yield call(request, '/api/v1/accounts/signup', {
       method: 'POST',
       body: JSON.stringify(data)
     });
@@ -49,9 +46,7 @@ function* signup (data, resolve, reject) {
 
     // indicate successful signup
     return true;
-
   } catch (err) {
-
     // reject the onSubmit promise of redux-form
     if (reject) {
       const errors = Object.keys(get(err, 'errors')).join();

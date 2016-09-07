@@ -11,19 +11,19 @@
  * the linting exception.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import CSSModules from 'react-css-modules';
-import { omit } from 'lodash';
+import NavBar from 'components/NavBar';
 
 import * as actions from './actions';
-import NavBar from 'components/NavBar';
 import styles from './styles.css';
+
 
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
 };
+
 
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)

@@ -1,4 +1,8 @@
-import { ACTIVATE_REQUEST, ACTIVATE_SUCCESS, ACTIVATE_ERROR } from './constants';
+import {
+  ACTIVATE_REQUEST,
+  ACTIVATE_SUCCESS,
+  ACTIVATE_ERROR,
+} from './constants';
 
 const initialState = {
   activated: false,

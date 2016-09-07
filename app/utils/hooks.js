@@ -1,5 +1,5 @@
-import createReducer from '../reducers';
 import { selectCurrentUser } from 'containers/App/selectors';
+import createReducer from '../reducers';
 
 /**
  * Inject an asynchronously loaded reducer

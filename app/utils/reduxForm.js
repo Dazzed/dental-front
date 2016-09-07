@@ -1,6 +1,7 @@
 import validator from 'validate.js';
 import forEach from 'lodash/forEach';
 
+/* eslint-disable max-len */
 const isEmpty = value => value === undefined || value === null || value === '';
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0/* first error */];
 
@@ -17,6 +18,7 @@ export function password (value) {
     return 'Password should have at least 6 characters, upper case, lower case and numbers.';
   }
 }
+/* eslint-enable max-len */
 
 export function required (value) {
   if (isEmpty(value)) {
@@ -68,7 +70,8 @@ export function createValidator (rules) {
   return (data = {}) => {
     const errors = {};
     Object.keys(rules).forEach((key) => {
-      const rule = join([].concat(rules[key])); // concat enables both functions and arrays of functions
+      // concat enables both functions and arrays of functions
+      const rule = join([].concat(rules[key]));
       const error = rule(data[key], data);
       if (error) {
         errors[key] = error;
@@ -84,9 +87,9 @@ export function createValidator (rules) {
 export function validatorFactory (schema) {
   return values => {
     const errors = validator(values, schema);
-    forEach(errors, (item, key) =>
-      errors[key] = item[0]
-    );
+    /* eslint-disable no-return-assign */
+    forEach(errors, (item, key) => errors[key] = item[0]);
+    /* eslint-enable no-return-assign */
     return errors;
   };
 }
