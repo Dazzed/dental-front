@@ -4,14 +4,22 @@
 
 /* eslint-disable no-constant-condition, consistent-return */
 
-import { take, call, put, cancel, cancelled, fork, select } from 'redux-saga/effects';
+import {
+  take, call, put, cancel, cancelled, fork, select
+} from 'redux-saga/effects';
+
 import { push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
 import { get } from 'lodash';
 
 import request from 'utils/request';
 import { setItem, removeItem } from 'utils/localStorage';
-import { LOGIN_REQUEST, LOGIN_ERROR, LOGOUT } from 'containers/LoginPage/constants';
+import {
+  LOGIN_REQUEST,
+  LOGIN_ERROR,
+  LOGOUT,
+} from 'containers/LoginPage/constants';
+
 import { loginError } from 'containers/LoginPage/actions';
 import { meFromToken, setAuthData, setUserData } from 'containers/App/actions';
 import { selectNextPathname } from 'common/selectors/router.selector';
@@ -24,7 +32,6 @@ export default [
 
 function* loginFlow () {
   while (true) {
-
     // listen for the LOGIN_REQUEST action dispatched on form submit
     const { payload: { data, resolve, reject } } = yield take(LOGIN_REQUEST);
 
@@ -35,8 +42,8 @@ function* loginFlow () {
     const action = yield take([ LOGOUT, LOGIN_ERROR ]);
 
     if (action.type === LOGOUT) {
-
-      // since the authorize task executed asynchronously, it is possible the LOGOUT action gets fired before
+      // since the authorize task executed asynchronously,
+      // it is possible the LOGOUT action gets fired before
       // the the authorize task completes, so we call cancel on it
       yield cancel(task);
 
@@ -50,13 +57,11 @@ function* loginFlow () {
 
     // remove jwt token from localstorage
     yield call(removeItem, 'jwtToken');
-
   }
 }
 
 function* authorize (data, resolve, reject) {
   try {
-
     // send a post request with the login credentials
     const response = yield call(request, '/api/v1/accounts/login', {
       method: 'POST',
@@ -88,9 +93,7 @@ function* authorize (data, resolve, reject) {
 
     // return the response from the generator task
     return response;
-
   } catch (err) {
-
     // reject the onSubmit promise of redux-form
     if (reject) {
       reject(new SubmissionError({ _error: get(err, 'meta.message') }));
@@ -98,16 +101,15 @@ function* authorize (data, resolve, reject) {
 
     // dispatch LOGIN_ERROR action
     yield put(loginError(err));
-
   } finally {
-
-    // because this generator task is asyc, it is possible to send a logout action before the user gets logged in
-    // whenever all the above code finish without an error, check if this task got cancelled by the parent generator
+    // because this generator task is asyc, it is possible to
+    // send a logout action before the user gets logged in
+    // whenever all the above code finish without an error,
+    // check if this task got cancelled by the parent generator
     // http://yelouafi.github.io/redux-saga/docs/advanced/NonBlockingCalls.html
     if (yield cancelled()) {
       // TODO: do i need something here?
       // ... put special cancellation handling code here
     }
-
   }
 }

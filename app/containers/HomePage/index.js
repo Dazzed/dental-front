@@ -15,7 +15,7 @@ import CSSModules from 'react-css-modules';
 import styles from './styles.css';
 
 @CSSModules(styles)
-export default class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export default class HomePage extends React.Component {
 
   render () {
     return (

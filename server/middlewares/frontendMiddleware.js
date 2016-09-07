@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const compression = require('compression');
 const proxy = require('express-http-proxy');
+
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 
 // Dev middleware
@@ -10,6 +11,7 @@ const addDevMiddlewares = (app, webpackConfig) => {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
+
   const compiler = webpack(webpackConfig);
   const middleware = webpackDevMiddleware(compiler, {
     noInfo: true,
@@ -54,7 +56,9 @@ const addProdMiddlewares = (app, options) => {
   app.use(compression());
   app.use(publicPath, express.static(outputPath));
 
-  app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(outputPath, 'index.html'))
+  );
 };
 
 // Proxy requests to real backend
@@ -62,14 +66,16 @@ const addProxyMiddleware = (app) => {
   const pxhost = process.env.PROXY_HOST || '127.0.0.1';
   const pxport = process.env.PROXY_PORT || '3090';
   const prefix = '/api';
-  const pxURL = process.env.NODE_ENV==='production' ? `${pxhost}/` : `${pxhost}:${pxport}/`;
+  const pxURL = process.env.NODE_ENV === 'production' ?
+    `${pxhost}/` : `${pxhost}:${pxport}/`;
 
-  console.log('pxURL : ' + pxURL);
+  console.log('pxURL : ' + pxURL); //eslint-disable-line
 
   // Proxy requests
   app.use('/api', proxy(pxURL, {
     forwardPath: (req) => {
       const reqPath = require('url').parse(req.url).path;
+
       return `${prefix}${reqPath}`;
     },
   }));
@@ -87,6 +93,7 @@ module.exports = (app, options) => {
     addProdMiddlewares(app, options);
   } else {
     const webpackConfig = require('../../internals/webpack/webpack.dev.babel');
+
     addDevMiddlewares(app, webpackConfig);
   }
 

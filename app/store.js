@@ -6,14 +6,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import createSagaMiddleware from 'redux-saga';
-import { noop } from 'lodash';
 
 import globalSagas from 'common/sagas';
 import createReducer from './reducers';
 
 
 const sagaMiddleware = createSagaMiddleware();
-const devtools = window.devToolsExtension || noop;
+const devtools = window.devToolsExtension || (() => noop => noop);
 
 export default function configureStore (initialState = {}) {
   // Create the store with two middlewares

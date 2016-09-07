@@ -1,22 +1,14 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Row, Col, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import Col from 'react-bootstrap/lib/Col';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
 
+import LabeledInput from 'components/LabeledInput';
 import loginFormValidator from './validator';
 import styles from './styles.css';
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => ( // eslint-disable-line react/prop-types
-  <FormGroup className={touched && error ? 'has-error': ''}>
-    <Col sm={12}>
-      <ControlLabel>{label}</ControlLabel>
-    </Col>
-    <Col sm={12}>
-      <FormControl {...input} placeholder={label} type={type} />
-      {touched && error && <HelpBlock>{error}</HelpBlock>}
-    </Col>
-  </FormGroup>
-);
 
 @reduxForm({
   form: 'login',
@@ -24,25 +16,57 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => ( // e
 })
 @CSSModules(styles)
 class LoginForm extends React.Component {
+
+  static propTypes = {
+    error: React.PropTypes.object,
+    handleSubmit: React.PropTypes.func.isRequired,
+    submitting: React.PropTypes.bool.isRequired,
+  };
+
   render () {
-    const { error, handleSubmit, reset, submitting } = this.props; // eslint-disable-line react/prop-types
+    const { error, handleSubmit, submitting } = this.props;
+
     return (
-      <form onSubmit={handleSubmit} styleName="wrapper" className="form-horizontal">
-        <Field name="email" type="text" component={renderField} label="User Name" />
-        <Field name="password" type="password" component={renderField} label="Password" />
+      <form
+        onSubmit={handleSubmit}
+        styleName="wrapper"
+        className="form-horizontal"
+      >
+
+        <Field
+          name="email"
+          type="text"
+          component={LabeledInput}
+          label="Email"
+        />
+
+        <Field
+          name="password"
+          type="password"
+          component={LabeledInput}
+          label="Password"
+        />
+
         <FormGroup className="has-error">
           <Col sm={12}>
             {error && <HelpBlock>{error}</HelpBlock>}
           </Col>
         </FormGroup>
+
         <FormGroup>
           <Col sm={6} smPush={6}>
-            <button type="submit" disabled={submitting} className="btn-bg btn-cyan btn-round">Log In</button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="btn-bg btn-cyan btn-round"
+            >
+              Log In
+            </button>
           </Col>
         </FormGroup>
       </form>
     );
-  };
+  }
 }
 
 export default LoginForm;

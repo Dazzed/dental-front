@@ -6,13 +6,15 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
-function selectComponent(type) {
+
+function selectComponent (type) {
   if (type === 'select') {
     return { componentClass: type };
-  } else {
-    return { type };
   }
+
+  return { type };
 }
+
 
 /**
  * LabeledInput is a block of code that is most used on forms.
@@ -21,7 +23,7 @@ function selectComponent(type) {
  *
  */
 const LabeledInput = ({ input, label, type, meta, width, children }) => (
-  <FormGroup className={meta.touched && meta.error ? 'has-error': ''}>
+  <FormGroup className={meta.touched && meta.error ? 'has-error' : ''}>
     <Col sm={12}>
       <ControlLabel>{label}</ControlLabel>
     </Col>

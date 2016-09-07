@@ -14,8 +14,9 @@ import CSSModules from 'react-css-modules';
 
 import styles from './styles.css';
 
+
 @CSSModules(styles)
-class NotFound extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class NotFound extends React.Component {
 
   render () {
     return (

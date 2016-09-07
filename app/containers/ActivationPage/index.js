@@ -13,10 +13,15 @@ import { activateRequest } from './actions';
 import { selectActivationPage } from './selectors';
 import styles from './styles.css';
 
+
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class ActivationPage extends Component { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = propTypes;
+class ActivationPage extends Component {
+
+  static propTypes ={
+    activationPage: React.PropTypes.object,
+    activateRequest: React.PropTypes.func,
+  };
 
   componentWillMount () {
     const activationKey = get(this.props, 'routeParams.activationKey');
@@ -34,7 +39,8 @@ class ActivationPage extends Component { // eslint-disable-line react/prefer-sta
           }
           { activated &&
             <h3>
-              Your account has been activated successfully! Please log in <Link to="/accounts/login">here</Link>.
+              Your account has been activated successfully! Please
+              log in <Link to="/accounts/login">here</Link>.
             </h3>
           }
           { error &&
@@ -42,17 +48,15 @@ class ActivationPage extends Component { // eslint-disable-line react/prefer-sta
               Sorry, account activation failed.
             </h3>
           }
-          {/* Sorry, account activation failed. please resend activation code again <Link to="/accounts/activate/resend">here</Link>. */}
+          {/* Sorry, account activation failed. please
+            resend activation code again
+            <Link to="/accounts/activate/resend">here</Link>. */}
         </div>
       </div>
     );
   }
 }
 
-const propTypes = {
-  activationPage: React.PropTypes.object,
-  activateRequest: React.PropTypes.func,
-};
 
 function mapStateToProps (state) {
   return {

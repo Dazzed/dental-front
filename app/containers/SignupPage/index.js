@@ -8,14 +8,19 @@ import { Row, Col } from 'react-bootstrap';
 import CSSModules from 'react-css-modules';
 import { omit } from 'lodash';
 
-import styles from './styles.css';
 import SignupForm from 'components/SignupForm';
+
+import styles from './styles.css';
 import * as actions from './actions';
+
 
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
-class SignupPage extends Component { // eslint-disable-line react/prefer-stateless-function
-  static propTypes = propTypes;
+class SignupPage extends Component {
+
+  static propTypes = {
+    onSignupRequest: React.PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
@@ -23,8 +28,6 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
   }
 
   render () {
-    const { onSignupRequest } = this.props;
-
     return (
       <div styleName="wrapper">
         <div className="container" styleName="container">
@@ -47,7 +50,9 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
                 <li>Emergency exam and xray once a year</li>
                 <li>1 emergency exam and xrays per year</li>
                 <li>10% Discount on any needed treatment</li>
-                <li>Affordable memberships plans starting as low as $20/month</li>
+                <li>
+                  Affordable memberships plans starting as low as $20/month
+                </li>
               </ul>
               <Col md={6}>
                 <div>Adults</div>
@@ -65,15 +70,12 @@ class SignupPage extends Component { // eslint-disable-line react/prefer-statele
   }
 }
 
-const propTypes = {
-  onSignupRequest: React.PropTypes.func,
-};
 
 function mapDispatchToProps (dispatch) {
   return {
-    onSignupRequest: (data, dispatch) => {
+    onSignupRequest: (data) => {
       // Temporary until we decide datepicker lib
-      data['birthDate'] = '1988-05-06';
+      data.birthDate = '1988-05-06'; // eslint-disable-line no-param-reassign
       return new Promise((resolve, reject) => {
         dispatch(
           actions.signupRequest({

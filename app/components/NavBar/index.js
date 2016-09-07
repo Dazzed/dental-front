@@ -11,12 +11,18 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { Navbar, Nav, NavItem, Image } from 'react-bootstrap';
 
-import styles from './styles.css';
 import logo from 'assets/images/dental-logo.png';
+import styles from './styles.css';
+
 
 @connect(null, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-class NavBar extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class NavBar extends React.Component {
+
+  static propTypes = {
+    changeRoute: React.PropTypes.func,
+  };
+
   constructor (props) {
     super(props);
     this.goToLogin = this.goToLogin.bind(this);
@@ -46,10 +52,20 @@ class NavBar extends React.Component { // eslint-disable-line react/prefer-state
         <Navbar.Collapse>
           <Nav pullRight>
             <NavItem>
-              <button className="btn-green btn-round" onClick={this.goToLogin}>Log In</button>
+              <button
+                className="btn-green btn-round"
+                onClick={this.goToLogin}
+              >
+                Log In
+              </button>
             </NavItem>
             <NavItem>
-              <button className="btn-cyan btn-round" onClick={this.goToSignUp}>Sign Up</button>
+              <button
+                className="btn-cyan btn-round"
+                onClick={this.goToSignUp}
+              >
+                Sign Up
+              </button>
             </NavItem>
           </Nav>
         </Navbar.Collapse>
@@ -58,9 +74,6 @@ class NavBar extends React.Component { // eslint-disable-line react/prefer-state
   }
 }
 
-NavBar.propTypes = {
-  changeRoute: React.PropTypes.func,
-};
 
 function mapDispatchToProps (dispatch) {
   return {

@@ -81,6 +81,7 @@
     "react/no-multi-comp": 0,
     "react/no-unknown-property": 2,
     "react/prefer-es6-class": 2,
+    "react/prefer-stateless-function": 0,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 2,
@@ -93,6 +94,7 @@
     "import/namespace": 2,
     "import/no-unresolved": 2,
     "import/no-named-as-default": 2,
+    "import/no-extraneous-dependencies": 0,
 
     // Strict Mode
     "strict": 0

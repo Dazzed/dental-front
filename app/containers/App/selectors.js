@@ -25,6 +25,7 @@ const selectDentistSpecialties = createSelector(
 
 export {
   selectGlobal,
+  selectUserType,
   selectCurrentUser,
   selectDentistSpecialties,
 };

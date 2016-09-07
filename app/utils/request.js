@@ -9,23 +9,20 @@ import 'whatwg-fetch';
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request (url, options = {}) {
-  const jwtToken = localStorage['jwtToken'];
-
-  let headers = {
-    'Accept': 'application/json',
-  };
+  const jwtToken = localStorage.jwtToken;
+  const headers = { Accept: 'application/json' };
+  const opts = Object.assign({}, options);
 
   if (jwtToken) {
-    headers['Authorization'] = `JWT ${jwtToken}`;
+    headers.Authorization = `JWT ${jwtToken}`;
   }
 
-  options.headers = Object.assign({}, options.headers, headers);
+  opts.headers = Object.assign({}, options.headers, headers);
 
-  return fetch(url, options)
+  return fetch(url, opts)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => data);
-  // .catch((err) => err);
 }
 
 /**
@@ -50,9 +47,14 @@ function parseJSON (response) {
 function checkStatus (response) {
   if (response.ok) { // response.status >= 200 && response.status < 300
     return response;
-  } else {
+  } else if (response.status === 400) {
     return response.json().then(err => {
       throw err;
     });
   }
+
+  const error = new Error('Request endpoint Error');
+  error.res = response;
+
+  throw error;
 }

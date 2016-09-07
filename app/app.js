@@ -8,8 +8,8 @@ import 'babel-polyfill';
 
 /* eslint-disable import/no-unresolved */
 // Load the manifest.json file and the .htaccess file
-// import '!file?name=[name].[ext]!./manifest.json'
-// import 'file?name=[name].[ext]!./.htaccess'
+import '!file?name=[name].[ext]!./manifest.json';
+import 'file?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved */
 
 // Import all the third party stuff
@@ -19,13 +19,17 @@ import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'react-router-scroll';
-import configureStore from './store';
 import getHooks from 'utils/hooks';
+
+import App from 'containers/App';
 
 // Load base styles
 import 'sanitize.css/sanitize.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'assets/styles/app.css';
+
+import configureStore from './store';
+import createRoutes from './routes';
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
@@ -35,8 +39,6 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Set up the router, wrapping all Routes in the App component
-import App from 'containers/App';
-import createRoutes from './routes';
 const rootRoute = {
   childRoutes: createRoutes(store),
   getComponent (nextState, cb) {
@@ -81,5 +83,7 @@ render(
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,
 // we do not want it installed
-import { install } from 'offline-plugin/runtime';
+
+const install = require('offline-plugin/runtime').install;
+
 install();

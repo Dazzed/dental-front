@@ -19,8 +19,8 @@ import styles from './styles.css';
 
 let TOSCheckbox = ({ input, meta: { touched, error } }) => (
   <Col sm={12}>
-    <FormGroup className={touched && error ? 'has-error': ''}>
-      <label styleName="checkbox-label">
+    <FormGroup className={touched && error ? 'has-error' : ''}>
+      <label styleName="checkbox-label" htmlFor={input.name}>
         <FormControl {...input} type="checkbox" styleName="checkbox" />
         I have read and accept the <a href="">Terms of Conditions</a>
         {touched && error && <HelpBlock>{error}</HelpBlock>}
@@ -49,8 +49,6 @@ class DentistSignupForm extends React.Component {
   static propTypes = {
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
-    reset: React.PropTypes.func.isRequired,
-    pristine: React.PropTypes.bool.isRequired,
     submitting: React.PropTypes.bool.isRequired,
     isInvalidName: React.PropTypes.bool,
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -62,7 +60,7 @@ class DentistSignupForm extends React.Component {
   };
 
   render () {
-    const { error, handleSubmit, pristine, reset, submitting } = this.props;
+    const { error, handleSubmit, submitting } = this.props;
     const { isInvalidName, dentistSpecialties } = this.props;
 
     return (
@@ -99,7 +97,7 @@ class DentistSignupForm extends React.Component {
           width={6}
         />
 
-        <FormGroup className={isInvalidName ? 'has-error': ''}>
+        <FormGroup className={isInvalidName ? 'has-error' : ''}>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>
           </Col>
@@ -176,7 +174,7 @@ class DentistSignupForm extends React.Component {
         </FormGroup>
       </form>
     );
-  };
+  }
 }
 
 export default DentistSignupForm;

@@ -1,8 +1,8 @@
-import { createValidator, email, required } from 'utils/reduxForm';
+import { validatorFactory } from 'utils/reduxForm';
 
-const  loginFormValidator = createValidator({
-  email: [ email, required ],
-  password: [ required ],
-});
+const schema = {
+  email: { presence: true, email: true },
+  password: { presence: true },
+};
 
-export default loginFormValidator;
+export default validatorFactory(schema);
