@@ -1,0 +1,23 @@
+$footer-text-color: #E9F1E4;
+
+.footer {
+  background-color: #92BB79;
+  color: $footer-text-color;
+  padding: 1rem 0;
+  font-size: 1rem;
+}
+
+li.nav-item {
+  & > a:hover,
+  & > a:active {
+    background-color: transparent;
+    color: #FFF;
+  }
+
+  & > a {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    color: $footer-text-color;
+    font-size: 1rem;
+  }
+}

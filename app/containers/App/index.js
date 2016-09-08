@@ -15,6 +15,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import NavBar from 'components/NavBar';
+import Footer from 'components/Footer';
 
 import * as actions from './actions';
 import styles from './styles.css';
@@ -44,6 +45,7 @@ export default class App extends Component {
       <div styleName="wrapper">
         <NavBar />
         {React.Children.toArray(this.props.children)}
+        <Footer />
       </div>
     );
   }
