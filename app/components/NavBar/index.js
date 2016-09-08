@@ -9,35 +9,41 @@ import CSSModules from 'react-css-modules';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Navbar, Nav, NavItem, Image } from 'react-bootstrap';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import Image from 'react-bootstrap/lib/Image';
 
+import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
+import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
 import logo from 'assets/images/dental-logo.png';
+import { selectCurrentUser } from 'containers/App/selectors';
+
 import styles from './styles.css';
 
 
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-class NavBar extends React.Component {
+export default class NavBar extends React.Component {
 
   static propTypes = {
     changeRoute: React.PropTypes.func,
+    loggedInUser: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.bool
+    ]),
   };
 
-  constructor (props) {
-    super(props);
-    this.goToLogin = this.goToLogin.bind(this);
-    this.goToSignUp = this.goToSignUp.bind(this);
-  }
-
-  goToLogin () {
+  goToLogin = () => {
     this.props.changeRoute('/accounts/login');
   }
 
-  goToSignUp () {
+  goToSignUp = () => {
     this.props.changeRoute('/signup');
   }
 
   render () {
+    const { firstName, lastName } = this.props.loggedInUser;
+    const fullName = `${firstName} ${lastName}`;
+
     return (
       <Navbar fixedTop>
         <Navbar.Header>
@@ -49,29 +55,24 @@ class NavBar extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
 
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <NavItem>
-              <button
-                className="btn-green btn-round"
-                onClick={this.goToLogin}
-              >
-                Log In
-              </button>
-            </NavItem>
-            <NavItem>
-              <button
-                className="btn-cyan btn-round"
-                onClick={this.goToSignUp}
-              >
-                Sign Up
-              </button>
-            </NavItem>
-          </Nav>
-        </Navbar.Collapse>
+        {this.props.loggedInUser ?
+          <LoggedInHeaderNav
+            fullName={fullName}
+          /> :
+          <AnonymousHeaderNav
+            goToLogin={this.goToLogin}
+            goToSignUp={this.goToSignUp}
+          />}
       </Navbar>
     );
   }
+}
+
+
+function mapStateToProps (state) {
+  return {
+    loggedInUser: selectCurrentUser(state),
+  };
 }
 
 
@@ -80,5 +81,3 @@ function mapDispatchToProps (dispatch) {
     changeRoute: (url) => dispatch(push(url)),
   };
 }
-
-export default NavBar;

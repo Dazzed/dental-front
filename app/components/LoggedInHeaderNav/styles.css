@@ -1,0 +1,28 @@
+.nav {
+  margin-right: 30px !important;
+
+  & > li {
+    padding-top: 15px !important;
+  }
+
+  & > li > span {
+    padding-top: 15px;
+    padding-left: 35px;
+    display: block;
+    color: #A6A6A6;
+  }
+
+  & a {
+    color: #1EC6F0 !important;
+  }
+
+  & a:hover {
+    text-decoration: none;
+  }
+}
+
+.avatar {
+  background-color: #A6A6A6;
+  height: 50px;
+  width: 50px;
+}
