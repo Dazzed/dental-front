@@ -10,17 +10,17 @@ function selectGlobal (state) {
 
 const selectUserType = createSelector(
   selectGlobal,
-  (substate) => get(substate, 'authData.userType'),
+  (substate) => get(substate, 'currentUser.type'),
 );
 
 const selectCurrentUser = createSelector(
   selectGlobal,
-  (substate) => substate.get('currentUser')
+  (substate) => get(substate, 'currentUser')
 );
 
 const selectDentistSpecialties = createSelector(
   selectGlobal,
-  (substate) => substate.get('dentistSpecialties').toJS()
+  (substate) => get(substate, 'dentistSpecialties')
 );
 
 export {

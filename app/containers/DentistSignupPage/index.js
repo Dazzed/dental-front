@@ -20,8 +20,8 @@ import * as actions from './actions';
 
 @connect(
   state => ({
-    isSignedUp: state.dentistSignup.get('dentistCreated'),
-    fullName: state.dentistSignup.get('fullName'),
+    isSignedUp: state.dentistSignup.dentistCreated,
+    fullName: state.dentistSignup.fullName,
   }),
   mapDispatchToProps)
 @CSSModules(styles)

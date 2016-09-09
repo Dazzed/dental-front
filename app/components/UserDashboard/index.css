@@ -1,0 +1,23 @@
+@import '../../assets/styles/variables';
+
+.h3-with-button {
+  h3 {
+    float: left;
+  }
+  button {
+    float: right;
+    margin: 1em  1em 0.6em;
+  }
+}
+
+.btn-add-member {
+  font-size: 16px;
+  text-transform: none;
+  border-radius: 1em;
+  background-color: #2a483a;
+  border: #2a483a;
+  color: $white;
+  margin-top: 0.5em;
+  margin-right: 1em;
+  padding: 0.3em 1em;
+}

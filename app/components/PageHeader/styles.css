@@ -1,0 +1,22 @@
+@import '../../assets/styles/variables';
+
+.page-header-container {
+  margin-bottom: 20px;
+  
+  h1 {
+    font-size: 18px;
+  }
+
+  &.client {
+    background-color: $green;
+  }
+  &.dentist {
+    background-color: $cyan;
+  }
+}
+
+.page-header {
+  color: $white;
+  margin: 0;
+  border: none;
+}

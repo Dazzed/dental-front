@@ -1,0 +1,90 @@
+@import '../../assets/styles/variables';  
+
+.my-dentist-container {
+  font-size: 16px;
+  color: $light-gray;
+  background-color: $white;
+  margin: 0 0 1em;
+  padding: 1em;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.avatar {
+  margin-top: 3em;
+  width: 100%;
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+  }
+}
+
+.btn {
+  background-color: $light-cyan;
+  border-color: $light-cyan;
+  border-radius: 1em;
+  font-size: 14px;
+  margin-top: 0.5em;
+}
+.name {
+  font-size: 28px;
+  color: $cyan;
+}
+.address, .affordability {
+  color: $dark-gray;
+}
+.membership-fee {
+  text-align: right;
+  color: $dark-gray;
+  .fee {
+    color: $green;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .child-fee {
+    color: $cyan;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.url-email-phone {
+  margin: 0;
+  .pair {
+    display: inline-block;
+    margin-right: 18px;
+    span.glyphicon {
+      margin-right: 5px;
+    }
+  }
+  a {
+    text-decoration: underline;
+  }
+  span.glyphicon {
+    margin-right: 5px;
+    color: $dark-gray;
+  }
+  .text {
+    color: $light-cyan;
+  }
+}
+
+/* star rating component */
+path {
+  fill: $dark-cyan;
+}
+input {
+  display: none;
+}
+.rating {
+  text-align: center;
+  color: $dark-cyan;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
