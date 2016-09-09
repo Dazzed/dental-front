@@ -36,7 +36,8 @@ function* loadUserFromToken () {
 
       // If the user landed on `/login` as the first route, redirect him
       const currentPath = yield select(selectCurrentPath);
-      if ([ '/login', '/signup', 'dentist-signup' ].indexOf(currentPath) > -1) {
+      const pathsToRedirect = [ '/login', '/signup', '/dentist-signup' ];
+      if (pathsToRedirect.indexOf(currentPath) > -1) {
         yield put(push('/dashboard'));
       }
     }

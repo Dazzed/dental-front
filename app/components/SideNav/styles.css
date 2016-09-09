@@ -1,0 +1,43 @@
+@import '../../assets/styles/variables';
+
+:global .dental-sidenav .nav > li > a.active {
+  background-color: $white !important;
+  color: $black;
+}
+
+li.nav-item {
+  margin-bottom: 5px;
+
+  & > a {
+    color: $white;
+    &:hover {
+      color: $black;
+    }
+  }
+}
+
+.dental-sidenav {
+  padding: 1em 1.5em;
+
+  &.client {
+    background-color: $green;
+
+    li.nav-item > a {
+      background-color: $dark-green;
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+
+  &.dentist {
+    background-color: $cyan;
+
+    li.nav-item > a {
+      background-color: $dark-cyan;
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@import '../../assets/styles/variables';
+
+.family-member {
+  padding: 0.5em 1em;
+  margin: 0 0 1em;
+  background-color: $white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,.3);
+}
+
+.details > div:not(.member-avatar) {
+  padding-top: 1em;
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid $light-gray;
+}
+
+.details > div:last-child {
+  width: 15%;
+  padding-right: 0;
+}
+
+.member-avatar {
+  height: 3.5em;
+  margin-top: 7px;
+  img {
+    border-radius: 50%;
+    width: auto;
+    height: 100%;
+  }
+}
+
+.col-with-name {
+  width: 22%;
+  margin-left: 3%;
+  padding-left: 0;
+}
+
+.member-name {
+  color: $dark-cyan;
+  margin-bottom: 0;
+}
+.account-owner {
+  color: $light-green;
+  position: absolute;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.btn-cancel {
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 1em;
+  background-color: $light-green;
+  border-color: $light-green;
+  color: $white;
+  margin-top: 0.5em;
+  padding: 0.2em 1.5em;
+}

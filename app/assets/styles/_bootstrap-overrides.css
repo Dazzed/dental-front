@@ -62,3 +62,8 @@
 :global(.btn-cyan) {
   @mixin colored-button $white, $light-cyan, $cyan;
 }
+
+:global(.btn-shadow) {
+  box-shadow: 2px 2px 2px rgba(0,0,0,.3);
+  border: none;
+}

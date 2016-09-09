@@ -74,6 +74,7 @@ class SignupForm extends React.Component {
             type="text"
             component={Input}
             label="First Name"
+            width={5}
           />
 
           <Field
@@ -81,6 +82,7 @@ class SignupForm extends React.Component {
             type="text"
             component={Input}
             label="Last Name"
+            width={5}
           />
         </FormGroup>
 
