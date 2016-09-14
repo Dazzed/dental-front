@@ -10,16 +10,16 @@ import { connect } from 'react-redux';
 
 import Button from 'react-bootstrap/lib/Button';
 
-import Intro from './Intro';
-import MyDentist from './MyDentist';
-import FamilyMembers from './FamilyMembers';
-
 import { selectCurrentUser } from 'containers/App/selectors';
+import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
 import {
   selectMyDentist,
   selectMyFamilyMembers,
 } from 'containers/Dashboard/selectors';
-import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
+
+import Intro from './Intro';
+import MyDentist from './MyDentist';
+import FamilyMembers from './FamilyMembers';
 
 import styles from './index.css';
 

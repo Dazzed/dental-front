@@ -121,6 +121,26 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/dentist/office/edit',
+      name: 'editOfficeInformation',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/EditOfficeInformation/reducer'),
+          System.import('containers/EditOfficeInformation/sagas'),
+          System.import('containers/EditOfficeInformation'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('editOfficeInformation', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {

@@ -2,8 +2,6 @@ import { takeLatest } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import request from 'utils/request';
-
 import {
   MY_DENTIST_REQUEST,
   MY_FAMILY_REQUEST,

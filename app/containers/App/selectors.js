@@ -23,9 +23,16 @@ const selectDentistSpecialties = createSelector(
   (substate) => get(substate, 'dentistSpecialties')
 );
 
+const selectPageTitle = createSelector(
+  selectGlobal,
+  (substate) => get(substate, 'pageTitle')
+);
+
+
 export {
   selectGlobal,
   selectUserType,
   selectCurrentUser,
   selectDentistSpecialties,
+  selectPageTitle,
 };
