@@ -1,4 +1,4 @@
-@import '../../assets/styles/variables';  
+@import '../../assets/styles/variables';
 
 .my-dentist-container {
   font-size: 16px;
@@ -17,6 +17,7 @@
 .avatar {
   margin-top: 3em;
   width: 100%;
+
   img {
     width: 100%;
     height: auto;
@@ -31,21 +32,27 @@
   font-size: 14px;
   margin-top: 0.5em;
 }
+
 .name {
   font-size: 28px;
   color: $cyan;
 }
-.address, .affordability {
+
+.address,
+.affordability {
   color: $dark-gray;
 }
+
 .membership-fee {
   text-align: right;
   color: $dark-gray;
+
   .fee {
     color: $green;
     font-size: 20px;
     font-weight: bold;
   }
+
   .child-fee {
     color: $cyan;
     font-size: 20px;
@@ -55,20 +62,25 @@
 
 .url-email-phone {
   margin: 0;
+
   .pair {
     display: inline-block;
     margin-right: 18px;
+
     span.glyphicon {
       margin-right: 5px;
     }
   }
+
   a {
     text-decoration: underline;
   }
+
   span.glyphicon {
     margin-right: 5px;
     color: $dark-gray;
   }
+
   .text {
     color: $light-cyan;
   }
@@ -78,9 +90,11 @@
 path {
   fill: $dark-cyan;
 }
+
 input {
   display: none;
 }
+
 .rating {
   text-align: center;
   color: $dark-cyan;

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Well } from 'react-bootstrap';
+// import { connect } from 'react-redux';
+// import { Well } from 'react-bootstrap';
 
 // import PatientGroup from './PatientGroup';
 
@@ -41,7 +41,7 @@ export default class DentistDashboard extends Component {
   }
 
   render () {
-    return <div>Dentist Dashboard</div>
+    return <div>Dentist Dashboard</div>;
     // const user = this.props.currentUser;
     // const patients = this.props.patients || [];
 
@@ -50,7 +50,8 @@ export default class DentistDashboard extends Component {
     //     <Well className="message-box">
     //       <div className="row">
     //         <div className="col-md-8">
-    //           <div className="hello-name">Hello {`${user.firstName} ${user.lastName}`},</div>
+    //           <div className="hello-name">
+    //           Hello {`${user.firstName} ${user.lastName}`},</div>
     //           <div>Current membership fees and activation fees</div>
     //         </div>
     //       </div>

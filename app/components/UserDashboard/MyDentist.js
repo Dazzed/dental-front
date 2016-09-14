@@ -10,6 +10,7 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import styles from './MyDentist.css';
 
+
 function MyDentist ({ dentist }) {
   if (!dentist) {
     return null;
@@ -45,8 +46,14 @@ function MyDentist ({ dentist }) {
               <div styleName="address">{address}</div>
             </Col>
             <Col md={6} styleName="membership-fee">
-              <div>Membership Fee: <span styleName="fee">{membershipFee}</span></div>
-              <div>Kids Membership Fee: <span styleName="child-fee">{childMembershipFee}</span></div>
+              <div>
+                Membership Fee: <span styleName="fee">{membershipFee}</span>
+              </div>
+              <div>
+                Kids Membership Fee: <span styleName="child-fee">
+                  {childMembershipFee}
+                </span>
+              </div>
             </Col>
           </Row>
 
@@ -54,7 +61,14 @@ function MyDentist ({ dentist }) {
             <div styleName="pair">
               {/* <Glyphicon glyph="star" styleName="glyphicon" /> */}
               <Glyphicon glyph="envelope" styleName="glyphicon" />
-              <a styleName="text" href={url} target="_blank">{url}</a>
+              <a
+                styleName="text"
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {url}
+              </a>
             </div>
             <div styleName="pair">
               <Glyphicon glyph="envelope" styleName="glyphicon" />
@@ -78,10 +92,24 @@ function MyDentist ({ dentist }) {
               Affordability: 5/5
             </Col>
             <Col md={4}>
-              <Button bsStyle="primary" block styleName="btn" className={classNames('btn-cyan', 'btn-shadow')}>Write Message</Button>
+              <Button
+                bsStyle="primary"
+                block
+                styleName="btn"
+                className={classNames('btn-cyan', 'btn-shadow')}
+              >
+                Write Message
+              </Button>
             </Col>
             <Col md={4}>
-              <Button bsStyle="primary" block styleName="btn" className={classNames('btn-cyan', 'btn-shadow')}>Write Review</Button>
+              <Button
+                bsStyle="primary"
+                block
+                styleName="btn"
+                className={classNames('btn-cyan', 'btn-shadow')}
+              >
+                Write Review
+              </Button>
             </Col>
           </Row>
         </Col>

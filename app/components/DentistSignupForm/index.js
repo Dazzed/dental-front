@@ -1,5 +1,6 @@
 import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
@@ -65,90 +66,100 @@ class DentistSignupForm extends React.Component {
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
-        <Field
-          name="email"
-          type="text"
-          component={LabeledInput}
-          label="Email Address"
-          width={12}
-        />
+        <Row>
+          <Field
+            name="email"
+            type="text"
+            component={LabeledInput}
+            label="Email Address"
+            width={12}
+          />
 
-        <Field
-          name="confirmEmail"
-          type="text"
-          component={LabeledInput}
-          label="Confirm Email Address"
-          width={12}
-        />
+          <Field
+            name="confirmEmail"
+            type="text"
+            component={LabeledInput}
+            label="Confirm Email Address"
+            width={12}
+          />
 
-        <Field
-          name="password"
-          type="password"
-          component={LabeledInput}
-          label="Password"
-          width={6}
-        />
+          <Field
+            name="password"
+            type="password"
+            component={LabeledInput}
+            label="Password"
+            width={6}
+          />
 
-        <Field
-          name="confirmPassword"
-          type="password"
-          component={LabeledInput}
-          label="Confirm Password"
-          width={6}
-        />
+          <Field
+            name="confirmPassword"
+            type="password"
+            component={LabeledInput}
+            label="Confirm Password"
+            width={6}
+          />
+
+        </Row>
 
         <FormGroup className={isInvalidName ? 'has-error' : ''}>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>
           </Col>
 
-          <Field
-            name="firstName"
-            type="text"
-            component={Input}
-            label="First Name"
-            width={5}
-          />
+          <Row>
+            <Col md={12}>
+              <Field
+                name="firstName"
+                type="text"
+                component={Input}
+                label="First Name"
+                width={5}
+              />
 
-          <Field
-            name="lastName"
-            type="text"
-            component={Input}
-            label="Last Name"
-            width={5}
-          />
+              <Field
+                name="lastName"
+                type="text"
+                component={Input}
+                label="Last Name"
+                width={5}
+              />
+            </Col>
+          </Row>
         </FormGroup>
 
-        <Field
-          name="specialtyId"
-          type="select"
-          label="Specialty"
-          component={LabeledInput}
-          width={5}
-        >
-          <option value="">Select an Specialty</option>
-          {dentistSpecialties.map((specialty, index) =>
-            (<option value={specialty.id} key={index}>
-              {specialty.name}
-            </option>)
-          )}
-        </Field>
+        <Row>
+          <Field
+            name="specialtyId"
+            type="select"
+            label="Specialty"
+            component={LabeledInput}
+            width={5}
+          >
+            <option value="">Select an Specialty</option>
+            {dentistSpecialties.map((specialty, index) =>
+              (<option value={specialty.id} key={index}>
+                {specialty.name}
+              </option>)
+            )}
+          </Field>
 
-        <Field
-          name="phone"
-          type="text"
-          component={LabeledInput}
-          label="Phone Number"
-          width={5}
-        />
+          <Field
+            name="phone"
+            type="text"
+            component={LabeledInput}
+            label="Phone Number"
+            width={5}
+          />
 
-        <Field
-          name="zipCode"
-          type="text"
-          component={LabeledInput}
-          label="Zip Code"
-          width={3}
-        />
+          <Field
+            name="zipCode"
+            type="text"
+            component={LabeledInput}
+            label="Zip Code"
+            width={3}
+          />
+
+        </Row>
 
         <Field
           name="tos"

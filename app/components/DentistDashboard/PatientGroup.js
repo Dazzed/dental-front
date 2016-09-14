@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 
-import PatientCard from 'components/PatientCard/PatientCard';
+// import PatientCard from 'components/PatientCard/PatientCard';
 
 export default class PatientGroup extends Component {
   static propTypes = {
@@ -10,10 +10,11 @@ export default class PatientGroup extends Component {
     sortBy: PropTypes.string,
   }
 
-  toggleSortByOptions() { }
+  toggleSortByOptions = () => { }
 
-  render() {
+  render () {
     const { title, patients } = this.props;
+    console.log(patients);
 
     return (
       <div className="patient-group">
@@ -25,13 +26,14 @@ export default class PatientGroup extends Component {
             <Glyphicon
               glyph="triangle-bottom"
               className="sorter-toggler"
-              onClick={this.toggleSortByOptions.bind(this)}
+              onClick={this.toggleSortByOptions}
             />
           </Col>
         </Row>
-        { patients &&
-          patients.map((patient, index) => <PatientCard {...patient} key={index} />)
-        }
+        {/* {patients && */}
+        {/*   patients.map((patient, index) => */}
+        {/*     <PatientCard {...patient} key={index} /> */}
+        {/*   )} */}
       </div>
     );
   }

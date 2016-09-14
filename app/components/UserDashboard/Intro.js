@@ -14,7 +14,11 @@ function Intro ({ fullName }) {
       <Row>
         <Col md={8}>
           <div styleName="hello-name">Hello {fullName},</div>
-          <div>Welcome to your personal dashboard. Here you can edit your account, write reviews and contact your dentist.</div>
+          <div>
+            Welcome to your personal dashboard.
+            Here you can edit your account, write reviews and contact
+            your dentist.
+          </div>
         </Col>
         <Col md={4}>
           <Image src={toothImg} />

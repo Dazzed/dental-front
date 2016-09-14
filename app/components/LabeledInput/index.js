@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -8,7 +9,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
 
 function selectComponent (type) {
-  if (type === 'select') {
+  if (type === 'select' || type === 'textarea') {
     return { componentClass: type };
   }
 
@@ -22,19 +23,33 @@ function selectComponent (type) {
  * Should be used with redux-forms.
  *
  */
-const LabeledInput = ({ input, label, type, meta, width, children }) => (
-  <FormGroup className={meta.touched && meta.error ? 'has-error' : ''}>
-    <Col sm={12}>
-      <ControlLabel>{label}</ControlLabel>
-    </Col>
-    <Col sm={width || 12}>
-      <FormControl {...input} placeholder={label} {...selectComponent(type)}>
-        {children}
-      </FormControl>
-      {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
-    </Col>
-  </FormGroup>
-);
+const LabeledInput =
+  ({ input, label, type, meta, width, children, className }) => {
+    const rootClassName = classnames({
+      'has-error': meta.touched && meta.error,
+    });
+
+    return (
+      <div className={className || 'col-md-12'}>
+        <FormGroup className={rootClassName}>
+          <Col sm={12}>
+            <ControlLabel>{label}</ControlLabel>
+          </Col>
+          <Col sm={width || 12}>
+            <FormControl
+              {...input}
+              placeholder={label}
+              {...selectComponent(type)}
+            >
+              {children}
+            </FormControl>
+            {meta.touched && meta.error &&
+              <HelpBlock>{meta.error}</HelpBlock>}
+          </Col>
+        </FormGroup>
+      </div>
+    );
+  };
 
 
 LabeledInput.propTypes = {
@@ -44,6 +59,7 @@ LabeledInput.propTypes = {
   meta: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,
   children: React.PropTypes.array,
+  className: React.PropTypes.string,
 };
 
 
