@@ -88,10 +88,10 @@
 
 /* star rating component */
 path {
-  fill: $dark-cyan;
+  /*fill: $dark-cyan;*/
 }
 
-input {
+input[name="dentist-rating"] {
   display: none;
 }
 
