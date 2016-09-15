@@ -6,7 +6,10 @@ import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import FaChain from 'react-icons/lib/fa/chain';
+import FaEnvelope from 'react-icons/lib/fa/envelope';
+import FaPhone from 'react-icons/lib/fa/phone';
+
 // import StarRating from 'react-star-rating';
 
 import WriteMessageModal from './WriteMessageModal';
@@ -118,8 +121,7 @@ class MyDentist extends Component {
 
             <Row styleName="row url-email-phone">
               <div styleName="pair">
-                {/* <Glyphicon glyph="star" styleName="glyphicon" /> */}
-                <Glyphicon glyph="envelope" styleName="glyphicon" />
+                <FaChain size={16} />
                 <a
                   styleName="text"
                   href={url}
@@ -130,12 +132,11 @@ class MyDentist extends Component {
                 </a>
               </div>
               <div styleName="pair">
-                <Glyphicon glyph="envelope" styleName="glyphicon" />
+                <FaEnvelope size={16} />
                 <span styleName="text">{email}</span>
               </div>
               <div styleName="pair">
-                {/* <Glyphicon glyph="earphone" styleName="glyphicon" /> */}
-                <Glyphicon glyph="envelope" styleName="glyphicon" />
+                <FaPhone size={16} />
                 <span styleName="text">{phone}</span>
               </div>
             </Row>
