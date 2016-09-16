@@ -7,7 +7,7 @@
 import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
-
+import { push } from 'react-router-redux';
 import Button from 'react-bootstrap/lib/Button';
 
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -36,11 +36,21 @@ export default class UserDashboard extends Component {
     myFamilyMembers: PropTypes.array,
     fetchMyDentist: PropTypes.func,
     fetchMyFamily: PropTypes.func,
+    changeRoute: PropTypes.func,
   };
+
+  constructor (props) {
+    super(props);
+    this.goToMembersPage = this.goToMembersPage.bind(this);
+  }
 
   componentWillMount () {
     this.props.fetchMyDentist();
     this.props.fetchMyFamily();
+  }
+
+  goToMembersPage () {
+    this.props.changeRoute('my-family-members');
   }
 
   render () {
@@ -56,7 +66,11 @@ export default class UserDashboard extends Component {
 
         <div styleName="h3-with-button" className="clearfix">
           <h3>Your Family Members</h3>
-          <Button bsStyle="primary" styleName="btn-add-member">
+          <Button
+            bsStyle="primary"
+            styleName="btn-add-member"
+            onClick={this.goToMembersPage}
+          >
             Add | edit family members
           </Button>
         </div>
@@ -84,5 +98,6 @@ function mapDispatchToProps (dispatch) {
   return {
     fetchMyDentist: () => dispatch(fetchMyDentist()),
     fetchMyFamily: () => dispatch(fetchMyFamily()),
+    changeRoute: (url) => dispatch(push(url)),
   };
 }

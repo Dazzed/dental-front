@@ -9,7 +9,7 @@ const reviewFormSchema = {
       lessThanOrEqualTo: 5,
     },
   },
-  showName: { presence: true },
+  isAnonymous: { presence: { message: '^Display name or not?' } },
 };
 
 const messageFormSchema = {

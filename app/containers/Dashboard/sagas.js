@@ -21,7 +21,7 @@ import {
 
 import {
   fetchMyDentist as fetchMyDentistMock,
-  fetchMyFamily as fetchMyFamilyMock,
+  // fetchMyFamily as fetchMyFamilyMock,
 } from './stubApi';
 
 // Individual exports for testing
@@ -65,9 +65,9 @@ export function* fetchMyDentist () {
 
 export function* fetchMyFamily () {
   try {
-    // const requestURL = '/api/v1/FETCH_MY_FAMILY';
-    // const response = yield call(request, requestURL);
-    const response = yield call(fetchMyFamilyMock);
+    const requestURL = '/api/v1/users/me/family-members';
+    const response = yield call(request, requestURL);
+    // const response = yield call(fetchMyFamilyMock);
 
     yield put(myFamilyFetched(response.data));
   } catch (err) {

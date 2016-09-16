@@ -27,9 +27,9 @@
 
 .btn {
   background-color: $light-cyan;
-  border-color: $light-cyan;
+  border: none;
   border-radius: 1em;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 0.5em;
 }
 

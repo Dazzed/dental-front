@@ -13,6 +13,11 @@ const selectUserType = createSelector(
   (substate) => get(substate, 'currentUser.type'),
 );
 
+const selectAuthState = createSelector(
+  selectGlobal,
+  (substate) => substate.loggedIn,
+);
+
 const selectCurrentUser = createSelector(
   selectGlobal,
   (substate) => get(substate, 'currentUser')
@@ -32,6 +37,7 @@ const selectPageTitle = createSelector(
 export {
   selectGlobal,
   selectUserType,
+  selectAuthState,
   selectCurrentUser,
   selectDentistSpecialties,
   selectPageTitle,
