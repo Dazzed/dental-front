@@ -21,8 +21,6 @@ function FamilyMember ({ details }) {
     avatar,
   } = details;
 
-  const relationship = 
-    find(MEMBER_RELATIONSHIP_TYPES, { value: familyRelationship });
   const memberSince = moment(createdAt).format('MMM D, YYYY');
   const avatarURL = avatar || 'http://www.teenink.com/images/default_face.gif';
 
@@ -38,7 +36,7 @@ function FamilyMember ({ details }) {
             <p styleName="account-owner">(Account Owner)</p>
           }
         </Col>
-        <Col md={2}>{relationship && relationship.text}</Col>
+        <Col md={2}>{MEMBER_RELATIONSHIP_TYPES[familyRelationship]}</Col>
         <Col md={2}>Custom</Col>
         <Col md={2}>$20.00</Col>
         <Col md={2} className="text-right">{memberSince}</Col>
