@@ -16,11 +16,12 @@ import ListGroup from 'react-bootstrap/lib/ListGroup';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import FaEdit from 'react-icons/lib/fa/edit';
 import FaClose from 'react-icons/lib/fa/close';
+import Confirm from 'react-confirm-bootstrap';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import AddFamilyMemberForm from 'components/AddFamilyMemberForm';
-import { fetchMyFamily } from 'containers/Dashboard/actions';
 
+import { fetchMyFamily } from 'containers/Dashboard/actions';
 import {
   setEditingMember,
   submitMemberForm,
@@ -36,6 +37,9 @@ class MyFamilyMembers extends Component {
     membersList: PropTypes.array,
     fetchMyFamily: PropTypes.func,
     setEditingMember: PropTypes.func,
+    onSubmitForm: PropTypes.func,
+    deleteMember: PropTypes.func,
+    resetForm: PropTypes.func,
   }
 
   constructor (props) {
@@ -69,6 +73,7 @@ class MyFamilyMembers extends Component {
   addNewMember () {
     this.showMemberForm();
     this.props.setEditingMember();
+    this.props.resetForm();
   }
 
   editMember (id) {
@@ -142,10 +147,14 @@ class MyFamilyMembers extends Component {
                         />
                       </Col>
                       <Col md={6} styleName="clickable">
-                        <FaClose
-                          size={16}
-                          onClick={this.deleteMember.bind(this, _member)}
-                        />
+                        <Confirm
+                          onConfirm={this.deleteMember.bind(this, _member)}
+                          body="Are you sure you want to delete this member?"
+                          confirmText="Confirm Delete"
+                          title="Deleting Member"
+                        >
+                          <a><FaClose size={16} /></a>
+                        </Confirm>
                       </Col>
                     </Col>
                   </Row>
@@ -190,6 +199,7 @@ function mapDispatchToProps (dispatch) {
 
     onSubmitForm: (values) => dispatch(submitMemberForm(values)),
     deleteMember: (id) => dispatch(deleteMember(id)),
+    resetForm: () => dispatch(resetForm('familyMember')),
   };
 }
 
