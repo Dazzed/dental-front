@@ -140,13 +140,13 @@ class MyFamilyMembers extends Component {
                       Custom
                     </Col>
                     <Col md={2}>
-                      <Col md={6} styleName="clickable">
+                      <Col md={6} styleName="action-icon">
                         <FaEdit
                           size={16}
                           onClick={this.editMember.bind(this, _member.id)}
                         />
                       </Col>
-                      <Col md={6} styleName="clickable">
+                      <Col md={6} styleName="action-icon">
                         <Confirm
                           onConfirm={this.deleteMember.bind(this, _member)}
                           body="Are you sure you want to delete this member?"

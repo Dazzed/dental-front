@@ -5,11 +5,14 @@
   font-weight: bold;
 }
 
-.clickable {
+.action-icon {
   cursor: pointer;
 
   :hover {
     color: $cyan;
+  }
+  a {
+    color: inherit;
   }
 }
 
