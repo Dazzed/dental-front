@@ -11,6 +11,8 @@ import {
   MY_FAMILY_REQUEST,
   MY_FAMILY_SUCCESS,
   MY_FAMILY_ERROR,
+  SUBMIT_CLIENT_MESSAGE_FORM,
+  SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
 
 export function fetchMyDentist () {
@@ -49,6 +51,20 @@ export function myFamilyFetched (payload) {
 export function myFamilyFetchingError (payload) {
   return {
     type: MY_FAMILY_ERROR,
+    payload,
+  };
+}
+
+export function submitClientMessageForm (payload) {
+  return {
+    type: SUBMIT_CLIENT_MESSAGE_FORM,
+    payload,
+  };
+}
+
+export function submitClientReviewForm (payload) {
+  return {
+    type: SUBMIT_CLIENT_REVIEW_FORM,
     payload,
   };
 }

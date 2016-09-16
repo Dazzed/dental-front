@@ -16,6 +16,7 @@ import 'file?name=[name].[ext]!./.htaccess';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import ReduxToastr from 'react-redux-toastr';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'react-router-scroll';
@@ -26,6 +27,7 @@ import App from 'containers/App';
 // Load base styles
 import 'sanitize.css/sanitize.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import 'assets/styles/app.css';
 
 import configureStore from './store';
@@ -71,11 +73,18 @@ function scrollMiddleware () {
 
 render(
   <Provider store={store}>
-    <Router
-      history={history}
-      routes={rootRoute}
-      render={applyRouterMiddleware(scrollMiddleware)}
-    />
+    <div>
+      <Router
+        history={history}
+        routes={rootRoute}
+        render={applyRouterMiddleware(scrollMiddleware)}
+      />
+      <ReduxToastr
+        timeOut={5000}
+        newestOnTop={false}
+        position="top-right"
+      />
+    </div>
   </Provider>,
   document.getElementById('app')
 );

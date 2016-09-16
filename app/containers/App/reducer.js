@@ -5,8 +5,8 @@ import {
   CHANGE_PAGE_TITLE,
 } from './constants';
 
-
 const initialState = {
+  loggedIn: !!localStorage.jwtToken,
   authData: false,
   currentUser: false,
   dentistSpecialties: [],

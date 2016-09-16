@@ -59,6 +59,10 @@
   @mixin colored-button $white, $light-green, $green;
 }
 
+:global(.btn-darkest-green) {
+  @mixin colored-button $white, $darkest-green, $white;
+}
+
 :global(.btn-cyan) {
   @mixin colored-button $white, $light-cyan, $cyan;
 }
