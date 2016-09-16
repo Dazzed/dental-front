@@ -15,9 +15,11 @@ import styles from './styles.css';
 
 
 function LoggedInHeaderNav ({ fullName, avatar }) {
+  // temporary default face icon for now
+  const avatarURL = avatar || 'http://www.teenink.com/images/default_face.gif';
   return (
     <Navbar.Collapse>
-      <Image className="pull-right" src={avatar} styleName="avatar" circle />
+      <Image className="pull-right" src={avatarURL} styleName="avatar" circle />
       <ul className="nav navbar-nav navbar-right" styleName="nav">
         <li role="presentation">
           <span>

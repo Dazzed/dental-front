@@ -91,7 +91,7 @@ class MyFamilyMembers extends Component {
 
     return (
       <Well>
-        <h3 styleName="title">List Your Family Members</h3>
+        <h3 styleName="title">Your Family Members</h3>
 
         <Row>
           <Col md={12}>

@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/lib/Col';
 import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 import moment from 'moment';
-import { find } from 'lodash';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 
