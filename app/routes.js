@@ -27,6 +27,7 @@ export default function createRoutes (store) {
 
   return [
     {
+      onEnter: redirectToDashboard,
       path: '/',
       name: 'home',
       getComponent (nextState, cb) {

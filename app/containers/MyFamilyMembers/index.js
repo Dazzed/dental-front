@@ -10,8 +10,9 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import moment from 'moment';
 import Well from 'react-bootstrap/lib/Well';
-import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+import Button from 'react-bootstrap/lib/Button';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import FaEdit from 'react-icons/lib/fa/edit';
@@ -21,6 +22,7 @@ import Confirm from 'react-confirm-bootstrap';
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import AddFamilyMemberForm from 'components/AddFamilyMemberForm';
 
+import { changePageTitle } from 'containers/App/actions';
 import { fetchMyFamily } from 'containers/Dashboard/actions';
 import {
   setEditingMember,
@@ -40,6 +42,7 @@ class MyFamilyMembers extends Component {
     onSubmitForm: PropTypes.func,
     deleteMember: PropTypes.func,
     resetForm: PropTypes.func,
+    changePageTitle: PropTypes.func,
   }
 
   constructor (props) {
@@ -54,6 +57,7 @@ class MyFamilyMembers extends Component {
 
   componentWillMount () {
     this.props.fetchMyFamily();
+    this.props.changePageTitle('Manage Family Members');
   }
 
   showMemberForm () {
@@ -164,12 +168,13 @@ class MyFamilyMembers extends Component {
           </Col>
 
           <Col md={12}>
-            <button
-              className="btn-darkest-green btn-round pull-right"
+            <Button
+              bsStyle="primary pull-right"
+              styleName="btn-add-member"
               onClick={this.addNewMember.bind(this)}
             >
               Add new member
-            </button>
+            </Button>
           </Col>
         </Row>
 
@@ -200,6 +205,7 @@ function mapDispatchToProps (dispatch) {
     onSubmitForm: (values) => dispatch(submitMemberForm(values)),
     deleteMember: (id) => dispatch(deleteMember(id)),
     resetForm: () => dispatch(resetForm('familyMember')),
+    changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
 }
 
