@@ -2,9 +2,6 @@
   background-color: $background;
   color: $color;
 
-  &:active {
-  }
-
   &:hover,
   &:focus,
   &:active:focus {

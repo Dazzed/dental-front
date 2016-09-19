@@ -19,7 +19,6 @@ class WriteReviewModal extends Component {
   }
 
   onSubmitForm (values) {
-    console.log('Review form submitted', values);
     this.props.dispatchSubmit(values);
     this.props.onClose();
   }

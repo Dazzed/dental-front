@@ -103,7 +103,8 @@ export function* deleteMemberWatcher () {
       const params = {
         method: 'DELETE',
       };
-      const response = yield call(request, requestURL, params);
+      // const response = yield call(request, requestURL, params);
+      yield call(request, requestURL, params);
 
       const message = `'${payload.firstName} ${payload.lastName}' 
         has been deleted.`;
