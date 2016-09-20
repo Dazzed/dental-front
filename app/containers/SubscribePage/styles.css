@@ -1,0 +1,14 @@
+@import '../../assets/styles/variables';
+
+.wrapper {
+  min-height: 100%;
+  background-color: $green;
+  color: $white;
+}
+
+.container {
+  padding-top: 2rem;
+}
+
+
+

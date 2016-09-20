@@ -163,6 +163,18 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/subscribe',
+      name: 'subscribePage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/SubscribePage'),
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    },  {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {
