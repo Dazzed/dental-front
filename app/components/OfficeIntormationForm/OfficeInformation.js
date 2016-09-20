@@ -6,8 +6,13 @@ import Row from 'react-bootstrap/lib/Row';
 
 import LabeledInput from 'components/LabeledInput';
 
+import { officeInformationValidator } from './validators';
 
-@reduxForm({ form: 'office-information' })
+
+@reduxForm({
+  form: 'office-information',
+  validate: officeInformationValidator,
+})
 export default class OfficeInformation extends React.Component {
 
   render () {

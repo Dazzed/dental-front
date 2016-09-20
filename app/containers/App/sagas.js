@@ -3,8 +3,15 @@ import { call, put } from 'redux-saga/effects';
 
 import request from 'utils/request';
 
-import { dentistSpecialtiesSuccess } from './actions';
-import { DENTIST_SPECIALTIES_REQUEST } from './constants';
+import {
+  dentistSpecialtiesSuccess,
+  requestServicesSuccess,
+} from './actions';
+
+import {
+  DENTIST_SPECIALTIES_REQUEST,
+  SERVICES_REQUEST,
+} from './constants';
 
 
 function* loadDentistSpecialties () {
@@ -19,6 +26,19 @@ function* loadDentistSpecialties () {
 }
 
 
+function* requestServices () {
+  yield* takeLatest(SERVICES_REQUEST, function* () {
+    try {
+      const services = yield call(request, '/api/v1/services');
+      yield put(requestServicesSuccess(services));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
+
 export default [
   loadDentistSpecialties,
+  requestServices,
 ];

@@ -75,8 +75,7 @@ export default class App extends Component {
               </div>
             </div>
           </div>
-          : React.Children.toArray(this.props.children)
-        }
+          : React.Children.toArray(this.props.children)}
         <Footer />
       </div>
     );
