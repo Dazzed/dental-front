@@ -46,8 +46,10 @@ function* loadUserFromToken () {
     yield put(setUserData(false));
 
     // if returns forbidden we remove the token from local storage
-    if (e.res.status === 401) {
+    if (e.res && e.res.status === 401) {
       removeItem('jwtToken');
+    } else {
+      console.error(e);
     }
   }
 }

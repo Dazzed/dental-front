@@ -5,6 +5,7 @@ import {
   DENTIST_SPECIALTIES_REQUEST,
   DENTIST_SPECIALTIES_SUCCESS,
   DENTIST_SPECIALTIES_ERROR,
+  CHANGE_PAGE_TITLE,
 } from './constants';
 
 
@@ -55,5 +56,13 @@ export function dentistSpecialtiesError (payload) {
   return {
     type: DENTIST_SPECIALTIES_ERROR,
     payload
+  };
+}
+
+
+export function changePageTitle (payload) {
+  return {
+    type: CHANGE_PAGE_TITLE,
+    payload,
   };
 }

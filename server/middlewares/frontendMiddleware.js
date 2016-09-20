@@ -64,7 +64,7 @@ const addProdMiddlewares = (app, options) => {
 // Proxy requests to real backend
 const addProxyMiddleware = (app) => {
   const pxhost = process.env.PROXY_HOST || '127.0.0.1';
-  const pxport = process.env.PROXY_PORT || '8080';
+  const pxport = process.env.PROXY_PORT || '3090';
   const prefix = '/api';
   const pxURL = process.env.NODE_ENV === 'production' ?
     `${pxhost}/` : `${pxhost}:${pxport}/`;

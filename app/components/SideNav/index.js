@@ -10,14 +10,14 @@ const navItems = {
   client: [
     { text: 'Dashboard', link: '/dashboard' },
     { text: 'Edit payment information', link: '/temp_link' },
-    { text: 'Manage family members', link: '/temp_link' },
+    { text: 'Manage family members', link: '/my-family-members' },
     { text: 'Transfer dental office', link: '/temp_link' },
     { text: 'Help & FAQ', link: '/temp_link' },
     { text: 'Cancel membership', link: '/temp_link' },
   ],
   dentist: [
     { text: 'Dentist dashboard', link: '/dashboard' },
-    { text: 'Edit office info', link: '/temp_link' },
+    { text: 'Edit office info', link: '/dentist/office/edit' },
     { text: 'Add new member', link: '/temp_link' },
     { text: 'Edit membership', link: '/custom-membership' },
     { text: 'Contact support', link: '/temp_link' },

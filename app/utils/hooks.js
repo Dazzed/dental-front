@@ -1,4 +1,4 @@
-import { selectCurrentUser } from 'containers/App/selectors';
+import { selectAuthState } from 'containers/App/selectors';
 import createReducer from '../reducers';
 
 /**
@@ -20,7 +20,7 @@ function injectAsyncSagas (store) {
 
 function redirectToLogin (store) {
   return (nextState, replace) => {
-    if (!selectCurrentUser(store.getState())) {
+    if (!selectAuthState(store.getState())) {
       replace({
         pathname: '/accounts/login',
         state: { nextPathname: nextState.location.pathname },
@@ -31,7 +31,7 @@ function redirectToLogin (store) {
 
 function redirectToDashboard (store) {
   return (nextState, replace) => {
-    if (selectCurrentUser(store.getState())) {
+    if (selectAuthState(store.getState())) {
       replace('/dashboard');
     }
   };

@@ -7,10 +7,10 @@
 
 .top-header {
   background-color: $white;
-  padding: 1em 1em;
+  padding: 1em;
   margin: -5px -10px;
   font-weight: 600;
-  
+
   & > div {
     padding: 0;
     word-break: break-word;
@@ -21,9 +21,11 @@
     color: $light-gray;
     margin-right: 5px;
   }
+
   .value {
     color: $black;
   }
+
   .value.status {
     color: $green;
   }
@@ -31,7 +33,7 @@
 
 .list-header {
   color: $gray;
-  margin: 2em 0 0 0;
+  margin: 2em 0 0;
 }
 
 .list-content {

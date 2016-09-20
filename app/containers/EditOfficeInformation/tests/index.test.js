@@ -1,10 +1,10 @@
-// import Dashboard from '../index';
+// import EditOfficeInformation from '../index';
 
 import expect from 'expect';
 // import { shallow } from 'enzyme';
 // import React from 'react';
 
-describe('<Dashboard />', () => {
+describe('<EditOfficeInformation />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

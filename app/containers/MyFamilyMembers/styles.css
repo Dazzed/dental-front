@@ -1,0 +1,26 @@
+@import '../../assets/styles/variables';
+
+.title {
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;
+
+  :hover {
+    color: $cyan;
+  }
+}
+
+.btn-add-member {
+  font-size: 16px;
+  text-transform: none;
+  border-radius: 1em;
+  background-color: #2A483A;
+  border: #2A483A;
+  color: $white;
+  margin-top: 0.5em;
+  margin-right: 1em;
+  padding: 0.3em 1em;
+}

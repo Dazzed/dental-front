@@ -22,7 +22,7 @@ const loadModule = (cb) => (componentModule) => {
 export default function createRoutes (store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const {
-    injectReducer, injectSagas, redirectToDashboard,
+    injectReducer, injectSagas, redirectToDashboard, redirectToLogin,
   } = getHooks(store);
 
   return [
@@ -101,6 +101,7 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
       path: '/dashboard',
       name: 'dashboard',
       getComponent (nextState, cb) {
@@ -114,6 +115,47 @@ export default function createRoutes (store) {
 
         importModules.then(([ reducer, sagas, component ]) => {
           injectReducer('dashboard', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/office/edit',
+      name: 'editOfficeInformation',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/EditOfficeInformation/reducer'),
+          System.import('containers/EditOfficeInformation/sagas'),
+          System.import('containers/EditOfficeInformation'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('editOfficeInformation', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/my-family-members',
+      name: 'myFamilyMembers',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/MyFamilyMembers/reducer'),
+          System.import('containers/MyFamilyMembers/sagas'),
+          System.import('containers/MyFamilyMembers'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('myFamilyMembers', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });
