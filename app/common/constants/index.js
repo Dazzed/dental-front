@@ -5,3 +5,8 @@ export const MEMBER_RELATIONSHIP_TYPES = {
 };
 
 export default MEMBER_RELATIONSHIP_TYPES;
+
+export const Currencies = {
+  USD: 'USD',
+  CAD: 'CAD',
+};

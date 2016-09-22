@@ -169,7 +169,8 @@ class MyFamilyMembers extends Component {
 
           <Col md={12}>
             <Button
-              bsStyle="primary pull-right"
+              bsStyle="primary"
+              className="pull-right"
               styleName="btn-add-member"
               onClick={this.addNewMember.bind(this)}
             >

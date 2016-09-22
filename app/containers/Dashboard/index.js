@@ -8,9 +8,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import UserDashboard from 'components/UserDashboard';
-// import DentistDashboard from 'components/DentistDashboard';
+import DentistDashboard from 'components/DentistDashboard';
 import { selectUserType } from 'containers/App/selectors';
-import selectDashboard from 'containers/Dashboard/selectors';
 import { USER_TYPES } from 'containers/Dashboard/constants';
 
 import { changePageTitle } from 'containers/App/actions';
@@ -19,7 +18,6 @@ import { changePageTitle } from 'containers/App/actions';
 function mapStateToProps (state) {
   return {
     userType: selectUserType(state),
-    dashboard: selectDashboard(state),
   };
 }
 
@@ -59,8 +57,7 @@ export default class Dashboard extends Component { // eslint-disable-line
     if (userType === USER_TYPES.CLIENT) {
       dashboardInstance = <UserDashboard />;
     } else if (userType === USER_TYPES.DENTIST) {
-      // dashboardInstance = <DentistDashboard />;
-      dashboardInstance = <div />;
+      dashboardInstance = <DentistDashboard />;
     } else {
       dashboardInstance = <div />;
     }
