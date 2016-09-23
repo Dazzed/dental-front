@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -33,19 +34,21 @@ class LoginForm extends React.Component {
         className="form-horizontal"
       >
 
-        <Field
-          name="email"
-          type="text"
-          component={LabeledInput}
-          label="Email"
-        />
+        <Row>
+          <Field
+            name="email"
+            type="text"
+            component={LabeledInput}
+            label="Email"
+          />
 
-        <Field
-          name="password"
-          type="password"
-          component={LabeledInput}
-          label="Password"
-        />
+          <Field
+            name="password"
+            type="password"
+            component={LabeledInput}
+            label="Password"
+          />
+        </Row>
 
         <FormGroup className="has-error">
           <Col sm={12}>

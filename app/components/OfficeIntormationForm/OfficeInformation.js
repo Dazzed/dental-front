@@ -7,7 +7,9 @@ import Row from 'react-bootstrap/lib/Row';
 import LabeledInput from 'components/LabeledInput';
 
 
-@reduxForm({ form: 'office-information' })
+@reduxForm({
+  form: 'office-information',
+})
 export default class OfficeInformation extends React.Component {
 
   render () {

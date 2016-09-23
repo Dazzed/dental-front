@@ -45,7 +45,7 @@ export default class NavBar extends React.Component {
     const fullName = `${firstName} ${lastName}`;
 
     return (
-      <Navbar fixedTop>
+      <Navbar fixedTop styleName="navbar">
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">

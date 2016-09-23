@@ -2,6 +2,7 @@ import {
   SET_AUTH_DATA,
   SET_USER_DATA,
   DENTIST_SPECIALTIES_SUCCESS,
+  SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
 } from './constants';
 
@@ -10,6 +11,7 @@ const initialState = {
   authData: false,
   currentUser: false,
   dentistSpecialties: [],
+  services: [],
   pageTitle: null,
 };
 
@@ -34,6 +36,12 @@ export default function appReducer (state = initialState, action) {
       return {
         ...state,
         dentistSpecialties: payload.data,
+      };
+
+    case SERVICES_REQUEST_SUCCESS:
+      return {
+        ...state,
+        services: payload.data,
       };
 
     case CHANGE_PAGE_TITLE:

@@ -2,9 +2,15 @@ import {
   ME_FROM_TOKEN,
   SET_AUTH_DATA,
   SET_USER_DATA,
+
   DENTIST_SPECIALTIES_REQUEST,
   DENTIST_SPECIALTIES_SUCCESS,
   DENTIST_SPECIALTIES_ERROR,
+
+  SERVICES_REQUEST,
+  SERVICES_REQUEST_SUCCESS,
+  SERVICES_REQUEST_ERROR,
+
   CHANGE_PAGE_TITLE,
 } from './constants';
 
@@ -55,6 +61,30 @@ export function dentistSpecialtiesSuccess (payload) {
 export function dentistSpecialtiesError (payload) {
   return {
     type: DENTIST_SPECIALTIES_ERROR,
+    payload
+  };
+}
+
+
+export function requestServices (payload) {
+  return {
+    type: SERVICES_REQUEST,
+    payload
+  };
+}
+
+
+export function requestServicesSuccess (payload) {
+  return {
+    type: SERVICES_REQUEST_SUCCESS,
+    payload
+  };
+}
+
+
+export function requestServicesError (payload) {
+  return {
+    type: SERVICES_REQUEST_ERROR,
     payload
   };
 }

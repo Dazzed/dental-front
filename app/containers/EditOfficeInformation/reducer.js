@@ -4,18 +4,24 @@
  *
  */
 
-import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  FETCH_DENTIST_INFO_SUCCESS,
+  UPDATE_DENTIST_INFO_SUCCESS
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = {
+  dentistInfo: {},
+};
 
 
 function editOfficeInformationReducer (state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case FETCH_DENTIST_INFO_SUCCESS:
+    case UPDATE_DENTIST_INFO_SUCCESS:
+      return {
+        ...state,
+        dentistInfo: action.payload.data,
+      };
     default:
       return state;
   }

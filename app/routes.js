@@ -123,6 +123,7 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
       path: '/dentist/office/edit',
       name: 'editOfficeInformation',
       getComponent (nextState, cb) {
