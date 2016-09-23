@@ -49,7 +49,7 @@ const selectSorter = createSelector(
 const selectNewMembers = createSelector(
   selectDentistDashboard,
   selectSorter,
-  (substate, sorter) => (
+  (substate) => (
     filter(substate.myPatients,
       (patient) => (moment().diff(patient.createdAt, 'days') <= 5)
     )
@@ -59,7 +59,7 @@ const selectNewMembers = createSelector(
 const selectNewReviews = createSelector(
   selectDentistDashboard,
   selectSorter,
-  (substate, sorter) => (
+  (substate) => (
     filter(substate.myPatients,
       (patient) => {
         const lastReviewDate = get(patient, 'lastReview.createdAt');
@@ -72,9 +72,7 @@ const selectNewReviews = createSelector(
 const selectAllMembers = createSelector(
   selectDentistDashboard,
   selectSorter,
-  (substate, sorter) => {
-    return substate.myPatients;
-  }
+  (substate) => substate.myPatients
 );
 
 export default selectDashboard;

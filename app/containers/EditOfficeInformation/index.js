@@ -69,7 +69,7 @@ export default class EditOfficeInformation extends React.Component {
           </Col>
         </Row>
 
-        <OfficeIntormationForm onSubmit={this.handleSubmit}/>
+        <OfficeIntormationForm onSubmit={this.handleSubmit} />
       </div>
     );
   }

@@ -11,7 +11,6 @@ import FaPhone from 'react-icons/lib/fa/phone';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaStar from 'react-icons/lib/fa/star';
-import FaStarO from 'react-icons/lib/fa/star-o';
 import Rating from 'react-rating';
 import moment from 'moment';
 

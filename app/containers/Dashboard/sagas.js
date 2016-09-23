@@ -1,11 +1,10 @@
 import { takeLatest } from 'redux-saga';
-import { take, call, put, fork, select, cancel } from 'redux-saga/effects';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { get } from 'lodash';
 import request from 'utils/request';
 
-import { selectUserId } from 'containers/App/selectors';
 import {
   MY_DENTIST_REQUEST,
   MY_FAMILY_REQUEST,
