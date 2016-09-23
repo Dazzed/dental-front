@@ -66,7 +66,7 @@ export default class Services extends React.Component {
           {services.map(item => (
             <Col md={4} key={item.id}>
               <Field
-                name={`services['_${item.id}']`}
+                name={`serviceSelected['_${item.id}']`}
                 sid={item.id}
                 label={item.name}
                 component={DUCheckedComponent}

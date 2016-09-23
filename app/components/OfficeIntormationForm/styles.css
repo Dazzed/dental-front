@@ -1,5 +1,6 @@
 .global-form {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .dropzone {
@@ -18,4 +19,24 @@
   p {
     margin-top: 20px;
   }
+}
+
+.member-item {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+.recommended-fee {
+  margin-top: 10px;
+}
+
+.title-case {
+  text-transform: capitalize;
+  text-align: right;
+}
+
+.radio {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;
 }

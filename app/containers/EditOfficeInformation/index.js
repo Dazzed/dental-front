@@ -15,7 +15,10 @@ import Image from 'react-bootstrap/lib/Image';
 import OfficeIntormationForm from 'components/OfficeIntormationForm';
 
 import { changePageTitle } from 'containers/App/actions';
-import { fetchDentistInfo } from 'containers/EditOfficeInformation/actions';
+import {
+  fetchDentistInfo,
+  updateDentistInfo,
+} from 'containers/EditOfficeInformation/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 import toothImg from 'assets/images/tooth-mag.png';
@@ -29,6 +32,7 @@ export default class EditOfficeInformation extends React.Component {
   static propTypes = {
     changePageTitle: React.PropTypes.func.isRequired,
     fetchDentistInfo: React.PropTypes.func.isRequired,
+    updateDentistInfo: React.PropTypes.func.isRequired,
     loggedInUser: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object
@@ -38,6 +42,10 @@ export default class EditOfficeInformation extends React.Component {
   componentWillMount () {
     this.props.changePageTitle('Edit Office Information');
     this.props.fetchDentistInfo();
+  }
+
+  handleSubmit = (data) => {
+    this.props.updateDentistInfo(data);
   }
 
   render () {
@@ -61,7 +69,7 @@ export default class EditOfficeInformation extends React.Component {
           </Col>
         </Row>
 
-        <OfficeIntormationForm />
+        <OfficeIntormationForm onSubmit={this.handleSubmit}/>
       </div>
     );
   }
@@ -71,8 +79,9 @@ export default class EditOfficeInformation extends React.Component {
 function mapDispatchToProps (dispatch) {
   return {
     dispatch,
-    changePageTitle: (title) => dispatch(changePageTitle(title)),
-    fetchDentistInfo: (title) => dispatch(fetchDentistInfo()),
+    changePageTitle: title => dispatch(changePageTitle(title)),
+    fetchDentistInfo: () => dispatch(fetchDentistInfo()),
+    updateDentistInfo: (data) => dispatch(updateDentistInfo(data)),
   };
 }
 

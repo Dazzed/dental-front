@@ -74,10 +74,10 @@ export function* submitFormWatcher () {
 
       let message;
       if (memberId) {
-        message = `'${payload.firstName} ${payload.lastName}' 
+        message = `'${payload.firstName} ${payload.lastName}'
           has been modified.`;
       } else {
-        message = `'${payload.firstName} ${payload.lastName}' 
+        message = `'${payload.firstName} ${payload.lastName}'
           has been added.`;
       }
       yield put(toastrActions.success('', message));
@@ -103,10 +103,10 @@ export function* deleteMemberWatcher () {
       const params = {
         method: 'DELETE',
       };
-      // const response = yield call(request, requestURL, params);
+
       yield call(request, requestURL, params);
 
-      const message = `'${payload.firstName} ${payload.lastName}' 
+      const message = `'${payload.firstName} ${payload.lastName}'
         has been deleted.`;
       yield put(toastrActions.success('', message));
 

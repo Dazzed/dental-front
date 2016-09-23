@@ -38,8 +38,8 @@ const LabeledInput =
           <Col sm={width || 12}>
             <FormControl
               {...input}
-              placeholder={label}
               {...selectComponent(type)}
+              placeholder={label}
             >
               {children}
             </FormControl>

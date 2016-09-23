@@ -6,6 +6,7 @@
 
 import {
   FETCH_DENTIST_INFO_SUCCESS,
+  UPDATE_DENTIST_INFO_SUCCESS
 } from './constants';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
 function editOfficeInformationReducer (state = initialState, action) {
   switch (action.type) {
     case FETCH_DENTIST_INFO_SUCCESS:
+    case UPDATE_DENTIST_INFO_SUCCESS:
       return {
         ...state,
         dentistInfo: action.payload.data,
