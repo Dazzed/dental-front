@@ -1,10 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import CSSModules from 'react-css-modules';
-import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 // import StarRating from 'react-star-rating';
 

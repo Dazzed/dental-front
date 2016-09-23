@@ -10,8 +10,9 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 import moment from 'moment';
 import Well from 'react-bootstrap/lib/Well';
-import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+import Button from 'react-bootstrap/lib/Button';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import FaEdit from 'react-icons/lib/fa/edit';
@@ -21,6 +22,7 @@ import Confirm from 'react-confirm-bootstrap';
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import AddFamilyMemberForm from 'components/AddFamilyMemberForm';
 
+import { changePageTitle } from 'containers/App/actions';
 import { fetchMyFamily } from 'containers/Dashboard/actions';
 import {
   setEditingMember,
@@ -40,6 +42,7 @@ class MyFamilyMembers extends Component {
     onSubmitForm: PropTypes.func,
     deleteMember: PropTypes.func,
     resetForm: PropTypes.func,
+    changePageTitle: PropTypes.func,
   }
 
   constructor (props) {
@@ -54,6 +57,7 @@ class MyFamilyMembers extends Component {
 
   componentWillMount () {
     this.props.fetchMyFamily();
+    this.props.changePageTitle('Manage Family Members');
   }
 
   showMemberForm () {
@@ -91,7 +95,7 @@ class MyFamilyMembers extends Component {
 
     return (
       <Well>
-        <h3 styleName="title">List Your Family Members</h3>
+        <h3 styleName="title">Your Family Members</h3>
 
         <Row>
           <Col md={12}>
@@ -140,13 +144,13 @@ class MyFamilyMembers extends Component {
                       Custom
                     </Col>
                     <Col md={2}>
-                      <Col md={6} styleName="clickable">
+                      <Col md={6} styleName="action-icon">
                         <FaEdit
                           size={16}
                           onClick={this.editMember.bind(this, _member.id)}
                         />
                       </Col>
-                      <Col md={6} styleName="clickable">
+                      <Col md={6} styleName="action-icon">
                         <Confirm
                           onConfirm={this.deleteMember.bind(this, _member)}
                           body="Are you sure you want to delete this member?"
@@ -164,12 +168,14 @@ class MyFamilyMembers extends Component {
           </Col>
 
           <Col md={12}>
-            <button
-              className="btn-darkest-green btn-round pull-right"
+            <Button
+              bsStyle="primary"
+              className="pull-right"
+              styleName="btn-add-member"
               onClick={this.addNewMember.bind(this)}
             >
               Add new member
-            </button>
+            </Button>
           </Col>
         </Row>
 
@@ -200,6 +206,7 @@ function mapDispatchToProps (dispatch) {
     onSubmitForm: (values) => dispatch(submitMemberForm(values)),
     deleteMember: (id) => dispatch(deleteMember(id)),
     resetForm: () => dispatch(resetForm('familyMember')),
+    changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
 }
 

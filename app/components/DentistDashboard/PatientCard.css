@@ -1,0 +1,150 @@
+@import '../../assets/styles/variables';
+
+.patient-card {
+  padding: 0.5em 1em;
+  margin: 0 0 1em;
+  background-color: $white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px rgba(0,0,0,.3);
+  font-size: 15px;
+}
+
+.avatar {
+  height: 5em;
+  margin-top: 10px;
+  padding-left: 0;
+  img {
+    border-radius: 50%;
+    width: auto;
+    height: calc(100% - 1em);
+  }
+  span {
+    color: $light-gray;
+  }
+}
+
+.details {
+  padding-left: 20px;
+  .pane {
+    border-top: 1px solid $light-gray;
+    padding: 10px 0;
+  }
+  .pane.no-border {
+    border-top: none;
+  }
+  svg {
+    color: $cyan;
+    margin-right: 4px;
+    vertical-align: text-top;
+  }
+  svg.toggler-icon {
+    color: $light-black;
+    margin: 0;
+  }
+  .toggler {
+    cursor: pointer;
+  }
+
+  span.desc {
+    color: $light-gray;
+  }
+  span.value {
+    font-weight: 600;
+    color: $dark-gray;
+  }
+  span.update-payment {
+    color: $light-cyan;
+    cursor: pointer;
+  }
+
+  .patient-name {
+    color: $dark-cyan;
+    font-size: 24px;
+  }
+  .membership-status {
+    font-weight: bold;
+    font-size: 16px;
+    color: $light-green;
+    &.warning {
+      color: $purple;
+    }
+  }
+  .member-since {
+    padding-top: 5px;
+  }
+
+  .members-pane {
+    line-height: 1.6em;
+    
+    .membership-status {
+      font-size: 15px;
+    }
+  }
+  .members-list {
+    font-size: 14px;
+    color: $dark-gray;
+    line-height: 2.5em;
+
+    .header {
+      color: $light-gray;
+    }
+
+    .avatar-name {
+      height: 2.5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      img {
+        border-radius: 50%;
+        height: 90%;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .review {
+    .text {
+      font-style: italic;
+      margin-top: 5px;
+    }
+  }
+
+  .review 
+  .review .rating {
+
+  }
+}
+
+.members-list-toggler {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.btn {
+  font-size: 13px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+
+/** animation **/
+.show-hide-enter {
+  opacity: 0.01;
+  transition: opacity 1s ease-in;
+}
+
+.show-hide-enter.show-hide-enter-active {
+  opacity: 1;
+}
+
+.show-hide-leave {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.show-hide-leave.show-hide-leave-active {
+  opacity: 0.01;
+}

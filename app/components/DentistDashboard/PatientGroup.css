@@ -1,0 +1,31 @@
+@import '../../assets/styles/variables';
+
+.group-header {
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 20px;
+  width: auto;
+}
+
+.bar {
+  border-top: 1px solid $light-gray;
+  margin-top: 15px;
+}
+
+.sort-by {
+  font-size: 15px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.sorter-toggler {
+  margin-left: 5px;
+  vertical-align: middle;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}

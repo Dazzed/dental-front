@@ -1,9 +1,7 @@
 @define-mixin colored-button $color, $background, $border {
   background-color: $background;
+  border-color: $border;
   color: $color;
-
-  &:active {
-  }
 
   &:hover,
   &:focus,

@@ -70,6 +70,7 @@
     span.glyphicon {
       margin-right: 5px;
     }
+
     svg {
       margin-right: 5px;
     }
@@ -91,10 +92,10 @@
 
 /* star rating component */
 path {
-  /*fill: $dark-cyan;*/
+  /* fill: $dark-cyan; */
 }
 
-input[name="dentist-rating"] {
+input[name='dentist-rating'] {
   display: none;
 }
 

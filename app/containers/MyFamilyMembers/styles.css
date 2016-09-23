@@ -5,11 +5,15 @@
   font-weight: bold;
 }
 
-.clickable {
+.action-icon {
   cursor: pointer;
 
   :hover {
     color: $cyan;
+  }
+
+  a {
+    color: inherit;
   }
 }
 
@@ -20,7 +24,5 @@
   background-color: #2A483A;
   border: #2A483A;
   color: $white;
-  margin-top: 0.5em;
-  margin-right: 1em;
   padding: 0.3em 1em;
 }

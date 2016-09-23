@@ -1,13 +1,15 @@
 import { takeLatest } from 'redux-saga';
-import { take, call, put, fork, cancel } from 'redux-saga/effects';
+import { take, call, put, fork, select, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { get } from 'lodash';
 import request from 'utils/request';
 
+import { selectUserId } from 'containers/App/selectors';
 import {
   MY_DENTIST_REQUEST,
   MY_FAMILY_REQUEST,
+  MY_PATIENTS_REQUEST,
   SUBMIT_CLIENT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
@@ -17,25 +19,29 @@ import {
   myDentistFetchingError,
   myFamilyFetched,
   myFamilyFetchingError,
+  myPatientsFetched,
+  myPatientsFetchingError,
 } from 'containers/Dashboard/actions';
 
 import {
   fetchMyDentist as fetchMyDentistMock,
-  // fetchMyFamily as fetchMyFamilyMock,
+  fetchMyPatients as fetchMyPatientsMock,
 } from './stubApi';
 
 // Individual exports for testing
 export function* userDashboardSaga () {
   const watcherA = yield fork(fetchMyDentistWatcher);
   const watcherB = yield fork(fetchMyFamilyWatcher);
-  const watcherC = yield fork(submitClientMessageFormWatcher);
-  const watcherD = yield fork(submitClientReviewFormWatcher);
+  const watcherC = yield fork(fetchMyPatientsWatcher);
+  const watcherD = yield fork(submitClientMessageFormWatcher);
+  const watcherE = yield fork(submitClientReviewFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
   yield cancel(watcherD);
+  yield cancel(watcherE);
 }
 
 export function* dentistDashboardSaga () {
@@ -49,6 +55,10 @@ export function* fetchMyDentistWatcher () {
 
 export function* fetchMyFamilyWatcher () {
   yield* takeLatest(MY_FAMILY_REQUEST, fetchMyFamily);
+}
+
+export function* fetchMyPatientsWatcher () {
+  yield* takeLatest(MY_PATIENTS_REQUEST, fetchMyPatients);
 }
 
 export function* fetchMyDentist () {
@@ -67,7 +77,6 @@ export function* fetchMyFamily () {
   try {
     const requestURL = '/api/v1/users/me/family-members';
     const response = yield call(request, requestURL);
-    // const response = yield call(fetchMyFamilyMock);
 
     yield put(myFamilyFetched(response.data));
   } catch (err) {
@@ -75,6 +84,18 @@ export function* fetchMyFamily () {
   }
 }
 
+export function* fetchMyPatients () {
+  try {
+    // const dentistId = yield select(selectUserId);
+    // const requestURL = `/api/v1/FETCH_PATIENTS_OF_A_DENTIST/${dentistId}`;
+    // const response = yield call(request, requestURL);
+    const response = yield call(fetchMyPatientsMock);
+
+    yield put(myPatientsFetched(response.data));
+  } catch (err) {
+    yield put(myPatientsFetchingError(err));
+  }
+}
 
 export function* submitClientMessageFormWatcher () {
   while (true) {

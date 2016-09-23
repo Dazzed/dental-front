@@ -11,6 +11,9 @@ import {
   MY_FAMILY_REQUEST,
   MY_FAMILY_SUCCESS,
   MY_FAMILY_ERROR,
+  MY_PATIENTS_REQUEST,
+  MY_PATIENTS_SUCCESS,
+  MY_PATIENTS_ERROR,
   SUBMIT_CLIENT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
@@ -51,6 +54,27 @@ export function myFamilyFetched (payload) {
 export function myFamilyFetchingError (payload) {
   return {
     type: MY_FAMILY_ERROR,
+    payload,
+  };
+}
+
+
+export function fetchMyPatients () {
+  return {
+    type: MY_PATIENTS_REQUEST,
+  };
+}
+
+export function myPatientsFetched (payload) {
+  return {
+    type: MY_PATIENTS_SUCCESS,
+    payload,
+  };
+}
+
+export function myPatientsFetchingError (payload) {
+  return {
+    type: MY_PATIENTS_ERROR,
     payload,
   };
 }

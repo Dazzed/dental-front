@@ -8,9 +8,31 @@ function selectGlobal (state) {
   return state.global;
 }
 
+const selectCurrentUser = createSelector(
+  selectGlobal,
+  (substate) => get(substate, 'currentUser')
+);
+
 const selectUserType = createSelector(
   selectGlobal,
   (substate) => get(substate, 'currentUser.type'),
+);
+
+const selectUserId = createSelector(
+  selectGlobal,
+  (substate) => get(substate, 'currentUser.id'),
+);
+
+const selectUserName = createSelector(
+  selectGlobal,
+  (substate) => {
+    const firstName = get(substate, 'currentUser.firstName');
+    const lastName = get(substate, 'currentUser.lastName');
+    if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    }
+    return null;
+  }
 );
 
 const selectAuthState = createSelector(
@@ -18,10 +40,6 @@ const selectAuthState = createSelector(
   (substate) => substate.loggedIn,
 );
 
-const selectCurrentUser = createSelector(
-  selectGlobal,
-  (substate) => get(substate, 'currentUser')
-);
 
 const selectDentistSpecialties = createSelector(
   selectGlobal,
@@ -37,6 +55,8 @@ const selectPageTitle = createSelector(
 export {
   selectGlobal,
   selectUserType,
+  selectUserId,
+  selectUserName,
   selectAuthState,
   selectCurrentUser,
   selectDentistSpecialties,

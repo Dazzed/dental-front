@@ -75,9 +75,9 @@ class AddFamilyMemberForm extends React.Component {
           className="col-md-6"
         >
           <option value="">Select a relationship type</option>
-          {MEMBER_RELATIONSHIP_TYPES.map((relationshipType, index) =>
-            <option value={relationshipType.value} key={index}>
-              {relationshipType.text}
+          {Object.keys(MEMBER_RELATIONSHIP_TYPES).map((key, index) =>
+            <option value={key} key={index}>
+              {MEMBER_RELATIONSHIP_TYPES[key]}
             </option>
           )}
         </Field>

@@ -1,0 +1,18 @@
+@import '../../assets/styles/variables';
+
+.intro-container {
+  background-color: $white;
+  color: $dark-gray;
+  font-size: 16px;
+}
+
+.hello-name {
+  color: $black;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.membership-link {
+  color: $cyan;
+  cursor: pointer;
+}
