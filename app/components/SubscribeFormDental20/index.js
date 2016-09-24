@@ -3,11 +3,13 @@ import StripeCheckout from 'react-stripe-checkout';
 
 export default class SubscribeFormDental20 extends React.Component {
   onToken = (token) => {
-    fetch('/save-stripe-token', {
+    fetch('/charge20', {
       method: 'POST',
       body: JSON.stringify(token),
-    }).then(token => {
-      alert('Thank you, ${token.email}');
+    }).then(function(data) {
+          console.log('token', token);
+    //(token => {
+    //  alert('Thank you for subscribing!');
     });
   }
 
@@ -24,23 +26,12 @@ export default class SubscribeFormDental20 extends React.Component {
         stripeKey="pk_test_71G4lapBvaU5MFU7Xq79iHRP"
         locale="auto"
         email="info@vidhub.co"
-        // Note: Enabling either address option will give the user the ability to
-        // fill out both. Addresses are sent as a second parameter in the token callback.
-        //shippingAddress
-        //billingAddress={false}
-        // Note: enabling both zipCode checks and billing or shipping address will
-        // cause zipCheck to be pulled from billing address (set to shipping if none provided).
-        //zipCode={false}
-        //alipay
-        //bitcoin
+        billingAddress={false}
+        zipCode={false}
         allowRememberMe={false}
         token={this.onToken}
-        // Note: `reconfigureOnUpdate` should be set to true IFF, for some reason
-        // you are using multiple stripe keys
         reconfigureOnUpdate={false}
-        // Note: you can change the event to `onTouchTap`, `onClick`, `onTouchStart`
-        // useful if you're using React-Tap-Event-Plugin
-        //triggerEvent="onTouchTap"
+        triggerEvent="onClick"
         >
         <button className="btn btn-primary">
           Subscribe

@@ -6,7 +6,6 @@
 // about the code splitting business
 import getHooks from 'utils/hooks';
 
-
 const errorLoading = (err) => {
   /* eslint-disable no-console */
   console.error('Dynamic page loading failed', err);
@@ -168,6 +167,30 @@ export default function createRoutes (store) {
       getComponent (nextState, cb) {
         Promise.all([
           System.import('containers/SubscribePage'),
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/charge15',
+      name: 'chargePage15',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/ChargePage15'),
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    },   {
+      path: '/charge20',
+      name: 'chargePage20',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/ChargePage20'),
         ])
           .then(([ component ]) => {
             loadModule(cb)(component);
