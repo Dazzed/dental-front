@@ -6,7 +6,6 @@
 // about the code splitting business
 import getHooks from 'utils/hooks';
 
-
 const errorLoading = (err) => {
   /* eslint-disable no-console */
   console.error('Dynamic page loading failed', err);

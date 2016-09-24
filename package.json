@@ -154,6 +154,7 @@
     "redux-saga": "0.11.0",
     "reselect": "2.5.3",
     "sanitize.css": "4.1.0",
+    "stripe": "^4.11.0",
     "util": "^0.10.3",
     "validate.js": "^0.10.0",
     "warning": "^3.0.0",
