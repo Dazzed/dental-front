@@ -1,0 +1,30 @@
+import { takeLatest } from 'redux-saga';
+
+import {
+  call, put
+} from 'redux-saga/effects';
+
+import { push } from 'react-router-redux';
+
+import { removeItem } from 'utils/localStorage';
+
+import {
+  LOGOUT,
+} from 'containers/LoginPage/constants';
+
+// Bootstrap sagas
+export default [
+  logoutFlow,
+];
+
+
+function* logoutFlow () {
+  yield* takeLatest(LOGOUT, function* () {
+    try {
+      yield call(removeItem, 'jwtToken');
+      yield put(push('/'));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}

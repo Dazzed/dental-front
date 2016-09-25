@@ -27,7 +27,7 @@ import { selectNextPathname } from 'common/selectors/router.selector';
 
 // Bootstrap sagas
 export default [
-  loginFlow
+  loginFlow,
 ];
 
 function* loginFlow () {
@@ -113,3 +113,4 @@ function* authorize (data, resolve, reject) {
     }
   }
 }
+
