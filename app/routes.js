@@ -177,6 +177,22 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/accounts/logout',
+      name: 'logout',
+      getComponent (location, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Logout/sagas'),
+          System.import('containers/Logout'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ sagas, component ]) => {
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {

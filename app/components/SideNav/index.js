@@ -14,6 +14,7 @@ const navItems = {
     { text: 'Transfer dental office', link: '/temp_link' },
     { text: 'Help & FAQ', link: '/temp_link' },
     { text: 'Cancel membership', link: '/temp_link' },
+    { text: 'Logout', link: '/accounts/logout' },
   ],
   dentist: [
     { text: 'Dentist dashboard', link: '/dashboard' },
@@ -22,7 +23,7 @@ const navItems = {
     { text: 'Edit membership', link: '/custom-membership' },
     { text: 'Contact support', link: '/temp_link' },
     { text: 'Reports', link: '/temp_link' },
-    { text: 'Marketing materials', link: '/temp_link' },
+    { text: 'Logout', link: '/accounts/logout' },
   ]
 };
 

@@ -156,3 +156,7 @@
 .show-hide-leave.show-hide-leave-active {
   opacity: 0.01;
 }
+
+.rating {
+  display: inherit;
+}
