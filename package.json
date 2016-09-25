@@ -147,6 +147,11 @@
     "react-router": "2.6.1",
     "react-router-redux": "4.0.5",
     "react-router-scroll": "0.2.1",
+<<<<<<< HEAD
+=======
+    "react-script-loader": "0.0.1",
+    "react-star-rating": "^1.4.2",
+>>>>>>> 7cda979f7d1ee45e0806c72af4c40e3cabb5badb
     "react-stripe-checkout": "^2.2.5",
     "redux": "3.5.2",
     "redux-form": "^6.0.5",
