@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import {
   ME_FROM_TOKEN,
-  SET_AUTH_DATA,
+  SET_AUTH_STATE,
   SET_USER_DATA,
 } from '../constants';
 
