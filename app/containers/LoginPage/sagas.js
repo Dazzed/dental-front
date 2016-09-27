@@ -21,7 +21,7 @@ import {
 } from 'containers/LoginPage/constants';
 
 import { loginError } from 'containers/LoginPage/actions';
-import { meFromToken, setAuthData, setUserData } from 'containers/App/actions';
+import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 import { selectNextPathname } from 'common/selectors/router.selector';
 
 
@@ -48,7 +48,7 @@ function* loginFlow () {
       yield cancel(task);
 
       // dispatch action to set user details to app.currentUser
-      yield put(setAuthData(false));
+      yield put(setAuthState(false));
       yield put(setUserData(false));
 
       // redirect to home page
@@ -72,10 +72,7 @@ function* authorize (data, resolve, reject) {
     // resolve(response);
 
     // dispatch action to set user details to app.currentUser
-    yield put(setAuthData({
-      userType: response.type,
-      token: response.token
-    }));
+    yield put(setAuthState(true));
 
     // set jwt token to localstorage
     yield call(setItem, 'jwtToken', response.token);

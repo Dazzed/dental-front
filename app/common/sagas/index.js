@@ -7,7 +7,7 @@ import { removeItem } from 'utils/localStorage';
 import { selectCurrentPath } from 'common/selectors/router.selector';
 import { selectCurrentUser } from 'containers/App/selectors';
 
-import { setAuthData, setUserData } from 'containers/App/actions';
+import { setAuthState, setUserData } from 'containers/App/actions';
 
 import { ME_FROM_TOKEN } from 'containers/App/constants';
 
@@ -42,7 +42,7 @@ function* loadUserFromToken () {
       }
     }
   } catch (e) {
-    yield put(setAuthData(false));
+    yield put(setAuthState(false));
     yield put(setUserData(false));
 
     // if returns forbidden we remove the token from local storage

@@ -1,5 +1,5 @@
 import {
-  SET_AUTH_DATA,
+  SET_AUTH_STATE,
   SET_USER_DATA,
   DENTIST_SPECIALTIES_SUCCESS,
   SERVICES_REQUEST_SUCCESS,
@@ -8,7 +8,6 @@ import {
 
 const initialState = {
   loggedIn: !!localStorage.jwtToken,
-  authData: false,
   currentUser: false,
   dentistSpecialties: [],
   services: [],
@@ -20,10 +19,10 @@ export default function appReducer (state = initialState, action) {
 
   switch (action.type) {
 
-    case SET_AUTH_DATA:
+    case SET_AUTH_STATE:
       return {
         ...state,
-        authData: payload.authData,
+        loggedIn: payload.newAuthState,
       };
 
     case SET_USER_DATA:

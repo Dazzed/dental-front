@@ -9,7 +9,7 @@ import {
 import {
   meFromToken,
   setUserData,
-  setAuthData,
+  setAuthState,
 } from '../actions';
 
 describe('App Actions', () => {
@@ -40,20 +40,17 @@ describe('App Actions', () => {
     });
   });
 
-  describe('setAuthData', () => {
+  describe('setAuthState', () => {
     it('should return the correct type and the passed auth token', () => {
-      const authData = {
-        token: 'eyJhbGci',
-        type: 'client',
-      };
+      const authState = true;
       const expectedResult = {
-        type: SET_AUTH_DATA,
+        type: SET_AUTH_STATE,
         payload: {
-          authData,
+          newAuthState: true,
         },
       };
 
-      expect(setAuthData(authData)).toEqual(expectedResult);
+      expect(setAuthState(authState)).toEqual(expectedResult);
     });
   });
 });
