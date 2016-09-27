@@ -176,7 +176,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-<<<<<<< HEAD
       path: '/accounts/logout',
       name: 'logout',
       getComponent (location, cb) {
@@ -193,7 +192,6 @@ export default function createRoutes (store) {
         });
       },
     }, {
-=======
       path: '/charge15',
       name: 'chargePage15',
       getComponent (nextState, cb) {
@@ -205,7 +203,7 @@ export default function createRoutes (store) {
           })
           .catch(errorLoading);
       },
-    },   {
+    }, {
       path: '/charge20',
       name: 'chargePage20',
       getComponent (nextState, cb) {
@@ -217,8 +215,7 @@ export default function createRoutes (store) {
           })
           .catch(errorLoading);
       },
-    },  {
->>>>>>> 7cda979f7d1ee45e0806c72af4c40e3cabb5badb
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {
