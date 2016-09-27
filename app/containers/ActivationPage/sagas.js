@@ -3,6 +3,7 @@ import { call, put } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import request from 'utils/request';
+import { getItem } from 'utils/localStorage';
 
 import {
   activateSuccess,
@@ -25,8 +26,8 @@ function* activateFlow () {
 function* activateUser (action) {
   try {
     // Don't allow logged-in users to activate again.
-    const token = localStorage.jwtToken;
-    if (token) {
+    const authToken = getItem('auth_token');
+    if (authToken) {
       yield put(push('/'));
       return;
     }

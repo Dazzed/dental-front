@@ -1,3 +1,5 @@
+import { getItem } from 'utils/localStorage';
+
 import {
   SET_AUTH_STATE,
   SET_USER_DATA,
@@ -7,7 +9,7 @@ import {
 } from './constants';
 
 const initialState = {
-  loggedIn: !!localStorage.jwtToken,
+  loggedIn: !!getItem('auth_token'),
   currentUser: false,
   dentistSpecialties: [],
   services: [],

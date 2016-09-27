@@ -2,7 +2,7 @@ import { take, call, put, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import request from 'utils/request';
-import { removeItem } from 'utils/localStorage';
+import { getItem, removeItem } from 'utils/localStorage';
 
 import { selectCurrentPath } from 'common/selectors/router.selector';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -23,9 +23,9 @@ function* refreshAuthFlow () {
 function* loadUserFromToken () {
   const requestURL = '/api/v1/users/me';
   const user = yield select(selectCurrentUser);
-  const jwtToken = localStorage.jwtToken;
+  const authToken = getItem('auth_token');
 
-  if (user || !jwtToken) {
+  if (user || !authToken) {
     return;
   }
 
@@ -47,7 +47,7 @@ function* loadUserFromToken () {
 
     // if returns forbidden we remove the token from local storage
     if (e.res && e.res.status === 401) {
-      removeItem('jwtToken');
+      removeItem('auth_token');
     } else {
       console.error(e);
     }

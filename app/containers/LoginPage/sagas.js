@@ -55,8 +55,8 @@ function* loginFlow () {
       yield put(push('/'));
     }
 
-    // remove jwt token from localstorage
-    yield call(removeItem, 'jwtToken');
+    // remove auth token from localstorage
+    yield call(removeItem, 'auth_token');
   }
 }
 
@@ -74,8 +74,8 @@ function* authorize (data, resolve, reject) {
     // dispatch action to set user details to app.currentUser
     yield put(setAuthState(true));
 
-    // set jwt token to localstorage
-    yield call(setItem, 'jwtToken', response.token);
+    // set auth token to localstorage
+    yield call(setItem, 'auth_token', response.token);
 
     // load details of authenticated user
     yield put(meFromToken());
