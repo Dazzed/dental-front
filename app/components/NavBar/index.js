@@ -37,7 +37,7 @@ export default class NavBar extends React.Component {
   }
 
   goToSignUp = () => {
-    this.props.changeRoute('/signup');
+    this.props.changeRoute('/accounts/signup');
   }
 
   render () {
