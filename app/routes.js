@@ -72,7 +72,7 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToDashboard,
-      path: '/signup',
+      path: '/accounts/signup',
       name: 'signupPage',
       getComponent (nextState, cb) {
         Promise.all([

@@ -2,12 +2,12 @@ import { take, call, put, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import request from 'utils/request';
-import { removeItem } from 'utils/localStorage';
+import { getItem, removeItem } from 'utils/localStorage';
 
 import { selectCurrentPath } from 'common/selectors/router.selector';
 import { selectCurrentUser } from 'containers/App/selectors';
 
-import { setAuthData, setUserData } from 'containers/App/actions';
+import { setAuthState, setUserData } from 'containers/App/actions';
 
 import { ME_FROM_TOKEN } from 'containers/App/constants';
 
@@ -23,9 +23,9 @@ function* refreshAuthFlow () {
 function* loadUserFromToken () {
   const requestURL = '/api/v1/users/me';
   const user = yield select(selectCurrentUser);
-  const jwtToken = localStorage.jwtToken;
+  const authToken = getItem('auth_token');
 
-  if (user || !jwtToken) {
+  if (user || !authToken) {
     return;
   }
 
@@ -36,18 +36,22 @@ function* loadUserFromToken () {
 
       // If the user landed on `/login` as the first route, redirect him
       const currentPath = yield select(selectCurrentPath);
-      const pathsToRedirect = [ '/login', '/signup', '/dentist-signup' ];
+      const pathsToRedirect = [
+        '/accounts/login',
+        '/accounts/signup',
+        '/accounts/dentist-signup'
+      ];
       if (pathsToRedirect.indexOf(currentPath) > -1) {
         yield put(push('/dashboard'));
       }
     }
   } catch (e) {
-    yield put(setAuthData(false));
+    yield put(setAuthState(false));
     yield put(setUserData(false));
 
     // if returns forbidden we remove the token from local storage
     if (e.res && e.res.status === 401) {
-      removeItem('jwtToken');
+      removeItem('auth_token');
     } else {
       console.error(e);
     }

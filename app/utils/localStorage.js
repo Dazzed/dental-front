@@ -4,7 +4,7 @@ export function setItem (...args) {
 }
 
 export function getItem (...args) {
-  localStorage.getItem(...args);
+  return localStorage.getItem(...args);
 }
 
 export function removeItem (...args) {

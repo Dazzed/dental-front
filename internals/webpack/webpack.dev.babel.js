@@ -52,6 +52,8 @@ module.exports = require('./webpack.base.babel')({
     'postcss',
   ].join('!'),
 
+  vendorCssLoaders: 'style-loader!css-loader',
+
   // Process the CSS with PostCSS
   postcssPlugins: [
     precss(),

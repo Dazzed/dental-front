@@ -21,7 +21,7 @@ export default [
 function* logoutFlow () {
   yield* takeLatest(LOGOUT, function* () {
     try {
-      yield call(removeItem, 'jwtToken');
+      yield call(removeItem, 'auth_token');
       yield put(push('/'));
     } catch (e) {
       console.log(e);

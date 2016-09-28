@@ -8,9 +8,9 @@ export default class SubscribeFormDental20 extends React.Component {
     fetch('/charge20', {
       method: 'POST',
       body: JSON.stringify(token),
-    }).then(function(data) {
-          console.log('token', token);
-    //(token => {
+    }).then(data => {
+      console.log('token', token, data);
+    // (token => {
     //  alert('Thank you for subscribing!');
     });
   }
@@ -34,7 +34,7 @@ export default class SubscribeFormDental20 extends React.Component {
         token={this.onToken}
         reconfigureOnUpdate={false}
         triggerEvent="onClick"
-        >
+      >
         <button className="btn btn-primary">
           Subscribe
         </button>

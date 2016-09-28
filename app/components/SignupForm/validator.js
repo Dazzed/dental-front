@@ -1,9 +1,9 @@
 import {
   createValidator,
-    email,
-    password,
-    required,
-    match,
+  email,
+  password,
+  required,
+  match,
 } from 'utils/reduxForm';
 
 const tosValidator = (value) => {

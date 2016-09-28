@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 
+import { getItem } from 'utils/localStorage';
+
 /**
  * Requests a URL, returning a promise
  *
@@ -9,12 +11,12 @@ import 'whatwg-fetch';
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request (url, options = {}) {
-  const jwtToken = localStorage.jwtToken;
+  const authToken = getItem('auth_token');
   const headers = { Accept: 'application/json' };
   const opts = Object.assign({}, options);
 
-  if (jwtToken) {
-    headers.Authorization = `JWT ${jwtToken}`;
+  if (authToken) {
+    headers.Authorization = `JWT ${authToken}`;
   }
 
   opts.headers = Object.assign({}, options.headers, headers);

@@ -4,31 +4,37 @@ import CSSModules from 'react-css-modules';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-// import StarRating from 'react-star-rating';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FaStar from 'react-icons/lib/fa/star';
+import Rating from 'react-rating';
 
 import LabeledInput from 'components/LabeledInput';
 import { writeReviewFormValidator } from './formValidator';
 
 import styles from './form.css';
 
-// const renderRating = ({ input }) => (
-//   <Col sm={12}>
-//     <FormGroup>
-//       <span>Rating</span>
-//       <StarRating
-//         name={input.name}
-//         totalStars={5}
-//         size={20}
-//       />
-//       <span>(please choose)</span>
-//     </FormGroup>
-//   </Col>
-// );
+const renderRating = ({ input }) => (
+  <Col sm={12}>
+    <FormGroup>
+      <Col sm={12}>
+        <ControlLabel style={{ marginRight: '4px' }}>Rating</ControlLabel>
+        <Rating
+          initialRate={input.value}
+          empty={<FaStar size={16} color="gray" />}
+          full={<FaStar size={16} />}
+          step={1}
+          onChange={(value) => input.onChange(value)}
+        />
+        <span>(please choose)</span>
+      </Col>
+    </FormGroup>
+  </Col>
+);
 
-// renderRating.propTypes = {
-//   input: React.PropTypes.object.isRequired,
-//   meta: React.PropTypes.object.isRequired,
-// };
+renderRating.propTypes = {
+  input: React.PropTypes.object.isRequired,
+  meta: React.PropTypes.object.isRequired,
+};
 
 const renderError = ({ meta: { touched, error } }) => (
   (touched && error) ?
@@ -79,17 +85,17 @@ class WriteReviewForm extends React.Component {
           label="Review"
         />
 
-        {/* <Field
+        <Field
           name="rating"
           component={renderRating}
-        /> */}
+        />
 
-        <Field
+        {/* <Field
           name="rating"
           type="number"
           component={LabeledInput}
           label="Rating"
-        />
+        /> */}
 
         <Col sm={12}>
           Reviewers Name

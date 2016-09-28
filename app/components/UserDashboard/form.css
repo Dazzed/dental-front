@@ -1,3 +1,5 @@
+@import '../../assets/styles/variables';
+
 input[type='radio'] {
   margin-right: 5px;
 }
@@ -5,4 +7,14 @@ input[type='radio'] {
 label.normal-font {
   font-weight: normal;
   margin-right: 15px;
+}
+
+svg {
+  color: $cyan;
+  margin-right: 4px;
+  vertical-align: text-top;
+}
+
+.rating-label {
+  margin-right: 4px;
 }

@@ -1,5 +1,7 @@
+import { getItem } from 'utils/localStorage';
+
 import {
-  SET_AUTH_DATA,
+  SET_AUTH_STATE,
   SET_USER_DATA,
   DENTIST_SPECIALTIES_SUCCESS,
   SERVICES_REQUEST_SUCCESS,
@@ -7,8 +9,7 @@ import {
 } from './constants';
 
 const initialState = {
-  loggedIn: !!localStorage.jwtToken,
-  authData: false,
+  loggedIn: !!getItem('auth_token'),
   currentUser: false,
   dentistSpecialties: [],
   services: [],
@@ -20,10 +21,10 @@ export default function appReducer (state = initialState, action) {
 
   switch (action.type) {
 
-    case SET_AUTH_DATA:
+    case SET_AUTH_STATE:
       return {
         ...state,
-        authData: payload.authData,
+        loggedIn: payload.newAuthState,
       };
 
     case SET_USER_DATA:

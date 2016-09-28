@@ -1,6 +1,6 @@
 import {
   ME_FROM_TOKEN,
-  SET_AUTH_DATA,
+  SET_AUTH_STATE,
   SET_USER_DATA,
 
   DENTIST_SPECIALTIES_REQUEST,
@@ -32,11 +32,11 @@ export function setUserData (currentUser) {
 }
 
 
-export function setAuthData (authData) {
+export function setAuthState (newAuthState) {
   return {
-    type: SET_AUTH_DATA,
+    type: SET_AUTH_STATE,
     payload: {
-      authData,
+      newAuthState,
     },
   };
 }
