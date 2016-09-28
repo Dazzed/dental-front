@@ -48,6 +48,7 @@ export default class App extends Component {
     loadUserFromToken: React.PropTypes.func,
     userType: React.PropTypes.string,
     pageTitle: React.PropTypes.string,
+    location: React.PropTypes.object,
   };
 
   componentWillMount () {
@@ -56,7 +57,13 @@ export default class App extends Component {
   }
 
   render () {
-    const { userType, pageTitle } = this.props;
+    const { userType, pageTitle, location: { pathname } } = this.props;
+
+    // NOTE: Hardcoded here to avoid the common layout
+    if (pathname === '/') {
+      return this.props.children;
+    }
+
     const title = pageTitle ?
       <PageHeader title={pageTitle} userType={userType} /> : null;
 

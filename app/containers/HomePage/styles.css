@@ -1,7 +1,101 @@
-@import '../../assets/styles/variables';
-
 .wrapper {
-  height: 100%;
-  background-color: $green;
-  color: $white;
+  width: 1240px;
+  background-image: url(./background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding-top: 1rem;
+  color: #FFF;
+
+  h1 {
+    font-size: 42px;
+    font-weight: bold;
+  }
+
+  p {
+    font-weight: bold;
+
+    strong {
+      color: #1D4D53;
+    }
+  }
+}
+
+.first-block {
+  padding-top: 5rem;
+  padding-bottom: 9rem;
+
+  span {
+    margin-left: 6px;
+  }
+}
+
+.second-block {
+  padding-top: 11rem;
+  padding-bottom: 5rem;
+
+  h2 {
+    color: #1D4D53;
+    font-size: 25px;
+  }
+
+  img {
+    background-color: #FFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  small {
+    font-weight: normal;
+  }
+}
+
+.third-block {
+  padding-top: 5rem;
+  padding-bottom: 6rem;
+
+  li {
+    list-style-image: url('./check.png');
+    padding-top: 10px;
+    font-size: 20px;
+  }
+}
+
+.four-block {
+  padding-top: 11rem;
+  padding-bottom: 20rem;
+
+  li {
+    list-style-image: url('./check.png');
+    padding-top: 10px;
+    font-size: 20px;
+  }
+}
+
+.navbar {
+  background: transparent;
+}
+
+.nav {
+  margin-right: 15px;
+}
+
+li.nav-item {
+  & > a:hover,
+  & > a:active {
+    background-color: transparent;
+    color: #FFF;
+  }
+
+  & > a {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    color: #FFF;
+    font-size: 1rem;
+  }
+}
+
+.footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
