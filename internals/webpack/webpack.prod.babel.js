@@ -5,6 +5,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 
+const extractVendorCSS = new ExtractTextPlugin('[name].lib.[hash].css');
+const extractAppCSS = new ExtractTextPlugin('[name].[hash].css');
+
 // PostCSS plugins
 const assets = require('postcss-assets');
 const cssnext = require('postcss-cssnext');
@@ -29,9 +32,14 @@ module.exports = require('./webpack.base.babel')({
 
   // We use ExtractTextPlugin so we get a seperate CSS file instead
   // of the CSS being in the JS and injected as a style tag
-  cssLoaders: ExtractTextPlugin.extract(
+  cssLoaders: extractAppCSS.extract(
     'style-loader',
     'css-loader?modules&-autoprefixer&importLoaders=1!postcss-loader'
+  ),
+
+  vendorCssLoaders: extractVendorCSS.extract(
+    'style-loader',
+    'css-loader'
   ),
 
   // In production, we minify our CSS with cssnano
@@ -92,7 +100,8 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     // Extract the CSS into a seperate file
-    new ExtractTextPlugin('[name].[contenthash].css'),
+    extractVendorCSS,
+    extractAppCSS,
 
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
