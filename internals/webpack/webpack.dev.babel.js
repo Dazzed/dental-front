@@ -46,7 +46,9 @@ module.exports = require('./webpack.base.babel')({
   // Load the CSS in a style tag in development
   cssLoaders: [
     'style?sourceMap',
-    'css?modules&importLoaders=1&sourceMap&localIdentName=[path]--[local]',
+    // 'style',
+    // 'css?modules&importLoaders=1&sourceMap&localIdentName=[path]--[local]',
+    'css?modules&importLoaders=1&localIdentName=[path]--[local]',
     'postcss',
   ].join('!'),
 

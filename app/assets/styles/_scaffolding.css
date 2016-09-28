@@ -9,10 +9,6 @@
   color: #444 !important;
 }
 
-:global(body) {
-  padding-top: $nav-height;
-}
-
 :global(#app) {
   height: 100%;
 

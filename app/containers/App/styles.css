@@ -4,7 +4,10 @@
  * App container styles
  */
 
+$nav-height: 6rem;
+
 .wrapper {
   height: 100%;
+  margin-top: $nav-height;
 }
 
