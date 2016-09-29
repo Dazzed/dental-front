@@ -12,6 +12,8 @@ import {
   LOGOUT,
 } from 'containers/LoginPage/constants';
 
+import { setAuthState, setUserData } from 'containers/App/actions';
+
 // Bootstrap sagas
 export default [
   logoutFlow,
@@ -22,6 +24,9 @@ function* logoutFlow () {
   yield* takeLatest(LOGOUT, function* () {
     try {
       yield call(removeItem, 'auth_token');
+      yield put(setAuthState(false));
+      yield put(setUserData(false));
+
       yield put(push('/'));
     } catch (e) {
       console.log(e);
