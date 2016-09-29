@@ -1,6 +1,6 @@
 :global(html),
 :global(body) {
-  font-family: $roboto-font-stack;
+  font-family: 'Lato';
   font-size: 16px;
   margin: 0;
   padding: 0;
