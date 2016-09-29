@@ -25,6 +25,7 @@ li.nav-item {
 
     li.nav-item > a {
       background-color: $dark-green;
+      white-space: nowrap;
 
       &:hover {
         background-color: $white;
