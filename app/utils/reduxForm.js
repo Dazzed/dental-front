@@ -90,6 +90,8 @@ export function validatorFactory (schema) {
     /* eslint-disable no-return-assign */
     forEach(errors, (item, key) => errors[key] = item[0]);
     /* eslint-enable no-return-assign */
-    return errors;
+    // In case of no errors, we need to return empty object at least,
+    // Otherwise, redux-form complains
+    return errors || {};
   };
 }
