@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import CSSModules from 'react-css-modules';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
@@ -18,7 +17,6 @@ import styles from './styles.css';
   form: 'signup',
   validate: signupFormValidator,
 })
-@CSSModules(styles)
 class SignupForm extends React.Component {
 
   static propTypes = {
@@ -105,10 +103,10 @@ class SignupForm extends React.Component {
               name="accountHolder"
               type="checkbox"
               component="input"
-              styleName="checkbox"
+              className={styles.checkbox}
             />
 
-            <span styleName="checkbox-label">
+            <span className={styles['checkbox-label']}>
               Will their primary account holder be joining the membership
             </span>
           </Col>
@@ -120,10 +118,10 @@ class SignupForm extends React.Component {
               name="tos"
               type="checkbox"
               component="input"
-              styleName="checkbox"
+              className={styles.checkbox}
             />
 
-            <span styleName="checkbox-label">
+            <span className={styles['checkbox-label']}>
               I have read and accept the <a href="">Terms of Conditions</a>
             </span>
           </Col>
