@@ -16,10 +16,10 @@ class SubscribePage extends React.Component {
 
   render () {
     return (
-      <div styleName="wrapper">
-        <div className="container" styleName="container">
+      <div className="wrapper">
+        <div className="container" >
           <Row>
-            <Col md={6} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
+            <Col md={4} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
               <h1>Kid's Plan: $15/month</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                 do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -34,7 +34,7 @@ class SubscribePage extends React.Component {
               <SubscribeFormDental15 />
             </Col>
 
-            <Col md={6} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
+            <Col md={4} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
               <h1>Adult Plan: $20/month</h1>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                 do eiusmod tempor incididunt ut labore et dolore magna aliqua.

@@ -9,7 +9,7 @@ import styles from './styles.css';
 const navItems = {
   client: [
     { text: 'Dashboard', link: '/dashboard' },
-    { text: 'Edit payment information', link: '/temp_link' },
+    { text: 'Edit payment information', link: '/subscribe' },
     { text: 'Manage family members', link: '/my-family-members' },
     { text: 'Transfer dental office', link: '/temp_link' },
     { text: 'Help & FAQ', link: '/temp_link' },
