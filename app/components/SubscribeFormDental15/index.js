@@ -42,7 +42,7 @@ export default class SubscribeFormDental15 extends React.Component {
             Subscribe
           </button>
         </StripeCheckout>
-        <br/>
+        <br />
       </div>
     );
   }
