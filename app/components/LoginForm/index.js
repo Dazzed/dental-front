@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import CSSModules from 'react-css-modules';
 
 import LabeledInput from 'components/LabeledInput';
 import loginFormValidator from './validator';
@@ -15,7 +14,6 @@ import styles from './styles.css';
   form: 'login',
   validate: loginFormValidator,
 })
-@CSSModules(styles)
 class LoginForm extends React.Component {
 
   static propTypes = {
@@ -30,8 +28,7 @@ class LoginForm extends React.Component {
     return (
       <form
         onSubmit={handleSubmit}
-        styleName="wrapper"
-        className="form-horizontal"
+        className={`form-horizontal ${styles.wrapper}`}
       >
 
         <Row>
