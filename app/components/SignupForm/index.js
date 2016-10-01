@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -30,72 +31,79 @@ class SignupForm extends React.Component {
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
+        <Row>
+          <Field
+            name="email"
+            type="text"
+            component={LabeledInput}
+            label="Email Address"
+            width={12}
+          />
 
-        <Field
-          name="email"
-          type="text"
-          component={LabeledInput}
-          label="Email Address"
-          width={12}
-        />
+          <Field
+            name="confirmEmail"
+            type="text"
+            component={LabeledInput}
+            label="Confirm Email Address"
+            width={12}
+          />
 
-        <Field
-          name="confirmEmail"
-          type="text"
-          component={LabeledInput}
-          label="Confirm Email Address"
-          width={12}
-        />
+          <Field
+            name="password"
+            type="password"
+            component={LabeledInput}
+            label="Password"
+            width={6}
+          />
 
-        <Field
-          name="password"
-          type="password"
-          component={LabeledInput}
-          label="Password"
-          width={6}
-        />
-
-        <Field
-          name="confirmPassword"
-          type="password"
-          component={LabeledInput}
-          label="Confirm Password"
-          width={6}
-        />
+          <Field
+            name="confirmPassword"
+            type="password"
+            component={LabeledInput}
+            label="Confirm Password"
+            width={6}
+          />
+        </Row>
 
         <FormGroup>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>
           </Col>
-          <Field
-            name="firstName"
-            type="text"
-            component={Input}
-            label="First Name"
-            width={5}
-          />
 
-          <Field
-            name="lastName"
-            type="text"
-            component={Input}
-            label="Last Name"
-            width={5}
-          />
+          <Row>
+            <Col md={12}>
+              <Field
+                name="firstName"
+                type="text"
+                component={Input}
+                label="First Name"
+                width={5}
+              />
+
+              <Field
+                name="lastName"
+                type="text"
+                component={Input}
+                label="Last Name"
+                width={5}
+              />
+            </Col>
+          </Row>
         </FormGroup>
 
-        <FormGroup>
-          <Col sm={12}>
-            <ControlLabel>Sex</ControlLabel>
-          </Col>
-          <Col sm={3}>
-            <Field name="sex" component="select" className="form-control">
-              <option />
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-            </Field>
-          </Col>
-        </FormGroup>
+        <Row>
+          <Field
+            name="sex"
+            type="select"
+            label="Gender"
+            component={LabeledInput}
+            width={5}
+          >
+            <option value="">Select gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </Field>
+        </Row>
 
         <FormGroup>
           <Col sm={12}>
