@@ -44,7 +44,6 @@ TOSCheckbox = CSSModules(styles)(TOSCheckbox);
   isInvalidName: isInvalidNameSelector(state),
   dentistSpecialties: selectDentistSpecialties(state),
 }))
-@CSSModules(styles)
 class DentistSignupForm extends React.Component {
 
   static propTypes = {
