@@ -8,7 +8,6 @@ import React from 'react';
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
@@ -30,6 +29,7 @@ import styles from './styles.css';
 function mapStateToProps (state) {
   return {
     initialValues: selectDentistInfo(state),
+    data: selectDentistInfo(state),
   };
 }
 
@@ -46,18 +46,26 @@ function mapActionsToProps (dispatch) {
   form: 'office-information',
   validate: officeInformationValidator,
 })
-@CSSModules(styles)
 class OfficeIntormationForm extends React.Component {
 
   static propTypes = {
     handleSubmit: React.PropTypes.func,
+    data: React.PropTypes.object.isRequired,
   }
 
   render () {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, data } = this.props;
+
+    if (!data.id) {
+      return (
+        <Row className={styles['global-form']}>
+          Loading...
+        </Row>
+      );
+    }
 
     return (
-      <Row styleName="global-form">
+      <Row className={styles['global-form']}>
         <form onSubmit={handleSubmit} className="form-horizontal">
           <OfficeIntormation />
           <UploadPhotos />

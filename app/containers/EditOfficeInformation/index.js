@@ -6,7 +6,6 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import CSSModules from 'react-css-modules';
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -26,7 +25,6 @@ import styles from './styles.css';
 
 
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
 export default class EditOfficeInformation extends React.Component {
 
   static propTypes = {
@@ -53,7 +51,7 @@ export default class EditOfficeInformation extends React.Component {
 
     return (
       <div>
-        <Row styleName="lead">
+        <Row className={styles.lead}>
           <Col md={7}>
             <h3>
               Hello {loggedInUser.firstName} {loggedInUser.lastName}

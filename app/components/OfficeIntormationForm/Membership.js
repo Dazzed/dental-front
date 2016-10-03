@@ -4,7 +4,6 @@ import Well from 'react-bootstrap/lib/Well';
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
-import CSSModules from 'react-css-modules';
 
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -45,7 +44,6 @@ DUCheckedComponent.propTypes = {
 
 @connect(mapStateToProps)
 @reduxForm({ form: 'office-information' })
-@CSSModules(styles)
 export default class Membership extends React.Component {
 
   static propTypes = {
@@ -71,7 +69,7 @@ export default class Membership extends React.Component {
         </Row>
 
         {data.membership && data.membership.items.map((item, index) =>
-          <Row key={index} styleName="member-item">
+          <Row key={index} className={styles['member-item']}>
             <Col md={5}>
               <Row>
                 <Field
@@ -107,7 +105,7 @@ export default class Membership extends React.Component {
               id="recommended-fee"
             />
           </Col>
-          <Col md={8} styleName="recommended-fee">
+          <Col md={8} className={styles['recommended-fee']}>
             <label htmlFor="recommended-fee">
               Recommended membership fee
             </label>
@@ -168,6 +166,5 @@ export default class Membership extends React.Component {
       </Well>
     );
   }
-
 }
 
