@@ -16,6 +16,8 @@ import WriteMessageModal from './WriteMessageModal';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
 
+const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
+
 class MyDentist extends Component {
   static propTypes = {
     dentist: PropTypes.object,
@@ -82,7 +84,7 @@ class MyDentist extends Component {
         <Row styleName="my-dentist-container">
           <Col md={2}>
             <div styleName="avatar">
-              <Image src={avatar} />
+              <Image src={avatar || defaultAvatar} />
             </div>
             <div styleName="rating">5/5</div>
             <div>
@@ -101,9 +103,11 @@ class MyDentist extends Component {
               <Col md={6}>
                 <div>Dental Practitioner</div>
                 <div styleName="name">{firstName} {lastName}</div>
-                <div styleName="address">
-                  {dentistInfo.city}, {dentistInfo.state}
-                </div>
+                {dentistInfo.city && dentistInfo.state &&
+                  <div styleName="address">
+                    {dentistInfo.city}, {dentistInfo.state}
+                  </div>
+                }
               </Col>
               <Col md={6} styleName="membership-fee">
                 {subscriptions.map(subscription =>
@@ -118,37 +122,43 @@ class MyDentist extends Component {
             </Row>
 
             <Row styleName="row url-email-phone">
-              <div styleName="pair">
-                <FaChain size={16} />
-                <a
-                  styleName="text"
-                  href={dentistInfo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {dentistInfo.url}
-                </a>
-              </div>
-              <div styleName="pair">
-                <FaEnvelope size={16} />
-                <a
-                  styleName="text"
-                  href={`mailto:${dentistInfo.email}`}
-                  rel="noopener noreferrer"
-                >
-                  {dentistInfo.email}
-                </a>
-              </div>
-              <div styleName="pair">
-                <FaPhone size={16} />
-                <a
-                  styleName="text"
-                  href={`tel:${dentistInfo.phone}`}
-                  rel="noopener noreferrer"
-                >
-                  {dentistInfo.phone}
-                </a>
-              </div>
+              {dentistInfo.url &&
+                <div styleName="pair">
+                  <FaChain size={16} />
+                  <a
+                    styleName="text"
+                    href={dentistInfo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {dentistInfo.url}
+                  </a>
+                </div>
+              }
+              {dentistInfo.email &&
+                <div styleName="pair">
+                  <FaEnvelope size={16} />
+                  <a
+                    styleName="text"
+                    href={`mailto:${dentistInfo.email}`}
+                    rel="noopener noreferrer"
+                  >
+                    {dentistInfo.email}
+                  </a>
+                </div>
+              }
+              {dentistInfo.phone &&
+                <div styleName="pair">
+                  <FaPhone size={16} />
+                  <a
+                    styleName="text"
+                    href={`tel:${dentistInfo.phone}`}
+                    rel="noopener noreferrer"
+                  >
+                    {dentistInfo.phone}
+                  </a>
+                </div>
+              }
             </Row>
 
             <Row styleName="row">

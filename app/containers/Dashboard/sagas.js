@@ -23,7 +23,7 @@ import {
 } from 'containers/Dashboard/actions';
 
 import {
-  fetchMyDentist as fetchMyDentistMock,
+  // fetchMyDentist as fetchMyDentistMock,
   fetchMyPatients as fetchMyPatientsMock,
 } from './stubApi';
 
