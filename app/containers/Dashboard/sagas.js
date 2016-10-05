@@ -62,9 +62,8 @@ export function* fetchMyPatientsWatcher () {
 
 export function* fetchMyDentist () {
   try {
-    // const requestURL = '/api/v1/FETCH_MY_DENTIST';
-    // const response = yield call(request, requestURL);
-    const response = yield call(fetchMyDentistMock);
+    const requestURL = '/api/v1/users/me/dentist';
+    const response = yield call(request, requestURL);
 
     yield put(myDentistFetched(response.data));
   } catch (err) {
