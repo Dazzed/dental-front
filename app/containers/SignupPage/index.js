@@ -20,14 +20,22 @@ class SignupPage extends Component {
 
   static propTypes = {
     onSignupRequest: React.PropTypes.func,
+    location: React.PropTypes.object,
   };
 
-  constructor (props) {
-    super(props);
-    this.onSignupRequest = this.props.onSignupRequest.bind(this);
+  onSignupRequest = (data) => {
+    const { location: { query: { dentist } } } = this.props;
+
+    if (dentist) {
+      data.dentistId = parseInt(dentist, 10); // eslint-disable-line
+      data.birthDate = '1988-05-06'; // eslint-disable-line no-param-reassign
+      this.props.onSignupRequest(data);
+    }
   }
 
   render () {
+    const { location: { query: { dentist } } } = this.props;
+
     return (
       <div styleName="wrapper">
         <div className="container" styleName="container">
@@ -37,7 +45,10 @@ class SignupPage extends Component {
                 <h1>Find an All-star Dentist!</h1>
               </div>
 
-              <SignupForm onSubmit={this.onSignupRequest} />
+              <SignupForm
+                onSubmit={this.onSignupRequest}
+                dentistId={dentist}
+              />
 
             </Col>
 
@@ -74,17 +85,10 @@ class SignupPage extends Component {
 function mapDispatchToProps (dispatch) {
   return {
     onSignupRequest: (data) => {
-      // Temporary until we decide datepicker lib
-      data.birthDate = '1988-05-06'; // eslint-disable-line no-param-reassign
-      return new Promise((resolve, reject) => {
-        dispatch(
-          actions.signupRequest({
-            data: omit(data, 'unknown'), resolve, reject
-          })
-        );
-      });
-    }
+      dispatch(actions.signupRequest(omit(data, 'unknown')));
+    },
   };
 }
+
 
 export default SignupPage;

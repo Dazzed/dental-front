@@ -70,15 +70,11 @@ class MyDentist extends Component {
     }
 
     const {
-      name,
-      address,
-      description,
-      membershipFee,
-      childMembershipFee,
-      url,
-      email,
-      phone,
+      firstName,
+      lastName,
       avatar,
+      subscriptions,
+      dentistInfo,
     } = dentist;
 
     return (
@@ -104,18 +100,20 @@ class MyDentist extends Component {
             <Row styleName="row">
               <Col md={6}>
                 <div>Dental Practitioner</div>
-                <div styleName="name">{name}</div>
-                <div styleName="address">{address}</div>
+                <div styleName="name">{firstName} {lastName}</div>
+                <div styleName="address">
+                  {dentistInfo.city}, {dentistInfo.state}
+                </div>
               </Col>
               <Col md={6} styleName="membership-fee">
-                <div>
-                  Membership Fee: <span styleName="fee">{membershipFee}</span>
-                </div>
-                <div>
-                  Kids Membership Fee: <span styleName="child-fee">
-                    {childMembershipFee}
-                  </span>
-                </div>
+                {subscriptions.map(subscription =>
+                  <div>
+                    {subscription.default ? '' : subscription.name}
+                    Membership Fee: <span styleName="fee">
+                      {subscription.total}
+                    </span>
+                  </div>
+                )}
               </Col>
             </Row>
 
@@ -124,26 +122,38 @@ class MyDentist extends Component {
                 <FaChain size={16} />
                 <a
                   styleName="text"
-                  href={url}
+                  href={dentistInfo.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {url}
+                  {dentistInfo.url}
                 </a>
               </div>
               <div styleName="pair">
                 <FaEnvelope size={16} />
-                <span styleName="text">{email}</span>
+                <a
+                  styleName="text"
+                  href={`mailto:${dentistInfo.email}`}
+                  rel="noopener noreferrer"
+                >
+                  {dentistInfo.email}
+                </a>
               </div>
               <div styleName="pair">
                 <FaPhone size={16} />
-                <span styleName="text">{phone}</span>
+                <a
+                  styleName="text"
+                  href={`tel:${dentistInfo.phone}`}
+                  rel="noopener noreferrer"
+                >
+                  {dentistInfo.phone}
+                </a>
               </div>
             </Row>
 
             <Row styleName="row">
               <Col md={12}>
-                {description}
+                {dentistInfo.message}
               </Col>
             </Row>
 

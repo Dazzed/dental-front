@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
+import Alert from 'react-bootstrap/lib/Alert';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -24,13 +25,20 @@ class SignupForm extends React.Component {
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
+    dentistId: React.PropTypes.string,
   };
 
   render () {
-    const { error, handleSubmit, submitting } = this.props;
+    const { error, handleSubmit, submitting, dentistId } = this.props;
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
+
+        {!dentistId ?
+          <Alert bsStyle="danger">
+            <h4>Sorry you need to be invited by a dentist.</h4>
+          </Alert> : null}
+
         <Row>
           <Field
             name="email"

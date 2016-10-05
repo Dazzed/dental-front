@@ -1,6 +1,8 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
-import { put, call } from 'redux-saga/effects';
+import { put, call, select } from 'redux-saga/effects';
+import { initialize } from 'redux-form';
+
 
 import request from 'utils/request';
 
@@ -14,12 +16,20 @@ import {
   UPDATE_DENTIST_INFO,
 } from './constants';
 
+import {
+  selectDentistInfo,
+} from './selectors';
+
 // Individual exports for testing
 export function* fetchDentistInfo () {
   yield* takeLatest(FETCH_DENTIST_INFO, function* () {
     try {
       const dentistInfo = yield call(request, '/api/v1/users/me/dentist-info');
       yield put(fetchDentistInfoSuccess(dentistInfo));
+
+      // Force initialization form
+      const state = yield select(selectDentistInfo);
+      yield put(initialize('office-information', state));
     } catch (e) {
       console.log(e);
     }

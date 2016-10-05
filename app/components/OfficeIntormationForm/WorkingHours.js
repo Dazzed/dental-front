@@ -3,7 +3,6 @@ import React from 'react';
 import Well from 'react-bootstrap/lib/Well';
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
-import CSSModules from 'react-css-modules';
 
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -36,7 +35,6 @@ function mapStateToProps (state) {
 
 @connect(mapStateToProps)
 @reduxForm({ form: 'office-information' })
-@CSSModules(styles)
 export default class WorkingHours extends React.Component {
 
   static propTypes = {
@@ -65,8 +63,8 @@ export default class WorkingHours extends React.Component {
         </Row>
 
         {data.workingHours && data.workingHours.map((item, index) =>
-          <Row key={index} styleName="member-item">
-            <Col md={3} styleName="title-case">
+          <Row key={index} className={styles['member-item']}>
+            <Col md={3} className={styles['title-case']}>
               {item.day}
             </Col>
 
@@ -77,7 +75,7 @@ export default class WorkingHours extends React.Component {
                   component="input"
                   type="radio"
                   value={false}
-                  styleName="radio"
+                  className={styles.radio}
                   normalize={toBoolean}
                 />
               </Row>
@@ -89,7 +87,7 @@ export default class WorkingHours extends React.Component {
                   name={`workingHours[${index}].isOpen`}
                   component="input"
                   type="radio"
-                  styleName="radio"
+                  className={styles.radio}
                   normalize={toBoolean}
                   value
                 />
