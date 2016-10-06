@@ -19,7 +19,6 @@ const renderRating = ({ input }) => (
       <Col sm={12}>
         <ControlLabel style={{ marginRight: '4px' }}>Rating</ControlLabel>
         <Rating
-          initialRate={input.value}
           empty={<FaStar size={16} color="gray" />}
           full={<FaStar size={16} />}
           step={1}

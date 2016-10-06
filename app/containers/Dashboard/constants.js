@@ -21,7 +21,7 @@ export const MY_PATIENTS_REQUEST = 'app/Dashboard/MY_PATIENTS_REQUEST';
 export const MY_PATIENTS_SUCCESS = 'app/Dashboard/MY_PATIENTS_SUCCESS';
 export const MY_PATIENTS_ERROR = 'app/Dashboard/MY_PATIENTS_ERROR';
 
-export const SUBMIT_CLIENT_MESSAGE_FORM =
-  'app/Dashboard/SUBMIT_CLIENT_MESSAGE_FORM';
+export const SUBMIT_MESSAGE_FORM =
+  'app/Dashboard/SUBMIT_MESSAGE_FORM';
 export const SUBMIT_CLIENT_REVIEW_FORM =
   'app/Dashboard/SUBMIT_CLIENT_REVIEW_FORM';

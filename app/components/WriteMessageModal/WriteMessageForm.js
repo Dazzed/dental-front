@@ -4,12 +4,12 @@ import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 import LabeledInput from 'components/LabeledInput';
-import { writeMessageFormValidator } from './formValidator';
+import formValidator from './validator';
 
 
 @reduxForm({
   form: 'writeMessage',
-  validate: writeMessageFormValidator,
+  validate: formValidator,
 })
 class WriteMessageForm extends React.Component {
 

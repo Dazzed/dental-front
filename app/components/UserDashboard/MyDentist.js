@@ -12,7 +12,7 @@ import FaPhone from 'react-icons/lib/fa/phone';
 
 // import StarRating from 'react-star-rating';
 
-import WriteMessageModal from './WriteMessageModal';
+import WriteMessageModal from 'components/WriteMessageModal';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
 

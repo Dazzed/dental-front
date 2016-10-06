@@ -14,7 +14,7 @@ import {
   MY_PATIENTS_REQUEST,
   MY_PATIENTS_SUCCESS,
   MY_PATIENTS_ERROR,
-  SUBMIT_CLIENT_MESSAGE_FORM,
+  SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
 
@@ -79,9 +79,9 @@ export function myPatientsFetchingError (payload) {
   };
 }
 
-export function submitClientMessageForm (payload) {
+export function submitMessageForm (payload) {
   return {
-    type: SUBMIT_CLIENT_MESSAGE_FORM,
+    type: SUBMIT_MESSAGE_FORM,
     payload,
   };
 }

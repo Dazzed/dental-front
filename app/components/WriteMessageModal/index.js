@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-bootstrap/lib/Modal';
 
-import { submitClientMessageForm } from 'containers/Dashboard/actions';
+import { submitMessageForm } from 'containers/Dashboard/actions';
 
 import WriteMessageForm from './WriteMessageForm';
 
@@ -51,7 +51,7 @@ class WriteMessageModal extends Component {
 
 function mapDispatchToProps (dispatch) {
   return {
-    dispatchSubmit: (values) => dispatch(submitClientMessageForm(values)),
+    dispatchSubmit: (values) => dispatch(submitMessageForm(values)),
   };
 }
 
