@@ -72,6 +72,7 @@ class MyDentist extends Component {
     }
 
     const {
+      id,
       firstName,
       lastName,
       avatar,
@@ -110,8 +111,8 @@ class MyDentist extends Component {
                 }
               </Col>
               <Col md={6} styleName="membership-fee">
-                {subscriptions.map(subscription =>
-                  <div>
+                {subscriptions.map((subscription, index) =>
+                  <div key={index}>
                     {subscription.default ? '' : subscription.name}
                     Membership Fee: <span styleName="fee">
                       {subscription.total}
@@ -198,6 +199,7 @@ class MyDentist extends Component {
         </Row>
 
         <WriteMessageModal
+          recipientId={id}
           showModal={this.state.showMessageModal}
           onClose={this.closeMessageModal}
         />

@@ -8,6 +8,7 @@ import WriteMessageForm from './WriteMessageForm';
 
 class WriteMessageModal extends Component {
   static propTypes = {
+    recipientId: PropTypes.number,
     showModal: PropTypes.bool,
     onClose: PropTypes.func,
     dispatchSubmit: PropTypes.func,
@@ -19,7 +20,12 @@ class WriteMessageModal extends Component {
   }
 
   onSubmitForm (values) {
-    this.props.dispatchSubmit(values);
+    this.props.dispatchSubmit({
+      recipientId: this.props.recipientId,
+      body: {
+        ...values,
+      },
+    });
     this.props.onClose();
   }
 

@@ -97,16 +97,20 @@ export function* fetchMyPatients () {
 
 export function* submitClientMessageFormWatcher () {
   while (true) {
-    // const { payload } = yield take(SUBMIT_CLIENT_MESSAGE_FORM);
-    yield take(SUBMIT_CLIENT_MESSAGE_FORM);
+    const {
+      payload: {
+        recipientId,
+        body,
+      },
+    } = yield take(SUBMIT_CLIENT_MESSAGE_FORM);
 
     try {
-      // const requestURL = '/api/v1/SUBMIT_MESSAGE_FORM';
-      // const params = {
-      //   method: 'POST',
-      //   body: JSON.stringify(payload),
-      // };
-      // const response = yield call(request, requestURL, params);
+      const requestURL = `/api/v1/users/me/messages/${recipientId}`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(body),
+      };
+      yield call(request, requestURL, params);
 
       yield put(toastrActions.success('', 'Your message has been submitted!'));
     } catch (err) {
