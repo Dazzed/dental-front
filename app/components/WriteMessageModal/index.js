@@ -2,12 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-bootstrap/lib/Modal';
 
-import { submitClientMessageForm } from 'containers/Dashboard/actions';
+import { submitMessageForm } from 'containers/Dashboard/actions';
 
 import WriteMessageForm from './WriteMessageForm';
 
 class WriteMessageModal extends Component {
   static propTypes = {
+    recipientId: PropTypes.number,
     showModal: PropTypes.bool,
     onClose: PropTypes.func,
     dispatchSubmit: PropTypes.func,
@@ -19,7 +20,12 @@ class WriteMessageModal extends Component {
   }
 
   onSubmitForm (values) {
-    this.props.dispatchSubmit(values);
+    this.props.dispatchSubmit({
+      recipientId: this.props.recipientId,
+      body: {
+        ...values,
+      },
+    });
     this.props.onClose();
   }
 
@@ -45,7 +51,7 @@ class WriteMessageModal extends Component {
 
 function mapDispatchToProps (dispatch) {
   return {
-    dispatchSubmit: (values) => dispatch(submitClientMessageForm(values)),
+    dispatchSubmit: (values) => dispatch(submitMessageForm(values)),
   };
 }
 

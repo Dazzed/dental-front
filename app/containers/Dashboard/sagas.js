@@ -9,7 +9,7 @@ import {
   MY_DENTIST_REQUEST,
   MY_FAMILY_REQUEST,
   MY_PATIENTS_REQUEST,
-  SUBMIT_CLIENT_MESSAGE_FORM,
+  SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
 
@@ -23,7 +23,7 @@ import {
 } from 'containers/Dashboard/actions';
 
 import {
-  fetchMyDentist as fetchMyDentistMock,
+  // fetchMyDentist as fetchMyDentistMock,
   fetchMyPatients as fetchMyPatientsMock,
 } from './stubApi';
 
@@ -32,7 +32,7 @@ export function* userDashboardSaga () {
   const watcherA = yield fork(fetchMyDentistWatcher);
   const watcherB = yield fork(fetchMyFamilyWatcher);
   const watcherC = yield fork(fetchMyPatientsWatcher);
-  const watcherD = yield fork(submitClientMessageFormWatcher);
+  const watcherD = yield fork(submitMessageFormWatcher);
   const watcherE = yield fork(submitClientReviewFormWatcher);
 
   yield take(LOCATION_CHANGE);
@@ -95,18 +95,22 @@ export function* fetchMyPatients () {
   }
 }
 
-export function* submitClientMessageFormWatcher () {
+export function* submitMessageFormWatcher () {
   while (true) {
-    // const { payload } = yield take(SUBMIT_CLIENT_MESSAGE_FORM);
-    yield take(SUBMIT_CLIENT_MESSAGE_FORM);
+    const {
+      payload: {
+        recipientId,
+        body,
+      },
+    } = yield take(SUBMIT_MESSAGE_FORM);
 
     try {
-      // const requestURL = '/api/v1/SUBMIT_MESSAGE_FORM';
-      // const params = {
-      //   method: 'POST',
-      //   body: JSON.stringify(payload),
-      // };
-      // const response = yield call(request, requestURL, params);
+      const requestURL = `/api/v1/users/me/messages/${recipientId}`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(body),
+      };
+      yield call(request, requestURL, params);
 
       yield put(toastrActions.success('', 'Your message has been submitted!'));
     } catch (err) {
