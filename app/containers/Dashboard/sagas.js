@@ -84,10 +84,8 @@ export function* fetchMyFamily () {
 
 export function* fetchMyPatients () {
   try {
-    // const dentistId = yield select(selectUserId);
-    // const requestURL = `/api/v1/FETCH_PATIENTS_OF_A_DENTIST/${dentistId}`;
-    // const response = yield call(request, requestURL);
-    const response = yield call(fetchMyPatientsMock);
+    const requestURL = '/api/v1/users/me/clients';
+    const response = yield call(request, requestURL);
 
     yield put(myPatientsFetched(response.data));
   } catch (err) {
