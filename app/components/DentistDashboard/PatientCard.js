@@ -24,16 +24,14 @@ export default class PatientCard extends Component {
   static propTypes = {
     firstName: PropTypes.string,
     lastName: PropTypes.string,
-    createdAt: PropTypes.string,
     email: PropTypes.string,
-    phoneNumber: PropTypes.string,
     avatar: PropTypes.string,
     contactMethod: PropTypes.string,
-    membership: PropTypes.object,
-    lastReview: PropTypes.object,
-    familyMemberCount: PropTypes.number,
     familyMembers: PropTypes.array,
-    status: PropTypes.string,
+    createdAt: PropTypes.string,
+    subscriptions: PropTypes.array,
+    phoneNumbers: PropTypes.array,
+    lastReview: PropTypes.object,
   }
 
   constructor (props) {
@@ -57,20 +55,38 @@ export default class PatientCard extends Component {
       firstName,
       lastName,
       email,
-      phoneNumber,
       createdAt,
       contactMethod,
       avatar,
       familyMembers,
-      familyMemberCount,
-      lastReview,
-      membership,
+      subscriptions,
+      phoneNumbers,
+      lastReview
     } = this.props;
 
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
-    const paidAt = moment(membership.paidAt).format('MMM D, YYYY');
-    const membershipStyle = membership.status === 'active' ? '' : 'warning';
+    // const paidAt = moment(#<{(|membership.paidAt|)}>#).format('MMM D, YYYY');
+
+    let membershipStyle = 'warning';
+    let status = '';
+    let phone = '';
+
+    subscriptions.forEach(subscription => {
+      if (new Date(subscription.endAt) > new Date()) {
+        membershipStyle = '';
+        status = 'active';
+      }
+    });
+
+    // NOTE: By now only one number so display that.
+    if (phoneNumbers && phoneNumbers[0]) {
+      phone = phoneNumbers[0].number;
+    }
+
+    const carret = showFamilyMembers
+      ? <FaCaretDown size={16} styleName="toggler-icon" />
+      : <FaCaretRight size={16} styleName="toggler-icon" />;
 
     return (
       <Row styleName="patient-card">
@@ -87,7 +103,7 @@ export default class PatientCard extends Component {
                   {`${firstName} ${lastName} `}
                 </span>
                 <span styleName={`membership-status ${membershipStyle}`}>
-                  {`(${membership.status})`}
+                  {`(${status})`}
                 </span>
               </Col>
               <Col md={4} styleName="member-since">
@@ -100,7 +116,7 @@ export default class PatientCard extends Component {
               </Col>
               <Col md={4}>
                 <span styleName="desc">Family Member Joined: </span>
-                <span styleName="value">{familyMemberCount}</span>
+                <span styleName="value">{familyMembers.length}</span>
               </Col>
             </Row>
           </div>
@@ -109,7 +125,7 @@ export default class PatientCard extends Component {
             <Row>
               <Col md={3}>
                 <FaPhone size={16} />
-                <span styleName="value">{phoneNumber}</span>
+                <span styleName="value">{phone}</span>
               </Col>
               <Col md={5}>
                 <FaEnvelope size={16} />
@@ -118,11 +134,7 @@ export default class PatientCard extends Component {
               <Col md={4} styleName="toggler" onClick={this.toggleMembers}>
                 <FaGroup size={16} />
                 <span styleName="value">Family Member Details</span>
-                {
-                  showFamilyMembers
-                    ? <FaCaretDown size={16} styleName="toggler-icon" />
-                    : <FaCaretRight size={16} styleName="toggler-icon" />
-                }
+                {familyMembers.length ? carret : null }
               </Col>
             </Row>
           </div>
@@ -132,7 +144,7 @@ export default class PatientCard extends Component {
             transitionEnterTimeout={100}
             transitionLeaveTimeout={100}
           >
-            { showFamilyMembers &&
+            { showFamilyMembers && familyMembers.length &&
               <div styleName="pane members-pane">
                 <Row>
                   <Col md={9} styleName="members-list">
@@ -172,7 +184,7 @@ export default class PatientCard extends Component {
                         Membership:{' '}
                       </span>
                       <span styleName={`membership-status ${membershipStyle}`}>
-                        {membership.status}
+                        {status}
                       </span>
                     </Row>
                     <Row>
@@ -180,7 +192,6 @@ export default class PatientCard extends Component {
                         Paid Date:{' '}
                       </span>
                       <span styleName="value">
-                        {membership && membership.paidAt && paidAt}
                       </span>
                     </Row>
                     <Row>
@@ -188,7 +199,6 @@ export default class PatientCard extends Component {
                         Total Monthly Payment:{' '}
                       </span>
                       <Money
-                        value={membership.totalMontlyPayment}
                         styleName="value"
                       />
                     </Row>

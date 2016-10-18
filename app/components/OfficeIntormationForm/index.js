@@ -70,7 +70,8 @@ class OfficeIntormationForm extends React.Component {
           <OfficeIntormation />
           <UploadPhotos />
           <Services />
-          <Membership />
+          <Membership title="Adult" />
+          <Membership title="Child" field="childMembership" />
           <WorkingHours />
 
           <Col md={12}>

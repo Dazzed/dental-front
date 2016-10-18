@@ -48,14 +48,20 @@ export default class Membership extends React.Component {
 
   static propTypes = {
     data: React.PropTypes.object,
+    field: React.PropTypes.string.isRequired,
+    title: React.PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    field: 'membership',
   }
 
   render () {
-    const { data } = this.props;
+    const { data, field, title } = this.props;
 
     return (
       <Well>
-        <h2>Membership pricing/affordability</h2>
+        <h2>{title} Membership pricing/affordability</h2>
 
         <br />
 
@@ -68,12 +74,12 @@ export default class Membership extends React.Component {
           </Col>
         </Row>
 
-        {data.membership && data.membership.items.map((item, index) =>
+        {data[field] && data[field].items.map((item, index) =>
           <Row key={index} className={styles['member-item']}>
             <Col md={5}>
               <Row>
                 <Field
-                  name={`membership.items[${index}].pricingCode`}
+                  name={`${field}.items[${index}].pricingCode`}
                   type="text"
                   component={Input}
                   label="Pricing code"
@@ -85,7 +91,7 @@ export default class Membership extends React.Component {
             <Col md={3}>
               <Row>
                 <Field
-                  name={`membership.items[${index}].price`}
+                  name={`${field}.items[${index}].price`}
                   type="number"
                   component={Input}
                   label="Price"
@@ -100,13 +106,13 @@ export default class Membership extends React.Component {
         <Row>
           <Col md={3}>
             <Field
-              name="membership.recommendedFee"
+              name={`${field}.recommendedFee`}
               component={DUCheckedComponent}
-              id="recommended-fee"
+              id={`${field}-recommended-fee`}
             />
           </Col>
           <Col md={8} className={styles['recommended-fee']}>
-            <label htmlFor="recommended-fee">
+            <label htmlFor={`${field}-recommended-fee`}>
               Recommended membership fee
             </label>
             <p>
@@ -121,7 +127,7 @@ export default class Membership extends React.Component {
           <Col md={3}>
             <Row>
               <Field
-                name="membership.activationCode"
+                name={`${field}.activationCode`}
                 component={Input}
                 label="Activation Code"
                 type="text"
@@ -146,15 +152,16 @@ export default class Membership extends React.Component {
           <Col md={3}>
             <Row>
               <Field
-                name="membership.discount"
+                name={`${field}.discount`}
                 component={Input}
                 label="Enter discount code"
                 type="number"
+                id={`${field}-discount`}
               />
             </Row>
           </Col>
           <Col md={8}>
-            <label htmlFor="discount">
+            <label htmlFor={`${field}-discount`}>
               Treatment discount percent
             </label>
             <p>
