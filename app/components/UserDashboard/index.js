@@ -9,6 +9,7 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Button from 'react-bootstrap/lib/Button';
+import changeFactory from 'change-js';
 
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
@@ -22,6 +23,8 @@ import MyDentist from './MyDentist';
 import FamilyMembers from './FamilyMembers';
 
 import styles from './index.css';
+
+const Change = changeFactory();
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
@@ -56,6 +59,18 @@ export default class UserDashboard extends Component {
   render () {
     const { loggedInUser, myDentist, myFamilyMembers } = this.props;
     const fullName = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
+    const status = myDentist ? myDentist.subscriptions[0].status : '';
+    // TODO: better here to use selector!
+    let total = myDentist ? myDentist.subscriptions[0].monthly : 0;
+
+    if (myDentist) {
+      total = new Change({ dollars: total });
+      myFamilyMembers.forEach(member => {
+        total = total.add(new Change({ dollars: member.subscription.monthly }));
+      });
+      total = total.dollars();
+    }
+
     return (
       <div className="user-dashboard-container">
         <Intro fullName={fullName} />
@@ -76,8 +91,8 @@ export default class UserDashboard extends Component {
         </div>
 
         <FamilyMembers
-          accountStatus="Active"
-          monthlyDue="999"
+          accountStatus={status}
+          monthlyDue={total}
           dueDate="Dec 7, 2017"
           members={myFamilyMembers}
         />

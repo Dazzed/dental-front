@@ -18,6 +18,7 @@ function FamilyMember ({ details }) {
     createdAt,
     accountOwner,
     avatar,
+    subscription,
   } = details;
 
   const memberSince = moment(createdAt).format('MMM D, YYYY');
@@ -37,7 +38,7 @@ function FamilyMember ({ details }) {
         </Col>
         <Col md={2}>{MEMBER_RELATIONSHIP_TYPES[familyRelationship]}</Col>
         <Col md={2}>Custom</Col>
-        <Col md={2}>$20.00</Col>
+        <Col md={2}>${subscription.monthly}</Col>
         <Col md={2} className="text-right">{memberSince}</Col>
       </Row>
 

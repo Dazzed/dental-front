@@ -44,7 +44,7 @@ function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
 
 FamilyMembers.propTypes = {
   accountStatus: PropTypes.string,
-  monthlyDue: PropTypes.string,
+  monthlyDue: PropTypes.number,
   dueDate: PropTypes.string,
   members: PropTypes.array,
 };

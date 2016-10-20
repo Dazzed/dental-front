@@ -111,14 +111,16 @@ class MyDentist extends Component {
                 }
               </Col>
               <Col md={6} styleName="membership-fee">
-                {subscriptions.map((subscription, index) =>
-                  <div key={index}>
-                    {subscription.default ? '' : subscription.name}
-                    Membership Fee: <span styleName="fee">
-                      {subscription.total}
-                    </span>
-                  </div>
-                )}
+                <div>
+                  Membership Fee: <span styleName="fee">
+                    {dentistInfo.membership.monthly}
+                  </span>
+                </div>
+                <div>
+                  Kid Membership Fee: <span styleName="child-fee">
+                    {dentistInfo.childMembership.monthly}
+                  </span>
+                </div>
               </Col>
             </Row>
 
