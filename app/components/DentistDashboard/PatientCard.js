@@ -13,11 +13,15 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaStar from 'react-icons/lib/fa/star';
 import Rating from 'react-rating';
 import moment from 'moment';
+import changeFactory from 'change-js';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import Money from 'components/Money';
 
 import styles from './PatientCard.css';
+
+const Change = changeFactory();
+
 
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientCard extends Component {
@@ -64,18 +68,27 @@ export default class PatientCard extends Component {
       lastReview
     } = this.props;
 
+    // TODO: only show current active susbscription!
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
     // const paidAt = moment(#<{(|membership.paidAt|)}>#).format('MMM D, YYYY');
+    // TODO: better here to use selector!
+    let total = subscriptions ? subscriptions[0].monthly : 0;
+
+    if (subscriptions) {
+      total = new Change({ dollars: total });
+      familyMembers.forEach(member => {
+        total = total.add(new Change({ dollars: member.subscription.monthly }));
+      });
+      total = total.dollars();
+    }
 
     let membershipStyle = 'warning';
-    let status = '';
     let phone = '';
 
     subscriptions.forEach(subscription => {
       if (new Date(subscription.endAt) > new Date()) {
         membershipStyle = '';
-        status = 'active';
       }
     });
 
@@ -103,7 +116,7 @@ export default class PatientCard extends Component {
                   {`${firstName} ${lastName} `}
                 </span>
                 <span styleName={`membership-status ${membershipStyle}`}>
-                  {`(${status})`}
+                  {`(${subscriptions[0].status})`}
                 </span>
               </Col>
               <Col md={4} styleName="member-since">
@@ -173,7 +186,9 @@ export default class PatientCard extends Component {
                             }
                           </Col>
                           <Col md={2} sm={2}>Custom</Col>
-                          <Col md={2} sm={2}>$20</Col>
+                          <Col md={2} sm={2}>
+                            ${member.subscription.monthly}
+                          </Col>
                         </Row>
                       ))
                     }
@@ -200,6 +215,7 @@ export default class PatientCard extends Component {
                       </span>
                       <Money
                         styleName="value"
+                        value={total}
                       />
                     </Row>
                     <Row>
