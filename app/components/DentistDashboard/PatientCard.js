@@ -35,7 +35,7 @@ export default class PatientCard extends Component {
     createdAt: PropTypes.string,
     subscriptions: PropTypes.array,
     phoneNumbers: PropTypes.array,
-    lastReview: PropTypes.object,
+    latestReview: PropTypes.object,
   }
 
   constructor (props) {
@@ -65,7 +65,7 @@ export default class PatientCard extends Component {
       familyMembers,
       subscriptions,
       phoneNumbers,
-      lastReview
+      latestReview
     } = this.props;
 
     // TODO: only show current active susbscription!
@@ -207,6 +207,7 @@ export default class PatientCard extends Component {
                         Paid Date:{' '}
                       </span>
                       <span styleName="value">
+                        {' '}
                       </span>
                     </Row>
                     <Row>
@@ -229,7 +230,7 @@ export default class PatientCard extends Component {
             }
           </ReactCSSTransitionGroup>
 
-          {lastReview &&
+          {latestReview &&
             <div styleName="pane review">
               <Row>
                 <Col md={6} styleName="rating">
@@ -238,17 +239,17 @@ export default class PatientCard extends Component {
                     full={<FaStar size={16} />}
                     step={1}
                     readonly
-                    initialRate={lastReview.rating}
+                    initialRate={latestReview.rating}
                   />
                 </Col>
                 <Col md={6} className="text-right">
                   <span styleName="desc">Reviewed Last: </span>
                   <span styleName="value">
-                    {moment(lastReview.createdAt).format('MMM D, YYYY')}
+                    {moment(latestReview.createdAt).format('MMM D, YYYY')}
                   </span>
                 </Col>
                 <Col md={12} styleName="text">
-                  "{lastReview.comment}"
+                  "{latestReview.message}"
                 </Col>
               </Row>
             </div>

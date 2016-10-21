@@ -11,6 +11,7 @@ class WriteReviewModal extends Component {
     showModal: PropTypes.bool,
     onClose: PropTypes.func,
     dispatchSubmit: PropTypes.func,
+    dentistId: PropTypes.number,
   }
 
   constructor (props) {
@@ -19,7 +20,11 @@ class WriteReviewModal extends Component {
   }
 
   onSubmitForm (values) {
-    this.props.dispatchSubmit(values);
+    this.props.dispatchSubmit({
+      dentistId: this.props.dentistId,
+      body: values,
+    });
+
     this.props.onClose();
   }
 

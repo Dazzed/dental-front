@@ -76,7 +76,6 @@ class MyDentist extends Component {
       firstName,
       lastName,
       avatar,
-      subscriptions,
       dentistInfo,
     } = dentist;
 
@@ -206,6 +205,7 @@ class MyDentist extends Component {
           onClose={this.closeMessageModal}
         />
         <WriteReviewModal
+          dentistId={id}
           showModal={this.state.showReviewModal}
           onClose={this.closeReviewModal}
         />

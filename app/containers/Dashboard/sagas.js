@@ -22,10 +22,6 @@ import {
   myPatientsFetchingError,
 } from 'containers/Dashboard/actions';
 
-import {
-  // fetchMyDentist as fetchMyDentistMock,
-  fetchMyPatients as fetchMyPatientsMock,
-} from './stubApi';
 
 // Individual exports for testing
 export function* userDashboardSaga () {
@@ -120,18 +116,22 @@ export function* submitMessageFormWatcher () {
 
 export function* submitClientReviewFormWatcher () {
   while (true) {
-    // const { payload } = yield take(SUBMIT_CLIENT_REVIEW_FORM);
+    const {
+      payload: {
+        dentistId,
+        body,
+      }
+    } = yield take(SUBMIT_CLIENT_REVIEW_FORM);
     // payload.isAnonymous = payload.isAnonymous === 'true';
-    yield take(SUBMIT_CLIENT_REVIEW_FORM);
+    // yield take(SUBMIT_CLIENT_REVIEW_FORM);
 
     try {
-      // const requestURL = '/api/v1/SUBMIT_REVIEW_FORM';
-      // const params = {
-      //   method: 'POST',
-      //   body: JSON.stringify(payload),
-      // };
-      // const response = yield call(request, requestURL, params);
-
+      const requestURL = `/api/v1/dentists/${dentistId}/review`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(body),
+      };
+      yield call(request, requestURL, params);
       yield put(toastrActions.success('', 'Your review has been submitted!'));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
