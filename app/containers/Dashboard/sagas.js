@@ -9,6 +9,7 @@ import {
   MY_DENTIST_REQUEST,
   MY_FAMILY_REQUEST,
   MY_PATIENTS_REQUEST,
+  CONVERSATION_REQUEST,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
@@ -20,6 +21,8 @@ import {
   myFamilyFetchingError,
   myPatientsFetched,
   myPatientsFetchingError,
+  conversationFetched,
+  conversationFetchingError,
 } from 'containers/Dashboard/actions';
 
 
@@ -30,6 +33,7 @@ export function* userDashboardSaga () {
   const watcherC = yield fork(fetchMyPatientsWatcher);
   const watcherD = yield fork(submitMessageFormWatcher);
   const watcherE = yield fork(submitClientReviewFormWatcher);
+  const watcherF = yield fork(fetchConversationWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -37,6 +41,7 @@ export function* userDashboardSaga () {
   yield cancel(watcherC);
   yield cancel(watcherD);
   yield cancel(watcherE);
+  yield cancel(watcherF);
 }
 
 export function* dentistDashboardSaga () {
@@ -54,6 +59,10 @@ export function* fetchMyFamilyWatcher () {
 
 export function* fetchMyPatientsWatcher () {
   yield* takeLatest(MY_PATIENTS_REQUEST, fetchMyPatients);
+}
+
+export function* fetchConversationWatcher () {
+  yield* takeLatest(CONVERSATION_REQUEST, fetchConversation);
 }
 
 export function* fetchMyDentist () {
@@ -89,6 +98,19 @@ export function* fetchMyPatients () {
   }
 }
 
+export function* fetchConversation (action) {
+  const { payload } = action;
+
+  try {
+    const requestURL = `/api/v1/users/me/messages/${payload.recipientId}`;
+    const response = yield call(request, requestURL);
+
+    yield put(conversationFetched(response.data.messages || []));
+  } catch (err) {
+    yield put(conversationFetchingError(err));
+  }
+}
+
 export function* submitMessageFormWatcher () {
   while (true) {
     const {
@@ -106,7 +128,7 @@ export function* submitMessageFormWatcher () {
       };
       yield call(request, requestURL, params);
 
-      yield put(toastrActions.success('', 'Your message has been submitted!'));
+      yield put(toastrActions.success('', 'Your message has been sent!'));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));

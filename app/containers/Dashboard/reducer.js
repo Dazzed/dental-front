@@ -8,6 +8,8 @@ import {
   MY_DENTIST_SUCCESS,
   MY_FAMILY_SUCCESS,
   MY_PATIENTS_SUCCESS,
+  CONVERSATION_REQUEST,
+  CONVERSATION_SUCCESS,
 } from './constants';
 
 const initialState = {
@@ -23,6 +25,7 @@ const initialState = {
       allMembers: null,
     }
   },
+  messages: [],
 };
 
 function dashboardReducer (state = initialState, action) {
@@ -50,6 +53,16 @@ function dashboardReducer (state = initialState, action) {
           ...state.dentistDashboard,
           myPatients: action.payload,
         },
+      };
+    case CONVERSATION_REQUEST:
+      return {
+        ...state,
+        messages: [],
+      };
+    case CONVERSATION_SUCCESS:
+      return {
+        ...state,
+        messages: action.payload,
       };
     default:
       return state;

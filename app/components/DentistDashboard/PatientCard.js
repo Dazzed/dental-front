@@ -17,6 +17,7 @@ import changeFactory from 'change-js';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import Money from 'components/Money';
+import WriteMessageModal from 'components/WriteMessageModal';
 
 import styles from './PatientCard.css';
 
@@ -42,15 +43,32 @@ export default class PatientCard extends Component {
     super(props);
     this.state = {
       showFamilyMembers: false,
+      showMessageModal: false,
     };
 
     this.toggleMembers = this.toggleMembers.bind(this);
+    this.openMessageModal = this.openMessageModal.bind(this);
+    this.closeMessageModal = this.closeMessageModal.bind(this);
   }
 
   toggleMembers () {
     this.setState({
       ...this.state,
       showFamilyMembers: !this.state.showFamilyMembers
+    });
+  }
+
+  openMessageModal () {
+    this.setState({
+      ...this.state,
+      showMessageModal: true,
+    });
+  }
+
+  closeMessageModal () {
+    this.setState({
+      ...this.state,
+      showMessageModal: false,
     });
   }
 
@@ -62,6 +80,7 @@ export default class PatientCard extends Component {
       createdAt,
       contactMethod,
       avatar,
+      id,
       familyMembers,
       subscriptions,
       phoneNumbers,
@@ -262,6 +281,7 @@ export default class PatientCard extends Component {
                   block
                   bsStyle="primary"
                   className="btn-green btn-round"
+                  onClick={this.openMessageModal}
                 >
                   Send a Message
                 </Button>
@@ -279,6 +299,13 @@ export default class PatientCard extends Component {
           </div>
 
         </Col>
+
+        <WriteMessageModal
+          recipientId={id}
+          recipientType="Patient"
+          showModal={this.state.showMessageModal}
+          onClose={this.closeMessageModal}
+        />
       </Row>
     );
   }

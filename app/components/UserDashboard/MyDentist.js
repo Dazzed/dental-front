@@ -201,6 +201,7 @@ class MyDentist extends Component {
 
         <WriteMessageModal
           recipientId={id}
+          recipientType="Dentist"
           showModal={this.state.showMessageModal}
           onClose={this.closeMessageModal}
         />
