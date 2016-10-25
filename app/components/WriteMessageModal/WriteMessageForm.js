@@ -41,7 +41,7 @@ class WriteMessageForm extends React.Component {
                 disabled={submitting}
                 className="btn-cyan btn-round"
               >
-                Submit
+                Send
               </button>
             </Col>
           </FormGroup>

@@ -49,7 +49,7 @@ function parseJSON (response) {
 function checkStatus (response) {
   if (response.ok) { // response.status >= 200 && response.status < 300
     return response;
-  } else if (response.status === 400) {
+  } else if (response.status === 400 || response.status === 403) {
     return response.json().then(err => {
       throw err;
     });

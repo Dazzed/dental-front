@@ -14,6 +14,9 @@ import {
   MY_PATIENTS_REQUEST,
   MY_PATIENTS_SUCCESS,
   MY_PATIENTS_ERROR,
+  CONVERSATION_REQUEST,
+  CONVERSATION_SUCCESS,
+  CONVERSATION_ERROR,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
 } from 'containers/Dashboard/constants';
@@ -75,6 +78,27 @@ export function myPatientsFetched (payload) {
 export function myPatientsFetchingError (payload) {
   return {
     type: MY_PATIENTS_ERROR,
+    payload,
+  };
+}
+
+export function fetchConversation (payload) {
+  return {
+    type: CONVERSATION_REQUEST,
+    payload,
+  };
+}
+
+export function conversationFetched (payload) {
+  return {
+    type: CONVERSATION_SUCCESS,
+    payload,
+  };
+}
+
+export function conversationFetchingError (payload) {
+  return {
+    type: CONVERSATION_ERROR,
     payload,
   };
 }

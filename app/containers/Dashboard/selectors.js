@@ -62,8 +62,9 @@ const selectNewReviews = createSelector(
   (substate) => (
     filter(substate.myPatients,
       (patient) => {
-        const lastReviewDate = get(patient, 'lastReview.createdAt');
-        return (lastReviewDate && moment().diff(lastReviewDate, 'days') <= 5);
+        const latestReview = get(patient, 'latestReview.createdAt');
+        return (latestReview) &&
+          (moment().diff(latestReview, 'days') <= 5);
       }
     )
   )
@@ -73,6 +74,11 @@ const selectAllMembers = createSelector(
   selectDentistDashboard,
   selectSorter,
   (substate) => substate.myPatients
+);
+
+const selectConversation = createSelector(
+  selectDashboardDomain,
+  (substate) => substate.messages
 );
 
 export default selectDashboard;
@@ -86,4 +92,5 @@ export {
   selectNewMembers,
   selectNewReviews,
   selectAllMembers,
+  selectConversation,
 };
