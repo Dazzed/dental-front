@@ -1,5 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 
 import request from 'utils/request';
 
@@ -37,8 +39,15 @@ function* requestServices () {
   });
 }
 
+function* toastrRemover () {
+  yield* takeLatest(LOCATION_CHANGE, function* () {
+    yield put(toastrActions.clean());
+  });
+}
+
 
 export default [
   loadDentistSpecialties,
   requestServices,
+  toastrRemover,
 ];

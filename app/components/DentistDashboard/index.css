@@ -1,3 +1,17 @@
 .wrapper {
   display: inherit;
 }
+
+.h3-with-button {
+  h3 {
+    float: left;
+  }
+
+  button {
+    float: right;
+    margin: 1em  1em 0.6em;
+    background-color: #2A483A;
+    border: #2A483A;
+    padding: 0.3em 2em;
+  }
+}

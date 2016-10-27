@@ -40,8 +40,12 @@
   padding-bottom: 0.25rem !important;
   padding-left: 2rem;
   padding-right: 2rem;
-  min-width: 6rem;
   &:active { padding-bottom: 0.2rem; }
+}
+
+:global(.btn) {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 :global(.btn-round) {
