@@ -45,7 +45,7 @@ function* signup (data) {
     const errors = mapValues(err.errors, (value) => value.msg);
 
     // dispatch LOGIN_ERROR action
-    yield put(stopSubmit('dentist-signup', errors));
+    yield put(stopSubmit('signup', errors));
     return false;
   }
 }

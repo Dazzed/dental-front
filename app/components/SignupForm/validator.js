@@ -1,26 +1,21 @@
-import {
-  createValidator,
-  email,
-  password,
-  required,
-  match,
-} from 'utils/reduxForm';
+import { validatorFactory } from 'utils/reduxForm';
 
-const tosValidator = (value) => {
-  if (value !== true) {
-    return 'Please accept the terms of conditions.';
-  }
-
-  return '';
+const schema = {
+  email: { presence: true, email: true },
+  confirmEmail: { presence: true, email: true, equality: 'email' },
+  password: { presence: true },
+  confirmPassword: { presence: true, equality: 'password' },
+  firstName: { presence: true },
+  lastName: { presence: true },
+  tos: {
+    presence: { message: '^You have to accept the Terms of service' },
+    inclusion: {
+      within: [ true ],
+      message: '^You have to accept the Terms of service',
+    },
+  },
 };
 
 
-const signupFormValidator = createValidator({
-  email: [ required, email ],
-  confirmEmail: [ required, match('email') ],
-  password: [ required, password ],
-  confirmPassword: [ required, match('password') ],
-  tos: [ required, tosValidator ],
-});
+export default validatorFactory(schema);
 
-export default signupFormValidator;

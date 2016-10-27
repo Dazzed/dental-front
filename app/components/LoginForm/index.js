@@ -58,7 +58,7 @@ class LoginForm extends React.Component {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-bg btn-cyan btn-round"
+              className="btn-cyan btn-round pull-right"
             >
               Log In
             </button>

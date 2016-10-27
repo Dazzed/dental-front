@@ -10,7 +10,13 @@ const schema = {
   phone: { presence: true },
   dentistSpecialty: { presence: { message: '^Select an Specialty' } },
   zipCode: { presence: true },
-  tos: { presence: { message: '^You have to accept the Terms of service' } },
+  tos: {
+    presence: { message: '^You have to accept the Terms of service' },
+    inclusion: {
+      within: [ true ],
+      message: '^You have to accept the Terms of service',
+    },
+  },
 };
 
 

@@ -2,41 +2,18 @@ import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import CSSModules from 'react-css-modules';
 
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
+import Checkbox from 'components/Checkbox';
 import { selectDentistSpecialties } from 'containers/App/selectors';
 import { isInvalidNameSelector } from 'containers/DentistSignupPage/selectors';
 import signupFormValidator from './validator';
-import styles from './styles.css';
-
-
-let TOSCheckbox = ({ input, meta: { touched, error } }) => (
-  <Col sm={12}>
-    <FormGroup className={touched && error ? 'has-error' : ''}>
-      <label styleName="checkbox-label" htmlFor={input.name}>
-        <FormControl {...input} type="checkbox" styleName="checkbox" />
-        I have read and accept the <a href="">Terms of Conditions</a>
-        {touched && error && <HelpBlock>{error}</HelpBlock>}
-      </label>
-    </FormGroup>
-  </Col>
-);
-
-
-TOSCheckbox.propTypes = {
-  input: React.PropTypes.object.isRequired,
-  meta: React.PropTypes.object.isRequired,
-};
-
-TOSCheckbox = CSSModules(styles)(TOSCheckbox);
 
 
 @reduxForm({ form: 'dentist-signup', validate: signupFormValidator })
@@ -162,8 +139,10 @@ class DentistSignupForm extends React.Component {
 
         <Field
           name="tos"
-          component={TOSCheckbox}
-        />
+          component={Checkbox}
+        >
+          I have read and accept the <a href="">Terms of Conditions</a>
+        </Field>
 
         <FormGroup className="has-error">
           <Col sm={12}>
@@ -176,7 +155,7 @@ class DentistSignupForm extends React.Component {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-bg btn-green btn-round btn-outline"
+              className="btn-green btn-round btn-outline"
             >
               Continue
             </button>
