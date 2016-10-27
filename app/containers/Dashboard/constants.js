@@ -29,3 +29,5 @@ export const SUBMIT_MESSAGE_FORM =
   'app/Dashboard/SUBMIT_MESSAGE_FORM';
 export const SUBMIT_CLIENT_REVIEW_FORM =
   'app/Dashboard/SUBMIT_CLIENT_REVIEW_FORM';
+export const SUBMIT_INVITE_PATIENT_FORM =
+  'app/Dashboard/SUBMIT_INVITE_PATIENT_FORM';

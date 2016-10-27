@@ -19,6 +19,7 @@ import {
   CONVERSATION_ERROR,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
+  SUBMIT_INVITE_PATIENT_FORM,
 } from 'containers/Dashboard/constants';
 
 export function fetchMyDentist () {
@@ -113,6 +114,13 @@ export function submitMessageForm (payload) {
 export function submitClientReviewForm (payload) {
   return {
     type: SUBMIT_CLIENT_REVIEW_FORM,
+    payload,
+  };
+}
+
+export function submitInvitePatientForm (payload) {
+  return {
+    type: SUBMIT_INVITE_PATIENT_FORM,
     payload,
   };
 }

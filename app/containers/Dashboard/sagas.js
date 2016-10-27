@@ -12,6 +12,7 @@ import {
   CONVERSATION_REQUEST,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
+  SUBMIT_INVITE_PATIENT_FORM,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -34,6 +35,7 @@ export function* userDashboardSaga () {
   const watcherD = yield fork(submitMessageFormWatcher);
   const watcherE = yield fork(submitClientReviewFormWatcher);
   const watcherF = yield fork(fetchConversationWatcher);
+  const watcherG = yield fork(submitInvitePatientFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -42,6 +44,7 @@ export function* userDashboardSaga () {
   yield cancel(watcherD);
   yield cancel(watcherE);
   yield cancel(watcherF);
+  yield cancel(watcherG);
 }
 
 export function* dentistDashboardSaga () {
@@ -155,6 +158,26 @@ export function* submitClientReviewFormWatcher () {
       };
       yield call(request, requestURL, params);
       yield put(toastrActions.success('', 'Your review has been submitted!'));
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+export function* submitInvitePatientFormWatcher () {
+  while (true) {
+    const { payload } = yield take(SUBMIT_INVITE_PATIENT_FORM);
+
+    try {
+      const requestURL = '/api/v1/dentists/me/invite_patient';
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      };
+      yield call(request, requestURL, params);
+
+      yield put(toastrActions.success('', 'Your invitation has been sent!'));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
