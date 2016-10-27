@@ -167,13 +167,21 @@ export default function createRoutes (store) {
       path: '/subscribe',
       name: 'subscribePage',
       getComponent (nextState, cb) {
-        Promise.all([
+        const importModules = Promise.all([
+          System.import('containers/SubscribePage/reducer'),
+          System.import('containers/SubscribePage/sagas'),
           System.import('containers/SubscribePage'),
-        ])
-          .then(([ component ]) => {
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('subscribe', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '/accounts/logout',

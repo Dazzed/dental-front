@@ -2,6 +2,7 @@
 import { takeLatest } from 'redux-saga';
 import { put, call, select } from 'redux-saga/effects';
 import { initialize } from 'redux-form';
+import { actions as toastrActions } from 'react-redux-toastr';
 
 
 import request from 'utils/request';
@@ -49,6 +50,7 @@ export function* updateDentistInfo () {
         });
 
       yield put(updateDentistInfoSuccess(dentistInfo));
+      yield put(toastrActions.success('', 'Your info has been updated!'));
     } catch (e) {
       console.log(e);
     }
