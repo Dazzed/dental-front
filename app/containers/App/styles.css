@@ -11,3 +11,6 @@ $nav-height: 6rem;
   margin-top: $nav-height;
 }
 
+.container-wrapper {
+  min-height: calc(100% - 45px);
+}

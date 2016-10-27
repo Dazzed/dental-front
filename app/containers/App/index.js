@@ -71,7 +71,7 @@ export default class App extends Component {
       <div styleName="wrapper">
         <NavBar />
         {userType ?
-          <div>
+          <div styleName="container-wrapper">
             {title}
             <div className="container">
               <div className="col-md-9">
