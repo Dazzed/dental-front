@@ -110,9 +110,6 @@ class MyFamilyMembers extends Component {
                 Age
               </Col>
               <Col md={2}>
-                Type
-              </Col>
-              <Col md={2}>
                 Edit  | Delete
               </Col>
             </Row>
@@ -139,9 +136,6 @@ class MyFamilyMembers extends Component {
                       {_member.birthDate &&
                         moment().diff(_member.birthDate, 'year', false)
                       }
-                    </Col>
-                    <Col md={2}>
-                      Custom
                     </Col>
                     <Col md={2}>
                       <Col md={6} styleName="action-icon">

@@ -37,7 +37,6 @@ function FamilyMember ({ details }) {
           }
         </Col>
         <Col md={2}>{MEMBER_RELATIONSHIP_TYPES[familyRelationship]}</Col>
-        <Col md={2}>Custom</Col>
         <Col md={2}>${subscription.monthly}</Col>
         <Col md={2} className="text-right">{memberSince}</Col>
       </Row>

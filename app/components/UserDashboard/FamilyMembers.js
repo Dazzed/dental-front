@@ -27,7 +27,6 @@ function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
       <Row styleName="list-header">
         <Col md={3}>Name</Col>
         <Col md={3}>Family Relationshiop</Col>
-        <Col md={2}>Type</Col>
         <Col md={1}>Fee</Col>
         <Col md={3} className="text-right">Member Since</Col>
       </Row>
