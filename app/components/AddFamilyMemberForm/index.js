@@ -106,14 +106,6 @@ class AddFamilyMemberForm extends React.Component {
           className="col-md-6"
         />
 
-        <Field
-          name="type"
-          type="text"
-          component={LabeledInput}
-          label="Account Type"
-          className="col-md-6"
-        />
-
         <Col sm={12}>
           <FormGroup>
             <Col sm={12}>
