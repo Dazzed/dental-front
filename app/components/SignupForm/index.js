@@ -10,9 +10,9 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
+import Checkbox from 'components/Checkbox';
 
 import signupFormValidator from './validator';
-import styles from './styles.css';
 
 
 @reduxForm({
@@ -113,47 +113,32 @@ class SignupForm extends React.Component {
           </Field>
         </Row>
 
-        <FormGroup>
-          <Col sm={12}>
-            <Field
-              name="accountHolder"
-              type="checkbox"
-              component="input"
-              className={styles.checkbox}
-            />
+        <Field
+          name="accountHolder"
+          component={Checkbox}
+        >
+          Will their primary account holder be joining the membership
+        </Field>
 
-            <span className={styles['checkbox-label']}>
-              Will their primary account holder be joining the membership
-            </span>
-          </Col>
-        </FormGroup>
-
-        <FormGroup>
-          <Col sm={12}>
-            <Field
-              name="tos"
-              type="checkbox"
-              component="input"
-              className={styles.checkbox}
-            />
-
-            <span className={styles['checkbox-label']}>
-              I have read and accept the <a href="">Terms of Conditions</a>
-            </span>
-          </Col>
-        </FormGroup>
+        <Field
+          name="tos"
+          component={Checkbox}
+        >
+          I have read and accept the <a href="">Terms of Conditions</a>
+        </Field>
 
         <FormGroup className="has-error">
           <Col sm={12}>
             {error && <HelpBlock>{error}</HelpBlock>}
           </Col>
         </FormGroup>
+
         <FormGroup>
           <Col sm={3}>
             <button
               type="submit"
               disabled={submitting}
-              className="btn-bg btn-cyan btn-round btn-outline"
+              className="btn btn-block btn-cyan btn-round btn-outline"
             >
               Continue
             </button>

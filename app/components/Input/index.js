@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Col from 'react-bootstrap/lib/Col';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -20,21 +21,27 @@ function selectComponent (type) {
  * Should be used with redux-forms.
  *
  */
-const Input = (
-  { input, label, type, meta, width, disabled, children, defaultValue }) => (
-  <Col sm={width || 12}>
-    <FormControl
-      {...input}
-      {...selectComponent(type)}
-      placeholder={label}
-      disabled={disabled}
-      defaultValue={defaultValue}
-    >
-      {children}
-    </FormControl>
-    {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
-  </Col>
-);
+const Input =
+  ({ input, label, type, meta, width, disabled, children, defaultValue }) => {
+    const rootClassName = classnames({
+      'has-error': meta.touched && meta.error,
+    });
+
+    return (
+      <Col sm={width || 12} className={rootClassName}>
+        <FormControl
+          {...input}
+          {...selectComponent(type)}
+          placeholder={label}
+          disabled={disabled}
+          defaultValue={defaultValue}
+        >
+          {children}
+        </FormControl>
+        {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
+      </Col>
+    );
+  };
 
 
 Input.propTypes = {
