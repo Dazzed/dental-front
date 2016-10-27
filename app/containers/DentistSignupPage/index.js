@@ -93,7 +93,7 @@ export default class SignupPage extends Component {
                     </p>
                     <br />
                     <button
-                      className="btn-bg btn-green btn-round btn-outline"
+                      className="btn-green btn-round btn-outline"
                       onClick={this.goToLoginPage}
                     >
                       Get Started

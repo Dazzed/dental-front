@@ -155,7 +155,7 @@ class DentistSignupForm extends React.Component {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-green btn-round btn-outline"
+              className="btn btn-block btn-green btn-round btn-outline"
             >
               Continue
             </button>

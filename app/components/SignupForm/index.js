@@ -138,7 +138,7 @@ class SignupForm extends React.Component {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-cyan btn-round btn-outline"
+              className="btn btn-block btn-cyan btn-round btn-outline"
             >
               Continue
             </button>

@@ -20,7 +20,7 @@ function AnonymousHeaderNav ({ goToLogin, goToSignUp }) {
       <Nav pullRight styleName="nav">
         <NavItem>
           <button
-            className="btn-green btn-round"
+            className="btn btn-green btn-round"
             onClick={goToLogin}
           >
             Log In
@@ -28,7 +28,7 @@ function AnonymousHeaderNav ({ goToLogin, goToSignUp }) {
         </NavItem>
         <NavItem>
           <button
-            className="btn-cyan btn-round"
+            className="btn btn-cyan btn-round"
             onClick={goToSignUp}
           >
             Sign Up
