@@ -292,7 +292,7 @@ export default class PatientCard extends Component {
                   bsStyle="primary"
                   className="btn-cyan btn-round"
                 >
-                  Edit custom membership
+                  Edit Membership
                 </Button>
               </Col>
             </Row>

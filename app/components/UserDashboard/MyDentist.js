@@ -174,26 +174,18 @@ class MyDentist extends Component {
                 Affordability: 5/5
               </Col>
               <Col md={4}>
-                <Button
-                  bsStyle="primary"
-                  block
-                  styleName="btn"
-                  className={classNames('btn-cyan', 'btn-shadow')}
-                  onClick={this.openMessageModal}
-                >
-                  Write Message
-                </Button>
+
               </Col>
               <Col md={4}>
-                <Button
-                  bsStyle="primary"
-                  block
-                  styleName="btn"
-                  className={classNames('btn-cyan', 'btn-shadow')}
-                  onClick={this.openReviewModal}
-                >
-                  Write Review
-                </Button>
+              <Button
+                bsStyle="primary"
+                block
+                styleName="btn"
+                className={classNames('btn-cyan', 'btn-shadow')}
+                onClick={this.openMessageModal}
+              >
+                Write Message
+              </Button>
               </Col>
             </Row>
           </Col>
