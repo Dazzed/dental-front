@@ -11,8 +11,17 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
+import { US_STATES } from 'common/constants';
+import forOwn from 'lodash/forOwn';
 
 import signupFormValidator from './validator';
+
+
+const states = [];
+
+forOwn(US_STATES, (value, key) => {
+  states.push([ key, value ]);
+});
 
 
 @reduxForm({
@@ -98,6 +107,76 @@ class SignupForm extends React.Component {
             </Col>
           </Row>
         </FormGroup>
+
+        <FormGroup>
+          <Col sm={12}>
+            <ControlLabel>Address</ControlLabel>
+          </Col>
+
+          <Row>
+            <Col md={12}>
+              <Field
+                name="state"
+                type="select"
+                component={Input}
+                label="State"
+                width={4}
+              >
+                {states.map(item =>
+                  <option
+                    value={item[0]}
+                    key={item[0]}
+                  >
+                    {item[1]}
+                  </option>
+                )}
+              </Field>
+
+              <Field
+                name="city"
+                type="text"
+                component={Input}
+                label="City"
+                width={4}
+              />
+
+              <Field
+                name="address"
+                type="text"
+                component={Input}
+                label="Street"
+                width={4}
+              />
+            </Col>
+          </Row>
+        </FormGroup>
+
+
+        <Row>
+          <Field
+            name="zipCode"
+            type="text"
+            component={LabeledInput}
+            label="Zip code"
+            width={6}
+          />
+
+          <Field
+            name="phone"
+            type="text"
+            component={LabeledInput}
+            label="Phone"
+            width={6}
+          />
+
+          <Field
+            name="birthDate"
+            type="date"
+            component={LabeledInput}
+            label="Birthdate"
+            width={6}
+          />
+        </Row>
 
         <Row>
           <Field

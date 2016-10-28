@@ -27,6 +27,8 @@ const Change = changeFactory();
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientCard extends Component {
   static propTypes = {
+    id: PropTypes.number,
+    accountHolder: PropTypes.bool,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     email: PropTypes.string,
@@ -81,6 +83,7 @@ export default class PatientCard extends Component {
       contactMethod,
       avatar,
       id,
+      accountHolder,
       familyMembers,
       subscriptions,
       phoneNumbers,
@@ -95,7 +98,7 @@ export default class PatientCard extends Component {
     let total = subscriptions ? subscriptions[0].monthly : 0;
 
     if (subscriptions) {
-      total = new Change({ dollars: total });
+      total = new Change({ dollars: accountHolder ? total : 0 });
       familyMembers.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });

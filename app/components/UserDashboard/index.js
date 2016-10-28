@@ -64,7 +64,7 @@ export default class UserDashboard extends Component {
     let total = myDentist ? myDentist.subscriptions[0].monthly : 0;
 
     if (myDentist) {
-      total = new Change({ dollars: total });
+      total = new Change({ dollars: loggedInUser.accountHolder ? total : 0 });
       myFamilyMembers.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });

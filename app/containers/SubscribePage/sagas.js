@@ -42,7 +42,8 @@ export function* requestPayBill () {
       yield put(push('/dashboard'));
       yield put(setBill({}));
       yield put(toastrActions.success('',
-        'Your subscription is now active.'));
+        'You have successfully activated your account.' +
+        ' You can now make an appointment.'));
     } catch (e) {
       console.log(e);
     }
