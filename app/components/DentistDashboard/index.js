@@ -89,6 +89,7 @@ export default class DentistDashboard extends Component {
               title={group.title}
               patients={patients[group.key]}
               sorter={sorter[group.key]}
+              displayTotal={index === 2}
             />
           )}
         </Well>
