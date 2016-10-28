@@ -4,6 +4,7 @@
 
 import React from 'react';
 
+import moment from 'moment';
 import { connect } from 'react-redux';
 // import { Row, Col } from 'react-bootstrap';
 // import SubscribeFormDental15 from 'components/SubscribeFormDental15';
@@ -13,7 +14,6 @@ import StripeCheckout from 'react-stripe-checkout';
 import { selectCurrentUser } from 'containers/App/selectors';
 import { billSelector } from './selectors';
 import { requestBill, requestPayBill } from './actions';
-import moment from 'moment';
 
 
 @connect(state => ({
