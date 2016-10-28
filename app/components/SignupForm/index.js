@@ -116,6 +116,14 @@ class SignupForm extends React.Component {
           <Row>
             <Col md={12}>
               <Field
+                name="address"
+                type="text"
+                component={Input}
+                label="Street"
+                width={4}
+              />
+
+              <Field
                 name="state"
                 type="select"
                 component={Input}
@@ -137,14 +145,6 @@ class SignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="City"
-                width={4}
-              />
-
-              <Field
-                name="address"
-                type="text"
-                component={Input}
-                label="Street"
                 width={4}
               />
             </Col>

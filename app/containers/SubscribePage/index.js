@@ -13,6 +13,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { selectCurrentUser } from 'containers/App/selectors';
 import { billSelector } from './selectors';
 import { requestBill, requestPayBill } from './actions';
+import moment from 'moment';
 
 
 @connect(state => ({
@@ -35,8 +36,19 @@ class SubscribePage extends React.Component {
   render () {
     const { bill, loggedInUser } = this.props;
 
-    if (!bill.total) {
-      return <div>No payment available</div>;
+    if (bill.status === 'active') {
+      return (
+        <div>
+          You paid your subscription and next payment will
+          be at: <strong>{moment(bill.endAt).format('LL')}</strong>
+        </div>
+      );
+    } else if (!bill.total && !loggedInUser.accountHolder) {
+      return (
+        <div>
+          You have to add member families to create a subscription.
+        </div>
+      );
     }
 
     return (
