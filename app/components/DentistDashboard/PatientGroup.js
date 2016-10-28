@@ -13,6 +13,7 @@ export default class PatientGroup extends Component {
     title: PropTypes.string,
     patients: PropTypes.array,
     sorter: PropTypes.object,
+    displayTotal: PropTypes.bool,
   }
 
   constructor (props) {
@@ -33,12 +34,23 @@ export default class PatientGroup extends Component {
   }
 
   render () {
-    const { title, patients } = this.props;
+    const { title, patients, displayTotal } = this.props;
+    const inactive = patients.filter(item =>
+      item.subscriptions[0].status === 'inactive'
+    ).length;
+
+    const active = patients.filter(item =>
+      item.subscriptions[0].status === 'active'
+    ).length;
+
+    const pastDue = patients.filter(item =>
+      item.subscriptions[0].status === 'past_due'
+    ).length;
 
     return (
       <div>
         <Row styleName="group-header">
-          <Col md={3} styleName="title">{title}</Col>
+          <Col md={3} styleName="title">{title} ({patients.length})</Col>
           <Col md={7} styleName="bar" />
           <Col md={2} styleName="sort-by" onClick={this.toggleSorter}>
             <span>Sort by</span>
@@ -49,6 +61,14 @@ export default class PatientGroup extends Component {
             }
           </Col>
         </Row>
+        {displayTotal ?
+          <Row>
+            <Col md={12}>
+              <p>
+              Inactive ({inactive}) - Active ({active}) - Past Due ({pastDue})
+              </p>
+            </Col>
+          </Row> : null}
         {patients &&
           patients.map((patient, index) =>
             <PatientCard {...patient} key={index} />
