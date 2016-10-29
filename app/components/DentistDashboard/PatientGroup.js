@@ -35,22 +35,31 @@ export default class PatientGroup extends Component {
 
   render () {
     const { title, patients, displayTotal } = this.props;
-    const inactive = patients.filter(item =>
-      item.subscriptions[0].status === 'inactive'
-    ).length;
 
-    const active = patients.filter(item =>
-      item.subscriptions[0].status === 'active'
-    ).length;
+    let inactive = 0;
+    let active = 0;
+    let pastDue = 0;
 
-    const pastDue = patients.filter(item =>
-      item.subscriptions[0].status === 'past_due'
-    ).length;
+    if (patients) {
+      inactive = patients.filter(item =>
+        item.subscriptions[0].status === 'inactive'
+      ).length;
+
+      active = patients.filter(item =>
+        item.subscriptions[0].status === 'active'
+      ).length;
+
+      pastDue = patients.filter(item =>
+        item.subscriptions[0].status === 'past_due'
+      ).length;
+    }
 
     return (
       <div>
         <Row styleName="group-header">
-          <Col md={3} styleName="title">{title} ({patients.length})</Col>
+          <Col md={3} styleName="title">
+            {title} ({patients ? patients.length : 0})
+          </Col>
           <Col md={7} styleName="bar" />
           <Col md={2} styleName="sort-by" onClick={this.toggleSorter}>
             <span>Sort by</span>
