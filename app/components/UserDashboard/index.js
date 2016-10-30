@@ -81,13 +81,6 @@ export default class UserDashboard extends Component {
 
         <div styleName="h3-with-button" className="clearfix">
           <h3>Your Family Members</h3>
-          <Button
-            bsStyle="primary"
-            styleName="btn-add-member"
-            onClick={this.goToMembersPage}
-          >
-            Add | edit family members
-          </Button>
         </div>
 
         <FamilyMembers
@@ -96,6 +89,16 @@ export default class UserDashboard extends Component {
           dueDate="Dec 7, 2017"
           members={myFamilyMembers}
         />
+        <div className="clearfix">
+          <Button
+            bsStyle="primary"
+            styleName="btn-add-member"
+            onClick={this.goToMembersPage}
+          >
+            Add | edit family members
+          </Button>
+        </div>
+        <br/>
       </div>
     );
   }
