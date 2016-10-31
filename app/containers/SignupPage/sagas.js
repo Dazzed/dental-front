@@ -7,6 +7,7 @@
 import { take, call, put } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { stopSubmit } from 'redux-form';
+import { actions as toastrActions } from 'react-redux-toastr';
 import mapValues from 'lodash/mapValues';
 
 import request from 'utils/request';
@@ -44,6 +45,7 @@ function* signup (data) {
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
 
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
     // dispatch LOGIN_ERROR action
     yield put(stopSubmit('signup', errors));
     return false;
