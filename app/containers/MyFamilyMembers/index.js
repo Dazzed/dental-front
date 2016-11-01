@@ -12,7 +12,6 @@ import moment from 'moment';
 import Well from 'react-bootstrap/lib/Well';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Button from 'react-bootstrap/lib/Button';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import FaEdit from 'react-icons/lib/fa/edit';
@@ -168,14 +167,12 @@ class MyFamilyMembers extends Component {
           </Col>
 
           <Col md={12}>
-            <Button
-              bsStyle="primary"
-              className="pull-right"
-              styleName="btn-add-member"
+            <button
+              className="btn btn-darkest-green btn-round pull-right"
               onClick={this.addNewMember.bind(this)}
             >
               Add new member
-            </Button>
+            </button>
           </Col>
         </Row>
 

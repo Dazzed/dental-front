@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 import FaGroup from 'react-icons/lib/fa/group';
 import FaEnvelope from 'react-icons/lib/fa/envelope';
@@ -280,23 +279,19 @@ export default class PatientCard extends Component {
           <div styleName="pane no-border">
             <Row>
               <Col md={4} sm={4}>
-                <Button
-                  block
-                  bsStyle="primary"
-                  className="btn-green btn-round"
+                <button
+                  className="btn btn-block btn-green btn-round"
                   onClick={this.openMessageModal}
                 >
                   Send a Message
-                </Button>
+                </button>
               </Col>
               <Col md={4} sm={5}>
-                <Button
-                  block
-                  bsStyle="primary"
-                  className="btn-cyan btn-round"
+                <button
+                  className="btn btn-block btn-cyan btn-round"
                 >
                   Edit Membership
-                </Button>
+                </button>
               </Col>
             </Row>
           </div>

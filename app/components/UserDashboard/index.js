@@ -8,7 +8,6 @@ import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import Button from 'react-bootstrap/lib/Button';
 import changeFactory from 'change-js';
 
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -90,13 +89,13 @@ export default class UserDashboard extends Component {
           members={myFamilyMembers}
         />
         <div className="clearfix">
-          <Button
-            bsStyle="primary"
+          <button
             styleName="btn-add-member"
+            className="btn btn-darkest-green btn-round"
             onClick={this.goToMembersPage}
           >
             Add | edit family members
-          </Button>
+          </button>
         </div>
 
         <br />
