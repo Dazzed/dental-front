@@ -19,6 +19,7 @@ import {
 
 import Intro from './Intro';
 import MyDentist from './MyDentist';
+import MyInfo from './MyInfo';
 import FamilyMembers from './FamilyMembers';
 
 import styles from './index.css';
@@ -77,6 +78,10 @@ export default class UserDashboard extends Component {
         <h3>Your Dentist</h3>
 
         <MyDentist dentist={myDentist} />
+
+        <h3>Your Info</h3>
+
+        <MyInfo user={loggedInUser} />
 
         <div styleName="h3-with-button" className="clearfix">
           <h3>Your Family Members</h3>

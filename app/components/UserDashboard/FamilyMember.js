@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 import moment from 'moment';
 
@@ -42,8 +41,12 @@ function FamilyMember ({ details }) {
       </Row>
 
       <Row>
-        <Col md={3} className="pull-right text-right">
-          <Button bsStyle="primary" styleName="btn-cancel">Cancel</Button>
+        <Col md={2} className="pull-right text-right">
+          <button
+            className="btn btn-green btn-round" styleName="btn-cancel"
+          >
+            Cancel
+          </button>
         </Col>
       </Row>
     </div>

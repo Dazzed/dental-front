@@ -1,6 +1,6 @@
 @import '../../assets/styles/variables';
 
-.my-dentist-container {
+.my-info-container {
   font-size: 16px;
   color: $light-gray;
   background-color: $white;
@@ -15,7 +15,7 @@
 }
 
 .avatar {
-  margin-top: 3em;
+  margin-top: 1em;
   width: 100%;
 
   img {
@@ -33,23 +33,6 @@
 .address,
 .affordability {
   color: $dark-gray;
-}
-
-.membership-fee {
-  text-align: right;
-  color: $dark-gray;
-
-  .fee {
-    color: $green;
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .child-fee {
-    color: $cyan;
-    font-size: 20px;
-    font-weight: bold;
-  }
 }
 
 .url-email-phone {
@@ -80,21 +63,4 @@
   .text {
     color: $light-cyan;
   }
-}
-
-/* star rating component */
-path {
-  /* fill: $dark-cyan; */
-}
-
-input[name='dentist-rating'] {
-  display: none;
-}
-
-.rating {
-  text-align: center;
-  color: $dark-cyan;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 3px;
 }

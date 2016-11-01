@@ -65,7 +65,7 @@ class SubscribePage extends React.Component {
             email={loggedInUser.email}
             token={this.props.requestPayBill}
           >
-            <button className="btn btn-primary">
+            <button className="btn btn-padding btn-green btn-round">
               Subscribe
             </button>
           </StripeCheckout>
