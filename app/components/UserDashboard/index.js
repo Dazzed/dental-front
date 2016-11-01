@@ -98,7 +98,9 @@ export default class UserDashboard extends Component {
             Add | edit family members
           </Button>
         </div>
-        <br/>
+
+        <br />
+
       </div>
     );
   }

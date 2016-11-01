@@ -4,16 +4,23 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 import SignupForm from 'components/SignupForm';
 
 import styles from './styles.css';
 import * as actions from './actions';
 
-
+@connect(
+  state => ({
+    isSignedUp: state.signup.patientCreated,
+    fullName: state.signup.fullName,
+  }),
+  mapDispatchToProps)
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
 class SignupPage extends Component {
@@ -21,6 +28,8 @@ class SignupPage extends Component {
   static propTypes = {
     onSignupRequest: React.PropTypes.func,
     location: React.PropTypes.object,
+    isSignedUp: React.PropTypes.bool,
+    fullName: React.PropTypes.string,
   };
 
   onSignupRequest = (data) => {
@@ -34,7 +43,11 @@ class SignupPage extends Component {
   }
 
   render () {
-    const { location: { query: { dentist } } } = this.props;
+    const {
+      isSignedUp,
+      fullName,
+      location: { query: { dentist } }
+    } = this.props;
 
     return (
       <div styleName="wrapper">
@@ -74,6 +87,24 @@ class SignupPage extends Component {
                 <div style={{ fontSize: '1.5rem' }}>$15.00/month</div>
               </Col>
             </Col>
+
+            <Modal show={isSignedUp}>
+              <Modal.Body styleName="modal-background">
+                <div className="row" styleName="no-padding">
+                  <div className="col-md-5" />
+                  <div className="col-md-7" styleName="main-content">
+                    <h2>Hi, { fullName }</h2>
+                    <br />
+
+                    <p>
+                      Thank you for signing up!
+                      Please check your email to activate your account.
+                    </p>
+                    <br />
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
           </Row>
         </div>
       </div>

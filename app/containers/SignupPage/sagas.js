@@ -5,12 +5,12 @@
 // /* eslint-disable no-constant-condition, consistent-return */
 
 import { take, call, put } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 import { stopSubmit } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 import mapValues from 'lodash/mapValues';
 
 import request from 'utils/request';
+import { signupSuccess } from 'containers/SignupPage/actions';
 import { SIGNUP_REQUEST } from './constants';
 
 // Bootstrap sagas
@@ -27,7 +27,9 @@ function* signupFlow () {
     const isSuccess = yield call(signup, payload);
 
     if (isSuccess) {
-      yield put(push('/accounts/login'));
+      yield put(signupSuccess({
+        fullName: `${payload.firstName} ${payload.lastName}`
+      }));
     }
   }
 }

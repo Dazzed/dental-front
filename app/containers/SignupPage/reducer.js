@@ -1,21 +1,21 @@
 import {
-  DENTIST_SIGNUP_SUCCESS,
+  SIGNUP_SUCCESS,
 } from './constants';
 
 
 const initialState = {
-  dentistCreated: false,
+  patientCreated: false,
   fullName: '',
 };
 
 
 export default function reducer (state = initialState, action) {
   switch (action.type) {
-    case DENTIST_SIGNUP_SUCCESS:
+    case SIGNUP_SUCCESS:
       return {
         ...state,
-        dentistCreated: true,
-        firstName: action.payload.fullName,
+        patientCreated: true,
+        fullName: action.payload.fullName,
       };
     default:
       return state;

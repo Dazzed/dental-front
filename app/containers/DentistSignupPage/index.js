@@ -78,7 +78,7 @@ export default class SignupPage extends Component {
                 <div className="row" styleName="no-padding">
                   <div className="col-md-5"> Icon should go here</div>
                   <div className="col-md-7" styleName="main-content">
-                    <h2>{ fullName },</h2>
+                    <h2>Hi, { fullName }</h2>
 
                     <p>Welcome to My Dental Marketplace!</p>
 

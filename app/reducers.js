@@ -8,7 +8,6 @@ import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import { reducer as toastrReducer } from 'react-redux-toastr';
 import appReducer from 'containers/App/reducer';
-import dentistSignupReducer from 'containers/DentistSignupPage/reducer';
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -19,7 +18,6 @@ export default function createReducer (asyncReducers) {
     form: formReducer,
     toastr: toastrReducer,
     global: appReducer,
-    dentistSignup: dentistSignupReducer,
     ...asyncReducers,
   });
 }
