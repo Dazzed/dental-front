@@ -11,7 +11,7 @@ const schema = {
   city: { presence: true },
   state: { presence: true },
   zipCode: { presence: true },
-  phone: { presence: true },
+  phone: { presence: true, format: /\(\d{3}\)\s*(\d{3})\-(\d{4})/ },
   birthDate: { presence: true },
   tos: {
     presence: { message: '^You have to accept the Terms of service' },

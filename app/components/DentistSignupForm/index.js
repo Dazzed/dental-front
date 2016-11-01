@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -89,7 +90,15 @@ class DentistSignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="First Name"
-                width={5}
+                width={4}
+              />
+
+              <Field
+                name="middleName"
+                type="text"
+                component={Input}
+                label="Middle Name"
+                width={4}
               />
 
               <Field
@@ -97,7 +106,7 @@ class DentistSignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="Last Name"
-                width={5}
+                width={4}
               />
             </Col>
           </Row>
@@ -122,6 +131,8 @@ class DentistSignupForm extends React.Component {
           <Field
             name="phone"
             type="text"
+            mask="(999) 999-9999"
+            maskChar=" "
             component={LabeledInput}
             label="Phone Number"
             width={5}
