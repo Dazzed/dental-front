@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
-import Button from 'react-bootstrap/lib/Button';
 import Well from 'react-bootstrap/lib/Well';
 
 import { fetchMyPatients } from 'containers/Dashboard/actions';
@@ -74,12 +73,12 @@ export default class DentistDashboard extends Component {
 
         <div styleName="h3-with-button" className="clearfix">
           <h3>List Total Active Members</h3>
-          <Button
-            className="btn btn-round btn-primary"
+          <button
+            className="btn btn-padding btn-darkest-green btn-round"
             onClick={this.openInviteModal}
           >
             Invite client
-          </Button>
+          </button>
         </div>
 
         <Well>

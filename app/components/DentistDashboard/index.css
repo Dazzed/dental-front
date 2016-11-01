@@ -1,3 +1,5 @@
+@import '../../assets/styles/variables';
+
 .wrapper {
   display: inherit;
 }
@@ -10,8 +12,5 @@
   button {
     float: right;
     margin: 1em  1em 0.6em;
-    background-color: #2A483A;
-    border: #2A483A;
-    padding: 0.3em 2em;
   }
 }

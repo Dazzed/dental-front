@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import { getItem } from 'utils/localStorage';
 
 import {
@@ -30,7 +31,10 @@ export default function appReducer (state = initialState, action) {
     case SET_USER_DATA:
       return {
         ...state,
-        currentUser: payload.currentUser,
+        currentUser: {
+          ...payload.currentUser,
+          phone: get(payload, 'currentUser.phoneNumbers[0].number'),
+        }
       };
 
     case DENTIST_SPECIALTIES_SUCCESS:

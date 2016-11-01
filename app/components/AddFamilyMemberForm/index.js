@@ -114,7 +114,7 @@ class AddFamilyMemberForm extends React.Component {
               <button
                 type="submit"
                 disabled={submitting}
-                className="btn-cyan btn-round"
+                className="btn btn-padding btn-cyan btn-round"
               >
                 Save
               </button>

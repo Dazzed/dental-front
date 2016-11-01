@@ -76,7 +76,7 @@ export default class HomePage extends React.Component {
               <Nav pullRight styleName="nav">
                 <NavItem>
                   <button
-                    className="btn-green btn-round"
+                    className="btn-green btn-round btn-outline"
                     onClick={this.goToLogin}
                   >
                     Log In
@@ -84,7 +84,7 @@ export default class HomePage extends React.Component {
                 </NavItem>
                 <NavItem>
                   <button
-                    className="btn-cyan btn-round"
+                    className="btn-cyan btn-round btn-outline"
                     onClick={this.goToSignUp}
                   >
                     Dentist Portal
@@ -201,14 +201,14 @@ export default class HomePage extends React.Component {
               potential.
             </p>
             <button
-              className="btn-cyan btn-round"
+              className="btn-cyan btn-round btn-outline"
               onClick={this.goToSignUp}
             >
               Dentist Portal
             </button>
             &nbsp;&nbsp;
             <button
-              className="btn-green btn-round"
+              className="btn-green btn-round btn-outline"
               onClick={this.goToLearnMore}
             >
               Learn More

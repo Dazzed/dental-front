@@ -4,16 +4,23 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 import SignupForm from 'components/SignupForm';
 
 import styles from './styles.css';
 import * as actions from './actions';
 
-
+@connect(
+  state => ({
+    isSignedUp: state.signup.patientCreated,
+    fullName: state.signup.fullName,
+  }),
+  mapDispatchToProps)
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
 class SignupPage extends Component {
@@ -21,6 +28,8 @@ class SignupPage extends Component {
   static propTypes = {
     onSignupRequest: React.PropTypes.func,
     location: React.PropTypes.object,
+    isSignedUp: React.PropTypes.bool,
+    fullName: React.PropTypes.string,
   };
 
   onSignupRequest = (data) => {
@@ -34,7 +43,11 @@ class SignupPage extends Component {
   }
 
   render () {
-    const { location: { query: { dentist } } } = this.props;
+    const {
+      isSignedUp,
+      fullName,
+      location: { query: { dentist } }
+    } = this.props;
 
     return (
       <div styleName="wrapper">
@@ -53,27 +66,81 @@ class SignupPage extends Component {
             </Col>
 
             <Col md={6} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
-              <h2>No more toothache,<br /> no more tooth decay</h2>
+              <Row>
+                <Col md={12}>
+                  <h2>
+                    No more toothache,<br /> no more tooth decay
+                  </h2>
+                  <br />
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={6}>
+                  <div>Adults</div>
+                  <div style={{ fontSize: '1.5rem' }}>$20.00/month</div>
+                </Col>
+                <Col md={6}>
+                  <div>Kids 12 and under</div>
+                  <div style={{ fontSize: '1.5rem' }}>$15.00/month</div>
+                </Col>
+              </Row>
+
+              <h3>Adult membership will include</h3>
               <ul>
-                <li>Basic Dental Cleaning every 6 months</li>
-                <li>Exams and X-rays as needed</li>
-                <li>Fluoride treatment for kids once per year</li>
-                <li>Emergency exam and xray once a year</li>
-                <li>1 emergency exam and xrays per year</li>
-                <li>10% Discount on any needed treatment</li>
+                <li>2 Cleanings per year</li>
+                <li>1 comprehensive Exam/year</li>
                 <li>
-                  Affordable memberships plans starting as low as $20/month
+                  1 Periodic Exam-This is completed with cleaning every time
+                   after the comp exam
+                </li>
+                <li>1 bitewing xray per year</li>
+                <li>1 Panorex Xray Completed once every 3 years</li>
+                <li>Emergency exam Allowance of 1 per year</li>
+                <li>
+                  Periapical film used with emergency exam Allowance of
+                  1 per year
                 </li>
               </ul>
-              <Col md={6}>
-                <div>Adults</div>
-                <div style={{ fontSize: '1.5rem' }}>$20.00/month</div>
-              </Col>
-              <Col md={6}>
-                <div>Kids 12 and under</div>
-                <div style={{ fontSize: '1.5rem' }}>$15.00/month</div>
-              </Col>
+
+              <h3>Child membership will include</h3>
+              <ul>
+                <li>2 Cleanings per year</li>
+                <li>1 comprehensive Exam/year</li>
+                <li>
+                  1 Periodic Exam-This is completed with cleaning every time
+                   after the comp exam
+                </li>
+                <li>1 bitewing xray per year</li>
+                <li>1 Panorex Xray Completed once every 3 years</li>
+                <li>Emergency exam Allowance of 1 per year</li>
+                <li>
+                  Periapical film used with emergency exam Allowance of
+                  1 per year
+                </li>
+                <li>
+                  1 fluoride treatment
+                </li>
+              </ul>
             </Col>
+
+            <Modal show={isSignedUp}>
+              <Modal.Body styleName="modal-background">
+                <div className="row" styleName="no-padding">
+                  <div className="col-md-5" />
+                  <div className="col-md-7" styleName="main-content">
+                    <h2>Hi, { fullName }</h2>
+                    <br />
+
+                    <p>
+                      Thank you for signing up!
+                      Please check your email to activate your account.
+                    </p>
+                    <br />
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
           </Row>
         </div>
       </div>

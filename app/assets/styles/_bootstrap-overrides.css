@@ -43,7 +43,7 @@
   &:active { padding-bottom: 0.2rem; }
 }
 
-:global(.btn) {
+:global(.btn-padding) {
   padding-left: 2rem;
   padding-right: 2rem;
 }

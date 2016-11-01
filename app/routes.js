@@ -76,10 +76,12 @@ export default function createRoutes (store) {
       name: 'signupPage',
       getComponent (nextState, cb) {
         Promise.all([
+          System.import('containers/SignupPage/reducer'),
           System.import('containers/SignupPage/sagas'),
           System.import('containers/SignupPage')
         ])
-          .then(([ sagas, component ]) => {
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('signup', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
@@ -91,10 +93,12 @@ export default function createRoutes (store) {
       name: 'dentistSignupPage',
       getComponent (nextState, cb) {
         Promise.all([
+          System.import('containers/DentistSignupPage/reducer'),
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([ sagas, component ]) => {
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('dentistSignup', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })

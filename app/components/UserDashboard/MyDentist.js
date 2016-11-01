@@ -1,10 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import CSSModules from 'react-css-modules';
-import classNames from 'classnames';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
-import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 import FaChain from 'react-icons/lib/fa/chain';
 import FaEnvelope from 'react-icons/lib/fa/envelope';
@@ -12,6 +10,7 @@ import FaPhone from 'react-icons/lib/fa/phone';
 
 // import StarRating from 'react-star-rating';
 
+import { US_STATES } from 'common/constants';
 import WriteMessageModal from 'components/WriteMessageModal';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
@@ -105,7 +104,7 @@ class MyDentist extends Component {
                 <div styleName="name">{firstName} {lastName}</div>
                 {dentistInfo.city && dentistInfo.state &&
                   <div styleName="address">
-                    {dentistInfo.city}, {dentistInfo.state}
+                    {dentistInfo.city}, {US_STATES[dentistInfo.state]}
                   </div>
                 }
               </Col>
@@ -177,15 +176,12 @@ class MyDentist extends Component {
               <Col md={4} />
 
               <Col md={4}>
-                <Button
-                  bsStyle="primary"
-                  block
-                  styleName="btn"
-                  className={classNames('btn-cyan', 'btn-shadow')}
+                <button
+                  className="btn btn-block btn-cyan btn-round btn-shadow"
                   onClick={this.openMessageModal}
                 >
                   Write Message
-                </Button>
+                </button>
               </Col>
             </Row>
           </Col>

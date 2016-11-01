@@ -26,7 +26,7 @@ const Checkbox = ({ input, meta: { touched, error }, children }) => (
 Checkbox.propTypes = {
   input: React.PropTypes.object.isRequired,
   meta: React.PropTypes.object.isRequired,
-  children: React.PropTypes.array,
+  children: React.PropTypes.any,
 };
 
 export default CSSModules(styles)(Checkbox);

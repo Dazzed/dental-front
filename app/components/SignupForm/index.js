@@ -148,6 +148,7 @@ class SignupForm extends React.Component {
                 label="State"
                 width={6}
               >
+                <option value="">Select state</option>
                 {states.map(item =>
                   <option
                     value={item[0]}
