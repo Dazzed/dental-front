@@ -127,16 +127,26 @@ class SignupForm extends React.Component {
                 name="address"
                 type="text"
                 component={Input}
-                label="Street"
-                width={4}
+                label="Street 1"
+                width={6}
               />
+
+              <Field
+                name="address2"
+                type="text"
+                component={Input}
+                label="Street 2"
+                width={6}
+              />
+
+              <div className="col-sm-12" style={{ marginTop: 10 }} />
 
               <Field
                 name="state"
                 type="select"
                 component={Input}
                 label="State"
-                width={4}
+                width={6}
               >
                 {states.map(item =>
                   <option
@@ -153,7 +163,7 @@ class SignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="City"
-                width={4}
+                width={6}
               />
             </Col>
           </Row>
