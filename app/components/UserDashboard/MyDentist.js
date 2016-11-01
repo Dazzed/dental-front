@@ -12,6 +12,7 @@ import FaPhone from 'react-icons/lib/fa/phone';
 
 // import StarRating from 'react-star-rating';
 
+import { US_STATES } from 'common/constants';
 import WriteMessageModal from 'components/WriteMessageModal';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
@@ -105,7 +106,7 @@ class MyDentist extends Component {
                 <div styleName="name">{firstName} {lastName}</div>
                 {dentistInfo.city && dentistInfo.state &&
                   <div styleName="address">
-                    {dentistInfo.city}, {dentistInfo.state}
+                    {dentistInfo.city}, {US_STATES[dentistInfo.state]}
                   </div>
                 }
               </Col>
