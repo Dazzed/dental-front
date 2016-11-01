@@ -93,6 +93,8 @@ class AddFamilyMemberForm extends React.Component {
         <Field
           name="phone"
           type="text"
+          mask="(999) 999-9999"
+          maskChar=" "
           component={LabeledInput}
           label="Phone Number"
           className="col-md-6"

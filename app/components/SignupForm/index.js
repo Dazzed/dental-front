@@ -94,7 +94,15 @@ class SignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="First Name"
-                width={5}
+                width={4}
+              />
+
+              <Field
+                name="middleName"
+                type="text"
+                component={Input}
+                label="Middle Name"
+                width={4}
               />
 
               <Field
@@ -102,7 +110,7 @@ class SignupForm extends React.Component {
                 type="text"
                 component={Input}
                 label="Last Name"
-                width={5}
+                width={4}
               />
             </Col>
           </Row>
@@ -164,6 +172,8 @@ class SignupForm extends React.Component {
           <Field
             name="phone"
             type="text"
+            mask="(999) 999-9999"
+            maskChar=" "
             component={LabeledInput}
             label="Phone"
             width={6}

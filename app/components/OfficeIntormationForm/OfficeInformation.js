@@ -50,6 +50,8 @@ export default class OfficeInformation extends React.Component {
           <Field
             name="phone"
             type="text"
+            mask="(999) 999-9999"
+            maskChar=" "
             component={LabeledInput}
             label="Office Phone Number"
             width={12}

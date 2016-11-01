@@ -6,14 +6,21 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import InputMask from 'react-input-mask';
 
 
-function selectComponent (type) {
-  if (type === 'select' || type === 'textarea') {
-    return { componentClass: type };
+function selectComponent (type, mask, maskChar) {
+  if (mask) {
+    return { componentClass: InputMask, mask, maskChar };
   }
 
-  return { type };
+  switch (type) {
+    case 'select':
+    case 'textarea':
+      return { componentClass: type };
+    default:
+      return { type };
+  }
 }
 
 
@@ -23,33 +30,34 @@ function selectComponent (type) {
  * Should be used with redux-forms.
  *
  */
-const LabeledInput =
-  ({ input, label, type, meta, width, children, className }) => {
-    const rootClassName = classnames({
-      'has-error': meta.touched && meta.error,
-    });
+const LabeledInput = ({
+  input, label, type, meta, width, children, className, mask, maskChar,
+}) => {
+  const rootClassName = classnames({
+    'has-error': meta.touched && meta.error,
+  });
 
-    return (
-      <div className={className || 'col-md-12'}>
-        <FormGroup className={rootClassName}>
-          <Col sm={12}>
-            <ControlLabel>{label}</ControlLabel>
-          </Col>
-          <Col sm={width || 12}>
-            <FormControl
-              {...input}
-              {...selectComponent(type)}
-              placeholder={label}
-            >
-              {children}
-            </FormControl>
-            {meta.touched && meta.error &&
-              <HelpBlock>{meta.error}</HelpBlock>}
-          </Col>
-        </FormGroup>
-      </div>
-    );
-  };
+  return (
+    <div className={className || 'col-md-12'}>
+      <FormGroup className={rootClassName}>
+        <Col sm={12}>
+          <ControlLabel>{label}</ControlLabel>
+        </Col>
+        <Col sm={width || 12}>
+          <FormControl
+            {...input}
+            {...selectComponent(type, mask, maskChar)}
+            placeholder={label}
+          >
+            {children}
+          </FormControl>
+          {meta.touched && meta.error &&
+            <HelpBlock>{meta.error}</HelpBlock>}
+        </Col>
+      </FormGroup>
+    </div>
+  );
+};
 
 
 LabeledInput.propTypes = {
@@ -60,6 +68,8 @@ LabeledInput.propTypes = {
   width: React.PropTypes.number,
   children: React.PropTypes.array,
   className: React.PropTypes.string,
+  mask: React.PropTypes.string,
+  maskChar: React.PropTypes.string,
 };
 
 
