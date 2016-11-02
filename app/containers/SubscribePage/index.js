@@ -59,7 +59,7 @@ class SubscribePage extends React.Component {
             name="My dental marketplace"
             description="Subscription"
             ComponentClass="div"
-            panelLabel="Give Money"
+            panelLabel="Process Payment"
             amount={bill.total}
             currency="USD"
             email={loggedInUser.email}
