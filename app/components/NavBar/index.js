@@ -14,7 +14,8 @@ import Image from 'react-bootstrap/lib/Image';
 
 import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
 import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
-import logo from 'assets/images/dental-logo.png';
+// import logo from 'assets/images/dental-logo.png';
+import logo from 'assets/images/logo2.png';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 import styles from './styles.css';
@@ -49,7 +50,7 @@ export default class NavBar extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">
-              <Image src={logo} />
+              <Image src={logo} style={{width: 200}} />
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
