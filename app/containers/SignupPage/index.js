@@ -37,7 +37,6 @@ class SignupPage extends Component {
 
     if (dentist) {
       data.dentistId = parseInt(dentist, 10); // eslint-disable-line
-      data.birthDate = '1988-05-06'; // eslint-disable-line no-param-reassign
       this.props.onSignupRequest(data);
     }
   }
