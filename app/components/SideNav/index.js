@@ -19,7 +19,7 @@ const navItems = {
   dentist: [
     { text: 'Dentist dashboard', link: '/dashboard' },
     { text: 'Edit office info', link: '/dentist/office/edit' },
-    { text: 'Manage Members', link: '/dentist/family-members' },
+    { text: 'Manage members', link: '/dentist/family-members' },
     // { text: 'Edit membership', link: '/custom-membership' },
     { text: 'Contact support', link: '/temp_link' },
     // { text: 'Reports', link: '/temp_link' },
