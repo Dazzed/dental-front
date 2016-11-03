@@ -20,6 +20,14 @@ import {
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
   SUBMIT_INVITE_PATIENT_FORM,
+  SET_EDITING_MEMBER,
+  SUBMIT_MEMBER_FORM,
+  ADD_MEMBER_SUCCESS,
+  EDIT_MEMBER_SUCCESS,
+  DELETE_MEMBER_REQUEST,
+  DELETE_MEMBER_SUCCESS,
+  REQUEST_PAYMENT_BILL,
+  SET_PAYMENT_BILL,
 } from 'containers/Dashboard/constants';
 
 export function fetchMyDentist () {
@@ -122,5 +130,71 @@ export function submitInvitePatientForm (payload) {
   return {
     type: SUBMIT_INVITE_PATIENT_FORM,
     payload,
+  };
+}
+
+export function setEditingMember (payload, userId) {
+  return {
+    type: SET_EDITING_MEMBER,
+    payload,
+    userId,
+  };
+}
+
+
+export function submitMemberForm (payload, userId) {
+  return {
+    type: SUBMIT_MEMBER_FORM,
+    payload,
+    userId,
+  };
+}
+
+export function memberAdded (payload, userId) {
+  return {
+    type: ADD_MEMBER_SUCCESS,
+    payload,
+    userId,
+  };
+}
+
+export function memberEdited (payload, userId) {
+  return {
+    type: EDIT_MEMBER_SUCCESS,
+    payload,
+    userId,
+  };
+}
+
+export function deleteMember (payload, userId) {
+  return {
+    type: DELETE_MEMBER_REQUEST,
+    payload,
+    userId,
+  };
+}
+
+export function memberDeleted (memberId, userId) {
+  return {
+    type: DELETE_MEMBER_SUCCESS,
+    memberId,
+    userId,
+  };
+}
+
+
+export function requestPayBill (payload, userId) {
+  return {
+    type: REQUEST_PAYMENT_BILL,
+    payload,
+    userId,
+  };
+}
+
+
+export function setBill (userId) {
+  return {
+    type: SET_PAYMENT_BILL,
+    userId,
   };
 }

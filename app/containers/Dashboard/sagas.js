@@ -13,6 +13,9 @@ import {
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
   SUBMIT_INVITE_PATIENT_FORM,
+  SUBMIT_MEMBER_FORM,
+  DELETE_MEMBER_REQUEST,
+  REQUEST_PAYMENT_BILL,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -24,6 +27,10 @@ import {
   myPatientsFetchingError,
   conversationFetched,
   conversationFetchingError,
+  memberEdited,
+  memberAdded,
+  memberDeleted,
+  setBill,
 } from 'containers/Dashboard/actions';
 
 
@@ -185,9 +192,98 @@ export function* submitInvitePatientFormWatcher () {
   }
 }
 
+export function* submitFormWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
+    const memberId = payload.id;
+
+    try {
+      let requestURL = `/api/v1/users/${userId}/family-members`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      };
+
+      if (memberId) {
+        params.method = 'PUT';
+        requestURL += `/${memberId}`;
+      }
+
+      const response = yield call(request, requestURL, params);
+
+      let message;
+      if (memberId) {
+        message = `'${payload.firstName} ${payload.lastName}'
+          has been modified.`;
+      } else {
+        message = `'${payload.firstName} ${payload.lastName}'
+          has been added.`;
+      }
+      yield put(toastrActions.success('', message));
+
+      if (memberId) {
+        yield put(memberEdited(response.data, userId));
+      } else {
+        yield put(memberAdded(response.data, userId));
+      }
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+
+export function* deleteMemberWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(DELETE_MEMBER_REQUEST);
+
+    try {
+      const requestURL =
+        `/api/v1/users/${userId}/family-members/${payload.id}`;
+      const params = {
+        method: 'DELETE',
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `'${payload.firstName} ${payload.lastName}'
+        has been deleted.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(memberDeleted(payload.id, userId));
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+
+export function* requestPayBill () {
+  yield* takeLatest(REQUEST_PAYMENT_BILL, function* (action) {
+    try {
+      const body = { token: action.payload.id };
+
+      yield call(request, `/api/v1/users/${action.userId}/charge-bill`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+
+      yield put(setBill(action.userId));
+      yield put(toastrActions.success('',
+        'You have successfully activated the account.'));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
 
 // All sagas to be loaded
 export default [
   userDashboardSaga,
   dentistDashboardSaga,
+  submitFormWatcher,
+  deleteMemberWatcher,
+  requestPayBill,
 ];

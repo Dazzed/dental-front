@@ -11,12 +11,9 @@ import Input from 'components/Input';
 import { selectEditingMember } from 'containers/MyFamilyMembers/selectors';
 import FamilyMemberValidator from './validator';
 
+const createdClasses = {};
 
-@reduxForm({
-  form: 'familyMember',
-  enableReinitialize: true,
-  validate: FamilyMemberValidator,
-})
+
 class AddFamilyMemberForm extends React.Component {
 
   static propTypes = {
@@ -46,6 +43,7 @@ class AddFamilyMemberForm extends React.Component {
             <Field
               name="avatar"
               type="file"
+              label="avatar"
               component={Input}
             />
           </Col>
@@ -133,4 +131,22 @@ function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps)(AddFamilyMemberForm);
+export default connect(mapStateToProps)(reduxForm({
+  form: 'familyMember',
+  enableReinitialize: true,
+  validate: FamilyMemberValidator,
+})(AddFamilyMemberForm));
+
+
+export function addFamilyMemberFactory (name, _mapStateToProps) {
+  if (!createdClasses[name]) {
+    createdClasses[name] = connect(_mapStateToProps)(reduxForm({
+      form: name,
+      enableReinitialize: true,
+      validate: FamilyMemberValidator,
+    })(AddFamilyMemberForm));
+  }
+
+  return createdClasses[name];
+}
+
