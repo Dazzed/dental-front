@@ -110,16 +110,12 @@ export default function createRoutes (store) {
       name: 'dashboard',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/Dashboard/reducer'),
-          System.import('containers/Dashboard/sagas'),
           System.import('containers/Dashboard'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('dashboard', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([ component ]) => {
           renderRoute(component);
         });
 
@@ -225,6 +221,14 @@ export default function createRoutes (store) {
           .then(([ component ]) => {
             loadModule(cb)(component);
           })
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/family-members',
+      name: 'editDentistMember',
+      getComponent (location, cb) {
+        System.import('containers/EditDentistMember')
+          .then(loadModule(cb))
           .catch(errorLoading);
       },
     }, {

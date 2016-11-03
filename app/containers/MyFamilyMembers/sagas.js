@@ -55,11 +55,11 @@ export function* fetchMyFamily () {
 
 export function* submitFormWatcher () {
   while (true) {
-    const { payload } = yield take(SUBMIT_MEMBER_FORM);
+    const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
     const memberId = payload.id;
 
     try {
-      let requestURL = '/api/v1/users/me/family-members';
+      let requestURL = `/api/v1/users/${userId || 'me'}/family-members`;
       const params = {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -96,10 +96,11 @@ export function* submitFormWatcher () {
 
 export function* deleteMemberWatcher () {
   while (true) {
-    const { payload } = yield take(DELETE_MEMBER_REQUEST);
+    const { payload, userId } = yield take(DELETE_MEMBER_REQUEST);
 
     try {
-      const requestURL = `/api/v1/users/me/family-members/${payload.id}`;
+      const requestURL =
+        `/api/v1/users/${userId || 'me'}/family-members/${payload.id}`;
       const params = {
         method: 'DELETE',
       };

@@ -47,11 +47,13 @@ const rootRoute = {
     // We need to inject sagas after loaded.
     Promise.all([
       System.import('containers/App/sagas'),
+      System.import('containers/Dashboard/sagas'),
     ])
-      .then(([ sagas ]) => {
+      .then(([ sagas, dashboard ]) => {
         cb(null, App);
         const { injectSagas } = getHooks(store);
         injectSagas(sagas.default);
+        injectSagas(dashboard.default);
       });
   }
 };

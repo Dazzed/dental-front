@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import { get, filter } from 'lodash';
 import moment from 'moment';
 
+
+const selectors = {};
+
 /**
  * Direct selector to the dashboard state domain
  */
@@ -81,7 +84,19 @@ const selectConversation = createSelector(
   (substate) => substate.messages
 );
 
+export function familyMembersToEditSelectorFactory (userId) {
+  if (!selectors[userId]) {
+    selectors[userId] = createSelector(
+      selectDashboardDomain,
+      (substate) => substate.familyMemberForms[userId]
+    );
+  }
+
+  return selectors[userId];
+}
+
 export default selectDashboard;
+
 export {
   selectDashboardDomain,
   selectUserDashboard,
