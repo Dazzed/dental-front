@@ -17,11 +17,11 @@ class ContactSupportForm extends React.Component {
 
   static propTypes = {
     handleSubmit: React.PropTypes.func.isRequired,
-    isSubmitting: React.PropTypes.bool.isRequired,
+    isSaving: React.PropTypes.bool.isRequired,
   };
 
   render () {
-    const { handleSubmit, isSubmitting } = this.props;
+    const { handleSubmit, isSaving } = this.props;
 
     return (
       <form
@@ -48,10 +48,10 @@ class ContactSupportForm extends React.Component {
             <Col sm={12}>
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSaving}
                 className="btn btn-padding btn-cyan btn-round"
               >
-                {isSubmitting &&
+                {isSaving &&
                   <LoadingSpinner size={16} />
                 }
                 Send Email

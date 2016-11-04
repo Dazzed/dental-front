@@ -37,6 +37,7 @@ export default function appReducer (state = initialState, action) {
             : {
               ...payload.currentUser,
               phone: get(payload, 'currentUser.phoneNumbers[0].number'),
+              address: get(payload, 'currentUser.addresses[0].value'),
             }
       };
 

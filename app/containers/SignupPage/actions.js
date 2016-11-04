@@ -29,5 +29,5 @@ export function signupError (payload) {
 export function clearSignupStatus () {
   return {
     type: CLEAR_SIGNUP_STATUS,
-  }
+  };
 }
