@@ -31,6 +31,7 @@ class SignupPage extends Component {
 
   static propTypes = {
     onSignupRequest: React.PropTypes.func,
+    clearSignupStatus: React.PropTypes.func,
     location: React.PropTypes.object,
     isSignedUp: React.PropTypes.bool,
     fullName: React.PropTypes.string,
@@ -47,6 +48,7 @@ class SignupPage extends Component {
   }
 
   goToHomePage = () => {
+    this.props.clearSignupStatus();
     this.props.changeRoute('/');
   }
 
@@ -148,6 +150,7 @@ function mapDispatchToProps (dispatch) {
     onSignupRequest: (data) => {
       dispatch(actions.signupRequest(omit(data, 'unknown')));
     },
+    clearSignupStatus: () => dispatch(actions.clearSignupStatus()),
     changeRoute: (url) => dispatch(push(url)),
   };
 }
