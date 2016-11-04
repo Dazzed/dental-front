@@ -8,12 +8,12 @@ const initialState = {
   submitting: false,
 };
 
-export default function profileReducer (state = initialState, action) {
+export default function profilePageReducer (state = initialState, action) {
   switch (action.type) {
     case SUBMIT_PROFILE_FORM:
       return {
         ...state,
-        submitting: true
+        submitting: true,
       };
     case SUBMIT_PROFILE_FORM_SUCCESS:
     case SUBMIT_PROFILE_FORM_ERROR:

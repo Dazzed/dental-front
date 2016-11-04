@@ -1,3 +1,6 @@
+export const FETCH_PROFILE_DATA =
+  'app/ProfilePage/FETCH_PROFILE_DATA';
+
 export const SUBMIT_PROFILE_FORM =
   'app/ProfilePage/SUBMIT_PROFILE_FORM';
 

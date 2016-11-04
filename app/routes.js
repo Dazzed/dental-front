@@ -166,7 +166,7 @@ export default function createRoutes (store) {
     }, {
       onEnter: redirectToLogin,
       path: '/accounts/profile',
-      name: 'profile',
+      name: 'profilePage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/ProfilePage/reducer'),
@@ -177,7 +177,7 @@ export default function createRoutes (store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('profile', reducer.default);
+          injectReducer('profilePage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });
