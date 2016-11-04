@@ -4,13 +4,15 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
+import Image from 'react-bootstrap/lib/Image';
 import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
-import { push } from 'react-router-redux';
 
+import logo from 'assets/images/logo2.png';
 import DentistSignupForm from 'components/DentistSignupForm';
 import { dentistSpecialtiesRequest } from 'containers/App/actions';
 
@@ -33,16 +35,24 @@ export default class SignupPage extends Component {
     getDentistSpecialties: React.PropTypes.func,
     isSignedUp: React.PropTypes.bool,
     fullName: React.PropTypes.string,
+    changeRoute: React.PropTypes.func,
   };
 
   constructor (props) {
     super(props);
     this.onSignupRequest = this.props.onSignupRequest.bind(this);
-    this.goToLoginPage = this.props.goToLoginPage.bind(this);
   }
 
   componentWillMount () {
     this.props.getDentistSpecialties();
+  }
+
+  goToHomePage = () => {
+    this.props.changeRoute('/');
+  }
+
+  goToLoginPage = () => {
+    this.props.changeRoute('/accounts/login');
   }
 
   render () {
@@ -73,10 +83,15 @@ export default class SignupPage extends Component {
               </ul>
             </Col>
 
-            <Modal show={isSignedUp}>
+            <Modal show={isSignedUp} onHide={this.goToHomePage}>
               <Modal.Body styleName="modal-background">
-                <div className="row" styleName="no-padding">
-                  <div className="col-md-5"> Icon should go here</div>
+                <div className="row" styleName="row">
+                  <div className="col-md-5 text-center">
+                    <Image
+                      src={logo}
+                      style={{ width: 200 }}
+                    />
+                  </div>
                   <div className="col-md-7" styleName="main-content">
                     <h2>Hi, { fullName }</h2>
 
@@ -120,5 +135,6 @@ function mapDispatchToProps (dispatch) {
     goToLoginPage: () => {
       dispatch(push('/accounts/login'));
     },
+    changeRoute: (url) => dispatch(push(url)),
   };
 }
