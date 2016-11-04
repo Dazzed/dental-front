@@ -283,12 +283,10 @@ export default class PatientCard extends Component {
                   className="btn btn-block btn-green btn-round"
                   onClick={this.openMessageModal}
                 >
-                  Send a Message
+                  Messages
                 </button>
               </Col>
-              <Col md={4} sm={5}>
-                
-              </Col>
+              <Col md={4} sm={5} />
             </Row>
           </div>
 

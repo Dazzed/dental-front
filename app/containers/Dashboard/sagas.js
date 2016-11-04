@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { reset } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 import get from 'lodash/get';
 import request from 'utils/request';
@@ -139,6 +140,7 @@ export function* submitMessageFormWatcher () {
       yield call(request, requestURL, params);
 
       yield put(toastrActions.success('', 'Your message has been sent!'));
+      yield put(reset('writeMessage'));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
