@@ -4,16 +4,20 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
+import Image from 'react-bootstrap/lib/Image';
 import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
 
+import logo from 'assets/images/logo2.png';
 import SignupForm from 'components/SignupForm';
 
-import styles from './styles.css';
 import * as actions from './actions';
+import styles from './styles.css';
+
 
 @connect(
   state => ({
@@ -30,6 +34,7 @@ class SignupPage extends Component {
     location: React.PropTypes.object,
     isSignedUp: React.PropTypes.bool,
     fullName: React.PropTypes.string,
+    changeRoute: React.PropTypes.func,
   };
 
   onSignupRequest = (data) => {
@@ -39,6 +44,10 @@ class SignupPage extends Component {
       data.dentistId = parseInt(dentist, 10); // eslint-disable-line
       this.props.onSignupRequest(data);
     }
+  }
+
+  goToHomePage = () => {
+    this.props.changeRoute('/');
   }
 
   render () {
@@ -87,7 +96,7 @@ class SignupPage extends Component {
                   </ul>
                 </Col>
               </Row>
-              <br/>
+              <br />
               <Row>
                 <Col md={12}>
                   <div>Child Membership $29/month</div>
@@ -104,10 +113,15 @@ class SignupPage extends Component {
               </Row>
             </Col>
 
-            <Modal show={isSignedUp}>
+            <Modal show={isSignedUp} onHide={this.goToHomePage}>
               <Modal.Body styleName="modal-background">
-                <div className="row" styleName="no-padding">
-                  <div className="col-md-5" />
+                <div className="row" styleName="row">
+                  <div className="col-md-5 text-center">
+                    <Image
+                      src={logo}
+                      style={{ width: 200 }}
+                    />
+                  </div>
                   <div className="col-md-7" styleName="main-content">
                     <h2>Hi, { fullName }</h2>
                     <br />
@@ -134,6 +148,7 @@ function mapDispatchToProps (dispatch) {
     onSignupRequest: (data) => {
       dispatch(actions.signupRequest(omit(data, 'unknown')));
     },
+    changeRoute: (url) => dispatch(push(url)),
   };
 }
 

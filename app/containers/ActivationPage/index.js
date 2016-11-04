@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import CSSModules from 'react-css-modules';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import { activateRequest } from './actions';
 import { selectActivationPage } from './selectors';

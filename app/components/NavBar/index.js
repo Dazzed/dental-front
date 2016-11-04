@@ -50,7 +50,7 @@ export default class NavBar extends React.Component {
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">
-              <Image src={logo} style={{width: 200}} />
+              <Image src={logo} style={{ width: 200 }} />
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle />

@@ -66,7 +66,7 @@ function mapDispatchToProps (dispatch) {
   return {
     fetchMyPatients: () => dispatch(fetchMyPatients()),
     changeRoute: (url) => dispatch(push(url)),
-    changePageTitle: () => dispatch(changePageTitle()),
+    changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
 }
 export default EditDentistMember;

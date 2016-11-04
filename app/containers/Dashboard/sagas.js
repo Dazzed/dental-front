@@ -2,7 +2,7 @@ import { takeLatest } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import request from 'utils/request';
 
 import {

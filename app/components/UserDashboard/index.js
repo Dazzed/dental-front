@@ -95,7 +95,6 @@ export default class UserDashboard extends Component {
         />
         <div className="clearfix">
           <button
-            styleName="btn-add-member"
             className="btn btn-darkest-green btn-round"
             onClick={this.goToMembersPage}
           >

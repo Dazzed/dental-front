@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 import LoginForm from 'components/LoginForm';
 

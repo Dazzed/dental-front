@@ -4,7 +4,8 @@
  *
  */
 
-import { find, findIndex } from 'lodash';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 
 import {
   MY_FAMILY_SUCCESS,

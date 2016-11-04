@@ -4,8 +4,6 @@ export const MEMBER_RELATIONSHIP_TYPES = {
   daughter: 'Daughter',
 };
 
-export default MEMBER_RELATIONSHIP_TYPES;
-
 export const Currencies = {
   USD: 'USD',
   CAD: 'CAD',
@@ -64,3 +62,5 @@ export const US_STATES = {
   WI: 'Wisconsin',
   WY: 'Wyoming',
 };
+
+export const contactSupportEmail = 'support@cawasa.com';

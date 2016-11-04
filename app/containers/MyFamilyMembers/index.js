@@ -14,9 +14,9 @@ import { selectMembersList } from './selectors';
 import styles from './styles.css';
 import FamilyMembers from './FamilyMembers';
 
-
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-class MyFamilyMembers extends Component {
+export default class MyFamilyMembers extends Component {
   static propTypes = {
     membersList: PropTypes.array,
     fetchMyFamily: PropTypes.func,
@@ -57,5 +57,3 @@ function mapDispatchToProps (dispatch) {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyFamilyMembers);
