@@ -10,7 +10,7 @@ import {
 
 import { push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import request from 'utils/request';
 import { setItem, removeItem } from 'utils/localStorage';

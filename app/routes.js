@@ -232,6 +232,26 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/dentist/contact-support',
+      name: 'contactSupportPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ContactSupportPage/reducer'),
+          System.import('containers/ContactSupportPage/sagas'),
+          System.import('containers/ContactSupportPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('contactSupportPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {

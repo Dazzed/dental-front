@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { get, filter } from 'lodash';
+import get from 'lodash/get';
+import filter from 'lodash/filter';
 import moment from 'moment';
 
 
