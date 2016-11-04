@@ -287,11 +287,7 @@ export default class PatientCard extends Component {
                 </button>
               </Col>
               <Col md={4} sm={5}>
-                <button
-                  className="btn btn-block btn-cyan btn-round"
-                >
-                  Edit Membership
-                </button>
+                
               </Col>
             </Row>
           </div>
