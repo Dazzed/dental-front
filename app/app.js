@@ -59,19 +59,19 @@ const rootRoute = {
 };
 
 // Scroll to top when going to a new page, imitating default browser behavior
-function scrollMiddleware () {
-  return useScroll((prevProps, props) => {
-    if (!prevProps || !props) {
-      return true;
-    }
+// function scrollMiddleware () {
+//   return useScroll((prevProps, props) => {
+//     if (!prevProps || !props) {
+//       return true;
+//     }
 
-    if (prevProps.location.pathname !== props.location.pathname) {
-      return [ 0, 0 ];
-    }
+//     if (prevProps.location.pathname !== props.location.pathname) {
+//       return [ 0, 0 ];
+//     }
 
-    return true;
-  });
-}
+//     return true;
+//   });
+// }
 
 render(
   <Provider store={store}>
@@ -79,7 +79,7 @@ render(
       <Router
         history={history}
         routes={rootRoute}
-        render={applyRouterMiddleware(scrollMiddleware)}
+        render={applyRouterMiddleware(useScroll())}
       />
       <ReduxToastr
         timeOut={5000}
