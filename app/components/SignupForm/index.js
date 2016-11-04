@@ -11,7 +11,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
-import { US_STATES } from 'common/constants';
+import { SEX_TYPES, US_STATES } from 'common/constants';
 import forOwn from 'lodash/forOwn';
 
 import signupFormValidator from './validator';
@@ -208,8 +208,11 @@ class SignupForm extends React.Component {
             width={5}
           >
             <option value="">Select gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
+            {Object.keys(SEX_TYPES).map(key =>
+              <option value={key} key={key}>
+                {SEX_TYPES[key]}
+              </option>
+            )}
           </Field>
         </Row>
 
