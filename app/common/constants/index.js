@@ -64,3 +64,9 @@ export const US_STATES = {
 };
 
 export const contactSupportEmail = 'support@cawasa.com';
+
+
+export const SEX_TYPES = {
+  M: 'Male',
+  F: 'Female',
+};

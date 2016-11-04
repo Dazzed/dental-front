@@ -45,7 +45,6 @@ class WriteMessageModal extends Component {
         ...values,
       },
     });
-    this.props.onClose();
   }
 
   render () {
@@ -61,18 +60,25 @@ class WriteMessageModal extends Component {
         <Modal.Body>
           <div className="col-md-12" styleName="messages">
             {messages.map((message, index) => (
-              <div styleName="item">
-                <div styleName="sender">
-                  {
-                    message.userId === recipientId
-                      ? recipientType
-                      : 'Me'
-                  }
+              <div key={index} styleName="item">
+
+                <div styleName="header">
+                  <div styleName="sender">
+                    {
+                      message.userId === recipientId
+                        ? recipientType
+                        : 'You'
+                    }
+                  </div>
+                  <div styleName="time">
+                    {moment(message.createdAt).format('MMM D, HH:MM A')}
+                  </div>
                 </div>
+
+                <div className="clearfix" />
+
                 <div styleName="text" key={index}>{message.body}</div>
-                <div styleName="time">
-                  {moment(message.createdAt).format('MMM D, HH:MM A')}
-                </div>
+
               </div>
             ))}
           </div>

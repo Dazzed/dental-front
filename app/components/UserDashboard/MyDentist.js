@@ -169,9 +169,7 @@ class MyDentist extends Component {
             </Row>
 
             <Row styleName="row">
-              <Col md={4} styleName="affordability">
-                
-              </Col>
+              <Col md={4} styleName="affordability" />
 
               <Col md={4} />
 
@@ -180,7 +178,7 @@ class MyDentist extends Component {
                   className="btn btn-block btn-cyan btn-round btn-shadow"
                   onClick={this.openMessageModal}
                 >
-                  Write Message
+                  Messages
                 </button>
               </Col>
             </Row>

@@ -1,7 +1,8 @@
 import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
-  SIGNUP_ERROR
+  SIGNUP_ERROR,
+  CLEAR_SIGNUP_STATUS,
 } from './constants';
 
 export function signupRequest (payload) {
@@ -23,4 +24,10 @@ export function signupError (payload) {
     type: SIGNUP_ERROR,
     payload
   };
+}
+
+export function clearSignupStatus () {
+  return {
+    type: CLEAR_SIGNUP_STATUS,
+  }
 }

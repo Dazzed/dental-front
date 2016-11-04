@@ -1,5 +1,6 @@
 import {
   SIGNUP_SUCCESS,
+  CLEAR_SIGNUP_STATUS
 } from './constants';
 
 
@@ -17,6 +18,12 @@ export default function reducer (state = initialState, action) {
         patientCreated: true,
         fullName: action.payload.fullName,
       };
+    case CLEAR_SIGNUP_STATUS:
+      return {
+        ...state,
+        patientCreated: false,
+        fullName: '',
+      }
     default:
       return state;
   }

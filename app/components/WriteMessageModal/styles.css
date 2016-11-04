@@ -3,25 +3,38 @@
 
   .item {
     padding: 5px;
+    margin-bottom: 15px;
 
     &:nth-child(even) {
-      background-color: lightgray;
+      background-color: #e3e3e3;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .header {
+      clear: both;
     }
 
     .sender {
       color: black;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: bold;
-      marign-right: 5px;
+      margin-right: 5px;
+      float: left;
     }
 
     .text {
-      marign-right: 5px;
+      white-space: pre-line;
+      margin-right: 5px;
+      font-style: italic;
     }
 
     .time {
       font-size: 12px;
-      color: gray;
+      opacity: 0.5;
+      float: right;
     }
   }
 }
