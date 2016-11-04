@@ -48,7 +48,7 @@ class ContactSupportPage extends Component {
 function mapStateToProps (state) {
   return {
     isSubmitting: state.contactSupportPage.submitting,
-  }
+  };
 }
 
 function mapDispatchToProps (dispatch) {

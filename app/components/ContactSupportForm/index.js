@@ -52,7 +52,7 @@ class ContactSupportForm extends React.Component {
                 className="btn btn-padding btn-cyan btn-round"
               >
                 {isSubmitting &&
-                  <LoadingSpinner size={16} />  
+                  <LoadingSpinner size={16} />
                 }
                 Send Email
               </button>

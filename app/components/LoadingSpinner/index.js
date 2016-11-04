@@ -1,7 +1,7 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 
 import FaSpinner from 'react-icons/lib/fa/spinner';
-import styles from './styles.css';
+import styles from './styles.css'; //eslint-disable-line
 
 export default class LoadingSpinner extends React.Component {
 
@@ -23,7 +23,7 @@ export default class LoadingSpinner extends React.Component {
           size={size || 30}
           className="text-info spinner-icon"
         />
-      )
+      );
     }
 
     return (
@@ -43,6 +43,6 @@ export default class LoadingSpinner extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
