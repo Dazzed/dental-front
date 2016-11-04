@@ -16,3 +16,8 @@
     color: inherit;
   }
 }
+
+.btn-add-member {
+  font-size: 16px;
+  padding: 0.3em 1em;
+}

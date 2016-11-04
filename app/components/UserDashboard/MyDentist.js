@@ -170,7 +170,7 @@ class MyDentist extends Component {
 
             <Row styleName="row">
               <Col md={4} styleName="affordability">
-                Affordability: 5/5
+                
               </Col>
 
               <Col md={4} />

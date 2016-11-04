@@ -140,7 +140,13 @@ class SignupForm extends React.Component {
               />
 
               <div className="col-sm-12" style={{ marginTop: 10 }} />
-
+              <Field
+                name="city"
+                type="text"
+                component={Input}
+                label="City"
+                width={6}
+              />
               <Field
                 name="state"
                 type="select"
@@ -159,13 +165,7 @@ class SignupForm extends React.Component {
                 )}
               </Field>
 
-              <Field
-                name="city"
-                type="text"
-                component={Input}
-                label="City"
-                width={6}
-              />
+
             </Col>
           </Row>
         </FormGroup>

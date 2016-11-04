@@ -54,7 +54,7 @@ class SignupPage extends Component {
           <Row>
             <Col md={6}>
               <div styleName="form-header">
-                <h1>Find an All-star Dentist!</h1>
+                <h1>Create your Membership Account</h1>
               </div>
 
               <SignupForm
@@ -68,59 +68,40 @@ class SignupPage extends Component {
               <Row>
                 <Col md={12}>
                   <h2>
-                    No more toothache,<br /> no more tooth decay
+                    Our Membership
                   </h2>
                   <br />
                 </Col>
               </Row>
 
               <Row>
-                <Col md={6}>
-                  <div>Adults</div>
-                  <div style={{ fontSize: '1.5rem' }}>$20.00/month</div>
-                </Col>
-                <Col md={6}>
-                  <div>Kids 12 and under</div>
-                  <div style={{ fontSize: '1.5rem' }}>$15.00/month</div>
+                <Col md={12}>
+                  <div>Adult Membership $33/month</div>
+                  <ul>
+                    <li>2 cleanings/year</li>
+                    <li>2 exams with necessary xrays/year</li>
+                    <li>Panorex xray once every 3 years</li>
+                    <li>1 emergency exam and xray/year</li>
+                    <li>10% of any needed treatment</li>
+                    <li>Total Savings/year=$118</li>
+                  </ul>
                 </Col>
               </Row>
-
-              <h3>Adult membership will include</h3>
-              <ul>
-                <li>2 Cleanings per year</li>
-                <li>1 comprehensive Exam/year</li>
-                <li>
-                  1 Periodic Exam-This is completed with cleaning every time
-                   after the comp exam
-                </li>
-                <li>1 bitewing xray per year</li>
-                <li>1 Panorex Xray Completed once every 3 years</li>
-                <li>Emergency exam Allowance of 1 per year</li>
-                <li>
-                  Periapical film used with emergency exam Allowance of
-                  1 per year
-                </li>
-              </ul>
-
-              <h3>Child membership will include</h3>
-              <ul>
-                <li>2 Cleanings per year</li>
-                <li>1 comprehensive Exam/year</li>
-                <li>
-                  1 Periodic Exam-This is completed with cleaning every time
-                   after the comp exam
-                </li>
-                <li>1 bitewing xray per year</li>
-                <li>1 Panorex Xray Completed once every 3 years</li>
-                <li>Emergency exam Allowance of 1 per year</li>
-                <li>
-                  Periapical film used with emergency exam Allowance of
-                  1 per year
-                </li>
-                <li>
-                  1 fluoride treatment
-                </li>
-              </ul>
+              <br/>
+              <Row>
+                <Col md={12}>
+                  <div>Child Membership $29/month</div>
+                  <ul>
+                    <li>2 cleanings/year</li>
+                    <li>2 exams with necessary xrays/year</li>
+                    <li>Panorex xray once every 3 years</li>
+                    <li>1 emergency exam with xray/year</li>
+                    <li>1 Fluoride treatment/year</li>
+                    <li>10% off any needed treatment</li>
+                    <li>Total Savings=$151/year</li>
+                  </ul>
+                </Col>
+              </Row>
             </Col>
 
             <Modal show={isSignedUp}>
