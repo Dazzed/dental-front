@@ -5,12 +5,11 @@ import get from 'lodash/get';
 
 import request from 'utils/request';
 
+import { setUserData } from 'containers/App/actions';
+
 import {
   SUBMIT_PROFILE_FORM,
 } from 'containers/ProfilePage/constants';
-import {
-  meFromToken
-} from 'containers/App/actions';
 import {
   submitProfileFormSucess,
   submitProfileFormError,
@@ -40,12 +39,12 @@ export function* submitFormWatcher () {
         method: 'PUT',
         body: JSON.stringify(payload),
       };
-      yield call(request, requestURL, params);
+      const response = yield call(request, requestURL, params);
 
+      yield put(setUserData(response.data));
       yield put(
         toastrActions.success('', 'Your information has been updated!')
       );
-      yield put(meFromToken());
       yield put(submitProfileFormSucess());
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
