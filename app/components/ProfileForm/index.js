@@ -171,12 +171,16 @@ class ProfileForm extends React.Component {
           </Field>
         </Row>
 
-        <Field
-          name="joinMembership"
-          component={Checkbox}
-        >
-          I'll also join the membership
-        </Field>
+        <FormGroup>
+          <Col sm={12}>
+            <Field
+              name="payingMember"
+              component={Checkbox}
+            >
+              I'll also be joining the membership
+            </Field>
+          </Col>
+        </FormGroup>
 
         <FormGroup>
           <Col sm={12}>

@@ -217,10 +217,10 @@ class SignupForm extends React.Component {
         </Row>
 
         <Field
-          name="accountHolder"
+          name="payingMember"
           component={Checkbox}
         >
-          Will their primary account holder be joining the membership
+          I'll also be joining the membership
         </Field>
 
         <Field
