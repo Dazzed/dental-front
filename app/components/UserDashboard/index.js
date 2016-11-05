@@ -11,7 +11,6 @@ import { push } from 'react-router-redux';
 import changeFactory from 'change-js';
 import { Modal } from 'react-bootstrap';
 import util from 'util';
-import axios from 'axios';
 
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
