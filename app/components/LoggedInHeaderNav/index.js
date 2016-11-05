@@ -20,7 +20,14 @@ function LoggedInHeaderNav ({ fullName, avatar }) {
   const avatarURL = avatar || 'http://www.teenink.com/images/default_face.gif';
   return (
     <Navbar.Collapse>
-      <Image className="pull-right" src={avatarURL} styleName="avatar" circle />
+      <Link to="/accounts/profile">
+        <Image
+          className="pull-right"
+          src={avatarURL}
+          styleName="avatar"
+          circle
+        />
+      </Link>
       <ul className="nav navbar-nav navbar-right" styleName="nav">
         <li role="presentation">
           <span>
@@ -29,7 +36,7 @@ function LoggedInHeaderNav ({ fullName, avatar }) {
           </span>
         </li>
         <li role="presentation">
-          <span>Welcome <Link to="/">{fullName}</Link></span>
+          <span>Welcome <Link to="/accounts/profile">{fullName}</Link></span>
         </li>
       </ul>
     </Navbar.Collapse>

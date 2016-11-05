@@ -9,6 +9,7 @@ import styles from './styles.css';
 const navItems = {
   client: [
     { text: 'Dashboard', link: '/dashboard' },
+    { text: 'Edit your info', link: '/accounts/profile' },
     { text: 'Payment info', link: '/subscribe' },
     // { text: 'Manage family members', link: '/my-family-members' },
     // { text: 'Transfer dental office', link: '/temp_link' },
@@ -18,6 +19,7 @@ const navItems = {
   ],
   dentist: [
     { text: 'Dentist dashboard', link: '/dashboard' },
+    // { text: 'Edit your info', link: '/accounts/profile' },
     { text: 'Edit office info', link: '/dentist/office/edit' },
     { text: 'Manage members', link: '/dentist/family-members' },
     // { text: 'Edit membership', link: '/custom-membership' },
@@ -27,9 +29,8 @@ const navItems = {
   ]
 };
 
-function offerings(userType) {
-
-  if ( userType === "client") {
+function offerings (userType) {
+  if (userType === 'client') {
     return (
       <div>
         <Row>
@@ -45,7 +46,7 @@ function offerings(userType) {
             </ul>
           </Col>
         </Row>
-        <br/>
+        <br />
         <Row>
           <Col md={12}>
             <div>Child Membership $29/month</div>
@@ -61,13 +62,12 @@ function offerings(userType) {
           </Col>
         </Row>
       </div>
-    )
+    );
   }
 }
 
 function SideNav ({ userType }) {
   const items = navItems[userType] || [];
-  console.log("What is user type : ", userType);
   return (
     <div styleName={`dental-sidenav ${userType}`} className="dental-sidenav">
       <Nav bsStyle="pills" stacked>

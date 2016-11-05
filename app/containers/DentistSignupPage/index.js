@@ -99,7 +99,7 @@ export default class SignupPage extends Component {
 
                     <p>
                       Your all-star dental office is now registered in
-                      My Dental Marketplace portal!.
+                      My Dental Marketplace portal!
                     </p>
                     <br />
                     <p>

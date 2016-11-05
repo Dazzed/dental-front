@@ -12,7 +12,12 @@ const Checkbox = ({ input, meta: { touched, error }, children }) => (
   <FormGroup className={touched && error ? 'has-error' : ''}>
     <Col sm={12}>
       <label styleName="checkbox-label" htmlFor={input.name}>
-        <FormControl {...input} type="checkbox" styleName="checkbox" />
+        <FormControl
+          {...input}
+          checked={input.value}
+          type="checkbox"
+          styleName="checkbox"
+        />
         <span>
           {children}
         </span>

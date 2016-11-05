@@ -13,7 +13,7 @@ import {
 @connect(mapStateToProps, mapDispatchToProps)
 class ContactSupportPage extends Component {
   static propTypes = {
-    isSubmitting: PropTypes.bool,
+    isSaving: PropTypes.bool,
     dispatchSubmit: PropTypes.func,
     changePageTitle: React.PropTypes.func.isRequired,
   }
@@ -37,7 +37,7 @@ class ContactSupportPage extends Component {
     return (
       <Well>
         <ContactSupportForm
-          isSubmitting={this.props.isSubmitting}
+          isSaving={this.props.isSaving}
           onSubmit={this.onSubmitForm}
         />
       </Well>
@@ -47,7 +47,7 @@ class ContactSupportPage extends Component {
 
 function mapStateToProps (state) {
   return {
-    isSubmitting: state.contactSupportPage.submitting,
+    isSaving: state.contactSupportPage.submitting,
   };
 }
 
