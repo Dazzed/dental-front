@@ -23,7 +23,7 @@ export default function reducer (state = initialState, action) {
         ...state,
         patientCreated: false,
         fullName: '',
-      }
+      };
     default:
       return state;
   }

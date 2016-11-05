@@ -42,18 +42,17 @@ export default class UserDashboard extends Component {
     changeRoute: PropTypes.func,
   };
 
-  constructor (props) {
-    super(props);
-    this.goToMembersPage = this.goToMembersPage.bind(this);
-  }
-
   componentWillMount () {
     this.props.fetchMyDentist();
     this.props.fetchMyFamily();
   }
 
-  goToMembersPage () {
+  goToMembersPage = () => {
     this.props.changeRoute('my-family-members');
+  }
+
+  goToProfilePage = () => {
+    this.props.changeRoute('/accounts/profile');
   }
 
   render () {
@@ -79,7 +78,15 @@ export default class UserDashboard extends Component {
 
         <MyDentist dentist={myDentist} />
 
-        <h3>Your Info</h3>
+        <div styleName="h3-with-button" className="clearfix">
+          <h3>Your Info</h3>
+          <button
+            className="btn btn-padding btn-darkest-green btn-round"
+            onClick={this.goToProfilePage}
+          >
+            Edit your info
+          </button>
+        </div>
 
         <MyInfo user={loggedInUser} />
 

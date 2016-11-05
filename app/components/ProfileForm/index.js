@@ -1,21 +1,18 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-
-import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
-import Alert from 'react-bootstrap/lib/Alert';
+import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import forOwn from 'lodash/forOwn';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
-import { SEX_TYPES, US_STATES } from 'common/constants';
-import forOwn from 'lodash/forOwn';
+import LoadingSpinner from 'components/LoadingSpinner';
+import { US_STATES } from 'common/constants';
 
-import signupFormValidator from './validator';
-
+import profileFormValidator from './validator';
 
 const states = [];
 
@@ -25,63 +22,25 @@ forOwn(US_STATES, (value, key) => {
 
 
 @reduxForm({
-  form: 'signup',
-  validate: signupFormValidator,
+  form: 'profile',
+  enableReinitialize: true,
+  validate: profileFormValidator,
 })
-class SignupForm extends React.Component {
+class ProfileForm extends React.Component {
 
   static propTypes = {
-    error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
-    submitting: React.PropTypes.bool.isRequired,
-    dentistId: React.PropTypes.string,
+    isSaving: React.PropTypes.bool.isRequired,
   };
 
   render () {
-    const { error, handleSubmit, submitting, dentistId } = this.props;
+    const { handleSubmit, isSaving } = this.props;
 
     return (
-      <form onSubmit={handleSubmit} className="form-horizontal">
-
-        {!dentistId ?
-          <Alert bsStyle="danger">
-            <h4>Sorry you need to be invited by a dentist.</h4>
-          </Alert> : null}
-
-        <Row>
-          <Field
-            name="email"
-            type="text"
-            component={LabeledInput}
-            label="Email Address"
-            width={12}
-          />
-
-          <Field
-            name="confirmEmail"
-            type="text"
-            component={LabeledInput}
-            label="Confirm Email Address"
-            width={12}
-          />
-
-          <Field
-            name="password"
-            type="password"
-            component={LabeledInput}
-            label="Password"
-            width={6}
-          />
-
-          <Field
-            name="confirmPassword"
-            type="password"
-            component={LabeledInput}
-            label="Confirm Password"
-            width={6}
-          />
-        </Row>
-
+      <form
+        onSubmit={handleSubmit}
+        className="form-horizontal"
+      >
         <FormGroup>
           <Col sm={12}>
             <ControlLabel>Name</ControlLabel>
@@ -170,7 +129,6 @@ class SignupForm extends React.Component {
           </Row>
         </FormGroup>
 
-
         <Row>
           <Field
             name="zipCode"
@@ -208,48 +166,40 @@ class SignupForm extends React.Component {
             width={5}
           >
             <option value="">Select gender</option>
-            {Object.keys(SEX_TYPES).map(key =>
-              <option value={key} key={key}>
-                {SEX_TYPES[key]}
-              </option>
-            )}
+            <option value="M">Male</option>
+            <option value="F">Female</option>
           </Field>
         </Row>
 
-        <Field
-          name="payingMember"
-          component={Checkbox}
-        >
-          I'll also be joining the membership
-        </Field>
-
-        <Field
-          name="tos"
-          component={Checkbox}
-        >
-          I have read and accept the <a href="">Terms of Conditions</a>
-        </Field>
-
-        <FormGroup className="has-error">
+        <FormGroup>
           <Col sm={12}>
-            {error && <HelpBlock>{error}</HelpBlock>}
+            <Field
+              name="payingMember"
+              component={Checkbox}
+            >
+              I'll also be joining the membership
+            </Field>
           </Col>
         </FormGroup>
 
         <FormGroup>
-          <Col sm={3}>
+          <Col sm={12}>
             <button
               type="submit"
-              disabled={submitting}
-              className="btn btn-block btn-cyan btn-round btn-outline"
+              disabled={isSaving}
+              className="btn btn-padding btn-cyan btn-round"
             >
-              Continue
+              {isSaving &&
+                <LoadingSpinner size={16} />
+              }
+              Save
             </button>
           </Col>
         </FormGroup>
+
       </form>
     );
   }
 }
 
-export default SignupForm;
+export default ProfileForm;
