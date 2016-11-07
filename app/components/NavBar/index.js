@@ -33,7 +33,7 @@ export default class NavBar extends React.Component {
     ]),
   };
 
-  goToLogin () {
+  goToLogin = () => {
     this.props.changeRoute('/accounts/login');
   }
 
