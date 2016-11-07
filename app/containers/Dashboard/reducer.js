@@ -13,6 +13,7 @@ import {
   MY_PATIENTS_SUCCESS,
   CONVERSATION_REQUEST,
   CONVERSATION_SUCCESS,
+  NEW_MSG_COUNT_SUCCESS,
   SET_EDITING_MEMBER,
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
@@ -35,6 +36,7 @@ const initialState = {
   },
   familyMemberForms: {},
   messages: [],
+  newMsgCountBySender: {},
 };
 
 function dashboardReducer (state = initialState, action) {
@@ -205,6 +207,14 @@ function dashboardReducer (state = initialState, action) {
       return {
         ...state,
         messages: action.payload,
+      };
+    case NEW_MSG_COUNT_SUCCESS:
+      return {
+        ...state,
+        newMsgCountBySender: {
+          ...state.newMsgCountBySender,
+          [action.payload.senderId]: action.payload.count,
+        },
       };
     case SET_EDITING_MEMBER:
       return {

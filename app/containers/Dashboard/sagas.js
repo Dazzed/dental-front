@@ -1,4 +1,4 @@
-import { takeLatest } from 'redux-saga';
+import { takeLatest, takeEvery } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { reset } from 'redux-form';
@@ -11,6 +11,8 @@ import {
   MY_FAMILY_REQUEST,
   MY_PATIENTS_REQUEST,
   CONVERSATION_REQUEST,
+  NEW_MSG_COUNT_REQUEST,
+  MARK_MSG_READ_REQUEST,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
   SUBMIT_INVITE_PATIENT_FORM,
@@ -28,6 +30,8 @@ import {
   myPatientsFetchingError,
   conversationFetched,
   conversationFetchingError,
+  fetchNewMsgCount,
+  newMsgCountFetched,
   memberEdited,
   memberAdded,
   memberDeleted,
@@ -39,11 +43,11 @@ import {
 export function* userDashboardSaga () {
   const watcherA = yield fork(fetchMyDentistWatcher);
   const watcherB = yield fork(fetchMyFamilyWatcher);
-  const watcherC = yield fork(fetchMyPatientsWatcher);
-  const watcherD = yield fork(submitMessageFormWatcher);
-  const watcherE = yield fork(submitClientReviewFormWatcher);
-  const watcherF = yield fork(fetchConversationWatcher);
-  const watcherG = yield fork(submitInvitePatientFormWatcher);
+  const watcherC = yield fork(submitMessageFormWatcher);
+  const watcherD = yield fork(submitClientReviewFormWatcher);
+  const watcherE = yield fork(fetchConversationWatcher);
+  const watcherF = yield fork(fetchNewMsgCountWatcher);
+  const watcherG = yield fork(markMsgReadWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -56,8 +60,12 @@ export function* userDashboardSaga () {
 }
 
 export function* dentistDashboardSaga () {
+  const watcherA = yield fork(fetchMyPatientsWatcher);
+  const watcherB = yield fork(submitInvitePatientFormWatcher);
+
   yield take(LOCATION_CHANGE);
-  return;
+  yield cancel(watcherA);
+  yield cancel(watcherB);
 }
 
 export function* fetchMyDentistWatcher () {
@@ -76,11 +84,20 @@ export function* fetchConversationWatcher () {
   yield* takeLatest(CONVERSATION_REQUEST, fetchConversation);
 }
 
+export function* fetchNewMsgCountWatcher () {
+  yield* takeEvery(NEW_MSG_COUNT_REQUEST, fetchNewMsgCountFn);
+}
+
+export function* markMsgReadWatcher () {
+  yield* takeLatest(MARK_MSG_READ_REQUEST, markMsgRead);
+}
+
 export function* fetchMyDentist () {
   try {
     const requestURL = '/api/v1/users/me/dentist';
     const response = yield call(request, requestURL);
 
+    yield put(fetchNewMsgCount({ senderId: response.data.id }));
     yield put(myDentistFetched(response.data));
   } catch (err) {
     yield put(myDentistFetchingError(err));
@@ -103,6 +120,11 @@ export function* fetchMyPatients () {
     const requestURL = '/api/v1/users/me/clients';
     const response = yield call(request, requestURL);
 
+    const tasks = [];
+    for (let i = 0; i < response.data.length; i++) {
+      tasks.push(put(fetchNewMsgCount({ senderId: response.data[i].id })));
+    }
+    yield [ tasks ];
     yield put(myPatientsFetched(response.data));
   } catch (err) {
     yield put(myPatientsFetchingError(err));
@@ -119,6 +141,38 @@ export function* fetchConversation (action) {
     yield put(conversationFetched(response.data.messages || []));
   } catch (err) {
     yield put(conversationFetchingError(err));
+  }
+}
+
+export function* fetchNewMsgCountFn (action) {
+  const { payload } = action;
+  const data = {
+    senderId: payload.senderId,
+    count: 0
+  };
+
+  try {
+    const requestURL =
+      `/api/v1/users/me/messages/${payload.senderId}/unread_count`;
+    const response = yield call(request, requestURL);
+
+    data.count = response.data.unread_count || 0;
+    yield put(newMsgCountFetched(data));
+  } catch (err) {
+    yield put(newMsgCountFetched(data));
+  }
+}
+
+export function* markMsgRead (action) {
+  const { payload } = action;
+
+  try {
+    const requestURL =
+      `/api/v1/users/me/messages/${payload.senderId}/mark_all_read`;
+    yield call(request, requestURL);
+    yield put(fetchNewMsgCount({ senderId: payload.senderId }));
+  } catch (err) {
+    console.log(err);
   }
 }
 

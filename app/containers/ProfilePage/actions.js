@@ -27,5 +27,5 @@ export function submitProfileFormError () {
 export function fetchProfileData () {
   return {
     type: FETCH_PROFILE_DATA,
-  }
+  };
 }

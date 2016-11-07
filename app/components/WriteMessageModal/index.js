@@ -59,6 +59,9 @@ class WriteMessageModal extends Component {
 
         <Modal.Body>
           <div className="col-md-12" styleName="messages">
+            {!messages.length &&
+              <span>- No messages so far -</span>
+            }
             {messages.map((message, index) => (
               <div key={index} styleName="item">
 

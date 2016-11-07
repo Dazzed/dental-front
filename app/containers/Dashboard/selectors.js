@@ -85,6 +85,11 @@ const selectConversation = createSelector(
   (substate) => substate.messages
 );
 
+const selectNewMsgCount = createSelector(
+  selectDashboardDomain,
+  (substate) => substate.newMsgCountBySender
+);
+
 export function familyMembersToEditSelectorFactory (userId) {
   if (!selectors[userId]) {
     selectors[userId] = createSelector(
@@ -109,4 +114,5 @@ export {
   selectNewReviews,
   selectAllMembers,
   selectConversation,
+  selectNewMsgCount,
 };

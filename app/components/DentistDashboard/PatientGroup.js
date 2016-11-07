@@ -1,19 +1,27 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { Row, Col } from 'react-bootstrap';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
+import { markMsgRead } from 'containers/Dashboard/actions';
+import { selectNewMsgCount, selectSorter }
+  from 'containers/Dashboard/selectors';
 import PatientCard from './PatientCard';
 import styles from './PatientGroup.css';
 
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientGroup extends Component {
   static propTypes = {
     title: PropTypes.string,
+    groupKey: PropTypes.string,
     patients: PropTypes.array,
     sorter: PropTypes.object,
+    newMsgCountBySender: PropTypes.object,
     displayTotal: PropTypes.bool,
+    markMsgRead: PropTypes.func,
   }
 
   constructor (props) {
@@ -22,19 +30,22 @@ export default class PatientGroup extends Component {
     this.state = {
       showSorter: false,
     };
-
-    this.toggleSorter = this.toggleSorter.bind(this);
   }
 
-  toggleSorter () {
+  toggleSorter = () => {
     this.setState({
       ...this.state,
       showSorter: !this.state.showSorter,
     });
   }
 
+  markMsgRead = (senderId) => {
+    this.props.markMsgRead(senderId);
+  }
+
   render () {
-    const { title, patients, displayTotal } = this.props;
+    const { title, patients, displayTotal, newMsgCountBySender }
+      = this.props;
 
     let inactive = 0;
     let active = 0;
@@ -80,10 +91,29 @@ export default class PatientGroup extends Component {
           </Row> : null}
         {patients &&
           patients.map((patient, index) =>
-            <PatientCard {...patient} key={index} />
+            <PatientCard
+              {...patient}
+              newMsgCount={newMsgCountBySender[patient.id]}
+              markMsgRead={this.markMsgRead}
+              key={index}
+            />
           )
         }
       </div>
     );
   }
+}
+
+
+function mapStateToProps (state) {
+  return {
+    newMsgCountBySender: selectNewMsgCount(state),
+    sorter: selectSorter(state),
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    markMsgRead: (senderId) => dispatch(markMsgRead({ senderId })),
+  };
 }

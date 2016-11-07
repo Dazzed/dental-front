@@ -10,7 +10,6 @@ import {
   selectNewMembers,
   selectNewReviews,
   selectAllMembers,
-  selectSorter,
 } from 'containers/Dashboard/selectors';
 
 import InvitePatientModal from 'components/InvitePatientModal';
@@ -31,7 +30,6 @@ export default class DentistDashboard extends Component {
   static propTypes = {
     userName: PropTypes.string,
     patients: PropTypes.object,
-    sorter: PropTypes.object,
     fetchMyPatients: PropTypes.func.isRequired,
     changeRoute: PropTypes.func,
   }
@@ -41,23 +39,20 @@ export default class DentistDashboard extends Component {
     this.state = {
       showInviteModal: false,
     };
-
-    this.openInviteModal = this.openInviteModal.bind(this);
-    this.closeInviteModal = this.closeInviteModal.bind(this);
   }
 
   componentWillMount () {
     this.props.fetchMyPatients();
   }
 
-  openInviteModal () {
+  openInviteModal = () => {
     this.setState({
       ...this.state,
       showInviteModal: true,
     });
   }
 
-  closeInviteModal () {
+  closeInviteModal = () => {
     this.setState({
       ...this.state,
       showInviteModal: false,
@@ -65,7 +60,7 @@ export default class DentistDashboard extends Component {
   }
 
   render () {
-    const { userName, patients, sorter } = this.props;
+    const { userName, patients } = this.props;
 
     return (
       <div className="dentist-dashboard-container">
@@ -86,8 +81,8 @@ export default class DentistDashboard extends Component {
             <PatientGroup
               key={index}
               title={group.title}
+              groupKey={group.key}
               patients={patients[group.key]}
-              sorter={sorter[group.key]}
               displayTotal={index === 2}
             />
           )}
@@ -112,7 +107,6 @@ function mapStateToProps (state) {
       newReviews: selectNewReviews(state),
       allMembers: selectAllMembers(state),
     },
-    sorter: selectSorter(state),
   };
 }
 

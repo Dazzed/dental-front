@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -12,14 +13,20 @@ import FaPhone from 'react-icons/lib/fa/phone';
 
 import { US_STATES } from 'common/constants';
 import WriteMessageModal from 'components/WriteMessageModal';
+import { selectNewMsgCount } from 'containers/Dashboard/selectors';
+import { markMsgRead } from 'containers/Dashboard/actions';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
 
 const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
 
+@connect(mapStateToProps, mapDispatchToProps)
+@CSSModules(styles, { allowMultiple: true })
 class MyDentist extends Component {
   static propTypes = {
     dentist: PropTypes.object,
+    newMsgCountBySender: PropTypes.object,
+    markMsgRead: PropTypes.func,
   };
 
   constructor (props) {
@@ -40,6 +47,11 @@ class MyDentist extends Component {
       ...this.state,
       showMessageModal: true,
     });
+
+    const { dentist, newMsgCountBySender } = this.props;
+    if (newMsgCountBySender[dentist.id] > 0) {
+      this.props.markMsgRead(dentist.id);
+    }
   }
 
   openReviewModal () {
@@ -64,7 +76,7 @@ class MyDentist extends Component {
   }
 
   render () {
-    const { dentist } = this.props;
+    const { dentist, newMsgCountBySender } = this.props;
 
     if (!dentist) {
       return null;
@@ -77,6 +89,8 @@ class MyDentist extends Component {
       avatar,
       dentistInfo,
     } = dentist;
+
+    const newMsgCount = newMsgCountBySender[id];
 
     return (
       <Well>
@@ -171,14 +185,17 @@ class MyDentist extends Component {
             <Row styleName="row">
               <Col md={4} styleName="affordability" />
 
-              <Col md={4} />
+              <Col md={3} />
 
-              <Col md={4}>
+              <Col md={5}>
                 <button
                   className="btn btn-block btn-cyan btn-round btn-shadow"
                   onClick={this.openMessageModal}
                 >
-                  Messages
+                  { newMsgCount > 0
+                    ? <span>{newMsgCount} New Messages</span>
+                    : <span>Messages</span>
+                  }
                 </button>
               </Col>
             </Row>
@@ -201,4 +218,16 @@ class MyDentist extends Component {
   }
 }
 
-export default CSSModules(styles, { allowMultiple: true })(MyDentist);
+function mapStateToProps (state) {
+  return {
+    newMsgCountBySender: selectNewMsgCount(state),
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    markMsgRead: (senderId) => dispatch(markMsgRead({ senderId })),
+  };
+}
+
+export default MyDentist;
