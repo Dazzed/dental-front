@@ -9,11 +9,10 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import changeFactory from 'change-js';
-import { Modal } from 'react-bootstrap';
-import util from 'util';
 
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
+import PaymentForm from 'containers/PaymentForm';
 import {
   selectMyDentist,
   selectMyFamilyMembers,
@@ -47,75 +46,15 @@ export default class UserDashboard extends Component {
   constructor (props) {
     super(props);
     this.goToMembersPage = this.goToMembersPage.bind(this);
-    this.openSpreadlyView = this.openSpreadlyView.bind(this);
   }
 
-  // SpreedlyExpress.onPaymentMethod(function(token, paymentMethod) {
-  //   // Send requisite payment method info to backend
-  //   var tokenField = document.getElementById("payment_method_token");
-  //   var fingerprintField = document.getElementById("payment_method_fingerprint");
-  //
-  //   tokenField.setAttribute("value", token);
-  //   fingerprintField.setAttribute("value", paymentMethod["fingerprint"]);
-  //
-  //   var masterForm = document.getElementById('payment-form');
-  //   masterForm.submit();
-  //
-  // });
-
   componentWillMount () {
-    SpreedlyExpress.init("MY4WccjEpI34lIikNK7qDAXpRVQ", {
-      "amount": "$9.83",
-      "company_name": "Acme",
-      "sidebar_top_description": "Providing widgets",
-      "sidebar_bottom_description": "Your order total today",
-      "full_name": "Mike O'Dell"
-    }, {
-      "email": "mikeodell77@gmail.com"
-    });
-
-
-    SpreedlyExpress.onPaymentMethod(function(token, paymentMethod) {
-      console.log("on payment method");
-      console.log("What is the incoming token : ", token);
-      console.log("What is the incoming payment method : ", paymentMethod);
-
-      const url = "https://core.spreedly.com/v1/gateways/UNdlfrv8cVnLhV9c4SFRfgfgCwP/purchase.json";
-      const body = {
-        "transaction": {
-          "payment_method_token": paymentMethod,
-          "amount": 100,
-          "currency_code": "USD",
-          "retain_on_success": true
-        }
-      }
-      const headers = {
-        "Access-Control-Allow-Origin": "*"
-      }
-
-      fetch(url, {
-        method: 'POST',
-        body: body,
-        headers: headers
-      }).then(response => {
-        console.log("Response : ", util.inspect(response));
-      // (token => {
-      //  alert('Thank you for subscribing!');
-      }).catch(error => {
-        console.log("Error : ", util.inspect(error));
-      });
-    });
-
     this.props.fetchMyDentist();
     this.props.fetchMyFamily();
   }
 
   goToMembersPage () {
     this.props.changeRoute('my-family-members');
-  }
-
-  openSpreadlyView () {
-    SpreedlyExpress.openView();
   }
 
   goToProfilePage = () => {
@@ -175,8 +114,7 @@ export default class UserDashboard extends Component {
             Add | edit family members
           </button>
 
-          <input type="submit" className="btn btn-darkest-green btn-round" value="Enter Payment Info" onClick={this.openSpreadlyView}/>
-
+          <PaymentForm total={total} user={loggedInUser} status={status} />
         </div>
 
         <br />
