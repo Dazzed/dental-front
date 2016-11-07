@@ -22,7 +22,6 @@ import styles from './PatientCard.css';
 
 const Change = changeFactory();
 
-
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientCard extends Component {
   static propTypes = {
@@ -38,6 +37,8 @@ export default class PatientCard extends Component {
     subscriptions: PropTypes.array,
     phoneNumbers: PropTypes.array,
     latestReview: PropTypes.object,
+    newMsgCount: PropTypes.number,
+    markMsgRead: PropTypes.func,
   }
 
   constructor (props) {
@@ -64,6 +65,9 @@ export default class PatientCard extends Component {
       ...this.state,
       showMessageModal: true,
     });
+    if (this.props.newMsgCount > 0) {
+      this.props.markMsgRead(this.props.id);
+    }
   }
 
   closeMessageModal () {
@@ -86,7 +90,8 @@ export default class PatientCard extends Component {
       familyMembers,
       subscriptions,
       phoneNumbers,
-      latestReview
+      latestReview,
+      newMsgCount,
     } = this.props;
 
     // TODO: only show current active susbscription!
@@ -112,6 +117,10 @@ export default class PatientCard extends Component {
         membershipStyle = '';
       }
     });
+
+    if (subscriptions[0].status === 'inactive') {
+      membershipStyle = 'warning';
+    }
 
     // NOTE: By now only one number so display that.
     if (phoneNumbers && phoneNumbers[0]) {
@@ -283,7 +292,10 @@ export default class PatientCard extends Component {
                   className="btn btn-block btn-green btn-round"
                   onClick={this.openMessageModal}
                 >
-                  Messages
+                  { newMsgCount > 0
+                    ? <span>{newMsgCount} New Messages</span>
+                    : <span>Messages</span>
+                  }
                 </button>
               </Col>
               <Col md={4} sm={5} />

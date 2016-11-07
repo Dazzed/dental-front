@@ -35,6 +35,7 @@
     "jsx-quotes": 2,
     "keyword-spacing": [2, {"before": true, "after": true, "overrides": {}}],
     "new-cap": [2, {"capIsNew": false}],
+    "no-console": 0,
     "no-constant-condition": 0,
     "no-mixed-spaces-and-tabs": 2,
     "no-multiple-empty-lines": [2, {"max": 2}],

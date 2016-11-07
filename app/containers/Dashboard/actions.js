@@ -17,6 +17,9 @@ import {
   CONVERSATION_REQUEST,
   CONVERSATION_SUCCESS,
   CONVERSATION_ERROR,
+  NEW_MSG_COUNT_REQUEST,
+  NEW_MSG_COUNT_SUCCESS,
+  MARK_MSG_READ_REQUEST,
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
   SUBMIT_INVITE_PATIENT_FORM,
@@ -111,6 +114,28 @@ export function conversationFetchingError (payload) {
     payload,
   };
 }
+
+export function fetchNewMsgCount (payload) {
+  return {
+    type: NEW_MSG_COUNT_REQUEST,
+    payload,
+  };
+}
+
+export function newMsgCountFetched (payload) {
+  return {
+    type: NEW_MSG_COUNT_SUCCESS,
+    payload,
+  };
+}
+
+export function markMsgRead (payload) {
+  return {
+    type: MARK_MSG_READ_REQUEST,
+    payload,
+  };
+}
+
 
 export function submitMessageForm (payload) {
   return {

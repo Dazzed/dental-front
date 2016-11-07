@@ -37,9 +37,11 @@ export default class UserDashboard extends Component {
       PropTypes.bool,
     ]),
     myDentist: PropTypes.object,
+    newMsgCountBySender: PropTypes.object,
     myFamilyMembers: PropTypes.array,
     fetchMyDentist: PropTypes.func,
     fetchMyFamily: PropTypes.func,
+    markMsgRead: PropTypes.func,
     changeRoute: PropTypes.func,
   };
 
@@ -61,8 +63,14 @@ export default class UserDashboard extends Component {
     this.props.changeRoute('/accounts/profile');
   }
 
+  markMsgRead = (senderId) => {
+    this.props.markMsgRead(senderId);
+  }
+
   render () {
-    const { loggedInUser, myDentist, myFamilyMembers } = this.props;
+    const {
+      loggedInUser, myDentist, myFamilyMembers, newMsgCountBySender,
+    } = this.props;
     const fullName = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
     const status = myDentist ? myDentist.subscriptions[0].status : '';
     // TODO: better here to use selector!
@@ -82,7 +90,11 @@ export default class UserDashboard extends Component {
 
         <h3>Your Dentist</h3>
 
-        <MyDentist dentist={myDentist} />
+        <MyDentist
+          dentist={myDentist}
+          newMsgCount={newMsgCountBySender}
+          markMsgRead={this.markMsgRead}
+        />
 
         <div styleName="h3-with-button" className="clearfix">
           <h3>Your Info</h3>

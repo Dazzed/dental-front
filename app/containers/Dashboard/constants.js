@@ -25,6 +25,11 @@ export const CONVERSATION_REQUEST = 'app/Dashboard/CONVERSATION_REQUEST';
 export const CONVERSATION_SUCCESS = 'app/Dashboard/CONVERSATION_SUCCESS';
 export const CONVERSATION_ERROR = 'app/Dashboard/CONVERSATION_ERROR';
 
+export const NEW_MSG_COUNT_REQUEST = 'app/Dashboard/NEW_MSG_COUNT_REQUEST';
+export const NEW_MSG_COUNT_SUCCESS = 'app/Dashboard/NEW_MSG_COUNT_SUCCESS';
+
+export const MARK_MSG_READ_REQUEST = 'app/Dashboard/MARK_MSG_READ_REQUEST';
+
 export const SET_EDITING_MEMBER = 'app/Dashboard/SET_EDITING_MEMBER';
 export const SUBMIT_MEMBER_FORM = 'app/Dashboard/SUBMIT_MEMBER_FORM';
 export const EDIT_MEMBER_SUCCESS = 'app/Dashboard/EDIT_MEMBER_SUCCESS';
