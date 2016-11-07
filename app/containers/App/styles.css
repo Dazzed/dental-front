@@ -4,11 +4,13 @@
  * App container styles
  */
 
-$nav-height: 6.5rem;
+:root {
+  --nav-height: 6.5rem;
+}
 
 .wrapper {
   height: 100%;
-  margin-top: $nav-height;
+  margin-top: var(--nav-height);
 }
 
 .container-wrapper {

@@ -10,6 +10,7 @@ import { reducer as toastrReducer } from 'react-redux-toastr';
 import appReducer from 'containers/App/reducer';
 import dashboardReducer from 'containers/Dashboard/reducer';
 import dentistSignupReducer from 'containers/DentistSignupPage/reducer';
+import paymentFormReducer from 'containers/PaymentForm/reducer';
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -22,6 +23,7 @@ export default function createReducer (asyncReducers) {
     global: appReducer,
     dentistSignup: dentistSignupReducer,
     dashboard: dashboardReducer,
+    paymentForm: paymentFormReducer,
     ...asyncReducers,
   });
 }

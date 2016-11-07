@@ -12,6 +12,7 @@ import changeFactory from 'change-js';
 
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
+import PaymentForm from 'containers/PaymentForm';
 import {
   selectMyDentist,
   selectMyFamilyMembers,
@@ -44,12 +45,17 @@ export default class UserDashboard extends Component {
     changeRoute: PropTypes.func,
   };
 
+  constructor (props) {
+    super(props);
+    this.goToMembersPage = this.goToMembersPage.bind(this);
+  }
+
   componentWillMount () {
     this.props.fetchMyDentist();
     this.props.fetchMyFamily();
   }
 
-  goToMembersPage = () => {
+  goToMembersPage () {
     this.props.changeRoute('my-family-members');
   }
 
@@ -119,6 +125,8 @@ export default class UserDashboard extends Component {
           >
             Add | edit family members
           </button>
+
+          <PaymentForm total={total} user={loggedInUser} status={status} />
         </div>
 
         <br />

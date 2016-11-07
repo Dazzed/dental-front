@@ -8,6 +8,11 @@ import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 
 import {
+  SET_BILL,
+} from 'containers/PaymentForm/constants';
+
+
+import {
   MY_DENTIST_SUCCESS,
   MY_FAMILY_SUCCESS,
   MY_PATIENTS_SUCCESS,
@@ -18,8 +23,8 @@ import {
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
   DELETE_MEMBER_SUCCESS,
-  SET_PAYMENT_BILL,
 } from './constants';
+
 
 const initialState = {
   userDashboard: {
@@ -46,7 +51,27 @@ function dashboardReducer (state = initialState, action) {
   let subscription;
 
   switch (action.type) {
-    case SET_PAYMENT_BILL:
+    case SET_BILL:
+      if (state.userDashboard && state.userDashboard.myDentist) {
+        subscription = state.userDashboard.myDentist.subscriptions[0];
+        subscription.status = action.payload.status;
+
+        return {
+          ...state,
+          userDashboard: {
+            ...state.userDashboard,
+            myDentist: {
+              ...state.userDashboard.myDentist,
+              subscriptions: [
+                subscription,
+                ...state.userDashboard.myDentist.subscriptions.slice(1),
+              ]
+            }
+          }
+        };
+      }
+
+      location.reload();
       listToEdit = filter(state.dentistDashboard.myPatients, item =>
         item.id === action.userId
       )[0];
@@ -58,7 +83,7 @@ function dashboardReducer (state = initialState, action) {
       // FIXME: just hardcoded
       subscription = {
         ...listToEdit.subscriptions[0],
-        status: 'active',
+        status: action.payload.status,
       };
 
       listToEdit = {

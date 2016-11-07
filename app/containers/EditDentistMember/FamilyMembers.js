@@ -12,7 +12,7 @@ import FaEdit from 'react-icons/lib/fa/edit';
 import FaClose from 'react-icons/lib/fa/close';
 import Confirm from 'react-confirm-bootstrap';
 import changeFactory from 'change-js';
-import StripeCheckout from 'react-stripe-checkout';
+import PaymentForm from 'containers/PaymentForm';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import { addFamilyMemberFactory } from 'components/AddFamilyMemberForm';
@@ -184,22 +184,11 @@ class MyFamilyMembers extends Component {
           </Col>
 
           <Col md={12}>
-            {subscription.status === 'inactive' &&
-              <StripeCheckout
-                stripeKey="pk_test_71G4lapBvaU5MFU7Xq79iHRP"
-                name="My dental marketplace"
-                description="Subscription"
-                panelLabel="Process Payment"
-                amount={total}
-                currency="USD"
-                email={user.email}
-                token={this.requestPayBill}
-              >
-                <button className="btn btn-padding btn-green btn-round">
-                  Subscribe
-                </button>
-              </StripeCheckout>
-            }
+            <PaymentForm
+              total={total}
+              user={user}
+              status={subscription.status}
+            />
 
             {subscription.status === 'active' && <strong>Paid</strong>}
             <button

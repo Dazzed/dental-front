@@ -114,5 +114,8 @@
     "import/ignore": [
       ".(scss|less|css)$"
     ]
+  },
+  "globals": {
+    "SpreedlyExpress": true
   }
 }

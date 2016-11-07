@@ -48,12 +48,14 @@ const rootRoute = {
     Promise.all([
       System.import('containers/App/sagas'),
       System.import('containers/Dashboard/sagas'),
+      System.import('containers/PaymentForm/sagas'),
     ])
-      .then(([ sagas, dashboard ]) => {
+      .then(([ sagas, dashboard, payment ]) => {
         cb(null, App);
         const { injectSagas } = getHooks(store);
         injectSagas(sagas.default);
         injectSagas(dashboard.default);
+        injectSagas(payment.default);
       });
   }
 };
