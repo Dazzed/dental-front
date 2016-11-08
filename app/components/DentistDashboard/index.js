@@ -4,7 +4,7 @@ import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
 import Well from 'react-bootstrap/lib/Well';
 
-import { fetchMyPatients } from 'containers/Dashboard/actions';
+import { fetchMyPatients, requestReport } from 'containers/Dashboard/actions';
 import { selectUserName } from 'containers/App/selectors';
 import {
   selectNewMembers,
@@ -31,6 +31,7 @@ export default class DentistDashboard extends Component {
     userName: PropTypes.string,
     patients: PropTypes.object,
     fetchMyPatients: PropTypes.func.isRequired,
+    requestReport: PropTypes.func.isRequired,
     changeRoute: PropTypes.func,
   }
 
@@ -59,6 +60,10 @@ export default class DentistDashboard extends Component {
     });
   }
 
+  requestReport = () => {
+    this.props.requestReport();
+  }
+
   render () {
     const { userName, patients } = this.props;
 
@@ -73,6 +78,12 @@ export default class DentistDashboard extends Component {
             onClick={this.openInviteModal}
           >
             Invite client
+          </button>
+          <button
+            className="btn btn-green btn-round"
+            onClick={this.requestReport}
+          >
+            Report
           </button>
         </div>
 
@@ -114,5 +125,6 @@ function mapDispatchToProps (dispatch) {
   return {
     fetchMyPatients: () => dispatch(fetchMyPatients()),
     changeRoute: (url) => dispatch(push(url)),
+    requestReport: () => dispatch(requestReport()),
   };
 }

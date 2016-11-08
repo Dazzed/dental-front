@@ -19,6 +19,7 @@ import {
   SUBMIT_MEMBER_FORM,
   DELETE_MEMBER_REQUEST,
   REQUEST_PAYMENT_BILL,
+  REQUEST_REPORT,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -335,6 +336,36 @@ export function* requestPayBill () {
   });
 }
 
+// Function to download data to a file
+function download (data, filename, type) {
+  const a = document.createElement('a');
+  const file = new Blob([ data ], { type });
+  if (window.navigator.msSaveOrOpenBlob) { // IE10+
+    window.navigator.msSaveOrOpenBlob(file, filename);
+  } else { // Others
+    const url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+}
+
+export function* requestReport () {
+  yield* takeLatest(REQUEST_REPORT, function* () {
+    try {
+      const response = yield call(request, '/api/v1/users/me/reports');
+      download(response, 'report.csv', 'text/csv');
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
 // All sagas to be loaded
 export default [
   userDashboardSaga,
@@ -342,4 +373,5 @@ export default [
   submitFormWatcher,
   deleteMemberWatcher,
   requestPayBill,
+  requestReport,
 ];

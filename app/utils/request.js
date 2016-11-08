@@ -35,7 +35,11 @@ export default function request (url, options = {}) {
  * @return {object}          The parsed JSON from the request
  */
 function parseJSON (response) {
-  return response.json();
+  if (response.headers.get('content-type').indexOf('csv') === -1) {
+    return response.json();
+  }
+
+  return response.text();
 }
 
 /**

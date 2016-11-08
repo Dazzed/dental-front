@@ -31,6 +31,7 @@ import {
   DELETE_MEMBER_SUCCESS,
   REQUEST_PAYMENT_BILL,
   SET_PAYMENT_BILL,
+  REQUEST_REPORT,
 } from 'containers/Dashboard/constants';
 
 export function fetchMyDentist () {
@@ -221,5 +222,12 @@ export function setBill (userId) {
   return {
     type: SET_PAYMENT_BILL,
     userId,
+  };
+}
+
+
+export function requestReport () {
+  return {
+    type: REQUEST_REPORT,
   };
 }
