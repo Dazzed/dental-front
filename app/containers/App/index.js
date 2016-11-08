@@ -29,6 +29,8 @@ const staticPages = [
   '/',
   '/terms',
   '/faq',
+  '/legal',
+  '/privacy',
 ];
 
 const mapDispatchToProps = {

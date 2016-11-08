@@ -8,7 +8,6 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 
 import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
 import { Link } from 'react-router';
 
 import styles from './styles.css';
@@ -18,23 +17,31 @@ function Footer () {
   return (
     <div styleName="footer">
       <div className="container">
-        <div className="col-md-6">
+        <div className="col-md-5">
           &copy; 2016 www.mydentalmarketplace.com all rights reserved
         </div>
-        <div className="col-md-6 text-right">
+        <div className="col-md-7 text-right">
           <Nav bsStyle="pills" pullRight>
-            <NavItem styleName="nav-item">
-              <Link to="/legal">Legal Information</Link>
-            </NavItem>
-            <NavItem styleName="nav-item">
-              <Link to="/terms">Terms and Conditions</Link>
-            </NavItem>
-            <NavItem styleName="nav-item">
-              <Link to="/faq">FAQ</Link>
-            </NavItem>
-            <NavItem styleName="nav-item">
-              <Link to="/privacy">Privacy Policy</Link>
-            </NavItem>
+            <li>
+              <Link to="/legal" activeClassName="active">
+                Legal Information
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms" activeClassName="active">
+                Terms and Conditions
+              </Link>
+            </li>
+            <li>
+              <Link to="/faq" activeClassName="active">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link to="/privacy" activeClassName="active">
+                Privacy Policy
+              </Link>
+            </li>
           </Nav>
         </div>
       </div>

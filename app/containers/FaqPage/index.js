@@ -49,7 +49,7 @@ export default class FaqPage extends React.Component {
                 <div styleName="answer">
                   <ul>
                     <li>
-                      Periodontal disease or Gum disease is an infection of the tissues that surround and support your teeth. It is present in roughly 10 percent of adults.  It is a major cause of tooth loss in adults. Because gum disease is usually painless, you may not know you have it. (for more information:
+                      Periodontal disease or Gum disease is an infection of the tissues that surround and support your teeth. It is present in roughly 10 percent of adults.  It is a major cause of tooth loss in adults. Because gum disease is usually painless, you may not know you have it. (for more information:{' '}
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
