@@ -19,6 +19,8 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import Image from 'react-bootstrap/lib/Image';
 import { Link } from 'react-router';
 
+import Footer from 'components/Footer';
+
 import styles from './styles.css';
 
 import logo from './logo.png';
@@ -215,32 +217,8 @@ export default class HomePage extends React.Component {
             </button>
           </div>
 
-          <div className="row" styleName="footer">
-            <div className="col-md-6">
-              &copy; 2016 www.mydentalmarketplace.com all rights reserved
-            </div>
-            <div className="col-md-6 text-right">
-              <Nav bsStyle="pills" pullRight>
-                <NavItem
-                  styleName="nav-item"
-                  href="/legal"
-                >
-                  Legal Information
-                </NavItem>
-                <NavItem
-                  styleName="nav-item"
-                  href="/tos"
-                >
-                  Terms of Service
-                </NavItem>
-                <NavItem
-                  styleName="nav-item"
-                  href="/privacy"
-                >
-                  Privacy Policy
-                </NavItem>
-              </Nav>
-            </div>
+          <div className="row" styleName="footer-block">
+            <Footer />
           </div>
         </div>
       </div>

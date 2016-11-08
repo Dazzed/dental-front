@@ -17,13 +17,13 @@ const schema = {
   phone: { presence: true, format: /\(\d{3}\)\s*(\d{3})\-(\d{4})/ },
   dentistSpecialty: { presence: { message: '^Select an Specialty' } },
   zipCode: { presence: true },
-  tos: {
-    presence: { message: '^You have to accept the Terms of service' },
-    inclusion: {
-      within: [ true ],
-      message: '^You have to accept the Terms of service',
-    },
-  },
+  // tos: {
+  //   presence: { message: '^You have to accept the Terms and Conditions' },
+  //   inclusion: {
+  //     within: [ true ],
+  //     message: '^You have to accept the Terms and Conditions',
+  //   },
+  // },
 };
 
 

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
-import Checkbox from 'components/Checkbox';
+// import Checkbox from 'components/Checkbox';
 import { selectDentistSpecialties } from 'containers/App/selectors';
 import { isInvalidNameSelector } from 'containers/DentistSignupPage/selectors';
 import signupFormValidator from './validator';
@@ -148,12 +148,12 @@ class DentistSignupForm extends React.Component {
 
         </Row>
 
-        <Field
+        {/* <Field
           name="tos"
           component={Checkbox}
         >
           I have read and accept the <a href="">Terms of Conditions</a>
-        </Field>
+        </Field> */}
 
         <FormGroup className="has-error">
           <Col sm={12}>

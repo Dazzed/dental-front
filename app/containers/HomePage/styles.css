@@ -97,7 +97,8 @@ li.nav-item {
   }
 }
 
-.footer {
-  padding-top: 20px;
-  padding-bottom: 20px;
+.footer-block {
+  > * {
+    background-color: transparent;
+  }
 }

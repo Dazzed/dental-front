@@ -1,3 +1,5 @@
+@import '../../assets/styles/variables';
+
 $footer-text-color: #E9F1E4;
 
 .footer {
@@ -5,19 +7,21 @@ $footer-text-color: #E9F1E4;
   color: $footer-text-color;
   padding: 1rem 0;
   font-size: 1rem;
-}
 
-li.nav-item {
-  & > a:hover,
-  & > a:active {
-    background-color: transparent;
-    color: #FFF;
-  }
+  li {
+    & > a:hover,
+    & > a:active,
+    & > a:focus {
+      background-color: transparent !important;
+      color: #337ab7;
+      text-decoration: underline !important;
+    }
 
-  & > a {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    color: $footer-text-color;
-    font-size: 1rem;
+    & > a {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      color: $footer-text-color;
+      font-size: 1rem;
+    }
   }
 }
