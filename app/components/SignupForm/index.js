@@ -223,12 +223,12 @@ class SignupForm extends React.Component {
           I'll also be joining the membership
         </Field>
 
-        <Field
+        {/* <Field
           name="tos"
           component={Checkbox}
         >
           I have read and accept the <a href="">Terms of Conditions</a>
-        </Field>
+        </Field> */}
 
         <FormGroup className="has-error">
           <Col sm={12}>

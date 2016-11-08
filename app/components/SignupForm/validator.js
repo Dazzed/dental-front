@@ -28,13 +28,13 @@ const schema = {
       message: '^Gender can\'t be blank',
     },
   },
-  tos: {
-    presence: { message: '^You have to accept the Terms of service' },
-    inclusion: {
-      within: [ true ],
-      message: '^You have to accept the Terms of service',
-    },
-  },
+  // tos: {
+  //   presence: { message: '^You have to accept the Terms and Conditions' },
+  //   inclusion: {
+  //     within: [ true ],
+  //     message: '^You have to accept the Terms and Conditions',
+  //   },
+  // },
 };
 
 
