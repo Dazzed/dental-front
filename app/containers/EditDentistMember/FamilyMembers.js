@@ -129,7 +129,7 @@ class MyFamilyMembers extends Component {
                 Member Since
               </Col>
               <Col md={2}>
-                Edit  | Delete
+                Edit  | Cancel
               </Col>
             </Row>
           </Col>
@@ -224,5 +224,3 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(null, mapDispatchToProps)(MyFamilyMembers);
-
-

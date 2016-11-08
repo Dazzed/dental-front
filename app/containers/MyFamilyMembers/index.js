@@ -38,7 +38,7 @@ export default class MyFamilyMembers extends Component {
     return (
       <FamilyMembers
         membersList={membersList}
-        title="Your Family Members"
+        title="Your Family Memberships"
       />
     );
   }

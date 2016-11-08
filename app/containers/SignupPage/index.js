@@ -79,7 +79,7 @@ class SignupPage extends Component {
               <Row>
                 <Col md={12}>
                   <h2>
-                    Our Membership
+                    Our Loyalty Memberships
                   </h2>
                   <br />
                 </Col>

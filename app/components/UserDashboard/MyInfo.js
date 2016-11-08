@@ -49,7 +49,7 @@ class MyInfo extends Component {
           <Col md={10}>
             <Row styleName="row">
               <Col md={6}>
-                <div>Account holder</div>
+                <div>Primary Account Holder</div>
                 <div styleName="name">{firstName} {lastName}</div>
                 {city && state &&
                   <div styleName="address">

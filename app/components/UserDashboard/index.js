@@ -109,7 +109,7 @@ export default class UserDashboard extends Component {
         <MyInfo user={loggedInUser} />
 
         <div styleName="h3-with-button" className="clearfix">
-          <h3>Your Family Members</h3>
+          <h3>Your Family Memberships</h3>
         </div>
 
         <FamilyMembers
