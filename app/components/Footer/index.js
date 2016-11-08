@@ -9,6 +9,7 @@ import CSSModules from 'react-css-modules';
 
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+import { Link } from 'react-router';
 
 import styles from './styles.css';
 
@@ -22,23 +23,17 @@ function Footer () {
         </div>
         <div className="col-md-6 text-right">
           <Nav bsStyle="pills" pullRight>
-            <NavItem
-              styleName="nav-item"
-              href="/legal"
-            >
-              Legal Information
+            <NavItem styleName="nav-item">
+              <Link to="/legal">Legal Information</Link>
             </NavItem>
-            <NavItem
-              styleName="nav-item"
-              href="/tos"
-            >
-              Terms of Service
+            <NavItem styleName="nav-item">
+              <Link to="/terms">Terms and Conditions</Link>
             </NavItem>
-            <NavItem
-              styleName="nav-item"
-              href="/privacy"
-            >
-              Privacy Policy
+            <NavItem styleName="nav-item">
+              <Link to="/faq">FAQ</Link>
+            </NavItem>
+            <NavItem styleName="nav-item">
+              <Link to="/privacy">Privacy Policy</Link>
             </NavItem>
           </Nav>
         </div>

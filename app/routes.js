@@ -273,6 +273,22 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/terms',
+      name: 'terms',
+      getComponent (nextState, cb) {
+        System.import('containers/TermsPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/faq',
+      name: 'faq',
+      getComponent (nextState, cb) {
+        System.import('containers/FaqPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {

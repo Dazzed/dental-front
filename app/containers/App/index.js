@@ -25,6 +25,11 @@ import { selectUserType, selectPageTitle } from 'containers/App/selectors';
 import * as actions from './actions';
 import styles from './styles.css';
 
+const staticPages = [
+  '/',
+  '/terms',
+  '/faq',
+];
 
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
@@ -70,7 +75,7 @@ export default class App extends Component {
     return (
       <div styleName="wrapper">
         <NavBar />
-        {userType ?
+        {userType && staticPages.indexOf(pathname) < 0 ?
           <div styleName="container-wrapper">
             {title}
             <div className="container">

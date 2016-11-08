@@ -221,23 +221,17 @@ export default class HomePage extends React.Component {
             </div>
             <div className="col-md-6 text-right">
               <Nav bsStyle="pills" pullRight>
-                <NavItem
-                  styleName="nav-item"
-                  href="/legal"
-                >
-                  Legal Information
+                <NavItem styleName="nav-item">
+                  <Link to="/legal">Legal Information</Link>
                 </NavItem>
-                <NavItem
-                  styleName="nav-item"
-                  href="/tos"
-                >
-                  Terms of Service
+                <NavItem styleName="nav-item">
+                  <Link to="/terms">Terms and Conditions</Link>
                 </NavItem>
-                <NavItem
-                  styleName="nav-item"
-                  href="/privacy"
-                >
-                  Privacy Policy
+                <NavItem styleName="nav-item">
+                  <Link to="/faq">FAQ</Link>
+                </NavItem>
+                <NavItem styleName="nav-item">
+                  <Link to="/privacy">Privacy Policy</Link>
                 </NavItem>
               </Nav>
             </div>

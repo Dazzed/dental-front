@@ -3,6 +3,7 @@
  *
  * App container styles
  */
+@import '../../assets/styles/variables';
 
 :root {
   --nav-height: 6.5rem;
@@ -10,7 +11,7 @@
 
 .wrapper {
   height: 100%;
-  margin-top: var(--nav-height);
+  margin-top: $nav-height;
 }
 
 .container-wrapper {

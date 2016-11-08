@@ -1,0 +1,14 @@
+@import '../../assets/styles/variables';
+
+.container-wrapper {
+  min-height: calc(100% - 45px);
+}
+
+ul {
+  list-style-type: square;
+}
+
+li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
