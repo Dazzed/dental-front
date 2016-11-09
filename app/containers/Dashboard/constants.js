@@ -38,6 +38,7 @@ export const DELETE_MEMBER_REQUEST = 'app/Dashboard/DELETE_MEMBER_REQUEST';
 export const DELETE_MEMBER_SUCCESS = 'app/Dashboard/DELETE_MEMBER_SUCCESS';
 export const REQUEST_PAYMENT_BILL = 'app/Dashboard/REQUEST_PAYMENT_BILL';
 export const SET_PAYMENT_BILL = 'app/Dashboard/SET_PAYMENT_BILL';
+export const REQUEST_REPORT = 'app/Dashboard/REQUEST_REPORT';
 
 export const SUBMIT_MESSAGE_FORM =
   'app/Dashboard/SUBMIT_MESSAGE_FORM';

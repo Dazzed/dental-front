@@ -13,7 +13,7 @@ $footer-text-color: #E9F1E4;
     & > a:active,
     & > a:focus {
       background-color: transparent !important;
-      color: #337ab7;
+      color: #337AB7;
       text-decoration: underline !important;
     }
 
@@ -25,3 +25,4 @@ $footer-text-color: #E9F1E4;
     }
   }
 }
+
