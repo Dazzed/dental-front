@@ -4,22 +4,14 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import forOwn from 'lodash/forOwn';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
 import LoadingSpinner from 'components/LoadingSpinner';
-import { US_STATES } from 'common/constants';
+import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 
 import profileFormValidator from './validator';
-
-const states = [];
-
-forOwn(US_STATES, (value, key) => {
-  states.push([ key, value ]);
-});
-
 
 @reduxForm({
   form: 'profile',
@@ -114,14 +106,13 @@ class ProfileForm extends React.Component {
                 width={6}
               >
                 <option value="">Select state</option>
-                {states.map(item =>
-                  <option
-                    value={item[0]}
-                    key={item[0]}
-                  >
-                    {item[1]}
-                  </option>
-                )}
+                {US_STATES &&
+                  Object.keys(US_STATES).map(key => (
+                    <option value={key} key={key}>
+                      {US_STATES[key]}
+                    </option>
+                  ))
+                }
               </Field>
 
 
@@ -168,6 +159,26 @@ class ProfileForm extends React.Component {
             <option value="">Select gender</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
+          </Field>
+        </Row>
+
+        <Row>
+          <Field
+            name="contactMethod"
+            type="select"
+            label="Gender"
+            component={LabeledInput}
+            width={5}
+          >
+            <option value="">Select preferred contact method</option>
+            {Object.keys(PREFERRED_CONTACT_METHODS).map(key =>
+              <option
+                value={key}
+                key={key}
+              >
+                {PREFERRED_CONTACT_METHODS[key]}
+              </option>
+            )}
           </Field>
         </Row>
 

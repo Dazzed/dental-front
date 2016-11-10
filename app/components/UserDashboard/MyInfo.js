@@ -9,7 +9,7 @@ import FaCalendar from 'react-icons/lib/fa/calendar';
 import FaEnvelope from 'react-icons/lib/fa/envelope';
 import FaPhone from 'react-icons/lib/fa/phone';
 
-import { US_STATES } from 'common/constants';
+import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 import styles from './MyInfo.css';
 
 const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
@@ -35,6 +35,7 @@ class MyInfo extends Component {
       email,
       phone,
       birthDate,
+      contactMethod,
     } = user;
 
     return (
@@ -91,6 +92,19 @@ class MyInfo extends Component {
                 </div>
               }
             </Row>
+
+            <Row styleName="row">
+              <Col md={12}>
+                <span>Preferred Contact Method: {' '}</span>
+                <span styleName="address">
+                {contactMethod &&
+                  PREFERRED_CONTACT_METHODS[contactMethod]
+                }
+                {!contactMethod && 'Not specified'}
+                </span>
+              </Col>
+            </Row>
+
           </Col>
         </Row>
       </Well>
