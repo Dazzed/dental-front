@@ -86,7 +86,7 @@ export default class UserDashboard extends Component {
       total = total.dollars();
     }
 
-    if (myDentist.subscriptions && myDentist.subscriptions[0]) {
+    if (myDentist && myDentist.subscriptions && myDentist.subscriptions[0]) {
       startedAt = myDentist.subscriptions[0].startAt;
     }
 
@@ -135,7 +135,7 @@ export default class UserDashboard extends Component {
           <PaymentForm total={total} user={loggedInUser} status={status} />
         </div>
 
-        {myDentist.subscriptions && myDentist.subscriptions[0] &&
+        {myDentist && myDentist.subscriptions && myDentist.subscriptions[0] &&
           <div className="clearfix">
             <p>
               <br />
