@@ -9,17 +9,11 @@ import forOwn from 'lodash/forOwn';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
+import renderDatePicker from 'components/DatePicker';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 
 import profileFormValidator from './validator';
-
-const states = [];
-
-forOwn(US_STATES, (value, key) => {
-  states.push([ key, value ]);
-});
-
 
 @reduxForm({
   form: 'profile',
@@ -114,14 +108,13 @@ class ProfileForm extends React.Component {
                 width={6}
               >
                 <option value="">Select state</option>
-                {states.map(item =>
-                  <option
-                    value={item[0]}
-                    key={item[0]}
-                  >
-                    {item[1]}
-                  </option>
-                )}
+                {US_STATES &&
+                  US_STATES.map(key => (
+                    <option value={key}, key={key}>
+                      US_STATES[key]
+                    </option>
+                  ));
+                }
               </Field>
 
 
@@ -151,7 +144,7 @@ class ProfileForm extends React.Component {
           <Field
             name="birthDate"
             type="date"
-            component={LabeledInput}
+            component={renderDatePicker}
             label="Birthdate"
             width={6}
           />
