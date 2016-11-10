@@ -4,12 +4,10 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import forOwn from 'lodash/forOwn';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
-import renderDatePicker from 'components/DatePicker';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 
@@ -109,11 +107,11 @@ class ProfileForm extends React.Component {
               >
                 <option value="">Select state</option>
                 {US_STATES &&
-                  US_STATES.map(key => (
-                    <option value={key}, key={key}>
-                      US_STATES[key]
+                  Object.keys(US_STATES).map(key => (
+                    <option value={key} key={key}>
+                      {US_STATES[key]}
                     </option>
-                  ));
+                  ))
                 }
               </Field>
 
@@ -144,7 +142,7 @@ class ProfileForm extends React.Component {
           <Field
             name="birthDate"
             type="date"
-            component={renderDatePicker}
+            component={LabeledInput}
             label="Birthdate"
             width={6}
           />
