@@ -11,6 +11,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
+import renderDatePicker from 'components/DatePicker';
 import { SEX_TYPES, US_STATES } from 'common/constants';
 import forOwn from 'lodash/forOwn';
 
@@ -193,7 +194,7 @@ class SignupForm extends React.Component {
           <Field
             name="birthDate"
             type="date"
-            component={LabeledInput}
+            component={renderDatePicker}
             label="Birthdate"
             width={6}
           />
@@ -227,7 +228,10 @@ class SignupForm extends React.Component {
           name="tos"
           component={Checkbox}
         >
-          I have read and accept the <a href="">Terms of Conditions</a>
+          I have read and accept the{' '}
+          <a href="/terms" target="_blank" rel="noopener noreferrer">
+            Terms and Conditions
+          </a>
         </Field> */}
 
         <FormGroup className="has-error">

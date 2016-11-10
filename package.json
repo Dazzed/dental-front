@@ -137,6 +137,7 @@
     "react-bootstrap": "0.30.2",
     "react-confirm-bootstrap": "^3.1.2",
     "react-css-modules": "^3.7.10",
+    "react-datepicker": "^0.34.0",
     "react-dom": "15.3.0",
     "react-dropzone": "^3.6.0",
     "react-helmet": "^3.1.0",
