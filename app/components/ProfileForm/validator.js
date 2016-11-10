@@ -18,6 +18,7 @@ const schema = {
   state: { presence: true },
   zipCode: { presence: true },
   phone: { presence: true, format: /\(\d{3}\)\s*(\d{3})\-(\d{4})/ },
+  contactMethod: { presence: true },
   // birthDate: { presence: true },
 };
 
