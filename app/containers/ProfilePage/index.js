@@ -30,17 +30,12 @@ class ProfilePage extends React.Component {
     changePageTitle: React.PropTypes.func.isRequired,
   }
 
-  constructor (props) {
-    super(props);
-    this.onSubmitForm = this.onSubmitForm.bind(this);
-  }
-
   componentDidMount () {
     this.props.changePageTitle('Edit Your Information');
     this.props.fetchProfileData();
   }
 
-  onSubmitForm (data) {
+  onSubmitForm = (data) => {
     this.props.dispatchSubmit(data);
   }
 

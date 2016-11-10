@@ -8,6 +8,7 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
+import renderDatePicker from 'components/DatePicker';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 
@@ -142,7 +143,7 @@ class ProfileForm extends React.Component {
           <Field
             name="birthDate"
             type="date"
-            component={LabeledInput}
+            component={renderDatePicker}
             label="Birthdate"
             width={6}
           />
