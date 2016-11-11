@@ -30,3 +30,8 @@
     color: #FFF;
   }
 }
+
+.savings-dollar {
+  color: $red;
+  text-decoration: underline;
+}

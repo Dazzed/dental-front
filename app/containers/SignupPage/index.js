@@ -95,7 +95,7 @@ class SignupPage extends Component {
                     <li>1 emergency exam and xray/year</li>
                     <li>10% of any needed treatment</li>
                   </ul>
-                  <h3 style={{color: 'red', textDecoration: 'underline'}}>Total Savings/year=$118</h3>
+                  <h3 styleName="savings-dollar">Total Savings/year=$118</h3>
                 </Col>
               </Row>
               <br />
@@ -110,7 +110,7 @@ class SignupPage extends Component {
                     <li>1 Fluoride treatment/year</li>
                     <li>10% off any needed treatment</li>
                   </ul>
-                  <h3 style={{color: 'red', textDecoration: 'underline'}}>Total Savings=$151/year</h3>
+                  <h3 styleName="savings-dollar">Total Savings=$151/year</h3>
                 </Col>
               </Row>
             </Col>
