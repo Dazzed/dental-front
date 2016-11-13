@@ -99,7 +99,7 @@ class MyDentist extends Component {
             <div styleName="avatar">
               <Image src={avatar || defaultAvatar} />
             </div>
-            <div styleName="rating">5/5</div>
+            {/* <div styleName="rating">5/5</div> */}
             <div>
               {/* <StarRating
                 name="dentist-rating"
@@ -118,6 +118,7 @@ class MyDentist extends Component {
                 <div styleName="name">{firstName} {lastName}</div>
                 {dentistInfo.city && dentistInfo.state &&
                   <div styleName="address">
+                    {dentistInfo.address}<br/>
                     {dentistInfo.city}, {US_STATES[dentistInfo.state]}
                   </div>
                 }

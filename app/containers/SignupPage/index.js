@@ -87,21 +87,21 @@ class SignupPage extends Component {
 
               <Row>
                 <Col md={12}>
-                  <div>Adult Membership $33/month</div>
+                  <div><h3>Adult Membership $33/month</h3></div>
                   <ul>
                     <li>2 cleanings/year</li>
                     <li>2 exams with necessary xrays/year</li>
                     <li>Panorex xray once every 3 years</li>
                     <li>1 emergency exam and xray/year</li>
                     <li>10% of any needed treatment</li>
-                    <li>Total Savings/year=$118</li>
                   </ul>
+                  <h3 style={{color: 'red', textDecoration: 'underline'}}>Total Savings/year=$118</h3>
                 </Col>
               </Row>
               <br />
               <Row>
                 <Col md={12}>
-                  <div>Child Membership $29/month</div>
+                  <div><h3>Child Membership $29/month</h3></div>
                   <ul>
                     <li>2 cleanings/year</li>
                     <li>2 exams with necessary xrays/year</li>
@@ -109,8 +109,8 @@ class SignupPage extends Component {
                     <li>1 emergency exam with xray/year</li>
                     <li>1 Fluoride treatment/year</li>
                     <li>10% off any needed treatment</li>
-                    <li>Total Savings=$151/year</li>
                   </ul>
+                  <h3 style={{color: 'red', textDecoration: 'underline'}}>Total Savings=$151/year</h3>
                 </Col>
               </Row>
             </Col>

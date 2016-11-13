@@ -20,6 +20,8 @@ const renderDatePicker = ({ input, label, meta: { touched, error } }) => (
           {...input}
           isClearable
           dateForm="MM/DD/YYYY"
+          showYearDropdown
+          scrollableYearDropdown
           selected={input.value ? moment(input.value) : null}
           className="form-control"
           placeholderText="MM/DD/YYYY"

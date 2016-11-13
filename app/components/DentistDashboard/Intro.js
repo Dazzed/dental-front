@@ -22,7 +22,7 @@ function Intro ({ name, changeRoute }) {
           </div>
         </Col>
         <Col md={4}>
-          <Image src={toothImg} />
+          
         </Col>
       </Row>
     </Well>
