@@ -74,9 +74,12 @@ class SignupForm extends React.Component {
             width={6}
           />
         </Row>
-          <Alert bsStyle="info">
-            <h5>Password should have at least 6 characters, upper case, lower case and numbers.</h5>
-          </Alert>
+        <Alert bsStyle="info">
+          <h5>
+            Password should have at least 6 characters, upper case,{' '}
+            lower case and numbers.
+          </h5>
+        </Alert>
 
         <Row>
           <Field

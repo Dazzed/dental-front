@@ -118,7 +118,7 @@ class MyDentist extends Component {
                 <div styleName="name">{firstName} {lastName}</div>
                 {dentistInfo.city && dentistInfo.state &&
                   <div styleName="address">
-                    {dentistInfo.address}<br/>
+                    {dentistInfo.address}<br />
                     {dentistInfo.city}, {US_STATES[dentistInfo.state]}
                   </div>
                 }

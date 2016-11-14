@@ -45,3 +45,8 @@ li.nav-item {
     }
   }
 }
+
+.savings-dollar {
+  color: $red;
+  text-decoration: underline;
+}

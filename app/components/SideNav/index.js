@@ -43,7 +43,7 @@ function offerings (userType) {
               <li>1 emergency exam and xray/year</li>
               <li>10% of any needed treatment</li>
             </ul>
-            <h4 style={{color: 'red', textDecoration: 'underline'}}>Total Savings/year=$118</h4>
+            <h4 styleName="savings-dollar">Total Savings/year=$118</h4>
           </Col>
         </Row>
         <br />
@@ -58,7 +58,7 @@ function offerings (userType) {
               <li>1 Fluoride treatment/year</li>
               <li>10% off any needed treatment</li>
             </ul>
-            <h4 style={{color: 'red', textDecoration: 'underline'}}>Total Savings=$151/year</h4>
+            <h4 styleName="savings-dollar">Total Savings=$151/year</h4>
           </Col>
         </Row>
       </div>

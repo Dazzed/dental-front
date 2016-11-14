@@ -3,9 +3,7 @@ import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
-import Image from 'react-bootstrap/lib/Image';
 
-import toothImg from 'assets/images/tooth-mag.png';
 import styles from './Intro.css';
 
 function Intro ({ name, changeRoute }) {
@@ -21,9 +19,7 @@ function Intro ({ name, changeRoute }) {
             Current membership fees and activation fees
           </div>
         </Col>
-        <Col md={4}>
-          
-        </Col>
+        <Col md={4} />
       </Row>
     </Well>
   );
