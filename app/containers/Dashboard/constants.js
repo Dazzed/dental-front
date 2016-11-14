@@ -24,6 +24,7 @@ export const MY_PATIENTS_ERROR = 'app/Dashboard/MY_PATIENTS_ERROR';
 export const CONVERSATION_REQUEST = 'app/Dashboard/CONVERSATION_REQUEST';
 export const CONVERSATION_SUCCESS = 'app/Dashboard/CONVERSATION_SUCCESS';
 export const CONVERSATION_ERROR = 'app/Dashboard/CONVERSATION_ERROR';
+export const MESSAGE_SENT = 'app/Dashboard/MESSAGE_SENT';
 
 export const NEW_MSG_COUNT_REQUEST = 'app/Dashboard/NEW_MSG_COUNT_REQUEST';
 export const NEW_MSG_COUNT_SUCCESS = 'app/Dashboard/NEW_MSG_COUNT_SUCCESS';

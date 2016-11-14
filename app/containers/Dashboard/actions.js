@@ -17,6 +17,7 @@ import {
   CONVERSATION_REQUEST,
   CONVERSATION_SUCCESS,
   CONVERSATION_ERROR,
+  MESSAGE_SENT,
   NEW_MSG_COUNT_REQUEST,
   NEW_MSG_COUNT_SUCCESS,
   MARK_MSG_READ_REQUEST,
@@ -105,6 +106,13 @@ export function fetchConversation (payload) {
 export function conversationFetched (payload) {
   return {
     type: CONVERSATION_SUCCESS,
+    payload,
+  };
+}
+
+export function messageSent (payload) {
+  return {
+    type: MESSAGE_SENT,
     payload,
   };
 }

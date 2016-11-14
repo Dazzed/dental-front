@@ -18,6 +18,7 @@ import {
   MY_PATIENTS_SUCCESS,
   CONVERSATION_REQUEST,
   CONVERSATION_SUCCESS,
+  MESSAGE_SENT,
   NEW_MSG_COUNT_SUCCESS,
   SET_EDITING_MEMBER,
   ADD_MEMBER_SUCCESS,
@@ -232,6 +233,14 @@ function dashboardReducer (state = initialState, action) {
       return {
         ...state,
         messages: action.payload,
+      };
+    case MESSAGE_SENT:
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          action.payload,
+        ]
       };
     case NEW_MSG_COUNT_SUCCESS:
       return {
