@@ -22,13 +22,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapActionsToProps (dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-@connect(mapStateToProps, mapActionsToProps)
+@connect(mapStateToProps)
 @reduxForm({
   form: 'profile',
   enableReinitialize: true,
