@@ -2,6 +2,7 @@ import React from 'react';
 
 import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
+import Alert from 'react-bootstrap/lib/Alert';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
@@ -77,6 +78,12 @@ class DentistSignupForm extends React.Component {
           />
 
         </Row>
+        <Alert bsStyle="info">
+          <h5>
+            Password should have at least 6 characters, upper case,{' '}
+            lower case and numbers.
+          </h5>
+        </Alert>
 
         <FormGroup className={isInvalidName ? 'has-error' : ''}>
           <Col sm={12}>

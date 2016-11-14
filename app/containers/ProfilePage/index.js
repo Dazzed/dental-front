@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import Well from 'react-bootstrap/lib/Well';
 // import pick from 'lodash/pick';
 import omit from 'lodash/omit';
@@ -28,11 +29,17 @@ class ProfilePage extends React.Component {
     dispatchSubmit: React.PropTypes.func,
     fetchProfileData: React.PropTypes.func.isRequired,
     changePageTitle: React.PropTypes.func.isRequired,
+    changeRoute: React.PropTypes.func,
   }
 
   componentDidMount () {
     this.props.changePageTitle('Edit Your Information');
     this.props.fetchProfileData();
+
+    const { profileData } = this.props;
+    if (profileData && profileData.type === 'dentist') {
+      this.props.changeRoute('/');
+    }
   }
 
   onSubmitForm = (data) => {
@@ -76,6 +83,7 @@ function mapDispatchToProps (dispatch) {
     },
     fetchProfileData: () => dispatch(fetchProfileData()),
     changePageTitle: (title) => dispatch(changePageTitle(title)),
+    changeRoute: (url) => dispatch(push(url)),
   };
 }
 export default ProfilePage;

@@ -28,4 +28,3 @@ const schema = {
 
 
 export default validatorFactory(schema);
-

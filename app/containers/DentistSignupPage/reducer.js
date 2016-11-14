@@ -15,7 +15,7 @@ export default function reducer (state = initialState, action) {
       return {
         ...state,
         dentistCreated: true,
-        firstName: action.payload.fullName,
+        fullName: action.payload.fullName,
       };
     default:
       return state;
