@@ -1,10 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
+import { selectCurrentUser } from 'containers/App/selectors';
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
 import Checkbox from 'components/Checkbox';
@@ -14,6 +16,19 @@ import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 
 import profileFormValidator from './validator';
 
+function mapStateToProps (state) {
+  return {
+    initialValues: selectCurrentUser(state),
+  };
+}
+
+function mapActionsToProps (dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+@connect(mapStateToProps, mapActionsToProps)
 @reduxForm({
   form: 'profile',
   enableReinitialize: true,
@@ -167,7 +182,7 @@ class ProfileForm extends React.Component {
           <Field
             name="contactMethod"
             type="select"
-            label="Gender"
+            label="Contatct method"
             component={LabeledInput}
             width={5}
           >
