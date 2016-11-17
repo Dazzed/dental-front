@@ -21,7 +21,7 @@ function Intro ({ fullName }) {
           </div>
         </Col>
         <Col md={4}>
-          <Image src={toothImg} />
+          
         </Col>
       </Row>
     </Well>
