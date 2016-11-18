@@ -81,6 +81,7 @@ export default class PatientCard extends Component {
     const {
       firstName,
       lastName,
+      birthDate,
       email,
       createdAt,
       contactMethod,
@@ -93,8 +94,6 @@ export default class PatientCard extends Component {
       latestReview,
       newMsgCount,
     } = this.props;
-
-    console.log('**********', payingMember);
 
     // TODO: only show current active susbscription!
     const { showFamilyMembers } = this.state;
@@ -200,6 +199,30 @@ export default class PatientCard extends Component {
                       <Col md={2} sm={2}>Type</Col>
                       <Col md={2} sm={2}>Fee</Col>
                     </Row>
+
+                    { payingMember &&
+                      <Row>
+                        <Col md={4} sm={4} styleName="avatar-name">
+                          <Image src={avatar} />
+                          <span>
+                            {`${firstName} ${lastName}`}
+                          </span>
+                        </Col>
+                        <Col md={3} sm={3}>
+                          Account Holder
+                        </Col>
+                        <Col md={1} sm={1}>
+                          {birthDate &&
+                            moment().diff(birthDate, 'year', false)
+                          }
+                        </Col>
+                        <Col md={2} sm={2}>Custom</Col>
+                        <Col md={2} sm={2}>
+                          ${subscriptions[0].monthly}
+                        </Col>
+                      </Row>
+                    }
+
                     { familyMembers &&
                       familyMembers.map((member, index) => (
                         <Row key={index}>
