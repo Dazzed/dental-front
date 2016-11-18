@@ -15,7 +15,7 @@ import formatUser from 'utils/formatUser';
 
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
-import PaymentForm from 'containers/PaymentForm';
+import PaymentForm from 'containers/Authorize.net/Form';
 import {
   selectMyDentist,
   selectMyFamilyMembers,

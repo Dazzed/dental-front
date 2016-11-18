@@ -133,6 +133,7 @@
     "lodash": "4.14.1",
     "moment": "^2.15.0",
     "offline-plugin": "^3.4.2",
+    "payform": "^1.2.0",
     "react": "15.3.0",
     "react-bootstrap": "0.30.2",
     "react-confirm-bootstrap": "^3.1.2",
