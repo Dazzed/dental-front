@@ -13,7 +13,7 @@ function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
       <Row styleName="top-header">
         <Col md={4}>
           <span styleName="label">Account:</span>
-          <span styleName="value status">{accountStatus}</span>
+          <span styleName={`value ${accountStatus}`}>{accountStatus}</span>
         </Col>
         <Col md={4}>
           <span styleName="label">Your total monthly due:</span>

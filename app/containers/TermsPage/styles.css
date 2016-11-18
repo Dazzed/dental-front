@@ -2,14 +2,28 @@
 
 .container-wrapper {
   min-height: calc(100% - 52px);
+}
 
-  ul {
+.container {
+  & > ul {
     list-style-type: square;
     margin-top: 20px;
+    margin-bottom: 40px;
+
+    & > li {
+      margin-bottom: 10px;
+    }
   }
 
-  li {
-    font-size: 18px;
+  .title {
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
     margin-bottom: 10px;
+  }
+
+  .description {
+    font-weight: normal;
+    font-size: 18px;
   }
 }

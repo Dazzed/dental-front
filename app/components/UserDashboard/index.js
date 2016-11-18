@@ -128,6 +128,7 @@ export default class UserDashboard extends Component {
           <button
             className="btn btn-darkest-green btn-round"
             onClick={this.goToMembersPage}
+            style={{ float: 'left', marginRight: '15px' }}
           >
             Add | edit family members
           </button>
