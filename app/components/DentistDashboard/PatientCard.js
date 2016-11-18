@@ -209,7 +209,7 @@ export default class PatientCard extends Component {
                           </span>
                         </Col>
                         <Col md={3} sm={3}>
-                          Account Holder
+                          ActHld/Mem
                         </Col>
                         <Col md={1} sm={1}>
                           {birthDate &&
