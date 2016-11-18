@@ -94,6 +94,8 @@ export default class PatientCard extends Component {
       newMsgCount,
     } = this.props;
 
+    console.log('**********', payingMember);
+
     // TODO: only show current active susbscription!
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
