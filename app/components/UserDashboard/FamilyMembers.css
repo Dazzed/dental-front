@@ -26,8 +26,11 @@
     color: $black;
   }
 
-  .value.status {
+  .value.active {
     color: $green;
+  }
+  .value.inactive {
+    color: $purple;
   }
 }
 
