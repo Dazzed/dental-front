@@ -7,7 +7,9 @@ import Well from 'react-bootstrap/lib/Well';
 import FamilyMember from './FamilyMember';
 import styles from './FamilyMembers.css';
 
-function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
+function FamilyMembers (
+  { accountStatus, monthlyDue, dueDate, members, owner }
+) {
   return (
     <Well styleName="family-members-container">
       <Row styleName="top-header">
@@ -31,6 +33,10 @@ function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
         <Col md={3} className="text-right">Member Since</Col>
       </Row>
       <Row styleName="list-content">
+        {owner.payingMember &&
+          <FamilyMember details={owner} />
+        }
+
         {members &&
           members.map((member, index) => (
             <FamilyMember details={member} key={index} />
@@ -43,9 +49,10 @@ function FamilyMembers ({ accountStatus, monthlyDue, dueDate, members }) {
 
 FamilyMembers.propTypes = {
   accountStatus: PropTypes.string,
-  monthlyDue: PropTypes.number,
+  monthlyDue: PropTypes.string,
   dueDate: PropTypes.string,
   members: PropTypes.array,
+  owner: PropTypes.object,
 };
 
 export default CSSModules(styles, { allowMultiple: true })(FamilyMembers);

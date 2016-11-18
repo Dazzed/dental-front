@@ -45,6 +45,10 @@
     .question {
       font-weight: bold;
     }
+
+    .answer {
+      font-weight: normal;
+    }
   }
 }
 

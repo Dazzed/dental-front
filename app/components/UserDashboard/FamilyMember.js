@@ -15,7 +15,7 @@ function FamilyMember ({ details }) {
     lastName,
     familyRelationship,
     createdAt,
-    accountOwner,
+    accountHolder,
     avatar,
     subscription,
   } = details;
@@ -31,7 +31,7 @@ function FamilyMember ({ details }) {
         </Col>
         <Col md={3} styleName="col-with-name">
           <p styleName="member-name">{`${firstName} ${lastName}`}</p>
-          {accountOwner === 'true' &&
+          {accountHolder &&
             <p styleName="account-owner">(Account Owner)</p>
           }
         </Col>
@@ -44,6 +44,7 @@ function FamilyMember ({ details }) {
         <Col md={2} className="pull-right text-right">
           <button
             className="btn btn-green btn-round" styleName="btn-cancel"
+            style={accountHolder && { visibility: 'hidden' }}
           >
             Cancel
           </button>
