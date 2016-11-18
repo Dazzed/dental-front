@@ -76,7 +76,11 @@ class PaymentForm extends React.Component {
 
   render () {
     const isPayed = this.props.status === 'active';
-    const disabled = this.props.requesting || this.props.status === 'active';
+    const noAmount = parseFloat(this.props.total) === 0;
+    const disabled = this.props.requesting
+      || noAmount
+      || this.props.status === 'active'
+      || !this.state.allChecked;
 
     return (
       <div>
@@ -85,9 +89,15 @@ class PaymentForm extends React.Component {
           className="btn btn-darkest-green btn-round"
           value="Enter Payment Info"
           onClick={this.openSpreadlyView}
-          disabled={disabled || !this.state.allChecked}
+          disabled={disabled}
         />
-        { !isPayed &&
+        { noAmount &&
+          <div styleName="checklist-container">
+            <p>To proceed with payment, please add family members or join{' '}
+            the membership yourself.</p>
+          </div>
+        }
+        { !isPayed && !noAmount &&
           <div styleName="checklist-container">
             <p>To proceed with payment, please read and check the following.</p>
             <div>

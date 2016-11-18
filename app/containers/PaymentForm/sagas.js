@@ -35,6 +35,10 @@ export function* requestPayBill () {
         yield put(toastrActions.success('',
           'You have successfully activated your account.' +
           ' You can now make an appointment.'));
+      } else if (response.status === 'inactive') {
+        yield put(toastrActions.error('',
+          'Could not process your request.' +
+          ' Sorry for the inconvenience.'));
       }
     } catch (e) {
       console.log(e);
