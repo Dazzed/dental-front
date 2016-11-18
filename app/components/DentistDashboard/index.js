@@ -67,6 +67,25 @@ export default class DentistDashboard extends Component {
   render () {
     const { userName, patients } = this.props;
 
+    let inactive = 0;
+    let active = 0;
+    let pastDue = 0;
+    const allMembers = patients.allMembers;
+
+    if (allMembers) {
+      inactive = allMembers.filter(item =>
+        item.subscriptions[0].status === 'inactive'
+      ).length;
+
+      active = allMembers.filter(item =>
+        item.subscriptions[0].status === 'active'
+      ).length;
+
+      pastDue = allMembers.filter(item =>
+        item.subscriptions[0].status === 'past_due'
+      ).length;
+    }
+
     return (
       <div className="dentist-dashboard-container">
         <Intro name={userName} changeRoute={this.props.changeRoute} />
@@ -88,13 +107,27 @@ export default class DentistDashboard extends Component {
         </div>
 
         <Well>
+          <div styleName="total-info">
+            Active{' '}
+            <span styleName="active">
+              {`(${active})`}
+            </span>
+            {' - '}Inactive{' '}
+            <span styleName="inactive">
+              {`(${inactive})`}
+            </span>
+            {' - '}Past Due{' '}
+            <span>
+              {`(${pastDue})`}
+            </span>
+          </div>
+
           {groups.map((group, index) =>
             <PatientGroup
               key={index}
               title={group.title}
               groupKey={group.key}
               patients={patients[group.key]}
-              displayTotal={index === 2}
             />
           )}
         </Well>

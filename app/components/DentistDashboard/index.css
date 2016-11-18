@@ -14,3 +14,15 @@
     margin: 1em  1em 0.6em;
   }
 }
+
+.total-info {
+  margin-bottom: 15px;
+
+  .active {
+    color: $light-green;
+  }
+
+  .inactive {
+    color: $purple;
+  }
+}

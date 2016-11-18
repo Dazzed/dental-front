@@ -20,7 +20,6 @@ export default class PatientGroup extends Component {
     patients: PropTypes.array,
     sorter: PropTypes.object,
     newMsgCountBySender: PropTypes.object,
-    displayTotal: PropTypes.bool,
     markMsgRead: PropTypes.func,
   }
 
@@ -44,26 +43,8 @@ export default class PatientGroup extends Component {
   }
 
   render () {
-    const { title, patients, displayTotal, newMsgCountBySender }
+    const { title, patients, newMsgCountBySender }
       = this.props;
-
-    let inactive = 0;
-    let active = 0;
-    let pastDue = 0;
-
-    if (patients) {
-      inactive = patients.filter(item =>
-        item.subscriptions[0].status === 'inactive'
-      ).length;
-
-      active = patients.filter(item =>
-        item.subscriptions[0].status === 'active'
-      ).length;
-
-      pastDue = patients.filter(item =>
-        item.subscriptions[0].status === 'past_due'
-      ).length;
-    }
 
     return (
       <div>
@@ -81,14 +62,7 @@ export default class PatientGroup extends Component {
             }
           </Col>
         </Row>
-        {displayTotal ?
-          <Row>
-            <Col md={12}>
-              <p>
-              Inactive ({inactive}) - Active ({active}) - Past Due ({pastDue})
-              </p>
-            </Col>
-          </Row> : null}
+
         {patients &&
           patients.map((patient, index) =>
             <PatientCard
