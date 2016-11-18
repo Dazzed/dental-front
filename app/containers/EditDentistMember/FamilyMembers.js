@@ -102,7 +102,7 @@ class MyFamilyMembers extends Component {
     let total = subscription ? subscription.monthly : 0;
 
     if (subscription) {
-      total = new Change({ dollars: user.accountHolder ? total : 0 });
+      total = new Change({ dollars: user.payingMember ? total : 0 });
       membersList.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });

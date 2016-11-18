@@ -79,7 +79,7 @@ export default class UserDashboard extends Component {
     let startedAt;
 
     if (myDentist) {
-      total = new Change({ dollars: loggedInUser.accountHolder ? total : 0 });
+      total = new Change({ dollars: loggedInUser.payingMember ? total : 0 });
       myFamilyMembers.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });
