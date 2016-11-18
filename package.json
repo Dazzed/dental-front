@@ -151,6 +151,7 @@
     "react-router-redux": "4.0.5",
     "react-router-scroll": "0.2.1",
     "react-stripe-checkout": "^2.2.5",
+    "react-tooltip": "^3.2.1",
     "redux": "3.5.2",
     "redux-form": "^6.0.5",
     "redux-immutable": "3.0.6",
