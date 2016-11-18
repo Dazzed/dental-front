@@ -36,6 +36,7 @@ class MyInfo extends Component {
       phone,
       birthDate,
       contactMethod,
+      payingMember,
     } = user;
 
     return (
@@ -101,6 +102,19 @@ class MyInfo extends Component {
                   PREFERRED_CONTACT_METHODS[contactMethod]
                 }
                 {!contactMethod && 'Not specified'}
+                </span>
+              </Col>
+            </Row>
+
+            {/* temporary workaround, need to show himself in family members */}
+            <Row styleName="row">
+              <Col md={12}>
+                <span>Joined Membership: {' '}</span>
+                <span styleName="address">
+                  { payingMember
+                      ? 'Yes'
+                      : 'No'
+                  }
                 </span>
               </Col>
             </Row>

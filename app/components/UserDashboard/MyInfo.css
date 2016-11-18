@@ -2,7 +2,7 @@
 
 .my-info-container {
   font-size: 16px;
-  color: $light-gray;
+  color: $gray;
   background-color: $white;
   margin: 0 0 1em;
   padding: 1em;
@@ -32,7 +32,7 @@
 
 .address,
 .affordability {
-  color: $dark-gray;
+  color: $black;
 }
 
 .url-email-phone {
