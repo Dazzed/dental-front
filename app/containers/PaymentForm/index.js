@@ -7,6 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
+import ReactTooltip from 'react-tooltip';
 
 import { requestPayBill } from './actions';
 import { requestEnableSelector } from './selectors';
@@ -141,11 +142,22 @@ class PaymentForm extends React.Component {
                   checked={this.state.checked[2]}
                   onChange={this.handleChange.bind(this, 2)}
                 />
-                I acknowlege if there is periodontal disease there will be additional charges.
+                If{' '}
+                <span data-tip data-for="disease-definition" className="link">
+                  Periodontal Disease
+                </span>
+                {' '}is present additional treatment and fees will be necessary prior to your basic cleaning.
               </label>
             </div>
           </div>
         }
+
+        <ReactTooltip id="disease-definition" place="bottom" type="info" effect="solid" offset={{top: '-15px', right: '70px'}}>
+          <p>
+            Periodontal disease, also known as gum disease, can range from relatively-minor gum inflammation <br/>
+            to much more serious forms of disease that can damage the soft tissue and bone that support the teeth.
+          </p>
+        </ReactTooltip>
       </div>
     );
   }

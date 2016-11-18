@@ -48,7 +48,7 @@ class TermsPage extends React.Component {
                       It is possible that, during the course of treatment by your dentist, he or she may discover a dental or health condition that may require further treatment—the costs associated with any further treatment are your responsibility and are not covered under the Dental Membership Plan.
                     </li>
                     <li>
-                      Periodontal disease, also known as gum disease, can range from relatively-minor gum inflammation to much more serious forms of disease that can damage the soft tissue and bone that support the teeth.  If your dentist determines that you have periodontal disease, he or she may recommend additional treatment before you are able to have a regular cleaning.  If you do have periodontal disease and require additional treatment, you will be responsible for the costs associated with that treatment.
+                      <span className="link">Periodontal disease</span>, also known as gum disease, can range from relatively-minor gum inflammation to much more serious forms of disease that can damage the soft tissue and bone that support the teeth.  If your dentist determines that you have periodontal disease, he or she may recommend additional treatment before you are able to have a regular cleaning.  If you do have periodontal disease and require additional treatment, you will be responsible for the costs associated with that treatment.
                     </li>
                   </ul>
                 </div>

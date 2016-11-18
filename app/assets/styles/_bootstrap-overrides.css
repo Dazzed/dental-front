@@ -1,4 +1,12 @@
 /** Bootstrap overrides **/
+:global(a) {
+  color: $link-color;
+}
+
+:global(.link) {
+  color: $link-color;
+}
+
 :global(.navbar-default) {
   background-color: $white;
   border: none;
