@@ -26,7 +26,7 @@ const Change = changeFactory();
 export default class PatientCard extends Component {
   static propTypes = {
     id: PropTypes.number,
-    accountHolder: PropTypes.bool,
+    payingMember: PropTypes.bool,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
     email: PropTypes.string,
@@ -86,13 +86,15 @@ export default class PatientCard extends Component {
       contactMethod,
       avatar,
       id,
-      accountHolder,
+      payingMember,
       familyMembers,
       subscriptions,
       phoneNumbers,
       latestReview,
       newMsgCount,
     } = this.props;
+
+    console.log('**********', payingMember);
 
     // TODO: only show current active susbscription!
     const { showFamilyMembers } = this.state;
@@ -102,7 +104,7 @@ export default class PatientCard extends Component {
     let total = subscriptions ? subscriptions[0].monthly : 0;
 
     if (subscriptions) {
-      total = new Change({ dollars: accountHolder ? total : 0 });
+      total = new Change({ dollars: payingMember ? total : 0 });
       familyMembers.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });

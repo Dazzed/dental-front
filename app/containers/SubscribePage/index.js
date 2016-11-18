@@ -43,7 +43,7 @@ class SubscribePage extends React.Component {
           be at: <strong>{moment(bill.endAt).format('LL')}</strong>
         </div>
       );
-    } else if (!bill.total && !loggedInUser.accountHolder) {
+    } else if (!bill.total && !loggedInUser.payingMember) {
       return (
         <div>
           You have to add member families to create a subscription.
