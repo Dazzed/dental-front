@@ -143,9 +143,15 @@ class PaymentForm extends React.Component {
                   onChange={this.handleChange.bind(this, 2)}
                 />
                 If{' '}
-                <span data-tip data-for="disease-definition" className="link">
+                <a
+                  href="https://www.perio.org/consumer/types-gum-disease.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-tip
+                  data-for="disease-definition"
+                >
                   Periodontal Disease
-                </span>
+                </a>
                 {' '}is present additional treatment and fees will be necessary prior to your basic cleaning.
               </label>
             </div>
@@ -154,8 +160,9 @@ class PaymentForm extends React.Component {
 
         <ReactTooltip id="disease-definition" place="bottom" type="info" effect="solid" offset={{top: '-15px', right: '70px'}}>
           <p>
-            Periodontal disease, also known as gum disease, can range from relatively-minor gum inflammation <br/>
-            to much more serious forms of disease that can damage the soft tissue and bone that support the teeth.
+            Periodontal disease or Gum disease is an infection of the tissues that surround and support your teeth. <br/>
+            It is present in roughly 10 percent of adults. It is a major cause of tooth loss in adults. <br/>
+            Because gum disease is usually painless, you may not know you have it.
           </p>
         </ReactTooltip>
       </div>
