@@ -27,7 +27,7 @@ SpreedlyExpress.onPaymentMethod((token, paymentMethod) => {
 class PaymentForm extends React.Component {
 
   static propTypes = {
-    total: React.PropTypes.number,
+    total: React.PropTypes.string,
     user: React.PropTypes.object,
     status: React.PropTypes.string,
     requesting: React.PropTypes.bool,

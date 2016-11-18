@@ -11,6 +11,8 @@ import { push } from 'react-router-redux';
 import changeFactory from 'change-js';
 import moment from 'moment';
 
+import formatUser from 'utils/formatUser';
+
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
 import PaymentForm from 'containers/PaymentForm';
@@ -75,11 +77,11 @@ export default class UserDashboard extends Component {
     const fullName = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
     const status = myDentist ? myDentist.subscriptions[0].status : '';
     // TODO: better here to use selector!
-    let total = myDentist ? myDentist.subscriptions[0].monthly : 0;
+    let total = myDentist ? myDentist.subscriptions[0].monthly : '0';
     let startedAt;
 
     if (myDentist) {
-      total = new Change({ dollars: loggedInUser.payingMember ? total : 0 });
+      total = new Change({ dollars: loggedInUser.payingMember ? total : '0' });
       myFamilyMembers.forEach(member => {
         total = total.add(new Change({ dollars: member.subscription.monthly }));
       });
@@ -123,6 +125,7 @@ export default class UserDashboard extends Component {
           monthlyDue={total}
           dueDate="Dec 7, 2017"
           members={myFamilyMembers}
+          owner={formatUser(loggedInUser, myDentist)}
         />
         <div className="clearfix">
           <button
