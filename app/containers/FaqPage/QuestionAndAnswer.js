@@ -1,5 +1,6 @@
 import React from 'react';
 import CSSModules from 'react-css-modules';
+import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import FaPlusSquare from 'react-icons/lib/fa/plus-square';
 import FaMinusSquare from 'react-icons/lib/fa/minus-square';
 
@@ -10,7 +11,7 @@ export default class QuestionAndAnswer extends React.Component {
   static propTypes = {
     no: React.PropTypes.number,
     question: React.PropTypes.string,
-    answer: React.PropTypes.func.function,
+    answer: React.PropTypes.object,
   };
 
   constructor (props) {
@@ -47,11 +48,17 @@ export default class QuestionAndAnswer extends React.Component {
           <div className="clearfix" />
         </div>
 
-        { isOpen &&
-          <div styleName="answer">
-            {answer}
-          </div>
-        }
+        <ReactCSSTransitionGroup
+          transitionName="answer"
+          transitionEnterTimeout={100}
+          transitionLeaveTimeout={100}
+        >
+          { isOpen &&
+            <div styleName="answer">
+              {answer}
+            </div>
+          }
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
