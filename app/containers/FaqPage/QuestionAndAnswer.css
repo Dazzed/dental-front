@@ -1,0 +1,57 @@
+@import '../../assets/styles/variables';
+
+.question {
+  background-color: $light-gray;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  .title {
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    max-width: calc(100% - 35px);
+  }
+
+  .toggle-icon {
+    float: right;
+    margin-top: -3px;
+
+    svg {
+      color: $black;
+    }
+  }
+}
+
+.answer {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+:global(.answer-enter) {
+  opacity: 0.01;
+
+  &.answer-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
+}
+
+:global(.answer-leave) {
+  opacity: 1;
+
+  &.answer-leave-active {
+    opacity: 0.01;
+    transition: opacity 100ms ease-in;
+  }
+}
+
+:global(.answer-appear) {
+  opacity: 0.01;
+
+  &.answer-appear-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
+}
