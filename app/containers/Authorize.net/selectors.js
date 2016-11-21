@@ -2,21 +2,39 @@ import { createSelector } from 'reselect';
 
 const paymentFormDomain = state => state.paymentForm;
 
-export const requestEnableSelector = createSelector(
+export const canCheckoutSelector = createSelector(
   paymentFormDomain,
-  (substate) => substate.requesting,
+  substate =>
+    !substate.requesting && !substate.requested && !substate.charging
+);
+
+export const isRequestingSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.requesting
+);
+
+export const wasRequestedSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.requested
+);
+
+export const errorSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.error
 );
 
 
-export const tokenSelector = createSelector(
+export const openSelector = createSelector(
   paymentFormDomain,
-  (substate) => substate.token,
+  substate => substate.open
 );
 
+export const userOpenedSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.userId
+);
 
-export default {
-  requestEnableSelector,
-  tokenSelector,
-};
-
-
+export const cardSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.card
+);

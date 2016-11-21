@@ -8,8 +8,8 @@ import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 
 import {
-  SET_BILL,
-} from 'containers/PaymentForm/constants';
+  PAYMENT_DONE,
+} from 'containers/Authorize.net/constants';
 
 
 import {
@@ -52,7 +52,7 @@ function dashboardReducer (state = initialState, action) {
   let subscription;
 
   switch (action.type) {
-    case SET_BILL:
+    case PAYMENT_DONE:
       if (state.userDashboard && state.userDashboard.myDentist) {
         subscription = state.userDashboard.myDentist.subscriptions[0];
         subscription.status = action.payload.status;
@@ -72,7 +72,6 @@ function dashboardReducer (state = initialState, action) {
         };
       }
 
-      location.reload();
       listToEdit = filter(state.dentistDashboard.myPatients, item =>
         item.id === action.userId
       )[0];
