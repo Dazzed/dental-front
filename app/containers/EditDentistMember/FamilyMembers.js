@@ -12,7 +12,7 @@ import FaEdit from 'react-icons/lib/fa/edit';
 import FaClose from 'react-icons/lib/fa/close';
 import Confirm from 'react-confirm-bootstrap';
 import changeFactory from 'change-js';
-import PaymentForm from 'containers/PaymentForm';
+import PaymentForm from 'containers/Authorize.net';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import { addFamilyMemberFactory } from 'components/AddFamilyMemberForm';

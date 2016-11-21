@@ -48,7 +48,7 @@ const rootRoute = {
     Promise.all([
       System.import('containers/App/sagas'),
       System.import('containers/Dashboard/sagas'),
-      System.import('containers/PaymentForm/sagas'),
+      System.import('containers/Authorize.net/sagas'),
     ])
       .then(([ sagas, dashboard, payment ]) => {
         cb(null, App);
