@@ -260,9 +260,8 @@ export default class Form extends React.Component {
     const formatChars = { 9: '[0-9X]' };
     const open =
       this.props.open && this.props.userOpened === this.props.user.id;
-    const canCheckout =
-      this.props.canCheckout && this.props.status === 'inactive'
-      && !noAmount && this.state.allChecked;
+    const canCheckout = this.props.canCheckout && !noAmount &&
+      this.state.allChecked;
 
 
     const submitDisabled =
@@ -270,12 +269,14 @@ export default class Form extends React.Component {
       !(state.cvc.value && !state.cvc.error) ||
       !(state.expiry.value && !state.expiry.error);
 
-    let checkoutButtonText = 'pay';
+    let checkoutButtonText = 'Pay' ?
+      this.props.status === 'inactive' : 'Update Card';
 
     if (this.props.wasRequested && !this.props.card) {
       checkoutButtonText = 'Save Card and Pay';
     } else if (this.props.card && this.state.editing) {
-      checkoutButtonText = 'Update Card and Pay';
+      checkoutButtonText = 'Update Card and Pay' ?
+        this.props.status === 'inactive' : 'Update Card';
     }
 
     return (
