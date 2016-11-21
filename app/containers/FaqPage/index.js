@@ -232,6 +232,12 @@ export default class FaqPage extends React.Component {
               )
             }
           </div>
+          <div className="col-md-12">
+            Don't see your question here?  Please contact support here{' '}
+            <a href="mailto:support@cawasa.com">
+              support@cawasa.com
+            </a>.
+          </div>
         </div>
       </div>
     );
