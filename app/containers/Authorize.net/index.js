@@ -289,6 +289,12 @@ export default class Form extends React.Component {
           disabled={!canCheckout}
         />
 
+        { noAmount &&
+          <div className={style['checklist-container']}>
+            <p>To proceed with payment, please add family members or join{' '}
+            the membership yourself.</p>
+          </div>
+        }
         { !isPayed && !noAmount &&
           <div className={style['checklist-container']}>
             <p>To proceed with payment, please read and check the following.</p>
