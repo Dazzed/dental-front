@@ -260,9 +260,13 @@ export default class Form extends React.Component {
     const formatChars = { 9: '[0-9X]' };
     const open =
       this.props.open && this.props.userOpened === this.props.user.id;
-    const canCheckout = this.props.canCheckout && !noAmount &&
+    let canCheckout = this.props.canCheckout && !noAmount &&
       this.state.allChecked;
 
+    // if was paid or over due enable button by default
+    if (this.props.status !== 'inactive') {
+      canCheckout = true;
+    }
 
     const submitDisabled =
       !(state.cardNumber.value && !state.cardNumber.error) ||
