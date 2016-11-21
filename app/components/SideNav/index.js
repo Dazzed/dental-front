@@ -13,7 +13,7 @@ const navItems = {
     // { text: 'Payment info', link: '/subscribe' },
     // { text: 'Manage family members', link: '/my-family-members' },
     // { text: 'Transfer dental office', link: '/temp_link' },
-    { text: 'Help & FAQ', link: '/temp_link' },
+    { text: 'Help & FAQ', link: '/faq' },
     // { text: 'Cancel membership', link: '/temp_link' },
     { text: 'Logout', link: '/accounts/logout' },
   ],
