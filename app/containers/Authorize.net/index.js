@@ -26,6 +26,7 @@ import {
   cardSelector,
   openSelector,
   userOpenedSelector,
+  isChargingSelector,
 } from './selectors';
 
 import {
@@ -51,6 +52,7 @@ function mapDispatchToProps (dispatch) {
 @connect(state => ({
   canCheckout: canCheckoutSelector(state),
   isRequesting: isRequestingSelector(state),
+  isCharging: isChargingSelector(state),
   wasRequested: wasRequestedSelector(state),
   open: openSelector(state),
   error: errorSelector(state),
@@ -63,6 +65,7 @@ export default class Form extends React.Component {
     status: React.PropTypes.string,
     canCheckout: React.PropTypes.bool,
     isRequesting: React.PropTypes.bool,
+    isCharging: React.PropTypes.bool,
     wasRequested: React.PropTypes.bool,
     open: React.PropTypes.bool,
     error: React.PropTypes.string,
@@ -155,7 +158,7 @@ export default class Form extends React.Component {
     state.zip.error = false;
     state.address.error = false;
     state.focused = null;
-
+    state.editing = false;
     this.setCard = false;
     this.setState(state);
 
@@ -296,12 +299,17 @@ export default class Form extends React.Component {
       canCheckout = true;
     }
 
-    const submitDisabled =
+    let submitDisabled =
+      this.props.isCharging ||
       !(state.cardNumber.value && !state.cardNumber.error) ||
       !(state.zip.value && !state.zip.error) ||
       !(state.address.value && !state.address.error) ||
       !(state.cvc.value && !state.cvc.error) ||
       !(state.expiry.value && !state.expiry.error);
+
+    if (!submitDisabled && this.setCard && !this.state.editing) {
+      submitDisabled = true;
+    }
 
     let checkoutButtonText = this.props.status === 'inactive' ?
       'Pay' : 'Update Card';
@@ -433,7 +441,7 @@ export default class Form extends React.Component {
                         bsStyle="link"
                         onClick={this.handleEdit}
                       >
-                        Edit
+                        Click here to edit your payment info
                       </Button>
                     </Col>
                   </Row>}

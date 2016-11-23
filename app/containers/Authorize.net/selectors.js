@@ -13,6 +13,11 @@ export const isRequestingSelector = createSelector(
   substate => substate.requesting
 );
 
+export const isChargingSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.charging
+);
+
 export const wasRequestedSelector = createSelector(
   paymentFormDomain,
   substate => substate.requested
