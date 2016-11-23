@@ -11,7 +11,8 @@
 .details > div:not(.member-avatar) {
   padding-top: 1em;
   padding-bottom: 1.5em;
-  /*border-bottom: 1px solid $light-gray;*/
+
+  /* border-bottom: 1px solid $light-gray; */
 }
 
 .details > div:last-child {
