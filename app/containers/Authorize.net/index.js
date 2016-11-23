@@ -70,6 +70,7 @@ export default class Form extends React.Component {
     requestCardInfo: React.PropTypes.func.isRequired,
     requestCharge: React.PropTypes.func.isRequired,
     clearData: React.PropTypes.func.isRequired,
+    openForm: React.PropTypes.func.isRequired,
     card: React.PropTypes.shape({}),
     user: React.PropTypes.shape({
       id: React.PropTypes.number,
@@ -103,6 +104,17 @@ export default class Form extends React.Component {
         mask: '999',
         error: false,
       },
+      address: {
+        value: '',
+        display: '',
+        error: false,
+      },
+      zip: {
+        value: '',
+        display: '',
+        mask: '99999',
+        error: false,
+      },
     };
   }
 
@@ -111,6 +123,8 @@ export default class Form extends React.Component {
       const state = { ...this.state };
       state.cardNumber.value = nextProps.card.number;
       state.expiry.value = nextProps.card.expiry;
+      state.zip.value = nextProps.card.zip;
+      state.address.value = nextProps.card.address;
       state.cvc.value = nextProps.card.cvc;
       state.cardNumber.display = nextProps.card.number.replace(/[-_]/g, '');
       state.expiry.display = nextProps.card.expiry;
@@ -124,7 +138,27 @@ export default class Form extends React.Component {
   }
 
   handleOpen = () => {
-    this.setState({ focused: null });
+    const state = { ...this.state };
+    state.cardNumber.value = '';
+    state.expiry.value = '';
+    state.cvc.value = '';
+    state.zip.value = '';
+    state.address.value = '';
+
+    state.cardNumber.display = '';
+    state.expiry.display = '';
+    state.cvc.display = '';
+
+    state.cardNumber.error = false;
+    state.expiry.error = false;
+    state.cvc.error = false;
+    state.zip.error = false;
+    state.address.error = false;
+    state.focused = null;
+
+    this.setCard = false;
+    this.setState(state);
+
     this.props.openForm(this.props.user.id);
 
     if (!this.props.wasRequested) {
@@ -136,6 +170,8 @@ export default class Form extends React.Component {
     const toRequest =
       (this.state.cardNumber.value && !this.state.cardNumber.error) ||
       (this.state.cvc.value && !this.state.cvc.error) ||
+      (this.state.zip.value && !this.state.zip.error) ||
+      (this.state.address.value && !this.state.address.error) ||
       (this.state.expiry.value && !this.state.expiry.error);
 
     if (toRequest) {
@@ -149,6 +185,8 @@ export default class Form extends React.Component {
           number: this.state.cardNumber.value,
           cvc: this.state.cvc.value,
           expiry: this.state.expiry.value,
+          address: this.state.address.value,
+          zip: this.state.zip.value,
         };
       }
 
@@ -157,18 +195,6 @@ export default class Form extends React.Component {
   }
 
   handleHide = () => {
-    const state = { ...this.state };
-    state.cardNumber.value = '';
-    state.expiry.value = '';
-    state.cvc.value = '';
-    state.cardNumber.display = '';
-    state.expiry.display = '';
-    state.cvc.display = '';
-    state.cardNumber.error = false;
-    state.expiry.error = false;
-    state.cvc.error = false;
-    this.setCard = false;
-    this.setState(state);
     this.props.clearData();
   }
 
@@ -208,12 +234,14 @@ export default class Form extends React.Component {
       state.focused = 'cvc';
       state.cvc.display = value;
       state.cvc.error = !payform.validateCardCVC(value);
-    } else {
+    } else if (name === 'expiry') {
       state.focused = 'expiry';
       const parsed = payform.parseCardExpiry(value);
       state.expiry.display = value;
       state.expiry.error =
         !payform.validateCardExpiry(parsed.month, parsed.year);
+    } else if (name === 'zip') {
+      state.zip.error = !/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(value);
     }
 
     this.setState(state);
@@ -244,7 +272,7 @@ export default class Form extends React.Component {
       focused = 'number';
     } else if (name === 'cvc') {
       focused = 'cvc';
-    } else {
+    } else if (name === 'expiry') {
       focused = 'expiry';
     }
 
@@ -270,17 +298,19 @@ export default class Form extends React.Component {
 
     const submitDisabled =
       !(state.cardNumber.value && !state.cardNumber.error) ||
+      !(state.zip.value && !state.zip.error) ||
+      !(state.address.value && !state.address.error) ||
       !(state.cvc.value && !state.cvc.error) ||
       !(state.expiry.value && !state.expiry.error);
 
-    let checkoutButtonText = 'Pay' ?
-      this.props.status === 'inactive' : 'Update Card';
+    let checkoutButtonText = this.props.status === 'inactive' ?
+      'Pay' : 'Update Card';
 
     if (this.props.wasRequested && !this.props.card) {
       checkoutButtonText = 'Save Card and Pay';
     } else if (this.props.card && this.state.editing) {
-      checkoutButtonText = 'Update Card and Pay' ?
-        this.props.status === 'inactive' : 'Update Card';
+      checkoutButtonText = this.props.status === 'inactive' ?
+        'Update Card and Pay' : 'Update Card';
     }
 
     return (
@@ -452,6 +482,41 @@ export default class Form extends React.Component {
                           onChange={this.handleChange}
                           value={state.cvc.value}
                           mask={state.cvc.mask}
+                          readOnly={readOnly}
+                          formatChars={formatChars}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup
+                        validationState={state.address.error ? 'error' : null}
+                      >
+                        <ControlLabel>Address</ControlLabel>
+                        <input
+                          className="form-control"
+                          type="text"
+                          name="address"
+                          onChange={this.handleChange}
+                          value={state.address.value}
+                          mask={state.address.mask}
+                          readOnly={readOnly}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup
+                        validationState={state.zip.error ? 'error' : null}
+                      >
+                        <ControlLabel>Zip Code</ControlLabel>
+                        <InputMask
+                          className="form-control"
+                          type="tel"
+                          name="zip"
+                          onChange={this.handleChange}
+                          value={state.zip.value}
+                          mask={state.zip.mask}
                           readOnly={readOnly}
                           formatChars={formatChars}
                         />
