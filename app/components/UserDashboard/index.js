@@ -83,7 +83,9 @@ export default class UserDashboard extends Component {
       total = new Change({ dollars: loggedInUser.payingMember ? total : '0' });
       myFamilyMembers.forEach(member => {
         if (member.subscription) {
-          total = total.add(new Change({ dollars: member.subscription.monthly }));
+          total = total.add(
+            new Change({ dollars: member.subscription.monthly })
+          );
         }
       });
       total = total.dollars().toFixed(2);

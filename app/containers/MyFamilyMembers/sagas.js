@@ -22,8 +22,8 @@ import {
 } from 'containers/Dashboard/actions';
 
 import {
-  memberAdded,
-  memberEdited,
+  // memberAdded,
+  // memberEdited,
   memberDeleted,
 } from 'containers/MyFamilyMembers/actions';
 
@@ -71,7 +71,8 @@ export function* submitFormWatcher () {
         requestURL += `/${memberId}`;
       }
 
-      const response = yield call(request, requestURL, params);
+      // const response = yield call(request, requestURL, params);
+      yield call(request, requestURL, params);
 
       let message;
       if (memberId) {

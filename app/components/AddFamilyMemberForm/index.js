@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Image from 'react-bootstrap/lib/Image';
+// import Image from 'react-bootstrap/lib/Image';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
-import Input from 'components/Input';
+// import Input from 'components/Input';
 import renderDatePicker from 'components/DatePicker';
 import { selectEditingMember } from 'containers/MyFamilyMembers/selectors';
 import FamilyMemberValidator from './validator';
