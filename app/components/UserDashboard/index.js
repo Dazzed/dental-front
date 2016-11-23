@@ -16,10 +16,9 @@ import formatUser from 'utils/formatUser';
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
 import PaymentForm from 'containers/Authorize.net';
-import {
-  selectMyDentist,
-  selectMyFamilyMembers,
-} from 'containers/Dashboard/selectors';
+import { selectMyDentist } from 'containers/Dashboard/selectors';
+import { selectMembersList as selectMyFamilyMembers }
+  from 'containers/MyFamilyMembers/selectors';
 
 import Intro from './Intro';
 import MyDentist from './MyDentist';
@@ -83,7 +82,11 @@ export default class UserDashboard extends Component {
     if (myDentist) {
       total = new Change({ dollars: loggedInUser.payingMember ? total : '0' });
       myFamilyMembers.forEach(member => {
-        total = total.add(new Change({ dollars: member.subscription.monthly }));
+        if (member.subscription) {
+          total = total.add(
+            new Change({ dollars: member.subscription.monthly })
+          );
+        }
       });
       total = total.dollars().toFixed(2);
     }
@@ -128,14 +131,6 @@ export default class UserDashboard extends Component {
           owner={formatUser(loggedInUser, myDentist)}
         />
         <div className="clearfix">
-          <button
-            className="btn btn-darkest-green btn-round"
-            onClick={this.goToMembersPage}
-            style={{ float: 'left', marginRight: '15px' }}
-          >
-            Add | edit family members
-          </button>
-
           <PaymentForm total={total} user={loggedInUser} status={status} />
         </div>
 

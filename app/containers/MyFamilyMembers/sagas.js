@@ -16,13 +16,14 @@ import {
 } from 'containers/MyFamilyMembers/constants';
 
 import {
+  fetchMyFamily,
   myFamilyFetched,
   myFamilyFetchingError,
 } from 'containers/Dashboard/actions';
 
 import {
-  memberAdded,
-  memberEdited,
+  // memberAdded,
+  // memberEdited,
   memberDeleted,
 } from 'containers/MyFamilyMembers/actions';
 
@@ -39,10 +40,10 @@ export function* defaultSaga () {
 }
 
 export function* fetchMyFamilyWatcher () {
-  yield* takeLatest(MY_FAMILY_REQUEST, fetchMyFamily);
+  yield* takeLatest(MY_FAMILY_REQUEST, loadMyFamily);
 }
 
-export function* fetchMyFamily () {
+export function* loadMyFamily () {
   try {
     const requestURL = '/api/v1/users/me/family-members';
     const response = yield call(request, requestURL);
@@ -70,7 +71,8 @@ export function* submitFormWatcher () {
         requestURL += `/${memberId}`;
       }
 
-      const response = yield call(request, requestURL, params);
+      // const response = yield call(request, requestURL, params);
+      yield call(request, requestURL, params);
 
       let message;
       if (memberId) {
@@ -82,11 +84,18 @@ export function* submitFormWatcher () {
       }
       yield put(toastrActions.success('', message));
 
-      if (memberId) {
-        yield put(memberEdited(response.data));
-      } else {
-        yield put(memberAdded(response.data));
-      }
+      // if (memberId) {
+      //   yield put(memberEdited(response.data));
+      // } else {
+      //   yield put(memberAdded(response.data));
+      // }
+
+      /**
+      * Create/Edit member response doesn't contain subscription info
+      * Which results in monthly fee of undefined
+      * Let's fetch the all family members again
+      **/
+      yield put(fetchMyFamily());
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));

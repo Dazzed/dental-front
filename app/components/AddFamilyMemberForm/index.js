@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Image from 'react-bootstrap/lib/Image';
+// import Image from 'react-bootstrap/lib/Image';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
-import Input from 'components/Input';
+// import Input from 'components/Input';
 import renderDatePicker from 'components/DatePicker';
 import { selectEditingMember } from 'containers/MyFamilyMembers/selectors';
 import FamilyMemberValidator from './validator';
@@ -24,14 +24,14 @@ class AddFamilyMemberForm extends React.Component {
 
   render () {
     const { handleSubmit, submitting } = this.props;
-    const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
+    // const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
 
     return (
       <form
         onSubmit={handleSubmit}
         className="form-horizontal"
       >
-        <Col md={12}>
+        {/* <Col md={12}>
           <Col sm={2}>
             <Image
               src={defaultAvatar}
@@ -48,7 +48,7 @@ class AddFamilyMemberForm extends React.Component {
               component={Input}
             />
           </Col>
-        </Col>
+        </Col> */}
 
         <Field
           name="firstName"
@@ -150,4 +150,3 @@ export function addFamilyMemberFactory (name, _mapStateToProps) {
 
   return createdClasses[name];
 }
-

@@ -69,6 +69,7 @@ class WriteReviewForm extends React.Component {
     return (
       <form
         onSubmit={handleSubmit}
+        styleName="write-review-form"
         className="form-horizontal"
       >
         <Field

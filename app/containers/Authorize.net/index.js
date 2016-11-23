@@ -318,7 +318,7 @@ export default class Form extends React.Component {
         <input
           type="button"
           className="btn btn-darkest-green btn-round"
-          value="Enter Payment Info"
+          value="Enter payment info"
           onClick={this.handleOpen}
           disabled={!canCheckout}
         />

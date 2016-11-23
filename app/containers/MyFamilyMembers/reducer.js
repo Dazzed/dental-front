@@ -2,6 +2,8 @@
  *
  * MyFamilyMembers reducer
  *
+ * Located in global state, necessary for client dashboard
+ *
  */
 
 import find from 'lodash/find';
