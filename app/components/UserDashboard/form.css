@@ -1,20 +1,22 @@
 @import '../../assets/styles/variables';
 
-input[type='radio'] {
-  margin-right: 5px;
-}
+.write-review-form {
+  input[type='radio'] {
+    margin-right: 5px;
+  }
 
-label.normal-font {
-  font-weight: normal;
-  margin-right: 15px;
-}
+  label.normal-font {
+    font-weight: normal;
+    margin-right: 15px;
+  }
 
-svg {
-  color: $cyan;
-  margin-right: 4px;
-  vertical-align: text-top;
-}
+  svg {
+    color: $cyan;
+    margin-right: 4px;
+    vertical-align: text-top;
+  }
 
-.rating-label {
-  margin-right: 4px;
+  .rating-label {
+    margin-right: 4px;
+  }
 }
