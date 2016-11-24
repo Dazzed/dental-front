@@ -22,7 +22,7 @@ class FamilyMembers extends Component {
   static propTypes = {
     accountStatus: PropTypes.string,
     monthlyDue: PropTypes.string,
-    dueDate: PropTypes.string,
+    dueAt: PropTypes.object,
     members: PropTypes.array,
     owner: PropTypes.object,
     setEditingMember: PropTypes.func,
@@ -74,7 +74,7 @@ class FamilyMembers extends Component {
   }
 
   render () {
-    const { accountStatus, monthlyDue, dueDate, members, owner } = this.props;
+    const { accountStatus, monthlyDue, dueAt, members, owner } = this.props;
 
     return (
       <Well styleName="family-members-container">
@@ -89,7 +89,9 @@ class FamilyMembers extends Component {
           </Col>
           <Col md={4}>
             <span styleName="label">Payment due date:</span>
-            <span styleName="value">{dueDate}</span>
+            { dueAt &&
+              <span styleName="value">{dueAt.format('MMM D, YYYY')}</span>
+            }
           </Col>
         </Row>
         <Row styleName="list-header">
