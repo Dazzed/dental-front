@@ -307,7 +307,8 @@ export default class Form extends React.Component {
       !(state.cvc.value && !state.cvc.error) ||
       !(state.expiry.value && !state.expiry.error);
 
-    if (!submitDisabled && this.setCard && !this.state.editing) {
+    if (!submitDisabled && this.setCard &&
+      !this.state.editing && this.props.status !== 'inactive') {
       submitDisabled = true;
     }
 
