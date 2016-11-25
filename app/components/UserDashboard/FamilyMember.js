@@ -39,7 +39,12 @@ function FamilyMember ({ details, onEdit, onDelete }) {
             <p styleName="account-owner">(Account Owner)</p>
           }
         </Col>
-        <Col md={2}>{MEMBER_RELATIONSHIP_TYPES[familyRelationship]}</Col>
+        <Col md={2}>
+          {accountHolder
+            ? 'Self'
+            : MEMBER_RELATIONSHIP_TYPES[familyRelationship]
+          }
+        </Col>
         <Col md={2}>${subscription.monthly}</Col>
         <Col md={2} className="text-right">{memberSince}</Col>
         {!accountHolder &&

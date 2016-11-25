@@ -1,8 +1,7 @@
 export const MEMBER_RELATIONSHIP_TYPES = {
-  partner: 'Partner',
+  partner: 'Spouse',
   son: 'Son',
   daughter: 'Daughter',
-  me: 'Self',
 };
 
 export const Currencies = {
