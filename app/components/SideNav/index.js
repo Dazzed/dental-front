@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 
 import { Link } from 'react-router';
-import { Nav, Row, Col } from 'react-bootstrap';
+import Nav from 'react-bootstrap/lib/Nav';
 
+import Offerings from './Offerings';
 import styles from './styles.css';
 
 const navItems = {
@@ -29,43 +30,6 @@ const navItems = {
   ]
 };
 
-function offerings (userType) {
-  if (userType === 'client') {
-    return (
-      <div>
-        <Row>
-          <Col md={12}>
-            <div>Adult Membership $33/month</div>
-            <ul>
-              <li>2 cleanings/year</li>
-              <li>2 exams with necessary xrays/year</li>
-              <li>Panorex xray once every 3 years</li>
-              <li>1 emergency exam and xray/year</li>
-              <li>10% of any needed treatment</li>
-            </ul>
-            <h4 styleName="savings-dollar">Total Savings/year=$118</h4>
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col md={12}>
-            <div>Child Membership $29/month</div>
-            <ul>
-              <li>2 cleanings/year</li>
-              <li>2 exams with necessary xrays/year</li>
-              <li>Panorex xray once every 3 years</li>
-              <li>1 emergency exam with xray/year</li>
-              <li>1 Fluoride treatment/year</li>
-              <li>10% off any needed treatment</li>
-            </ul>
-            <h4 styleName="savings-dollar">Total Savings=$151/year</h4>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
-}
-
 function SideNav ({ userType }) {
   const items = navItems[userType] || [];
   return (
@@ -79,7 +43,10 @@ function SideNav ({ userType }) {
           )
         }
       </Nav>
-      {offerings(userType)}
+
+      {userType === 'client' &&
+        <Offerings />
+      }
     </div>
   );
 }

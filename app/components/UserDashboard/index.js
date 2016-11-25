@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import changeFactory from 'change-js';
 import moment from 'moment';
+import get from 'lodash/get';
 
 import formatUser from 'utils/formatUser';
 
@@ -77,7 +78,8 @@ export default class UserDashboard extends Component {
     const status = myDentist ? myDentist.subscriptions[0].status : '';
     // TODO: better here to use selector!
     let total = myDentist ? myDentist.subscriptions[0].monthly : '0';
-    let startedAt;
+    const paidAt = get(myDentist, 'subscriptions[0].paidAt');
+    let dueAt;
 
     if (myDentist) {
       total = new Change({ dollars: loggedInUser.payingMember ? total : '0' });
@@ -91,8 +93,8 @@ export default class UserDashboard extends Component {
       total = total.dollars().toFixed(2);
     }
 
-    if (myDentist && myDentist.subscriptions && myDentist.subscriptions[0]) {
-      startedAt = myDentist.subscriptions[0].startAt;
+    if (paidAt) {
+      dueAt = moment(paidAt).add(1, 'month');
     }
 
     return (
@@ -126,7 +128,7 @@ export default class UserDashboard extends Component {
         <FamilyMembers
           accountStatus={status}
           monthlyDue={total}
-          dueDate="Dec 7, 2017"
+          dueAt={dueAt}
           members={myFamilyMembers}
           owner={formatUser(loggedInUser, myDentist)}
         />
@@ -134,16 +136,15 @@ export default class UserDashboard extends Component {
           <PaymentForm total={total} user={loggedInUser} status={status} />
         </div>
 
-        {myDentist && myDentist.subscriptions && myDentist.subscriptions[0] &&
+        {dueAt &&
           <div className="clearfix">
             <p>
               <br />
-              This is a recurring payment and the membership is good for 30
-              days starting on <strong> {
-                  moment(startedAt).format('MMMM Do YYYY')}
-              </strong>
+              This is a recurring payment and the membership is good until{' '}
+              <strong>{dueAt.format('MMMM Do YYYY')}</strong>.
             </p>
-          </div>}
+          </div>
+        }
 
         <br />
 
