@@ -18,6 +18,11 @@ import {
 } from './actions';
 
 
+// NOTE: flag used to control many requests on production
+// Maybe dynamic sagas are doing this???
+let charging = false;
+
+
 export function* requestToken () {
   yield* takeLatest(REQUEST_CARD_INFO, function* (action) {
     try {
@@ -38,7 +43,12 @@ export function* requestToken () {
 
 export function* requestCharge () {
   yield* takeLatest(REQUEST_CHARGE, function* (action) {
+    if (charging) {
+      return;
+    }
+
     try {
+      charging = true;
       const response = yield call(
         request, `/api/v1/users/${action.userId}/charge-bill`, {
           method: 'POST',
@@ -62,6 +72,8 @@ export function* requestCharge () {
       if (e.errors) {
         yield put(setError(e.errors.errorMessage : null));
       }
+    } finally {
+      charging = false;
     }
   });
 }
