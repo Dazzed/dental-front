@@ -10,7 +10,7 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 
 import {
-  MY_FAMILY_SUCCESS,
+  MY_MEMBERS_SUCCESS,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -32,7 +32,7 @@ function myFamilyMembersReducer (state = initialState, action) {
   let index;
 
   switch (action.type) {
-    case MY_FAMILY_SUCCESS:
+    case MY_MEMBERS_SUCCESS:
       return {
         ...state,
         membersList: action.payload,

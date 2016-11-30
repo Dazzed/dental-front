@@ -9,7 +9,7 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 
 import { changePageTitle } from 'containers/App/actions';
-import { fetchMyFamily } from 'containers/Dashboard/actions';
+import { fetchMyMembers } from 'containers/Dashboard/actions';
 import { selectMembersList } from './selectors';
 import styles from './styles.css';
 import FamilyMembers from './FamilyMembers';
@@ -19,7 +19,7 @@ import FamilyMembers from './FamilyMembers';
 export default class MyFamilyMembers extends Component {
   static propTypes = {
     membersList: PropTypes.array,
-    fetchMyFamily: PropTypes.func,
+    fetchMyMembers: PropTypes.func,
     setEditingMember: PropTypes.func,
     onSubmitForm: PropTypes.func,
     deleteMember: PropTypes.func,
@@ -28,7 +28,7 @@ export default class MyFamilyMembers extends Component {
   }
 
   componentWillMount () {
-    this.props.fetchMyFamily();
+    this.props.fetchMyMembers();
     this.props.changePageTitle('Manage Family Members');
   }
 
@@ -53,7 +53,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchMyFamily: () => dispatch(fetchMyFamily()),
+    fetchMyMembers: () => dispatch(fetchMyMembers()),
     changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
 }

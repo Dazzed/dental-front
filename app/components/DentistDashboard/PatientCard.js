@@ -12,18 +12,16 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaStar from 'react-icons/lib/fa/star';
 import Rating from 'react-rating';
 import moment from 'moment';
-import changeFactory from 'change-js';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
-import Money from 'components/Money';
 import WriteMessageModal from 'components/WriteMessageModal';
 
 import styles from './PatientCard.css';
 
-const Change = changeFactory();
 
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientCard extends Component {
+
   static propTypes = {
     id: PropTypes.number,
     payingMember: PropTypes.bool,
@@ -32,9 +30,9 @@ export default class PatientCard extends Component {
     email: PropTypes.string,
     avatar: PropTypes.string,
     contactMethod: PropTypes.string,
-    familyMembers: PropTypes.array,
+    members: PropTypes.array,
     createdAt: PropTypes.string,
-    subscriptions: PropTypes.array,
+    subscription: PropTypes.object,
     phoneNumbers: PropTypes.array,
     latestReview: PropTypes.object,
     newMsgCount: PropTypes.number,
@@ -43,34 +41,32 @@ export default class PatientCard extends Component {
 
   constructor (props) {
     super(props);
+
     this.state = {
       showFamilyMembers: false,
       showMessageModal: false,
     };
-
-    this.toggleMembers = this.toggleMembers.bind(this);
-    this.openMessageModal = this.openMessageModal.bind(this);
-    this.closeMessageModal = this.closeMessageModal.bind(this);
   }
 
-  toggleMembers () {
+  toggleMembers = () => {
     this.setState({
       ...this.state,
       showFamilyMembers: !this.state.showFamilyMembers
     });
   }
 
-  openMessageModal () {
+  openMessageModal = () => {
     this.setState({
       ...this.state,
       showMessageModal: true,
     });
+
     if (this.props.newMsgCount > 0) {
       this.props.markMsgRead(this.props.id);
     }
   }
 
-  closeMessageModal () {
+  closeMessageModal = () => {
     this.setState({
       ...this.state,
       showMessageModal: false,
@@ -79,47 +75,16 @@ export default class PatientCard extends Component {
 
   render () {
     const {
-      firstName,
-      lastName,
-      birthDate,
-      email,
-      createdAt,
-      contactMethod,
-      avatar,
-      id,
-      payingMember,
-      familyMembers,
-      subscriptions,
-      phoneNumbers,
-      latestReview,
-      newMsgCount,
+      firstName, lastName, createdAt, contactMethod, avatar, email, id,
+      members, subscription, phoneNumbers, latestReview, newMsgCount,
     } = this.props;
 
-    // TODO: only show current active susbscription!
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
-    // const paidAt = moment(#<{(|membership.paidAt|)}>#).format('MMM D, YYYY');
-    // TODO: better here to use selector!
-    let total = subscriptions ? subscriptions[0].monthly : 0;
 
-    if (subscriptions) {
-      total = new Change({ dollars: payingMember ? total : 0 });
-      familyMembers.forEach(member => {
-        total = total.add(new Change({ dollars: member.subscription.monthly }));
-      });
-      total = total.dollars();
-    }
-
-    let membershipStyle = 'warning';
     let phone = '';
 
-    subscriptions.forEach(subscription => {
-      if (new Date(subscription.endAt) > new Date()) {
-        membershipStyle = '';
-      }
-    });
-
-    if (subscriptions[0].status === 'inactive') {
+    if (subscription.status === 'inactive') {
       membershipStyle = 'warning';
     }
 
@@ -146,9 +111,6 @@ export default class PatientCard extends Component {
                 <span styleName="patient-name">
                   {`${firstName} ${lastName} `}
                 </span>
-                <span styleName={`membership-status ${membershipStyle}`}>
-                  {`(${subscriptions[0].status})`}
-                </span>
               </Col>
               <Col md={4} styleName="member-since">
                 <span styleName="desc">Member Since: </span>
@@ -160,7 +122,7 @@ export default class PatientCard extends Component {
               </Col>
               <Col md={4}>
                 <span styleName="desc">Family Member Joined: </span>
-                <span styleName="value">{familyMembers.length}</span>
+                <span styleName="value">{members.length}</span>
               </Col>
             </Row>
           </div>
@@ -178,7 +140,7 @@ export default class PatientCard extends Component {
               <Col md={4} styleName="toggler" onClick={this.toggleMembers}>
                 <FaGroup size={16} />
                 <span styleName="value">Family Member Details</span>
-                {familyMembers.length ? carret : null }
+                {members.length ? carret : null }
               </Col>
             </Row>
           </div>
@@ -188,7 +150,7 @@ export default class PatientCard extends Component {
             transitionEnterTimeout={100}
             transitionLeaveTimeout={100}
           >
-            { showFamilyMembers && familyMembers.length &&
+            { showFamilyMembers && members.length &&
               <div styleName="pane members-pane">
                 <Row>
                   <Col md={9} styleName="members-list">
@@ -200,31 +162,8 @@ export default class PatientCard extends Component {
                       <Col md={2} sm={2}>Fee</Col>
                     </Row>
 
-                    { payingMember &&
-                      <Row>
-                        <Col md={4} sm={4} styleName="avatar-name">
-                          <Image src={avatar} />
-                          <span>
-                            {`${firstName} ${lastName}`}
-                          </span>
-                        </Col>
-                        <Col md={3} sm={3}>
-                          ActHld/Mem
-                        </Col>
-                        <Col md={1} sm={1}>
-                          {birthDate &&
-                            moment().diff(birthDate, 'year', false)
-                          }
-                        </Col>
-                        <Col md={2} sm={2}>Custom</Col>
-                        <Col md={2} sm={2}>
-                          ${subscriptions[0].monthly}
-                        </Col>
-                      </Row>
-                    }
-
-                    { familyMembers &&
-                      familyMembers.map((member, index) => (
+                    { members &&
+                      members.map((member, index) => (
                         <Row key={index}>
                           <Col md={4} sm={4} styleName="avatar-name">
                             <Image src={member.avatar} />
@@ -253,7 +192,7 @@ export default class PatientCard extends Component {
                       <span styleName="desc">
                         Membership:{' '}
                       </span>
-                      <span styleName={`membership-status ${membershipStyle}`}>
+                      <span styleName="membership-status">
                         {status}
                       </span>
                     </Row>

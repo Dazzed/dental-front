@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import get from 'lodash/get';
 
-import { selectMyDentist } from 'containers/Dashboard/selectors';
+import { myDentistSelector } from 'containers/Dashboard/selectors';
 import styles from './Offerings.css';
 
 @connect(mapStateToProps, null)
@@ -59,6 +59,6 @@ export default class Offerings extends Component {
 
 function mapStateToProps (state) {
   return {
-    myDentist: selectMyDentist(state),
+    myDentist: myDentistSelector(state),
   };
 }

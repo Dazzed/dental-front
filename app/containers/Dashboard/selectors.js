@@ -9,50 +9,34 @@ const selectors = {};
 /**
  * Direct selector to the dashboard state domain
  */
-const selectDashboardDomain = state => state.dashboard;
+const domainSelector = state => state.dashboard;
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by Dashboard
- */
 
 const selectDashboard = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate
 );
 
-const selectUserDashboard = createSelector(
-  selectDashboardDomain,
-  (substate) => substate.userDashboard
-);
 
-const selectDentistDashboard = createSelector(
-  selectDashboardDomain,
-  (substate) => substate.dentistDashboard,
-);
-
-const selectMyDentist = createSelector(
-  selectUserDashboard,
+const myDentistSelector = createSelector(
+  domainSelector,
   (substate) => substate.myDentist
 );
 
-const selectMyFamilyMembers = createSelector(
-  selectUserDashboard,
-  (substate) => substate.myFamilyMembers
+
+const myMembersSelector = createSelector(
+  domainSelector,
+  (substate) => substate.myMembers
 );
+
 
 const selectSorter = createSelector(
-  selectDentistDashboard,
-  (substate) => substate.sorter
+  (substate) => substate
 );
 
-const selectNewMembers = createSelector(
-  selectDentistDashboard,
-  selectSorter,
+
+const newMembersSelector = createSelector(
+  domainSelector,
   (substate) => (
     filter(substate.myPatients,
       (patient) => (moment().diff(patient.createdAt, 'days') <= 5)
@@ -60,40 +44,39 @@ const selectNewMembers = createSelector(
   )
 );
 
-const selectNewReviews = createSelector(
-  selectDentistDashboard,
-  selectSorter,
+
+const newReviewsSelector = createSelector(
+  domainSelector,
   (substate) => (
-    filter(substate.myPatients,
-      (patient) => {
-        const latestReview = get(patient, 'latestReview.createdAt');
-        return (latestReview) &&
-          (moment().diff(latestReview, 'days') <= 5);
-      }
-    )
+    filter(substate.myPatients, (patient) => {
+      const latestReview = get(patient, 'latestReview.createdAt');
+      return (latestReview) && (moment().diff(latestReview, 'days') <= 5);
+    })
   )
 );
 
-const selectAllMembers = createSelector(
-  selectDentistDashboard,
-  selectSorter,
+
+const allMembersSelector = createSelector(
+  domainSelector,
   (substate) => substate.myPatients
 );
 
+
 const selectConversation = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate.messages
 );
 
+
 const selectNewMsgCount = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate.newMsgCountBySender
 );
 
 export function familyMembersToEditSelectorFactory (userId) {
   if (!selectors[userId]) {
     selectors[userId] = createSelector(
-      selectDashboardDomain,
+      domainSelector,
       (substate) => substate.familyMemberForms[userId]
     );
   }
@@ -104,15 +87,13 @@ export function familyMembersToEditSelectorFactory (userId) {
 export default selectDashboard;
 
 export {
-  selectDashboardDomain,
-  selectUserDashboard,
-  selectDentistDashboard,
-  selectMyDentist,
-  selectMyFamilyMembers,
+  domainSelector,
   selectSorter,
-  selectNewMembers,
-  selectNewReviews,
-  selectAllMembers,
   selectConversation,
   selectNewMsgCount,
+  myDentistSelector,
+  myMembersSelector,
+  newMembersSelector,
+  newReviewsSelector,
+  allMembersSelector,
 };

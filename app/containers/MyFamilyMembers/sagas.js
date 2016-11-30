@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import request from 'utils/request';
 
 import {
-  MY_FAMILY_REQUEST,
+  MY_MEMBERS_REQUEST,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -16,9 +16,9 @@ import {
 } from 'containers/MyFamilyMembers/constants';
 
 import {
-  fetchMyFamily,
-  myFamilyFetched,
-  myFamilyFetchingError,
+  fetchMyMembers,
+  setMyMembers,
+  setMemberErrors,
 } from 'containers/Dashboard/actions';
 
 import {
@@ -29,28 +29,28 @@ import {
 
 // Individual exports for testing
 export function* defaultSaga () {
-  const watcherA = yield fork(fetchMyFamilyWatcher);
+  // const watcherA = yield fork(fetchMyMembersWatcher);
   const watcherB = yield fork(submitFormWatcher);
   const watcherC = yield fork(deleteMemberWatcher);
 
   yield take(LOCATION_CHANGE);
-  yield cancel(watcherA);
+  // yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
 }
 
-export function* fetchMyFamilyWatcher () {
-  yield* takeLatest(MY_FAMILY_REQUEST, loadMyFamily);
+export function* fetchMyMembersWatcher () {
+  yield* takeLatest(MY_MEMBERS_REQUEST, loadMyFamily);
 }
 
 export function* loadMyFamily () {
   try {
-    const requestURL = '/api/v1/users/me/family-members';
+    const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
 
-    yield put(myFamilyFetched(response.data));
+    yield put(setMyMembers(response.data));
   } catch (err) {
-    yield put(myFamilyFetchingError(err));
+    yield put(setMemberErrors(err));
   }
 }
 
@@ -60,7 +60,7 @@ export function* submitFormWatcher () {
     const memberId = payload.id;
 
     try {
-      let requestURL = `/api/v1/users/${userId || 'me'}/family-members`;
+      let requestURL = `/api/v1/users/${userId || 'me'}/members`;
       const params = {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -95,7 +95,7 @@ export function* submitFormWatcher () {
       * Which results in monthly fee of undefined
       * Let's fetch the all family members again
       **/
-      yield put(fetchMyFamily());
+      yield put(fetchMyMembers());
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));

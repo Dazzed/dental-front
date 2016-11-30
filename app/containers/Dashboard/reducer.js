@@ -14,13 +14,12 @@ import {
 
 import {
   MY_DENTIST_SUCCESS,
-  MY_FAMILY_SUCCESS,
+  MY_MEMBERS_SUCCESS,
   MY_PATIENTS_SUCCESS,
   CONVERSATION_REQUEST,
   CONVERSATION_SUCCESS,
   MESSAGE_SENT,
   NEW_MSG_COUNT_SUCCESS,
-  SET_EDITING_MEMBER,
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
   DELETE_MEMBER_SUCCESS,
@@ -28,22 +27,21 @@ import {
 
 
 const initialState = {
-  userDashboard: {
-    myDentist: null,
-    myFamilyMembers: null,
-  },
-  dentistDashboard: {
-    myPatients: null,
-    sorter: {
-      newMembers: null,
-      newReviews: null,
-      allMembers: null,
-    }
-  },
-  familyMemberForms: {},
+  // Client Owner Dashboard
+  myMembers: null,
+  myDentist: null,
+
+  // Dentist dashboard fields
+  myPatients: null,
+  newMembers: null,
+  newReviews: null,
+  allMembers: null,
+
+  // All types
   messages: [],
   newMsgCountBySender: {},
 };
+
 
 function dashboardReducer (state = initialState, action) {
   let listToEdit;
@@ -202,37 +200,33 @@ function dashboardReducer (state = initialState, action) {
     case MY_DENTIST_SUCCESS:
       return {
         ...state,
-        userDashboard: {
-          ...state.userDashboard,
-          myDentist: action.payload,
-        },
+        myDentist: action.payload,
       };
-    case MY_FAMILY_SUCCESS:
+
+    case MY_MEMBERS_SUCCESS:
       return {
         ...state,
-        userDashboard: {
-          ...state.userDashboard,
-          myFamilyMembers: action.payload,
-        },
+        myMembers: action.payload,
       };
+
     case MY_PATIENTS_SUCCESS:
       return {
         ...state,
-        dentistDashboard: {
-          ...state.dentistDashboard,
-          myPatients: action.payload,
-        },
+        myPatients: action.payload,
       };
+
     case CONVERSATION_REQUEST:
       return {
         ...state,
         messages: [],
       };
+
     case CONVERSATION_SUCCESS:
       return {
         ...state,
         messages: action.payload,
       };
+
     case MESSAGE_SENT:
       return {
         ...state,
@@ -241,6 +235,7 @@ function dashboardReducer (state = initialState, action) {
           action.payload,
         ]
       };
+
     case NEW_MSG_COUNT_SUCCESS:
       return {
         ...state,
@@ -249,14 +244,7 @@ function dashboardReducer (state = initialState, action) {
           [action.payload.senderId]: action.payload.count,
         },
       };
-    case SET_EDITING_MEMBER:
-      return {
-        ...state,
-        familyMemberForms: {
-          ...state.familyMemberForms,
-          [action.userId]: action.payload,
-        },
-      };
+
     default:
       return state;
   }

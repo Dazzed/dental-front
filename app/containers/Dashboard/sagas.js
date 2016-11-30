@@ -8,7 +8,7 @@ import request from 'utils/request';
 
 import {
   MY_DENTIST_REQUEST,
-  MY_FAMILY_REQUEST,
+  MY_MEMBERS_REQUEST,
   MY_PATIENTS_REQUEST,
   CONVERSATION_REQUEST,
   NEW_MSG_COUNT_REQUEST,
@@ -23,10 +23,10 @@ import {
 } from 'containers/Dashboard/constants';
 
 import {
-  myDentistFetched,
-  myDentistFetchingError,
-  myFamilyFetched,
-  myFamilyFetchingError,
+  setMyDentist,
+  setMyDentistErrors,
+  setMyMembers,
+  setMemberErrors,
   myPatientsFetched,
   myPatientsFetchingError,
   conversationFetched,
@@ -44,7 +44,7 @@ import {
 // Individual exports for testing
 export function* userDashboardSaga () {
   const watcherA = yield fork(fetchMyDentistWatcher);
-  const watcherB = yield fork(fetchMyFamilyWatcher);
+  const watcherB = yield fork(fetchMyMembersWatcher);
   const watcherC = yield fork(submitMessageFormWatcher);
   const watcherD = yield fork(submitClientReviewFormWatcher);
   const watcherE = yield fork(fetchConversationWatcher);
@@ -74,8 +74,8 @@ export function* fetchMyDentistWatcher () {
   yield* takeLatest(MY_DENTIST_REQUEST, fetchMyDentist);
 }
 
-export function* fetchMyFamilyWatcher () {
-  yield* takeLatest(MY_FAMILY_REQUEST, fetchMyFamily);
+export function* fetchMyMembersWatcher () {
+  yield* takeLatest(MY_MEMBERS_REQUEST, fetchMyMembers);
 }
 
 export function* fetchMyPatientsWatcher () {
@@ -100,26 +100,26 @@ export function* fetchMyDentist () {
     const response = yield call(request, requestURL);
 
     yield put(fetchNewMsgCount({ senderId: response.data.id }));
-    yield put(myDentistFetched(response.data));
+    yield put(setMyDentist(response.data));
   } catch (err) {
-    yield put(myDentistFetchingError(err));
+    yield put(setMyDentistErrors(err));
   }
 }
 
-export function* fetchMyFamily () {
+export function* fetchMyMembers () {
   try {
-    const requestURL = '/api/v1/users/me/family-members';
+    const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
 
-    yield put(myFamilyFetched(response.data));
+    yield put(setMyMembers(response.data));
   } catch (err) {
-    yield put(myFamilyFetchingError(err));
+    yield put(setMemberErrors(err));
   }
 }
 
 export function* fetchMyPatients () {
   try {
-    const requestURL = '/api/v1/users/me/clients';
+    const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
 
     const tasks = [];
@@ -258,7 +258,7 @@ export function* submitFormWatcher () {
     const memberId = payload.id;
 
     try {
-      let requestURL = `/api/v1/users/${userId}/family-members`;
+      let requestURL = `/api/v1/users/${userId}/members`;
       const params = {
         method: 'POST',
         body: JSON.stringify(payload),

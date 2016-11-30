@@ -12,7 +12,7 @@ import { fetchMyPatients } from 'containers/Dashboard/actions';
 import { changePageTitle } from 'containers/App/actions';
 
 import {
-  selectAllMembers,
+  allMembersSelector,
 } from 'containers/Dashboard/selectors';
 
 import styles from './styles.css';
@@ -58,7 +58,7 @@ export class EditDentistMember extends React.Component {
 
 function mapStateToProps (state) {
   return {
-    patients: selectAllMembers(state),
+    patients: allMembersSelector(state),
   };
 }
 

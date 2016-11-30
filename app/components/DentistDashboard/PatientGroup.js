@@ -6,10 +6,13 @@ import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 import { markMsgRead } from 'containers/Dashboard/actions';
-import { selectNewMsgCount, selectSorter }
-  from 'containers/Dashboard/selectors';
+import {
+  selectNewMsgCount, selectSorter,
+} from 'containers/Dashboard/selectors';
+
 import PatientCard from './PatientCard';
 import styles from './PatientGroup.css';
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
@@ -43,8 +46,7 @@ export default class PatientGroup extends Component {
   }
 
   render () {
-    const { title, patients, newMsgCountBySender }
-      = this.props;
+    const { title, patients, newMsgCountBySender } = this.props;
 
     return (
       <div>
@@ -55,11 +57,9 @@ export default class PatientGroup extends Component {
           <Col md={7} styleName="bar" />
           <Col md={2} styleName="sort-by" onClick={this.toggleSorter}>
             <span>Sort by</span>
-            {
-              this.state.showSorter
-                ? <FaCaretDown size={16} styleName="sorter-toggler" />
-                : <FaCaretRight size={16} styleName="sorter-toggler" />
-            }
+            {this.state.showSorter
+              ? <FaCaretDown size={16} styleName="sorter-toggler" />
+              : <FaCaretRight size={16} styleName="sorter-toggler" />}
           </Col>
         </Row>
 

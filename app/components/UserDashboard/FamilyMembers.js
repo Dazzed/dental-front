@@ -6,7 +6,8 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 
-import AddFamilyMemberForm from 'components/AddFamilyMemberForm';
+import MemberForm from 'components/MemberForm';
+
 import {
   setEditingMember,
   submitMemberForm,
@@ -19,12 +20,9 @@ import styles from './FamilyMembers.css';
 
 @CSSModules(styles, { allowMultiple: true })
 class FamilyMembers extends Component {
+
   static propTypes = {
-    accountStatus: PropTypes.string,
-    monthlyDue: PropTypes.string,
-    dueAt: PropTypes.object,
     members: PropTypes.array,
-    owner: PropTypes.object,
     setEditingMember: PropTypes.func,
     onSubmitForm: PropTypes.func,
     deleteMember: PropTypes.func,
@@ -60,7 +58,7 @@ class FamilyMembers extends Component {
   addNewMember = () => {
     this.showMemberForm();
     this.props.setEditingMember();
-    this.props.resetForm();
+    // this.props.resetForm();
   }
 
   editMember = (id) => {
@@ -74,8 +72,7 @@ class FamilyMembers extends Component {
   }
 
   render () {
-    // const { accountStatus, monthlyDue, dueAt, members, owner } = this.props;
-    const { members, owner } = this.props;
+    const { members } = this.props;
 
     return (
       <Well styleName="family-members-container">
@@ -83,23 +80,20 @@ class FamilyMembers extends Component {
           <Col md={3}>Name</Col>
           <Col md={3}>Family Relationshiop</Col>
           <Col md={1}>Fee</Col>
-          <Col md={3} className="text-right">Member Since</Col>
+          <Col md={1}>Status</Col>
+          <Col md={2} className="text-center">Member Since</Col>
+          <Col md={2} className="text-center">Actions</Col>
         </Row>
-        <Row styleName="list-content">
-          {owner.payingMember &&
-            <FamilyMember details={owner} />
-          }
 
-          {members &&
-            members.map((member, index) => (
-              <FamilyMember
-                details={member}
-                key={index}
-                onEdit={this.editMember.bind(this, member.id)}
-                onDelete={this.deleteMember.bind(this, member)}
-              />
-            ))
-          }
+        <Row styleName="list-content">
+          {members && members.map((member, index) => (
+            <FamilyMember
+              details={member}
+              key={index}
+              onEdit={this.editMember}
+              onDelete={this.deleteMember}
+            />
+          ))}
         </Row>
 
         <Row>
@@ -115,7 +109,7 @@ class FamilyMembers extends Component {
 
         <Row style={{ marginTop: '15px' }}>
           {this.state.showMemberForm &&
-            <AddFamilyMemberForm
+            <MemberForm
               onSubmit={this.onSubmitForm}
             />
           }
