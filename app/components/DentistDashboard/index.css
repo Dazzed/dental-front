@@ -17,6 +17,8 @@
 
 .total-info {
   margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
 
   .active {
     color: $light-green;

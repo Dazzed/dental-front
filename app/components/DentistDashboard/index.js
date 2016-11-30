@@ -112,11 +112,11 @@ export default class DentistDashboard extends Component {
             <span styleName="active">
               {`(${active})`}
             </span>
-            {' - '}Inactive{' '}
+            {', '}Inactive{' '}
             <span styleName="inactive">
               {`(${inactive})`}
             </span>
-            {' - '}Past Due{' '}
+            {', '}Past Due{' '}
             <span>
               {`(${pastDue})`}
             </span>

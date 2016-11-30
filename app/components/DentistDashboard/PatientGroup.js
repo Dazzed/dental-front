@@ -27,14 +27,22 @@ export default class PatientGroup extends Component {
     super(props);
 
     this.state = {
-      showSorter: false,
+      isSortVisible: false,
+      isCardVisible: false,
     };
   }
 
-  toggleSorter = () => {
+  toggleSort = () => {
     this.setState({
       ...this.state,
-      showSorter: !this.state.showSorter,
+      isSortVisible: !this.state.isSortVisible,
+    });
+  }
+
+  toggleCard = () => {
+    this.setState({
+      ...this.state,
+      isCardVisible: !this.state.isCardVisible,
     });
   }
 
@@ -49,21 +57,20 @@ export default class PatientGroup extends Component {
     return (
       <div>
         <Row styleName="group-header">
-          <Col md={3} styleName="title">
+          <Col md={3} styleName="title" onClick={this.toggleCard}>
             {title} ({patients ? patients.length : 0})
-          </Col>
-          <Col md={7} styleName="bar" />
-          <Col md={2} styleName="sort-by" onClick={this.toggleSorter}>
-            <span>Sort by</span>
             {
-              this.state.showSorter
+              this.state.isCardVisible
                 ? <FaCaretDown size={16} styleName="sorter-toggler" />
                 : <FaCaretRight size={16} styleName="sorter-toggler" />
             }
           </Col>
+          <Col md={2} styleName="sort-by" onClick={this.toggleSort}>
+            <span>Sort by</span>
+          </Col>
         </Row>
 
-        {patients &&
+        {patients && this.state.isCardVisible &&
           patients.map((patient, index) =>
             <PatientCard
               {...patient}

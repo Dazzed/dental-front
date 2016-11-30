@@ -2,12 +2,16 @@
 
 .group-header {
   padding-bottom: 5px;
-  font-weight: bold;
+  font-size: 18px;
+
+  &:hover .title {
+    font-weight: bold;
+  }
 }
 
 .title {
-  font-size: 20px;
   width: auto;
+  cursor: pointer;
 }
 
 .bar {
@@ -17,7 +21,7 @@
 
 .sort-by {
   font-size: 15px;
-  margin-top: 5px;
+  margin-top: 3px;
   cursor: pointer;
 }
 
