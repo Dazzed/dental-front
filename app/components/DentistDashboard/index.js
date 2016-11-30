@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
-import Well from 'react-bootstrap/lib/Well';
 
 import { fetchMyPatients, requestReport } from 'containers/Dashboard/actions';
 import { selectUserName } from 'containers/App/selectors';
