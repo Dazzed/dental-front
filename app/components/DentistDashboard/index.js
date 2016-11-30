@@ -18,7 +18,7 @@ const groups = [
   { key: 'newReviews', title: 'New Review' },
   { key: 'activeMembers', title: 'Active Members' },
   { key: 'inactiveMembers', title: 'Inactive Members' },
-  { key: 'allReviews', title: 'Reviews (all)' },
+  { key: 'allReviews', title: 'Reviews' },
 ];
 
 @connect(mapStateToProps, mapDispatchToProps)

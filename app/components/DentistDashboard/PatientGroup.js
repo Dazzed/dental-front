@@ -51,10 +51,15 @@ export default class PatientGroup extends Component {
 
   render () {
     const { isCardVisible } = this.state;
-    const { title, patients, newMsgCountBySender }
+    const { title, patients, newMsgCountBySender, groupKey }
       = this.props;
-    const count = patients ? patients.length : 0;
     const headerStyle = isCardVisible ? 'group-header active' : 'group-header';
+    let count = patients ? patients.length : 0;
+
+    // kind of hack :)
+    if (groupKey === 'allReviews') {
+      count = 'all';
+    }
 
     return (
       <div styleName="patient-group">
