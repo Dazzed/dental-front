@@ -31,6 +31,7 @@
 
     .title {
       float: left;
+      margin-right: 10px;
     }
 
     .dot-line {
@@ -46,6 +47,8 @@
 }
 
 .sorter-toggler {
+  margin-left: 10px;
+
   &:hover {
     opacity: 0.5;
   }
