@@ -109,7 +109,7 @@ function fnGroupPatients (substate) {
   function getNewMembers () {
     return filter(
       substate.myPatients,
-      (patient) => (moment().diff(patient.createdAt, 'days') <= 5)
+      (patient) => (moment().diff(patient.createdAt, 'days') <= 30)
     );
   }
 
@@ -119,7 +119,7 @@ function fnGroupPatients (substate) {
       (patient) => {
         const latestReview = get(patient, 'latestReview.createdAt');
         return (latestReview) &&
-          (moment().diff(latestReview, 'days') <= 5);
+          (moment().diff(latestReview, 'days') <= 30);
       }
     );
   }
