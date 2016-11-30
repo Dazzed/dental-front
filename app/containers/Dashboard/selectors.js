@@ -50,34 +50,15 @@ const selectSorter = createSelector(
   (substate) => substate.sorter
 );
 
-const selectNewMembers = createSelector(
-  selectDentistDashboard,
-  selectSorter,
-  (substate) => (
-    filter(substate.myPatients,
-      (patient) => (moment().diff(patient.createdAt, 'days') <= 5)
-    )
-  )
-);
-
-const selectNewReviews = createSelector(
-  selectDentistDashboard,
-  selectSorter,
-  (substate) => (
-    filter(substate.myPatients,
-      (patient) => {
-        const latestReview = get(patient, 'latestReview.createdAt');
-        return (latestReview) &&
-          (moment().diff(latestReview, 'days') <= 5);
-      }
-    )
-  )
-);
-
 const selectAllMembers = createSelector(
   selectDentistDashboard,
   selectSorter,
   (substate) => substate.myPatients
+);
+
+const selectGroupedPatients = createSelector(
+  selectDentistDashboard,
+  fnGroupPatients
 );
 
 const selectConversation = createSelector(
@@ -110,9 +91,66 @@ export {
   selectMyDentist,
   selectMyFamilyMembers,
   selectSorter,
-  selectNewMembers,
-  selectNewReviews,
+  selectGroupedPatients,
   selectAllMembers,
   selectConversation,
   selectNewMsgCount,
 };
+
+function fnGroupPatients (substate) {
+  return {
+    newMembers: getNewMembers(),
+    newReviews: getNewReviews(),
+    activeMembers: getActiveMembers(),
+    inactiveMembers: getInactiveMembers(),
+    allReviews: getAllReviews()
+  };
+
+  function getNewMembers () {
+    return filter(
+      substate.myPatients,
+      (patient) => (moment().diff(patient.createdAt, 'days') <= 30)
+    );
+  }
+
+  function getNewReviews () {
+    return filter(
+      substate.myPatients,
+      (patient) => {
+        const latestReview = get(patient, 'latestReview.createdAt');
+        return (latestReview) &&
+          (moment().diff(latestReview, 'days') <= 30);
+      }
+    );
+  }
+
+  function getActiveMembers () {
+    return filter(
+      substate.myPatients,
+      (patient) => {
+        const status = get(patient, 'subscriptions[0].status');
+        return (status) && status === 'active';
+      }
+    );
+  }
+
+  function getInactiveMembers () {
+    return filter(
+      substate.myPatients,
+      (patient) => {
+        const status = get(patient, 'subscriptions[0].status');
+        return (status) && status === 'inactive';
+      }
+    );
+  }
+
+  function getAllReviews () {
+    return filter(
+      substate.myPatients,
+      (patient) => {
+        const latestReview = get(patient, 'latestReview.createdAt');
+        return !!latestReview;
+      }
+    );
+  }
+}

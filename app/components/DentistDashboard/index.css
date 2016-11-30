@@ -15,8 +15,24 @@
   }
 }
 
-.total-info {
-  margin-bottom: 15px;
+.patients-overview {
+  font-size: 16px;
+
+  .total-info,
+  .sorter {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #F5F5F5;
+    border: 1px solid white;
+  }
+
+  .total-info {
+    width: calc(100% - 150px);
+  }
+
+  .sorter {
+    width: 150px;
+  }
 
   .active {
     color: $light-green;

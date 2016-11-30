@@ -2,15 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
-import Well from 'react-bootstrap/lib/Well';
 
 import { fetchMyPatients, requestReport } from 'containers/Dashboard/actions';
 import { selectUserName } from 'containers/App/selectors';
-import {
-  selectNewMembers,
-  selectNewReviews,
-  selectAllMembers,
-} from 'containers/Dashboard/selectors';
+import { selectGroupedPatients } from 'containers/Dashboard/selectors';
 
 import InvitePatientModal from 'components/InvitePatientModal';
 import Intro from './Intro';
@@ -20,8 +15,10 @@ import styles from './index.css';
 
 const groups = [
   { key: 'newMembers', title: 'New Members' },
-  { key: 'newReviews', title: 'New Review(s)' },
-  { key: 'allMembers', title: 'Members' },
+  { key: 'newReviews', title: 'New Review' },
+  { key: 'activeMembers', title: 'Active Members' },
+  { key: 'inactiveMembers', title: 'Inactive Members' },
+  { key: 'allReviews', title: 'Reviews' },
 ];
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -67,24 +64,9 @@ export default class DentistDashboard extends Component {
   render () {
     const { userName, patients } = this.props;
 
-    let inactive = 0;
-    let active = 0;
-    let pastDue = 0;
-    const allMembers = patients.allMembers;
-
-    if (allMembers) {
-      inactive = allMembers.filter(item =>
-        item.subscriptions[0].status === 'inactive'
-      ).length;
-
-      active = allMembers.filter(item =>
-        item.subscriptions[0].status === 'active'
-      ).length;
-
-      pastDue = allMembers.filter(item =>
-        item.subscriptions[0].status === 'past_due'
-      ).length;
-    }
+    const activeCount = patients.activeMembers.length;
+    const inactiveCount = patients.inactiveMembers.length;
+    const pastDueCount = patients.dueMembers && patients.dueMembers.length;
 
     return (
       <div className="dentist-dashboard-container">
@@ -106,31 +88,37 @@ export default class DentistDashboard extends Component {
           </button>
         </div>
 
-        <Well>
+        <div
+          styleName="patients-overview"
+          style={{ fontWeight: 'bold', marginBottom: '10px' }}
+        >
           <div styleName="total-info">
             Active{' '}
             <span styleName="active">
-              {`(${active})`}
+              {`(${activeCount || 0})`}
             </span>
-            {' - '}Inactive{' '}
+            {',  '}&nbsp;&nbsp;Inactive{' '}
             <span styleName="inactive">
-              {`(${inactive})`}
+              {`(${inactiveCount || 0})`}
             </span>
-            {' - '}Past Due{' '}
+            {','}&nbsp;&nbsp;Past Due{' '}
             <span>
-              {`(${pastDue})`}
+              {`(${pastDueCount || 0})`}
             </span>
           </div>
+          <div styleName="sorter">
+            Sort By
+          </div>
+        </div>
 
-          {groups.map((group, index) =>
-            <PatientGroup
-              key={index}
-              title={group.title}
-              groupKey={group.key}
-              patients={patients[group.key]}
-            />
-          )}
-        </Well>
+        {groups.map((group, index) =>
+          <PatientGroup
+            key={index}
+            title={group.title}
+            groupKey={group.key}
+            patients={patients[group.key]}
+          />
+        )}
 
         <RevenueStats total={67800} />
 
@@ -146,11 +134,7 @@ export default class DentistDashboard extends Component {
 function mapStateToProps (state) {
   return {
     userName: selectUserName(state),
-    patients: {
-      newMembers: selectNewMembers(state),
-      newReviews: selectNewReviews(state),
-      allMembers: selectAllMembers(state),
-    },
+    patients: selectGroupedPatients(state)
   };
 }
 
