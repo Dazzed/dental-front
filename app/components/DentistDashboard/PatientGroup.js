@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
-import { Row, Col } from 'react-bootstrap';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
@@ -51,34 +50,45 @@ export default class PatientGroup extends Component {
   }
 
   render () {
+    const { isCardVisible } = this.state;
     const { title, patients, newMsgCountBySender }
       = this.props;
+    const count = patients ? patients.length : 0;
+    const headerStyle = isCardVisible ? 'group-header active' : 'group-header';
 
     return (
-      <div>
-        <Row styleName="group-header">
-          <Col md={3} styleName="title" onClick={this.toggleCard}>
-            {title} ({patients ? patients.length : 0})
-            {
-              this.state.isCardVisible
-                ? <FaCaretDown size={16} styleName="sorter-toggler" />
-                : <FaCaretRight size={16} styleName="sorter-toggler" />
-            }
-          </Col>
-          <Col md={2} styleName="sort-by" onClick={this.toggleSort}>
+      <div styleName="patient-group">
+        <div styleName={headerStyle}>
+          <div styleName="title-wrapper" onClick={this.toggleCard}>
+            <div styleName="title">
+              {title} ({count})
+              {
+                isCardVisible
+                  ? <FaCaretDown size={16} styleName="sorter-toggler" />
+                  : <FaCaretRight size={16} styleName="sorter-toggler" />
+              }
+            </div>
+            <div styleName="dot-line" />
+          </div>
+          <div styleName="sorter" onClick={this.toggleSort}>
             <span>Sort by</span>
-          </Col>
-        </Row>
+          </div>
+          <div className="clearfix" />
+        </div>
 
-        {patients && this.state.isCardVisible &&
-          patients.map((patient, index) =>
-            <PatientCard
-              {...patient}
-              newMsgCount={newMsgCountBySender[patient.id]}
-              markMsgRead={this.markMsgRead}
-              key={index}
-            />
-          )
+        {patients && !!patients.length && isCardVisible &&
+          <div styleName="patient-list">
+            {
+              patients.map((patient, index) =>
+                <PatientCard
+                  {...patient}
+                  newMsgCount={newMsgCountBySender[patient.id]}
+                  markMsgRead={this.markMsgRead}
+                  key={index}
+                />
+              )
+            }
+          </div>
         }
       </div>
     );

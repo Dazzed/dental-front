@@ -106,7 +106,10 @@ export default class DentistDashboard extends Component {
           </button>
         </div>
 
-        <Well>
+        <div
+          styleName="patients-overview"
+          style={{ fontWeight: 'bold', marginBottom: '10px' }}
+        >
           <div styleName="total-info">
             Active{' '}
             <span styleName="active">
@@ -121,16 +124,19 @@ export default class DentistDashboard extends Component {
               {`(${pastDue})`}
             </span>
           </div>
+          <div styleName="sorter">
+            Sort By
+          </div>
+        </div>
 
-          {groups.map((group, index) =>
-            <PatientGroup
-              key={index}
-              title={group.title}
-              groupKey={group.key}
-              patients={patients[group.key]}
-            />
-          )}
-        </Well>
+        {groups.map((group, index) =>
+          <PatientGroup
+            key={index}
+            title={group.title}
+            groupKey={group.key}
+            patients={patients[group.key]}
+          />
+        )}
 
         <RevenueStats total={67800} />
 
