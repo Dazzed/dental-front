@@ -22,7 +22,7 @@ export default class FamilyMember extends React.Component {
   }
 
   handleDelete = () => {
-    this.props.onDelete(this.props.details.id);
+    this.props.onDelete(this.props.details);
   }
 
   handleEdit = () => {

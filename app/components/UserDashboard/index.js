@@ -3,7 +3,6 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import formatUser from 'utils/formatUser';
 import PaymentForm from 'containers/Authorize.net';
 
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -79,8 +78,6 @@ export default class UserDashboard extends Component {
 
     const fullName = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
 
-    console.log(myDentist);
-
     return (
       <div className="user-dashboard-container">
         <Intro fullName={fullName} />
@@ -111,6 +108,7 @@ export default class UserDashboard extends Component {
 
         <FamilyMembers
           members={myMembers}
+          owner={loggedInUser.id}
         />
 
         <div className="clearfix">

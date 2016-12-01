@@ -76,17 +76,13 @@ export default class PatientCard extends Component {
   render () {
     const {
       firstName, lastName, createdAt, contactMethod, avatar, email, id,
-      members, subscription, phoneNumbers, latestReview, newMsgCount,
+      members, phoneNumbers, latestReview, newMsgCount,
     } = this.props;
 
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
 
     let phone = '';
-
-    if (subscription.status === 'inactive') {
-      membershipStyle = 'warning';
-    }
 
     // NOTE: By now only one number so display that.
     if (phoneNumbers && phoneNumbers[0]) {
@@ -208,10 +204,6 @@ export default class PatientCard extends Component {
                       <span styleName="desc">
                         Total Monthly Payment:{' '}
                       </span>
-                      <Money
-                        styleName="value"
-                        value={total}
-                      />
                     </Row>
                     <Row>
                       <span styleName="update-payment">

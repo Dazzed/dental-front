@@ -25,6 +25,9 @@ import {
   NEW_MSG_COUNT_REQUEST,
   NEW_MSG_COUNT_SUCCESS,
 
+  OPEN_MEMBER_FORM,
+  CLOSE_MEMBER_FORM,
+
   MARK_MSG_READ_REQUEST,
 
   SUBMIT_MESSAGE_FORM,
@@ -32,6 +35,7 @@ import {
   SUBMIT_INVITE_PATIENT_FORM,
 
   SUBMIT_MEMBER_FORM,
+  SET_EDITING_MEMBER,
 
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
@@ -42,6 +46,29 @@ import {
   SET_PAYMENT_BILL,
   REQUEST_REPORT,
 } from 'containers/Dashboard/constants';
+
+
+export function setEditingMember (memberId) {
+  return {
+    type: SET_EDITING_MEMBER,
+    memberId,
+  };
+}
+
+
+export function openMemberForm (ownerId) {
+  return {
+    type: OPEN_MEMBER_FORM,
+    ownerId,
+  };
+}
+
+
+export function closeMemberForm () {
+  return {
+    type: CLOSE_MEMBER_FORM,
+  };
+}
 
 
 export function fetchMyDentist () {
@@ -175,14 +202,6 @@ export function submitInvitePatientForm (payload) {
   };
 }
 
-// TODO: Delete this after migration to new user schema is done
-export function setEditingMember (payload, userId) {
-  return {
-    payload,
-    userId,
-  };
-}
-
 
 export function submitMemberForm (payload, userId) {
   return {
@@ -192,7 +211,8 @@ export function submitMemberForm (payload, userId) {
   };
 }
 
-export function memberAdded (payload, userId) {
+
+export function setAddedMember (payload, userId) {
   return {
     type: ADD_MEMBER_SUCCESS,
     payload,
@@ -200,7 +220,8 @@ export function memberAdded (payload, userId) {
   };
 }
 
-export function memberEdited (payload, userId) {
+
+export function setEditedMember (payload, userId) {
   return {
     type: EDIT_MEMBER_SUCCESS,
     payload,
@@ -208,15 +229,18 @@ export function memberEdited (payload, userId) {
   };
 }
 
-export function deleteMember (payload, userId) {
+
+export function deleteMember (userId, payload) {
+  console.log(userId, payload);
   return {
     type: DELETE_MEMBER_REQUEST,
-    payload,
     userId,
+    payload,
   };
 }
 
-export function memberDeleted (memberId, userId) {
+
+export function setDeletedMember (memberId, userId) {
   return {
     type: DELETE_MEMBER_SUCCESS,
     memberId,

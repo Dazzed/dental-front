@@ -15,9 +15,9 @@ import changeFactory from 'change-js';
 import PaymentForm from 'containers/Authorize.net';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
-import { addFamilyMemberFactory } from 'components/AddFamilyMemberForm';
+import addFamilyMemberFactory from 'components/MemberForm';
 import {
-  familyMembersToEditSelectorFactory,
+  editingMemberSelector as familyMembersToEditSelectorFactory,
 } from 'containers/Dashboard/selectors';
 
 import {

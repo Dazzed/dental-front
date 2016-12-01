@@ -17,7 +17,7 @@ import {
 
 
 function* loadDentistSpecialties () {
-  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* () {
+  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* handler () {
     try {
       const specialties = yield call(request, '/api/v1/dentist-specialties');
       yield put(dentistSpecialtiesSuccess(specialties));
@@ -29,7 +29,7 @@ function* loadDentistSpecialties () {
 
 
 function* requestServices () {
-  yield* takeLatest(SERVICES_REQUEST, function* () {
+  yield* takeLatest(SERVICES_REQUEST, function* handler () {
     try {
       const services = yield call(request, '/api/v1/services');
       yield put(requestServicesSuccess(services));
@@ -40,7 +40,7 @@ function* requestServices () {
 }
 
 function* toastrRemover () {
-  yield* takeLatest(LOCATION_CHANGE, function* () {
+  yield* takeLatest(LOCATION_CHANGE, function* handler () {
     yield put(toastrActions.clean());
   });
 }

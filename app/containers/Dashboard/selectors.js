@@ -18,6 +18,18 @@ const selectDashboard = createSelector(
 );
 
 
+const memberFormOpenedSelector = createSelector(
+  domainSelector,
+  subtate => subtate.memberFormOpened
+);
+
+
+const editingMemberSelector = createSelector(
+  domainSelector,
+  subtate => subtate.editingMember
+);
+
+
 const myDentistSelector = createSelector(
   domainSelector,
   (substate) => substate.myDentist
@@ -88,6 +100,8 @@ export default selectDashboard;
 
 export {
   domainSelector,
+  memberFormOpenedSelector,
+  editingMemberSelector,
   selectSorter,
   selectConversation,
   selectNewMsgCount,

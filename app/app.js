@@ -49,7 +49,6 @@ const rootRoute = {
       System.import('containers/App/sagas'),
       System.import('containers/Dashboard/sagas'),
       System.import('containers/Authorize.net/sagas'),
-      System.import('containers/MyFamilyMembers/sagas'),
     ])
       .then(([ sagas, dashboard, payment, familyMembers ]) => {
         cb(null, App);

@@ -24,7 +24,7 @@ let charging = false;
 
 
 export function* requestToken () {
-  yield* takeLatest(REQUEST_CARD_INFO, function* (action) {
+  yield* takeLatest(REQUEST_CARD_INFO, function* handler (action) {
     try {
       const response = yield call(
         request, `/api/v1/users/${action.userId}/credit-card`, {
@@ -42,7 +42,7 @@ export function* requestToken () {
 
 
 export function* requestCharge () {
-  yield* takeLatest(REQUEST_CHARGE, function* (action) {
+  yield* takeLatest(REQUEST_CHARGE, function* handler (action) {
     if (charging) {
       return;
     }

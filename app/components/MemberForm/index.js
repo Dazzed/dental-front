@@ -7,15 +7,23 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
-// import Input from 'components/Input';
 import renderDatePicker from 'components/DatePicker';
-import { selectEditingMember } from 'containers/MyFamilyMembers/selectors';
-import FamilyMemberValidator from './validator';
-
-const createdClasses = {};
+import { editingMemberSelector } from 'containers/Dashboard/selectors';
+import MemberValidator from './validator';
 
 
-class AddFamilyMemberForm extends React.Component {
+const mapStateToProps = (state) => ({
+  initialValues: editingMemberSelector(state),
+});
+
+
+@connect(mapStateToProps)
+@reduxForm({
+  form: 'familyMember',
+  enableReinitialize: true,
+  validate: MemberValidator,
+})
+export default class MemberForm extends React.Component {
 
   static propTypes = {
     handleSubmit: React.PropTypes.func.isRequired,
@@ -126,27 +134,3 @@ class AddFamilyMemberForm extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    initialValues: selectEditingMember(state),
-  };
-}
-
-export default connect(mapStateToProps)(reduxForm({
-  form: 'familyMember',
-  enableReinitialize: true,
-  validate: FamilyMemberValidator,
-})(AddFamilyMemberForm));
-
-
-export function addFamilyMemberFactory (name, _mapStateToProps) {
-  if (!createdClasses[name]) {
-    createdClasses[name] = connect(_mapStateToProps)(reduxForm({
-      form: name,
-      enableReinitialize: true,
-      validate: FamilyMemberValidator,
-    })(AddFamilyMemberForm));
-  }
-
-  return createdClasses[name];
-}

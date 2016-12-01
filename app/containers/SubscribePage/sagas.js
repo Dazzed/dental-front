@@ -19,7 +19,7 @@ import {
 
 // Individual exports for testing
 export function* requestBill () {
-  yield* takeLatest(REQUEST_BILL, function* () {
+  yield* takeLatest(REQUEST_BILL, function* handler () {
     try {
       const bill = yield call(request, '/api/v1/users/me/bill');
       yield put(setBill(bill));
@@ -30,7 +30,7 @@ export function* requestBill () {
 }
 
 export function* requestPayBill () {
-  yield* takeLatest(REQUEST_PAYMENT_BILL, function* (action) {
+  yield* takeLatest(REQUEST_PAYMENT_BILL, function* handler (action) {
     try {
       const body = { token: action.payload.id };
 

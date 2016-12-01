@@ -8,71 +8,75 @@ import Well from 'react-bootstrap/lib/Well';
 
 import MemberForm from 'components/MemberForm';
 
+import { memberFormOpenedSelector } from 'containers/Dashboard/selectors';
 import {
+  openMemberForm,
+  closeMemberForm,
   setEditingMember,
   submitMemberForm,
   deleteMember,
-} from 'containers/MyFamilyMembers/actions';
+} from 'containers/Dashboard/actions';
 
 import FamilyMember from './FamilyMember';
 import styles from './FamilyMembers.css';
 
 
+const mapDispatchToProps = (dispatch) => ({
+  onSubmitForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+  deleteMember: (id, values) => dispatch(deleteMember(id, values)),
+  resetForm: () => dispatch(resetForm('familyMember')),
+  openMemberForm: ownerId => dispatch(openMemberForm(ownerId)),
+  closeMemberForm: () => dispatch(closeMemberForm()),
+  setEditingMember: memberId => dispatch(setEditingMember(memberId)),
+});
+
+
+const mapStateToProps = state => ({
+  openedForm: memberFormOpenedSelector(state),
+});
+
+
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-class FamilyMembers extends Component {
+export default class FamilyMembers extends Component {
 
   static propTypes = {
+    owner: PropTypes.number.isRequired,
+    openedForm: PropTypes.number,
     members: PropTypes.array,
-    setEditingMember: PropTypes.func,
-    onSubmitForm: PropTypes.func,
-    deleteMember: PropTypes.func,
-    resetForm: PropTypes.func,
+    resetForm: PropTypes.func.isRequired,
+    openMemberForm: PropTypes.func.isRequired,
+    onSubmitForm: PropTypes.func.isRequired,
+    setEditingMember: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
   }
 
-  constructor (props) {
-    super(props);
-
-    // show/hide based on the state selector?
-    // in case we need to hide the form after save
-    this.state = {
-      showMemberForm: false,
-    };
-  }
-
-  onSubmitForm = (data) => {
-    this.props.onSubmitForm(data);
-
-    setTimeout(() => {
-      this.hideMemberForm();
-    }, 500);
-  }
-
-  showMemberForm = () => {
-    this.setState({ showMemberForm: true });
-  }
-
-  hideMemberForm = () => {
-    this.setState({ showMemberForm: false });
+  handleSubmit = (values) => {
+    this.props.onSubmitForm(values, this.props.owner);
   }
 
   addNewMember = () => {
-    this.showMemberForm();
+    this.openForm();
     this.props.setEditingMember();
-    // this.props.resetForm();
   }
 
   editMember = (id) => {
-    this.showMemberForm();
+    this.openForm();
     this.props.setEditingMember(id);
   }
 
   deleteMember = (member) => {
-    this.hideMemberForm();
-    this.props.deleteMember(member);
+    this.props.deleteMember(this.props.owner, member);
+  }
+
+  openForm () {
+    this.props.resetForm();
+    this.props.openMemberForm(this.props.owner);
   }
 
   render () {
-    const { members } = this.props;
+    const { members, openedForm, owner } = this.props;
+    const showForm = openedForm === owner;
 
     return (
       <Well styleName="family-members-container">
@@ -108,24 +112,13 @@ class FamilyMembers extends Component {
         </Row>
 
         <Row style={{ marginTop: '15px' }}>
-          {this.state.showMemberForm &&
+          {showForm &&
             <MemberForm
-              onSubmit={this.onSubmitForm}
-            />
-          }
+              onSubmit={this.handleSubmit}
+            />}
         </Row>
       </Well>
     );
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    setEditingMember: (id) => dispatch(setEditingMember(id)),
-    onSubmitForm: (values) => dispatch(submitMemberForm(values)),
-    deleteMember: (id) => dispatch(deleteMember(id)),
-    resetForm: () => dispatch(resetForm('familyMember')),
-  };
-}
-
-export default connect(null, mapDispatchToProps)(FamilyMembers);
