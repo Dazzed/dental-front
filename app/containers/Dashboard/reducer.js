@@ -40,9 +40,6 @@ const initialState = {
 
   // Dentist dashboard fields
   myPatients: null,
-  newMembers: null,
-  newReviews: null,
-  allMembers: null,
 
   // All types
   messages: [],
