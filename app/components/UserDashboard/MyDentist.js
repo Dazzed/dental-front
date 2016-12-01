@@ -177,7 +177,7 @@ class MyDentist extends Component {
               }
             </Row>
 
-            <Row styleName="row">
+            <Row styleName="row" style={{ whiteSpace: 'pre-wrap' }}>
               <Col md={12}>
                 {dentistInfo.message}
               </Col>
