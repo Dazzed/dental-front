@@ -44,6 +44,8 @@ export const REQUEST_PAYMENT_BILL = 'app/Dashboard/REQUEST_PAYMENT_BILL';
 export const SET_PAYMENT_BILL = 'app/Dashboard/SET_PAYMENT_BILL';
 export const REQUEST_REPORT = 'app/Dashboard/REQUEST_REPORT';
 
+export const UPDATE_PATIENT_SEARCH = 'app/Dashboard/UPDATE_PATIENT_SEARCH';
+
 export const SUBMIT_MESSAGE_FORM =
   'app/Dashboard/SUBMIT_MESSAGE_FORM';
 export const SUBMIT_CLIENT_REVIEW_FORM =

@@ -45,6 +45,8 @@ import {
   REQUEST_PAYMENT_BILL,
   SET_PAYMENT_BILL,
   REQUEST_REPORT,
+
+  UPDATE_PATIENT_SEARCH,
 } from 'containers/Dashboard/constants';
 
 
@@ -269,5 +271,12 @@ export function setBill (userId) {
 export function requestReport () {
   return {
     type: REQUEST_REPORT,
+  };
+}
+
+export function updatePatientSearch (term) {
+  return {
+    type: UPDATE_PATIENT_SEARCH,
+    term,
   };
 }

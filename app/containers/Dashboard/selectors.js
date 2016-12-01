@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import filter from 'lodash/filter';
+import some from 'lodash/some';
 import moment from 'moment';
 
 
@@ -58,6 +59,11 @@ const groupedPatientsSelector = createSelector(
   fnGroupPatients
 );
 
+const patientSearchTermSelector = createSelector(
+  domainSelector,
+  (substate) => substate.patientSearchTerm
+);
+
 
 const selectConversation = createSelector(
   domainSelector,
@@ -83,6 +89,7 @@ export {
   myMembersSelector,
   allPatientsSelector,
   groupedPatientsSelector,
+  patientSearchTermSelector,
 };
 
 function fnGroupPatients (substate) {
@@ -141,4 +148,16 @@ function fnGroupPatients (substate) {
       }
     );
   }
+}
+
+function isPatientMatchingTerm (patient, term) {
+  const hasMatchingFamilyMember = some(
+        patient.familyMembers || [],
+        (member) => member.firstName.toLowerCase().indexOf(term) > -1
+                  || member.lastName.toLowerCase().indexOf(term) > -1
+      );
+
+  return hasMatchingFamilyMember
+      || patient.firstName.toLowerCase().indexOf(term) > -1
+      || patient.firstName.toLowerCase().indexOf(term) > -1;
 }

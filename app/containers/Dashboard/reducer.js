@@ -30,6 +30,8 @@ import {
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
   DELETE_MEMBER_SUCCESS,
+
+  UPDATE_PATIENT_SEARCH,
 } from './constants';
 
 
@@ -40,6 +42,7 @@ const initialState = {
 
   // Dentist dashboard fields
   myPatients: null,
+  patientSearchTerm: '',
 
   // All types
   messages: [],
@@ -299,6 +302,12 @@ function dashboardReducer (state = initialState, action) {
       return {
         ...state,
         editingMember: state.myMembers[member],
+      };
+
+    case UPDATE_PATIENT_SEARCH:
+      return {
+        ...state,
+        patientSearchTerm: action.term.toLowerCase(),
       };
 
     default:
