@@ -48,10 +48,11 @@ import {
 } from 'containers/Dashboard/constants';
 
 
-export function setEditingMember (memberId) {
+export function setEditingMember (memberId, userId) {
   return {
     type: SET_EDITING_MEMBER,
     memberId,
+    userId,
   };
 }
 

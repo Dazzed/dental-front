@@ -54,8 +54,9 @@ const initialState = {
 
 function dashboardReducer (state = initialState, action) {
   let member;
-
+  let account;
   let listToEdit;
+
   let patientIndex;
   let subscription;
 
@@ -111,141 +112,112 @@ function dashboardReducer (state = initialState, action) {
           ]
         }
       };
+
     case DELETE_MEMBER_SUCCESS:
       // if myPatients exists we are in dentist dashboard
       if (state.myPatients) {
-        break;
-      } else {
-        member = findIndex(state.myMembers, { id: action.memberId });
-        return {
-          ...state,
-          myMembers: [
-            ...state.myMembers.slice(0, member),
-            ...state.myMembers.slice(member + 1),
+        account = findIndex(state.myPatients, { id: action.userId });
+        listToEdit = state.myPatients[account];
+        member = findIndex(listToEdit.members, { id: action.memberId });
+
+        listToEdit = {
+          ...listToEdit,
+          members: [
+            ...listToEdit.members.slice(0, member),
+            ...listToEdit.members.slice(member + 1),
           ],
         };
+
+        return {
+          ...state,
+          myPatients: [
+            ...state.myPatients.slice(0, account),
+            listToEdit,
+            ...state.myPatients.slice(account + 1),
+          ]
+        };
       }
-      // listToEdit = filter(state.dentistDashboard.myPatients, item =>
-      //   item.id === action.userId
-      // )[0];
-      //
-      // patientIndex = findIndex(state.dentistDashboard.myPatients, {
-      //   id: action.userId,
-      // });
-      //
-      // indexToEdit = findIndex(listToEdit.familyMembers, {
-      //   id: action.memberId,
-      // });
-      //
-      // listToEdit = {
-      //   ...listToEdit,
-      //   familyMembers: [
-      //     ...listToEdit.familyMembers.slice(0, indexToEdit),
-      //     ...listToEdit.familyMembers.slice(indexToEdit + 1),
-      //   ]
-      // };
-      //
-      // return {
-      //   ...state,
-      //   dentistDashboard: {
-      //     ...state.dentistDashboard,
-      //     myPatients: [
-      //       ...state.dentistDashboard.myPatients.slice(0, patientIndex),
-      //       listToEdit,
-      //       ...state.dentistDashboard.myPatients.slice(patientIndex + 1),
-      //     ]
-      //   }
-      // };
+
+      member = findIndex(state.myMembers, { id: action.memberId });
+      return {
+        ...state,
+        myMembers: [
+          ...state.myMembers.slice(0, member),
+          ...state.myMembers.slice(member + 1),
+        ],
+      };
 
     case EDIT_MEMBER_SUCCESS:
       // if myPatients exists we are in dentist dashboard
       if (state.myPatients) {
-        break;
-      } else {
-        member = findIndex(state.myMembers, { id: action.payload.id });
+        account = findIndex(state.myPatients, { id: action.userId });
+        listToEdit = state.myPatients[account];
+        member = findIndex(listToEdit.members, { id: action.payload.id });
+
+        listToEdit = {
+          ...listToEdit,
+          members: [
+            ...listToEdit.members.slice(0, member),
+            action.payload,
+            ...listToEdit.members.slice(member + 1),
+          ],
+        };
+
         return {
           ...state,
           memberFormOpened: null,
-          myMembers: [
-            ...state.myMembers.slice(0, member),
-            action.payload,
-            ...state.myMembers.slice(member + 1),
-          ],
+          myPatients: [
+            ...state.myPatients.slice(0, account),
+            listToEdit,
+            ...state.myPatients.slice(account + 1),
+          ]
         };
       }
-      // listToEdit = filter(state.dentistDashboard.myPatients, item =>
-      //   item.id === action.userId
-      // )[0];
-      //
-      // patientIndex = findIndex(state.dentistDashboard.myPatients, {
-      //   id: action.userId,
-      // });
-      //
-      // indexToEdit = findIndex(listToEdit.familyMembers, {
-      //   id: action.payload.id,
-      // });
-      //
-      // listToEdit = {
-      //   ...listToEdit,
-      //   familyMembers: [
-      //     ...listToEdit.familyMembers.slice(0, indexToEdit),
-      //     action.payload,
-      //     ...listToEdit.familyMembers.slice(indexToEdit + 1),
-      //   ]
-      // };
-      //
-      // return {
-      //   ...state,
-      //   dentistDashboard: {
-      //     ...state.dentistDashboard,
-      //     myPatients: [
-      //       ...state.dentistDashboard.myPatients.slice(0, patientIndex),
-      //       listToEdit,
-      //       ...state.dentistDashboard.myPatients.slice(patientIndex + 1),
-      //     ]
-      //   }
-      // };
+
+      member = findIndex(state.myMembers, { id: action.payload.id });
+      return {
+        ...state,
+        memberFormOpened: null,
+        myMembers: [
+          ...state.myMembers.slice(0, member),
+          action.payload,
+          ...state.myMembers.slice(member + 1),
+        ],
+      };
+
     case ADD_MEMBER_SUCCESS:
       // if myPatients exists we are in dentist dashboard
       if (state.myPatients) {
-        break;
-      } else {
-        return {
-          ...state,
-          memberFormOpened: null,
-          myMembers: [
-            ...state.myMembers,
+        account = findIndex(state.myPatients, { id: action.userId });
+        listToEdit = state.myPatients[account];
+
+        listToEdit = {
+          ...listToEdit,
+          members: [
+            ...listToEdit.members,
             action.payload,
           ],
         };
+
+        return {
+          ...state,
+          memberFormOpened: null,
+          myPatients: [
+            ...state.myPatients.slice(0, account),
+            listToEdit,
+            ...state.myPatients.slice(account + 1),
+          ]
+        };
       }
-      // listToEdit = filter(state.dentistDashboard.myPatients, item =>
-      //   item.id === action.userId
-      // )[0];
-      //
-      // patientIndex = findIndex(state.dentistDashboard.myPatients, {
-      //   id: action.userId,
-      // });
-      //
-      // listToEdit = {
-      //   ...listToEdit,
-      //   familyMembers: [
-      //     ...listToEdit.familyMembers,
-      //     action.payload,
-      //   ]
-      // };
-      //
-      // return {
-      //   ...state,
-      //   dentistDashboard: {
-      //     ...state.dentistDashboard,
-      //     myPatients: [
-      //       ...state.dentistDashboard.myPatients.slice(0, patientIndex),
-      //       listToEdit,
-      //       ...state.dentistDashboard.myPatients.slice(patientIndex + 1),
-      //     ]
-      //   }
-      // };
+
+      return {
+        ...state,
+        memberFormOpened: null,
+        myMembers: [
+          ...state.myMembers,
+          action.payload,
+        ],
+      };
 
     case MY_DENTIST_SUCCESS:
       return {
@@ -308,17 +280,32 @@ function dashboardReducer (state = initialState, action) {
       };
 
     case SET_EDITING_MEMBER:
+      // If no set memberId set null editing member
+      if (!action.memberId || action.memberId < 0) {
+        return {
+          ...state,
+          editingMember: null
+        };
+      }
+
       // if myPatients exists we are in dentist dashboard
       if (state.myPatients) {
-        break;
-      } else {
-        member = findIndex(state.myMembers, { id: action.memberId });
+        account = findIndex(state.myPatients, { id: action.userId });
+        listToEdit = state.myPatients[account];
+        member = findIndex(listToEdit.members, { id: action.memberId });
 
         return {
           ...state,
-          editingMember: state.myMembers[member],
+          editingMember: listToEdit.members[member],
         };
       }
+
+      member = findIndex(state.myMembers, { id: action.memberId });
+
+      return {
+        ...state,
+        editingMember: state.myMembers[member],
+      };
 
     default:
       return state;

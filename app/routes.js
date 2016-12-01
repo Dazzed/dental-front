@@ -224,14 +224,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/dentist/family-members',
-      name: 'editDentistMember',
-      getComponent (location, cb) {
-        System.import('containers/EditDentistMember')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
       path: '/dentist/contact-support',
       name: 'contactSupportPage',
       getComponent (nextState, cb) {

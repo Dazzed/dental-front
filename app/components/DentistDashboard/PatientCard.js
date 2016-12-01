@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { reset as resetForm } from 'redux-form';
 import CSSModules from 'react-css-modules';
 import ReactCSSTransitionGroup from 'react/lib/ReactCSSTransitionGroup';
 import Row from 'react-bootstrap/lib/Row';
@@ -12,18 +14,47 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaStar from 'react-icons/lib/fa/star';
 import Rating from 'react-rating';
 import moment from 'moment';
+import MemberForm from 'components/MemberForm';
 
-import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import WriteMessageModal from 'components/WriteMessageModal';
 
+import { memberFormOpenedSelector } from 'containers/Dashboard/selectors';
+import {
+  openMemberForm,
+  closeMemberForm,
+  setEditingMember,
+  submitMemberForm,
+  deleteMember,
+} from 'containers/Dashboard/actions';
+
+import FamilyMember from './FamilyMember';
 import styles from './PatientCard.css';
 
 
+const mapDispatchToProps = (dispatch) => ({
+  onSubmitForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+  deleteMember: (id, values) => dispatch(deleteMember(id, values)),
+  resetForm: () => dispatch(resetForm('familyMember')),
+  openMemberForm: ownerId => dispatch(openMemberForm(ownerId)),
+  closeMemberForm: () => dispatch(closeMemberForm()),
+  setEditingMember: (memberId, userId) =>
+    dispatch(setEditingMember(memberId, userId)),
+});
+
+
+const mapStateToProps = state => ({
+  openedForm: memberFormOpenedSelector(state),
+});
+
+
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
 export default class PatientCard extends Component {
 
   static propTypes = {
     id: PropTypes.number,
+    owner: PropTypes.number,
+    openedForm: PropTypes.number,
     payingMember: PropTypes.bool,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
@@ -33,10 +64,15 @@ export default class PatientCard extends Component {
     members: PropTypes.array,
     createdAt: PropTypes.string,
     subscription: PropTypes.object,
-    phoneNumbers: PropTypes.array,
+    phone: PropTypes.string,
     latestReview: PropTypes.object,
     newMsgCount: PropTypes.number,
     markMsgRead: PropTypes.func,
+    setEditingMember: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
+    resetForm: PropTypes.func.isRequired,
+    openMemberForm: PropTypes.func.isRequired,
+    onSubmitForm: PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -73,21 +109,39 @@ export default class PatientCard extends Component {
     });
   }
 
+  handleSubmit = (values) => {
+    this.props.onSubmitForm(values, this.props.id);
+  }
+
+  addNewMember = () => {
+    this.openForm();
+    this.props.setEditingMember();
+  }
+
+  editMember = (memberId) => {
+    this.openForm();
+    this.props.setEditingMember(memberId, this.props.id);
+  }
+
+  deleteMember = (member) => {
+    this.props.deleteMember(this.props.id, member);
+  }
+
+  openForm () {
+    this.props.resetForm();
+    this.props.openMemberForm(this.props.id);
+  }
+
   render () {
     const {
       firstName, lastName, createdAt, contactMethod, avatar, email, id,
-      members, phoneNumbers, latestReview, newMsgCount,
+      members, phone, latestReview, newMsgCount, openedForm,
     } = this.props;
+
+    const showForm = openedForm === id;
 
     const { showFamilyMembers } = this.state;
     const memberSince = moment(createdAt).format('MMM D, YYYY');
-
-    let phone = '';
-
-    // NOTE: By now only one number so display that.
-    if (phoneNumbers && phoneNumbers[0]) {
-      phone = phoneNumbers[0].number;
-    }
 
     const carret = showFamilyMembers
       ? <FaCaretDown size={16} styleName="toggler-icon" />
@@ -149,68 +203,43 @@ export default class PatientCard extends Component {
             { showFamilyMembers && members.length &&
               <div styleName="pane members-pane">
                 <Row>
-                  <Col md={9} styleName="members-list">
+                  <Col md={12} styleName="members-list">
                     <Row styleName="header">
-                      <Col md={4} sm={4}>Family Members</Col>
+                      <Col md={3} sm={3}>Family Members</Col>
                       <Col md={3} sm={3}>Family Relation</Col>
                       <Col md={1} sm={1}>Age</Col>
                       <Col md={2} sm={2}>Type</Col>
-                      <Col md={2} sm={2}>Fee</Col>
+                      <Col md={1} sm={1}>Fee</Col>
+                      <Col md={2} sm={2}>Actions</Col>
                     </Row>
 
-                    { members &&
-                      members.map((member, index) => (
-                        <Row key={index}>
-                          <Col md={4} sm={4} styleName="avatar-name">
-                            <Image src={member.avatar} />
-                            <span>
-                              {`${member.firstName} ${member.lastName}`}
-                            </span>
-                          </Col>
-                          <Col md={3} sm={3}>
-                          {MEMBER_RELATIONSHIP_TYPES[member.familyRelationship]}
-                          </Col>
-                          <Col md={1} sm={1}>
-                            {member.birthDate &&
-                              moment().diff(member.birthDate, 'year', false)
-                            }
-                          </Col>
-                          <Col md={2} sm={2}>Custom</Col>
-                          <Col md={2} sm={2}>
-                            ${member.subscription.monthly}
-                          </Col>
-                        </Row>
-                      ))
-                    }
+                    {members &&
+                      members.map((member, index) =>
+                        <FamilyMember
+                          owner={id}
+                          details={member}
+                          key={index}
+                          onEdit={this.editMember}
+                          onDelete={this.deleteMember}
+                        />
+                      )}
                   </Col>
-                  <Col md={3}>
-                    <Row>
-                      <span styleName="desc">
-                        Membership:{' '}
-                      </span>
-                      <span styleName="membership-status">
-                        {status}
-                      </span>
-                    </Row>
-                    <Row>
-                      <span styleName="desc">
-                        Paid Date:{' '}
-                      </span>
-                      <span styleName="value">
-                        {' '}
-                      </span>
-                    </Row>
-                    <Row>
-                      <span styleName="desc">
-                        Total Monthly Payment:{' '}
-                      </span>
-                    </Row>
-                    <Row>
-                      <span styleName="update-payment">
-                        Update Payment Info
-                      </span>
-                    </Row>
+                </Row>
+                <Row>
+                  <Col md={12}>
+                    <button
+                      className="btn btn-darkest-green btn-round pull-right"
+                      onClick={this.addNewMember}
+                    >
+                      Add new member
+                    </button>
                   </Col>
+                </Row>
+                <Row style={{ marginTop: '15px' }}>
+                  {showForm &&
+                    <MemberForm
+                      onSubmit={this.handleSubmit}
+                    />}
                 </Row>
               </div>
             }

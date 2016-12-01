@@ -21,7 +21,6 @@ const navItems = {
     { text: 'Dentist dashboard', link: '/dashboard' },
     // { text: 'Edit your info', link: '/accounts/profile' },
     { text: 'Edit office info', link: '/dentist/office/edit' },
-    { text: 'Manage members', link: '/dentist/family-members' },
     // { text: 'Edit membership', link: '/custom-membership' },
     { text: 'Contact support', link: '/dentist/contact-support' },
     // { text: 'Reports', link: '/temp_link' },
