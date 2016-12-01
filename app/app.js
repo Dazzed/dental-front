@@ -50,13 +50,12 @@ const rootRoute = {
       System.import('containers/Dashboard/sagas'),
       System.import('containers/Authorize.net/sagas'),
     ])
-      .then(([ sagas, dashboard, payment, familyMembers ]) => {
+      .then(([ sagas, dashboard, payment ]) => {
         cb(null, App);
         const { injectSagas } = getHooks(store);
         injectSagas(sagas.default);
         injectSagas(dashboard.default);
         injectSagas(payment.default);
-        injectSagas(familyMembers.default);
       });
   }
 };

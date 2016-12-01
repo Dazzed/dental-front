@@ -70,17 +70,6 @@ const selectNewMsgCount = createSelector(
   (substate) => substate.newMsgCountBySender
 );
 
-export function familyMembersToEditSelectorFactory (userId) {
-  if (!selectors[userId]) {
-    selectors[userId] = createSelector(
-      domainSelector,
-      (substate) => substate.familyMemberForms[userId]
-    );
-  }
-
-  return selectors[userId];
-}
-
 export default selectDashboard;
 
 export {
@@ -127,7 +116,7 @@ function fnGroupPatients (substate) {
     return filter(
       substate.myPatients,
       (patient) => {
-        const status = get(patient, 'subscriptions[0].status');
+        const status = get(patient, 'subscription.status');
         return (status) && status === 'active';
       }
     );
@@ -137,7 +126,7 @@ function fnGroupPatients (substate) {
     return filter(
       substate.myPatients,
       (patient) => {
-        const status = get(patient, 'subscriptions[0].status');
+        const status = get(patient, 'subscription.status');
         return (status) && status === 'inactive';
       }
     );
