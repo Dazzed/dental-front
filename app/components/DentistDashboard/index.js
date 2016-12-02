@@ -2,15 +2,20 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import { fetchMyPatients, requestReport } from 'containers/Dashboard/actions';
 import { selectUserName } from 'containers/App/selectors';
-import { groupedPatientsSelector } from 'containers/Dashboard/selectors';
+import {
+  groupedAndFilteredPatientsSelector
+} from 'containers/Dashboard/selectors';
 
 import InvitePatientModal from 'components/InvitePatientModal';
 import Intro from './Intro';
 import RevenueStats from './RevenueStats';
 import PatientGroup from './PatientGroup';
+import PatientAutosuggest from './PatientAutosuggest';
 import styles from './index.css';
 
 const groups = [
@@ -73,26 +78,31 @@ export default class DentistDashboard extends Component {
       <div className="dentist-dashboard-container">
         <Intro name={userName} changeRoute={this.props.changeRoute} />
 
-        <div styleName="h3-with-button" className="clearfix">
-          <h3>List Total Active Members</h3>
-          <button
-            className="btn btn-padding btn-darkest-green btn-round"
-            onClick={this.openInviteModal}
-          >
-            Invite client
-          </button>
-          <button
-            className="btn btn-green btn-round"
-            onClick={this.requestReport}
-          >
-            Report
-          </button>
-        </div>
+        <h3 styleName="list-header">List Total Active Members</h3>
 
-        <div
-          styleName="patients-overview"
-          style={{ fontWeight: 'bold', marginBottom: '10px' }}
-        >
+        <Row styleName="filter-bar">
+          <Col md={6}>
+            <PatientAutosuggest />
+          </Col>
+          <Col md={6} className="text-right">
+            <button
+              styleName="action-button"
+              className="btn btn-green btn-round"
+              onClick={this.requestReport}
+            >
+              Report
+            </button>
+            <button
+              styleName="action-button"
+              className="btn btn-padding btn-darkest-green btn-round"
+              onClick={this.openInviteModal}
+            >
+              Invite client
+            </button>
+          </Col>
+        </Row>
+
+        <div styleName="patients-overview">
           <div styleName="total-info">
             Active{' '}
             <span styleName="active">
@@ -135,7 +145,7 @@ export default class DentistDashboard extends Component {
 function mapStateToProps (state) {
   return {
     userName: selectUserName(state),
-    patients: groupedPatientsSelector(state)
+    patients: groupedAndFilteredPatientsSelector(state)
   };
 }
 

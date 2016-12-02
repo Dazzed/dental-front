@@ -1,11 +1,10 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
+import map from 'lodash/map';
 import filter from 'lodash/filter';
 import some from 'lodash/some';
 import moment from 'moment';
 
-
-const selectors = {};
 
 /**
  * Direct selector to the dashboard state domain
@@ -54,14 +53,37 @@ const allPatientsSelector = createSelector(
 );
 
 
-const groupedPatientsSelector = createSelector(
-  domainSelector,
-  fnGroupPatients
-);
-
 const patientSearchTermSelector = createSelector(
   domainSelector,
   (substate) => substate.patientSearchTerm
+);
+
+const groupedAndFilteredPatientsSelector = createSelector(
+  domainSelector,
+  patientSearchTermSelector,
+  fnGroupPatients
+);
+
+const autosuggestPatientsSelector = createSelector(
+  domainSelector,
+  (substate) => (
+    map(
+      substate.myPatients,
+      (patient) => {
+        const patientName = `${patient.firstName} ${patient.lastName}`;
+        const himself = [ { fullName: patientName } ];
+        return {
+          fullName: patientName,
+          members:
+            himself.concat(
+              map(patient.members, (member) => ({
+                fullName: `${member.firstName} ${member.lastName}`
+              }))
+            )
+        };
+      }
+    )
+  )
 );
 
 
@@ -88,11 +110,12 @@ export {
   myDentistSelector,
   myMembersSelector,
   allPatientsSelector,
-  groupedPatientsSelector,
+  groupedAndFilteredPatientsSelector,
   patientSearchTermSelector,
+  autosuggestPatientsSelector,
 };
 
-function fnGroupPatients (substate) {
+function fnGroupPatients (substate, term) {
   return {
     newMembers: getNewMembers(),
     newReviews: getNewReviews(),
@@ -105,7 +128,7 @@ function fnGroupPatients (substate) {
     return filter(
       substate.myPatients,
       (patient) => (moment().diff(patient.createdAt, 'days') <= 30)
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getNewReviews () {
@@ -116,7 +139,7 @@ function fnGroupPatients (substate) {
         return (latestReview) &&
           (moment().diff(latestReview, 'days') <= 30);
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getActiveMembers () {
@@ -126,7 +149,7 @@ function fnGroupPatients (substate) {
         const status = get(patient, 'subscription.status');
         return (status) && status === 'active';
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getInactiveMembers () {
@@ -136,7 +159,7 @@ function fnGroupPatients (substate) {
         const status = get(patient, 'subscription.status');
         return (status) && status === 'inactive';
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getAllReviews () {
@@ -146,18 +169,20 @@ function fnGroupPatients (substate) {
         const latestReview = get(patient, 'latestReview.createdAt');
         return !!latestReview;
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 }
 
 function isPatientMatchingTerm (patient, term) {
+  if (term === '') {
+    return true;
+  }
+
   const hasMatchingFamilyMember = some(
-        patient.familyMembers || [],
-        (member) => member.firstName.toLowerCase().indexOf(term) > -1
-                  || member.lastName.toLowerCase().indexOf(term) > -1
+        patient.members || [],
+        (member) => `${member.firstName} ${member.lastName}` === term
       );
 
   return hasMatchingFamilyMember
-      || patient.firstName.toLowerCase().indexOf(term) > -1
-      || patient.firstName.toLowerCase().indexOf(term) > -1;
+      || `${patient.firstName} ${patient.lastName}` === term;
 }

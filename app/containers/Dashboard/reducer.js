@@ -307,7 +307,7 @@ function dashboardReducer (state = initialState, action) {
     case UPDATE_PATIENT_SEARCH:
       return {
         ...state,
-        patientSearchTerm: action.term.toLowerCase(),
+        patientSearchTerm: action.term,
       };
 
     default:
