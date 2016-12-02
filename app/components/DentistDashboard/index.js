@@ -2,27 +2,30 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { push } from 'react-router-redux';
-import Well from 'react-bootstrap/lib/Well';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import { fetchMyPatients, requestReport } from 'containers/Dashboard/actions';
 import { selectUserName } from 'containers/App/selectors';
 import {
-  selectNewMembers,
-  selectNewReviews,
-  selectAllMembers,
+  groupedAndFilteredPatientsSelector
 } from 'containers/Dashboard/selectors';
 
 import InvitePatientModal from 'components/InvitePatientModal';
 import Intro from './Intro';
 import RevenueStats from './RevenueStats';
 import PatientGroup from './PatientGroup';
+import PatientAutosuggest from './PatientAutosuggest';
 import styles from './index.css';
 
 const groups = [
   { key: 'newMembers', title: 'New Members' },
-  { key: 'newReviews', title: 'New Review(s)' },
-  { key: 'allMembers', title: 'Members' },
+  { key: 'newReviews', title: 'New Reviews' },
+  { key: 'activeMembers', title: 'Active Members' },
+  { key: 'inactiveMembers', title: 'Inactive Members' },
+  { key: 'allReviews', title: 'Reviews' },
 ];
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
@@ -67,70 +70,66 @@ export default class DentistDashboard extends Component {
   render () {
     const { userName, patients } = this.props;
 
-    let inactive = 0;
-    let active = 0;
-    let pastDue = 0;
-    const allMembers = patients.allMembers;
-
-    if (allMembers) {
-      inactive = allMembers.filter(item =>
-        item.subscriptions[0].status === 'inactive'
-      ).length;
-
-      active = allMembers.filter(item =>
-        item.subscriptions[0].status === 'active'
-      ).length;
-
-      pastDue = allMembers.filter(item =>
-        item.subscriptions[0].status === 'past_due'
-      ).length;
-    }
+    const activeCount = patients.activeMembers.length;
+    const inactiveCount = patients.inactiveMembers.length;
+    const pastDueCount = patients.dueMembers && patients.dueMembers.length;
 
     return (
       <div className="dentist-dashboard-container">
         <Intro name={userName} changeRoute={this.props.changeRoute} />
 
-        <div styleName="h3-with-button" className="clearfix">
-          <h3>List Total Active Members</h3>
-          <button
-            className="btn btn-padding btn-darkest-green btn-round"
-            onClick={this.openInviteModal}
-          >
-            Invite client
-          </button>
-          <button
-            className="btn btn-green btn-round"
-            onClick={this.requestReport}
-          >
-            Report
-          </button>
-        </div>
+        <h3 styleName="list-header">List Total Active Members</h3>
 
-        <Well>
+        <Row styleName="filter-bar">
+          <Col md={6}>
+            <PatientAutosuggest />
+          </Col>
+          <Col md={6} className="text-right">
+            <button
+              styleName="action-button"
+              className="btn btn-green btn-round"
+              onClick={this.requestReport}
+            >
+              Report
+            </button>
+            <button
+              styleName="action-button"
+              className="btn btn-padding btn-darkest-green btn-round"
+              onClick={this.openInviteModal}
+            >
+              Invite client
+            </button>
+          </Col>
+        </Row>
+
+        <div styleName="patients-overview">
           <div styleName="total-info">
             Active{' '}
             <span styleName="active">
-              {`(${active})`}
+              {`(${activeCount || 0})`}
             </span>
-            {' - '}Inactive{' '}
+            {','}&nbsp;&nbsp;Inactive{' '}
             <span styleName="inactive">
-              {`(${inactive})`}
+              {`(${inactiveCount || 0})`}
             </span>
-            {' - '}Past Due{' '}
+            {','}&nbsp;&nbsp;Past Due{' '}
             <span>
-              {`(${pastDue})`}
+              {`(${pastDueCount || 0})`}
             </span>
           </div>
+          <div styleName="sorter">
+            Sort By
+          </div>
+        </div>
 
-          {groups.map((group, index) =>
-            <PatientGroup
-              key={index}
-              title={group.title}
-              groupKey={group.key}
-              patients={patients[group.key]}
-            />
-          )}
-        </Well>
+        {groups.map((group, index) =>
+          <PatientGroup
+            key={index}
+            title={group.title}
+            groupKey={group.key}
+            patients={patients[group.key]}
+          />
+        )}
 
         <RevenueStats total={67800} />
 
@@ -146,11 +145,7 @@ export default class DentistDashboard extends Component {
 function mapStateToProps (state) {
   return {
     userName: selectUserName(state),
-    patients: {
-      newMembers: selectNewMembers(state),
-      newReviews: selectNewReviews(state),
-      allMembers: selectAllMembers(state),
-    },
+    patients: groupedAndFilteredPatientsSelector(state)
   };
 }
 

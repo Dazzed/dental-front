@@ -1,61 +1,89 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import CSSModules from 'react-css-modules';
+import moment from 'moment';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
-import moment from 'moment';
+import FaEdit from 'react-icons/lib/fa/edit';
+import FaClose from 'react-icons/lib/fa/close';
+import Confirm from 'react-confirm-bootstrap';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
-
 import styles from './FamilyMember.css';
-/* eslint-disable */
-function FamilyMember ({ details }) {
-  const {
-    firstName,
-    lastName,
-    familyRelationship,
-    createdAt,
-    accountHolder,
-    avatar,
-    subscription,
-  } = details;
 
-  const memberSince = moment(createdAt).format('MMM D, YYYY');
-  const avatarURL = avatar || 'http://www.teenink.com/images/default_face.gif';
 
-  return (
-    <div styleName="family-member">
-      <Row styleName="details">
-        <Col md={1} styleName="member-avatar">
-          <Image src={avatarURL} />
-        </Col>
-        <Col md={3} styleName="col-with-name">
-          <p styleName="member-name">{`${firstName} ${lastName}`}</p>
-          {accountHolder &&
-            <p styleName="account-owner">(Account Owner)</p>
-          }
-        </Col>
-        <Col md={2}>{MEMBER_RELATIONSHIP_TYPES[familyRelationship]}</Col>
-        <Col md={2}>${subscription.monthly}</Col>
-        <Col md={2} className="text-right">{memberSince}</Col>
-      </Row>
+@CSSModules(styles, { allowMultiple: true })
+export default class FamilyMember extends React.Component {
 
-      <Row>
-        <Col md={2} className="pull-right text-right">
-          <button
-            className="btn btn-green btn-round" styleName="btn-cancel"
-            style={accountHolder && { visibility: 'hidden' }}
-          >
-            Cancel
-          </button>
-        </Col>
-      </Row>
-    </div>
-  );
+  static propTypes = {
+    details: React.PropTypes.object.isRequired,
+    onEdit: React.PropTypes.func.isRequired,
+    onDelete: React.PropTypes.func.isRequired,
+  }
+
+  handleDelete = () => {
+    this.props.onDelete(this.props.details);
+  }
+
+  handleEdit = () => {
+    this.props.onEdit(this.props.details.id);
+  }
+
+  render () {
+    const {
+      details: {
+        firstName,
+        lastName,
+        familyRelationship,
+        createdAt,
+        accountHolder,
+        avatar,
+        subscription,
+      },
+    } = this.props;
+
+    const fullName = `${firstName} ${lastName}`;
+
+    const memberSince = moment(createdAt).format('MMM D, YYYY');
+    const avatarURL =
+      avatar || 'http://www.teenink.com/images/default_face.gif';
+
+    return (
+      <div styleName="family-member">
+        <Row styleName="details">
+          <Col md={1} styleName="member-avatar">
+            <Image src={avatarURL} />
+          </Col>
+          <Col md={3} styleName="col-with-name">
+            <p styleName="member-name">{fullName}</p>
+            {accountHolder &&
+              <p styleName="account-owner">(Account Owner)</p>}
+          </Col>
+          <Col md={2}>
+            {accountHolder
+              ? 'Self'
+              : MEMBER_RELATIONSHIP_TYPES[familyRelationship]}
+          </Col>
+          <Col md={1}>${subscription.monthly}</Col>
+          <Col md={1} className="text-right">{subscription.status}</Col>
+          <Col md={2} className="text-center">{memberSince}</Col>
+          {!accountHolder &&
+            <Col md={2} styleName="action-icon" className="text-right">
+              <FaEdit
+                size={16}
+                onClick={this.handleEdit}
+              />
+              <Confirm
+                onConfirm={this.handleDelete}
+                body={`Are you sure you want to delete '${fullName}'?`}
+                confirmText="Confirm Delete"
+                title="Deleting Member"
+              >
+                <a><FaClose size={16} /></a>
+              </Confirm>
+            </Col>}
+        </Row>
+      </div>
+    );
+  }
 }
-
-FamilyMember.propTypes = {
-  details: PropTypes.object,
-};
-
-export default CSSModules(styles, { allowMultiple: true })(FamilyMember);

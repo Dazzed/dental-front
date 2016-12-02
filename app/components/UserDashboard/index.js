@@ -1,24 +1,15 @@
-/**
-*
-* UserDashboard
-*
-*/
-
 import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import changeFactory from 'change-js';
-import moment from 'moment';
 
-import formatUser from 'utils/formatUser';
+import PaymentForm from 'containers/Authorize.net';
 
 import { selectCurrentUser } from 'containers/App/selectors';
-import { fetchMyDentist, fetchMyFamily } from 'containers/Dashboard/actions';
-import PaymentForm from 'containers/Authorize.net';
+import { fetchMyDentist, fetchMyMembers } from 'containers/Dashboard/actions';
 import {
-  selectMyDentist,
-  selectMyFamilyMembers,
+  myDentistSelector,
+  myMembersSelector,
 } from 'containers/Dashboard/selectors';
 
 import Intro from './Intro';
@@ -28,37 +19,47 @@ import FamilyMembers from './FamilyMembers';
 
 import styles from './index.css';
 
-const Change = changeFactory();
+
+const mapStateToProps = (state) => ({
+  loggedInUser: selectCurrentUser(state),
+  myDentist: myDentistSelector(state),
+  myMembers: myMembersSelector(state),
+});
+
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchMyDentist: () => dispatch(fetchMyDentist()),
+    fetchMyMembers: () => dispatch(fetchMyMembers()),
+    changeRoute: (url) => dispatch(push(url)),
+  };
+}
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
 export default class UserDashboard extends Component {
 
   static propTypes = {
+    myDentist: PropTypes.object,
+    newMsgCountBySender: PropTypes.object,
+    myMembers: PropTypes.array,
+    fetchMyDentist: PropTypes.func,
+    fetchMyMembers: PropTypes.func,
+    markMsgRead: PropTypes.func,
+    changeRoute: PropTypes.func,
     loggedInUser: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.bool,
     ]),
-    myDentist: PropTypes.object,
-    newMsgCountBySender: PropTypes.object,
-    myFamilyMembers: PropTypes.array,
-    fetchMyDentist: PropTypes.func,
-    fetchMyFamily: PropTypes.func,
-    markMsgRead: PropTypes.func,
-    changeRoute: PropTypes.func,
   };
-
-  constructor (props) {
-    super(props);
-    this.goToMembersPage = this.goToMembersPage.bind(this);
-  }
 
   componentWillMount () {
     this.props.fetchMyDentist();
-    this.props.fetchMyFamily();
+    this.props.fetchMyMembers();
   }
 
-  goToMembersPage () {
+  goToMembersPage = () => {
     this.props.changeRoute('my-family-members');
   }
 
@@ -72,25 +73,10 @@ export default class UserDashboard extends Component {
 
   render () {
     const {
-      loggedInUser, myDentist, myFamilyMembers, newMsgCountBySender,
+      loggedInUser, myDentist, myMembers, newMsgCountBySender,
     } = this.props;
+
     const fullName = `${loggedInUser.firstName} ${loggedInUser.lastName}`;
-    const status = myDentist ? myDentist.subscriptions[0].status : '';
-    // TODO: better here to use selector!
-    let total = myDentist ? myDentist.subscriptions[0].monthly : '0';
-    let startedAt;
-
-    if (myDentist) {
-      total = new Change({ dollars: loggedInUser.payingMember ? total : '0' });
-      myFamilyMembers.forEach(member => {
-        total = total.add(new Change({ dollars: member.subscription.monthly }));
-      });
-      total = total.dollars().toFixed(2);
-    }
-
-    if (myDentist && myDentist.subscriptions && myDentist.subscriptions[0]) {
-      startedAt = myDentist.subscriptions[0].startAt;
-    }
 
     return (
       <div className="user-dashboard-container">
@@ -121,54 +107,16 @@ export default class UserDashboard extends Component {
         </div>
 
         <FamilyMembers
-          accountStatus={status}
-          monthlyDue={total}
-          dueDate="Dec 7, 2017"
-          members={myFamilyMembers}
-          owner={formatUser(loggedInUser, myDentist)}
+          members={myMembers}
+          owner={loggedInUser.id}
         />
+
         <div className="clearfix">
-          <button
-            className="btn btn-darkest-green btn-round"
-            onClick={this.goToMembersPage}
-            style={{ float: 'left', marginRight: '15px' }}
-          >
-            Add | edit family members
-          </button>
-
-          <PaymentForm total={total} user={loggedInUser} status={status} />
+          <PaymentForm user={loggedInUser} />
         </div>
-
-        {myDentist && myDentist.subscriptions && myDentist.subscriptions[0] &&
-          <div className="clearfix">
-            <p>
-              <br />
-              This is a recurring payment and the membership is good for 30
-              days starting on <strong> {
-                  moment(startedAt).format('MMMM Do YYYY')}
-              </strong>
-            </p>
-          </div>}
-
         <br />
-
       </div>
     );
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    loggedInUser: selectCurrentUser(state),
-    myDentist: selectMyDentist(state),
-    myFamilyMembers: selectMyFamilyMembers(state),
-  };
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    fetchMyDentist: () => dispatch(fetchMyDentist()),
-    fetchMyFamily: () => dispatch(fetchMyFamily()),
-    changeRoute: (url) => dispatch(push(url)),
-  };
-}

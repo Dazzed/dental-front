@@ -4,19 +4,39 @@
   display: inherit;
 }
 
-.h3-with-button {
-  h3 {
-    float: left;
-  }
-
-  button {
-    float: right;
-    margin: 1em  1em 0.6em;
-  }
+.list-header {
+  margin: 30px 0 15px;
 }
 
-.total-info {
+.filter-bar {
   margin-bottom: 15px;
+}
+
+.action-button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.patients-overview {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: '10px';
+
+  .total-info,
+  .sorter {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #F5F5F5;
+    border: 1px solid white;
+  }
+
+  .total-info {
+    width: calc(100% - 150px);
+  }
+
+  .sorter {
+    width: 150px;
+  }
 
   .active {
     color: $light-green;

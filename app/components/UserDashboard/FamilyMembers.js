@@ -1,58 +1,124 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import CSSModules from 'react-css-modules';
+import { connect } from 'react-redux';
+import { reset as resetForm } from 'redux-form';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 
+import MemberForm from 'components/MemberForm';
+
+import { memberFormOpenedSelector } from 'containers/Dashboard/selectors';
+import {
+  openMemberForm,
+  closeMemberForm,
+  setEditingMember,
+  submitMemberForm,
+  deleteMember,
+} from 'containers/Dashboard/actions';
+
 import FamilyMember from './FamilyMember';
 import styles from './FamilyMembers.css';
 
-function FamilyMembers (
-  { accountStatus, monthlyDue, dueDate, members, owner }
-) {
-  return (
-    <Well styleName="family-members-container">
-      <Row styleName="top-header">
-        <Col md={4}>
-          <span styleName="label">Account:</span>
-          <span styleName={`value ${accountStatus}`}>{accountStatus}</span>
-        </Col>
-        <Col md={4}>
-          <span styleName="label">Your total monthly due:</span>
-          <span styleName="value">${monthlyDue}</span>
-        </Col>
-        <Col md={4}>
-          <span styleName="label">Payment due date:</span>
-          <span styleName="value">{dueDate}</span>
-        </Col>
-      </Row>
-      <Row styleName="list-header">
-        <Col md={3}>Name</Col>
-        <Col md={3}>Family Relationshiop</Col>
-        <Col md={1}>Fee</Col>
-        <Col md={3} className="text-right">Member Since</Col>
-      </Row>
-      <Row styleName="list-content">
-        {owner.payingMember &&
-          <FamilyMember details={owner} />
-        }
 
-        {members &&
-          members.map((member, index) => (
-            <FamilyMember details={member} key={index} />
-          ))
-        }
-      </Row>
-    </Well>
-  );
+const mapDispatchToProps = (dispatch) => ({
+  onSubmitForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+  deleteMember: (id, values) => dispatch(deleteMember(id, values)),
+  resetForm: () => dispatch(resetForm('familyMember')),
+  openMemberForm: ownerId => dispatch(openMemberForm(ownerId)),
+  closeMemberForm: () => dispatch(closeMemberForm()),
+  setEditingMember: memberId => dispatch(setEditingMember(memberId)),
+});
+
+
+const mapStateToProps = state => ({
+  openedForm: memberFormOpenedSelector(state),
+});
+
+
+@connect(mapStateToProps, mapDispatchToProps)
+@CSSModules(styles, { allowMultiple: true })
+export default class FamilyMembers extends Component {
+
+  static propTypes = {
+    owner: PropTypes.number.isRequired,
+    openedForm: PropTypes.number,
+    members: PropTypes.array,
+    resetForm: PropTypes.func.isRequired,
+    openMemberForm: PropTypes.func.isRequired,
+    onSubmitForm: PropTypes.func.isRequired,
+    setEditingMember: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
+  }
+
+  handleSubmit = (values) => {
+    this.props.onSubmitForm(values, this.props.owner);
+  }
+
+  addNewMember = () => {
+    this.openForm();
+    this.props.setEditingMember();
+  }
+
+  editMember = (id) => {
+    this.openForm();
+    this.props.setEditingMember(id);
+  }
+
+  deleteMember = (member) => {
+    this.props.deleteMember(this.props.owner, member);
+  }
+
+  openForm () {
+    this.props.resetForm();
+    this.props.openMemberForm(this.props.owner);
+  }
+
+  render () {
+    const { members, openedForm, owner } = this.props;
+    const showForm = openedForm === owner;
+
+    return (
+      <Well styleName="family-members-container">
+        <Row styleName="list-header">
+          <Col md={3}>Name</Col>
+          <Col md={3}>Family Relationshiop</Col>
+          <Col md={1}>Fee</Col>
+          <Col md={1}>Status</Col>
+          <Col md={2} className="text-center">Member Since</Col>
+          <Col md={2} className="text-center">Actions</Col>
+        </Row>
+
+        <Row styleName="list-content">
+          {members && members.map((member, index) => (
+            <FamilyMember
+              details={member}
+              key={index}
+              onEdit={this.editMember}
+              onDelete={this.deleteMember}
+            />
+          ))}
+        </Row>
+
+        <Row>
+          <Col md={12}>
+            <button
+              className="btn btn-darkest-green btn-round pull-right"
+              onClick={this.addNewMember}
+            >
+              Add new member
+            </button>
+          </Col>
+        </Row>
+
+        <Row style={{ marginTop: '15px' }}>
+          {showForm &&
+            <MemberForm
+              onSubmit={this.handleSubmit}
+            />}
+        </Row>
+      </Well>
+    );
+  }
 }
 
-FamilyMembers.propTypes = {
-  accountStatus: PropTypes.string,
-  monthlyDue: PropTypes.string,
-  dueDate: PropTypes.string,
-  members: PropTypes.array,
-  owner: PropTypes.object,
-};
-
-export default CSSModules(styles, { allowMultiple: true })(FamilyMembers);

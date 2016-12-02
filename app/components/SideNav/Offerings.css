@@ -1,0 +1,6 @@
+@import '../../assets/styles/variables';
+
+.savings-dollar {
+  color: $red;
+  text-decoration: underline;
+}

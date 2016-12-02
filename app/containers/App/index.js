@@ -21,6 +21,7 @@ import SideNav from 'components/SideNav';
 import PageHeader from 'components/PageHeader';
 
 import { selectUserType, selectPageTitle } from 'containers/App/selectors';
+import browserDetector from 'utils/browserDetector';
 
 import * as actions from './actions';
 import styles from './styles.css';
@@ -61,6 +62,11 @@ export default class App extends Component {
   componentWillMount () {
     // Always load user details from the localStorage Token
     this.props.loadUserFromToken();
+
+    if (browserDetector.isOld()) {
+      // eslint-disable-next-line
+      alert(browserDetector.warning);
+    }
   }
 
   render () {

@@ -1,29 +1,53 @@
 @import '../../assets/styles/variables';
 
+.patient-group {
+  background-color: #F5F5F5;
+}
+
+.patient-list {
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
 .group-header {
-  padding-bottom: 5px;
-  font-weight: bold;
-}
+  font-size: 16px;
 
-.title {
-  font-size: 20px;
-  width: auto;
-}
+  &.active,
+  &:hover {
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-.bar {
-  border-top: 1px solid $light-gray;
-  margin-top: 15px;
-}
+  .title-wrapper,
+  .sorter {
+    float: left;
+    padding: 10px 15px;
+    background-color: #F5F5F5;
+    border: 1px solid white;
+  }
 
-.sort-by {
-  font-size: 15px;
-  margin-top: 5px;
-  cursor: pointer;
+  .title-wrapper {
+    width: calc(100% - 150px);
+
+    .title {
+      float: left;
+      margin-right: 10px;
+    }
+
+    .dot-line {
+      overflow: hidden;
+      height: 14px;
+      border-bottom: 1px dotted black;
+    }
+  }
+
+  .sorter {
+    width: 150px;
+  }
 }
 
 .sorter-toggler {
-  margin-left: 5px;
-  vertical-align: middle;
+  margin-left: 10px;
 
   &:hover {
     opacity: 0.5;

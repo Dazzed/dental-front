@@ -35,7 +35,7 @@ function* submitFlow () {
 }
 
 export function* profileDataFetcher () {
-  yield* takeLatest(FETCH_PROFILE_DATA, function* () {
+  yield* takeLatest(FETCH_PROFILE_DATA, function* handler () {
     try {
       const response = yield call(request, '/api/v1/users/me');
       yield put(setUserData(response.data));

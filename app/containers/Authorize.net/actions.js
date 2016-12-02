@@ -6,7 +6,26 @@ import {
   CLEAR_DATA,
   PAYMENT_DONE,
   OPEN_FORM,
+  REQUEST_PENDING_AMOUNT,
+  SET_PENDING_AMOUNT,
 } from './constants';
+
+
+export function requestPendingAmount (userId) {
+  return {
+    type: REQUEST_PENDING_AMOUNT,
+    userId,
+  };
+}
+
+
+export function setPendingAmount (userId, amount) {
+  return {
+    type: SET_PENDING_AMOUNT,
+    userId,
+    amount,
+  };
+}
 
 
 export function requestCardInfo (userId) {

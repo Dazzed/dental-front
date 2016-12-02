@@ -13,6 +13,11 @@ export const isRequestingSelector = createSelector(
   substate => substate.requesting
 );
 
+export const isChargingSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.charging
+);
+
 export const wasRequestedSelector = createSelector(
   paymentFormDomain,
   substate => substate.requested
@@ -37,4 +42,10 @@ export const userOpenedSelector = createSelector(
 export const cardSelector = createSelector(
   paymentFormDomain,
   substate => substate.card
+);
+
+
+export const amountsSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.amounts
 );

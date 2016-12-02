@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
-import { Row, Col } from 'react-bootstrap';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 import { markMsgRead } from 'containers/Dashboard/actions';
-import { selectNewMsgCount, selectSorter }
-  from 'containers/Dashboard/selectors';
+import {
+  selectNewMsgCount, selectSorter,
+} from 'containers/Dashboard/selectors';
+
 import PatientCard from './PatientCard';
 import styles from './PatientGroup.css';
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
@@ -27,14 +29,22 @@ export default class PatientGroup extends Component {
     super(props);
 
     this.state = {
-      showSorter: false,
+      isSortVisible: false,
+      isCardVisible: false,
     };
   }
 
-  toggleSorter = () => {
+  toggleSort = () => {
     this.setState({
       ...this.state,
-      showSorter: !this.state.showSorter,
+      isSortVisible: !this.state.isSortVisible,
+    });
+  }
+
+  toggleCard = () => {
+    this.setState({
+      ...this.state,
+      isCardVisible: !this.state.isCardVisible,
     });
   }
 
@@ -43,35 +53,49 @@ export default class PatientGroup extends Component {
   }
 
   render () {
-    const { title, patients, newMsgCountBySender }
-      = this.props;
+    const { isCardVisible } = this.state;
+    const { title, patients, newMsgCountBySender, groupKey } = this.props;
+    const headerStyle = isCardVisible ? 'group-header active' : 'group-header';
+    let count = patients ? patients.length : 0;
+
+    // kind of hack :)
+    if (groupKey === 'allReviews') {
+      count = 'all';
+    }
 
     return (
-      <div>
-        <Row styleName="group-header">
-          <Col md={3} styleName="title">
-            {title} ({patients ? patients.length : 0})
-          </Col>
-          <Col md={7} styleName="bar" />
-          <Col md={2} styleName="sort-by" onClick={this.toggleSorter}>
+      <div styleName="patient-group">
+        <div styleName={headerStyle}>
+          <div styleName="title-wrapper" onClick={this.toggleCard}>
+            <div styleName="title">
+              {title} ({count})
+              {
+                isCardVisible
+                  ? <FaCaretDown size={16} styleName="sorter-toggler" />
+                  : <FaCaretRight size={16} styleName="sorter-toggler" />
+              }
+            </div>
+            <div styleName="dot-line" />
+          </div>
+          <div styleName="sorter" onClick={this.toggleSort}>
             <span>Sort by</span>
-            {
-              this.state.showSorter
-                ? <FaCaretDown size={16} styleName="sorter-toggler" />
-                : <FaCaretRight size={16} styleName="sorter-toggler" />
-            }
-          </Col>
-        </Row>
+          </div>
+          <div className="clearfix" />
+        </div>
 
-        {patients &&
-          patients.map((patient, index) =>
-            <PatientCard
-              {...patient}
-              newMsgCount={newMsgCountBySender[patient.id]}
-              markMsgRead={this.markMsgRead}
-              key={index}
-            />
-          )
+        {patients && !!patients.length && isCardVisible &&
+          <div styleName="patient-list">
+            {
+              patients.map((patient, index) =>
+                <PatientCard
+                  {...patient}
+                  newMsgCount={newMsgCountBySender[patient.id]}
+                  markMsgRead={this.markMsgRead}
+                  key={index}
+                />
+              )
+            }
+          </div>
         }
       </div>
     );

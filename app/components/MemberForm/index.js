@@ -3,19 +3,27 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Image from 'react-bootstrap/lib/Image';
+// import Image from 'react-bootstrap/lib/Image';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
-import Input from 'components/Input';
 import renderDatePicker from 'components/DatePicker';
-import { selectEditingMember } from 'containers/MyFamilyMembers/selectors';
-import FamilyMemberValidator from './validator';
-
-const createdClasses = {};
+import { editingMemberSelector } from 'containers/Dashboard/selectors';
+import MemberValidator from './validator';
 
 
-class AddFamilyMemberForm extends React.Component {
+const mapStateToProps = (state) => ({
+  initialValues: editingMemberSelector(state),
+});
+
+
+@connect(mapStateToProps)
+@reduxForm({
+  form: 'familyMember',
+  enableReinitialize: true,
+  validate: MemberValidator,
+})
+export default class MemberForm extends React.Component {
 
   static propTypes = {
     handleSubmit: React.PropTypes.func.isRequired,
@@ -24,14 +32,14 @@ class AddFamilyMemberForm extends React.Component {
 
   render () {
     const { handleSubmit, submitting } = this.props;
-    const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
+    // const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
 
     return (
       <form
         onSubmit={handleSubmit}
         className="form-horizontal"
       >
-        <Col md={12}>
+        {/* <Col md={12}>
           <Col sm={2}>
             <Image
               src={defaultAvatar}
@@ -48,7 +56,7 @@ class AddFamilyMemberForm extends React.Component {
               component={Input}
             />
           </Col>
-        </Col>
+        </Col> */}
 
         <Field
           name="firstName"
@@ -124,30 +132,5 @@ class AddFamilyMemberForm extends React.Component {
       </form>
     );
   }
-}
-
-function mapStateToProps (state) {
-  return {
-    initialValues: selectEditingMember(state),
-  };
-}
-
-export default connect(mapStateToProps)(reduxForm({
-  form: 'familyMember',
-  enableReinitialize: true,
-  validate: FamilyMemberValidator,
-})(AddFamilyMemberForm));
-
-
-export function addFamilyMemberFactory (name, _mapStateToProps) {
-  if (!createdClasses[name]) {
-    createdClasses[name] = connect(_mapStateToProps)(reduxForm({
-      form: name,
-      enableReinitialize: true,
-      validate: FamilyMemberValidator,
-    })(AddFamilyMemberForm));
-  }
-
-  return createdClasses[name];
 }
 
