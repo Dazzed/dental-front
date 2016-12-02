@@ -232,7 +232,6 @@ export function setEditedMember (payload, userId) {
 
 
 export function deleteMember (userId, payload) {
-  console.log(userId, payload);
   return {
     type: DELETE_MEMBER_REQUEST,
     userId,

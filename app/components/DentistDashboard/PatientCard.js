@@ -15,6 +15,7 @@ import FaStar from 'react-icons/lib/fa/star';
 import Rating from 'react-rating';
 import moment from 'moment';
 import MemberForm from 'components/MemberForm';
+import PaymentForm from 'containers/Authorize.net';
 
 import WriteMessageModal from 'components/WriteMessageModal';
 
@@ -283,10 +284,11 @@ export default class PatientCard extends Component {
                   }
                 </button>
               </Col>
-              <Col md={4} sm={5} />
+              <div className="clearfix">
+                <PaymentForm user={this.props} />
+              </div>
             </Row>
           </div>
-
         </Col>
 
         <WriteMessageModal

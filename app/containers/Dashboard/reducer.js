@@ -53,61 +53,58 @@ function dashboardReducer (state = initialState, action) {
   let member;
   let account;
   let listToEdit;
-
-  let patientIndex;
-  let subscription;
+  let members;
 
   switch (action.type) {
     case PAYMENT_DONE:
-      if (state.userDashboard && state.userDashboard.myDentist) {
-        subscription = state.userDashboard.myDentist.subscriptions[0];
-        subscription.status = action.payload.status;
+      // if myPatients exists we are in dentist dashboard
+      if (state.myPatients) {
+        account = findIndex(state.myPatients, { id: action.userId });
+        listToEdit = state.myPatients[account];
+        members = listToEdit.members.map(member => {
+          if (action.payload.indexOf(member.id) >= 0) {
+            return {
+              ...member,
+              subscription: {
+                ...member.subscription,
+                status: 'active',
+              },
+            };
+          }
+          return member
+        });
+
+        listToEdit = {
+          ...listToEdit,
+          members,
+        };
 
         return {
           ...state,
-          userDashboard: {
-            ...state.userDashboard,
-            myDentist: {
-              ...state.userDashboard.myDentist,
-              subscriptions: [
-                subscription,
-                ...state.userDashboard.myDentist.subscriptions.slice(1),
-              ]
-            }
-          }
+          myPatients: [
+            ...state.myPatients.slice(0, account),
+            listToEdit,
+            ...state.myPatients.slice(account + 1),
+          ]
         };
       }
 
-      listToEdit = filter(state.dentistDashboard.myPatients, item =>
-        item.id === action.userId
-      )[0];
-
-      patientIndex = findIndex(state.dentistDashboard.myPatients, {
-        id: action.userId,
+      members = state.myMembers.map(member => {
+        if (action.payload.indexOf(member.id) >= 0) {
+          return {
+            ...member,
+            subscription: {
+              ...member.subscription,
+              status: 'active',
+            },
+          };
+        }
+        return member
       });
-
-      subscription = {
-        ...listToEdit.subscriptions[0],
-        status: action.payload.status,
-      };
-
-      listToEdit = {
-        ...listToEdit,
-        subscriptions: [
-          subscription,
-        ]
-      };
 
       return {
         ...state,
-        dentistDashboard: {
-          ...state.dentistDashboard,
-          myPatients: [
-            ...state.dentistDashboard.myPatients.slice(0, patientIndex),
-            listToEdit,
-            ...state.dentistDashboard.myPatients.slice(patientIndex + 1),
-          ]
-        }
+        myMembers: members,
       };
 
     case DELETE_MEMBER_SUCCESS:

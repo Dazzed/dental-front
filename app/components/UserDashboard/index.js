@@ -112,7 +112,7 @@ export default class UserDashboard extends Component {
         />
 
         <div className="clearfix">
-          <PaymentForm user={loggedInUser} status={status} />
+          <PaymentForm user={loggedInUser} />
         </div>
         <br />
       </div>

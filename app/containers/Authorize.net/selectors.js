@@ -43,3 +43,9 @@ export const cardSelector = createSelector(
   paymentFormDomain,
   substate => substate.card
 );
+
+
+export const amountsSelector = createSelector(
+  paymentFormDomain,
+  substate => substate.amounts
+);

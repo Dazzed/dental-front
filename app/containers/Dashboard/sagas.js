@@ -205,7 +205,6 @@ export function* submitMessageFormWatcher () {
       };
       const response = yield call(request, requestURL, params);
 
-      console.log(response);
       yield put(messageSent(response));
       yield put(toastrActions.success('', 'Your message has been sent!'));
       yield put(reset('writeMessage'));
