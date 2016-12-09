@@ -5,10 +5,13 @@ import FaCaretRight from 'react-icons/lib/fa/caret-right';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 import { markMsgRead } from 'containers/Dashboard/actions';
-import { selectNewMsgCount, selectSorter }
-  from 'containers/Dashboard/selectors';
+import {
+  selectNewMsgCount, selectSorter,
+} from 'containers/Dashboard/selectors';
+
 import PatientCard from './PatientCard';
 import styles from './PatientGroup.css';
+
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
@@ -51,8 +54,7 @@ export default class PatientGroup extends Component {
 
   render () {
     const { isCardVisible } = this.state;
-    const { title, patients, newMsgCountBySender, groupKey }
-      = this.props;
+    const { title, patients, newMsgCountBySender, groupKey } = this.props;
     const headerStyle = isCardVisible ? 'group-header active' : 'group-header';
     let count = patients ? patients.length : 0;
 

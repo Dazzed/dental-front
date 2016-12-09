@@ -21,7 +21,7 @@ export default [
 
 
 function* logoutFlow () {
-  yield* takeLatest(LOGOUT, function* () {
+  yield* takeLatest(LOGOUT, function* handler () {
     try {
       yield call(removeItem, 'auth_token');
       yield put(setAuthState(false));

@@ -1,103 +1,121 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
+import map from 'lodash/map';
 import filter from 'lodash/filter';
+import some from 'lodash/some';
 import moment from 'moment';
 
-
-const selectors = {};
 
 /**
  * Direct selector to the dashboard state domain
  */
-const selectDashboardDomain = state => state.dashboard;
+const domainSelector = state => state.dashboard;
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by Dashboard
- */
 
 const selectDashboard = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate
 );
 
-const selectUserDashboard = createSelector(
-  selectDashboardDomain,
-  (substate) => substate.userDashboard
+
+const memberFormOpenedSelector = createSelector(
+  domainSelector,
+  subtate => subtate.memberFormOpened
 );
 
-const selectDentistDashboard = createSelector(
-  selectDashboardDomain,
-  (substate) => substate.dentistDashboard,
+
+const editingMemberSelector = createSelector(
+  domainSelector,
+  subtate => subtate.editingMember
 );
 
-const selectMyDentist = createSelector(
-  selectUserDashboard,
+
+const myDentistSelector = createSelector(
+  domainSelector,
   (substate) => substate.myDentist
 );
 
-const selectMyFamilyMembers = createSelector(
-  selectUserDashboard,
-  (substate) => substate.myFamilyMembers
+
+const myMembersSelector = createSelector(
+  domainSelector,
+  (substate) => substate.myMembers
 );
+
 
 const selectSorter = createSelector(
-  selectDentistDashboard,
-  (substate) => substate.sorter
+  (substate) => substate
 );
 
-const selectAllMembers = createSelector(
-  selectDentistDashboard,
-  selectSorter,
+
+const allPatientsSelector = createSelector(
+  domainSelector,
   (substate) => substate.myPatients
 );
 
-const selectGroupedPatients = createSelector(
-  selectDentistDashboard,
+
+const patientSearchTermSelector = createSelector(
+  domainSelector,
+  (substate) => substate.patientSearchTerm
+);
+
+const groupedAndFilteredPatientsSelector = createSelector(
+  domainSelector,
+  patientSearchTermSelector,
   fnGroupPatients
 );
 
+const autosuggestPatientsSelector = createSelector(
+  domainSelector,
+  (substate) => (
+    map(
+      substate.myPatients,
+      (patient) => {
+        const patientName = `${patient.firstName} ${patient.lastName}`;
+        const himself = [ { fullName: patientName } ];
+        return {
+          fullName: patientName,
+          members:
+            himself.concat(
+              map(patient.members, (member) => ({
+                fullName: `${member.firstName} ${member.lastName}`
+              }))
+            )
+        };
+      }
+    )
+  )
+);
+
+
 const selectConversation = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate.messages
 );
 
+
 const selectNewMsgCount = createSelector(
-  selectDashboardDomain,
+  domainSelector,
   (substate) => substate.newMsgCountBySender
 );
-
-export function familyMembersToEditSelectorFactory (userId) {
-  if (!selectors[userId]) {
-    selectors[userId] = createSelector(
-      selectDashboardDomain,
-      (substate) => substate.familyMemberForms[userId]
-    );
-  }
-
-  return selectors[userId];
-}
 
 export default selectDashboard;
 
 export {
-  selectDashboardDomain,
-  selectUserDashboard,
-  selectDentistDashboard,
-  selectMyDentist,
-  selectMyFamilyMembers,
+  domainSelector,
+  memberFormOpenedSelector,
+  editingMemberSelector,
   selectSorter,
-  selectGroupedPatients,
-  selectAllMembers,
   selectConversation,
   selectNewMsgCount,
+  myDentistSelector,
+  myMembersSelector,
+  allPatientsSelector,
+  groupedAndFilteredPatientsSelector,
+  patientSearchTermSelector,
+  autosuggestPatientsSelector,
 };
 
-function fnGroupPatients (substate) {
+function fnGroupPatients (substate, term) {
   return {
     newMembers: getNewMembers(),
     newReviews: getNewReviews(),
@@ -110,7 +128,7 @@ function fnGroupPatients (substate) {
     return filter(
       substate.myPatients,
       (patient) => (moment().diff(patient.createdAt, 'days') <= 30)
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getNewReviews () {
@@ -121,27 +139,27 @@ function fnGroupPatients (substate) {
         return (latestReview) &&
           (moment().diff(latestReview, 'days') <= 30);
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getActiveMembers () {
     return filter(
       substate.myPatients,
       (patient) => {
-        const status = get(patient, 'subscriptions[0].status');
+        const status = get(patient, 'subscription.status');
         return (status) && status === 'active';
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getInactiveMembers () {
     return filter(
       substate.myPatients,
       (patient) => {
-        const status = get(patient, 'subscriptions[0].status');
+        const status = get(patient, 'subscription.status');
         return (status) && status === 'inactive';
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
 
   function getAllReviews () {
@@ -151,6 +169,20 @@ function fnGroupPatients (substate) {
         const latestReview = get(patient, 'latestReview.createdAt');
         return !!latestReview;
       }
-    );
+    ).filter(patient => isPatientMatchingTerm(patient, term));
   }
+}
+
+function isPatientMatchingTerm (patient, term) {
+  if (term === '') {
+    return true;
+  }
+
+  const hasMatchingFamilyMember = some(
+        patient.members || [],
+        (member) => `${member.firstName} ${member.lastName}` === term
+      );
+
+  return hasMatchingFamilyMember
+      || `${patient.firstName} ${patient.lastName}` === term;
 }

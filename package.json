@@ -136,6 +136,7 @@
     "offline-plugin": "^3.4.2",
     "payform": "^1.2.0",
     "react": "15.3.0",
+    "react-autosuggest": "^7.0.1",
     "react-bootstrap": "0.30.2",
     "react-confirm-bootstrap": "^3.1.2",
     "react-credit-card": "^0.20.0",

@@ -1,5 +1,5 @@
 // import { take, call, put, select } from 'redux-saga/effects';
-import { takeLatest } from 'redux-saga';
+import { takeLatest, takeEvery } from 'redux-saga';
 import { put, call } from 'redux-saga/effects';
 import { actions as toastrActions } from 'react-redux-toastr';
 
@@ -8,6 +8,7 @@ import request from 'utils/request';
 import {
   REQUEST_CARD_INFO,
   REQUEST_CHARGE,
+  REQUEST_PENDING_AMOUNT,
 } from './constants';
 
 
@@ -15,6 +16,7 @@ import {
   setCardInfo,
   setError,
   paymentDone,
+  setPendingAmount,
 } from './actions';
 
 
@@ -23,8 +25,26 @@ import {
 let charging = false;
 
 
-export function* requestToken () {
-  yield* takeLatest(REQUEST_CARD_INFO, function* (action) {
+export function* requestPendingAmount () {
+  yield* takeEvery(REQUEST_PENDING_AMOUNT, function* handler (action) {
+    try {
+      const response = yield call(
+        request, `/api/v1/users/${action.userId}/pending-amount`, {
+          method: 'GET',
+        }
+      );
+
+      yield put(setPendingAmount(action.userId, response.data));
+    } catch (e) {
+      console.log(e);
+      yield put(setPendingAmount(action.userId, 0));
+    }
+  });
+}
+
+
+export function* requestCreditCard () {
+  yield* takeLatest(REQUEST_CARD_INFO, function* handler (action) {
     try {
       const response = yield call(
         request, `/api/v1/users/${action.userId}/credit-card`, {
@@ -42,7 +62,7 @@ export function* requestToken () {
 
 
 export function* requestCharge () {
-  yield* takeLatest(REQUEST_CHARGE, function* (action) {
+  yield* takeLatest(REQUEST_CHARGE, function* handler (action) {
     if (charging) {
       return;
     }
@@ -58,7 +78,8 @@ export function* requestCharge () {
         },
       );
 
-      yield put(paymentDone(action.userId, response));
+      yield put(paymentDone(action.userId, response.data));
+
       if (response.status === 'active') {
         yield put(toastrActions.success('',
           'You have successfully activated your account.' +
@@ -80,8 +101,8 @@ export function* requestCharge () {
 
 // All sagas to be loaded
 export default [
-  requestToken,
+  requestCreditCard,
+  requestPendingAmount,
   requestCharge,
 ];
-
 

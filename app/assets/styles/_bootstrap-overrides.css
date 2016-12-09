@@ -91,3 +91,76 @@
 :global(.form-group) {
   margin-bottom: 0.5rem;
 }
+
+/** REACT-AUTOSUGGEST **/
+:global(.react-autosuggest__container) {
+  position: relative;
+  float: left;
+}
+
+:global(.react-autosuggest__input) {
+  width: 240px;
+  height: 35px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #AAA;
+  border-radius: 4px;
+}
+
+:global(.react-autosuggest__input:focus) {
+  outline: none;
+}
+
+:global(.react-autosuggest__container--open .react-autosuggest__input) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+:global(.react-autosuggest__suggestions-container) {
+  display: none;
+}
+
+:global(.react-autosuggest__container--open .react-autosuggest__suggestions-container) {
+  display: block;
+  position: absolute;
+  top: 35px;
+  width: 240px;
+  border: 1px solid #AAA;
+  background-color: #FFF;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+:global(.react-autosuggest__suggestions-list) {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+:global(.react-autosuggest__suggestion) {
+  cursor: pointer;
+  padding: 6px 20px;
+}
+
+:global(.react-autosuggest__suggestion--focused) {
+  background-color: #DDD;
+}
+
+:global(.react-autosuggest__section-title) {
+  padding: 10px 0 0 10px;
+  font-size: 12px;
+  color: #777;
+  border-top: 1px dashed #CCC;
+}
+
+:global(.react-autosuggest__section-container:first-child .react-autosuggest__section-title) {
+  border-top: 0;
+}
+
+/** END OF REACT-AUTOSUGGEST **/

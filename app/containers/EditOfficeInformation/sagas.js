@@ -23,7 +23,7 @@ import {
 
 // Individual exports for testing
 export function* fetchDentistInfo () {
-  yield* takeLatest(FETCH_DENTIST_INFO, function* () {
+  yield* takeLatest(FETCH_DENTIST_INFO, function* handler () {
     try {
       const dentistInfo = yield call(request, '/api/v1/users/me/dentist-info');
       yield put(fetchDentistInfoSuccess(dentistInfo));
@@ -38,7 +38,7 @@ export function* fetchDentistInfo () {
 }
 
 export function* updateDentistInfo () {
-  yield* takeLatest(UPDATE_DENTIST_INFO, function* (action) {
+  yield* takeLatest(UPDATE_DENTIST_INFO, function* handler (action) {
     try {
       const body = action.payload;
       body.services = body.serviceSelected;
