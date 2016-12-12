@@ -73,6 +73,7 @@ export default class Form extends React.Component {
     open: React.PropTypes.bool,
     error: React.PropTypes.string,
     userOpened: React.PropTypes.number,
+    requestPendingAmount: React.PropTypes.func.isRequired,
     requestCardInfo: React.PropTypes.func.isRequired,
     requestCharge: React.PropTypes.func.isRequired,
     clearData: React.PropTypes.func.isRequired,
@@ -502,7 +503,7 @@ export default class Form extends React.Component {
                         <ControlLabel>CVC</ControlLabel>
                         <InputMask
                           className="form-control"
-                          size="3"
+                          size="4"
                           type="tel"
                           name="cvc"
                           onChange={this.handleChange}
