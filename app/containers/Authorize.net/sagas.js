@@ -58,8 +58,9 @@ export function* requestCharge () {
         },
       );
 
-      yield put(paymentDone(action.userId, response));
-      if (response.status === 'active') {
+      yield put(paymentDone(action.userId, response.data));
+
+      if (response.data.length > 0) {
         yield put(toastrActions.success('',
           'You have successfully activated your account.' +
           ' You can now make an appointment.'));
