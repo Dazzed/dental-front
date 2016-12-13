@@ -64,6 +64,7 @@ export default class App extends Component {
     this.props.loadUserFromToken();
 
     if (browserDetector.isOld()) {
+      // eslint-disable-next-line
       alert(browserDetector.warning);
     }
   }

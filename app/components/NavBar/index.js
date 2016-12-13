@@ -6,16 +6,16 @@
 
 import React from 'react';
 import CSSModules from 'react-css-modules';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Navbar from 'react-bootstrap/lib/Navbar';
-import Image from 'react-bootstrap/lib/Image';
+// import Image from 'react-bootstrap/lib/Image';
 
 import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
 import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
 // import logo from 'assets/images/dental-logo.png';
-import logo from 'assets/images/logo2.png';
+// import logo from 'assets/images/logo2.png';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 import styles from './styles.css';
@@ -49,9 +49,14 @@ export default class NavBar extends React.Component {
       <Navbar fixedTop styleName="navbar">
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/">
-              <Image src={logo} style={{ width: 200 }} />
-            </Link>
+            {/*
+              * - In the future, if a patient/dentist is logged in
+              *   we would show respective logo.
+              * - Removed for now
+              <Link to="/">
+                <Image src={logo} style={{ width: 200 }} />
+              </Link>
+            */}
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

@@ -144,23 +144,6 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
-      path: '/my-family-members',
-      name: 'myFamilyMembers',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/MyFamilyMembers'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ component ]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
-      onEnter: redirectToLogin,
       path: '/accounts/profile',
       name: 'profilePage',
       getComponent (nextState, cb) {
@@ -238,14 +221,6 @@ export default function createRoutes (store) {
           .then(([ component ]) => {
             loadModule(cb)(component);
           })
-          .catch(errorLoading);
-      },
-    }, {
-      path: '/dentist/family-members',
-      name: 'editDentistMember',
-      getComponent (location, cb) {
-        System.import('containers/EditDentistMember')
-          .then(loadModule(cb))
           .catch(errorLoading);
       },
     }, {

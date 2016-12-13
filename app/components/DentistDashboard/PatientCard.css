@@ -160,3 +160,20 @@
 .rating {
   display: inherit;
 }
+
+.action-icon {
+  cursor: pointer;
+
+  svg {
+    margin: 0 10px;
+  }
+
+  :hover {
+    color: $cyan;
+  }
+
+  a {
+    color: $black;
+  }
+}
+

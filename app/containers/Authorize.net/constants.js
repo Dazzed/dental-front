@@ -5,3 +5,5 @@ export const SET_ERROR = 'AuthorizeNet/SET_ERROR';
 export const CLEAR_DATA = 'AuthorizeNet/CLEAR_DATA';
 export const PAYMENT_DONE = 'AuthorizeNet/PAYMENT_DONE';
 export const OPEN_FORM = 'AuthorizeNet/OPEN_FORM';
+export const REQUEST_PENDING_AMOUNT = 'AuthorizeNet/REQUEST_PENDING_AMOUNT';
+export const SET_PENDING_AMOUNT = 'AuthorizeNet/SET_PENDING_AMOUNT';

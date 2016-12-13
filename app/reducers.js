@@ -11,7 +11,6 @@ import appReducer from 'containers/App/reducer';
 import dashboardReducer from 'containers/Dashboard/reducer';
 import dentistSignupReducer from 'containers/DentistSignupPage/reducer';
 import paymentFormReducer from 'containers/Authorize.net/reducer';
-import myFamilyMembersReducer from 'containers/MyFamilyMembers/reducer';
 
 /**
  * Creates the main reducer with the asynchronously loaded ones
@@ -25,7 +24,6 @@ export default function createReducer (asyncReducers) {
     dentistSignup: dentistSignupReducer,
     dashboard: dashboardReducer,
     paymentForm: paymentFormReducer,
-    myFamilyMembers: myFamilyMembersReducer,
     ...asyncReducers,
   });
 }

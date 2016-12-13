@@ -1,42 +1,52 @@
+import get from 'lodash/get';
+import request from 'utils/request';
+import mapValues from 'lodash/mapValues';
+
 import { takeLatest, takeEvery } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { reset } from 'redux-form';
+import { reset, stopSubmit } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
-import get from 'lodash/get';
-import request from 'utils/request';
 
 import {
   MY_DENTIST_REQUEST,
-  MY_FAMILY_REQUEST,
+  MY_MEMBERS_REQUEST,
   MY_PATIENTS_REQUEST,
+
   CONVERSATION_REQUEST,
   NEW_MSG_COUNT_REQUEST,
   MARK_MSG_READ_REQUEST,
+
   SUBMIT_MESSAGE_FORM,
   SUBMIT_CLIENT_REVIEW_FORM,
   SUBMIT_INVITE_PATIENT_FORM,
   SUBMIT_MEMBER_FORM,
+
   DELETE_MEMBER_REQUEST,
   REQUEST_PAYMENT_BILL,
   REQUEST_REPORT,
 } from 'containers/Dashboard/constants';
 
 import {
-  myDentistFetched,
-  myDentistFetchingError,
-  myFamilyFetched,
-  myFamilyFetchingError,
+  setMyDentist,
+  setMyDentistErrors,
+  setMyMembers,
+  setMemberErrors,
+
   myPatientsFetched,
   myPatientsFetchingError,
+
   conversationFetched,
   conversationFetchingError,
+
   messageSent,
   fetchNewMsgCount,
   newMsgCountFetched,
-  memberEdited,
-  memberAdded,
-  memberDeleted,
+
+  setEditedMember,
+  setAddedMember,
+  setDeletedMember,
+
   setBill,
 } from 'containers/Dashboard/actions';
 
@@ -44,7 +54,7 @@ import {
 // Individual exports for testing
 export function* userDashboardSaga () {
   const watcherA = yield fork(fetchMyDentistWatcher);
-  const watcherB = yield fork(fetchMyFamilyWatcher);
+  const watcherB = yield fork(fetchMyMembersWatcher);
   const watcherC = yield fork(submitMessageFormWatcher);
   const watcherD = yield fork(submitClientReviewFormWatcher);
   const watcherE = yield fork(fetchConversationWatcher);
@@ -74,8 +84,8 @@ export function* fetchMyDentistWatcher () {
   yield* takeLatest(MY_DENTIST_REQUEST, fetchMyDentist);
 }
 
-export function* fetchMyFamilyWatcher () {
-  yield* takeLatest(MY_FAMILY_REQUEST, fetchMyFamily);
+export function* fetchMyMembersWatcher () {
+  yield* takeLatest(MY_MEMBERS_REQUEST, fetchMyMembers);
 }
 
 export function* fetchMyPatientsWatcher () {
@@ -100,26 +110,26 @@ export function* fetchMyDentist () {
     const response = yield call(request, requestURL);
 
     yield put(fetchNewMsgCount({ senderId: response.data.id }));
-    yield put(myDentistFetched(response.data));
+    yield put(setMyDentist(response.data));
   } catch (err) {
-    yield put(myDentistFetchingError(err));
+    yield put(setMyDentistErrors(err));
   }
 }
 
-export function* fetchMyFamily () {
+export function* fetchMyMembers () {
   try {
-    const requestURL = '/api/v1/users/me/family-members';
+    const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
 
-    yield put(myFamilyFetched(response.data));
+    yield put(setMyMembers(response.data));
   } catch (err) {
-    yield put(myFamilyFetchingError(err));
+    yield put(setMemberErrors(err));
   }
 }
 
 export function* fetchMyPatients () {
   try {
-    const requestURL = '/api/v1/users/me/clients';
+    const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
 
     const tasks = [];
@@ -195,7 +205,6 @@ export function* submitMessageFormWatcher () {
       };
       const response = yield call(request, requestURL, params);
 
-      console.log(response);
       yield put(messageSent(response));
       yield put(toastrActions.success('', 'Your message has been sent!'));
       yield put(reset('writeMessage'));
@@ -258,7 +267,7 @@ export function* submitFormWatcher () {
     const memberId = payload.id;
 
     try {
-      let requestURL = `/api/v1/users/${userId}/family-members`;
+      let requestURL = `/api/v1/users/${userId}/members`;
       const params = {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -270,25 +279,28 @@ export function* submitFormWatcher () {
       }
 
       const response = yield call(request, requestURL, params);
-
       let message;
+
       if (memberId) {
         message = `'${payload.firstName} ${payload.lastName}'
           has been modified.`;
       } else {
-        message = `'${payload.firstName} ${payload.lastName}'
-          has been added.`;
+        message = `'${payload.firstName} ${payload.lastName}' has been added.`;
       }
+
       yield put(toastrActions.success('', message));
 
       if (memberId) {
-        yield put(memberEdited(response.data, userId));
+        yield put(setEditedMember(response.data, userId));
       } else {
-        yield put(memberAdded(response.data, userId));
+        yield put(setAddedMember(response.data, userId));
       }
     } catch (err) {
-      const errorMessage = get(err, 'message', 'Something went wrong!');
-      yield put(toastrActions.error('', errorMessage));
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      // dispatch LOGIN_ERROR action
+      yield put(stopSubmit('familyMember', errors));
     }
   }
 }
@@ -300,7 +312,7 @@ export function* deleteMemberWatcher () {
 
     try {
       const requestURL =
-        `/api/v1/users/${userId}/family-members/${payload.id}`;
+        `/api/v1/users/${userId}/members/${payload.id}`;
       const params = {
         method: 'DELETE',
       };
@@ -311,7 +323,7 @@ export function* deleteMemberWatcher () {
         has been deleted.`;
       yield put(toastrActions.success('', message));
 
-      yield put(memberDeleted(payload.id, userId));
+      yield put(setDeletedMember(payload.id, userId));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
@@ -321,7 +333,7 @@ export function* deleteMemberWatcher () {
 
 
 export function* requestPayBill () {
-  yield* takeLatest(REQUEST_PAYMENT_BILL, function* (action) {
+  yield* takeLatest(REQUEST_PAYMENT_BILL, function* handler (action) {
     try {
       const body = { token: action.payload.id };
 
@@ -359,7 +371,7 @@ function download (data, filename, type) {
 }
 
 export function* requestReport () {
-  yield* takeLatest(REQUEST_REPORT, function* () {
+  yield* takeLatest(REQUEST_REPORT, function* handler () {
     try {
       const response = yield call(request, '/api/v1/users/me/reports');
       download(response, 'report.csv', 'text/csv');

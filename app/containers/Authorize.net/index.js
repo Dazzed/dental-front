@@ -27,6 +27,7 @@ import {
   openSelector,
   userOpenedSelector,
   isChargingSelector,
+  amountsSelector,
 } from './selectors';
 
 import {
@@ -34,6 +35,7 @@ import {
   requestCharge,
   clearData,
   openForm,
+  requestPendingAmount,
 } from './actions';
 
 import style from './styles.css';
@@ -45,6 +47,7 @@ function mapDispatchToProps (dispatch) {
     openForm: (userId) => dispatch(openForm(userId)),
     requestCardInfo: userId => dispatch(requestCardInfo(userId)),
     requestCharge: (userId, data) => dispatch(requestCharge(userId, data)),
+    requestPendingAmount: (userId) => dispatch(requestPendingAmount(userId)),
   };
 }
 
@@ -58,11 +61,11 @@ function mapDispatchToProps (dispatch) {
   error: errorSelector(state),
   card: cardSelector(state),
   userOpened: userOpenedSelector(state),
+  amounts: amountsSelector(state),
 }), mapDispatchToProps)
 export default class Form extends React.Component {
 
   static propTypes = {
-    status: React.PropTypes.string,
     canCheckout: React.PropTypes.bool,
     isRequesting: React.PropTypes.bool,
     isCharging: React.PropTypes.bool,
@@ -70,15 +73,16 @@ export default class Form extends React.Component {
     open: React.PropTypes.bool,
     error: React.PropTypes.string,
     userOpened: React.PropTypes.number,
+    requestPendingAmount: React.PropTypes.func.isRequired,
     requestCardInfo: React.PropTypes.func.isRequired,
     requestCharge: React.PropTypes.func.isRequired,
     clearData: React.PropTypes.func.isRequired,
     openForm: React.PropTypes.func.isRequired,
     card: React.PropTypes.shape({}),
+    amounts: React.PropTypes.shape({}),
     user: React.PropTypes.shape({
       id: React.PropTypes.number,
-      authorizeId: React.PropTypes.number,
-    }),
+    }).isRequired,
   }
 
   constructor (props) {
@@ -104,7 +108,7 @@ export default class Form extends React.Component {
       cvc: {
         value: '',
         display: '',
-        mask: '999',
+        mask: '9999',
         error: false,
       },
       address: {
@@ -119,6 +123,10 @@ export default class Form extends React.Component {
         error: false,
       },
     };
+  }
+
+  componentWillMount () {
+    this.props.requestPendingAmount(this.props.user.id);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -184,9 +192,11 @@ export default class Form extends React.Component {
         (!this.props.card && this.props.wasRequested)) {
         // If not card and was requested we need to send card info to
         // create the card
+
+        // Remove whitespaces which are being resulted from different cards
         data = {
-          number: this.state.cardNumber.value,
-          cvc: this.state.cvc.value,
+          number: this.state.cardNumber.value.replace(/\s/g, ''),
+          cvc: this.state.cvc.value.replace(/\s/g, ''),
           expiry: this.state.expiry.value,
           address: this.state.address.value,
           zip: this.state.zip.value,
@@ -284,18 +294,21 @@ export default class Form extends React.Component {
 
   render () {
     const { isRequesting } = this.props;
-    const isPayed = this.props.status === 'active';
-    const noAmount = parseFloat(this.props.total) === 0;
     const state = this.state;
     const readOnly = this.props.card && !this.state.editing;
     const formatChars = { 9: '[0-9X]' };
+
+    const noAmount =
+      parseFloat(this.props.amounts[this.props.user.id] || 0) === 0.0;
+
     const open =
       this.props.open && this.props.userOpened === this.props.user.id;
+
     let canCheckout = this.props.canCheckout && !noAmount &&
       this.state.allChecked;
 
     // if was paid or over due enable button by default
-    if (this.props.status !== 'inactive') {
+    if (noAmount) {
       canCheckout = true;
     }
 
@@ -308,18 +321,16 @@ export default class Form extends React.Component {
       !(state.expiry.value && !state.expiry.error);
 
     if (!submitDisabled && this.setCard &&
-      !this.state.editing && this.props.status !== 'inactive') {
+      !this.state.editing && noAmount) {
       submitDisabled = true;
     }
 
-    let checkoutButtonText = this.props.status === 'inactive' ?
-      'Pay' : 'Update Card';
+    let checkoutButtonText = !noAmount ? 'Pay' : 'Update Card';
 
     if (this.props.wasRequested && !this.props.card) {
       checkoutButtonText = 'Save Card and Pay';
     } else if (this.props.card && this.state.editing) {
-      checkoutButtonText = this.props.status === 'inactive' ?
-        'Update Card and Pay' : 'Update Card';
+      checkoutButtonText = !noAmount ? 'Update Card and Pay' : 'Update Card';
     }
 
     return (
@@ -332,13 +343,13 @@ export default class Form extends React.Component {
           disabled={!canCheckout}
         />
 
-        { noAmount &&
+        {noAmount &&
           <div className={style['checklist-container']}>
             <p>To proceed with payment, please add family members or join{' '}
             the membership yourself.</p>
-          </div>
-        }
-        { !isPayed && !noAmount &&
+          </div>}
+
+        {!noAmount &&
           <div className={style['checklist-container']}>
             <p>To proceed with payment, please read and check the following.</p>
             <div>
@@ -398,8 +409,7 @@ export default class Form extends React.Component {
                 necessary prior to your basic cleaning.
               </label>
             </div>
-          </div>
-        }
+          </div>}
 
         <ReactTooltip
           id="disease-definition"
@@ -462,6 +472,7 @@ export default class Form extends React.Component {
                       onFocus={this.handleFocus}
                       readOnly={readOnly}
                       formatChars={formatChars}
+                      maskChar=" "
                     />
                   </FormGroup>
                   <Row>
@@ -481,6 +492,7 @@ export default class Form extends React.Component {
                           mask={state.expiry.mask}
                           readOnly={readOnly}
                           formatChars={formatChars}
+                          maskChar=" "
                         />
                       </FormGroup>
                     </Col>
@@ -491,7 +503,7 @@ export default class Form extends React.Component {
                         <ControlLabel>CVC</ControlLabel>
                         <InputMask
                           className="form-control"
-                          size="3"
+                          size="4"
                           type="tel"
                           name="cvc"
                           onChange={this.handleChange}
@@ -499,6 +511,7 @@ export default class Form extends React.Component {
                           mask={state.cvc.mask}
                           readOnly={readOnly}
                           formatChars={formatChars}
+                          maskChar=" "
                         />
                       </FormGroup>
                     </Col>

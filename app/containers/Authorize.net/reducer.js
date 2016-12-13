@@ -6,6 +6,7 @@ import {
   CLEAR_DATA,
   PAYMENT_DONE,
   OPEN_FORM,
+  SET_PENDING_AMOUNT,
 } from './constants';
 
 
@@ -28,6 +29,7 @@ const initialState = {
   requesting: false,
   open: false,
   userId: null,
+  amounts: {},
 };
 
 
@@ -65,9 +67,26 @@ function paymentFormReducer (state = initialState, action) {
         error: action.error,
       };
     case PAYMENT_DONE:
-      return initialState;
+      return {
+        ...initialState,
+        amounts: {
+          ...state.amounts,
+          [action.userId]: 0,
+        },
+      };
     case CLEAR_DATA:
-      return initialState;
+      return {
+        ...initialState,
+        amounts: state.amounts,
+      };
+    case SET_PENDING_AMOUNT:
+      return {
+        ...state,
+        amounts: {
+          ...state.amounts,
+          [action.userId]: action.amount,
+        },
+      };
     default:
       return state;
   }
