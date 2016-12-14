@@ -39,12 +39,7 @@ class SignupPage extends Component {
   };
 
   onSignupRequest = (data) => {
-    const { location: { query: { dentist } } } = this.props;
-
-    if (dentist) {
-      data.dentistId = parseInt(dentist, 10); // eslint-disable-line
-      this.props.onSignupRequest(data);
-    }
+    this.props.onSignupRequest(data);
   }
 
   goToHomePage = () => {
@@ -56,7 +51,6 @@ class SignupPage extends Component {
     const {
       isSignedUp,
       fullName,
-      location: { query: { dentist } }
     } = this.props;
 
     return (
@@ -70,7 +64,6 @@ class SignupPage extends Component {
 
               <SignupForm
                 onSubmit={this.onSignupRequest}
-                dentistId={dentist}
               />
 
             </Col>
