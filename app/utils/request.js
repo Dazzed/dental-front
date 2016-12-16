@@ -12,11 +12,16 @@ import { getItem } from 'utils/localStorage';
  */
 export default function request (url, options = {}) {
   const authToken = getItem('auth_token');
-  const headers = { Accept: 'application/json' };
+  const headers = {};
   const opts = Object.assign({}, options);
 
   if (authToken) {
     headers.Authorization = `JWT ${authToken}`;
+  }
+
+  if (url.indexOf('upload') === -1) {
+    headers.Accept = 'application/json';
+    headers['Content-Type'] = 'application/json';
   }
 
   opts.headers = Object.assign({}, options.headers, headers);

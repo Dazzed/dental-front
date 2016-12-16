@@ -3,13 +3,14 @@ import CSSModules from 'react-css-modules';
 import moment from 'moment';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Image from 'react-bootstrap/lib/Image';
 import FaEdit from 'react-icons/lib/fa/edit';
 import FaClose from 'react-icons/lib/fa/close';
 import Confirm from 'react-confirm-bootstrap';
 
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
+
 import styles from './FamilyMember.css';
+import Avatar from './Avatar';
 
 
 @CSSModules(styles, { allowMultiple: true })
@@ -45,14 +46,15 @@ export default class FamilyMember extends React.Component {
     const fullName = `${firstName} ${lastName}`;
 
     const memberSince = moment(createdAt).format('MMM D, YYYY');
-    const avatarURL =
-      avatar || 'http://www.teenink.com/images/default_face.gif';
 
     return (
       <div styleName="family-member">
         <Row styleName="details">
           <Col md={1} styleName="member-avatar">
-            <Image src={avatarURL} />
+            <Avatar
+              src={avatar ? avatar.location : undefined}
+              userId={this.props.details.id}
+            />
           </Col>
           <Col md={3} styleName="col-with-name">
             <p styleName="member-name">{fullName}</p>

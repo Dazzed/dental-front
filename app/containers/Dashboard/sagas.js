@@ -25,6 +25,8 @@ import {
   DELETE_MEMBER_REQUEST,
   REQUEST_PAYMENT_BILL,
   REQUEST_REPORT,
+
+  UPLOAD_AVATAR,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -48,6 +50,7 @@ import {
   setDeletedMember,
 
   setBill,
+  setAvatar,
 } from 'containers/Dashboard/actions';
 
 
@@ -351,6 +354,28 @@ export function* requestPayBill () {
   });
 }
 
+
+export function* uploadAvatar () {
+  yield* takeLatest(UPLOAD_AVATAR, function* handler (action) {
+    try {
+      const { file, userId } = action;
+      const data = new FormData();
+      data.append('avatar', file);
+
+      const response = yield call(request,
+        `/api/v1/users/${action.userId}/upload-avatar`, {
+          method: 'POST',
+          body: data,
+        });
+
+      yield put(setAvatar(response.data, userId));
+      yield put(toastrActions.success('', 'Avatar uploaded.'));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
 // Function to download data to a file
 function download (data, filename, type) {
   const a = document.createElement('a');
@@ -389,4 +414,5 @@ export default [
   deleteMemberWatcher,
   requestPayBill,
   requestReport,
+  uploadAvatar,
 ];

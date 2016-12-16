@@ -45,6 +45,8 @@ export const SET_PAYMENT_BILL = 'app/Dashboard/SET_PAYMENT_BILL';
 export const REQUEST_REPORT = 'app/Dashboard/REQUEST_REPORT';
 
 export const UPDATE_PATIENT_SEARCH = 'app/Dashboard/UPDATE_PATIENT_SEARCH';
+export const UPLOAD_AVATAR = 'app/Dashboard/UPLOAD_AVATAR';
+export const SET_AVATAR = 'app/Dashboard/SET_AVATAR';
 
 export const SUBMIT_MESSAGE_FORM =
   'app/Dashboard/SUBMIT_MESSAGE_FORM';
