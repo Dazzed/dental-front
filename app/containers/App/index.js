@@ -32,6 +32,7 @@ const staticPages = [
   '/faq',
   '/legal',
   '/privacy',
+  '/accounts/complete-signup',
 ];
 
 const mapDispatchToProps = {

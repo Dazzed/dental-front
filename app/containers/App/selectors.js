@@ -35,11 +35,30 @@ const selectUserName = createSelector(
   }
 );
 
+const selectUserNameParts = createSelector(
+  selectGlobal,
+  (substate) => (
+    {
+      firstName: get(substate, 'currentUser.firstName'),
+      middleName: get(substate, 'currentUser.middleName'),
+      lastName: get(substate, 'currentUser.lastName')
+    }
+  )
+);
+
 const selectAuthState = createSelector(
   selectGlobal,
   (substate) => substate.loggedIn,
 );
 
+// Test if signup process is all complete by checking some required fields
+const selectSignupCompleteState = createSelector(
+  selectGlobal,
+  (substate) => (
+    !!get(substate, 'currentUser.birthDate') &&
+    !!get(substate, 'currentUser.phone')
+  )
+);
 
 const selectDentistSpecialties = createSelector(
   selectGlobal,
@@ -62,7 +81,9 @@ export {
   selectUserType,
   selectUserId,
   selectUserName,
+  selectUserNameParts,
   selectAuthState,
+  selectSignupCompleteState,
   selectCurrentUser,
   selectDentistSpecialties,
   selectPageTitle,
