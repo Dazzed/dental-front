@@ -1,5 +1,5 @@
 import { take, call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 
 import request from 'utils/request';
 import { getItem, removeItem } from 'utils/localStorage';
@@ -10,7 +10,6 @@ import {
 import {
   selectCurrentUser,
   selectSignupCompleteState,
-  selectUserType,
 } from 'containers/App/selectors';
 
 import { setAuthState, setUserData } from 'containers/App/actions';
@@ -53,17 +52,16 @@ function* loadUserFromToken () {
 
       const nextPathName = yield select(selectNextPathname);
       const isSignupComplete = yield select(selectSignupCompleteState);
-      const userType = yield select(selectUserType);
 
       if (nextPathName) {
-        yield put(push(nextPathName));
+        yield put(replace(nextPathName));
       } else {
-        if (userType === 'dentist' || isSignupComplete) { // eslint-disable-line
+        if (isSignupComplete) { // eslint-disable-line
           console.log('COMMON SAGA - GOING TO DASHBOARD');
-          yield put(push('/dasbhoard'));
+          yield put(replace('/dashboard'));
         } else {
           console.log('COMMON SAGA - GOING TO COMPLETE SIGNUP ');
-          yield put(push('/accounts/complete-signup'));
+          yield put(replace('/accounts/complete-signup'));
         }
       }
     }

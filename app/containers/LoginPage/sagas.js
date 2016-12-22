@@ -23,7 +23,6 @@ import {
 import { loginError } from 'containers/LoginPage/actions';
 import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
-
 // Bootstrap sagas
 export default [
   loginFlow,

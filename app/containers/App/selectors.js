@@ -55,8 +55,11 @@ const selectAuthState = createSelector(
 const selectSignupCompleteState = createSelector(
   selectGlobal,
   (substate) => (
-    !!get(substate, 'currentUser.birthDate') &&
-    !!get(substate, 'currentUser.phone')
+    get(substate, 'currentUser.type') === 'dentist' ||
+    (
+      !!get(substate, 'currentUser.birthDate') &&
+      !!get(substate, 'currentUser.phone')
+    )
   )
 );
 
