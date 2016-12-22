@@ -2,7 +2,8 @@ import { selectCurrentPath } from 'common/selectors/router.selector';
 
 import {
   selectAuthState,
-  selectSignupCompleteState
+  selectSignupCompleteState,
+  selectUserType,
 } from 'containers/App/selectors';
 import createReducer from '../reducers';
 
@@ -27,6 +28,7 @@ function redirectToLogin (store) {
   return (nextState, replace) => {
     const isLoggedIn = selectAuthState(store.getState());
     const isSignupComplete = selectSignupCompleteState(store.getState());
+    const userType = selectUserType(store.getState());
     const currentPath = selectCurrentPath(store.getState());
     const signupFinalPath = '/accounts/complete-signup';
 
@@ -36,7 +38,7 @@ function redirectToLogin (store) {
         state: { nextPathname: nextState.location.pathname },
       });
     } else {
-      if (!isSignupComplete && currentPath !== signupFinalPath) { // eslint-disable-line
+      if (userType !== 'dentist' && !isSignupComplete && currentPath !== signupFinalPath) { // eslint-disable-line
         replace(signupFinalPath);
       }
     }

@@ -5,12 +5,12 @@ import request from 'utils/request';
 import { getItem, removeItem } from 'utils/localStorage';
 
 import {
-  selectCurrentPath,
   selectNextPathname,
 } from 'common/selectors/router.selector';
 import {
   selectCurrentUser,
   selectSignupCompleteState,
+  selectUserType,
 } from 'containers/App/selectors';
 
 import { setAuthState, setUserData } from 'containers/App/actions';
@@ -53,11 +53,12 @@ function* loadUserFromToken () {
 
       const nextPathName = yield select(selectNextPathname);
       const isSignupComplete = yield select(selectSignupCompleteState);
+      const userType = yield select(selectUserType);
 
       if (nextPathName) {
         yield put(push(nextPathName));
       } else {
-        if (isSignupComplete) { // eslint-disable-line
+        if (userType === 'dentist' || isSignupComplete) { // eslint-disable-line
           console.log('COMMON SAGA - GOING TO DASHBOARD');
           yield put(push('/dasbhoard'));
         } else {

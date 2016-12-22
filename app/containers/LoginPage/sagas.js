@@ -5,7 +5,7 @@
 /* eslint-disable no-constant-condition, consistent-return */
 
 import {
-  take, call, put, cancel, cancelled, fork, select
+  take, call, put, cancel, cancelled, fork
 } from 'redux-saga/effects';
 
 import { push } from 'react-router-redux';
