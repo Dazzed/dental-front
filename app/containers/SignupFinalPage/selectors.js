@@ -15,7 +15,6 @@ const signupCompleteSelector = createSelector(
 export {
   officesSelector,
   signupCompleteSelector,
-}
-
+};
 
 export default signupFinalDomain;

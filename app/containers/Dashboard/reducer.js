@@ -4,7 +4,6 @@
  *
  */
 
-import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 
 import {
@@ -64,17 +63,17 @@ function dashboardReducer (state = initialState, action) {
       if (state.myPatients) {
         account = findIndex(state.myPatients, { id: action.userId });
         listToEdit = state.myPatients[account];
-        members = listToEdit.members.map(member => {
-          if (action.payload.indexOf(member.id) >= 0) {
+        members = listToEdit.members.map(e => {
+          if (action.payload.indexOf(e.id) >= 0) {
             return {
-              ...member,
+              ...e,
               subscription: {
-                ...member.subscription,
+                ...e.subscription,
                 status: 'active',
               },
             };
           }
-          return member
+          return e;
         });
 
         listToEdit = {
@@ -92,17 +91,17 @@ function dashboardReducer (state = initialState, action) {
         };
       }
 
-      members = state.myMembers.map(member => {
-        if (action.payload.indexOf(member.id) >= 0) {
+      members = state.myMembers.map(e => {
+        if (action.payload.indexOf(e.id) >= 0) {
           return {
-            ...member,
+            ...e,
             subscription: {
-              ...member.subscription,
+              ...e.subscription,
               status: 'active',
             },
           };
         }
-        return member
+        return e;
       });
 
       return {

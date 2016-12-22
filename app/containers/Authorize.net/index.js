@@ -296,7 +296,7 @@ export default class Form extends React.Component {
     const formatChars = { 9: '[0-9X]' };
 
     const noAmount =
-      parseFloat(this.props.amounts[this.props.user.id] || 0) === 0.0;
+      parseFloat(this.props.amounts[this.props.user.id] || 0) === 0.0;
 
     const open =
       this.props.open && this.props.userOpened === this.props.user.id;
@@ -322,7 +322,7 @@ export default class Form extends React.Component {
       submitDisabled = true;
     }
 
-    let checkoutButtonText = !noAmount ?  'Pay' : 'Update Card';
+    let checkoutButtonText = !noAmount ? 'Pay' : 'Update Card';
 
     if (this.props.wasRequested && !this.props.card) {
       checkoutButtonText = 'Save Card and Pay';
