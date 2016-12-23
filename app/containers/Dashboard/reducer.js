@@ -63,17 +63,17 @@ function dashboardReducer (state = initialState, action) {
       if (state.myPatients) {
         account = findIndex(state.myPatients, { id: action.userId });
         listToEdit = state.myPatients[account];
-        members = listToEdit.members.map(e => {
-          if (action.payload.indexOf(e.id) >= 0) {
+        members = listToEdit.members.map(item => {
+          if (action.payload.indexOf(item.id) >= 0) {
             return {
-              ...e,
+              ...item,
               subscription: {
-                ...e.subscription,
+                ...item.subscription,
                 status: 'active',
               },
             };
           }
-          return e;
+          return item;
         });
 
         listToEdit = {
@@ -91,17 +91,17 @@ function dashboardReducer (state = initialState, action) {
         };
       }
 
-      members = state.myMembers.map(e => {
-        if (action.payload.indexOf(e.id) >= 0) {
+      members = state.myMembers.map(item => {
+        if (action.payload.indexOf(item.id) >= 0) {
           return {
-            ...e,
+            ...item,
             subscription: {
-              ...e.subscription,
+              ...item.subscription,
               status: 'active',
             },
           };
         }
-        return e;
+        return item;
       });
 
       return {

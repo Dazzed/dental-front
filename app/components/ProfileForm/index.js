@@ -176,7 +176,7 @@ class ProfileForm extends React.Component {
           <Field
             name="contactMethod"
             type="select"
-            label="Contatct method"
+            label="Contact method"
             component={LabeledInput}
             width={5}
           >

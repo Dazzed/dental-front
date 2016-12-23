@@ -73,6 +73,7 @@ export default class Form extends React.Component {
     open: React.PropTypes.bool,
     error: React.PropTypes.string,
     userOpened: React.PropTypes.number,
+    requestPendingAmount: React.PropTypes.func.isRequired,
     requestCardInfo: React.PropTypes.func.isRequired,
     requestCharge: React.PropTypes.func.isRequired,
     clearData: React.PropTypes.func.isRequired,
@@ -191,9 +192,11 @@ export default class Form extends React.Component {
         (!this.props.card && this.props.wasRequested)) {
         // If not card and was requested we need to send card info to
         // create the card
+
+        // Remove whitespaces which are being resulted from different cards
         data = {
-          number: this.state.cardNumber.value,
-          cvc: this.state.cvc.value,
+          number: this.state.cardNumber.value.replace(/\s/g, ''),
+          cvc: this.state.cvc.value.replace(/\s/g, ''),
           expiry: this.state.expiry.value,
           address: this.state.address.value,
           zip: this.state.zip.value,
@@ -500,7 +503,7 @@ export default class Form extends React.Component {
                         <ControlLabel>CVC</ControlLabel>
                         <InputMask
                           className="form-control"
-                          size="3"
+                          size="4"
                           type="tel"
                           name="cvc"
                           onChange={this.handleChange}
