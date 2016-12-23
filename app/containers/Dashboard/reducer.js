@@ -61,7 +61,7 @@ function dashboardReducer (state = initialState, action) {
 
   switch (action.type) {
     case SET_AVATAR:
-      members = state.myMembers.map(item => {
+      members = state.myMembers.map((item) => {
         if (item.id === action.userId) {
           return {
             ...item,

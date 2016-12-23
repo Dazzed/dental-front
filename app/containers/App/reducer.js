@@ -9,6 +9,11 @@ import {
   CHANGE_PAGE_TITLE,
 } from './constants';
 
+
+import {
+  SET_AVATAR,
+} from 'containers/Dashboard/constants';
+
 const initialState = {
   loggedIn: !!getItem('auth_token'),
   currentUser: false,
@@ -21,6 +26,18 @@ export default function appReducer (state = initialState, action) {
   const { payload } = action;
 
   switch (action.type) {
+
+    case SET_AVATAR:
+      if (action.userId === state.currentUser.id) {
+        return {
+          ...state,
+          currentUser: {
+            ...state.currentUser,
+            avatar: action.avatar,
+          },
+        };
+      }
+      return state;
 
     case SET_AUTH_STATE:
       return {

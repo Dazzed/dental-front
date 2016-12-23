@@ -19,17 +19,15 @@ export default function request (url, options = {}) {
     headers.Authorization = `JWT ${authToken}`;
   }
 
-  if (url.indexOf('upload') === -1) {
-    headers.Accept = 'application/json';
-    headers['Content-Type'] = 'application/json';
-  }
+  headers.Accept = 'application/json';
+  headers['Content-Type'] = 'application/json';
 
   opts.headers = Object.assign({}, options.headers, headers);
 
   return fetch(url, opts)
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => data);
+    .then(data => data);
 }
 
 /**

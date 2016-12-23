@@ -17,7 +17,9 @@ import styles from './styles.css';
 
 function LoggedInHeaderNav ({ fullName, avatar }) {
   // temporary default face icon for now
-  const avatarURL = avatar || 'http://www.teenink.com/images/default_face.gif';
+  const avatarURL = avatar ?
+    avatar.location : 'http://www.teenink.com/images/default_face.gif';
+
   return (
     <Navbar.Collapse>
       <Link to="/accounts/profile">
@@ -45,7 +47,8 @@ function LoggedInHeaderNav ({ fullName, avatar }) {
 
 LoggedInHeaderNav.propTypes = {
   fullName: React.PropTypes.string,
-  avatar: React.PropTypes.string,
+  avatar: React.PropTypes.shape([
+  ]),
 };
 
 

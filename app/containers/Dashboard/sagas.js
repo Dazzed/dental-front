@@ -359,16 +359,31 @@ export function* uploadAvatar () {
   yield* takeLatest(UPLOAD_AVATAR, function* handler (action) {
     try {
       const { file, userId } = action;
-      const data = new FormData();
-      data.append('avatar', file);
+      const params = `file-name=${file.name}&file-type=${file.type}`;
 
       const response = yield call(request,
-        `/api/v1/users/${action.userId}/upload-avatar`, {
-          method: 'POST',
-          body: data,
+        `/api/v1/users/${action.userId}/sign-avatar?${params}`, {
+          method: 'GET',
         });
 
-      yield put(setAvatar(response.data, userId));
+      const promise = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', response.signedRequest);
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              resolve();
+            } else {
+              reject();
+            }
+          }
+        };
+        xhr.send(file);
+      });
+
+      yield promise;
+
+      yield put(setAvatar(response.avatar, userId));
       yield put(toastrActions.success('', 'Avatar uploaded.'));
     } catch (e) {
       console.log(e);
