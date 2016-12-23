@@ -1,4 +1,9 @@
-import { selectAuthState } from 'containers/App/selectors';
+import { selectCurrentPath } from 'common/selectors/router.selector';
+
+import {
+  selectAuthState,
+  selectSignupCompleteState,
+} from 'containers/App/selectors';
 import createReducer from '../reducers';
 
 /**
@@ -20,23 +25,33 @@ function injectAsyncSagas (store) {
 
 function redirectToLogin (store) {
   return (nextState, replace) => {
-    if (!selectAuthState(store.getState())) {
+    const isLoggedIn = selectAuthState(store.getState());
+    const isSignupComplete = selectSignupCompleteState(store.getState());
+    const currentPath = selectCurrentPath(store.getState());
+    const signupFinalPath = '/accounts/complete-signup';
+
+    if (!isLoggedIn) {
       replace({
         pathname: '/accounts/login',
         state: { nextPathname: nextState.location.pathname },
       });
+    } else {
+      if (!isSignupComplete && currentPath !== signupFinalPath) { // eslint-disable-line
+        replace(signupFinalPath);
+      }
     }
   };
 }
 
 function redirectToDashboard (store) {
   return (nextState, replace) => {
-    if (selectAuthState(store.getState())) {
+    const isLoggedIn = selectAuthState(store.getState());
+
+    if (isLoggedIn) {
       replace('/dashboard');
     }
   };
 }
-
 
 /**
  * Helper for creating injectors
@@ -46,6 +61,6 @@ export default function getHooks (store) {
     injectReducer: injectAsyncReducer(store),
     injectSagas: injectAsyncSagas(store),
     redirectToLogin: redirectToLogin(store),
-    redirectToDashboard: redirectToDashboard(store)
+    redirectToDashboard: redirectToDashboard(store),
   };
 }

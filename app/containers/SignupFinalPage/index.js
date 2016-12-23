@@ -13,45 +13,52 @@ import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
 
 import logo from 'assets/images/logo2.png';
-import SignupForm from 'components/SignupForm';
+import SignupFinalForm from 'components/SignupFinalForm';
+import { selectCurrentUser } from 'containers/App/selectors';
 
 import * as actions from './actions';
+import { officesSelector, signupCompleteSelector } from './selectors';
 import styles from './styles.css';
 
 
-@connect(
-  state => ({
-    isSignedUp: state.signup.patientCreated,
-    fullName: state.signup.fullName,
-  }),
-  mapDispatchToProps)
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class SignupPage extends Component {
+class SignupFinalPage extends Component {
 
   static propTypes = {
-    onSignupRequest: React.PropTypes.func,
-    clearSignupStatus: React.PropTypes.func,
-    location: React.PropTypes.object,
+    onFinalSignupRequest: React.PropTypes.func,
+    clearFinalSignupStatus: React.PropTypes.func,
+    fetchOffices: React.PropTypes.func,
+    currentUser: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.bool
+    ]),
     isSignedUp: React.PropTypes.bool,
-    fullName: React.PropTypes.string,
     changeRoute: React.PropTypes.func,
+    offices: React.PropTypes.array,
   };
 
+  componentWillMount () {
+    this.props.fetchOffices();
+  }
+
   onSignupRequest = (data) => {
-    this.props.onSignupRequest(data);
+    this.props.onFinalSignupRequest(data);
   }
 
   goToHomePage = () => {
-    this.props.clearSignupStatus();
+    this.props.clearFinalSignupStatus();
     this.props.changeRoute('/');
   }
 
+  goToLogout = () => {
+    this.props.clearFinalSignupStatus();
+    this.props.changeRoute('/accounts/logout');
+  }
+
   render () {
-    const {
-      isSignedUp,
-      fullName,
-    } = this.props;
+    const { isSignedUp, currentUser, offices } = this.props;
+    const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
 
     return (
       <div styleName="wrapper">
@@ -59,11 +66,13 @@ class SignupPage extends Component {
           <Row>
             <Col md={6}>
               <div styleName="form-header">
-                <h1>Create your Membership Account</h1>
+                <h1>Complete Your Signup</h1>
               </div>
 
-              <SignupForm
+              <SignupFinalForm
                 onSubmit={this.onSignupRequest}
+                offices={offices}
+                onLogout={this.goToLogout}
               />
 
             </Col>
@@ -122,7 +131,8 @@ class SignupPage extends Component {
                     <br />
 
                     <p>
-                      Thank you for signing up!
+                      Thank you for completing signing up!
+                      Now you have full access to all features.
                     </p>
                     <br />
                   </div>
@@ -137,15 +147,25 @@ class SignupPage extends Component {
 }
 
 
+function mapStateToProps (state) {
+  return {
+    currentUser: selectCurrentUser(state),
+    isSignedUp: signupCompleteSelector(state),
+    offices: officesSelector(state),
+  };
+}
+
 function mapDispatchToProps (dispatch) {
   return {
-    onSignupRequest: (data) => {
-      dispatch(actions.signupRequest(omit(data, 'unknown')));
+    onFinalSignupRequest: (data) => {
+      dispatch(actions.finalSignupRequest(
+        omit(data, [ 'unknown', 'firstName', 'middleName', 'lastName' ])
+      ));
     },
-    clearSignupStatus: () => dispatch(actions.clearSignupStatus()),
+    clearFinalSignupStatus: () => dispatch(actions.clearFinalSignupStatus()),
+    fetchOffices: () => dispatch(actions.fetchOffices()),
     changeRoute: (url) => dispatch(push(url)),
   };
 }
 
-
-export default SignupPage;
+export default SignupFinalPage;

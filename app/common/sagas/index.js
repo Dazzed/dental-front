@@ -1,16 +1,20 @@
 import { take, call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 
 import request from 'utils/request';
 import { getItem, removeItem } from 'utils/localStorage';
 
-import { selectCurrentPath } from 'common/selectors/router.selector';
-import { selectCurrentUser } from 'containers/App/selectors';
+import {
+  selectNextPathname,
+} from 'common/selectors/router.selector';
+import {
+  selectCurrentUser,
+  selectSignupCompleteState,
+} from 'containers/App/selectors';
 
 import { setAuthState, setUserData } from 'containers/App/actions';
 
 import { ME_FROM_TOKEN } from 'containers/App/constants';
-
 
 function* refreshAuthFlow () {
   while (true) {
@@ -35,14 +39,30 @@ function* loadUserFromToken () {
       yield put(setUserData(response.data));
 
       // If the user landed on `/login` as the first route, redirect him
-      const currentPath = yield select(selectCurrentPath);
-      const pathsToRedirect = [
-        '/accounts/login',
-        '/accounts/signup',
-        '/accounts/dentist-signup'
-      ];
-      if (pathsToRedirect.indexOf(currentPath) > -1) {
-        yield put(push('/dashboard'));
+      // const currentPath = yield select(selectCurrentPath);
+      // const pathsToRedirect = [
+      //   '/accounts/login',
+      //   '/accounts/signup',
+      //   '/accounts/dentist-signup'
+      // ];
+      // if (pathsToRedirect.indexOf(currentPath) > -1) {
+      //   console.log('COMMON SAGA going to dashboard', currentPath)
+      //   yield put(push('/dashboard'));
+      // }
+
+      const nextPathName = yield select(selectNextPathname);
+      const isSignupComplete = yield select(selectSignupCompleteState);
+
+      if (nextPathName) {
+        yield put(replace(nextPathName));
+      } else {
+        if (isSignupComplete) { // eslint-disable-line
+          console.log('COMMON SAGA - GOING TO DASHBOARD');
+          yield put(replace('/dashboard'));
+        } else {
+          console.log('COMMON SAGA - GOING TO COMPLETE SIGNUP ');
+          yield put(replace('/accounts/complete-signup'));
+        }
       }
     }
   } catch (e) {

@@ -19,8 +19,10 @@ export default class Offerings extends Component {
   render () {
     const { myDentist } = this.props;
     // TODO: better here to use selector!
-    let childMonthly = get(myDentist, 'dentistInfo.childMembership.monthly', 0);
-    let adultMonthly = get(myDentist, 'dentistInfo.membership.monthly', 0);
+    const childMonthly =
+      get(myDentist, 'dentistInfo.childMembership.monthly', 0);
+    const adultMonthly =
+      get(myDentist, 'dentistInfo.membership.monthly', 0);
 
     return (
       <div>

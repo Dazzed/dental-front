@@ -5,7 +5,7 @@
 /* eslint-disable no-constant-condition, consistent-return */
 
 import {
-  take, call, put, cancel, cancelled, fork, select
+  take, call, put, cancel, cancelled, fork
 } from 'redux-saga/effects';
 
 import { push } from 'react-router-redux';
@@ -22,8 +22,6 @@ import {
 
 import { loginError } from 'containers/LoginPage/actions';
 import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
-import { selectNextPathname } from 'common/selectors/router.selector';
-
 
 // Bootstrap sagas
 export default [
@@ -80,13 +78,7 @@ function* authorize (data, resolve, reject) {
     // load details of authenticated user
     yield put(meFromToken());
 
-    // redirect to nextPathName or to the dashboard page
-    const nextPathName = yield select(selectNextPathname);
-    if (nextPathName) {
-      yield put(push(nextPathName));
-    } else {
-      yield put(push('/dashboard'));
-    }
+    // Post-processor is in common/sagas/index.js
 
     // return the response from the generator task
     return response;

@@ -4,7 +4,6 @@
  *
  */
 
-// import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 
 import {

@@ -21,7 +21,7 @@ const loadModule = (cb) => (componentModule) => {
 export default function createRoutes (store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const {
-    injectReducer, injectSagas, redirectToDashboard, redirectToLogin,
+    injectReducer, injectSagas, redirectToDashboard, redirectToLogin
   } = getHooks(store);
 
   return [
@@ -82,6 +82,23 @@ export default function createRoutes (store) {
         ])
           .then(([ reducer, sagas, component ]) => {
             injectReducer('signup', reducer.default);
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/accounts/complete-signup',
+      name: 'signupFinalPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/SignupFinalPage/reducer'),
+          System.import('containers/SignupFinalPage/sagas'),
+          System.import('containers/SignupFinalPage')
+        ])
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('signupFinal', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
