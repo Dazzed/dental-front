@@ -37,6 +37,7 @@ class SignupFinalForm extends React.Component {
   static propTypes = {
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
+    onLogout: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
     offices: React.PropTypes.array,
   };
@@ -238,6 +239,15 @@ class SignupFinalForm extends React.Component {
               className="btn btn-block btn-cyan btn-round btn-outline"
             >
               Continue
+            </button>
+          </Col>
+
+          <Col sm={3}>
+            <button
+              className="btn btn-block btn-round btn-outline"
+              onClick={this.props.onLogout}
+            >
+              Skip & Logout
             </button>
           </Col>
         </FormGroup>

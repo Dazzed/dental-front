@@ -51,6 +51,11 @@ class SignupFinalPage extends Component {
     this.props.changeRoute('/');
   }
 
+  goToLogout = () => {
+    this.props.clearFinalSignupStatus();
+    this.props.changeRoute('/accounts/logout');
+  }
+
   render () {
     const { isSignedUp, currentUser, offices } = this.props;
     const fullName = `${currentUser.firstName} ${currentUser.lastName}`;
@@ -67,6 +72,7 @@ class SignupFinalPage extends Component {
               <SignupFinalForm
                 onSubmit={this.onSignupRequest}
                 offices={offices}
+                onLogout={this.goToLogout}
               />
 
             </Col>
