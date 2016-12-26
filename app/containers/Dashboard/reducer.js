@@ -126,6 +126,7 @@ function dashboardReducer (state = initialState, action) {
 
         return {
           ...state,
+          memberFormOpened: null,
           myPatients: [
             ...state.myPatients.slice(0, account),
             listToEdit,
@@ -137,6 +138,7 @@ function dashboardReducer (state = initialState, action) {
       member = findIndex(state.myMembers, { id: action.memberId });
       return {
         ...state,
+        memberFormOpened: null,
         myMembers: [
           ...state.myMembers.slice(0, member),
           ...state.myMembers.slice(member + 1),
