@@ -25,6 +25,8 @@ import {
   DELETE_MEMBER_REQUEST,
   REQUEST_PAYMENT_BILL,
   REQUEST_REPORT,
+
+  UPLOAD_AVATAR,
 } from 'containers/Dashboard/constants';
 
 import {
@@ -48,6 +50,7 @@ import {
   setDeletedMember,
 
   setBill,
+  setAvatar,
 } from 'containers/Dashboard/actions';
 
 
@@ -351,6 +354,43 @@ export function* requestPayBill () {
   });
 }
 
+
+export function* uploadAvatar () {
+  yield* takeLatest(UPLOAD_AVATAR, function* handler (action) {
+    try {
+      const { file, userId } = action;
+      const params = `file-name=${file.name}&file-type=${file.type}`;
+
+      const response = yield call(request,
+        `/api/v1/users/${action.userId}/sign-avatar?${params}`, {
+          method: 'GET',
+        });
+
+      const promise = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', response.signedRequest);
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              resolve();
+            } else {
+              reject();
+            }
+          }
+        };
+        xhr.send(file);
+      });
+
+      yield promise;
+
+      yield put(setAvatar(response.avatar, userId));
+      yield put(toastrActions.success('', 'Avatar uploaded.'));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
 // Function to download data to a file
 function download (data, filename, type) {
   const a = document.createElement('a');
@@ -389,4 +429,5 @@ export default [
   deleteMemberWatcher,
   requestPayBill,
   requestReport,
+  uploadAvatar,
 ];

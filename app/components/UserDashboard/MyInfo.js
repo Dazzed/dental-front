@@ -8,11 +8,11 @@ import Image from 'react-bootstrap/lib/Image';
 import FaCalendar from 'react-icons/lib/fa/calendar';
 import FaEnvelope from 'react-icons/lib/fa/envelope';
 import FaPhone from 'react-icons/lib/fa/phone';
+import Avatar from './Avatar';
 
 import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
 import styles from './MyInfo.css';
 
-const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
 
 class MyInfo extends Component {
   static propTypes = {
@@ -37,6 +37,7 @@ class MyInfo extends Component {
       birthDate,
       contactMethod,
       payingMember,
+      id,
     } = user;
 
     return (
@@ -44,7 +45,10 @@ class MyInfo extends Component {
         <Row styleName="my-info-container">
           <Col md={2}>
             <div styleName="avatar">
-              <Image src={avatar || defaultAvatar} />
+              <Avatar
+                src={avatar ? avatar.location : undefined}
+                userId={id}
+              />
             </div>
           </Col>
 

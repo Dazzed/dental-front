@@ -12,19 +12,22 @@ import { getItem } from 'utils/localStorage';
  */
 export default function request (url, options = {}) {
   const authToken = getItem('auth_token');
-  const headers = { Accept: 'application/json' };
+  const headers = {};
   const opts = Object.assign({}, options);
 
   if (authToken) {
     headers.Authorization = `JWT ${authToken}`;
   }
 
+  headers.Accept = 'application/json';
+  headers['Content-Type'] = 'application/json';
+
   opts.headers = Object.assign({}, options.headers, headers);
 
   return fetch(url, opts)
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => data);
+    .then(data => data);
 }
 
 /**

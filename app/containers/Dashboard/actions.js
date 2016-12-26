@@ -47,7 +47,27 @@ import {
   REQUEST_REPORT,
 
   UPDATE_PATIENT_SEARCH,
+  UPLOAD_AVATAR,
+  SET_AVATAR,
 } from 'containers/Dashboard/constants';
+
+
+export function uploadAvatar (file, userId) {
+  return {
+    type: UPLOAD_AVATAR,
+    file,
+    userId,
+  };
+}
+
+
+export function setAvatar (avatar, userId) {
+  return {
+    type: SET_AVATAR,
+    avatar,
+    userId,
+  };
+}
 
 
 export function setEditingMember (memberId, userId) {

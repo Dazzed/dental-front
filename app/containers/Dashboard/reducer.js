@@ -31,6 +31,8 @@ import {
   DELETE_MEMBER_SUCCESS,
 
   UPDATE_PATIENT_SEARCH,
+
+  SET_AVATAR,
 } from './constants';
 
 
@@ -58,6 +60,22 @@ function dashboardReducer (state = initialState, action) {
   let members;
 
   switch (action.type) {
+    case SET_AVATAR:
+      members = state.myMembers.map((item) => {
+        if (item.id === action.userId) {
+          return {
+            ...item,
+            avatar: action.avatar,
+          };
+        }
+        return item;
+      });
+
+      return {
+        ...state,
+        myMembers: members,
+      };
+
     case PAYMENT_DONE:
       // if myPatients exists we are in dentist dashboard
       if (state.myPatients) {
