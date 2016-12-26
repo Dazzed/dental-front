@@ -140,7 +140,7 @@ class SignupFinalForm extends React.Component {
             type="text"
             component={LabeledInput}
             label="Zip code"
-            width={6}
+            className="col-md-6"
           />
 
           <Field
@@ -150,7 +150,7 @@ class SignupFinalForm extends React.Component {
             maskChar=" "
             component={LabeledInput}
             label="Phone"
-            width={6}
+            className="col-md-6"
           />
 
           <Field
@@ -182,22 +182,6 @@ class SignupFinalForm extends React.Component {
             </Col>
             <Col md={6}>
               <Field
-                name="officeId"
-                type="select"
-                label="Dental Office"
-                component={LabeledInput}
-                width={12}
-              >
-                <option value="">Select dental office</option>
-                {offices.map(e =>
-                  <option value={e.id} key={e.id}>
-                    {e.officeName}
-                  </option>
-                )}
-              </Field>
-            </Col>
-            <Col md={6}>
-              <Field
                 name="contactMethod"
                 type="select"
                 label="Contatct method"
@@ -211,6 +195,22 @@ class SignupFinalForm extends React.Component {
                     key={key}
                   >
                     {PREFERRED_CONTACT_METHODS[key]}
+                  </option>
+                )}
+              </Field>
+            </Col>
+            <Col md={6}>
+              <Field
+                name="officeId"
+                type="select"
+                label="Dental Office"
+                component={LabeledInput}
+                width={12}
+              >
+                <option value="">Select dental office</option>
+                {offices.map(e =>
+                  <option value={e.id} key={e.id}>
+                    {e.officeName}
                   </option>
                 )}
               </Field>

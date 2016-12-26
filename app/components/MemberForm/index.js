@@ -5,7 +5,11 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 // import Image from 'react-bootstrap/lib/Image';
 
-import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
+import {
+  SEX_TYPES,
+  PREFERRED_CONTACT_METHODS,
+  MEMBER_RELATIONSHIP_TYPES,
+} from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
 import renderDatePicker from 'components/DatePicker';
 import { editingMemberSelector } from 'containers/Dashboard/selectors';
@@ -92,9 +96,7 @@ export default class MemberForm extends React.Component {
                 </option>
               )}
             </Field>
-          </Row>
 
-          <Row>
             <Field
               name="birthDate"
               type="date"
@@ -102,6 +104,41 @@ export default class MemberForm extends React.Component {
               label="Birthdate"
               className="col-md-6"
             />
+          </Row>
+
+          <Row>
+            <Field
+              name="sex"
+              type="select"
+              label="Gender"
+              component={LabeledInput}
+              className="col-md-6"
+            >
+              <option value="">Select gender</option>
+              {Object.keys(SEX_TYPES).map(key =>
+                <option value={key} key={key}>
+                  {SEX_TYPES[key]}
+                </option>
+              )}
+            </Field>
+
+            <Field
+              name="contactMethod"
+              type="select"
+              label="Contatct method"
+              component={LabeledInput}
+              className="col-md-6"
+            >
+              <option value="">Select preferred contact method</option>
+              {Object.keys(PREFERRED_CONTACT_METHODS).map(key =>
+                <option
+                  value={key}
+                  key={key}
+                >
+                  {PREFERRED_CONTACT_METHODS[key]}
+                </option>
+              )}
+            </Field>
           </Row>
 
           <Row className="form-group">

@@ -9,8 +9,10 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import 'react-datepicker/dist/react-datepicker.css';
 import './styles.css';
 
-const renderDatePicker = ({ input, label, meta: { touched, error } }) => (
-  <div className="col-md-12">
+const renderDatePicker = ({
+  input, label, className, meta: { touched, error }
+}) => (
+  <div className={className || 'col-md-12'}>
     <FormGroup className={touched && error ? 'has-error' : ''}>
       <Col sm={12}>
         <ControlLabel>{label}</ControlLabel>
@@ -37,6 +39,7 @@ renderDatePicker.propTypes = {
   input: React.PropTypes.object.isRequired,
   meta: React.PropTypes.object.isRequired,
   label: React.PropTypes.string,
+  className: React.PropTypes.string,
 };
 
 export default renderDatePicker;

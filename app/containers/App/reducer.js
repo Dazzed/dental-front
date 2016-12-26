@@ -2,6 +2,10 @@ import get from 'lodash/get';
 import { getItem } from 'utils/localStorage';
 
 import {
+  SET_AVATAR,
+} from 'containers/Dashboard/constants';
+
+import {
   SET_AUTH_STATE,
   SET_USER_DATA,
   DENTIST_SPECIALTIES_SUCCESS,
@@ -9,10 +13,6 @@ import {
   CHANGE_PAGE_TITLE,
 } from './constants';
 
-
-import {
-  SET_AVATAR,
-} from 'containers/Dashboard/constants';
 
 const initialState = {
   loggedIn: !!getItem('auth_token'),

@@ -1,10 +1,6 @@
 import { takeLatest } from 'redux-saga';
-
-import {
-  call, put
-} from 'redux-saga/effects';
-
-import { push } from 'react-router-redux';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
+import { push, LOCATION_CHANGE } from 'react-router-redux';
 
 import { removeItem } from 'utils/localStorage';
 
@@ -16,11 +12,17 @@ import { setAuthState, setUserData } from 'containers/App/actions';
 
 // Bootstrap sagas
 export default [
-  logoutFlow,
+  main
 ];
 
+function* main () {
+  const watcherInstance = yield fork(logoutWatcher);
 
-function* logoutFlow () {
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherInstance);
+}
+
+function* logoutWatcher () {
   yield* takeLatest(LOGOUT, function* handler () {
     try {
       yield call(removeItem, 'auth_token');

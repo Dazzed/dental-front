@@ -21,11 +21,11 @@ import {
 
 // Bootstrap sagas
 export default [
-  submitFlow,
+  main,
 ];
 
 
-function* submitFlow () {
+function* main () {
   const watcherA = yield fork(profileDataFetcher);
   const watcherB = yield fork(submitFormWatcher);
 
@@ -34,7 +34,7 @@ function* submitFlow () {
   yield cancel(watcherB);
 }
 
-export function* profileDataFetcher () {
+function* profileDataFetcher () {
   yield* takeLatest(FETCH_PROFILE_DATA, function* handler () {
     try {
       const response = yield call(request, '/api/v1/users/me');
@@ -49,7 +49,7 @@ export function* profileDataFetcher () {
   });
 }
 
-export function* submitFormWatcher () {
+function* submitFormWatcher () {
   while (true) {
     const { payload } = yield take(SUBMIT_PROFILE_FORM);
 

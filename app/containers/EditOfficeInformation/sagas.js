@@ -1,6 +1,7 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest } from 'redux-saga';
-import { put, call, select } from 'redux-saga/effects';
+import { take, call, put, fork, cancel, select } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { initialize } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 
@@ -21,8 +22,21 @@ import {
   selectDentistInfo,
 } from './selectors';
 
+export default [
+  main
+];
+
+function* main () {
+  const watcherA = yield fork(fetchDentistInfo);
+  const watcherB = yield fork(updateDentistInfo);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherA);
+  yield cancel(watcherB);
+}
+
 // Individual exports for testing
-export function* fetchDentistInfo () {
+function* fetchDentistInfo () {
   yield* takeLatest(FETCH_DENTIST_INFO, function* handler () {
     try {
       const dentistInfo = yield call(request, '/api/v1/users/me/dentist-info');
@@ -37,7 +51,7 @@ export function* fetchDentistInfo () {
   });
 }
 
-export function* updateDentistInfo () {
+function* updateDentistInfo () {
   yield* takeLatest(UPDATE_DENTIST_INFO, function* handler (action) {
     try {
       const body = action.payload;
@@ -56,9 +70,3 @@ export function* updateDentistInfo () {
     }
   });
 }
-
-// All sagas to be loaded
-export default [
-  fetchDentistInfo,
-  updateDentistInfo,
-];

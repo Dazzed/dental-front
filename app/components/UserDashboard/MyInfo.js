@@ -4,13 +4,13 @@ import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
-import Image from 'react-bootstrap/lib/Image';
+// import Image from 'react-bootstrap/lib/Image';
 import FaCalendar from 'react-icons/lib/fa/calendar';
 import FaEnvelope from 'react-icons/lib/fa/envelope';
 import FaPhone from 'react-icons/lib/fa/phone';
-import Avatar from './Avatar';
 
 import { US_STATES, PREFERRED_CONTACT_METHODS } from 'common/constants';
+import Avatar from './Avatar';
 import styles from './MyInfo.css';
 
 

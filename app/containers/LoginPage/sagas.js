@@ -4,11 +4,8 @@
 
 /* eslint-disable no-constant-condition, consistent-return */
 
-import {
-  take, call, put, cancel, cancelled, fork
-} from 'redux-saga/effects';
-
-import { push } from 'react-router-redux';
+import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
 import get from 'lodash/get';
 
@@ -25,10 +22,17 @@ import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
 // Bootstrap sagas
 export default [
-  loginFlow,
+  main
 ];
 
-function* loginFlow () {
+function* main () {
+  const watcherInstance = yield fork(loginWatcher);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherInstance);
+}
+
+function* loginWatcher () {
   while (true) {
     // listen for the LOGIN_REQUEST action dispatched on form submit
     const { payload: { data, resolve, reject } } = yield take(LOGIN_REQUEST);
