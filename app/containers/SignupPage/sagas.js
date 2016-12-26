@@ -4,7 +4,8 @@
 
 // /* eslint-disable no-constant-condition, consistent-return */
 
-import { take, call, put } from 'redux-saga/effects';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { stopSubmit } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 import mapValues from 'lodash/mapValues';
@@ -15,10 +16,17 @@ import { SIGNUP_REQUEST } from './constants';
 
 // Bootstrap sagas
 export default [
-  signupFlow
+  main
 ];
 
-function* signupFlow () {
+function* main () {
+  const watcherInstance = yield fork(signupWatcher);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherInstance);
+}
+
+function* signupWatcher () {
   while (true) {
     // listen for the SIGNUP_REQUEST action dispatched on form submit
     const { payload } = yield take(SIGNUP_REQUEST);

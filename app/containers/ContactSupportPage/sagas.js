@@ -16,11 +16,11 @@ import {
 
 // Bootstrap sagas
 export default [
-  submitFlow,
+  main,
 ];
 
 
-function* submitFlow () {
+function* main () {
   const watcher = yield fork(submitFormWatcher);
 
   yield take(LOCATION_CHANGE);
@@ -28,7 +28,7 @@ function* submitFlow () {
 }
 
 
-export function* submitFormWatcher () {
+function* submitFormWatcher () {
   while (true) {
     const { payload } = yield take(SUBMIT_CONTACT_SUPPORT);
 

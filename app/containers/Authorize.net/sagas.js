@@ -28,7 +28,7 @@ let charging = false;
 
 // Global Sagas are being injected upon every location change
 // Strictly need to cancel so that many requests are avoided.
-export function* mergedSaga () {
+function* main () {
   const watcherA = yield fork(requestCreditCard);
   const watcherB = yield fork(requestPendingAmount);
   const watcherC = yield fork(requestCharge);
@@ -39,7 +39,7 @@ export function* mergedSaga () {
   yield cancel(watcherC);
 }
 
-export function* requestPendingAmount () {
+function* requestPendingAmount () {
   yield* takeEvery(REQUEST_PENDING_AMOUNT, function* handler (action) {
     try {
       const response = yield call(
@@ -57,7 +57,7 @@ export function* requestPendingAmount () {
 }
 
 
-export function* requestCreditCard () {
+function* requestCreditCard () {
   yield* takeLatest(REQUEST_CARD_INFO, function* handler (action) {
     try {
       const response = yield call(
@@ -75,7 +75,7 @@ export function* requestCreditCard () {
 }
 
 
-export function* requestCharge () {
+function* requestCharge () {
   yield* takeLatest(REQUEST_CHARGE, function* handler (action) {
     if (charging) {
       return;
@@ -115,6 +115,5 @@ export function* requestCharge () {
 
 // All sagas to be loaded
 export default [
-  mergedSaga,
+  main,
 ];
-

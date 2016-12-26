@@ -1,4 +1,5 @@
-import { take, call, put } from 'redux-saga/effects';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { stopSubmit } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 import mapValues from 'lodash/mapValues';
@@ -11,11 +12,17 @@ import { DENTIST_SIGNUP_REQUEST } from './constants';
 
 // Bootstrap sagas
 export default [
-  signupFlow,
+  main,
 ];
 
+function* main () {
+  const watcherInstance = yield fork(signupWatcher);
 
-function* signupFlow () {
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherInstance);
+}
+
+function* signupWatcher () {
   while (true) {
     // listen for the SIGNUP_REQUEST action dispatched on form submit
     const { payload } = yield take(DENTIST_SIGNUP_REQUEST);

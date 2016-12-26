@@ -93,31 +93,31 @@ export function* commonSaga () {
   yield cancel(watcherD);
 }
 
-export function* fetchMyDentistWatcher () {
+function* fetchMyDentistWatcher () {
   yield* takeLatest(MY_DENTIST_REQUEST, fetchMyDentist);
 }
 
-export function* fetchMyMembersWatcher () {
+function* fetchMyMembersWatcher () {
   yield* takeLatest(MY_MEMBERS_REQUEST, fetchMyMembers);
 }
 
-export function* fetchMyPatientsWatcher () {
+function* fetchMyPatientsWatcher () {
   yield* takeLatest(MY_PATIENTS_REQUEST, fetchMyPatients);
 }
 
-export function* fetchConversationWatcher () {
+function* fetchConversationWatcher () {
   yield* takeLatest(CONVERSATION_REQUEST, fetchConversation);
 }
 
-export function* fetchNewMsgCountWatcher () {
+function* fetchNewMsgCountWatcher () {
   yield* takeEvery(NEW_MSG_COUNT_REQUEST, fetchNewMsgCountFn);
 }
 
-export function* markMsgReadWatcher () {
+function* markMsgReadWatcher () {
   yield* takeLatest(MARK_MSG_READ_REQUEST, markMsgRead);
 }
 
-export function* fetchMyDentist () {
+function* fetchMyDentist () {
   try {
     const requestURL = '/api/v1/users/me/dentist';
     const response = yield call(request, requestURL);
@@ -129,7 +129,7 @@ export function* fetchMyDentist () {
   }
 }
 
-export function* fetchMyMembers () {
+function* fetchMyMembers () {
   try {
     const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
@@ -140,7 +140,7 @@ export function* fetchMyMembers () {
   }
 }
 
-export function* fetchMyPatients () {
+function* fetchMyPatients () {
   try {
     const requestURL = '/api/v1/users/me/members';
     const response = yield call(request, requestURL);
@@ -156,7 +156,7 @@ export function* fetchMyPatients () {
   }
 }
 
-export function* fetchConversation (action) {
+function* fetchConversation (action) {
   const { payload } = action;
 
   try {
@@ -169,7 +169,7 @@ export function* fetchConversation (action) {
   }
 }
 
-export function* fetchNewMsgCountFn (action) {
+function* fetchNewMsgCountFn (action) {
   const { payload } = action;
   const data = {
     senderId: payload.senderId,
@@ -188,7 +188,7 @@ export function* fetchNewMsgCountFn (action) {
   }
 }
 
-export function* markMsgRead (action) {
+function* markMsgRead (action) {
   const { payload } = action;
 
   try {
@@ -201,7 +201,7 @@ export function* markMsgRead (action) {
   }
 }
 
-export function* submitMessageFormWatcher () {
+function* submitMessageFormWatcher () {
   while (true) {
     const {
       payload: {
@@ -228,7 +228,7 @@ export function* submitMessageFormWatcher () {
   }
 }
 
-export function* submitClientReviewFormWatcher () {
+function* submitClientReviewFormWatcher () {
   while (true) {
     const {
       payload: {
@@ -254,7 +254,7 @@ export function* submitClientReviewFormWatcher () {
   }
 }
 
-export function* submitInvitePatientFormWatcher () {
+function* submitInvitePatientFormWatcher () {
   while (true) {
     const { payload } = yield take(SUBMIT_INVITE_PATIENT_FORM);
 
@@ -274,7 +274,7 @@ export function* submitInvitePatientFormWatcher () {
   }
 }
 
-export function* submitFormWatcher () {
+function* submitFormWatcher () {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
     const memberId = payload.id;
@@ -319,7 +319,7 @@ export function* submitFormWatcher () {
 }
 
 
-export function* deleteMemberWatcher () {
+function* deleteMemberWatcher () {
   while (true) {
     const { payload, userId } = yield take(DELETE_MEMBER_REQUEST);
 
@@ -345,7 +345,7 @@ export function* deleteMemberWatcher () {
 }
 
 
-export function* requestPayBill () {
+function* requestPayBill () {
   yield* takeLatest(REQUEST_PAYMENT_BILL, function* handler (action) {
     try {
       const body = { token: action.payload.id };
@@ -383,7 +383,7 @@ function download (data, filename, type) {
   }
 }
 
-export function* requestReport () {
+function* requestReport () {
   yield* takeLatest(REQUEST_REPORT, function* handler () {
     try {
       const response = yield call(request, '/api/v1/users/me/reports');
