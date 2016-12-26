@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const compression = require('compression');
 const proxy = require('express-http-proxy');
+const bodyParser = require('body-parser');
 
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 
@@ -71,6 +72,9 @@ const addProxyMiddleware = (app) => {
 
   console.log('pxURL : ' + pxURL); //eslint-disable-line
 
+  app.use(bodyParser.json({ limit: '4mb' }));
+  app.use(bodyParser.urlencoded({ limit: '4mb', extended: true }));
+
   // Proxy requests
   app.use('/api', proxy(pxURL, {
     forwardPath: (req) => {
@@ -78,6 +82,7 @@ const addProxyMiddleware = (app) => {
 
       return `${prefix}${reqPath}`;
     },
+    reqBodyEncoding: null,
   }));
 };
 
