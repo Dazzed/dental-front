@@ -1,6 +1,7 @@
 // import { take, call, put, select } from 'redux-saga/effects';
 import { takeLatest, takeEvery } from 'redux-saga';
-import { put, call } from 'redux-saga/effects';
+import { take, call, put, fork, cancel } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
 
 import request from 'utils/request';
@@ -24,6 +25,19 @@ import {
 // Maybe dynamic sagas are doing this???
 let charging = false;
 
+
+// Global Sagas are being injected upon every location change
+// Strictly need to cancel so that many requests are avoided.
+export function* mergedSaga () {
+  const watcherA = yield fork(requestCreditCard);
+  const watcherB = yield fork(requestPendingAmount);
+  const watcherC = yield fork(requestCharge);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherA);
+  yield cancel(watcherB);
+  yield cancel(watcherC);
+}
 
 export function* requestPendingAmount () {
   yield* takeEvery(REQUEST_PENDING_AMOUNT, function* handler (action) {
@@ -101,8 +115,6 @@ export function* requestCharge () {
 
 // All sagas to be loaded
 export default [
-  requestCreditCard,
-  requestPendingAmount,
-  requestCharge,
+  mergedSaga,
 ];
 

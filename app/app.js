@@ -53,6 +53,8 @@ const rootRoute = {
       .then(([ sagas, dashboard, payment ]) => {
         cb(null, App);
         const { injectSagas } = getHooks(store);
+        // Each of these sagas needs to be cancelled upon location change
+        // Otherwise there will be many duplicates!
         injectSagas(sagas.default);
         injectSagas(dashboard.default);
         injectSagas(payment.default);

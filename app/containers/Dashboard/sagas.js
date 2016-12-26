@@ -80,6 +80,19 @@ export function* dentistDashboardSaga () {
   yield cancel(watcherB);
 }
 
+export function* commonSaga () {
+  const watcherA = yield fork(submitFormWatcher);
+  const watcherB = yield fork(deleteMemberWatcher);
+  const watcherC = yield fork(requestPayBill);
+  const watcherD = yield fork(requestReport);
+
+  yield take(LOCATION_CHANGE);
+  yield cancel(watcherA);
+  yield cancel(watcherB);
+  yield cancel(watcherC);
+  yield cancel(watcherD);
+}
+
 export function* fetchMyDentistWatcher () {
   yield* takeLatest(MY_DENTIST_REQUEST, fetchMyDentist);
 }
@@ -385,8 +398,5 @@ export function* requestReport () {
 export default [
   userDashboardSaga,
   dentistDashboardSaga,
-  submitFormWatcher,
-  deleteMemberWatcher,
-  requestPayBill,
-  requestReport,
+  commonSaga,
 ];
