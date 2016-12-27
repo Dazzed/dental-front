@@ -4,7 +4,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { replace } from 'react-router-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
@@ -16,6 +16,7 @@ import logo from 'assets/images/logo2.png';
 import SignupFinalForm from 'components/SignupFinalForm';
 import { selectCurrentUser } from 'containers/App/selectors';
 
+import { meFromToken } from 'containers/App/actions';
 import * as actions from './actions';
 import { officesSelector, signupCompleteSelector } from './selectors';
 import styles from './styles.css';
@@ -28,6 +29,7 @@ class SignupFinalPage extends Component {
   static propTypes = {
     onFinalSignupRequest: React.PropTypes.func,
     clearFinalSignupStatus: React.PropTypes.func,
+    loadUserFromToken: React.PropTypes.func,
     fetchOffices: React.PropTypes.func,
     currentUser: React.PropTypes.oneOfType([
       React.PropTypes.object,
@@ -47,11 +49,13 @@ class SignupFinalPage extends Component {
   }
 
   goToHomePage = () => {
+    this.props.loadUserFromToken();
     this.props.clearFinalSignupStatus();
     this.props.changeRoute('/');
   }
 
-  goToLogout = () => {
+  goToLogout = (evt) => {
+    evt.preventDefault();
     this.props.clearFinalSignupStatus();
     this.props.changeRoute('/accounts/logout');
   }
@@ -164,7 +168,8 @@ function mapDispatchToProps (dispatch) {
     },
     clearFinalSignupStatus: () => dispatch(actions.clearFinalSignupStatus()),
     fetchOffices: () => dispatch(actions.fetchOffices()),
-    changeRoute: (url) => dispatch(push(url)),
+    changeRoute: (url) => dispatch(replace(url)),
+    loadUserFromToken: () => dispatch(meFromToken()),
   };
 }
 

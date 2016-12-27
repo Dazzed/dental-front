@@ -298,7 +298,6 @@ export default class Form extends React.Component {
     const readOnly = this.props.card && !this.state.editing;
     const formatChars = { 9: '[0-9X]' };
 
-    console.log(this.props);
     const noAmount =
       parseFloat(this.props.amounts[this.props.user.id] || 0) === 0.0;
 

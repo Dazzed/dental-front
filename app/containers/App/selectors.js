@@ -51,6 +51,11 @@ const selectAuthState = createSelector(
   (substate) => substate.loggedIn,
 );
 
+const selectAuthLoadingState = createSelector(
+  selectGlobal,
+  (substate) => substate.loggedIn && !substate.currentUser,
+);
+
 // Test if signup process is all complete by checking some required fields
 const selectSignupCompleteState = createSelector(
   selectGlobal,
@@ -86,6 +91,7 @@ export {
   selectUserName,
   selectUserNameParts,
   selectAuthState,
+  selectAuthLoadingState,
   selectSignupCompleteState,
   selectCurrentUser,
   selectDentistSpecialties,

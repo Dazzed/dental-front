@@ -2,6 +2,7 @@ import { selectCurrentPath } from 'common/selectors/router.selector';
 
 import {
   selectAuthState,
+  selectAuthLoadingState,
   selectSignupCompleteState,
 } from 'containers/App/selectors';
 import createReducer from '../reducers';
@@ -26,19 +27,30 @@ function injectAsyncSagas (store) {
 function redirectToLogin (store) {
   return (nextState, replace) => {
     const isLoggedIn = selectAuthState(store.getState());
-    const isSignupComplete = selectSignupCompleteState(store.getState());
-    const currentPath = selectCurrentPath(store.getState());
-    const signupFinalPath = '/accounts/complete-signup';
 
+    // If user is not logged in, redirect to '/accounts/login'
     if (!isLoggedIn) {
       replace({
         pathname: '/accounts/login',
         state: { nextPathname: nextState.location.pathname },
       });
-    } else {
-      if (!isSignupComplete && currentPath !== signupFinalPath) { // eslint-disable-line
-        replace(signupFinalPath);
-      }
+      return;
+    }
+
+    // In the process of loading user details from auth token
+    // Let's wait (do nothing here in this hook)
+    const loadingFromToken = selectAuthLoadingState(store.getState());
+    if (loadingFromToken) {
+      return;
+    }
+
+    // Check the signup complete state, if not yet completed full signup
+    // Redirect to /accoutns/complete-signup
+    const currentPath = selectCurrentPath(store.getState());
+    const signupFinalPath = '/accounts/complete-signup';
+    const isSignupComplete = selectSignupCompleteState(store.getState());
+    if (!isSignupComplete && currentPath !== signupFinalPath) {
+      replace(signupFinalPath);
     }
   };
 }
