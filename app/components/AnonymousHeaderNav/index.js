@@ -26,14 +26,6 @@ function AnonymousHeaderNav ({ goToLogin, goToSignUp }) {
             Log In
           </button>
         </NavItem>
-        <NavItem>
-          <button
-            className="btn btn-padding btn-cyan btn-round"
-            onClick={goToSignUp}
-          >
-            Sign Up
-          </button>
-        </NavItem>
       </Nav>
     </Navbar.Collapse>
   );
