@@ -7,6 +7,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Table from 'react-bootstrap/lib/Table';
 import payform from 'payform';
 import InputMask from 'react-input-mask';
 import Card from 'react-credit-card';
@@ -28,6 +29,7 @@ import {
   userOpenedSelector,
   isChargingSelector,
   amountsSelector,
+  detailsSelector,
 } from './selectors';
 
 import {
@@ -44,10 +46,10 @@ import style from './styles.css';
 function mapDispatchToProps (dispatch) {
   return {
     clearData: () => dispatch(clearData()),
-    openForm: (userId) => dispatch(openForm(userId)),
+    openForm: userId => dispatch(openForm(userId)),
     requestCardInfo: userId => dispatch(requestCardInfo(userId)),
     requestCharge: (userId, data) => dispatch(requestCharge(userId, data)),
-    requestPendingAmount: (userId) => dispatch(requestPendingAmount(userId)),
+    requestPendingAmount: userId => dispatch(requestPendingAmount(userId)),
   };
 }
 
@@ -62,6 +64,7 @@ function mapDispatchToProps (dispatch) {
   card: cardSelector(state),
   userOpened: userOpenedSelector(state),
   amounts: amountsSelector(state),
+  details: detailsSelector(state),
 }), mapDispatchToProps)
 export default class Form extends React.Component {
 
@@ -83,6 +86,7 @@ export default class Form extends React.Component {
     user: React.PropTypes.shape({
       id: React.PropTypes.number,
     }).isRequired,
+    details: React.PropTypes.shape({}),
   }
 
   constructor (props) {
@@ -265,7 +269,7 @@ export default class Form extends React.Component {
     let allChecked = false;
 
     checkList[index] = !checkList[index];
-    allChecked = checkList.filter((c) => !!c).length === checkList.length;
+    allChecked = checkList.filter(c => !!c).length === checkList.length;
 
     this.setState({
       checked: checkList,
@@ -293,12 +297,11 @@ export default class Form extends React.Component {
   }
 
   render () {
-    const { isRequesting } = this.props;
+    const { isRequesting, details } = this.props;
     const state = this.state;
     const readOnly = this.props.card && !this.state.editing;
     const formatChars = { 9: '[0-9X]' };
 
-    console.log(this.props);
     const noAmount =
       parseFloat(this.props.amounts[this.props.user.id] || 0) === 0.0;
 
@@ -553,11 +556,35 @@ export default class Form extends React.Component {
                     </Col>
                   </Row>
                 </form>
+                <br />
+                {details && details.members.length > 0 &&
+                <Table striped bordered condensed hover>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Member</th>
+                      <th>Charges</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {details.members.map((member, item) =>
+                      <tr key={item}>
+                        <td>{item + 1}</td>
+                        <td>{member.fullName}</td>
+                        <td>{member.monthly}</td>
+                      </tr>)}
+                    <tr>
+                      <td colSpan="2"><strong>Total</strong></td>
+                      <td><strong>{details.total}</strong></td>
+                    </tr>
+                  </tbody>
+                </Table>}
               </div>}
-              {this.props.error &&
-                <Alert bsStyle="danger">
-                  <p>{this.props.error}</p>
-                </Alert>}
+
+            {this.props.error &&
+            <Alert bsStyle="danger">
+              <p>{this.props.error}</p>
+            </Alert>}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleHide}>Close</Button>
