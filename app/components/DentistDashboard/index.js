@@ -13,7 +13,6 @@ import {
 
 import InvitePatientModal from 'components/InvitePatientModal';
 import Intro from './Intro';
-import RevenueStats from './RevenueStats';
 import PatientGroup from './PatientGroup';
 import PatientAutosuggest from './PatientAutosuggest';
 import styles from './index.css';
@@ -131,7 +130,7 @@ export default class DentistDashboard extends Component {
           />
         )}
 
-        <RevenueStats total={67800} />
+        <br />
 
         <InvitePatientModal
           showModal={this.state.showInviteModal}
@@ -152,7 +151,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     fetchMyPatients: () => dispatch(fetchMyPatients()),
-    changeRoute: (url) => dispatch(push(url)),
+    changeRoute: url => dispatch(push(url)),
     requestReport: () => dispatch(requestReport()),
   };
 }
