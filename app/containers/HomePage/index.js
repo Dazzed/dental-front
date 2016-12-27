@@ -84,14 +84,6 @@ export default class HomePage extends React.Component {
                     Log In
                   </button>
                 </NavItem>
-                <NavItem>
-                  <button
-                    className="btn-cyan btn-round btn-outline"
-                    onClick={this.goToSignUp}
-                  >
-                    Dentist Portal
-                  </button>
-                </NavItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -202,12 +194,6 @@ export default class HomePage extends React.Component {
               mydentalmarketplace.com can help your practice reach its
               potential.
             </p>
-            <button
-              className="btn-cyan btn-round btn-outline"
-              onClick={this.goToSignUp}
-            >
-              Dentist Portal
-            </button>
             &nbsp;&nbsp;
             <button
               className="btn-green btn-round btn-outline"

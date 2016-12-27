@@ -18,7 +18,7 @@ function Footer () {
     <div styleName="footer">
       <div className="container">
         <div className="col-md-5">
-          &copy; 2016 www.mydentalmarketplace.com all rights reserved
+          &copy; Powered by DentalHQ.com 2016
         </div>
         <div className="col-md-7 text-right">
           <Nav bsStyle="pills" pullRight>
