@@ -558,33 +558,33 @@ export default class Form extends React.Component {
                 </form>
                 <br />
                 {details && details.members.length > 0 &&
-                <Table striped bordered condensed hover>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Member</th>
-                      <th>Charges</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {details.members.map((member, item) =>
-                      <tr key={item}>
-                        <td>{item + 1}</td>
-                        <td>{member.fullName}</td>
-                        <td>{member.monthly}</td>
-                      </tr>)}
-                    <tr>
-                      <td colSpan="2"><strong>Total</strong></td>
-                      <td><strong>{details.total}</strong></td>
-                    </tr>
-                  </tbody>
-                </Table>}
+                  <Table striped bordered condensed hover>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Member</th>
+                        <th>Charges</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {details.members.map((member, item) =>
+                        <tr key={item}>
+                          <td>{item + 1}</td>
+                          <td>{member.fullName}</td>
+                          <td>{member.monthly}</td>
+                        </tr>)}
+                      <tr>
+                        <td colSpan="2"><strong>Total</strong></td>
+                        <td><strong>{details.total}</strong></td>
+                      </tr>
+                    </tbody>
+                  </Table>}
               </div>}
 
             {this.props.error &&
-            <Alert bsStyle="danger">
-              <p>{this.props.error}</p>
-            </Alert>}
+              <Alert bsStyle="danger">
+                <p>{this.props.error}</p>
+              </Alert>}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleHide}>Close</Button>
