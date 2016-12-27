@@ -1,12 +1,12 @@
 import { take, call, put, select } from 'redux-saga/effects';
 import { replace } from 'react-router-redux';
 
+import {
+  selectCurrentPath, selectNextPathname
+} from 'common/selectors/router.selector';
 import request from 'utils/request';
 import { getItem, removeItem } from 'utils/localStorage';
 
-import {
-  selectNextPathname,
-} from 'common/selectors/router.selector';
 import {
   selectCurrentUser,
   selectSignupCompleteState,
@@ -27,9 +27,10 @@ function* refreshAuthFlow () {
 function* loadUserFromToken () {
   const requestURL = '/api/v1/users/me';
   const user = yield select(selectCurrentUser);
+  const isFullyLoaded = yield select(selectSignupCompleteState);
   const authToken = getItem('auth_token');
 
-  if (user || !authToken) {
+  if ((user && isFullyLoaded) || !authToken) {
     return;
   }
 
@@ -38,30 +39,22 @@ function* loadUserFromToken () {
     if (!response.err) {
       yield put(setUserData(response.data));
 
-      // If the user landed on `/login` as the first route, redirect him
-      // const currentPath = yield select(selectCurrentPath);
-      // const pathsToRedirect = [
-      //   '/accounts/login',
-      //   '/accounts/signup',
-      //   '/accounts/dentist-signup'
-      // ];
-      // if (pathsToRedirect.indexOf(currentPath) > -1) {
-      //   console.log('COMMON SAGA going to dashboard', currentPath)
-      //   yield put(push('/dashboard'));
-      // }
-
+      // This is mainly for the step after login page
       const nextPathName = yield select(selectNextPathname);
+      const currentPath = yield select(selectCurrentPath);
       const isSignupComplete = yield select(selectSignupCompleteState);
+      const dashboardPath = '/dashboard';
+      const signupPath = '/accounts/complete-signup';
 
       if (nextPathName) {
         yield put(replace(nextPathName));
       } else {
-        if (isSignupComplete) { // eslint-disable-line
+        if (isSignupComplete && currentPath !== dashboardPath) { // eslint-disable-line
           console.log('COMMON SAGA - GOING TO DASHBOARD');
-          yield put(replace('/dashboard'));
-        } else {
+          yield put(replace(dashboardPath));
+        } else if (!isSignupComplete && currentPath !== signupPath) {
           console.log('COMMON SAGA - GOING TO COMPLETE SIGNUP ');
-          yield put(replace('/accounts/complete-signup'));
+          yield put(replace(signupPath));
         }
       }
     }

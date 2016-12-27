@@ -11,7 +11,6 @@ import { stopSubmit } from 'redux-form';
 import { actions as toastrActions } from 'react-redux-toastr';
 import mapValues from 'lodash/mapValues';
 
-import { meFromToken } from 'containers/App/actions';
 import request from 'utils/request';
 import {
   finalSignupSuccess, fetchOfficesSuccess
@@ -42,7 +41,6 @@ function* finalSignupWatcher () {
 
     if (isSuccess) {
       yield put(finalSignupSuccess());
-      yield put(meFromToken());
     }
   }
 }
