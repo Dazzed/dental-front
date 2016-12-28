@@ -53,6 +53,8 @@ import {
   setAvatar,
 } from 'containers/Dashboard/actions';
 
+import { requestPendingAmount } from 'containers/Authorize.net/actions';
+
 
 // Individual exports for testing
 export function* userDashboardSaga () {
@@ -313,6 +315,8 @@ function* submitFormWatcher () {
       } else {
         yield put(setAddedMember(response.data, userId));
       }
+
+      yield put(requestPendingAmount(userId));
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
 
@@ -342,6 +346,7 @@ function* deleteMemberWatcher () {
       yield put(toastrActions.success('', message));
 
       yield put(setDeletedMember(payload.id, userId));
+      yield put(requestPendingAmount(userId));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
