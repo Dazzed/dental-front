@@ -135,8 +135,9 @@ class SignupFinalPage extends Component {
                     <br />
 
                     <p>
-                      Thank you for completing signing up!
-                      Now you have full access to all features.
+                      Thank you for completing signing up!<br />
+                      Please click anywhere to continue to{' '}
+                      your dental portal and select your services.
                     </p>
                     <br />
                   </div>

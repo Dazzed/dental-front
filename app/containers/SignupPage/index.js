@@ -122,7 +122,8 @@ class SignupPage extends Component {
                     <br />
 
                     <p>
-                      Thank you for signing up!
+                      Thank you for signing up!<br />
+                      Please check your email to complete your account set up.
                     </p>
                     <br />
                   </div>
