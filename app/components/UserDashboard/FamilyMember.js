@@ -44,8 +44,26 @@ export default class FamilyMember extends React.Component {
     } = this.props;
 
     const fullName = `${firstName} ${lastName}`;
+    let nextPayment = '---';
 
-    const memberSince = moment(createdAt).format('MMM D, YYYY');
+    if (subscription) {
+      switch (subscription.status) {
+        case 'active':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        case 'canceled':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        case 'late':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        default:
+          nextPayment = '---';
+      }
+    }
 
     return (
       <div styleName="family-member">
@@ -68,7 +86,7 @@ export default class FamilyMember extends React.Component {
           </Col>
           <Col md={1}>${subscription.monthly}</Col>
           <Col md={1} className="text-right">{subscription.status}</Col>
-          <Col md={2} className="text-center">{memberSince}</Col>
+          <Col md={2} className="text-center">{nextPayment}</Col>
           {!accountHolder &&
             <Col md={2} styleName="action-icon" className="text-right">
               <FaEdit

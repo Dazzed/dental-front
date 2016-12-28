@@ -85,7 +85,7 @@ export default class FamilyMembers extends Component {
           <Col md={3}>Family Relationshiop</Col>
           <Col md={1}>Fee</Col>
           <Col md={1}>Status</Col>
-          <Col md={2} className="text-center">Member Since</Col>
+          <Col md={2} className="text-center">Paid Thru</Col>
           <Col md={2} className="text-center">Actions</Col>
         </Row>
 
