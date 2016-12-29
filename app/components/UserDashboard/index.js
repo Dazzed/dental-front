@@ -82,14 +82,6 @@ export default class UserDashboard extends Component {
       <div className="user-dashboard-container">
         <Intro fullName={fullName} />
 
-        <h3>Your Dentist</h3>
-
-        <MyDentist
-          dentist={myDentist}
-          newMsgCount={newMsgCountBySender}
-          markMsgRead={this.markMsgRead}
-        />
-
         <div styleName="h3-with-button" className="clearfix">
           <h3>Your Info</h3>
           <button
@@ -111,6 +103,15 @@ export default class UserDashboard extends Component {
           owner={loggedInUser.id}
         />
 
+        <h3>Your Dentist</h3>
+
+        <MyDentist
+          dentist={myDentist}
+          newMsgCount={newMsgCountBySender}
+          markMsgRead={this.markMsgRead}
+        />
+
+
         <div className="clearfix">
           <PaymentForm user={loggedInUser} />
         </div>
@@ -119,4 +120,3 @@ export default class UserDashboard extends Component {
     );
   }
 }
-
