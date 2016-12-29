@@ -8,11 +8,9 @@ import { push } from 'react-router-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
-import Image from 'react-bootstrap/lib/Image';
 import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
 
-import logo from 'assets/images/logo2.png';
 import SignupForm from 'components/SignupForm';
 
 import * as actions from './actions';
@@ -111,12 +109,7 @@ class SignupPage extends Component {
             <Modal show={isSignedUp} onHide={this.goToHomePage}>
               <Modal.Body styleName="modal-background">
                 <div className="row" styleName="row">
-                  <div className="col-md-5 text-center">
-                    <Image
-                      src={logo}
-                      style={{ width: 200 }}
-                    />
-                  </div>
+                  <div className="col-md-5 text-center" />
                   <div className="col-md-7" styleName="main-content">
                     <h2>Hi, { fullName }</h2>
                     <br />
