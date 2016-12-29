@@ -208,8 +208,8 @@ const QuestionAndAnswers = [
     answer: (
       <ul>
         <li>
-          Your membership plan is setup by your dentist and as such all concerns and questions should be directed towards your dental provider.  If you feel that your provider is unable to remedy your concerns, you may email DentalHQ at <a href="mailto:DentalHQ@gmail.com"
-        rel="noopener noreferrer">DentalHQ@gmail.com</a>.  However, please understand that DentalHQ simply processes these memberships and has no authority over your dental provider.
+          Your membership plan is setup by your dentist and as such all concerns and questions should be directed towards your dental provider.  If you feel that your provider is unable to remedy your concerns, you may email DentalHQ at <a href="mailto:info@dentalhq.com"
+        rel="noopener noreferrer">info@dentalhq.com</a>.  However, please understand that DentalHQ simply processes these memberships and has no authority over your dental provider.
         </li>
       </ul>
     )

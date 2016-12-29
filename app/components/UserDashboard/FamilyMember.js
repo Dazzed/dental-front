@@ -40,12 +40,24 @@ export default class FamilyMember extends React.Component {
         accountHolder,
         avatar,
         subscription,
+        birthDate,
       },
     } = this.props;
 
     const fullName = `${firstName} ${lastName}`;
 
     const memberSince = moment(createdAt).format('MMM D, YYYY');
+
+    // const type = moment(birthDate).format('MMDDYYYY');
+    // const typeDate = moment(type, "MMDDYYYY").fromNow();
+    //
+    // const typeDate = moment(type).diff(typeDate, "MMDDYYYY",true);
+
+    const typeNow = moment().toDate();
+    const typeDate = moment(typeNow).diff(birthDate, "years", true);
+
+    const checkDate = (typeDate < 13) ? "Child" : "Adult";
+
 
     return (
       <div styleName="family-member">
@@ -61,7 +73,7 @@ export default class FamilyMember extends React.Component {
             {accountHolder &&
               <p styleName="account-owner">(Account Owner)</p>}
           </Col>
-          <Col md={2}>
+          <Col md={1}>
             {accountHolder
               ? 'Self'
               : MEMBER_RELATIONSHIP_TYPES[familyRelationship]}
@@ -69,8 +81,9 @@ export default class FamilyMember extends React.Component {
           <Col md={1}>${subscription.monthly}</Col>
           <Col md={1} className="text-right">{subscription.status}</Col>
           <Col md={2} className="text-center">{memberSince}</Col>
+          <Col md={1} className="text-center">{checkDate}</Col>
           {!accountHolder &&
-            <Col md={2} styleName="action-icon" className="text-right">
+            <Col md={1} styleName="action-icon" className="text-right">
               <FaEdit
                 size={16}
                 onClick={this.handleEdit}

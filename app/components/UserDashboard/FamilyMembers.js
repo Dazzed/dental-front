@@ -82,12 +82,12 @@ export default class FamilyMembers extends Component {
       <Well styleName="family-members-container">
         <Row styleName="list-header">
           <Col md={3}>Name</Col>
-          <Col md={3}>Family Relationship</Col>
+          <Col md={2} className="text-center">Family Relationship</Col>
           <Col md={1}>Fee</Col>
           <Col md={1}>Status</Col>
           <Col md={2} className="text-center">Member Since</Col>
-          <Col md={1} className="text-right">Type</Col>
-          <Col md={1} className="text-right">Actions</Col>
+          <Col md={1} className="text-left">Type</Col>
+          <Col md={2} className="text-left">Actions</Col>
         </Row>
 
         <Row styleName="list-content">
