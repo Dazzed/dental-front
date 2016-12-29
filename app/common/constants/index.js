@@ -63,7 +63,7 @@ export const US_STATES = {
   WY: 'Wyoming',
 };
 
-export const contactSupportEmail = 'support@cawasa.com';
+export const contactSupportEmail = 'questions@dentalhq.com';
 
 
 export const SEX_TYPES = {

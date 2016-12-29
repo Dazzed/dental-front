@@ -224,7 +224,7 @@ export default class FaqPage extends React.Component {
         <PageHeader title="Frequently Asked Questions" />
         <div className="container">
           <div className="col-md-12">
-            { QuestionAndAnswers.map((item, index) => 
+            { QuestionAndAnswers.map((item, index) =>
                 <QuestionAndAnswer
                   key={index}
                   {...item}
@@ -234,8 +234,8 @@ export default class FaqPage extends React.Component {
           </div>
           <div className="col-md-12">
             Don't see your question here?  Please contact support here{' '}
-            <a href="mailto:support@cawasa.com">
-              support@cawasa.com
+            <a href="mailto:info@dentalhq.com">
+              info@dentalhq.com
             </a>.
           </div>
         </div>
