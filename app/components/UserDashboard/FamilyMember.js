@@ -56,7 +56,7 @@ export default class FamilyMember extends React.Component {
               userId={this.props.details.id}
             />
           </Col>
-          <Col md={3} styleName="col-with-name">
+          <Col md={2} styleName="col-with-name">
             <p styleName="member-name">{fullName}</p>
             {accountHolder &&
               <p styleName="account-owner">(Account Owner)</p>}
