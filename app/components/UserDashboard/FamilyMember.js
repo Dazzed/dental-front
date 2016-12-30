@@ -68,12 +68,12 @@ export default class FamilyMember extends React.Component {
               userId={this.props.details.id}
             />
           </Col>
-          <Col md={2} styleName="col-with-name">
+          <Col md={2}>
             <p styleName="member-name">{fullName}</p>
             {accountHolder &&
               <p styleName="account-owner">(Account Owner)</p>}
           </Col>
-          <Col md={1}>
+          <Col md={2} className="text-center">
             {accountHolder
               ? 'Self'
               : MEMBER_RELATIONSHIP_TYPES[familyRelationship]}
@@ -83,7 +83,7 @@ export default class FamilyMember extends React.Component {
           <Col md={2} className="text-center">{memberSince}</Col>
           <Col md={1} className="text-center">{checkDate}</Col>
           {!accountHolder &&
-            <Col md={1} styleName="action-icon" className="text-right">
+            <Col md={2} styleName="action-icon" className="text-center">
               <FaEdit
                 size={16}
                 onClick={this.handleEdit}
