@@ -43,19 +43,19 @@ function* loadUserFromToken () {
       const nextPathName = yield select(selectNextPathname);
       const currentPath = yield select(selectCurrentPath);
       const isSignupComplete = yield select(selectSignupCompleteState);
-      const dashboardPath = '/dashboard';
-      const signupPath = '/accounts/complete-signup';
+      const redirectPaths = [
+        '/accounts/login',
+        '/accounts/signup',
+        '/accounts/dentist-signup',
+        '/accounts/complete-signup'
+      ];
 
       if (nextPathName) {
         yield put(replace(nextPathName));
-      } else {
-        if (isSignupComplete && currentPath !== dashboardPath) { // eslint-disable-line
-          console.log('COMMON SAGA - GOING TO DASHBOARD');
-          yield put(replace(dashboardPath));
-        } else if (!isSignupComplete && currentPath !== signupPath) {
-          console.log('COMMON SAGA - GOING TO COMPLETE SIGNUP ');
-          yield put(replace(signupPath));
-        }
+      } else if (!isSignupComplete) {
+        yield put(replace('/accounts/complete-signup'));
+      } else if (isSignupComplete && redirectPaths.indexOf(currentPath) > -1) {
+        yield put(replace('/dashboard'));
       }
     }
   } catch (e) {
