@@ -23,6 +23,7 @@ import {
  */
 const initialState = {
   card: null,
+  details: null,
   error: null,
   charging: false,
   requested: false,
@@ -54,7 +55,8 @@ function paymentFormReducer (state = initialState, action) {
     case SET_CARD_INFO:
       return {
         ...state,
-        card: action.info,
+        card: action.data ? action.data.info : null,
+        details: action.data ? action.data.details : null,
         requesting: false,
         requested: true,
       };

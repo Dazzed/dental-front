@@ -42,7 +42,7 @@ export default class NavBar extends React.Component {
   }
 
   render () {
-    const { firstName, lastName } = this.props.loggedInUser;
+    const { firstName, lastName, avatar } = this.props.loggedInUser;
     const fullName = `${firstName} ${lastName}`;
 
     return (
@@ -63,7 +63,7 @@ export default class NavBar extends React.Component {
 
         {this.props.loggedInUser ?
           <LoggedInHeaderNav
-            fullName={fullName}
+            fullName={fullName} avatar={avatar}
           /> :
           <AnonymousHeaderNav
             goToLogin={this.goToLogin}

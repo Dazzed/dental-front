@@ -75,9 +75,9 @@ export function setError (error) {
 }
 
 
-export function setCardInfo (info) {
+export function setCardInfo (data) {
   return {
     type: SET_CARD_INFO,
-    info,
+    data,
   };
 }

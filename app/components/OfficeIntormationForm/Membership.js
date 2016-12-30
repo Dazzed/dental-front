@@ -127,31 +127,6 @@ export default class Membership extends React.Component {
           <Col md={3}>
             <Row>
               <Field
-                name={`${field}.activationCode`}
-                component={Input}
-                label="Activation Code"
-                type="text"
-              />
-            </Row>
-          </Col>
-          <Col md={8}>
-            <label htmlFor="activationCode">
-              Enter their activation fee
-            </label>
-            <p>
-              The activation fee should be what cost on the top of the first
-              months membership fee that you need to receive to cover the
-              OVERHEAD of that first new patient appointment. This protects
-              your bottom line from patients ending their membership after
-              only one month of payments.
-            </p>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md={3}>
-            <Row>
-              <Field
                 name={`${field}.discount`}
                 component={Input}
                 label="Enter discount code"
@@ -174,4 +149,3 @@ export default class Membership extends React.Component {
     );
   }
 }
-

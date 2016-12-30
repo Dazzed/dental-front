@@ -2,12 +2,17 @@ import get from 'lodash/get';
 import { getItem } from 'utils/localStorage';
 
 import {
+  SET_AVATAR,
+} from 'containers/Dashboard/constants';
+
+import {
   SET_AUTH_STATE,
   SET_USER_DATA,
   DENTIST_SPECIALTIES_SUCCESS,
   SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
 } from './constants';
+
 
 const initialState = {
   loggedIn: !!getItem('auth_token'),
@@ -21,6 +26,18 @@ export default function appReducer (state = initialState, action) {
   const { payload } = action;
 
   switch (action.type) {
+
+    case SET_AVATAR:
+      if (action.userId === state.currentUser.id) {
+        return {
+          ...state,
+          currentUser: {
+            ...state.currentUser,
+            avatar: action.avatar,
+          },
+        };
+      }
+      return state;
 
     case SET_AUTH_STATE:
       return {
