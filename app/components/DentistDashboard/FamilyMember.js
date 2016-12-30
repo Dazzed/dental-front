@@ -64,12 +64,15 @@ export default class FamilyMember extends React.Component {
         <Col md={1} sm={1}>
           ${subscription.monthly}
         </Col>
+        {payingMember &&
+          <Col md={2} styleName="action-icon disabled" className="text-right">
+            <FaEdit size={16} />
+            <FaClose size={16} />
+          </Col>
+        }
         {!payingMember &&
           <Col md={2} styleName="action-icon" className="text-right">
-            <FaEdit
-              size={16}
-              onClick={this.handleEdit}
-            />
+            <FaEdit size={16} onClick={this.handleEdit} />
             <Confirm
               onConfirm={this.handleDelete}
               body={`Are you sure you want to delete '${fullName}'?`}
@@ -78,7 +81,8 @@ export default class FamilyMember extends React.Component {
             >
               <a><FaClose size={16} /></a>
             </Confirm>
-          </Col>}
+          </Col>
+        }
       </Row>
     );
   }
