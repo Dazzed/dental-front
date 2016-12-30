@@ -34,7 +34,7 @@ export default class FamilyMember extends React.Component {
         firstName,
         lastName,
         familyRelationship,
-        accountHolder,
+        payingMember,
         subscription,
         birthDate,
       },
@@ -64,7 +64,7 @@ export default class FamilyMember extends React.Component {
         <Col md={1} sm={1}>
           ${subscription.monthly}
         </Col>
-        {!accountHolder &&
+        {!payingMember &&
           <Col md={2} styleName="action-icon" className="text-right">
             <FaEdit
               size={16}
