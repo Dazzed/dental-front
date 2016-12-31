@@ -37,6 +37,15 @@
   padding-left: 0;
 }
 
+.col-with-fee {{
+	margin-left: 0;
+	padding-left: 0;
+	}}
+
+.col-with-relation {
+	width: 17%;
+}
+
 .member-name {
   color: $dark-cyan;
   margin-bottom: 0;
@@ -78,4 +87,3 @@
     }
   }
 }
-
