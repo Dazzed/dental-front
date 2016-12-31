@@ -208,8 +208,8 @@ const QuestionAndAnswers = [
     answer: (
       <ul>
         <li>
-          Your membership plan is setup by your dentist and as such all concerns and questions should be directed towards your dental provider.  If you feel that your provider is unable to remedy your concerns, you may email DentalHQ at <a href="mailto:DentalHQ@gmail.com"
-        rel="noopener noreferrer">DentalHQ@gmail.com</a>.  However, please understand that DentalHQ simply processes these memberships and has no authority over your dental provider.
+          Your membership plan is setup by your dentist and as such all concerns and questions should be directed towards your dental provider.  If you feel that your provider is unable to remedy your concerns, you may email DentalHQ at <a href="mailto:info@dentalhq.com"
+        rel="noopener noreferrer">info@dentalhq.com</a>.  However, please understand that DentalHQ simply processes these memberships and has no authority over your dental provider.
         </li>
       </ul>
     )
@@ -224,7 +224,7 @@ export default class FaqPage extends React.Component {
         <PageHeader title="Frequently Asked Questions" />
         <div className="container">
           <div className="col-md-12">
-            { QuestionAndAnswers.map((item, index) => 
+            { QuestionAndAnswers.map((item, index) =>
                 <QuestionAndAnswer
                   key={index}
                   {...item}
@@ -234,8 +234,8 @@ export default class FaqPage extends React.Component {
           </div>
           <div className="col-md-12">
             Don't see your question here?  Please contact support here{' '}
-            <a href="mailto:support@cawasa.com">
-              support@cawasa.com
+            <a href="mailto:info@dentalhq.com">
+              info@dentalhq.com
             </a>.
           </div>
         </div>

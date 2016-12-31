@@ -14,6 +14,14 @@ import FaListUl from 'react-icons/lib/fa/list-ul';
 
 import styles from './styles.css';
 
+//Notifications Link
+//
+// <li role="presentation">
+//   <span>
+//     <Link to="#" role="button">Notifications </Link>
+//     <FaListUl size={16} />
+//   </span>
+// </li>
 
 function LoggedInHeaderNav ({ fullName, avatar }) {
   // temporary default face icon for now
@@ -31,12 +39,7 @@ function LoggedInHeaderNav ({ fullName, avatar }) {
         />
       </Link>
       <ul className="nav navbar-nav navbar-right" styleName="nav">
-        <li role="presentation">
-          <span>
-            <Link to="#" role="button">Notifications </Link>
-            <FaListUl size={16} />
-          </span>
-        </li>
+
         <li role="presentation">
           <span>Welcome <Link to="/accounts/profile">{fullName}</Link></span>
         </li>

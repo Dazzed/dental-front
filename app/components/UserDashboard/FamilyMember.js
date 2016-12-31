@@ -39,6 +39,7 @@ export default class FamilyMember extends React.Component {
         payingMember,
         avatar,
         subscription,
+        birthDate,
       },
     } = this.props;
 
@@ -64,6 +65,17 @@ export default class FamilyMember extends React.Component {
       }
     }
 
+    // const type = moment(birthDate).format('MMDDYYYY');
+    // const typeDate = moment(type, "MMDDYYYY").fromNow();
+    //
+    // const typeDate = moment(type).diff(typeDate, "MMDDYYYY",true);
+
+    const typeNow = moment().toDate();
+    const typeDate = moment(typeNow).diff(birthDate, "years", true);
+
+    const checkDate = (typeDate < 13) ? "Child" : "Adult";
+
+
     return (
       <div styleName="family-member">
         <Row styleName="details">
@@ -73,7 +85,7 @@ export default class FamilyMember extends React.Component {
               userId={this.props.details.id}
             />
           </Col>
-          <Col md={3} styleName="col-with-name">
+          <Col md={2} styleName="col-with-name">
             <p styleName="member-name">{fullName}</p>
             {payingMember &&
               <p styleName="account-owner">(Account Owner)</p>}
