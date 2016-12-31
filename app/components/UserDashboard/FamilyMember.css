@@ -69,5 +69,13 @@
   a {
     color: $black;
   }
+
+  &.disabled {
+    color: $gray;
+
+    :hover {
+      color: $gray;
+    }
+  }
 }
 

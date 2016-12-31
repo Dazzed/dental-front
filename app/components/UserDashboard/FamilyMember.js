@@ -36,8 +36,7 @@ export default class FamilyMember extends React.Component {
         firstName,
         lastName,
         familyRelationship,
-        createdAt,
-        accountHolder,
+        payingMember,
         avatar,
         subscription,
         birthDate,
@@ -45,8 +44,37 @@ export default class FamilyMember extends React.Component {
     } = this.props;
 
     const fullName = `${firstName} ${lastName}`;
+    let nextPayment = '---';
 
-    const memberSince = moment(createdAt).format('MMM D, YYYY');
+    if (subscription) {
+      switch (subscription.status) {
+        case 'active':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        case 'canceled':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        case 'late':
+          nextPayment = moment(subscription.endAt).format('MMM D, YYYY');
+          break;
+
+        default:
+          nextPayment = '---';
+      }
+    }
+
+    // const type = moment(birthDate).format('MMDDYYYY');
+    // const typeDate = moment(type, "MMDDYYYY").fromNow();
+    //
+    // const typeDate = moment(type).diff(typeDate, "MMDDYYYY",true);
+
+    const typeNow = moment().toDate();
+    const typeDate = moment(typeNow).diff(birthDate, "years", true);
+
+    const checkDate = (typeDate < 13) ? "Child" : "Adult";
+
 
     // const type = moment(birthDate).format('MMDDYYYY');
     // const typeDate = moment(type, "MMDDYYYY").fromNow();
@@ -70,24 +98,26 @@ export default class FamilyMember extends React.Component {
           </Col>
           <Col md={2} styleName="col-with-name">
             <p styleName="member-name">{fullName}</p>
-            {accountHolder &&
+            {payingMember &&
               <p styleName="account-owner">(Account Owner)</p>}
           </Col>
-          <Col md={1}>
-            {accountHolder
+          <Col md={2}>
+            {payingMember
               ? 'Self'
               : MEMBER_RELATIONSHIP_TYPES[familyRelationship]}
           </Col>
           <Col md={1}>${subscription.monthly}</Col>
           <Col md={1} className="text-right">{subscription.status}</Col>
-          <Col md={2} className="text-center">{memberSince}</Col>
-          <Col md={1} className="text-center">{checkDate}</Col>
-          {!accountHolder &&
-            <Col md={1} styleName="action-icon" className="text-right">
-              <FaEdit
-                size={16}
-                onClick={this.handleEdit}
-              />
+          <Col md={2} className="text-center">{nextPayment}</Col>
+          {payingMember &&
+            <Col md={2} styleName="action-icon disabled" className="text-right">
+              <FaEdit size={16} />
+              <FaClose size={16} />
+            </Col>
+          }
+          {!payingMember &&
+            <Col md={2} styleName="action-icon" className="text-right">
+              <FaEdit size={16} onClick={this.handleEdit} />
               <Confirm
                 onConfirm={this.handleDelete}
                 body={`Are you sure you want to delete '${fullName}'?`}
@@ -96,7 +126,8 @@ export default class FamilyMember extends React.Component {
               >
                 <a><FaClose size={16} /></a>
               </Confirm>
-            </Col>}
+            </Col>
+          }
         </Row>
       </div>
     );

@@ -125,7 +125,7 @@ export default class MemberForm extends React.Component {
             <Field
               name="contactMethod"
               type="select"
-              label="Contatct method"
+              label="Contact method"
               component={LabeledInput}
               className="col-md-6"
             >
