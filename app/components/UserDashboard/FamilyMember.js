@@ -75,18 +75,6 @@ export default class FamilyMember extends React.Component {
 
     const checkDate = (typeDate < 13) ? "Child" : "Adult";
 
-
-    // const type = moment(birthDate).format('MMDDYYYY');
-    // const typeDate = moment(type, "MMDDYYYY").fromNow();
-    //
-    // const typeDate = moment(type).diff(typeDate, "MMDDYYYY",true);
-
-    const typeNow = moment().toDate();
-    const typeDate = moment(typeNow).diff(birthDate, "years", true);
-
-    const checkDate = (typeDate < 13) ? "Child" : "Adult";
-
-
     return (
       <div styleName="family-member">
         <Row styleName="details">
