@@ -85,24 +85,26 @@ export default class FamilyMember extends React.Component {
             />
           </Col>
           <Col md={2} styleName="col-with-name">
-            <p styleName="member-name">{fullName}</p>
+            <p styleName="member-name">{fullName} ({checkDate})</p>
+						{subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
             {payingMember &&
-              <p styleName="account-owner">(Account Owner)</p>}
+              <p styleName="account-owner">(Account Owner)</p>}<br/>
+
           </Col>
-          <Col md={2}>
+          <Col md={1} styleName="col-with-relation">
             {payingMember
               ? 'Self'
               : MEMBER_RELATIONSHIP_TYPES[familyRelationship]}
           </Col>
-          <Col md={1}>${subscription.monthly}</Col>
-          <Col md={1} className="text-right">{subscription.status}</Col>
-          <Col md={2} className="text-center">{nextPayment}</Col>
+          <Col md={1} styleName="col-with-relation">${subscription.monthly}</Col>
+          <Col md={2} styleName="col-with-fee">{nextPayment}</Col>
           {payingMember &&
             <Col md={2} styleName="action-icon disabled" className="text-right">
               <FaEdit size={16} />
               <FaClose size={16} />
             </Col>
           }
+
           {!payingMember &&
             <Col md={2} styleName="action-icon" className="text-right">
               <FaEdit size={16} onClick={this.handleEdit} />
