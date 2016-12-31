@@ -8,11 +8,9 @@ import { replace } from 'react-router-redux';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
-import Image from 'react-bootstrap/lib/Image';
 import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
 
-import logo from 'assets/images/logo2.png';
 import SignupFinalForm from 'components/SignupFinalForm';
 import { selectCurrentUser } from 'containers/App/selectors';
 
@@ -124,19 +122,15 @@ class SignupFinalPage extends Component {
             <Modal show={isSignedUp} onHide={this.goToHomePage}>
               <Modal.Body styleName="modal-background">
                 <div className="row" styleName="row">
-                  <div className="col-md-5 text-center">
-                    <Image
-                      src={logo}
-                      style={{ width: 200 }}
-                    />
-                  </div>
+                  <div className="col-md-5 text-center" />
                   <div className="col-md-7" styleName="main-content">
                     <h2>Hi, { fullName }</h2>
                     <br />
 
                     <p>
-                      Thank you for completing signing up!
-                      Now you have full access to all features.
+                      Thank you for completing signing up!<br />
+                      Please click anywhere to continue to{' '}
+                      your dental portal and select your services.
                     </p>
                     <br />
                   </div>

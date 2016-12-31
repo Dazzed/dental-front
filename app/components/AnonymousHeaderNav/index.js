@@ -14,7 +14,7 @@ import NavItem from 'react-bootstrap/lib/NavItem';
 import styles from './styles.css';
 
 
-function AnonymousHeaderNav ({ goToLogin, goToSignUp }) {
+function AnonymousHeaderNav ({ goToLogin }) {
   return (
     <Navbar.Collapse>
       <Nav pullRight styleName="nav">
@@ -33,7 +33,6 @@ function AnonymousHeaderNav ({ goToLogin, goToSignUp }) {
 
 AnonymousHeaderNav.propTypes = {
   goToLogin: React.PropTypes.func.isRequired,
-  goToSignUp: React.PropTypes.func.isRequired,
 };
 
 export default CSSModules(styles, { allowMultiple: true })(AnonymousHeaderNav);

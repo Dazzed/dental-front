@@ -23,11 +23,6 @@ function Footer () {
         <div className="col-md-7 text-right">
           <Nav bsStyle="pills" pullRight>
             <li>
-              <Link to="/legal" activeClassName="active">
-                Legal Information
-              </Link>
-            </li>
-            <li>
               <Link to="/terms" activeClassName="active">
                 Terms and Conditions
               </Link>
