@@ -269,6 +269,14 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/privacy',
+      name: 'privacy',
+      getComponent (nextState, cb) {
+        System.import('containers/PrivacyPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    },{
       path: '/faq',
       name: 'faq',
       getComponent (nextState, cb) {

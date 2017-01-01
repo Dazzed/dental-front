@@ -22,6 +22,11 @@ function Footer () {
         </div>
         <div className="col-md-7 text-right">
           <Nav bsStyle="pills" pullRight>
+						<li>
+              <Link to="/privacy" activeClassName="active">
+                Privacy
+              </Link>
+            </li>
             <li>
               <Link to="/terms" activeClassName="active">
                 Terms and Conditions
