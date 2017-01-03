@@ -141,7 +141,7 @@ const QuestionAndAnswers = [
     answer: (
       <ul>
         <li>
-          No refunds are available with your membership, however you may cancel at any time.
+          Full refund will be allowed if request is made within 30 days of initial payment unless any services have already been rendered. No refunds will be issued once services have been rendered. All refund requests should be emailed to dentalHQ@gmail.com.
         </li>
       </ul>
     )
