@@ -83,7 +83,7 @@ export default class FamilyMembers extends Component {
         <Row styleName="list-header">
           <Col md={4}>Name</Col>
           <Col md={2} className="text-left">Relation</Col>
-          <Col md={2} classNAme="text-left">Fee</Col>
+          <Col md={2} className="text-left">Fee</Col>
           <Col md={2} className="text-left">Paid Thru</Col>
           <Col md={2} className="text-right">Actions</Col>
         </Row>
