@@ -5,18 +5,13 @@ import Dropzone from 'react-dropzone';
 import styles from './styles.css';
 
 export default class ClassName extends React.Component {
-  
-    onDrop: function (acceptedFiles) {     
-      console.log('Accepted files: ', acceptedFiles);
-    },
-      
-
+ 
   render () {
     return (
       <Well>
-        <h2>Upload Photos!!</h2>
+        <h2>Upload Multiple Photos</h2>
 
-        <Dropzone className={styles.dropzone} multiple={true} accept="image/*" onDrop={this.onDrop}>
+        <Dropzone className={styles.dropzone}>
           <p>
             Click or drop image files here
           </p>
