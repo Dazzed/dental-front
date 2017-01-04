@@ -14,7 +14,7 @@ export default class ClassName extends React.Component {
   render () {
     return (
       <Well>
-        <h2>Upload Photos!</h2>
+        <h2>Upload Photos!!</h2>
 
         <Dropzone className={styles.dropzone} multiple={true} accept="image/*" onDrop={this.onDrop}>
           <p>
