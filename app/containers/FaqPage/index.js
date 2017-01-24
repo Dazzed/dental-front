@@ -213,7 +213,18 @@ const QuestionAndAnswers = [
         </li>
       </ul>
     )
-  }
+  },
+  {
+    no: 13,
+  question: 'Refund',
+  answer: (
+    <ul>
+      <li>
+        Full refund will be allowed if request is made within 30 days of initial payment unless any services have already been rendered. No refunds will be issued once services have been rendered.  All refund requests should be emailed to <a href="mailto:dentalHQ@gmail.com">dentalHQ@gmail.com</a>.
+      </li>
+    </ul>
+  )
+}
 ];
 
 @CSSModules(styles)
