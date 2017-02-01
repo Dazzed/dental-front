@@ -51,3 +51,10 @@ git push heroku master
 Development
 ================================================================================
 Run `npm start` to see your app at `localhost:3000`.
+
+
+Deployment
+================================================================================
+```
+git push heroku master
+```
