@@ -20,7 +20,7 @@ import {
 } from 'containers/EditOfficeInformation/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
-import toothImg from 'assets/images/tooth-mag.png';
+import toothImg from 'assets/images/tooth-logo.png';
 import styles from './styles.css';
 
 

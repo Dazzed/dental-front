@@ -23,7 +23,7 @@ import Footer from 'components/Footer';
 
 import styles from './styles.css';
 
-import logo from './logo.png';
+import logo from 'assets/images/logo.png';
 import raleigh from './raleigh.png';
 import durham from './durham.png';
 import chapelHill from './chapel-hill.png';

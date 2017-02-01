@@ -12,7 +12,7 @@ import Image from 'react-bootstrap/lib/Image';
 import CSSModules from 'react-css-modules';
 import omit from 'lodash/omit';
 
-import logo from 'assets/images/logo2.png';
+import logo from 'assets/images/wells-family-dentistry-logo.png';
 import DentistSignupForm from 'components/DentistSignupForm';
 import { dentistSpecialtiesRequest } from 'containers/App/actions';
 

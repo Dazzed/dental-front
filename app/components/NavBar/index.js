@@ -14,8 +14,8 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 
 import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
 import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
-// import logo from 'assets/images/dental-logo.png';
-// import logo from 'assets/images/logo2.png';
+// import logo from 'assets/images/logo.png';
+// import logo from 'assets/images/wells-family-dentistry-logo.png';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 import styles from './styles.css';
