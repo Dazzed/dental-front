@@ -63,6 +63,42 @@ export default class HomePage extends React.Component {
   render () {
     return (
       <div styleName="wrapper">
+
+        {/*
+        First Block
+        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        */}
+        <div styleName="first-block">
+          <header>
+            <h1>
+              <img src={logo} alt="Dental HQ" />
+            </h1>
+            <h2>Quality, Affordable Membership Plans</h2>
+          </header>
+
+          <form>
+            <input type="text" styleName="search" placeholder="Enter your location, zip code, dentist name, etc." />
+            <br />
+            <input type="submit" styleName="get-started" value="GET STARTED" />
+          </form>
+
+          <div styleName="next-section-cover">
+            <h3>
+              Find affordable monthly service plans for the best dentists in your area!
+            </h3>
+            <p>
+              How DentalHQ Works
+              <br />
+              \/
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+
+
+      {/*
+      <div styleName="wrapper">
         <div className="container">
           <Navbar styleName="navbar">
             <Navbar.Header>
@@ -208,6 +244,6 @@ export default class HomePage extends React.Component {
           </div>
         </div>
       </div>
-    );
+    */}
   }
 }
