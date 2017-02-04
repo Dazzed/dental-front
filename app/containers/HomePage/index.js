@@ -24,6 +24,9 @@ import Footer from 'components/Footer';
 import styles from './styles.css';
 
 import logo from 'assets/images/logo.png';
+import calendarIcon from 'assets/images/calendar-icon.png';
+import checkboardIcon from 'assets/images/checkboard-icon.png';
+import toothIcon from 'assets/images/tooth-icon.png';
 import raleigh from './raleigh.png';
 import durham from './durham.png';
 import chapelHill from './chapel-hill.png';
@@ -93,6 +96,77 @@ export default class HomePage extends React.Component {
             </p>
           </div>
         </div>
+
+        {/*
+        Second Block
+        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        -->
+        */}
+        <div styleName="second-block">
+          <div className="container">
+            <input type="button" styleName="large-button" value="WATCH VIDEO &gt;" />
+
+            <h2 styleName="large-title">
+              No insurance? No problem.
+            </h2>
+
+            <p styleName="large-text">
+              Why deal with an expensive, restrictive private insurnace plan when you can find the best dental practices near you offering affordable monthly membership plans?
+            </p>
+
+            <div className="row">
+              <div className="col-md-4">
+                <div styleName="process">
+                  <img src={toothIcon} alt="Tooth Icon" />
+                  <h3 styleName="large-title">
+                    Browse
+                  </h3>
+                  <p styleName="large-text">
+                    from our extensive
+                    <br />
+                    selection of quality
+                    <br />
+                    dentists near you.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div styleName="process">
+                  <img src={checkboardIcon} alt="Checkboard Icon" />
+                  <h3 styleName="large-title">
+                    Select
+                  </h3>
+                  <p styleName="large-text">
+                    the dentist with the
+                    <br />
+                    membership plan that
+                    <br />
+                    meets your needs.
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div styleName="process">
+                  <img src={calendarIcon} alt="Calendar Icon" />
+                  <h3 styleName="large-title">
+                    Call
+                  </h3>
+                  <p styleName="large-text">
+                    the dentist directly
+                    <br />
+                    to schedule an
+                    <br />
+                    appointment.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
     );
 
