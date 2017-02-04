@@ -26,7 +26,25 @@ pages.
   line-height: 2rem;
 }
 
+.button {
+  border: 1px solid #00adef;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+
+  color: #FFF;
+  background-color: #00adef;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: #00adef;
+    background-color: #FFF;
+  }
+}
+
 .large-button {
+  border: 2px solid #00adef;
   border-radius: 1rem;
   padding: 1.5rem 2.5rem;
 
@@ -36,6 +54,29 @@ pages.
   font-size: 1.5rem;
   font-weight: 600;
   line-height: normal;
+
+  &:hover {
+    color: #00adef;
+    background-color: #FFF;
+  }
+}
+
+.large-button__hollow {
+  border: 2px solid #FFF;
+  border-radius: 1rem;
+  padding: 1.5rem 2.5rem;
+
+  color: #FFF;
+  background-color: transparent;
+
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: rgba(105, 201, 149, 0.75);
+    background-color: #FFF;
+  }
 }
 
 
@@ -65,11 +106,18 @@ First Block
   form {
     .search {
       width: 34rem;
+      border: 1px solid #FFF;
       border-radius: 0.5rem;
       padding: 1rem 2rem;
 
       color: #737070;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.6);
+
+      &:hover,
+      &:focus,
+      &:valid {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
 
       &::-webkit-input-placeholder {
         opacity: 1;
@@ -100,15 +148,12 @@ First Block
       }
     }
 
-    .get-started {
+    .button {
       margin-top: 1rem;
-      border-radius: 0.5rem;
-      padding: 1rem 1.5rem;
 
-      color: #FFF;
-      background-color: #00adef;
-
-      font-weight: 600;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
     }
   }
 
@@ -173,69 +218,58 @@ Third Block
 ================================================================================
 */
 .third-block {
-  position: relative;
   margin-bottom: 1rem;
 
-  background: url(/b608e86be5638ac8382a385e6c27628e.jpg) center -350px / cover no-repeat;
+  background: url(assets/images/brushing-teeth.jpg) center -350px / cover no-repeat;
 
   text-align: center;
 
-  .large-title {
+  .third-block__overlay {
     display: block;
     margin: 0;
     padding: 4.5rem 0;
 
+    background-color: rgba(0, 172, 237, 0.75);
+  }
+
+  .large-title {
     color: #FFF;
-    background-color: rgba(0, 172, 237, 0.8);
   }
 }
 
 
+/*
+Fourth Block
+================================================================================
+*/
+.fourth-block {
+  margin-bottom: 1rem;
 
+  background: url(assets/images/dentist-and-woman.jpg) center -200px / cover no-repeat;
 
+  text-align: center;
 
+  .fourth-block__overlay {
+    display: block;
+    margin: 0;
+    padding: 3rem 0;
 
-
-
-
-
-
-.four-block {
-  padding-top: 11rem;
-  padding-bottom: 20rem;
-
-  li {
-    list-style-image: url('./check.png');
-    padding-top: 10px;
-    font-size: 20px;
+    background-color: rgba(105, 201, 149, 0.75);
   }
-}
 
-.navbar {
-  background: transparent;
-}
+  .large-title {
+    margin: 0 0 2rem 0;
 
-.nav {
-  margin-right: 15px;
-}
-
-li.nav-item {
-  & > a:hover,
-  & > a:active {
-    background-color: transparent;
     color: #FFF;
   }
 
-  & > a {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    color: #FFF;
-    font-size: 1rem;
-  }
-}
+  .large-text {
+    margin: 0 0 2rem 0;
 
-.footer-block {
-  > * {
-    background-color: transparent;
+    color: #FFF;
+  }
+
+  .large-button {
+    color: #FFF;
   }
 }
