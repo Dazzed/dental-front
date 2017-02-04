@@ -1,6 +1,8 @@
 /*
 Page-Wide
 ================================================================================
+NOTE: These are all good candidates for generic styles if used on multiple
+pages.
 */
 .wrapper {
   width: 100%;
@@ -42,9 +44,7 @@ First Block
 ================================================================================
 */
 .first-block {
-  background-image: url(assets/images/brushing-teeth.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: url(assets/images/brushing-teeth.jpg) top center / cover no-repeat;
 
   header {
     padding: 10rem 0 16rem 0;
@@ -167,16 +167,38 @@ Second Block
   }
 }
 
-.third-block {
-  padding-top: 5rem;
-  padding-bottom: 6rem;
 
-  li {
-    list-style-image: url('./check.png');
-    padding-top: 10px;
-    font-size: 20px;
+/*
+Third Block
+================================================================================
+*/
+.third-block {
+  position: relative;
+  margin-bottom: 1rem;
+
+  background: url(/b608e86be5638ac8382a385e6c27628e.jpg) center -350px / cover no-repeat;
+
+  text-align: center;
+
+  .large-title {
+    display: block;
+    margin: 0;
+    padding: 4.5rem 0;
+
+    color: #FFF;
+    background-color: rgba(0, 172, 237, 0.8);
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 .four-block {
   padding-top: 11rem;

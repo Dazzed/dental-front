@@ -167,6 +167,17 @@ export default class HomePage extends React.Component {
           </div>
         </div>
 
+        {/*
+        Third Block
+        ------------------------------------------------------------
+        */}
+        <div styleName="third-block">
+          <h3 styleName="large-title">
+            Membership plans starting as low as $20 a month!
+          </h3>
+        </div>
+         
+
       </div>
     );
 
