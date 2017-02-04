@@ -108,7 +108,7 @@ export default class PatientAutosuggest extends React.Component {
           inputProps={inputProps}
         />
         <a
-          href=""
+          href="#"
           onClick={this.clearSearch}
         >
           <FaClose size={16} style={{ margin: '8px' }} />

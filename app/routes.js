@@ -268,7 +268,7 @@ export default function createRoutes (store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    }, {
+    }, { // TODO: two privacy pages... :O
       path: '/privacy',
       name: 'privacy',
       getComponent (nextState, cb) {
@@ -292,7 +292,7 @@ export default function createRoutes (store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    }, {
+    }, { // TODO: two privacy pages... :O
       path: '/privacy',
       name: 'privacy',
       getComponent (nextState, cb) {

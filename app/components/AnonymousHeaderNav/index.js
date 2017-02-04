@@ -13,6 +13,7 @@ import Nav from 'react-bootstrap/lib/Nav';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import CSSModules from 'react-css-modules';
+import { Link } from 'react-router';
 
 // app
 import styles from 'components/NavBar/styles.css';
@@ -22,18 +23,10 @@ import styles from 'components/NavBar/styles.css';
 Anonymous Header Nav
 ================================================================================
 */
-function AnonymousHeaderNav ({ goToLogin }) {
+function AnonymousHeaderNav () {
   return (
-    <a href="#" onClick={goToLogin} styleName="navbar__text">Login</a>
+    <Link to="/accounts/login" styleName="navbar__text">Login</Link>
   );
 }
-
-/*
-Props
-------------------------------------------------------------
-*/
-AnonymousHeaderNav.propTypes = {
-  goToLogin: React.PropTypes.func.isRequired,
-};
 
 export default CSSModules(styles, { allowMultiple: true })(AnonymousHeaderNav);

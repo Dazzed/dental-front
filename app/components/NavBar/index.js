@@ -15,7 +15,7 @@ import React from 'react';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
 // app
@@ -38,18 +38,12 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    changeRoute: (url) => dispatch(push(url)),
-  };
-}
-
 
 /*
 NavBar
 ================================================================================
 */
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, null)
 @CSSModules(styles, { allowMultiple: true })
 export default class NavBar extends React.Component {
 
@@ -63,15 +57,15 @@ export default class NavBar extends React.Component {
   };
 
   returnLinks = {
-    '/faq': (<a href="/" styleName="navbar__text">&lt; Home</a>),
-  }
-
-  goToLogin = () => {
-    this.props.changeRoute('/accounts/login');
-  }
-
-  goToSignUp = () => {
-    this.props.changeRoute('/accounts/signup');
+    '/accounts/login': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/complete-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/dentist-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/logout': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/faq': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/privacy': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/subscribe': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/terms': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
   }
 
   render () {
@@ -82,7 +76,7 @@ export default class NavBar extends React.Component {
                      : null;
 
     let usersHeaderItems = (
-      <AnonymousHeaderNav goToLogin={this.goToLogin} goToSignUp={this.goToSignUp} />
+      <AnonymousHeaderNav />
     );
     if (this.props.loggedInUser) {
       usersHeaderItems = (
@@ -99,9 +93,9 @@ export default class NavBar extends React.Component {
           
           <div className="col-md-4" styleName="navbar__col">
             <div styleName="navbar__brand">
-              <a href="/" styleName="navbar__brand__link">
+              <Link to="/" styleName="navbar__brand__link">
                 <img src={logo} alt="DentalHQ Logo" styleName="navbar__brand__img" />
-              </a>
+              </Link>
             </div>
           </div>
           
