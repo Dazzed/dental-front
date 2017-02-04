@@ -20,7 +20,7 @@ import styles from './styles.css';
 
 
 /*
-Page Header Component
+Page Header
 ================================================================================
 TODO: Remove the `userType` prop.  New designs are blue regardless of dentist / client.
 */

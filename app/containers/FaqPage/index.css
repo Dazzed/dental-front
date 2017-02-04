@@ -21,3 +21,7 @@ pages.
   min-height: calc(100% - 52px);
   margin-bottom: 40px;
 }
+
+.content-wrapper {
+  margin: 2rem 0;
+}
