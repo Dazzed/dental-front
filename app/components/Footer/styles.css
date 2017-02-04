@@ -10,12 +10,6 @@ Imports
 /* global */
 @import '../../assets/styles/variables';
 
-/*
-Variables
-------------------------------------------------------------
-*/
-/* local */
-$footer-text-color: #BBC !default;
 
 /*
 Footer
@@ -24,8 +18,8 @@ Footer
 .footer {
   padding: 3rem 0;
 
-  color: $footer-text-color;
-  background-color: #4d4d4d;
+  color: $color-secondary-lowlight;
+  background-color: $color-primary-lowlight;
 
   font-size: 0.875rem;
 }
@@ -49,7 +43,7 @@ ul.footer__nav {
     margin: 0 0.625rem;
 
     & > a {
-      color: $footer-text-color;
+      color: $color-secondary-lowlight;
 
       cursor: pointer;
     }
@@ -57,7 +51,7 @@ ul.footer__nav {
     & > a:hover,
     & > a:active,
     & > a:focus {
-      color: #FFF;
+      color: $color-white;
 
       text-decoration: none;
     }

@@ -3,21 +3,9 @@ Home Page Styles
 ================================================================================
 */
 
-/*
-Variables
-------------------------------------------------------------
-*/
-/* local */
-$color-primary-highlight: #00A1DF !default;   /* rgb: 0,   161, 263 */
-$color-secondary-highlight: #73C8AF !default; /* rgb: 115, 200, 175 */
+/* global */
+@import '../../assets/styles/variables';
 
-$color-primary-transparent: rgba(0, 161, 263, 0.65) !default;
-$color-secondary-transparent: rgba(115, 200, 175, 0.75) !default;
-
-$color-primary-lowlight: #646569 !default;    /* rgb: 100, 101, 105 */
-$color-secondary-lowlight: #BDBBBB !default;  /* rgb: 189, 187, 187 */
-
-$color-white: #FFF !default;
 
 /*
 Page-wide Styles
@@ -120,13 +108,12 @@ IE: Login links on the RHS.
 */
 .floating-menu {
   position: fixed;
+  transform: rotate(-90deg);
   top: 200px;
   right: -148px;
   display: inline-block;
 
   font-size: 0.875rem;
-
-  transform: rotate(-90deg);
 }
 
 .floating-menu  ul.login-links {

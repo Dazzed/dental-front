@@ -1,3 +1,10 @@
+/*
+Old Variables
+================================================================================
+WARNING: DO NOT USE GOING FORWARD
+
+TODO: Refactor them out.
+*/
 $roboto-font-stack: 'Roboto', sans-serif !default;
 
 $white: #FFF;
@@ -26,3 +33,33 @@ $purple: #C4185D;
 
 $nav-height: 6.5rem;
 
+
+/*
+Style Variables
+================================================================================
+USE THESE: They are the new ones.
+
+NOTE: The value of `rem` units will be calculated based on the $font-size-base
+      variable below.
+*/
+
+/*
+Colors
+------------------------------------------------------------
+*/
+$color-white: #FFF;
+
+$color-primary-highlight: #00A1DF;   /* rgb(  0, 161, 263) */
+$color-secondary-highlight: #73C8AF; /* rgb(115, 200, 175) */
+
+$color-primary-transparent:            rgba(  0, 161, 263, 0.65);
+$color-secondary-transparent:          rgba(115, 200, 175, 0.75);
+
+$color-primary-lowlight: #646569;    /* rgb(100, 101, 105) */
+$color-secondary-lowlight: #BDBBBB;  /* rgb(189, 187, 187) */
+
+/*
+Fonts
+------------------------------------------------------------
+*/
+$font-size-base: 16px;
