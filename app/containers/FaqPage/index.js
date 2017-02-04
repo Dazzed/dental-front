@@ -1,10 +1,28 @@
+/*
+FAQ Page
+================================================================================
+Route: `/faq`
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
 import CSSModules from 'react-css-modules';
 
+// app
 import PageHeader from 'components/PageHeader';
+
+// local
 import QuestionAndAnswer from './QuestionAndAnswer';
 import styles from './index.css';
 
+/*
+Q&A Content
+------------------------------------------------------------
+*/
 /* eslint-disable */
 const QuestionAndAnswers = [
   {
@@ -214,25 +232,32 @@ const QuestionAndAnswers = [
       </ul>
     )
   },
+
   {
     no: 13,
-  question: 'Refund',
-  answer: (
-    <ul>
-      <li>
-        Full refund will be allowed if request is made within 30 days of initial payment unless any services have already been rendered. No refunds will be issued once services have been rendered.  All refund requests should be emailed to <a href="mailto:dentalHQ@gmail.com">dentalHQ@gmail.com</a>.
-      </li>
-    </ul>
-  )
+    question: 'Refund',
+    answer: (
+      <ul>
+        <li>
+          Full refund will be allowed if request is made within 30 days of initial payment unless any services have already been rendered. No refunds will be issued once services have been rendered.  All refund requests should be emailed to <a href="mailto:dentalHQ@gmail.com">dentalHQ@gmail.com</a>.
+        </li>
+      </ul>
+    )
 }
 ];
 
+
+/*
+FAQ
+================================================================================
+*/
 @CSSModules(styles)
 export default class FaqPage extends React.Component {
   render () {
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Frequently Asked Questions" />
+
         <div className="container">
           <div className="col-md-12">
             { QuestionAndAnswers.map((item, index) =>
@@ -250,6 +275,7 @@ export default class FaqPage extends React.Component {
             </a>.
           </div>
         </div>
+
       </div>
     );
   }

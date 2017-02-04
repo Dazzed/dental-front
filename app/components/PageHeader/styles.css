@@ -1,25 +1,51 @@
+/*
+Page Header Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
-.page-header-container {
-  margin-bottom: 20px;
-  box-shadow: -5px 1px 10px #A6A6A6;
-  background-color: $green;
 
-  h1 {
-    font-size: 18px;
-  }
-
-  &.client {
-    background-color: $green;
-  }
-
-  &.dentist {
-    background-color: $cyan;
-  }
-}
-
+/*
+Page Header
+================================================================================
+*/
 .page-header {
-  color: $white;
-  margin: 0 !important;
-  border: none !important;
+  border-bottom: 3.5rem solid $color-primary-lowlight;
+
+  color: $color-white;
+  background: url(assets/images/dentist-and-woman.jpg) center -235px / cover no-repeat;
+
+  text-align: center;
+
+  .page-header__overlay {
+    display: block;
+    margin: 0;
+    padding: 5rem 0;
+
+    background-color: $color-primary-transparent;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow:    0px 5px 5px 0px rgba(50, 50, 50, 0.25);
+    box-shadow:         0px 5px 5px 0px rgba(50, 50, 50, 0.25);
+
+    &.client {
+      background-color: $color-secondary-transparent;
+    }
+
+    &.dentist {
+      background-color: $color-primary-transparent;
+    }
+  }
+
+  .large-title {
+    margin: 0;
+
+    font-size: 3rem;
+    text-transform: capitalize;
+  }
 }

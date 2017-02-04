@@ -1,7 +1,9 @@
 /*
 Home Page
 ================================================================================
-This is the first thing users see of our App, at the '/' route
+Route: `/`
+
+This is the first thing users see of our App, at the '/' route.
 
 NOTE: while this component should technically be a stateless functional
 component (SFC), hot reloading does not currently support SFCs. If hot
@@ -20,7 +22,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
-// global
+// app
 import logo from 'assets/images/logo.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
@@ -40,8 +42,9 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
+
 /*
-Home Page
+Home
 ================================================================================
 */
 @connect(null, mapDispatchToProps)
@@ -63,12 +66,13 @@ export default class HomePage extends React.Component {
   }
 
   goToFaq = () => {
-    this.props.changeRoute('/faqs');
+    this.props.changeRoute('/faq');
   }
 
   render () {
     return (
       <div styleName="wrapper">
+
         {/*
         RHS Floating Menu
         ------------------------------------------------------------

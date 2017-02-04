@@ -1,5 +1,22 @@
+/*
+FAQ Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
+
+/*
+Page-Wide
+================================================================================
+NOTE: These are all good candidates for generic styles if used on multiple
+pages.
+*/
 .container-wrapper {
   min-height: calc(100% - 52px);
   margin-bottom: 40px;

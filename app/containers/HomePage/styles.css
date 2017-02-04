@@ -3,12 +3,16 @@ Home Page Styles
 ================================================================================
 */
 
-/* global */
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
 
 /*
-Page-wide Styles
+Page-Wide
 ================================================================================
 NOTE: These are all good candidates for generic styles if used on multiple
 pages.
