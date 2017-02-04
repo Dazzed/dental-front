@@ -1,6 +1,27 @@
 /*
 Home Page Styles
 ================================================================================
+*/
+
+/*
+Variables
+------------------------------------------------------------
+*/
+/* local */
+$color-primary-highlight: #00A1DF !default;   /* rgb: 0,   161, 263 */
+$color-secondary-highlight: #73C8AF !default; /* rgb: 115, 200, 175 */
+
+$color-primary-transparent: rgba(0, 161, 263, 0.65) !default;
+$color-secondary-transparent: rgba(115, 200, 175, 0.75) !default;
+
+$color-primary-lowlight: #646569 !default;    /* rgb: 100, 101, 105 */
+$color-secondary-lowlight: #BDBBBB !default;  /* rgb: 189, 187, 187 */
+
+$color-white: #FFF !default;
+
+/*
+Page-wide Styles
+================================================================================
 NOTE: These are all good candidates for generic styles if used on multiple
 pages.
 */
@@ -27,19 +48,19 @@ pages.
 }
 
 .button {
-  border: 1px solid #00adef;
+  border: 1px solid $color-primary-highlight;
   border-radius: 0.5rem;
   padding: 1rem 1.5rem;
 
-  color: #FFF;
-  background-color: #00adef;
+  color: $color-white;
+  background-color: $color-primary-highlight;
 
   font-weight: 600;
   line-height: normal;
 
   &:hover {
-    color: #00adef;
-    background-color: #FFF;
+    color: $color-primary-highlight;
+    background-color: $color-white;
   }
 
   &:focus {
@@ -48,20 +69,20 @@ pages.
 }
 
 .large-button {
-  border: 2px solid #00adef;
+  border: 2px solid $color-primary-highlight;
   border-radius: 1rem;
   padding: 1.5rem 2.5rem;
 
-  color: #FFF;
-  background-color: #00adef;
+  color: $color-white;
+  background-color: $color-primary-highlight;
 
   font-size: 1.5rem;
   font-weight: 600;
   line-height: normal;
 
   &:hover {
-    color: #00adef;
-    background-color: #FFF;
+    color: $color-primary-highlight;
+    background-color: $color-white;
   }
 
   &:focus {
@@ -70,11 +91,11 @@ pages.
 }
 
 .large-button__hollow {
-  border: 2px solid #FFF;
+  border: 2px solid $color-white;
   border-radius: 1rem;
   padding: 1.5rem 2.5rem;
 
-  color: #FFF;
+  color: $color-white;
   background-color: transparent;
 
   font-size: 1.5rem;
@@ -82,12 +103,73 @@ pages.
   line-height: normal;
 
   &:hover {
-    color: rgba(105, 201, 149, 0.75);
-    background-color: #FFF;
+    color: $color-secondary-transparent;
+    background-color: $color-white;
   }
 
   &:focus {
     outline: none;
+  }
+}
+
+
+/*
+Floating Menu
+================================================================================
+IE: Login links on the RHS.
+*/
+.floating-menu {
+  position: fixed;
+  top: 200px;
+  right: -148px;
+  display: inline-block;
+
+  font-size: 0.875rem;
+
+  transform: rotate(-90deg);
+}
+
+.floating-menu  ul.login-links {
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+
+  text-transform: uppercase;
+
+  & > li {
+    display: inline-block;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.5rem 2.5rem;
+
+    /* NOTE: Defaults to the .login-links__link--secondary color. */
+    background-color: $color-primary-lowlight;
+
+    text-align: center;
+
+    & > a {
+      color: $color-white;
+
+      cursor: pointer;
+    }
+
+    & > a:hover,
+    & > a:active,
+    & > a:focus {
+      color: $color-white;
+
+      text-decoration: none;
+    }
+  }
+
+  > li.login-links__link--primary {
+    background-color: $color-secondary-highlight;
+  }
+
+  > li.login-links__link--secondary {
+    background-color: $color-primary-lowlight;
   }
 }
 
@@ -109,7 +191,7 @@ First Block
     h2 {
       margin: 0;
 
-      color: rgba(90, 162, 103, 0.8);
+      color: rgba(90, 162, 103, 0.8); /* NOTE: not one of the usual colors... */
 
       font-size: 2rem;
     }
@@ -118,11 +200,11 @@ First Block
   form {
     .search {
       width: 34rem;
-      border: 1px solid #FFF;
+      border: 1px solid $color-white;
       border-radius: 0.5rem;
       padding: 1rem 2rem;
 
-      color: #737070;
+      color: $color-primary-lowlight;
       background-color: rgba(255, 255, 255, 0.6);
 
       &:hover,
@@ -134,28 +216,28 @@ First Block
 
       &::-webkit-input-placeholder {
         opacity: 1;
-        color: #737070;
+        color: $color-primary-lowlight;
 
         text-align: center;
       }
 
       &:-moz-placeholder { /* Firefox 18- */
         opacity: 1;
-        color: #737070;
+        color: $color-primary-lowlight;
 
         text-align: center;
       }
 
       &::-moz-placeholder { /* Firefox 19+ */
         opacity: 1;
-        color: #737070;
+        color: $color-primary-lowlight;
 
         text-align: center;
       }
 
       &:-ms-input-placeholder {
         opacity: 1;
-        color: #737070;
+        color: $color-primary-lowlight;
 
         text-align: center;
       }
@@ -174,8 +256,8 @@ First Block
     margin-top: 5rem;
     padding: 2rem 0 1rem 0;
 
-    color: #FFF;
-    background-color: rgba(0, 172, 237, 0.6);
+    color: $color-white;
+    background-color: $color-primary-transparent;
 
     h3 {
       font-size: 1.75rem;
@@ -196,11 +278,11 @@ Second Block
 .second-block {
   padding: 3.5rem 0;
 
-  color: #4f4f4f;
-  background-color: #FFF;
+  color: $color-primary-lowlight;
+  background-color: $color-white;
 
   .large-title {
-    color: #00adef;
+    color: $color-primary-highlight;
   }
 
   .process {
@@ -221,7 +303,7 @@ Second Block
   }
 
   .col-md-4:first-child .process {
-    background-color: #e6f7fe;
+    background-color: $color-primary-transparent;
   }
 }
 
@@ -242,11 +324,11 @@ Third Block
     margin: 0;
     padding: 4.5rem 0;
 
-    background-color: rgba(0, 172, 237, 0.75);
+    background-color: $color-primary-transparent;
   }
 
   .large-title {
-    color: #FFF;
+    color: $color-white;
   }
 }
 
@@ -267,22 +349,22 @@ Fourth Block
     margin: 0;
     padding: 3rem 0;
 
-    background-color: rgba(105, 201, 149, 0.75);
+    background-color: $color-secondary-transparent;
   }
 
   .large-title {
     margin: 0 0 2rem 0;
 
-    color: #FFF;
+    color: $color-white;
   }
 
   .large-text {
     margin: 0 0 2rem 0;
 
-    color: #FFF;
+    color: $color-white;
   }
 
   .large-button {
-    color: #FFF;
+    color: $color-white;
   }
 }

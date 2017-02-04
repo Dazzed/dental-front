@@ -69,10 +69,26 @@ export default class HomePage extends React.Component {
   render () {
     return (
       <div styleName="wrapper">
+        {/*
+        RHS Floating Menu
+        ------------------------------------------------------------
+        */}
+        <div styleName="floating-menu">
+          <ul styleName="login-links">
+            <li styleName="login-links__link--secondary">
+              <Link to="/accounts/login">Login</Link>
+            </li>
+
+            <li styleName="login-links__link--primary">
+              <Link to="/accounts/login">Dentist Portal</Link>
+            </li>
+          </ul>
+        </div>
+
 
         {/*
         First Block
-        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        ------------------------------------------------------------
         */}
         <div styleName="first-block">
           <header>
@@ -102,7 +118,7 @@ export default class HomePage extends React.Component {
 
         {/*
         Second Block
-        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        ------------------------------------------------------------
         -->
         */}
         <div styleName="second-block">

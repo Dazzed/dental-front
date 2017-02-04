@@ -50,13 +50,14 @@ ul.footer__nav {
 
     & > a {
       color: $footer-text-color;
+
+      cursor: pointer;
     }
 
     & > a:hover,
     & > a:active,
     & > a:focus {
       color: #FFF;
-      background-color: #4d4d4d;
 
       text-decoration: none;
     }
