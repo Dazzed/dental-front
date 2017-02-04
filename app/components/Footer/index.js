@@ -1,50 +1,41 @@
-/**
-*
-* Footer
-*
+/*
+Footer Component
+================================================================================
 */
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
 import CSSModules from 'react-css-modules';
-
-import Nav from 'react-bootstrap/lib/Nav';
 import { Link } from 'react-router';
 
+// local
 import styles from './styles.css';
 
 
+/*
+Footer
+================================================================================
+*/
 function Footer () {
   return (
     <div styleName="footer">
-      <div className="container">
-        <div className="col-md-5">
-          &copy; Powered by DentalHQ.com 2016
-        </div>
-        <div className="col-md-7 text-right">
-          <Nav bsStyle="pills" pullRight>
-						<li>
-              <Link to="/privacy" activeClassName="active">
-                Privacy
-              </Link>
-            </li>
-            <li>
-              <Link to="/terms" activeClassName="active">
-                Terms and Conditions
-              </Link>
-            </li>
-            <li>
-              <Link to="/faq" activeClassName="active">
-                FAQ
-              </Link>
-            </li>
-            <li>
-              <Link to="/privacy" activeClassName="active">
-                Privacy Policy
-              </Link>
-            </li>
-          </Nav>
-        </div>
-      </div>
+      <ul styleName="footer__nav">
+        <li>
+          <Link to="/faq">FAQ's</Link>
+        </li>
+
+        <li>
+          <Link to="/terms">Terms of Service</Link>
+        </li>
+
+        <li>
+          <Link to="/privacy">Privacy Policy</Link>
+        </li>
+      </ul>
     </div>
   );
 }

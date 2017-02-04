@@ -1,41 +1,49 @@
 /*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a neccessity for you then you can refactor it and remove
- * the linting exception.
- */
+Home Page
+================================================================================
+This is the first thing users see of our App, at the '/' route
 
+NOTE: while this component should technically be a stateless functional
+component (SFC), hot reloading does not currently support SFCs. If hot
+reloading is not a neccessity for you then you can refactor it and remove
+the linting exception.
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
 import CSSModules from 'react-css-modules';
-import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import Image from 'react-bootstrap/lib/Image';
 import { Link } from 'react-router';
+import { push } from 'react-router-redux';
 
-import Footer from 'components/Footer';
-
-import styles from './styles.css';
-
+// global
 import logo from 'assets/images/logo.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
 import toothIcon from 'assets/images/tooth-icon.png';
+import Footer from 'components/Footer';
 
+// local
+import styles from './styles.css';
 
+/*
+Redux
+------------------------------------------------------------
+*/
 function mapDispatchToProps (dispatch) {
   return {
     changeRoute: (url) => dispatch(push(url)),
   };
 }
 
-
+/*
+Home Page
+================================================================================
+*/
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
 export default class HomePage extends React.Component {
@@ -48,12 +56,14 @@ export default class HomePage extends React.Component {
     this.props.changeRoute('/accounts/login');
   }
 
-  goToSignUp = () => {
-    this.props.changeRoute('/accounts/dentist-signup');
+  performDentistSearch = (e) => {
+    // TODO: grab the input text from the event and pass it on to the search page
+    e.preventDefault(); // default = form submission
+    this.props.changeRoute('/search');
   }
 
-  goToLearnMore = () => {
-    this.props.changeRoute('/learn-more');
+  goToFaq = () => {
+    this.props.changeRoute('/faqs');
   }
 
   render () {
@@ -72,7 +82,7 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          <form novalidate>
+          <form noValidate onSubmit={this.performDentistSearch}>
             <input type="text" styleName="search" placeholder="Enter your location, zip code, dentist name, etc." required />
             <br />
             <input type="submit" styleName="button" value="GET STARTED" />
@@ -100,6 +110,7 @@ export default class HomePage extends React.Component {
 
             <div className="row">
               <div className="col-md-10 col-md-offset-1">
+                {/* TODO: Need video link, or content to display on the site. */}
                 <input type="button" styleName="large-button" value="WATCH VIDEO &gt;" />
 
                 <h2 styleName="large-title">
@@ -201,13 +212,24 @@ export default class HomePage extends React.Component {
                     potential.
                   </p>
 
-                  <input type="button" styleName="large-button__hollow" value="LEARN MORE &gt;" />
+                  <input
+                    type="button"
+                    styleName="large-button__hollow"
+                    onClick={this.goToFaq}
+                    value="LEARN MORE &gt;"
+                  />
                 </div>
               </div>
 
             </div>
           </div>
         </div>
+
+        {/*
+        Footer
+        ------------------------------------------------------------
+        */}
+        <Footer />
 
       </div>
     );

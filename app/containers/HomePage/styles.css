@@ -1,5 +1,5 @@
 /*
-Page-Wide
+Home Page Styles
 ================================================================================
 NOTE: These are all good candidates for generic styles if used on multiple
 pages.
@@ -41,6 +41,10 @@ pages.
     color: #00adef;
     background-color: #FFF;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .large-button {
@@ -59,6 +63,10 @@ pages.
     color: #00adef;
     background-color: #FFF;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .large-button__hollow {
@@ -76,6 +84,10 @@ pages.
   &:hover {
     color: rgba(105, 201, 149, 0.75);
     background-color: #FFF;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
@@ -114,6 +126,7 @@ First Block
       background-color: rgba(255, 255, 255, 0.6);
 
       &:hover,
+      &:active,
       &:focus,
       &:valid {
         background-color: rgba(255, 255, 255, 0.8);

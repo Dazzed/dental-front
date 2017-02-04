@@ -1,28 +1,64 @@
+/*
+Footer Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* global */
 @import '../../assets/styles/variables';
 
-$footer-text-color: #E9F1E4;
+/*
+Variables
+------------------------------------------------------------
+*/
+/* local */
+$footer-text-color: #BBC !default;
 
+/*
+Footer
+================================================================================
+*/
 .footer {
-  background-color: #92BB79;
-  color: $footer-text-color;
-  padding: 1rem 0;
-  font-size: 1rem;
+  padding: 3rem 0;
 
-  li {
+  color: $footer-text-color;
+  background-color: #4d4d4d;
+
+  font-size: 0.875rem;
+}
+
+/*
+Footer Nav
+------------------------------------------------------------
+*/
+ul.footer__nav {
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  & > li {
+    display: inline-block;
+    margin: 0 0.625rem;
+
+    & > a {
+      color: $footer-text-color;
+    }
+
     & > a:hover,
     & > a:active,
     & > a:focus {
-      background-color: transparent !important;
-      color: #337AB7;
-      text-decoration: underline !important;
-    }
+      color: #FFF;
+      background-color: #4d4d4d;
 
-    & > a {
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      color: $footer-text-color;
-      font-size: 1rem;
+      text-decoration: none;
     }
   }
 }
-
