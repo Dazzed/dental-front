@@ -29,10 +29,15 @@ Question and Answer
   }
 
   .qanda__question {
+    margin-top: 0;
+
     font-weight: bold;
   }
 
-  .qanda__answer {
+  p.qanda__answer,
+  ul.qanda__answer,
+  .qanda__answer p:last-child,
+  .qanda__answer ul:last-child {
     p:last-child,
     ul:last-child {
       margin-bottom: 0;

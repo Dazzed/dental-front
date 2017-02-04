@@ -37,13 +37,15 @@ Page-Wide
   }
 
   .term__title {
+    margin-top: 0;
+
     font-weight: bold;
   }
 
-  .term__description {
-    p:last-child,
-    ul:last-child {
-      margin-bottom: 0;
-    }
+  p.term__description,
+  ul.term__description,
+  .term__description p:last-child,
+  .term__description ul:last-child {
+    margin-bottom: 0;
   }
 }
