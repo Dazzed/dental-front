@@ -12,24 +12,25 @@ class TermsPage extends React.Component {
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Terms and Conditions" />
+
         <div className="container">
-          <div className="col-md-12" styleName="container">
-            <ul>
+          <div className="col-md-12">
+            <div styleName="content-wrapper">
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   A Dental Membership Plan is NOT dental insurance.
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   The Dental Membership Plan does not make payments to your dentist for the services you receive. The Dental Membership Plan is a loyalty program between you and your dentist. By enrolling in the Dental Membership Plan and making your monthly payments under the plan, you become eligible to receive certain dental services from your dentist. These services are described below. DentalHQ is not an insurance company, it is an intermediary company that processes payments for your Dental Membership Plan on behalf of your dentist.
-                </div>
-              </li>
+                </p>
+              </div>
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   Covered Services and Non-Covered Services
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   The following services are provided under the Dental Membership Plan between you and your dentist:
                   <ul>
                     <li>
@@ -51,14 +52,14 @@ class TermsPage extends React.Component {
                       <span className="link">Periodontal disease</span>, also known as gum disease, can range from relatively-minor gum inflammation to much more serious forms of disease that can damage the soft tissue and bone that support the teeth.  If your dentist determines that you have periodontal disease, he or she may recommend additional treatment before you are able to have a regular cleaning.  If you do have periodontal disease and require additional treatment, you will be responsible for the costs associated with that treatment.
                     </li>
                   </ul>
-                </div>
-              </li>
+                </p>
+              </div>
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   Other Fees, Discounts, and Products
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   <ul>
                     <li>
                       Any late fees or missed-appointment fees that your dentist may charge will still apply—you should contact your dentist regarding any no show penalties before scheduling an appointment.
@@ -70,39 +71,40 @@ class TermsPage extends React.Component {
                       Discounts provided under the Dental Membership Plan apply only to services provided by your dentist, and not products that your dentist may sell.
                     </li>
                   </ul>
-                </div>
-              </li>
+                </p>
+              </div>
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   Monthly Payment Required
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   Your membership in the Dental Membership Plan is valid for thirty (30) days following your most recent payment—you must make monthly payments to maintain your eligibility for services under the Dental Membership Plan.
-                </div>
-              </li>
+                </p>
+              </div>
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   Cancellation Policy
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   You may cancel your Dental Membership Plan at any time and for any reason.  If you cancel your participation in a Dental Membership Plan within three months of enrolling in the plan, DentalHQ will charge a one-time administrative fee equal to Twenty Dollars ($20.00) per member, to offset the costs associated with processing your Dental Membership Plan enrollment.
-                </div>
-              </li>
+                </p>
+              </div>
 
-              <li>
-                <div styleName="title">
+              <div styleName="term">
+                <h4 styleName="term__title">
                   Re-Enrollment
-                </div>
-                <div styleName="description">
+                </h4>
+                <p styleName="term__description">
                   If you decide to cancel your membership, or if your monthly payment for your Dental Membership Plan is delinquent by more than 60 days, DentalHQ will move your account to inactive status. While your account is in inactive status, your Dental Membership Plan will be suspended with your dental office.  Although you may continue to see your dentist, while your account is inactive status any services provided to you by your dentist will not be covered by the Dental Membership Plan, and you will be responsible for payment of any costs of treatment.  If you decide to re-instate your Dental Membership Plan through DentalHQ, DentalHQ will charge a Ninety Nine Dollars ($99.00) re-enrollment fee, per member, to offset the costs associated with processing your Dental Membership Plan re-enrollment.
-                </div>
-              </li>
+                </p>
+              </div>
 
-            </ul>
+            </div>
           </div>
         </div>
+
       </div>
     );
   }

@@ -1,29 +1,49 @@
+/*
+Terms Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
+
+/*
+Page-Wide
+================================================================================
+*/
 .container-wrapper {
   min-height: calc(100% - 52px);
 }
 
-.container {
-  & > ul {
-    list-style-type: square;
-    margin-top: 20px;
-    margin-bottom: 40px;
+.content-wrapper {
+  margin: 2rem 0;
+}
 
-    & > li {
-      margin-bottom: 10px;
-    }
+.term {
+  border-bottom: 1px solid $color-secondary-lowlight;
+  padding: 3rem 0;
+
+  color: $color-primary-lowlight;
+
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  &:last-child {
+    border-bottom: none;
   }
 
-  .title {
+  .term__title {
     font-weight: bold;
-    font-size: 20px;
-    text-decoration: underline;
-    margin-bottom: 10px;
   }
 
-  .description {
-    font-weight: normal;
-    font-size: 18px;
+  .term__description {
+    p:last-child,
+    ul:last-child {
+      margin-bottom: 0;
+    }
   }
 }

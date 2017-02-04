@@ -21,12 +21,12 @@ Question And Answer
 */
 function QuestionAndAnswer({ question, answer }) {
   return (
-    <div styleName="qanda-wrapper">
-      <h4 styleName="question">
+    <div styleName="qanda">
+      <h4 styleName="qanda__question">
         {question}
       </h4>
 
-      <div styleName="answer">
+      <div styleName="qanda__answer">
         {answer}
       </div>
     </div>

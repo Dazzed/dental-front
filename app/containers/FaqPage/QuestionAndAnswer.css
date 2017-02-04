@@ -15,7 +15,7 @@ Imports
 Question and Answer
 ================================================================================
 */
-.qanda-wrapper {
+.qanda {
   border-bottom: 1px solid $color-secondary-lowlight;
   padding: 3rem 0;
 
@@ -28,11 +28,11 @@ Question and Answer
     border-bottom: none;
   }
 
-  .question {
+  .qanda__question {
     font-weight: bold;
   }
 
-  .answer {
+  .qanda__answer {
     p:last-child,
     ul:last-child {
       margin-bottom: 0;
