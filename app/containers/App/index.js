@@ -83,7 +83,7 @@ export default class App extends Component {
 
     return (
       <div styleName="wrapper">
-        <NavBar />
+        <NavBar pathname={pathname} />
         {userType && staticPages.indexOf(pathname) < 0 ?
           <div styleName="container-wrapper">
             {title}

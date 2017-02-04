@@ -1,26 +1,54 @@
-/**
-*
-* NavBar
-*
+/*
+NavBar Component
+================================================================================
+NOTE: Add custom left-hand-side elements for routes in the `returnLinks`
+      dictionary (a class field).
 */
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
-import CSSModules from 'react-css-modules';
-// import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import Navbar from 'react-bootstrap/lib/Navbar';
 // import Image from 'react-bootstrap/lib/Image';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import CSSModules from 'react-css-modules';
+import { connect } from 'react-redux';
+// import { Link } from 'react-router';
+import { push } from 'react-router-redux';
 
+// app
+import logo from 'assets/images/logo.png';
+// import logo from 'assets/images/wells-family-dentistry-logo.png';
 import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
 import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
-// import logo from 'assets/images/logo.png';
-// import logo from 'assets/images/wells-family-dentistry-logo.png';
 import { selectCurrentUser } from 'containers/App/selectors';
 
+// local
 import styles from './styles.css';
 
+/*
+Redux
+------------------------------------------------------------
+*/
+function mapStateToProps (state) {
+  return {
+    loggedInUser: selectCurrentUser(state),
+  };
+}
 
+function mapDispatchToProps (dispatch) {
+  return {
+    changeRoute: (url) => dispatch(push(url)),
+  };
+}
+
+
+/*
+NavBar
+================================================================================
+*/
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
 export default class NavBar extends React.Component {
@@ -31,7 +59,12 @@ export default class NavBar extends React.Component {
       React.PropTypes.object,
       React.PropTypes.bool
     ]),
+    pathname: React.PropTypes.string,
   };
+
+  returnLinks = {
+    '/faq': (<a href="/" styleName="navbar__text">&lt; Home</a>),
+  }
 
   goToLogin = () => {
     this.props.changeRoute('/accounts/login');
@@ -44,46 +77,39 @@ export default class NavBar extends React.Component {
   render () {
     const { firstName, lastName, avatar } = this.props.loggedInUser;
     const fullName = `${firstName} ${lastName}`;
+    const returnLink = this.returnLinks.hasOwnProperty(this.props.pathname)
+                     ? this.returnLinks[this.props.pathname]
+                     : null;
+
+    let usersHeaderItems = (
+      <AnonymousHeaderNav goToLogin={this.goToLogin} goToSignUp={this.goToSignUp} />
+    );
+    if (this.props.loggedInUser) {
+      usersHeaderItems = (
+        <LoggedInHeaderNav fullName={fullName} avatar={avatar} />
+      );
+    }
 
     return (
       <Navbar fixedTop styleName="navbar">
-        <Navbar.Header>
-          <Navbar.Brand>
-            {/*
-              * - In the future, if a patient/dentist is logged in
-              *   we would show respective logo.
-              * - Removed for now
-              <Link to="/">
-                <Image src={logo} style={{ width: 200 }} />
-              </Link>
-            */}
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-
-        {this.props.loggedInUser ?
-          <LoggedInHeaderNav
-            fullName={fullName} avatar={avatar}
-          /> :
-          <AnonymousHeaderNav
-            goToLogin={this.goToLogin}
-            goToSignUp={this.goToSignUp}
-          />}
+        <div className="row" styleName="navbar__row">
+          <div className="col-md-4" styleName="navbar__col">
+            {returnLink}
+          </div>
+          
+          <div className="col-md-4" styleName="navbar__col">
+            <div styleName="navbar__brand">
+              <a href="/" styleName="navbar__brand__link">
+                <img src={logo} alt="DentalHQ Logo" styleName="navbar__brand__img" />
+              </a>
+            </div>
+          </div>
+          
+          <div className="col-md-4" styleName="navbar__col">
+            {usersHeaderItems}
+          </div>
+        </div>
       </Navbar>
     );
   }
-}
-
-
-function mapStateToProps (state) {
-  return {
-    loggedInUser: selectCurrentUser(state),
-  };
-}
-
-
-function mapDispatchToProps (dispatch) {
-  return {
-    changeRoute: (url) => dispatch(push(url)),
-  };
 }

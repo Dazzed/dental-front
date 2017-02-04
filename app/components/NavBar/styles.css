@@ -1,6 +1,89 @@
+/*
+NavBar Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
+
+/*
+NavBar
+================================================================================
+*/
 .navbar {
   box-shadow: -5px 1px 10px #888;
   z-index: 900 !important;
+
+  /*
+  Layout
+  ------------------------------------------------------------
+  */
+  .navbar__row {
+    height: 100%;
+  }
+
+  .navbar__col {
+    height: 100%;
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      text-align: center;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  /*
+  Brand
+  ------------------------------------------------------------
+  */
+  .navbar__brand {
+    display: block;
+    height: 100%;
+  }
+
+  .navbar__brand__link {
+    display: inline-block;
+    height: 100%;
+  }
+
+  .navbar__brand__img {
+    position: relative;
+    top: 20%;
+    height: 60%;
+  }
+
+  /*
+  Text & Links
+  ------------------------------------------------------------
+  */
+  .navbar__text {
+    display: inline;
+    position: relative;
+    top: calc(50% - 1rem);
+
+    color: $color-primary-lowlight;
+
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  a.navbar__text {
+    &:hover,
+    &:active,
+    &:focus {
+      color: $color-secondary-lowlight;
+      text-decoration: none;
+    }
+  }
 }

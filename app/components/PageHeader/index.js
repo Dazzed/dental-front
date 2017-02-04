@@ -37,7 +37,7 @@ function PageHeader ({ title, userType }) {
 }
 
 /*
-Prop Types
+Props
 ------------------------------------------------------------
 */
 PageHeader.propTypes = {
