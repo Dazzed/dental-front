@@ -5,7 +5,7 @@ import PageHeader from 'components/PageHeader';
 import styles from './index.css';
 
 @CSSModules(styles)
-export default class FaqPage extends React.Component {
+export default class PrivacyPage extends React.Component {
   render () {
     return (
       <div styleName="container-wrapper">

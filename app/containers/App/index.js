@@ -78,25 +78,37 @@ export default class App extends Component {
       return this.props.children;
     }
 
-    const title = pageTitle ?
-      <PageHeader title={pageTitle} userType={userType} /> : null;
+    let content = null;
+    const childComponents = React.Children.toArray(this.props.children);
+    const title = pageTitle
+                ? <PageHeader title={pageTitle} userType={userType} />
+                : null;
+
+    // the visitor is a logged in user AND is not on a static page
+    const onUserPage = userType && staticPages.indexOf(pathname) < 0;
+    if (onUserPage) {
+      content = (
+        <div styleName="container-wrapper">
+          {title}
+          <div className="container">
+            <div className="col-md-9">
+              {childComponents}
+            </div>
+            <div className="col-md-3">
+              <SideNav userType={userType} />
+            </div>
+          </div>
+        </div>
+      );
+    }
+    else {
+      content = childComponents;
+    }
 
     return (
       <div styleName="wrapper">
         <NavBar pathname={pathname} />
-        {userType && staticPages.indexOf(pathname) < 0 ?
-          <div styleName="container-wrapper">
-            {title}
-            <div className="container">
-              <div className="col-md-9">
-                {React.Children.toArray(this.props.children)}
-              </div>
-              <div className="col-md-3">
-                <SideNav userType={userType} />
-              </div>
-            </div>
-          </div>
-          : React.Children.toArray(this.props.children)}
+        {content}
         <Footer />
       </div>
     );

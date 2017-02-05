@@ -63,3 +63,19 @@ Fonts
 ------------------------------------------------------------
 */
 $font-size-base: 16px;
+
+/*
+Sizing
+------------------------------------------------------------
+*/
+/* Taken by inspecting the size of the header (navbar) / footer. */
+$header-height: 104px;
+$footer-height: 116px;
+
+/* A magic-ish number that was determined by trial and error.
+ * Affected by the Footer height:
+ *   - Smaller footer => bottom whitespace.
+ *   - Larger  footer => scroll bar (even without content filling the page).
+ */
+$body-height: calc(100% - 114px);
+

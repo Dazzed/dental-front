@@ -16,7 +16,7 @@ Page-Wide
 ================================================================================
 */
 .container-wrapper {
-  min-height: calc(100% - 52px);
+  min-height: $body-height;
 }
 
 .content-wrapper {

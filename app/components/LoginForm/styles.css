@@ -1,3 +1,41 @@
+/*
+Login Form Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Login Form Component
+================================================================================
+*/
 .wrapper {  /* stylelint-ignore */
   padding: 0 1rem 1rem;
+}
+
+.button {
+  border: 1px solid $color-secondary-highlight;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-secondary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-secondary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }

@@ -84,12 +84,58 @@
 /** forms **/
 :global(.form-horizontal .control-label) {
   font-size: 1.125rem;
-  font-weight: normal;
-  padding-bottom: 0.5rem;
+  font-weight: bold;
+  padding-bottom: 1rem;
 }
 
 :global(.form-group) {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+:global(.form-control) {
+  height: 40px;
+  border: 1px solid rgba(189, 187, 187, 0.3); // $color-secondary-lowlight in rgba form
+  border-radius: 0.75rem;
+
+  color: #646569; /* $color-primary-lowlight */
+  background-color: #f8f8f8;
+  box-shadow: none;
+
+  font-size: 1rem;
+
+  &::-webkit-input-placeholder {
+    opacity: 1;
+    color: #646569; /* $color-primary-lowlight */
+
+    font-size: 0.75rem;
+  }
+
+  &:-moz-placeholder { /* Firefox 18- */
+    opacity: 1;
+    color: #646569; /* $color-primary-lowlight */
+
+    font-size: 0.75rem;
+  }
+
+  &::-moz-placeholder { /* Firefox 19+ */
+    opacity: 1;
+    color: #646569; /* $color-primary-lowlight */
+
+    font-size: 0.75rem;
+  }
+
+  &:-ms-input-placeholder {
+    opacity: 1;
+    color: #646569; /* $color-primary-lowlight */
+
+    font-size: 0.75rem;
+  }
+}
+
+:global(.has-error .form-control) {
+  border: 1px solid #a94442; // add the border back for errors
+
+  box-shadow: none;
 }
 
 /** REACT-AUTOSUGGEST **/

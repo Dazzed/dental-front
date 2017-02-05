@@ -1,19 +1,37 @@
+/*
+Login Form Component
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import CSSModules from 'react-css-modules';
+import Row from 'react-bootstrap/lib/Row';
+import { Field, reduxForm } from 'redux-form';
 
+// app
 import LabeledInput from 'components/LabeledInput';
+
+// local
 import loginFormValidator from './validator';
 import styles from './styles.css';
 
-
+/*
+Login Form
+================================================================================
+*/
 @reduxForm({
   form: 'login',
   validate: loginFormValidator,
 })
+@CSSModules(styles)
 class LoginForm extends React.Component {
 
   static propTypes = {
@@ -28,7 +46,8 @@ class LoginForm extends React.Component {
     return (
       <form
         onSubmit={handleSubmit}
-        className={`form-horizontal ${styles.wrapper}`}
+        className="form-horizontal"
+        styleName="wrapper"
       >
 
         <Row>
@@ -36,14 +55,16 @@ class LoginForm extends React.Component {
             name="email"
             type="text"
             component={LabeledInput}
-            label="Email"
+            label="Email:"
+            placeholder="Password"
           />
 
           <Field
             name="password"
             type="password"
             component={LabeledInput}
-            label="Password"
+            label="Password:"
+            placeholder="Password"
           />
         </Row>
 
@@ -53,17 +74,9 @@ class LoginForm extends React.Component {
           </Col>
         </FormGroup>
 
-        <FormGroup>
-          <Col sm={6} smPush={6}>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="btn btn-block btn-cyan btn-round pull-right"
-            >
-              Log In
-            </button>
-          </Col>
-        </FormGroup>
+        <div className="text-center">
+          <input type="submit" disabled={submitting} styleName="button" value="Log In &gt;" />
+        </div>
       </form>
     );
   }
