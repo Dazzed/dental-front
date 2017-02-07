@@ -1,9 +1,14 @@
-// These are the pages you can go to.
-// They are all wrapped in the App component, which should contain the
-// navbar etc
-// See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more
-// information
-// about the code splitting business
+/*
+Routes
+================================================================================
+These are the pages you can go to.  They are all wrapped in the App component,
+which should contain the navbar etc
+
+See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
+about the code splitting business.
+
+**Organization:** The routes are listed alphabetically.
+*/
 import getHooks from 'utils/hooks';
 
 const errorLoading = (err) => {
@@ -71,23 +76,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      onEnter: redirectToDashboard,
-      path: '/accounts/signup',
-      name: 'signupPage',
-      getComponent (nextState, cb) {
-        Promise.all([
-          System.import('containers/SignupPage/reducer'),
-          System.import('containers/SignupPage/sagas'),
-          System.import('containers/SignupPage')
-        ])
-          .then(([ reducer, sagas, component ]) => {
-            injectReducer('signup', reducer.default);
-            injectSagas(sagas.default);
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
-      },
-    }, {
       onEnter: redirectToLogin,
       path: '/accounts/complete-signup',
       name: 'signupFinalPage',
@@ -122,6 +110,84 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/accounts/logout',
+      name: 'logout',
+      getComponent (location, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Logout/sagas'),
+          System.import('containers/Logout'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ sagas, component ]) => {
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/accounts/profile',
+      name: 'profilePage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ProfilePage/reducer'),
+          System.import('containers/ProfilePage/sagas'),
+          System.import('containers/ProfilePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('profilePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/accounts/signup',
+      name: 'signupPage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/SignupPage/reducer'),
+          System.import('containers/SignupPage/sagas'),
+          System.import('containers/SignupPage')
+        ])
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('signup', reducer.default);
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/charge15',
+      name: 'chargePage15',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/ChargePage15'),
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/charge20',
+      name: 'chargePage20',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/ChargePage20'),
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
       onEnter: redirectToLogin,
       path: '/dashboard',
       name: 'dashboard',
@@ -133,6 +199,26 @@ export default function createRoutes (store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([ component ]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/contact-support',
+      name: 'contactSupportPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ContactSupportPage/reducer'),
+          System.import('containers/ContactSupportPage/sagas'),
+          System.import('containers/ContactSupportPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('contactSupportPage', reducer.default);
+          injectSagas(sagas.default);
           renderRoute(component);
         });
 
@@ -160,25 +246,20 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
-      onEnter: redirectToLogin,
-      path: '/accounts/profile',
-      name: 'profilePage',
+      path: '/faq',
+      name: 'faq',
       getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/ProfilePage/reducer'),
-          System.import('containers/ProfilePage/sagas'),
-          System.import('containers/ProfilePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('profilePage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
+        System.import('containers/FaqPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/privacy',
+      name: 'privacy',
+      getComponent (nextState, cb) {
+        System.import('containers/PrivacyPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
       },
     }, {
       path: '/subscribe',
@@ -201,86 +282,10 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/accounts/logout',
-      name: 'logout',
-      getComponent (location, cb) {
-        const importModules = Promise.all([
-          System.import('containers/Logout/sagas'),
-          System.import('containers/Logout'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ sagas, component ]) => {
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-      },
-    }, {
-      path: '/charge15',
-      name: 'chargePage15',
-      getComponent (nextState, cb) {
-        Promise.all([
-          System.import('containers/ChargePage15'),
-        ])
-          .then(([ component ]) => {
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
-      },
-    }, {
-      path: '/charge20',
-      name: 'chargePage20',
-      getComponent (nextState, cb) {
-        Promise.all([
-          System.import('containers/ChargePage20'),
-        ])
-          .then(([ component ]) => {
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
-      },
-    }, {
-      path: '/dentist/contact-support',
-      name: 'contactSupportPage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/ContactSupportPage/reducer'),
-          System.import('containers/ContactSupportPage/sagas'),
-          System.import('containers/ContactSupportPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('contactSupportPage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
       path: '/terms',
       name: 'terms',
       getComponent (nextState, cb) {
         System.import('containers/TermsPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
-      path: '/privacy',
-      name: 'privacy',
-      getComponent (nextState, cb) {
-        System.import('containers/PrivacyPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    },{
-      path: '/faq',
-      name: 'faq',
-      getComponent (nextState, cb) {
-        System.import('containers/FaqPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },
