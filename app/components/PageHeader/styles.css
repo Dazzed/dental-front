@@ -16,8 +16,6 @@ Page Header
 ================================================================================
 */
 .page-header {
-  border-bottom: 3.5rem solid $color-primary-lowlight;
-
   color: $color-white;
   background: url(assets/images/dentist-and-woman.jpg) center -235px / cover no-repeat;
 
@@ -45,4 +43,17 @@ Page Header
     font-size: 3rem;
     text-transform: capitalize;
   }
+}
+
+.border-content {
+  min-height: 3.5rem; /* for pages without any border content */
+  padding: 1rem 0;
+
+  color: $color-white;
+  background-color: $color-primary-lowlight;
+
+  font-weight: lighter;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
 }

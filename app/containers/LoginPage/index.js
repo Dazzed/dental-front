@@ -58,14 +58,20 @@ class LoginPage extends Component {
   }
 
   render () {
+    const borderContent = (
+      <span>
+        Not a member yet? No problem! <strong>Sign Up below:</strong>
+      </span>
+    );
+
     return (
       <div styleName="container-wrapper">
-        <PageHeader>
+        <PageHeader borderContent={borderContent}>
           <LoginForm onSubmit={this.onLoginRequest} />
         </PageHeader>
 
         <div className="container">
-          
+
         </div>
 
       </div>
