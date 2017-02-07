@@ -60,14 +60,12 @@ class LoginPage extends Component {
   render () {
     return (
       <div styleName="container-wrapper">
-        <PageHeader title="Login" />
+        <PageHeader>
+          <LoginForm onSubmit={this.onLoginRequest} />
+        </PageHeader>
 
         <div className="container">
-          <div styleName="login-wrapper">
-            <div styleName="login">
-              <LoginForm onSubmit={this.onLoginRequest} />
-            </div>
-          </div>
+          
         </div>
 
       </div>

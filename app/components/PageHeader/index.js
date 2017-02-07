@@ -24,12 +24,17 @@ Page Header
 ================================================================================
 TODO: Remove the `userType` prop.  New designs are blue regardless of dentist / client.
 */
-function PageHeader ({ title, userType }) {
+function PageHeader ({ title, userType, children }) {
+  let content = children;
+  if (title) {
+    titleHtml = (<h1 styleName="large-title">{title}</h1>);
+  }
+
   return (
     <div styleName="page-header">
       <div styleName={`page-header__overlay ${userType || ''}`}>
         <div className="container">
-          <h1 styleName="large-title">{title}</h1>
+          {content}
         </div>
       </div>
     </div>

@@ -14,10 +14,11 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
+import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 
 // app
-import LabeledInput from 'components/LabeledInput';
+import LabeledInputInline from 'components/LabeledInputInline';
 
 // local
 import loginFormValidator from './validator';
@@ -46,37 +47,38 @@ class LoginForm extends React.Component {
     return (
       <form
         onSubmit={handleSubmit}
-        className="form-horizontal"
+        className="form-inline"
         styleName="wrapper"
       >
+        <Field
+          name="email"
+          type="text"
+          component={LabeledInputInline}
+          label="Email"
+          hideLabel={true}
+        />
 
-        <Row>
-          <Field
-            name="email"
-            type="text"
-            component={LabeledInput}
-            label="Email:"
-            placeholder="Password"
-          />
-
-          <Field
-            name="password"
-            type="password"
-            component={LabeledInput}
-            label="Password:"
-            placeholder="Password"
-          />
-        </Row>
+        <Field
+          name="password"
+          type="password"
+          component={LabeledInputInline}
+          label="Password"
+          hideLabel={true}
+        />
 
         <FormGroup className="has-error">
-          <Col sm={12}>
-            {error && <HelpBlock>{error}</HelpBlock>}
-          </Col>
+          {error && <HelpBlock>{error}</HelpBlock>}
         </FormGroup>
 
-        <div className="text-center">
-          <input type="submit" disabled={submitting} styleName="button" value="Log In &gt;" />
-        </div>
+        <FormGroup>
+          <input type="submit" disabled={submitting} styleName="button" value="LOG IN &gt;" />
+        </FormGroup>
+
+        <span styleName="help-link">
+          <Link to="/faq">
+            Need Help?
+          </Link>
+        </span>
       </form>
     );
   }

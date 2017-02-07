@@ -12,23 +12,29 @@ Imports
 
 
 /*
-Login Form Component
+Login Form
 ================================================================================
 */
 .wrapper {  /* stylelint-ignore */
-  padding: 0 1rem 1rem;
+  > * {
+    margin-right: 15px;
+  }
+
+  > :last-child {
+    margin-right: 0;
+  }
 }
 
 .button {
   border: 1px solid $color-secondary-highlight;
   border-radius: 0.5rem;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 2rem;
 
   color: $color-white;
   background-color: $color-secondary-highlight;
 
   font-weight: 600;
-  line-height: normal;
+  line-height: 1.5rem;
 
   &:hover {
     color: $color-secondary-highlight;
@@ -38,4 +44,8 @@ Login Form Component
   &:focus {
     outline: none;
   }
+}
+
+.help-link a {
+  color: $color-white;
 }
