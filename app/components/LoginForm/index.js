@@ -18,7 +18,7 @@ import { Link } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 
 // app
-import LabeledInputInline from 'components/LabeledInputInline';
+import InlineInput from 'components/InlineInput';
 
 // local
 import loginFormValidator from './validator';
@@ -50,25 +50,23 @@ class LoginForm extends React.Component {
         className="form-inline"
         styleName="wrapper"
       >
+        <FormGroup className="has-error">
+          {error && <HelpBlock>{error}</HelpBlock>}
+        </FormGroup>
+
         <Field
           name="email"
           type="text"
-          component={LabeledInputInline}
+          component={InlineInput}
           label="Email"
-          hideLabel={true}
         />
 
         <Field
           name="password"
           type="password"
-          component={LabeledInputInline}
+          component={InlineInput}
           label="Password"
-          hideLabel={true}
         />
-
-        <FormGroup className="has-error">
-          {error && <HelpBlock>{error}</HelpBlock>}
-        </FormGroup>
 
         <FormGroup>
           <input type="submit" disabled={submitting} styleName="button" value="LOG IN &gt;" />

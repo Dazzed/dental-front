@@ -1,5 +1,5 @@
 /*
-Labeled Input Inline Component
+Inline Input Component
 ================================================================================
 */
 
@@ -38,27 +38,21 @@ function selectComponent (type, mask, maskChar) {
 
 
 /*
-Labeled Input Inline
+Inline Input
 ================================================================================
-LabeledInputInline is a block of code that is most used on forms.
+InlineInput is a block of code that is most used on forms.
 
 It should be used with redux-forms.
 */
-const LabeledInputInline = ({
-  input, label, hideLabel, type, meta, width, children, className, mask, maskChar,
+const InlineInput = ({
+  input, label, type, meta, width, children, className, mask, maskChar,
 }) => {
   const rootClassName = classnames({
     'has-error': meta.touched && meta.error,
   });
 
-  let labelContent = null;
-  if (!hideLabel) {
-    labelContent = (<ControlLabel>{label}</ControlLabel>);
-  }
-
   return (
-    <FormGroup className={rootClassName}>
-      {labelContent}
+    <span className={rootClassName}>
       <FormControl
         {...input}
         {...selectComponent(type, mask, maskChar)}
@@ -66,11 +60,11 @@ const LabeledInputInline = ({
       >
         {children}
       </FormControl>
-    </FormGroup>
+    </span>
   );
 };
 
-LabeledInputInline.propTypes = {
+InlineInput.propTypes = {
   input: React.PropTypes.object.isRequired,
   label: React.PropTypes.string.isRequired,
   type: React.PropTypes.string.isRequired,
@@ -82,4 +76,4 @@ LabeledInputInline.propTypes = {
   maskChar: React.PropTypes.string,
 };
 
-export default LabeledInputInline;
+export default InlineInput;
