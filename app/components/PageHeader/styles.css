@@ -29,9 +29,6 @@ Page Header
     padding: 5rem 0;
 
     background-color: $color-primary-transparent;
-    -webkit-box-shadow: 0px 5px 5px 0px rgba(50, 50, 50, 0.25);
-    -moz-box-shadow:    0px 5px 5px 0px rgba(50, 50, 50, 0.25);
-    box-shadow:         0px 5px 5px 0px rgba(50, 50, 50, 0.25);
 
     &.client {
       background-color: $color-secondary-transparent;

@@ -1,0 +1,151 @@
+/*
+Learn More Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page-Wide
+================================================================================
+*/
+.container-wrapper {
+  min-height: $body-height;
+}
+
+.large-title {
+  margin-bottom: 1.5rem;
+
+  font-size: 3rem;
+  text-transform: capitalize;
+}
+
+.large-text {
+  margin-bottom: 3rem;
+
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 2rem;
+}
+
+.large-button__inverse {
+  border: 2px solid $color-primary-highlight;
+  border-radius: 1rem;
+  padding: 1.5rem 2.5rem;
+
+  color: $color-primary-highlight;
+  background-color: $color-white;
+
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-white;
+    background-color: $color-primary-highlight;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/*
+First Block
+================================================================================
+*/
+.first-block {
+  position: relative;
+  z-index: 1;
+
+  background: url(assets/images/dentist-and-kid-flipped.jpg) center / cover no-repeat;
+
+  /* position the inline-block content relative to the center of the page */
+  text-align: center;
+
+  .first-block__content {
+    position: relative;
+    left: 150px;
+    display: inline-block;
+    margin: 300px 0 100px 0;
+    border: 2px solid $color-white;
+    border-radius: 1rem;
+    padding: 2rem;
+
+    background-color: rgba(255, 255, 255, 0.75);
+
+    text-align: center;
+  }
+}
+
+/*
+Second Block
+================================================================================
+*/
+.second-block {
+  position: relative;
+  z-index: 10;
+
+  display: flex;
+  padding: 3rem 0;
+
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+
+  color: $color-white;
+  background-color: $color-secondary-highlight;
+  box-shadow: 0px  8px 16px rgba(0, 0, 0, 0.25),
+              0px -8px 16px rgba(0, 0, 0, 0.25);
+
+  .arrow-left {
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .second-block__content {
+    text-align: center;
+  }
+
+  .arrow-right {
+    cursor: pointer;
+    text-align: right;
+  }
+}
+
+
+/*
+Third Block
+================================================================================
+*/
+.third-block {
+  position: relative;
+  z-index: 1;
+
+  background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
+
+  /* position the inline-block content relative to the center of the page */
+  text-align: center;
+
+  .third-block__content {
+    position: relative;
+    right: 150px;
+    display: inline-block;
+    margin: 300px 0 100px 0;
+    border: 2px solid $color-white;
+    border-radius: 1rem;
+    padding: 2rem;
+
+    background-color: rgba(255, 255, 255, 0.75);
+
+    text-align: center;
+  }
+}

@@ -62,6 +62,7 @@ export default class NavBar extends React.Component {
     '/accounts/complete-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/dentist-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/logout': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/learn-more': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/faq': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/privacy': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/subscribe': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
@@ -76,7 +77,7 @@ export default class NavBar extends React.Component {
                      : null;
 
     let usersHeaderItems = (
-      <AnonymousHeaderNav />
+      <AnonymousHeaderNav pathname={this.props.pathname} />
     );
     if (this.props.loggedInUser) {
       usersHeaderItems = (

@@ -246,6 +246,14 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/learn-more',
+      name: 'learnMore',
+      getComponent (nextState, cb) {
+        System.import('containers/LearnMorePage')
+          .then(loadModule(cb))
+          .catch(errorLoading)
+      }
+    }, {
       path: '/faq',
       name: 'faq',
       getComponent (nextState, cb) {

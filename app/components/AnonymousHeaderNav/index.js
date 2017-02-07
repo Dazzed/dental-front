@@ -23,10 +23,14 @@ import styles from 'components/NavBar/styles.css';
 Anonymous Header Nav
 ================================================================================
 */
-function AnonymousHeaderNav () {
-  return (
-    <Link to="/accounts/login" styleName="navbar__text">Login</Link>
-  );
+function AnonymousHeaderNav ({ pathname }) {
+  let content = (<Link to="/accounts/login" styleName="navbar__text">Login</Link>);
+
+  if (pathname === "/learn-more") {
+    content = (<Link to="/accounts/login" styleName="navbar__text">Dentist Portal</Link>);
+  }
+
+  return content;
 }
 
 export default CSSModules(styles, { allowMultiple: true })(AnonymousHeaderNav);

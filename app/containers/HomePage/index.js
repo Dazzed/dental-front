@@ -66,11 +66,12 @@ export default class HomePage extends React.Component {
     };
   }
 
-  toggleMarketingVideo = () => {
-    this.setState({
-      ...this.state,
-      showMarketingVideo: !this.state.showMarketingVideo
-    });
+  goToFaq = () => {
+    this.props.changeRoute('/faq');
+  }
+
+  goToLearnMore = () => {
+    this.props.changeRoute('/learn-more');
   }
 
   goToLogin = () => {
@@ -83,8 +84,11 @@ export default class HomePage extends React.Component {
     this.props.changeRoute('/search');
   }
 
-  goToFaq = () => {
-    this.props.changeRoute('/faq');
+  toggleMarketingVideo = () => {
+    this.setState({
+      ...this.state,
+      showMarketingVideo: !this.state.showMarketingVideo
+    });
   }
 
   render () {
@@ -275,7 +279,7 @@ export default class HomePage extends React.Component {
                   <input
                     type="button"
                     styleName="large-button__hollow"
-                    onClick={this.goToFaq}
+                    onClick={this.goToLearnMore}
                     value="LEARN MORE &gt;"
                   />
                 </div>
