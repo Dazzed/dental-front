@@ -17,6 +17,7 @@ Imports
 */
 // libs
 import React from 'react';
+import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -26,7 +27,9 @@ import { push } from 'react-router-redux';
 import logo from 'assets/images/logo.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
+import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
 import toothIcon from 'assets/images/tooth-icon.png';
+import marketingVideo from 'assets/videos/marketing-video.mp4';
 import Footer from 'components/Footer';
 
 // local
@@ -54,6 +57,21 @@ export default class HomePage extends React.Component {
   static propTypes = {
     changeRoute: React.PropTypes.func,
   };
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      showMarketingVideo: false,
+    };
+  }
+
+  toggleMarketingVideo = () => {
+    this.setState({
+      ...this.state,
+      showMarketingVideo: !this.state.showMarketingVideo
+    });
+  }
 
   goToLogin = () => {
     this.props.changeRoute('/accounts/login');
@@ -130,8 +148,30 @@ export default class HomePage extends React.Component {
 
             <div className="row">
               <div className="col-md-10 col-md-offset-1">
-                {/* TODO: Need video link, or content to display on the site. */}
-                <input type="button" styleName="large-button" value="WATCH VIDEO &gt;" />
+                <input
+                  type="button"
+                  styleName="large-button"
+                  value="WATCH VIDEO &gt;"
+                  onClick={this.toggleMarketingVideo}
+                />
+
+                <Modal
+                  backdrop={true}
+                  dialogClassName={styles['marketing-video-modal']}
+                  onHide={this.toggleMarketingVideo}
+                  show={this.state.showMarketingVideo}
+                >
+                  <Modal.Body>
+                    <video
+                      autoPlay
+                      controls
+                      poster={marketingVideoPoster}
+                      ref="video"
+                    >
+                      <source src={marketingVideo} type="video/mp4" />
+                    </video>
+                  </Modal.Body>
+                </Modal>
 
                 <h2 styleName="large-title">
                   No insurance? No problem.
