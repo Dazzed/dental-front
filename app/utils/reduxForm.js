@@ -1,9 +1,24 @@
-import validator from 'validate.js';
+import validate from 'validate.js';
 import forEach from 'lodash/forEach';
+import moment from 'moment';
 
 /* eslint-disable */
 const isEmpty = value => value === undefined || value === null || value === '';
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0/* first error */];
+
+validate.extend(validate.validators.datetime, {
+  // NOTE: value is an ISO string
+  parse: function(value, options) {
+    return +moment(value);
+  },
+
+  // NOTE: value is a unix timestamp
+  format: function(value, options) {
+    return options.dateOnly
+      ? moment(value).format("M/D/YYYY")
+      : moment(value).format("M/D/YYYY h:m:s");
+  },
+});
 
 export function email (value) {
   // Let's not start a debate on email regex. This is just for an example app!
@@ -86,7 +101,7 @@ export function createValidator (rules) {
  */
 export function validatorFactory (schema) {
   return values => {
-    const errors = validator(values, schema);
+    const errors = validate(values, schema);
     /* eslint-disable no-return-assign */
     forEach(errors, (item, key) => errors[key] = item[0]);
     /* eslint-enable no-return-assign */

@@ -9,6 +9,10 @@ Imports
 */
 // local
 import {
+  FETCH_OFFICES_REQUEST,
+  FETCH_OFFICES_SUCCESS,
+  FETCH_OFFICES_ERROR,
+
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -19,6 +23,32 @@ import {
   SIGNUP_ERROR,
   CLEAR_SIGNUP_STATUS,
 } from './constants';
+
+
+/*
+Fetch Actions
+================================================================================
+*/
+export function fetchOffices () {
+  return {
+    type: FETCH_OFFICES_REQUEST,
+  };
+}
+
+export function fetchOfficesSuccess (payload) {
+  return {
+    type: FETCH_OFFICES_SUCCESS,
+    payload,
+  };
+}
+
+export function fetchOfficesError (payload) {
+  return {
+    type: FETCH_OFFICES_ERROR,
+    payload,
+  };
+}
+
 
 /*
 Login Actions
@@ -83,4 +113,3 @@ export function clearSignupStatus () {
     type: CLEAR_SIGNUP_STATUS,
   };
 }
-

@@ -16,6 +16,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
 // app
@@ -29,16 +30,6 @@ import LabeledInput from 'components/LabeledInput';
 // local
 import styles from './styles.css';
 import signupFormValidator from './validator';
-
-/*
-Helpers
-------------------------------------------------------------
-*/
-const states = [];
-
-forOwn(US_STATES, (value, key) => {
-  states.push([ key, value ]);
-});
 
 
 /*
@@ -56,10 +47,11 @@ class SignupForm extends React.Component {
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
+    offices: React.PropTypes.array,
   };
 
   render () {
-    const { error, handleSubmit, submitting } = this.props;
+    const { error, handleSubmit, submitting, offices } = this.props;
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -159,6 +151,8 @@ class SignupForm extends React.Component {
           <Field
             name="zipCode"
             type="text"
+            mask="99999"
+            maskChar=" "
             component={LabeledInput}
             label="Zip code"
             placeholder=""
@@ -170,6 +164,21 @@ class SignupForm extends React.Component {
 
         <Row>
           <Field
+            name="officeId"
+            type="select"
+            label="Dental Office"
+            component={LabeledInput}
+            className="col-sm-4"
+          >
+            <option value="">Select dental office</option>
+            {offices.map(e =>
+              <option value={e.id} key={e.id}>
+                {e.officeName}
+              </option>
+            )}
+          </Field>
+
+          <Field
             name="phone"
             type="text"
             mask="(999) 999-9999"
@@ -177,7 +186,7 @@ class SignupForm extends React.Component {
             component={LabeledInput}
             label="Phone"
             placeholder=""
-            className="col-sm-6"
+            className="col-sm-4"
           />
 
           <Field
@@ -185,8 +194,9 @@ class SignupForm extends React.Component {
             type="select"
             label="Preferred Contact Method"
             component={LabeledInput}
-            className="col-sm-6"
+            className="col-sm-4"
           >
+            <option value=""></option>
             {Object.keys(PREFERRED_CONTACT_METHODS).map(key =>
               <option
                 value={key}

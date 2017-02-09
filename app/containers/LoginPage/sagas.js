@@ -1,38 +1,80 @@
-/**
- *
- */
+/*
+Login Page Sagas
+================================================================================
+*/
 
 /* eslint-disable no-constant-condition, consistent-return */
 
-import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
+import get from 'lodash/get';
+import mapValues from 'lodash/mapValues';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
-import get from 'lodash/get';
-
-import request from 'utils/request';
+import { takeLatest } from 'redux-saga';
+import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
 import { setItem, removeItem } from 'utils/localStorage';
+import request from 'utils/request';
+
+// app
+import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
+
+// local
 import {
+  FETCH_OFFICES_REQUEST,
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGOUT,
   SIGNUP_REQUEST,
 } from './constants';
+import { fetchOfficesSuccess, loginError, signupSuccess } from './actions';
 
-import { loginError, signupSuccess } from './actions';
-import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
+/*
+ Main Saga
+ ================================================================================
+ */
 // Bootstrap sagas
 export default [
   main
 ];
 
 function* main () {
-  const watcherInstance = yield fork(loginWatcher);
+  const watcherA = yield fork(fetchOfficesWatcher);
+  const watcherB = yield fork(loginWatcher);
+  const watcherC = yield fork(signupWatcher);
 
   yield take(LOCATION_CHANGE);
-  yield cancel(watcherInstance);
+  yield cancel(watcherA);
+  yield cancel(watcherB);
+  yield cancel(watcherC);
 }
 
+
+/*
+Fetch Sagas
+================================================================================
+// TODO: handle errors appropriately
+*/
+function* fetchOfficesWatcher () {
+  yield* takeLatest(FETCH_OFFICES_REQUEST, function* handler () {
+    try {
+      const response = yield call(request, '/api/v1/offices');
+      yield put(fetchOfficesSuccess(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
+
+/*
+Login Sagas
+================================================================================
+*/
 function* loginWatcher () {
   while (true) {
     // listen for the LOGIN_REQUEST action dispatched on form submit
@@ -108,6 +150,11 @@ function* authorize (data, resolve, reject) {
   }
 }
 
+
+/*
+Signup Sagas
+================================================================================
+*/
 function* signupWatcher () {
   while (true) {
     // listen for the SIGNUP_REQUEST action dispatched on form submit

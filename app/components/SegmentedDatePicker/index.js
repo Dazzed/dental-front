@@ -49,7 +49,7 @@ class SegmentedDatePicker extends React.Component {
     };
 
     if (this.props.input.value) {
-      const date = moment(this.props.input.value, "MM/DD/YYYY");
+      const date = moment(this.props.input.value);
 
       dateComponents = {
         day: date.format("D"),
@@ -76,7 +76,7 @@ class SegmentedDatePicker extends React.Component {
                        + "/" + dateComponents.day
                        + "/" + dateComponents.year;
       const date = moment(dateString, "M/D/YYYY");
-      this.props.input.onChange(date.format("MM/DD/YYYY"));
+      this.props.input.onChange(date.toISOString());
     }
   }
 
