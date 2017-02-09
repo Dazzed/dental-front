@@ -31,23 +31,27 @@ function selectComponent (type, mask, maskChar) {
  *
  */
 const LabeledInput = ({
-  input, label, type, meta, width, children, className, mask, maskChar,
+  input, label, type, meta, width, children, className, mask, maskChar, placeholder,
 }) => {
   const rootClassName = classnames({
     'has-error': meta.touched && meta.error,
   });
 
+  const placeholderText = placeholder !== undefined
+                       ? placeholder
+                       : label;
+
   return (
     <div className={className || 'col-md-12'}>
       <FormGroup className={rootClassName}>
         <Col sm={12}>
-          <ControlLabel>{label}</ControlLabel>
+          <ControlLabel>{label}:</ControlLabel>
         </Col>
         <Col sm={width || 12}>
           <FormControl
             {...input}
             {...selectComponent(type, mask, maskChar)}
-            placeholder={label}
+            placeholder={placeholderText}
           >
             {children}
           </FormControl>
@@ -70,6 +74,7 @@ LabeledInput.propTypes = {
   className: React.PropTypes.string,
   mask: React.PropTypes.string,
   maskChar: React.PropTypes.string,
+  placeholder: React.PropTypes.string,
 };
 
 

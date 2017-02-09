@@ -15,9 +15,10 @@ import {
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGOUT,
-} from 'containers/LoginPage/constants';
+  SIGNUP_REQUEST,
+} from './constants';
 
-import { loginError } from 'containers/LoginPage/actions';
+import { loginError, signupSuccess } from './actions';
 import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
 // Bootstrap sagas
@@ -107,3 +108,37 @@ function* authorize (data, resolve, reject) {
   }
 }
 
+function* signupWatcher () {
+  while (true) {
+    // listen for the SIGNUP_REQUEST action dispatched on form submit
+    const { payload } = yield take(SIGNUP_REQUEST);
+
+    // execute the signup task
+    const isSuccess = yield call(signup, payload);
+
+    if (isSuccess) {
+      yield put(signupSuccess({
+        fullName: `${payload.firstName} ${payload.lastName}`
+      }));
+    }
+  }
+}
+
+function* signup (data) {
+  try {
+    // send a post request with the desired user details
+    yield call(request, '/api/v1/accounts/signup', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    return true;
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    // dispatch LOGIN_ERROR action
+    yield put(stopSubmit('signup', errors));
+    return false;
+  }
+}

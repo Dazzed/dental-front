@@ -15,7 +15,7 @@ const renderDatePicker = ({
   <div className={className || 'col-md-12'}>
     <FormGroup className={touched && error ? 'has-error' : ''}>
       <Col sm={12}>
-        <ControlLabel>{label}</ControlLabel>
+        <ControlLabel>{label}:</ControlLabel>
       </Col>
       <Col sm={12}>
         <DatePicker

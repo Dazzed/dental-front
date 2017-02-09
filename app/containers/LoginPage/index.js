@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 // app
 import LoginForm from 'components/LoginForm';
 import PageHeader from 'components/PageHeader';
+import SignupForm from 'components/SignupForm';
 
 // local
 import styles from './styles.css';
@@ -35,7 +36,11 @@ function mapDispatchToProps (dispatch) {
           })
         );
       })
-    )
+    ),
+
+    onSignupRequest: (data) => {
+      dispatch(actions.signupRequest(omit(data, 'unknown')));
+    },
   };
 }
 
@@ -50,11 +55,15 @@ class LoginPage extends Component {
 
   static propTypes = {
     onLoginRequest: React.PropTypes.func,
+    onSignupRequest: React.PropTypes.func,
   };
 
-  constructor (props) {
-    super(props);
-    this.onLoginRequest = this.props.onLoginRequest.bind(this);
+  onLoginRequest = (data) => {
+    this.props.onLoginRequest(data);
+  }
+
+  onSignupRequest = (data) => {
+    this.props.onSignupRequest(data);
   }
 
   render () {
@@ -71,7 +80,19 @@ class LoginPage extends Component {
         </PageHeader>
 
         <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
 
+              <div styleName="signup-form-wrapper">
+                <h2 styleName="large-title">
+                  Step 1 &gt; Tell Us About Yourself
+                </h2>
+
+                <SignupForm onSubmit={this.onSignupRequest} />
+              </div>
+
+            </div>
+          </div>
         </div>
 
       </div>

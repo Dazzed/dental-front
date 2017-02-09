@@ -19,29 +19,24 @@ Page-Wide
   min-height: $body-height;
 }
 
-.login-wrapper {
-  width: 100%;
-  max-width: 328px;
-  margin: 3.5rem auto 0 auto;
-  border: 1px solid $light-gray;
-  border-radius: 3px;
+.large-title {
+  margin-bottom: 2.5rem;
 
-  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.5);
-
-  background-color: #FFF;
-
-  .login {
-    /* NOTE: The top needs an extra 1rem b/c the form wrapper adds another 1rem
-     * of padding to the sides and bottom.
-     */
-    padding: 2rem 1rem 1rem 1rem;
-  }
+  font-size: 3rem;
+  text-transform: capitalize;
 }
 
 
 /*
-Custom Page Header
+Signup Form
 ================================================================================
 */
+.signup-form-wrapper {
+  margin: 2.5rem 0 5rem 0;
 
+  .large-title {
+    color: $color-primary-highlight;
 
+    text-align: center;
+  }
+}

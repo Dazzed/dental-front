@@ -85,7 +85,7 @@
 :global(.form-horizontal .control-label) {
   font-size: 1.125rem;
   font-weight: bold;
-  padding-bottom: 1rem;
+  padding: 0 0 1rem 0;
 }
 
 :global(.form-group) {
