@@ -93,32 +93,14 @@ Second Block
   position: relative;
   z-index: 10;
 
-  display: flex;
   padding: 3rem 0;
-
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: center;
 
   color: $color-white;
   background-color: $color-secondary-highlight;
   box-shadow: 0px  8px 16px rgba(0, 0, 0, 0.25),
               0px -8px 16px rgba(0, 0, 0, 0.25);
 
-  .arrow-left {
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .second-block__content {
-    text-align: center;
-  }
-
-  .arrow-right {
-    cursor: pointer;
-    text-align: right;
-  }
+  text-align: center;
 }
 
 
