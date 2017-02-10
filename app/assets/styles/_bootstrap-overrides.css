@@ -81,6 +81,11 @@
   border: none;
 }
 
+:global(.modal-title) {
+  font-size: 1rem;
+  text-align: center;
+}
+
 /** forms **/
 :global(.form-horizontal .control-label) {
   font-size: 1.125rem;

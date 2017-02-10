@@ -36,17 +36,39 @@ const membersSelector = createSelector(
     }
 
     // precondition: the family members haven't been fetched yet
-    if (familyMembers === undefined) {
+    if (familyMembers === null) {
       return false;
     }
 
-    const members = [];
-
-    members.concat(familyMembers);
+    let members = [];
+    members = members.concat(familyMembers);
     members.push(currentUser);
+    members.sort((a, b) => {
+      const aName = a.firstName + a.lastName;
+      const bName = b.firstName + b.lastName;
+
+      if (aName < bName) {
+        return -1;
+      }
+      if (aName > bName) {
+        return 1;
+      }
+
+      return 0;
+    });
 
     return members;
   }
+);
+
+const editingActiveSelector = createSelector(
+  domainSelector,
+  substate => substate.editingActive,
+);
+
+const editingMemberSelector = createSelector(
+  domainSelector,
+  subtate => subtate.editingMember,
 );
 
 /*
@@ -58,4 +80,7 @@ export default domainSelector;
 export {
   familyMembersSelector,
   membersSelector,
+
+  editingActiveSelector,
+  editingMemberSelector,
 };

@@ -16,18 +16,26 @@ import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { reset as resetForm } from 'redux-form';
 
 // app
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
-import PatientDashboardTabs from 'components/PatientDashboardTabs';
+import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
+import MemberForm from 'components/MemberForm';
+import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
+import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
   fetchFamilyMembers,
+  setEditingMember,
+  clearEditingMember,
+  submitMemberForm,
 } from './actions';
 import {
+  editingActiveSelector,
   membersSelector,
 } from './selectors';
 import styles from './styles.css';
@@ -38,7 +46,9 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    editingActive: editingActiveSelector(state),
     members: membersSelector(state),
+    user: selectCurrentUser(state),
   };
 }
 
@@ -46,6 +56,10 @@ function mapDispatchToProps (dispatch) {
   return {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
+    resetForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
   };
 }
 
@@ -60,21 +74,30 @@ class FamilyPage extends React.Component {
 
   static propTypes = {
     // state
+    editingActive: React.PropTypes.bool.isRequired,
     members: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
+    ]),
+    user: React.PropTypes.oneOfType([
+      React.PropTypes.bool,
+      React.PropTypes.object,
     ]),
 
     // dispatch
     changePageTitle: React.PropTypes.func.isRequired,
     fetchFamilyMembers: React.PropTypes.func.isRequired,
+    resetForm: React.PropTypes.func.isRequired,
+    setEditingMember: React.PropTypes.func.isRequired,
+    clearEditingMember: React.PropTypes.func.isRequired,
+    submitMemberForm: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
     super(props);
 
     this.state = {
-      showAddFamilyMemberModal: false,
+      showCancelModal: false,
     };
   }
 
@@ -83,17 +106,59 @@ class FamilyPage extends React.Component {
     this.props.fetchFamilyMembers();
   }
 
-  toggleAddFamilyMemberModal = () => {
+  /*
+  Page Actions
+  ------------------------------------------------------------
+  */
+  addMember = () => {
+    this.props.resetForm();
+    this.props.setEditingMember(null);
+  }
+
+  editMember = (member) => {
+    this.props.resetForm();
+    this.props.setEditingMember(member);
+  }
+
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
+  }
+
+  cancelMember = (member) => {
+    // TODO
+
+    this.toggleCancelModal();
+  }
+
+  /*
+  Form Submissions
+  ------------------------------------------------------------
+  */
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(values, this.props.user.id);
+  }
+
+  handleCancelSubmit = (values) => {
+    // TODO
+  }
+
+  /*
+  Modal Toggles
+  ------------------------------------------------------------
+  */
+  toggleCancelModal = () => {
     this.setState({
-      ...this.state,
-      showAddFamilyMemberModal: !this.state.showAddFamilyMemberModal,
+      ...this.setState,
+      showCancelModal: !this.state.showCancelModal,
     });
   }
 
+  /*
+  Render
+  ------------------------------------------------------------
+  */
   render () {
-    const { members } = this.props;
-
-    console.log(members);
+    const { editingActive, members } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
     if (members === false) {
@@ -108,94 +173,6 @@ class FamilyPage extends React.Component {
       );
     }
 
-    const memberRows = members.map((member) => {
-      const {
-        avatar,
-        familyRelationship,
-        firstName,
-        id,
-        lastName,
-        subscription,
-        type,
-      } = member;
-
-      const profilePhoto = avatar !== null
-                         ? (<img src={avatar} alt="Member Profile Photo" />)
-                         : (<FaUser />);
-
-      const relationship = familyRelationship !== null
-                         ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
-                         : "Self";
-
-      const accountOwner = familyRelationship !== null
-                         ? null
-                         : (<div styleName="members__member__owner">Primary Account Owner</div>);
-
-      const fee = subscription
-                ? "$" + subscription.monthly
-                : "---";
-
-      return (
-        <div className="row" styleName="members__member" key={id}>
-
-          <div className="col-sm-2">
-            <div styleName="members__member__profile">
-              {profilePhoto}
-            </div>
-          </div>
-
-          <div className="col-sm-3">
-            <div styleName="members__member__name">
-              {firstName} {lastName}
-              {accountOwner}
-            </div>
-          </div>
-
-          <div className="col-sm-2">
-            <div styleName="members__member__info">
-              {relationship}
-            </div>
-          </div>
-
-          <div className="col-sm-1">
-            <div styleName="members__member__info">
-              {type}
-            </div>
-          </div>
-
-          <div className="col-sm-1">
-            <div styleName="members__member__info">
-              {fee}
-            </div>
-          </div>
-
-          <div className="col-sm-3">
-            <div styleName="members__member__info">
-              TODO
-
-              <div styleName="members__member__controls">
-                {/* TODO: onClick */}
-                <input
-                  type="button"
-                  styleName="button--short"
-                  value="Edit"
-                />
-
-                {/* TODO: onClick */}
-                <input
-                  type="button"
-                  styleName="button--short--lowlight"
-                  value="Cancel"
-                />
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      );
-    });
-
     return (
       <div>
         <PatientDashboardTabs active="family" />
@@ -206,60 +183,46 @@ class FamilyPage extends React.Component {
               type="button"
               styleName="button"
               value="ADD FAMILY MEMBER +"
-              onClick={this.toggleAddFamilyMemberModal}
+              onClick={this.addMember}
             />
           </div>
 
-          {/*
-          List Family Members & User
-          ------------------------------------------------------------
-          */}
-          <div className="grid" styleName="members">
-            <div className="row" styleName="members__title">
-              <div className="col-sm-2">
-                {/* profile pic */}
-              </div>
-              <div className="col-sm-3">
-                Name
-              </div>
-              <div className="col-sm-2">
-                Relationship
-              </div>
-              <div className="col-sm-1">
-                Type
-              </div>
-              <div className="col-sm-1">
-                Fee
-              </div>
-              <div className="col-sm-3">
-                Member Since
-              </div>
-            </div>
-
-            {memberRows}
-          </div>
-          
+          <FamilyMembersList
+            members={members}
+            onCancel={this.cancelMember}
+            onEdit={this.editMember}
+          />          
         </div>
 
         {/*
-        Add Family Member Modal
+        Member Form Modal
+        ------------------------------------------------------------
+        */}
+        <MemberForm
+          show={editingActive}
+          onCancel={this.cancelMemberFormAction}
+          onSubmit={this.handleMemberFormSubmit}
+        />
+
+        {/*
+        Cancel Family Member Modal
         ------------------------------------------------------------
         */}
         <Modal
-          backdrop={true}
-          onHide={this.toggleAddFamilyMemberModal}
-          show={this.state.showAddFamilyMemberModal}
+          backdrop={'static'}
+          onHide={this.toggleCancelModal}
+          show={this.state.showCancelModal}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Add A Family Member</Modal.Title>
+            <Modal.Title>Cancel A Family Member</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
-            TODO
+            TODO: CANCEL
           </Modal.Body>
 
           <Modal.Footer>
-            TODO
+            TODO: CANCEL
           </Modal.Footer>
         </Modal>
 

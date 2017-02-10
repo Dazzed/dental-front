@@ -59,7 +59,7 @@ const schema = {
   officeId: {
     presence: { message: '^Please select a dental office' },
   },
-  phone: { // TODO
+  phone: {
     presence: true,
     format: {
       pattern: /\(\d{3}\) \d{3}-\d{4}?/,

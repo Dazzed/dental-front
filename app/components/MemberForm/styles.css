@@ -1,5 +1,5 @@
 /*
-Patient Family Page Styles
+Family Member Form Component Styles
 ================================================================================
 */
 
@@ -15,20 +15,27 @@ Imports
 Page Wide
 ================================================================================
 */
-.content {
-  padding: 2rem;
+.modal-controls {
+  text-align: right;
 
-  background-color: $color-secondary-background;
+  > * {
+    margin-right: 1.5rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
-.button {
+.button--short {
   border: 1px solid $color-primary-highlight;
   border-radius: 0.25rem;
-  padding: 1rem 1.5rem;
+  padding: 0.25rem 1.5rem;
 
   color: $color-white;
   background-color: $color-primary-highlight;
 
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: normal;
 
@@ -42,13 +49,24 @@ Page Wide
   }
 }
 
+.button--short--lowlight {
+  border: 1px solid $color-primary-lowlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
 
-/*
-Family
-================================================================================
-*/
-.add-family-member-wrapper {
-  margin-bottom: 1.5rem;
+  color: $color-white;
+  background-color: $color-primary-lowlight;
 
-  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-lowlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
 }
