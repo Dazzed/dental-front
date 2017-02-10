@@ -17,3 +17,8 @@
 .container-wrapper {
   min-height: calc(100% - 45px);
 }
+
+.content-wrapper {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}

@@ -1,7 +1,7 @@
 /*
 Patient Family Page
 ================================================================================
-Route: `/family`
+Route: `/your-family`
 */
 
 /*
@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 // app
+import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -70,7 +71,7 @@ class FamilyPage extends React.Component {
     const { familyMembers } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
-    if (!familyMembers) {
+    if (familyMembers === undefined) {
       return (
         <Well>
           <LoadingSpinner showOnlyIcon={false} />
@@ -79,9 +80,13 @@ class FamilyPage extends React.Component {
     }
 
     return (
-      <Well>
-        Family Page
-      </Well>
+        <div>
+          <PatientDashboardTabs active="family" />
+
+          <div>
+            Family
+          </div>
+        </div>
     );
   }
 

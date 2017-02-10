@@ -58,6 +58,11 @@ $color-secondary-transparent:          rgba(115, 200, 175, 0.75);
 $color-primary-lowlight: #646569;    /* rgb(100, 101, 105) */
 $color-secondary-lowlight: #BDBBBB;  /* rgb(189, 187, 187) */
 
+$color-primary-background:             rgba(  0, 161, 263, 0.2);
+$color-primary-background-hover:       rgba(0, 161, 263, 0.25);
+$color-secondary-background:           rgba(189, 187, 187, 0.2);
+$color-secondary-background-hover:     rgba(189, 187, 187, 0.25);
+
 /*
 Fonts
 ------------------------------------------------------------

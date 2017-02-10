@@ -17,7 +17,6 @@ import CSSModules from 'react-css-modules';
 
 import NavBar from 'components/NavBar';
 import Footer from 'components/Footer';
-import SideNav from 'components/SideNav';
 import PageHeader from 'components/PageHeader';
 
 import { selectUserType, selectPageTitle } from 'containers/App/selectors';
@@ -91,11 +90,10 @@ export default class App extends Component {
         <div styleName="container-wrapper">
           {title}
           <div className="container">
-            <div className="col-md-9">
-              {childComponents}
-            </div>
-            <div className="col-md-3">
-              <SideNav userType={userType} />
+            <div className="col-md-12">
+              <div styleName="content-wrapper">
+                {childComponents}
+              </div>
             </div>
           </div>
         </div>

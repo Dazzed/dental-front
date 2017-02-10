@@ -256,27 +256,6 @@ export default function createRoutes (store) {
           .catch(errorLoading)
       }
     }, {
-      onEnter: redirectToLogin,
-      path: '/family',
-      name: 'familyPage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/FamilyPage/reducer'),
-          System.import('containers/FamilyPage/sagas'),
-          System.import('containers/FamilyPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('familyPage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
       path: '/faq',
       name: 'faq',
       getComponent (nextState, cb) {
@@ -319,6 +298,27 @@ export default function createRoutes (store) {
         System.import('containers/TermsPage')
           .then(loadModule(cb))
           .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/your-family',
+      name: 'familyPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/FamilyPage/reducer'),
+          System.import('containers/FamilyPage/sagas'),
+          System.import('containers/FamilyPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('familyPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '*',
