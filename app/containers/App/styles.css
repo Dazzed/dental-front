@@ -15,7 +15,7 @@
 }
 
 .container-wrapper {
-  min-height: calc(100% - 45px);
+  min-height: $body-height;
 }
 
 .content-wrapper {

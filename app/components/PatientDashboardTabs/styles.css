@@ -25,6 +25,7 @@ Patient Dashboard Tabs
   :global .nav-tabs > li {
     float: none;
     display: inline-block;
+    margin-bottom: 0;
 
     & > a {
       margin: 0 2rem 0.5rem 0;
