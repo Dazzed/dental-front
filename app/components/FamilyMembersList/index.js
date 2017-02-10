@@ -11,6 +11,8 @@ Imports
 import moment from 'moment';
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
 import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 
@@ -30,12 +32,12 @@ class FamilyMembersList extends React.Component {
 
   static propTypes = {
     // passed in
-    onCancel: React.PropTypes.func.isRequired,
-    onEdit: React.PropTypes.func.isRequired,
     members: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
     ]),
+    onEdit: React.PropTypes.func.isRequired,
+    onRemove: React.PropTypes.func.isRequired,
   }
 
   onEditClick = (index) => {
@@ -46,16 +48,16 @@ class FamilyMembersList extends React.Component {
     };
   }
 
-  onCancelClick = (index) => {
+  onRemoveClick = (index) => {
     const member = this.props.members[index];
 
     return () => {
-      this.props.onCancel(member);
+      this.props.onRemove(member);
     };
   }
 
   render() {
-    const { onCancel, onEdit, members } = this.props;
+    const { onRemove, onEdit, members } = this.props;
 
     const memberRows = members.map((member, index) => {
       const {
@@ -86,6 +88,21 @@ class FamilyMembersList extends React.Component {
                 ? "$" + subscription.monthly
                 : "---";
 
+      const removePopover = (
+        <Popover id="remove-popover" title="Are you sure?">
+          <p>Please confirm that you want to remove <strong>'{firstName} {lastName}'</strong> from your plan.</p>
+
+          <div className="text-center">
+            <input
+              type="button"
+              className={styles["button--short--lowlight"]}
+              value="Confirm Removal"
+              onClick={this.onRemoveClick(index)}
+            />
+          </div>
+        </Popover>
+      );
+
       const controls = isOwner
                      ? null
                      : (<div styleName="members__member__controls">
@@ -96,12 +113,13 @@ class FamilyMembersList extends React.Component {
                             onClick={this.onEditClick(index)}
                           />
 
-                          <input
-                            type="button"
-                            styleName="button--short--lowlight"
-                            value="Cancel"
-                            onClick={this.onCancelClick(index)}
-                          />
+                          <OverlayTrigger trigger="click" placement="bottom" rootClose overlay={removePopover}>
+                            <input
+                              type="button"
+                              styleName="button--short--lowlight"
+                              value="Remove"
+                            />
+                          </OverlayTrigger>
                         </div>
                        );
 

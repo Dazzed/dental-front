@@ -13,10 +13,13 @@ import findIndex from 'lodash/findIndex';
 // local
 import {
   FAMILY_MEMBERS_SUCCESS,
+
   SET_EDITING_MEMBER,
   CLEAR_EDITING_MEMBER,
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
+
+  REMOVE_MEMBER_SUCCESS,
 } from './constants';
 
 /*
@@ -27,6 +30,7 @@ const initialState = {
   familyMembers: null,
   editingActive: false,
   editingMember: null,
+  removingMember: null,
 };
 
 /*
@@ -34,6 +38,8 @@ Reducer
 ------------------------------------------------------------
 */
 function familyPageReducer (state = initialState, action) {
+  let memberIdx;
+
   switch (action.type) {
     case FAMILY_MEMBERS_SUCCESS:
       return {
@@ -67,7 +73,7 @@ function familyPageReducer (state = initialState, action) {
       };
 
     case EDIT_MEMBER_SUCCESS:
-      const memberIdx = findIndex(state.familyMembers, { id: action.payload.id });
+      memberIdx = findIndex(state.familyMembers, { id: action.payload.id });
 
       return {
         ...state,
@@ -78,6 +84,17 @@ function familyPageReducer (state = initialState, action) {
         ],
         editingActive: false,
         editingMember: null,
+      };
+
+    case REMOVE_MEMBER_SUCCESS:
+      memberIdx = findIndex(state.familyMembers, { id: action.memberId });
+
+      return {
+        ...state,
+        familyMembers: [
+          ...state.familyMembers.slice(0, memberIdx),
+          ...state.familyMembers.slice(memberIdx + 1),
+        ],
       };
 
     default:

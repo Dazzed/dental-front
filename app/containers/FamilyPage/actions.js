@@ -18,6 +18,9 @@ import {
   SUBMIT_MEMBER_FORM,
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
+
+  REMOVE_MEMBER_REQUEST,
+  REMOVE_MEMBER_SUCCESS,
 } from './constants';
 
 /*
@@ -45,7 +48,7 @@ export function setFamilyMembersErrors (payload) {
 }
 
 /*
-Member Form
+Add / Edit Member
 ------------------------------------------------------------
 */
 export function setEditingMember (member) {
@@ -83,4 +86,24 @@ export function setEditedMember (payload, userId) {
     payload,
     userId,
   };
+}
+
+/*
+Remove Member 
+------------------------------------------------------------
+*/
+export function setRemovingMember (payload, userId) {
+  return {
+    type: REMOVE_MEMBER_REQUEST,
+    payload,
+    userId,
+  };
+}
+
+export function setRemovedMember (memberId, userId) {
+  return {
+    type: REMOVE_MEMBER_SUCCESS,
+    memberId,
+    userId,
+  }
 }

@@ -15,3 +15,6 @@ export const SUBMIT_MEMBER_FORM = 'app/FamilyPage/SUBMIT_MEMBER_FORM';
 export const ADD_MEMBER_SUCCESS = 'app/FamilyPage/ADD_MEMBER_SUCCESS';
 export const EDIT_MEMBER_SUCCESS = 'app/FamilyPage/EDIT_MEMBER_SUCCESS';
 
+export const REMOVE_MEMBER_REQUEST = 'app/FamilyPage/REMOVE_MEMBER_REQUEST';
+export const REMOVE_MEMBER_SUCCESS = 'app/FamilyPage/REMOVE_MEMBER_SUCCESS';
+

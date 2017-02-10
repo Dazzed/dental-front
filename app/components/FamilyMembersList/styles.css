@@ -59,6 +59,28 @@ Page Wide
   }
 }
 
+.button--short--danger {
+  border: 1px solid $color-red;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-red;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-red;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 
 /*
 Family Members List

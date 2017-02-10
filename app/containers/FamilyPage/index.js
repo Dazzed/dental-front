@@ -33,6 +33,7 @@ import {
   setEditingMember,
   clearEditingMember,
   submitMemberForm,
+  setRemovingMember,
 } from './actions';
 import {
   editingActiveSelector,
@@ -60,6 +61,7 @@ function mapDispatchToProps (dispatch) {
     setEditingMember: (member) => dispatch(setEditingMember(member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+    setRemovingMember: (member, userId) => dispatch(setRemovingMember(member, userId)),
   };
 }
 
@@ -91,14 +93,7 @@ class FamilyPage extends React.Component {
     setEditingMember: React.PropTypes.func.isRequired,
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
-  }
-
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      showCancelModal: false,
-    };
+    setRemovingMember: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -120,37 +115,20 @@ class FamilyPage extends React.Component {
     this.props.setEditingMember(member);
   }
 
-  cancelMemberFormAction = () => {
-    this.props.clearEditingMember();
-  }
-
-  cancelMember = (member) => {
-    // TODO
-
-    this.toggleCancelModal();
+  setRemovingMember = (member) => {
+    this.props.setRemovingMember(member, this.props.user.id);
   }
 
   /*
-  Form Submissions
+  Form Events
   ------------------------------------------------------------
   */
   handleMemberFormSubmit = (values) => {
     this.props.submitMemberForm(values, this.props.user.id);
   }
 
-  handleCancelSubmit = (values) => {
-    // TODO
-  }
-
-  /*
-  Modal Toggles
-  ------------------------------------------------------------
-  */
-  toggleCancelModal = () => {
-    this.setState({
-      ...this.setState,
-      showCancelModal: !this.state.showCancelModal,
-    });
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
   }
 
   /*
@@ -189,43 +167,17 @@ class FamilyPage extends React.Component {
 
           <FamilyMembersList
             members={members}
-            onCancel={this.cancelMember}
             onEdit={this.editMember}
+            onRemove={this.setRemovingMember}
           />          
         </div>
 
-        {/*
-        Member Form Modal
-        ------------------------------------------------------------
-        */}
+        {/* displayed in a modal */}
         <MemberForm
           show={editingActive}
           onCancel={this.cancelMemberFormAction}
           onSubmit={this.handleMemberFormSubmit}
         />
-
-        {/*
-        Cancel Family Member Modal
-        ------------------------------------------------------------
-        */}
-        <Modal
-          backdrop={'static'}
-          onHide={this.toggleCancelModal}
-          show={this.state.showCancelModal}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Cancel A Family Member</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            TODO: CANCEL
-          </Modal.Body>
-
-          <Modal.Footer>
-            TODO: CANCEL
-          </Modal.Footer>
-        </Modal>
-
       </div>
     );
   }
