@@ -28,7 +28,7 @@ export default class AvatarEditor extends React.Component {
   }
 
   static defaultProps = {
-    src: 'http://www.teenink.com/images/default_face.gif',
+    src: null, // TODO - was 'http://www.teenink.com/images/default_face.gif',
   }
 
   handleClick = (event) => {

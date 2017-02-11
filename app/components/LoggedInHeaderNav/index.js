@@ -26,7 +26,7 @@ import styles from './styles.css';
 function LoggedInHeaderNav ({ fullName, avatar }) {
   // temporary default face icon for now
   const avatarURL = avatar ?
-    avatar.location : 'http://www.teenink.com/images/default_face.gif';
+    avatar.location : null; // TODO - was 'http://www.teenink.com/images/default_face.gif';
 
   return (
     <Navbar.Collapse>

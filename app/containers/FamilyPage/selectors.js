@@ -19,7 +19,6 @@ Selectors
 */
 const domainSelector = state => state.familyPage;
 
-// Needed?
 const familyMembersSelector = createSelector(
   domainSelector,
   (substate) => { return substate.familyMembers; }

@@ -1,0 +1,42 @@
+/*
+Avatar Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Avatar
+================================================================================
+*/
+.avatar__wrapper {
+  /* NOTE: width and height are set in the style property based on the
+           component's `size` property.
+  */
+  margin: 0 auto;
+  border: 0.25rem solid $color-primary-lowlight;
+  border-radius: 100%;
+  padding: 0.5rem;
+
+  background-color: $color-white;
+
+  text-align: center;
+
+  /* select the FaUser child */
+  & .avatar--default > * {
+    width: 100%;
+    height: 100%;
+  }
+
+  & .avatar--photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+  }
+}

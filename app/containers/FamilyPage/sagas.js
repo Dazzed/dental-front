@@ -19,7 +19,6 @@ import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 // app
 import request from 'utils/request';
 import { setUserData } from 'containers/App/actions';
-import { selectCurrentUser } from 'containers/App/selectors';
 import { requestPendingAmount } from 'containers/Authorize.net/actions';
 
 // local

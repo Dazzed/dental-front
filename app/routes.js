@@ -321,6 +321,27 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
+      path: '/your-dentist',
+      name: 'yourDentistPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/YourDentistPage/reducer'),
+          System.import('containers/YourDentistPage/sagas'),
+          System.import('containers/YourDentistPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('yourDentistPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent (nextState, cb) {

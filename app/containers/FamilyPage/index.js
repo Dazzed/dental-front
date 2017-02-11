@@ -15,7 +15,6 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
@@ -97,7 +96,7 @@ class FamilyPage extends React.Component {
   }
 
   componentDidMount () {
-    this.props.changePageTitle('Update Your Family Information');
+    this.props.changePageTitle('Your Family Members');
     this.props.fetchFamilyMembers();
   }
 

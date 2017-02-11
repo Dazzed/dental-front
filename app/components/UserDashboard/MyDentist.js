@@ -18,7 +18,7 @@ import { markMsgRead } from 'containers/Dashboard/actions';
 import WriteReviewModal from './WriteReviewModal';
 import styles from './MyDentist.css';
 
-const defaultAvatar = 'http://www.teenink.com/images/default_face.gif';
+const defaultAvatar = null; // TODO - was 'http://www.teenink.com/images/default_face.gif';
 
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
