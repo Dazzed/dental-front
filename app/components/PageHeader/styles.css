@@ -27,14 +27,6 @@ Page Header
     padding: 5rem 0;
 
     background-color: $color-primary-transparent;
-
-    &.client {
-      background-color: $color-secondary-transparent;
-    }
-
-    &.dentist {
-      background-color: $color-primary-transparent;
-    }
   }
 
   .large-title {

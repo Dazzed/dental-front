@@ -22,7 +22,6 @@ import styles from './styles.css';
 /*
 Page Header
 ================================================================================
-TODO: Remove the `userType` prop.  New designs are blue regardless of dentist / client.
 */
 function PageHeader ({ borderContent, children, title, userType }) {
   let content = children;
@@ -33,7 +32,7 @@ function PageHeader ({ borderContent, children, title, userType }) {
   return (
     <div>
       <div styleName="page-header">
-        <div styleName={`page-header__overlay ${userType || ''}`}>
+        <div styleName={`page-header__overlay`}>
           <div className="container">
             {content}
           </div>
