@@ -9,34 +9,31 @@ Imports
 */
 // local
 import {
-  // TODO
+  FAMILY_MEMBERS_REQUEST,
+  FAMILY_MEMBERS_SUCCESS,
+  FAMILY_MEMBERS_ERROR,
 } from './constants';
 
 /*
-Fetch
+Fetch Family Members
 ------------------------------------------------------------
 */
-// TODO
-
-// EXAMPLE
-/*
-export function fetchDentist() {
+export function fetchFamilyMembers() {
   return {
-    type: DENTIST_REQUEST,
+    type: FAMILY_MEMBERS_REQUEST,
   };
 }
 
-export function setDentist (payload) {
+export function setFamilyMembers (payload) {
   return {
-    type: DENTIST_SUCCESS,
+    type: FAMILY_MEMBERS_SUCCESS,
     payload,
   };
 }
 
-export function setDentistErrors (payload) {
+export function setFamilyMembersErrors (payload) {
   return {
-    type: DENTIST_ERROR,
+    type: FAMILY_MEMBERS_ERROR,
     payload,
   };
 }
-*/

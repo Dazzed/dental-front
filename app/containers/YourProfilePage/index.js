@@ -18,6 +18,7 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
+import FamilyMembersPlanSummary from 'components/FamilyMembersPlanSummary';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
@@ -25,10 +26,10 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
-  // TODO
+  fetchFamilyMembers,
 } from './actions';
 import {
-  // TODO
+  membersSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -38,16 +39,16 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    members: membersSelector(state),
     user: selectCurrentUser(state),
-    // TODO
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
+    fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
     resetForm: () => dispatch(resetForm('TODO')),
-    // TODO
   };
 }
 
@@ -62,6 +63,10 @@ class YourProfilePage extends React.Component {
 
   static propTypes = {
     // state
+    members: React.PropTypes.oneOfType([
+      React.PropTypes.bool,
+      React.PropTypes.array,
+    ]),
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -69,11 +74,13 @@ class YourProfilePage extends React.Component {
 
     // dispatch
     changePageTitle: React.PropTypes.func.isRequired,
+    fetchFamilyMembers: React.PropTypes.func.isRequired,
     resetForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
     this.props.changePageTitle('Your Profile');
+    this.props.fetchFamilyMembers();
   }
 
   /*
@@ -115,10 +122,10 @@ class YourProfilePage extends React.Component {
   ------------------------------------------------------------
   */
   render () {
-    const { user } = this.props;
+    const { members, user } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
-    if (user === false) {
+    if (user === false || members === false) {
       return (
         <div>
           <PatientDashboardTabs active="profile" />
@@ -193,47 +200,7 @@ class YourProfilePage extends React.Component {
               Plan Details:
             </p>
 
-            {/* TODO */}
-            {/* Move into a component and hookup to membership info... */}
-            <div styleName="plan-details">
-              <div className="row" styleName="plan-details__header">
-                <div className="col-md-4">Name</div>
-                <div className="col-md-3">Relationship</div>
-                <div className="col-md-3">Plan Type</div>
-                <div className="col-md-2">Monthly Fee</div>
-              </div>
-
-              <div className="row" styleName="plan-details__entry">
-                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
-                <div className="col-md-3">You</div>
-                <div className="col-md-3">Custom</div>
-                <div className="col-md-2">$50.00</div>
-              </div>
-
-              <div className="row" styleName="plan-details__entry">
-                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
-                <div className="col-md-3">You</div>
-                <div className="col-md-3">Custom</div>
-                <div className="col-md-2">$50.00</div>
-              </div>
-
-              <div className="row" styleName="plan-details__entry">
-                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
-                <div className="col-md-3">You</div>
-                <div className="col-md-3">Custom</div>
-                <div className="col-md-2">$50.00</div>
-              </div>
-            </div>
-
-            <div className="row" styleName="plan-total">
-              <div className="col-md-10" styleName="plan-total__label">
-                Total Monthly Membership Fee:
-              </div>
-
-              <div className="col-md-2" styleName="plan-total__amount">
-                $100.00 {/* TODO */}
-              </div>
-            </div>
+            <FamilyMembersPlanSummary members={members} />
 
           </div>
 
@@ -248,15 +215,15 @@ class YourProfilePage extends React.Component {
                 <p>
                   <span styleName="text--label">Address:</span>
                   <br />
-                  123 Address Street {/* TODO */}
+                  {user.address}
                   <br />
-                  Cityname, NC 12345 {/* TODO */}
+                  {user.city}, {user.state} {user.zipCode}
                 </p>
 
                 <p>
                   <span styleName="text--label">Phone:</span>
                   <br />
-                  123-456-7788 {/* TODO */}
+                  {user.phone}
                 </p>
 
                 <p>

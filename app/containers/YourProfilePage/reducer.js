@@ -9,7 +9,7 @@ Imports
 */
 // local
 import {
-  // TODO
+  FAMILY_MEMBERS_SUCCESS,
 } from './constants';
 
 /*
@@ -17,7 +17,7 @@ Initial State
 ------------------------------------------------------------
 */
 const initialState = {
-  // TODO
+  familyMembers: null,
 };
 
 /*
@@ -28,16 +28,11 @@ function yourProfilePageReducer (state = initialState, action) {
   let memberIdx;
 
   switch (action.type) {
-    // TODO
-
-    // EXAMPLE
-    /*
-    case DENTIST_SUCCESS:
+    case FAMILY_MEMBERS_SUCCESS:
       return {
         ...state,
-        dentist: action.payload
+        familyMembers: action.payload,
       };
-    */
 
     default:
       return state;

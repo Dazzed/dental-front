@@ -111,38 +111,6 @@ Your Profile
   margin-bottom: 0;
 }
 
-.plan-details {
-  margin: 1rem 0;
-
-  .plan-details__header {
-    margin-bottom: 0.5rem;
-
-    font-size: 0.75rem;
-    font-weight: bold;
-  }
-
-  .plan-details__entry {
-    margin-bottom: 0.25rem;
-  }
-
-  .plan-details__entry__title {
-    font-size: 1.125rem;
-    font-weight: bold;
-  }
-}
-
-.plan-total {
-  color: $color-primary-highlight;
-
-  font-weight: bold;
-
-  .plan-total__label {
-    text-align: right;
-  }
-
-  .plan-total__amount {}
-}
-
 .personal-info {
   p {
     margin-bottom: 1rem;

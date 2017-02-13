@@ -21,10 +21,11 @@ import request from 'utils/request';
 
 // local
 import {
-  // TODO
+  setFamilyMembers,
+  setFamilyMembersErrors,
 } from './actions';
 import {
-  // TODO
+  FAMILY_MEMBERS_REQUEST,
 } from './constants';
 
 
@@ -39,25 +40,19 @@ export default [
 ];
 
 function* main () {
-  // TODO
-  const watcherA = yield fork(todoSomeFetcherName);
+  const watcherA = yield fork(familyMembersFetcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
 }
 
-function* todoSomeFetcherName () {
-  // TODO
-
-  // EXAMPLE
-  /*
-  yield* takeLatest(DENTIST_REQUEST, function* handler () {
+function* familyMembersFetcher () {
+  yield* takeLatest(FAMILY_MEMBERS_REQUEST, function* handler () {
     try {
-      const response = yield call(request, '/api/v1/users/me/dentist');
-      yield put(setDentist(response.data));
+      const response = yield call(request, '/api/v1/users/me/members');
+      yield put(setFamilyMembers(response.data));
     } catch(err) {
-      yield put(setDentistErrors(err));
+      yield put(setFamilyMembersErrors(err));
     }
   });
-  */
 }
