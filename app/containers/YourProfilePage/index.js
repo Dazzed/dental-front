@@ -137,27 +137,172 @@ class YourProfilePage extends React.Component {
         <div styleName="content">
 
           {/*
-          Account Status Row
+          Account Status
           ------------------------------------------------------------
           */}
-          <div className="row">
-            Test 1
+          <div className="row" styleName="segment">
+
+            <div className="col-md-9">
+              <p>
+                <span styleName="text--inline-label">Account Status:</span>
+                <span styleName="text--primary--bold">Active{/* TODO */}</span>
+              </p>
+
+              <p>
+                <span styleName="text--inline-label">Current Balance:</span>
+                <span styleName="text--bold">$100{/* TODO */}</span>
+              </p>
+
+              <p>
+                <span styleName="text--inline-label">Payment Due Date:</span>
+                <span styleName="text--bold">December 7, 2017{/* TODO */}</span>
+              </p>
+            </div>
+
+            <div className="col-md-3">
+              <div styleName="user-action-buttons">
+                <p>
+                  <input
+                    type="button"
+                    styleName="button--full-width"
+                    value="MAKE A PAYMENT"
+                    onClick={this.makePayment}
+                  />
+                </p>
+
+                <p>
+                  <input
+                    type="button"
+                    styleName="button--lowlight--full-width"
+                    value="EDIT PLAN"
+                    onClick={this.editPlan}
+                  />
+                </p>
+              </div>
+            </div>
+
           </div>
 
           {/*
-          Plan Details Row
+          Plan Details
           ------------------------------------------------------------
           */}
-          <div className="row">
-            Test 2
+          <div styleName="segment">
+
+            <p styleName="text--label">
+              Plan Details:
+            </p>
+
+            {/* TODO */}
+            {/* Move into a component and hookup to membership info... */}
+            <div styleName="plan-details">
+              <div className="row" styleName="plan-details__header">
+                <div className="col-md-4">Name</div>
+                <div className="col-md-3">Relationship</div>
+                <div className="col-md-3">Plan Type</div>
+                <div className="col-md-2">Monthly Fee</div>
+              </div>
+
+              <div className="row" styleName="plan-details__entry">
+                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
+                <div className="col-md-3">You</div>
+                <div className="col-md-3">Custom</div>
+                <div className="col-md-2">$50.00</div>
+              </div>
+
+              <div className="row" styleName="plan-details__entry">
+                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
+                <div className="col-md-3">You</div>
+                <div className="col-md-3">Custom</div>
+                <div className="col-md-2">$50.00</div>
+              </div>
+
+              <div className="row" styleName="plan-details__entry">
+                <div className="col-md-4" styleName="plan-details__entry__title">Bob Sample</div>
+                <div className="col-md-3">You</div>
+                <div className="col-md-3">Custom</div>
+                <div className="col-md-2">$50.00</div>
+              </div>
+            </div>
+
+            <div className="row" styleName="plan-total">
+              <div className="col-md-10" styleName="plan-total__label">
+                Total Monthly Membership Fee:
+              </div>
+
+              <div className="col-md-2" styleName="plan-total__amount">
+                $100.00 {/* TODO */}
+              </div>
+            </div>
+
           </div>
 
           {/*
-          Profile & Payment Info Row
+          Profile & Payment Info
           ------------------------------------------------------------
           */}
-          <div className="row">
-            Test 3
+          <div styleName="segment">
+            <div className="row" styleName="personal-info">
+
+              <div className="col-md-7">
+                <p>
+                  <span styleName="text--label">Address:</span>
+                  <br />
+                  123 Address Street {/* TODO */}
+                  <br />
+                  Cityname, NC 12345 {/* TODO */}
+                </p>
+
+                <p>
+                  <span styleName="text--label">Phone:</span>
+                  <br />
+                  123-456-7788 {/* TODO */}
+                </p>
+
+                <p>
+                  <span styleName="personal-info__change-link" onClick={this.editProfile}>
+                    Edit Profile
+                  </span>
+
+                  <span styleName="personal-info__change-link" onClick={this.editSecuritySettings}>
+                    Login &amp; Security Settings
+                  </span>
+
+                  <span styleName="personal-info__change-link" onClick={this.cancelMembership}>
+                    Cancel Membership
+                  </span>
+                </p>
+              </div>
+
+              <div className="col-md-5">
+                <p>
+                  <span styleName="text--label">Payment Info:</span>
+
+                  <span styleName="personal-info__change-link" onClick={this.changePaymentMethod}>
+                    Edit / Add Payment Method
+                  </span>
+                </p>
+
+                <p>
+                  <span styleName="text--bold">Card Number</span>
+                  <br />
+                  Visa ending in 1731 {/* TODO */}
+                </p>
+
+                <p>
+                  <span styleName="text--bold">Name</span>
+                  <br />
+                  Bob Sample {/* TODO */}
+                </p>
+
+                <p>
+                  <span styleName="text--bold">Exp. Date</span>
+                  <br />
+                  02/2019 {/* TODO */}
+                </p>
+              </div>
+
+            </div>
           </div>
 
         </div>

@@ -65,9 +65,105 @@ Page Wide
   }
 }
 
+/*
+Text
+------------------------------------------------------------
+*/
+.text--bold {
+  font-weight: 600;
+}
+
+.text--primary--bold {
+  color: $color-primary-highlight;
+
+  font-weight: bold;
+}
+
+.text--label {
+  font-size: 1.25rem;
+  font-weight: 600;  
+}
+
+.text--inline-label {
+  margin-right: 10px;
+
+  color: $color-primary-lowlight;
+
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
 
 /*
 Your Profile
 ================================================================================
 */
+.segment {
+  border-bottom: 1px solid $color-secondary-lowlight;
+  padding: 1.5rem 0;
 
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.user-action-buttons > p:last-child {
+  margin-bottom: 0;
+}
+
+.plan-details {
+  margin: 1rem 0;
+
+  .plan-details__header {
+    margin-bottom: 0.5rem;
+
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+
+  .plan-details__entry {
+    margin-bottom: 0.25rem;
+  }
+
+  .plan-details__entry__title {
+    font-size: 1.125rem;
+    font-weight: bold;
+  }
+}
+
+.plan-total {
+  color: $color-primary-highlight;
+
+  font-weight: bold;
+
+  .plan-total__label {
+    text-align: right;
+  }
+
+  .plan-total__amount {}
+}
+
+.personal-info {
+  p {
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .personal-info__change-link {
+    display: block;
+    margin-top: 0.5rem;
+
+    color: $color-primary-transparent;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-primary-highlight;
+      text-decoration: none;
+    }
+  }
+}
