@@ -1,43 +1,110 @@
-/**
- * Login Page
- */
+/*
+Signup Page
+================================================================================
+*/
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
+import omit from 'lodash/omit';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
-import omit from 'lodash/omit';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
+// app
+import LoginForm from 'components/LoginForm';
+import PageHeader from 'components/PageHeader';
 import SignupForm from 'components/SignupForm';
 
-import * as actions from './actions';
+// local
+import {
+  fetchOffices,
+  loginRequest,
+  signupRequest,
+  clearSignupStatus
+} from './actions';
+import {
+  fullNameSelector,
+  isSignedUpSelector,
+  officesSelector
+} from './selectors';
 import styles from './styles.css';
 
+/*
+Redux
+------------------------------------------------------------
+*/
+function mapStateToProps (state) {
+  return {
+    // fetch
+    offices: officesSelector(state),
 
-@connect(
-  state => ({
-    isSignedUp: state.signup.patientCreated,
-    fullName: state.signup.fullName,
-  }),
-  mapDispatchToProps)
-@connect(null, mapDispatchToProps)
+    // signup
+    fullName: fullNameSelector(state),
+    isSignedUp: isSignedUpSelector(state),
+  };
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    // fetch
+    fetchOffices: () => dispatch(fetchOffices()),
+
+    // login
+    onLoginRequest: (data) => ( // handle async tasks with sagas
+      new Promise((resolve, reject) => {
+        dispatch(
+          loginRequest({
+            data: omit(data, 'unknown'), resolve, reject
+          })
+        );
+      })
+    ),
+
+    // signup
+    changeRoute: (url) => dispatch(push(url)),
+    clearSignupStatus: () => dispatch(clearSignupStatus()),
+    onSignupRequest: (data) => {
+      dispatch(signupRequest(omit(data, 'unknown')));
+    },
+  };
+}
+
+
+/*
+Signup
+================================================================================
+*/
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 class SignupPage extends Component {
 
   static propTypes = {
-    onSignupRequest: React.PropTypes.func,
-    clearSignupStatus: React.PropTypes.func,
-    location: React.PropTypes.object,
-    isSignedUp: React.PropTypes.bool,
+    // fetch - state
+    offices: React.PropTypes.array,
+
+    // fetch - dispatch
+    fetchOffices: React.PropTypes.func,
+
+    // login - dispatch
+    onLoginRequest: React.PropTypes.func,
+
+    // signup - state
     fullName: React.PropTypes.string,
+    isSignedUp: React.PropTypes.bool,
+
+    // signup - dispatch
     changeRoute: React.PropTypes.func,
+    clearSignupStatus: React.PropTypes.func,
+    onSignupRequest: React.PropTypes.func,
   };
 
-  onSignupRequest = (data) => {
-    this.props.onSignupRequest(data);
+  componentWillMount () {
+    this.props.fetchOffices();
   }
 
   goToHomePage = () => {
@@ -45,101 +112,69 @@ class SignupPage extends Component {
     this.props.changeRoute('/');
   }
 
+  onLoginRequest = (data) => {
+    this.props.onLoginRequest(data);
+  }
+
+  onSignupRequest = (data) => {
+    this.props.onSignupRequest(data);
+  }
+
   render () {
-    const {
-      isSignedUp,
-      fullName,
-    } = this.props;
+    const { isSignedUp, fullName, offices } = this.props;
+
+    const borderContent = (
+      <span>
+        Not a member yet? No problem! <strong>Sign Up below:</strong>
+      </span>
+    );
 
     return (
-      <div styleName="wrapper">
-        <div className="container" styleName="container">
-          <Row>
-            <Col md={6}>
-              <div styleName="form-header">
-                <h1>Create your Membership Account</h1>
+      <div styleName="container-wrapper">
+        <PageHeader borderContent={borderContent}>
+          <LoginForm onSubmit={this.onLoginRequest} />
+        </PageHeader>
+
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
+
+              <div styleName="signup-form-wrapper">
+                <h2 styleName="large-title">
+                  Step 1 &gt; Tell Us About Yourself
+                </h2>
+
+                <SignupForm
+                  offices={offices}
+                  onSubmit={this.onSignupRequest}
+                />
               </div>
 
-              <SignupForm
-                onSubmit={this.onSignupRequest}
-              />
-
-            </Col>
-
-            <Col md={6} style={{ fontSize: '1.125rem', paddingLeft: '8rem' }}>
-              <Row>
-                <Col md={12}>
-                  <h2>
-                    Our Loyalty Memberships
-                  </h2>
-                  <br />
-                </Col>
-              </Row>
-
-              <Row>
-                <Col md={12}>
-                  <div><h3>Adult Membership $33/month</h3></div>
-                  <ul>
-                    <li>2 cleanings/year</li>
-                    <li>2 exams with necessary xrays/year</li>
-                    <li>Panorex xray once every 3 years</li>
-                    <li>1 emergency exam and xray/year</li>
-                    <li>10% of any needed treatment</li>
-                  </ul>
-                  <h3 styleName="savings-dollar">Total Savings/year=$118</h3>
-                </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col md={12}>
-                  <div><h3>Child Membership $29/month</h3></div>
-                  <ul>
-                    <li>2 cleanings/year</li>
-                    <li>2 exams with necessary xrays/year</li>
-                    <li>Panorex xray once every 3 years</li>
-                    <li>1 emergency exam with xray/year</li>
-                    <li>1 Fluoride treatment/year</li>
-                    <li>10% off any needed treatment</li>
-                  </ul>
-                  <h3 styleName="savings-dollar">Total Savings=$151/year</h3>
-                </Col>
-              </Row>
-            </Col>
-
-            <Modal show={isSignedUp} onHide={this.goToHomePage}>
-              <Modal.Body styleName="modal-background">
-                <div className="row" styleName="row">
-                  <div className="col-md-5 text-center" />
-                  <div className="col-md-7" styleName="main-content">
-                    <h2>Hi, { fullName }</h2>
-                    <br />
-
-                    <p>
-                      Thank you for signing up!<br />
-                      Please check your email to complete your account set up.
-                    </p>
-                    <br />
-                  </div>
-                </div>
-              </Modal.Body>
-            </Modal>
-          </Row>
+            </div>
+          </div>
         </div>
+
+        <Modal show={isSignedUp} onHide={this.goToHomePage}>
+          <Modal.Body styleName="modal-background">
+            <div className="row" styleName="row">
+              <div className="col-md-5 text-center" />
+              <div className="col-md-7" styleName="main-content">
+                <h2>Hi, { fullName }</h2>
+                <br />
+
+                <p>
+                  Thank you for signing up!<br />
+                  Please check your email to complete your account set up.
+                </p>
+                <br />
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+
       </div>
     );
   }
 }
-
-
-function mapDispatchToProps (dispatch) {
-  return {
-    onSignupRequest: (data) => {
-      dispatch(actions.signupRequest(omit(data, 'unknown')));
-    },
-    clearSignupStatus: () => dispatch(actions.clearSignupStatus()),
-    changeRoute: (url) => dispatch(push(url)),
-  };
-}
-
 
 export default SignupPage;

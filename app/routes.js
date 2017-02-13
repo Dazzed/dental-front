@@ -78,6 +78,7 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      // TODO: remove this page
       onEnter: redirectToLogin,
       path: '/accounts/complete-signup',
       name: 'signupFinalPage',
@@ -159,7 +160,7 @@ export default function createRoutes (store) {
           System.import('containers/SignupPage')
         ])
           .then(([ reducer, sagas, component ]) => {
-            injectReducer('signup', reducer.default);
+            injectReducer('signupPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
