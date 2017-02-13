@@ -1,3 +1,4 @@
+// TODO: DELETE this page
 /*
  *
  * Dashboard
@@ -10,7 +11,7 @@ import { connect } from 'react-redux';
 import UserDashboard from 'components/UserDashboard';
 import DentistDashboard from 'components/DentistDashboard';
 import { selectUserType } from 'containers/App/selectors';
-import { USER_TYPES } from 'containers/Dashboard/constants';
+import { USER_TYPES } from 'common/constants';
 
 import { changePageTitle } from 'containers/App/actions';
 

@@ -76,7 +76,7 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      // TODO: remove this page
+      // TODO: DELETE this page
       onEnter: redirectToLogin,
       path: '/accounts/complete-signup',
       name: 'signupFinalPage',
@@ -168,6 +168,9 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      // TODO: DELETE this page
+      // NOTE: must create the dentist dashboard first
+      //       search for `/dentist-dashboard` to see where to link to it
       onEnter: redirectToLogin,
       path: '/dashboard',
       name: 'dashboard',

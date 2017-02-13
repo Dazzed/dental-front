@@ -39,7 +39,7 @@ export function* requestPayBill () {
         body: JSON.stringify(body),
       });
 
-      yield put(push('/dashboard'));
+      yield put(push('/your-profile'));
       yield put(setBill({}));
       yield put(toastrActions.success('',
         'You have successfully activated your account.' +

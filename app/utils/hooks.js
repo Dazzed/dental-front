@@ -1,9 +1,11 @@
+import { USER_TYPES } from 'common/constants';
 import { selectCurrentPath } from 'common/selectors/router.selector';
 
 import {
   selectAuthState,
   selectAuthLoadingState,
   selectSignupCompleteState,
+  selectUserType,
 } from 'containers/App/selectors';
 import createReducer from '../reducers';
 
@@ -58,8 +60,15 @@ function redirectToLogin (store) {
 function redirectToDashboard (store) {
   return (nextState, replace) => {
     const isLoggedIn = selectAuthState(store.getState());
+    const userType = selectUserType(store.getState());
 
-    if (isLoggedIn) {
+    if (isLoggedIn && userType === USER_TYPES.CLIENT) {
+      replace('/your-profile');
+    }
+    else if (isLoggedIn && userType === USER_TYPES.DENTIST) {
+      // TODO
+      // replace('/dentist-dashboard');
+
       replace('/dashboard');
     }
   };

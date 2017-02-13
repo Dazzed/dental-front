@@ -1,6 +1,12 @@
 /*
 Common Constants
 ================================================================================
+Organized (mostly) alphabetically by section title and then constant name.
+
+NOTE: The "Location" constants (US_STATES) and "Time & Date" constants
+      (DAYS, MONTHS, and YEARS) are at the end of this document because they are
+      very long and would otherwise push more commonly referenced constants to
+      the bottom.
 */
 
 /*
@@ -8,6 +14,15 @@ DentalHQ Info
 ------------------------------------------------------------
 */
 export const contactSupportEmail = 'questions@dentalhq.com';
+
+/*
+Financial
+------------------------------------------------------------
+*/
+export const Currencies = {
+  USD: 'USD',
+  CAD: 'CAD',
+};
 
 /*
 Member Info
@@ -32,12 +47,12 @@ export const SEX_TYPES = {
 };
 
 /*
-Financial
+User Types
 ------------------------------------------------------------
 */
-export const Currencies = {
-  USD: 'USD',
-  CAD: 'CAD',
+export const USER_TYPES = {
+  CLIENT: 'client',
+  DENTIST: 'dentist',
 };
 
 /*

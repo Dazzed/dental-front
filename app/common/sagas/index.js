@@ -4,12 +4,14 @@ import { replace } from 'react-router-redux';
 import {
   selectCurrentPath, selectNextPathname
 } from 'common/selectors/router.selector';
+import { USER_TYPES } from 'common/constants';
 import request from 'utils/request';
 import { getItem, removeItem } from 'utils/localStorage';
 
 import {
   selectCurrentUser,
   selectSignupCompleteState,
+  selectUserType,
 } from 'containers/App/selectors';
 
 import { setAuthState, setUserData } from 'containers/App/actions';
@@ -43,6 +45,7 @@ function* loadUserFromToken () {
       const nextPathName = yield select(selectNextPathname);
       const currentPath = yield select(selectCurrentPath);
       const isSignupComplete = yield select(selectSignupCompleteState);
+      const userType = yield select(selectUserType);
       const redirectPaths = [
         '/accounts/login',
         '/accounts/signup',
@@ -55,7 +58,15 @@ function* loadUserFromToken () {
       } else if (!isSignupComplete) {
         yield put(replace('/accounts/complete-signup'));
       } else if (isSignupComplete && redirectPaths.indexOf(currentPath) > -1) {
-        yield put(replace('/dashboard'));
+        if (userType === USER_TYPES.CLIENT) {
+          yield put(replace('/your-profile'));
+        }
+        else if (userType === USER_TYPES.DENTIST) {
+          // TODO
+          // yield put(replace('/dentist-dashboard'));
+
+          yield put(replace('/dashboard'));
+        }
       }
     }
   } catch (e) {
