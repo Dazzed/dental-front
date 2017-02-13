@@ -1,5 +1,5 @@
 /*
-Patient Dentist Page Actions
+Patient Profile Page Actions
 ================================================================================
 */
 
@@ -9,15 +9,17 @@ Imports
 */
 // local
 import {
-  DENTIST_REQUEST,
-  DENTIST_SUCCESS,
-  DENTIST_ERROR,
+  // TODO
 } from './constants';
 
 /*
-Fetch Dentist
+Fetch
 ------------------------------------------------------------
 */
+// TODO
+
+// EXAMPLE
+/*
 export function fetchDentist() {
   return {
     type: DENTIST_REQUEST,
@@ -37,3 +39,4 @@ export function setDentistErrors (payload) {
     payload,
   };
 }
+*/

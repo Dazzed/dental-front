@@ -1,5 +1,5 @@
 /*
-Your Dentist Page Sagas
+Your Profile Page Sagas
 ================================================================================
 */
 
@@ -21,11 +21,10 @@ import request from 'utils/request';
 
 // local
 import {
-  setDentist,
-  setDentistErrors,
+  // TODO
 } from './actions';
 import {
-  DENTIST_REQUEST,
+  // TODO
 } from './constants';
 
 
@@ -40,13 +39,18 @@ export default [
 ];
 
 function* main () {
-  const watcherA = yield fork(dentistFetcher);
+  // TODO
+  const watcherA = yield fork(todoSomeFetcherName);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
 }
 
-function* dentistFetcher () {
+function* todoSomeFetcherName () {
+  // TODO
+
+  // EXAMPLE
+  /*
   yield* takeLatest(DENTIST_REQUEST, function* handler () {
     try {
       const response = yield call(request, '/api/v1/users/me/dentist');
@@ -55,4 +59,5 @@ function* dentistFetcher () {
       yield put(setDentistErrors(err));
     }
   });
+  */
 }

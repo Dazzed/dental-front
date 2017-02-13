@@ -45,7 +45,7 @@ export default class PatientDashboardTabs extends React.Component {
   selectTab = (key) => {
     switch (key) {
       case 'profile':
-        this.props.changeRoute('/accounts/profile');
+        this.props.changeRoute('/your-profile');
         break;
 
       case 'family':

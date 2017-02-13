@@ -1,5 +1,5 @@
 /*
-Patient Family Page
+Patient Dentist Page
 ================================================================================
 Route: `/your-dentist`
 */
@@ -54,12 +54,12 @@ function mapDispatchToProps (dispatch) {
 
 
 /*
-Family
+Dentist
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class FamilyPage extends React.Component {
+class YourDentistPage extends React.Component {
 
   static propTypes = {
     // state
@@ -111,8 +111,6 @@ class FamilyPage extends React.Component {
   */
   render () {
     const { dentist, user } = this.props;
-
-    console.log(dentist);
 
     // precondition: the data must be loaded, otherwise wait for it
     if (dentist === false) {
@@ -336,4 +334,4 @@ class FamilyPage extends React.Component {
   }
 }
 
-export default FamilyPage;
+export default YourDentistPage;
