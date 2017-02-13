@@ -24,13 +24,11 @@ import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
 // local
 import {
-  FETCH_OFFICES_REQUEST,
   LOGIN_REQUEST,
   LOGIN_ERROR,
   LOGOUT,
-  SIGNUP_REQUEST,
 } from './constants';
-import { fetchOfficesSuccess, loginError, signupSuccess } from './actions';
+import { loginError } from './actions';
 
 
 /*
@@ -43,31 +41,10 @@ export default [
 ];
 
 function* main () {
-  const watcherA = yield fork(fetchOfficesWatcher);
   const watcherB = yield fork(loginWatcher);
-  const watcherC = yield fork(signupWatcher);
 
   yield take(LOCATION_CHANGE);
-  yield cancel(watcherA);
   yield cancel(watcherB);
-  yield cancel(watcherC);
-}
-
-
-/*
-Fetch Sagas
-================================================================================
-// TODO: handle errors appropriately
-*/
-function* fetchOfficesWatcher () {
-  yield* takeLatest(FETCH_OFFICES_REQUEST, function* handler () {
-    try {
-      const response = yield call(request, '/api/v1/offices');
-      yield put(fetchOfficesSuccess(response.data));
-    } catch (e) {
-      console.log(e);
-    }
-  });
 }
 
 
@@ -147,45 +124,5 @@ function* authorize (data, resolve, reject) {
       // TODO: do i need something here?
       // ... put special cancellation handling code here
     }
-  }
-}
-
-
-/*
-Signup Sagas
-================================================================================
-*/
-function* signupWatcher () {
-  while (true) {
-    // listen for the SIGNUP_REQUEST action dispatched on form submit
-    const { payload } = yield take(SIGNUP_REQUEST);
-
-    // execute the signup task
-    const isSuccess = yield call(signup, payload);
-
-    if (isSuccess) {
-      yield put(signupSuccess({
-        fullName: `${payload.firstName} ${payload.lastName}`
-      }));
-    }
-  }
-}
-
-function* signup (data) {
-  try {
-    // send a post request with the desired user details
-    yield call(request, '/api/v1/accounts/signup', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-
-    return true;
-  } catch (err) {
-    const errors = mapValues(err.errors, (value) => value.msg);
-
-    yield put(toastrActions.error('', 'Please fix errors on the form!'));
-    // dispatch LOGIN_ERROR action
-    yield put(stopSubmit('signup', errors));
-    return false;
   }
 }

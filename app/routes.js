@@ -66,12 +66,10 @@ export default function createRoutes (store) {
       name: 'loginPage',
       getComponent (nextState, cb) {
         Promise.all([
-          System.import('containers/LoginPage/reducer'),
           System.import('containers/LoginPage/sagas'),
           System.import('containers/LoginPage')
         ])
-          .then(([ reducer, sagas, component ]) => {
-            injectReducer('loginPage', reducer.default);
+          .then(([ sagas, component ]) => {
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
