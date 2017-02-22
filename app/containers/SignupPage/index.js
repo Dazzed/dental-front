@@ -1,5 +1,5 @@
 /*
-Signup Page
+Patient Signup Page
 ================================================================================
 */
 
@@ -16,14 +16,12 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 // app
-import LoginForm from 'components/LoginForm';
 import PageHeader from 'components/PageHeader';
 import SignupForm from 'components/SignupForm';
 
 // local
 import {
   fetchOffices,
-  loginRequest,
   signupRequest,
   clearSignupStatus
 } from './actions';
@@ -54,17 +52,6 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchOffices: () => dispatch(fetchOffices()),
 
-    // login
-    onLoginRequest: (data) => ( // handle async tasks with sagas
-      new Promise((resolve, reject) => {
-        dispatch(
-          loginRequest({
-            data: omit(data, 'unknown'), resolve, reject
-          })
-        );
-      })
-    ),
-
     // signup
     changeRoute: (url) => dispatch(push(url)),
     clearSignupStatus: () => dispatch(clearSignupStatus()),
@@ -90,9 +77,6 @@ class SignupPage extends Component {
     // fetch - dispatch
     fetchOffices: React.PropTypes.func,
 
-    // login - dispatch
-    onLoginRequest: React.PropTypes.func,
-
     // signup - state
     fullName: React.PropTypes.string,
     isSignedUp: React.PropTypes.bool,
@@ -112,10 +96,6 @@ class SignupPage extends Component {
     this.props.changeRoute('/');
   }
 
-  onLoginRequest = (data) => {
-    this.props.onLoginRequest(data);
-  }
-
   onSignupRequest = (data) => {
     this.props.onSignupRequest(data);
   }
@@ -131,9 +111,7 @@ class SignupPage extends Component {
 
     return (
       <div styleName="container-wrapper">
-        <PageHeader borderContent={borderContent}>
-          <LoginForm onSubmit={this.onLoginRequest} />
-        </PageHeader>
+        <PageHeader title="Signup for a Patient Account" borderContent={borderContent} />
 
         <div className="container">
           <div className="row">

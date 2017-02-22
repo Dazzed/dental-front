@@ -1,5 +1,5 @@
 /*
-Signup Page Reducers
+Patient Signup Page Reducers
 ================================================================================
 */
 
