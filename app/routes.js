@@ -188,6 +188,66 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/dentist/members',
+      name: 'dentistMembersPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+          System.import('containers/DentistMembersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('dentistMembersPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/new-members',
+      name: 'dentistNewMembersPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistNewMembersPage/reducer'),
+          System.import('containers/DentistNewMembersPage/sagas'),
+          System.import('containers/DentistNewMembersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('dentistNewMembersPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/new-reviews',
+      name: 'dentistNewReviewsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistNewReviewsPage/reducer'),
+          System.import('containers/DentistNewReviewsPage/sagas'),
+          System.import('containers/DentistNewReviewsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('dentistNewReviewsPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/dentist/contact-support',
       name: 'contactSupportPage',
       getComponent (nextState, cb) {
