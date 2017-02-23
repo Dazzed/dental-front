@@ -3,10 +3,6 @@ import {
   SET_AUTH_STATE,
   SET_USER_DATA,
 
-  DENTIST_SPECIALTIES_REQUEST,
-  DENTIST_SPECIALTIES_SUCCESS,
-  DENTIST_SPECIALTIES_ERROR,
-
   SERVICES_REQUEST,
   SERVICES_REQUEST_SUCCESS,
   SERVICES_REQUEST_ERROR,
@@ -38,30 +34,6 @@ export function setAuthState (newAuthState) {
     payload: {
       newAuthState,
     },
-  };
-}
-
-
-export function dentistSpecialtiesRequest (payload) {
-  return {
-    type: DENTIST_SPECIALTIES_REQUEST,
-    payload
-  };
-}
-
-
-export function dentistSpecialtiesSuccess (payload) {
-  return {
-    type: DENTIST_SPECIALTIES_SUCCESS,
-    payload
-  };
-}
-
-
-export function dentistSpecialtiesError (payload) {
-  return {
-    type: DENTIST_SPECIALTIES_ERROR,
-    payload
   };
 }
 

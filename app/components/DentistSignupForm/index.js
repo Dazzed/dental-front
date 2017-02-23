@@ -1,122 +1,115 @@
+/*
+Dentist Signup Form Component
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
-
 import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Alert from 'react-bootstrap/lib/Alert';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Row from 'react-bootstrap/lib/Row';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-
-import { Field, reduxForm } from 'redux-form';
+import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 
-import LabeledInput from 'components/LabeledInput';
+// app
 import Input from 'components/Input';
-// import Checkbox from 'components/Checkbox';
-import { selectDentistSpecialties } from 'containers/App/selectors';
+import LabeledInput from 'components/LabeledInput';
 import { isInvalidNameSelector } from 'containers/DentistSignupPage/selectors';
-import signupFormValidator from './validator';
+
+// local
+import styles from './styles.css';
+import dentistSignupFormValidator from './validator';
+
+/*
+Redux
+------------------------------------------------------------
+*/
+function mapStateToProps (state) {
+  return {
+    isInvalidName: isInvalidNameSelector(state),
+  };
+}
 
 
-@reduxForm({ form: 'dentist-signup', validate: signupFormValidator })
-@connect(state => ({
-  isInvalidName: isInvalidNameSelector(state),
-  dentistSpecialties: selectDentistSpecialties(state),
-}))
+/*
+Signup Form
+================================================================================
+*/
+@reduxForm({
+  form: 'dentist-signup',
+  validate: dentistSignupFormValidator,
+})
+@connect(mapStateToProps, null)
+@CSSModules(styles)
 class DentistSignupForm extends React.Component {
 
   static propTypes = {
-    error: React.PropTypes.object,
-    handleSubmit: React.PropTypes.func.isRequired,
-    submitting: React.PropTypes.bool.isRequired,
-    isInvalidName: React.PropTypes.bool,
+    // passed from parent
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
       createdAt: React.PropTypes.date,
       updatedAt: React.PropTypes.date,
     })),
+
+    // mapped from props
+    isInvalidName: React.PropTypes.bool,
+
+    // redux form
+    error: React.PropTypes.object,
+    handleSubmit: React.PropTypes.func.isRequired,
+    submitting: React.PropTypes.bool.isRequired,
   };
 
   render () {
-    const { error, handleSubmit, submitting } = this.props;
-    const { isInvalidName, dentistSpecialties } = this.props;
+    const {
+      // state
+      dentistSpecialties,
+      isInvalidName,
+
+      // redux form
+      error,
+      handleSubmit,
+      submitting
+    } = this.props;
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
-        <Row>
-          <Field
-            name="email"
-            type="text"
-            component={LabeledInput}
-            label="Email Address"
-            width={12}
-          />
-
-          <Field
-            name="confirmEmail"
-            type="text"
-            component={LabeledInput}
-            label="Confirm Email Address"
-            width={12}
-          />
-
-          <Field
-            name="password"
-            type="password"
-            component={LabeledInput}
-            label="Password"
-            width={6}
-          />
-
-          <Field
-            name="confirmPassword"
-            type="password"
-            component={LabeledInput}
-            label="Confirm Password"
-            width={6}
-          />
-
-        </Row>
-        <Alert bsStyle="info">
-          <h5>
-            Password should have at least 6 characters, upper case,{' '}
-            lower case and numbers.
-          </h5>
-        </Alert>
-
         <FormGroup className={isInvalidName ? 'has-error' : ''}>
           <Col sm={12}>
-            <ControlLabel>Name</ControlLabel>
+            <ControlLabel>Your Name:</ControlLabel>
           </Col>
 
-          <Row>
-            <Col md={12}>
-              <Field
-                name="firstName"
-                type="text"
-                component={Input}
-                label="First Name"
-                width={4}
-              />
+          <Field
+            name="firstName"
+            type="text"
+            component={Input}
+            label="First Name"
+            width={4}
+          />
 
-              <Field
-                name="middleName"
-                type="text"
-                component={Input}
-                label="Middle Name"
-                width={4}
-              />
+          <Field
+            name="middleName"
+            type="text"
+            component={Input}
+            label="Middle Name (optional)"
+            width={4}
+          />
 
-              <Field
-                name="lastName"
-                type="text"
-                component={Input}
-                label="Last Name"
-                width={4}
-              />
-            </Col>
-          </Row>
+          <Field
+            name="lastName"
+            type="text"
+            component={Input}
+            label="Last Name"
+            width={4}
+          />
         </FormGroup>
 
         <Row>
@@ -125,14 +118,14 @@ class DentistSignupForm extends React.Component {
             type="select"
             label="Specialty"
             component={LabeledInput}
-            width={5}
+            className="col-sm-4"
           >
             <option value="">Select an Specialty</option>
-            {dentistSpecialties.map((specialty, index) =>
-              (<option value={specialty.id} key={index}>
+            {dentistSpecialties.map((specialty, index) => (
+              <option value={specialty.id} key={index}>
                 {specialty.name}
-              </option>)
-            )}
+              </option>
+            ))}
           </Field>
 
           <Field
@@ -141,29 +134,70 @@ class DentistSignupForm extends React.Component {
             mask="(999) 999-9999"
             maskChar=" "
             component={LabeledInput}
-            label="Phone Number"
-            width={5}
+            label="Phone"
+            placeholder=""
+            className="col-sm-4"
           />
 
           <Field
             name="zipCode"
             type="text"
+            mask="99999"
+            maskChar=" "
             component={LabeledInput}
             label="Zip Code"
-            width={3}
+            placeholder=""
+            className="col-sm-4"
           />
-
         </Row>
 
-        {/* <Field
-          name="tos"
-          component={Checkbox}
-        >
-          I have read and accept the{' '}
-          <a href="/terms" target="_blank" rel="noopener noreferrer">
-            Terms and Conditions
-          </a>
-        </Field> */}
+        <hr styleName="spacer" />
+
+        <Row>
+          <Field
+            name="email"
+            type="text"
+            component={LabeledInput}
+            label="Email Address"
+            placeholder=""
+            className="col-sm-6"
+          />
+
+          <Field
+            name="confirmEmail"
+            type="text"
+            component={LabeledInput}
+            label="Confirm Email Address"
+            placeholder=""
+            className="col-sm-6"
+          />
+        </Row>
+
+        <Row>
+          <Field
+            name="password"
+            type="password"
+            component={LabeledInput}
+            label="Password"
+            placeholder=""
+            className="col-sm-6"
+          />
+
+          <Field
+            name="confirmPassword"
+            type="password"
+            component={LabeledInput}
+            label="Confirm Password"
+            placeholder=""
+            className="col-sm-6"
+          />
+
+          <div className="col-sm-12">
+            <h5 styleName="field-instructions">
+              Password should have at least 6 characters, upper case, lower case and numbers.
+            </h5>
+          </div>
+        </Row>
 
         <FormGroup className="has-error">
           <Col sm={12}>
@@ -171,15 +205,14 @@ class DentistSignupForm extends React.Component {
           </Col>
         </FormGroup>
 
-        <FormGroup>
-          <Col sm={3}>
-            <button
+        <FormGroup className="text-center">
+          <Col sm={12}>
+            <input
               type="submit"
               disabled={submitting}
-              className="btn btn-block btn-green btn-round btn-outline"
-            >
-              Continue
-            </button>
+              value="CREATE MY ACCOUNT &gt;"
+              styleName="large-button--secondary"
+            />
           </Col>
         </FormGroup>
       </form>

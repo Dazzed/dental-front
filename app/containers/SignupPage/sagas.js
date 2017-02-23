@@ -10,24 +10,23 @@ Imports
 ------------------------------------------------------------
 */
 // libs
-import get from 'lodash/get';
 import mapValues from 'lodash/mapValues';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 import { SubmissionError } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
-import { setItem, removeItem } from 'utils/localStorage';
 import request from 'utils/request';
-
-// app
-import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
 // local
 import {
   FETCH_OFFICES_REQUEST,
   SIGNUP_REQUEST,
 } from './constants';
-import { fetchOfficesSuccess, signupSuccess } from './actions';
+import {
+  fetchOfficesSuccess,
+  signupSuccess,
+} from './actions';
 
 
 /*
@@ -52,7 +51,6 @@ function* main () {
 /*
 Fetch Sagas
 ================================================================================
-// TODO: handle errors appropriately
 */
 function* fetchOfficesWatcher () {
   yield* takeLatest(FETCH_OFFICES_REQUEST, function* handler () {
@@ -93,11 +91,10 @@ function* signup (data) {
       method: 'POST',
       body: JSON.stringify(data)
     });
-
     return true;
+
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
     yield put(stopSubmit('signup', errors));
     return false;

@@ -1,20 +1,51 @@
+/*
+Dentist Signup Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
-.wrapper {
-  min-height: 100%;
-  background-color: $cyan;
-  color: $white;
+
+/*
+Page-Wide
+================================================================================
+*/
+.container-wrapper {
+  min-height: $body-height;
 }
 
-.container {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+.large-title {
+  margin-bottom: 2.5rem;
+
+  font-size: 3rem;
+  text-transform: capitalize;
 }
 
-.form-header {
-  margin-bottom: 2rem;
+
+/*
+Signup Form
+================================================================================
+*/
+.signup-form-wrapper {
+  margin: 2.5rem 0 5rem 0;
+
+  .large-title {
+    color: $color-primary-highlight;
+
+    text-align: center;
+  }
 }
 
+
+/*
+Signup Success Modal
+================================================================================
+*/
 .modal-background {
   background-color: #00C0EF;
   padding: 0;

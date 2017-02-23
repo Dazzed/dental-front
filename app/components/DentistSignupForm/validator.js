@@ -1,8 +1,25 @@
-import { validatorFactory } from 'utils/reduxForm';
+/*
+Dentist Signup Form Validator
+================================================================================
+*/
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// app
+import {
+  validatorFactory
+} from 'utils/reduxForm';
+
+/*
+Schema
+------------------------------------------------------------
+*/
 const schema = {
   email: { presence: true, email: true },
   confirmEmail: { presence: true, email: true, equality: 'email' },
+
   password: {
     presence: true,
     format: {
@@ -12,19 +29,26 @@ const schema = {
     }
   },
   confirmPassword: { presence: true, equality: 'password' },
-  firstName: { presence: true },
-  lastName: { presence: true },
-  phone: { presence: true, format: /\(\d{3}\)\s*(\d{3})\-(\d{4})/ },
-  dentistSpecialty: { presence: { message: '^Select an Specialty' } },
-  zipCode: { presence: true },
-  // tos: {
-  //   presence: { message: '^You have to accept the Terms and Conditions' },
-  //   inclusion: {
-  //     within: [ true ],
-  //     message: '^You have to accept the Terms and Conditions',
-  //   },
-  // },
-};
 
+  firstName: { presence: true },
+  // middleName is optional
+  lastName: { presence: true },
+
+  phone: {
+    presence: true,
+    format: {
+      pattern: /\(\d{3}\) \d{3}-\d{4}?/,
+      message: '^Please enter a 10-digit US phone number.'
+    }
+  },
+  specialtyId: { presence: { message: '^Please select an Specialty' } },
+  zipCode: {
+    presence: true,
+    format: {
+      pattern: /\d{5}?/,
+      message: '^Please enter a 5-digit US zip code.',
+    }
+  },
+};
 
 export default validatorFactory(schema);

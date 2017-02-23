@@ -8,7 +8,6 @@ import {
 import {
   SET_AUTH_STATE,
   SET_USER_DATA,
-  DENTIST_SPECIALTIES_SUCCESS,
   SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
 } from './constants';
@@ -17,7 +16,6 @@ import {
 const initialState = {
   loggedIn: !!getItem('auth_token'),
   currentUser: false,
-  dentistSpecialties: [],
   services: [],
   pageTitle: null,
 };
@@ -56,12 +54,6 @@ export default function appReducer (state = initialState, action) {
               phone: get(payload, 'currentUser.phoneNumbers[0].number'),
               address: get(payload, 'currentUser.addresses[0].value'),
             }
-      };
-
-    case DENTIST_SPECIALTIES_SUCCESS:
-      return {
-        ...state,
-        dentistSpecialties: payload.data,
       };
 
     case SERVICES_REQUEST_SUCCESS:

@@ -1,19 +1,67 @@
+/*
+Dentist Signup Page Selectors
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
 import get from 'lodash/get';
 import { createSelector } from 'reselect';
 
+const domainSelector = state => state.dentistSignupPage;
 
-const firstNameErrorSelector =
-  state => get(state, 'form.dentist-signup.syncErrors.firstName');
-const lastNameErrorSelector =
-  state => get(state, 'form.dentist-signup.syncErrors.lastName');
-const isFirstNameTouched =
-  state => get(state, 'form.dentist-signup.fields.firstName.touched');
-const isLastNameTouched =
-  state => get(state, 'form.dentist-signup.fields.lastName.touched');
+/*
+Fetch Selectors
+------------------------------------------------------------
+*/
+const dentistSpecialtiesSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'dentistSpecialties')
+);
 
+/*
+Signup Selectors
+------------------------------------------------------------
+*/
+const fullNameSelector = createSelector(
+  domainSelector,
+  (substate) => substate.fullName,
+);
 
-/* eslint-disable import/prefer-default-export */
-export const isInvalidNameSelector = createSelector(
+const isSignedUpSelector = createSelector(
+  domainSelector,
+  (substate) => substate.dentistCreated,
+);
+
+/*
+Signup Form Selectors
+------------------------------------------------------------
+*/
+const formSelector = state => get(state, 'form.dentist-signup.syncErrors');
+
+const firstNameErrorSelector = createSelector(
+  formSelector,
+  (substate) => get(substate, 'firstName'),
+);
+
+const lastNameErrorSelector = createSelector(
+  formSelector,
+  (substate) => get(substate, 'lastName'),
+);
+
+const isFirstNameTouched = createSelector(
+  formSelector,
+  (substate) => get(substate, 'firstName.touched'),
+);
+
+const isLastNameTouched = createSelector(
+  formSelector,
+  (substate) => get(substate, 'lastName.touched'),
+);
+
+const isInvalidNameSelector = createSelector(
   firstNameErrorSelector,
   lastNameErrorSelector,
   isFirstNameTouched,
@@ -21,4 +69,21 @@ export const isInvalidNameSelector = createSelector(
   (firstName, lastName, firstNameTouched, lastNameTouched) =>
     (!!(firstName || lastName) && (firstNameTouched || lastNameTouched))
 );
-/* eslint-enable import/prefer-default-export */
+
+/*
+Exports
+------------------------------------------------------------
+*/
+export default domainSelector;
+
+export {
+  // fetch
+  dentistSpecialtiesSelector,
+
+  // signup
+  fullNameSelector,
+  isSignedUpSelector,
+
+  // signup form
+  isInvalidNameSelector,
+};

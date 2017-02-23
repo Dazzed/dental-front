@@ -148,6 +148,10 @@
   box-shadow: none;
 }
 
+:global(.help-block) {
+  margin-bottom: 0;
+}
+
 /** REACT-AUTOSUGGEST **/
 :global(.react-autosuggest__container) {
   position: relative;

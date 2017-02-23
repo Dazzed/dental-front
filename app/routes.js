@@ -104,7 +104,7 @@ export default function createRoutes (store) {
           System.import('containers/DentistSignupPage')
         ])
           .then(([ reducer, sagas, component ]) => {
-            injectReducer('dentistSignup', reducer.default);
+            injectReducer('dentistSignupPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })

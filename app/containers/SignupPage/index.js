@@ -21,9 +21,9 @@ import SignupForm from 'components/SignupForm';
 
 // local
 import {
+  clearSignupStatus,
   fetchOffices,
   signupRequest,
-  clearSignupStatus
 } from './actions';
 import {
   fullNameSelector,
@@ -55,9 +55,7 @@ function mapDispatchToProps (dispatch) {
     // signup
     changeRoute: (url) => dispatch(push(url)),
     clearSignupStatus: () => dispatch(clearSignupStatus()),
-    onSignupRequest: (data) => {
-      dispatch(signupRequest(omit(data, 'unknown')));
-    },
+    onSignupRequest: (data) => dispatch(signupRequest(omit(data, 'unknown'))),
   };
 }
 

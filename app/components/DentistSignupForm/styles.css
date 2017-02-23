@@ -1,5 +1,5 @@
 /*
-Patient Signup Form Styles
+Dentist Signup Form Styles
 ================================================================================
 */
 
@@ -43,6 +43,12 @@ Signup Form
 */
 .spacer {
   margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* needed since FormGroup is not in a Row, so the margins overlap instead of stacking */
+.spacer--after-form-group {
+  margin-top: 2.5rem;
   margin-bottom: 2.5rem;
 }
 
