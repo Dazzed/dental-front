@@ -18,8 +18,9 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
-import LoadingSpinner from 'components/LoadingSpinner';
+import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
@@ -120,6 +121,8 @@ class DentistMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
+          {/* TODO */}
+          <DentistDashboardHeader revenueToDate="$100,000" />
           <DentistDashboardTabs active="members" />
 
           <div styleName="content">
@@ -131,6 +134,8 @@ class DentistMembersPage extends React.Component {
 
     return (
       <div>
+        {/* TODO */}
+        <DentistDashboardHeader revenueToDate="$100,000" />
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">
