@@ -5,11 +5,6 @@ Dentist Members Page Constants
 
 /* eslint-disable no-multi-spaces */
 
-// TODO
-
-// EXAMPLE
-/*
-export const DENTIST_REQUEST = 'app/YourDentistPage/DENTIST_REQUEST';
-export const DENTIST_SUCCESS = 'app/YourDentistPage/DENTIST_SUCCESS';
-export const DENTIST_ERROR   = 'app/YourDentistPage/DENTIST_ERROR';
-*/
+export const FETCH_PATIENTS_REQUEST = 'app/DentistMembersPage/FETCH_PATIENTS_REQUEST';
+export const FETCH_PATIENTS_SUCCESS = 'app/DentistMembersPage/FETCH_PATIENTS_SUCCESS';
+export const FETCH_PATIENTS_ERROR   = 'app/DentistMembersPage/FETCH_PATIENTS_ERROR';

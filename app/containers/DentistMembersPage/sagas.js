@@ -21,10 +21,11 @@ import request from 'utils/request';
 
 // local
 import {
-  // TODO
+  fetchPatientsSuccess,
+  fetchPatientsError,
 } from './actions';
 import {
-  // TODO
+  FETCH_PATIENTS_REQUEST,
 } from './constants';
 
 
@@ -38,29 +39,19 @@ export default [
 ];
 
 function* main () {
-  // TODO
-
-  // EXAMPLE
-  /*
-  const watcherA = yield fork(dentistFetcher);
+  const watcherA = yield fork(patientsFetcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
-  */
 }
 
-// TODO
-
-// EXAMPLE
-/*
-function* dentistFetcher () {
-  yield* takeLatest(DENTIST_REQUEST, function* handler () {
+function* patientsFetcher () {
+  yield* takeLatest(FETCH_PATIENTS_REQUEST, function* handler() {
     try {
-      const response = yield call(request, '/api/v1/users/me/dentist');
-      yield put(setDentist(response.data));
-    } catch(err) {
-      yield put(setDentistErrors(err));
+      const response = yield call(request, '/api/v1/users/me/members');
+      yield put(fetchPatientsSuccess(response.data));
+    } catch (error) {
+      yield put(fetchPatientsError(error));
     }
   });
 }
-*/

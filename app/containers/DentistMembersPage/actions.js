@@ -9,47 +9,31 @@ Imports
 */
 // local
 import {
-  // TODO
+  FETCH_PATIENTS_REQUEST,
+  FETCH_PATIENTS_SUCCESS,
+  FETCH_PATIENTS_ERROR,
 } from './constants';
 
 /*
-Fetch User
+Fetch Patients
 ------------------------------------------------------------
 */
-// TODO
-
-/*
-Fetch Members
-------------------------------------------------------------
-*/
-// todo
-
-
-// EXAMPLE
-/*
-import {
-  DENTIST_REQUEST,
-  DENTIST_SUCCESS,
-  DENTIST_ERROR,
-} from './constants';
-
-export function fetchDentist() {
+export function fetchPatients () {
   return {
-    type: DENTIST_REQUEST,
+    type: FETCH_PATIENTS_REQUEST,
   };
 }
 
-export function setDentist (payload) {
+export function fetchPatientsSuccess (payload) {
   return {
-    type: DENTIST_SUCCESS,
+    type: FETCH_PATIENTS_SUCCESS,
     payload,
   };
 }
 
-export function setDentistErrors (payload) {
+export function fetchPatientsError (payload) {
   return {
-    type: DENTIST_ERROR,
+    type: FETCH_PATIENTS_ERROR,
     payload,
   };
 }
-*/

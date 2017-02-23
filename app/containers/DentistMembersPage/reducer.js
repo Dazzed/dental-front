@@ -9,7 +9,7 @@ Imports
 */
 // local
 import {
-  // TODO
+  FETCH_PATIENTS_SUCCESS
 } from './constants';
 
 /*
@@ -17,19 +17,34 @@ Initial State
 ------------------------------------------------------------
 */
 const initialState = {
-  // TODO
+  patients: null,
 };
 
+
 /*
-Reducer
-------------------------------------------------------------
+Reducers
+================================================================================
 */
 function dentistMembersPageReducer (state = initialState, action) {
   switch (action.type) {
-    // TODO
+    
+    /*
+    Patients Reducers
+    ------------------------------------------------------------
+    */
+    case FETCH_PATIENTS_SUCCESS:
+      return {
+        ...state,
+        patients: action.payload,
+      };
 
+    /*
+    Default Reducer
+    ------------------------------------------------------------
+    */
     default:
       return state;
+
   }
 }
 

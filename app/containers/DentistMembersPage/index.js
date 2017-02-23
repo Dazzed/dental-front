@@ -25,10 +25,11 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
-  // TODO
+  fetchPatients,
 } from './actions';
 import {
-  // TODO
+  selectDataLoaded,
+  selectPatients,
 } from './selectors';
 import styles from './styles.css';
 
@@ -38,15 +39,22 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    // app state
     user: selectCurrentUser(state),
-    // TODO
+
+    // page state
+    dataLoaded: selectDataLoaded(state),
+    patients: selectPatients(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app actions
     changePageTitle: (title) => dispatch(changePageTitle(title)),
-    // TODO
+    
+    // page actions
+    fetchPatients: () => dispatch(fetchPatients()),
   };
 }
 
@@ -60,16 +68,25 @@ Members
 class DentistMembersPage extends React.Component {
 
   static propTypes = {
-    // state
+    // state - app
     user: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
+      React.PropTypes.bool, // will be `false` until loaded
       React.PropTypes.object,
-    ]),
-    // TODO
+    ]).isRequired,
 
-    // dispatch
+    // dispatch - app
     changePageTitle: React.PropTypes.func.isRequired,
-    // TODO
+
+    // state - page
+    dataLoaded: React.PropTypes.bool.isRequired,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
+
+    // dispatch - page
+    fetchPatients: React.PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    this.props.fetchPatients();
   }
 
   componentDidMount() {
@@ -94,12 +111,13 @@ class DentistMembersPage extends React.Component {
   */
   render () {
     const {
-      // TODO
+      dataLoaded,
+      patients,
+      user,
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
-    // TODO
-    if (false) {
+    if (dataLoaded === false) {
       return (
         <div>
           <DentistDashboardTabs active="members" />
