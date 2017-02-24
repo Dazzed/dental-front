@@ -24,7 +24,7 @@ Dentist Dashboard Header
 class DentistDashboardHeader extends React.Component {
 
   static propTypes = {
-    // from parent
+    // passed in
     revenueToDate: React.PropTypes.string.isRequired,
   }
 

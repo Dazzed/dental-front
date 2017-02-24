@@ -21,6 +21,7 @@ import Avatar from 'components/Avatar';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import LoadingSpinner from 'components/LoadingSpinner';
+import PatientsList from 'components/PatientsList';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
@@ -98,7 +99,17 @@ class DentistMembersPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  // TODO
+  editMembership = (patient) => {
+    // TODO
+  }
+
+  renewMembership = (patient) => {
+    // TODO
+  }
+
+  toggleEnrollmentFee = (patient) => {
+    // TODO
+  }
 
   /*
   Form Events
@@ -139,12 +150,14 @@ class DentistMembersPage extends React.Component {
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">
-          {/* TODO: remove */}
-          Dentist Members Page
-
           {/* TODO: sort by */}
-          {/* TODO: list members */}
 
+          <PatientsList
+            patients={patients}
+            onEditMembership={this.editMembership}
+            onRenewMembership={this.renewMembership}
+            onToggleEnrollmentFee={this.toggleEnrollmentFee}
+          />
         </div>
 
         {/* TODO: modals */}
