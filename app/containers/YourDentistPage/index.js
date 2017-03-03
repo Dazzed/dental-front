@@ -139,7 +139,7 @@ class YourDentistPage extends React.Component {
             */}
             <div className="col-md-9" styleName="profile-content-wrapper">
               <div styleName="profile-content__avatar">
-                <Avatar url={dentist.avatar} size={9} />
+                <Avatar url={dentist.avatar} size={"9rem"} />
               </div>
 
               <div styleName="profile-content__name-and-rating">

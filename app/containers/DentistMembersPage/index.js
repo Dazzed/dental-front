@@ -99,15 +99,31 @@ class DentistMembersPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  editMembership = (patient) => {
+  addMember = (patient) => {
     // TODO
   }
 
-  renewMembership = (patient) => {
+  toggleCancelationFee = (patient) => {
     // TODO
   }
 
-  toggleEnrollmentFee = (patient) => {
+  toggleReEnrollmentFee = (patient) => {
+    // TODO
+  }
+
+  updateMember = (patient, member) => {
+    // TODO
+  }
+
+  cancelMember = (patient, member) => {
+    // TODO
+  }
+
+  renewMember = (patient, member) => {
+    // TODO
+  }
+
+  reEnrollMember = (patient, member) => {
     // TODO
   }
 
@@ -154,9 +170,15 @@ class DentistMembersPage extends React.Component {
 
           <PatientsList
             patients={patients}
-            onEditMembership={this.editMembership}
-            onRenewMembership={this.renewMembership}
-            onToggleEnrollmentFee={this.toggleEnrollmentFee}
+
+            onAddMember={this.addMember}
+            onToggleCancelationFee={this.toggleCancelationFee}
+            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
+
+            onUpdateMember={this.updateMember}
+            onCancelMember={this.cancelMember}
+            onRenewMember={this.renewMember}
+            onReEnrollMember={this.reEnrollMember}
           />
         </div>
 

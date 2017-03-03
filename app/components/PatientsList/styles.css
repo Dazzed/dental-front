@@ -1,0 +1,131 @@
+/*
+Patients List Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.button--short {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/*
+Patients List
+================================================================================
+*/
+
+/*
+Patient List
+------------------------------------------------------------
+*/
+.patient-list {}
+
+.patient-list__entry {
+  /* TODO: slightly lighter gray background color */
+}
+
+/*
+Member Avatar
+------------------------------------------------------------
+*/
+.member-avatar {
+  /* TODO: move up so it overlaps the top of the container */
+}
+
+/*
+Member Overview
+------------------------------------------------------------
+*/
+.member-overview {
+  /* TODO: default font-size bump + gray color */
+}
+
+.member-overview__divided-row {
+  /* TODO */
+}
+
+.member-overview__name {
+  /* TODO: size + color */
+  display: inline-block;
+}
+
+.member-overview__status,
+.member-overview__status--active,
+.member-overview__status--past-due,
+.member-overview__status--canceled,
+.member-overview__status--inactive {
+  /* TODO: size */
+  text-transform: capitalize;
+}
+.member-overview__status {
+  color: $color-black;
+}
+.member-overview__status--active {
+  color: $color-secondary-highlight;
+}
+.member-overview__status--past-due {
+  /* TODO: choose a better yellow */
+  color: yellow;
+}
+.member-overview__status--canceled {
+  color: $color-red;
+}
+.member-overview__status--inactive {
+  color: $color-red;
+}
+
+.member-overview__info,
+.member-overview__details-toggle {
+  color: $color-black;
+
+  font-weight: bold;
+}
+
+/*
+Subscription Overview
+------------------------------------------------------------
+*/
+.subscription-overview {
+  /* TODO */
+}
+
+.subscription-overview__info {
+  /* TODO */
+}
+
+/*
+Controls
+------------------------------------------------------------
+*/
+.controls {
+  /* TODO */
+}

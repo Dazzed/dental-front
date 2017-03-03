@@ -17,7 +17,9 @@ import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 
 // app
-import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
+import {
+  MEMBER_RELATIONSHIP_TYPES
+} from 'common/constants';
 
 // local
 import styles from './styles.css';
@@ -40,26 +42,22 @@ class FamilyMembersList extends React.Component {
     onRemove: React.PropTypes.func.isRequired,
   }
 
-  onEditClick = (index) => {
-    const member = this.props.members[index];
-
-    return () => {
-      this.props.onEdit(member);
-    };
+  // NOTE: bind the member to this function
+  onEditClick = (member) => {
+    this.props.onEdit(member);
   }
 
-  onRemoveClick = (index) => {
-    const member = this.props.members[index];
-
-    return () => {
-      this.props.onRemove(member);
-    };
+  // NOTE: bind the member to this function
+  onRemoveClick = (member) => {
+    this.props.onRemove(member);
   }
 
   render() {
-    const { onRemove, onEdit, members } = this.props;
+    const {
+      members
+    } = this.props;
 
-    const memberRows = members.map((member, index) => {
+    const memberRows = members.map((member) => {
       const {
         avatar,
         familyRelationship,
@@ -97,7 +95,7 @@ class FamilyMembersList extends React.Component {
               type="button"
               className={styles["button--short--lowlight"]}
               value="Confirm Removal"
-              onClick={this.onRemoveClick(index)}
+              onClick={this.onRemoveClick.bind(this, member)}
             />
           </div>
         </Popover>
@@ -110,7 +108,7 @@ class FamilyMembersList extends React.Component {
                             type="button"
                             styleName="button--short"
                             value="Edit"
-                            onClick={this.onEditClick(index)}
+                            onClick={this.onEditClick.bind(this, member)}
                           />
 
                           <OverlayTrigger trigger="click" placement="bottom" rootClose overlay={removePopover}>
