@@ -140,12 +140,29 @@
 
     font-size: 0.75rem;
   }
+
+  &[type=checkbox]:focus,
+  &[type=radio]:focus {
+    box-shadow: none;
+    outline: none;
+  }
 }
 
 :global(.has-error .form-control) {
   border: 1px solid #a94442; // add the border back for errors
 
   box-shadow: none;
+}
+
+:global(.input-group-addon) {
+  height: 40px;
+  border: 1px solid rgba(189, 187, 187, 0.3); // $color-secondary-lowlight in rgba form
+  border-radius: 0.75rem;
+
+  color: #646569; /* $color-primary-lowlight */
+  box-shadow: none;
+
+  font-size: 1rem;
 }
 
 :global(.help-block) {

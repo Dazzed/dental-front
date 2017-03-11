@@ -55,5 +55,62 @@ Signup Form
 .field-instructions {
   margin-bottom: 1.5rem;
 
-  text-align: center;
+  font-weight: 300;
+}
+
+/*
+Image Uploader
+------------------------------------------------------------
+*/
+.image-uploader {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+
+  color: $color-white;
+  background-color: rgba(189, 187, 187, 0.3); /* $color-secondary-lowlight in rgba form */
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(189, 187, 187, 0.5); /* $color-secondary-lowlight in rgba form */
+  }
+}
+
+.image-uploader__plus-icon {
+  position: relative;
+  left: calc(50% - 24px);
+  top: calc(50% - 24px);
+}
+
+/*
+Pricing Codes
+------------------------------------------------------------
+*/
+.pricing-codes {}
+
+.pricing-codes__titles {
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dotted $color-secondary-lowlight;
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry {
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry__code {
+  padding-top: 9px; /*  = (   pricing code amount input height [40px]
+                            - pricing code name line height    [22px]
+                          ) / 2
+                    */
+}
+
+.activation-checkbox--align {
+  padding-top: 48px; /* =   annual membership fee label height        [41px]
+                          + (   annual membership fee input height    [40px]
+                              - activation checkbox form group height [26px]
+                            ) / 2
+                     */
 }

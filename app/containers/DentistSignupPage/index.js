@@ -23,6 +23,12 @@ import { push } from 'react-router-redux';
 import logo from 'assets/images/wells-family-dentistry-logo.png';
 import DentistSignupForm from 'components/DentistSignupForm';
 import PageHeader from 'components/PageHeader';
+import {
+  requestServices,
+} from 'containers/App/actions';
+import {
+  selectServices,
+} from 'containers/App/selectors';
 
 // local
 import {
@@ -45,6 +51,7 @@ function mapStateToProps (state) {
   return {
     // fetch
     dentistSpecialties: dentistSpecialtiesSelector(state),
+    services: selectServices(state),
 
     // signup
     fullName: fullNameSelector(state),
@@ -56,6 +63,7 @@ function mapDispatchToProps (dispatch) {
   return {
     // fetch
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
+    getServices: () => dispatch(requestServices()),
 
     // signup
     changeRoute: (url) => dispatch(push(url)),
@@ -80,23 +88,32 @@ export default class SignupPage extends Component {
       name: React.PropTypes.string.isRequired,
       createdAt: React.PropTypes.date,
       updatedAt: React.PropTypes.date,
-    })),
+    })).isRequired,
+
+    services: React.PropTypes.arrayOf(React.PropTypes.shape({
+      id: React.PropTypes.number.isRequired,
+      name: React.PropTypes.string.isRequired,
+      createdAt: React.PropTypes.date,
+      updatedAt: React.PropTypes.date,
+    })).isRequired,
 
     // fetch - dispatch
-    getDentistSpecialties: React.PropTypes.func,
+    getDentistSpecialties: React.PropTypes.func.isRequired,
+    getServices: React.PropTypes.func.isRequired,
 
     // signup - state
     fullName: React.PropTypes.string,
     isSignedUp: React.PropTypes.bool,
 
     // signup - dispatch
-    changeRoute: React.PropTypes.func,
-    clearSignupStatus: React.PropTypes.func,
-    onSignupRequest: React.PropTypes.func,
+    changeRoute: React.PropTypes.func.isRequired,
+    clearSignupStatus: React.PropTypes.func.isRequired,
+    onSignupRequest: React.PropTypes.func.isRequired,
   };
 
   componentWillMount () {
     this.props.getDentistSpecialties();
+    this.props.getServices();
   }
 
   goToHomePage = () => {
@@ -113,7 +130,17 @@ export default class SignupPage extends Component {
   }
 
   render () {
-    const { isSignedUp, fullName, dentistSpecialties } = this.props;
+    const {
+      // fetch
+      dentistSpecialties,
+      services,
+
+      // signup
+      fullName,
+      isSignedUp,
+    } = this.props;
+
+    console.log("Page:", services);
 
     const borderContent = (
       <span className="text-uppercase">
@@ -138,6 +165,7 @@ export default class SignupPage extends Component {
 
                 <DentistSignupForm
                   dentistSpecialties={dentistSpecialties}
+                  services={services}
                   onSubmit={this.onSignupRequest}
                 />
               </div>
