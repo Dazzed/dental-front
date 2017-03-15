@@ -14,6 +14,10 @@ import {
   DENTIST_SPECIALTIES_SUCCESS,
   DENTIST_SPECIALTIES_ERROR,
 
+  PRICING_CODES_REQUEST,
+  PRICING_CODES_SUCCESS,
+  PRICING_CODES_ERROR,
+
   // signup
   DENTIST_SIGNUP_REQUEST,
   DENTIST_SIGNUP_SUCCESS,
@@ -43,6 +47,27 @@ export function dentistSpecialtiesSuccess (payload) {
 export function dentistSpecialtiesError (payload) {
   return {
     type: DENTIST_SPECIALTIES_ERROR,
+    payload
+  };
+}
+
+export function pricingCodesRequest (payload) {
+  return {
+    type: PRICING_CODES_REQUEST,
+    payload
+  };
+}
+
+export function pricingCodesSuccess (payload) {
+  return {
+    type: PRICING_CODES_SUCCESS,
+    payload
+  };
+}
+
+export function pricingCodesError (payload) {
+  return {
+    type: PRICING_CODES_ERROR,
     payload
   };
 }

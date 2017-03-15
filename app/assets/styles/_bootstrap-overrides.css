@@ -148,6 +148,17 @@
   }
 }
 
+:global(input[type=checkbox]),
+:global(input[type=radio]) {
+  cursor: pointer;
+
+  &:focus,
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+}
+
 :global(.has-error .form-control) {
   border: 1px solid #a94442; // add the border back for errors
 

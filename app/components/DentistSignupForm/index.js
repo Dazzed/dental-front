@@ -1,8 +1,6 @@
 /*
 Dentist Signup Form Component
 ================================================================================
-TODO: Should the dentist also select a specialty on this page? That was part of
-      the old signup flow...
 */
 
 /*
@@ -18,39 +16,64 @@ import Row from 'react-bootstrap/lib/Row';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, formValueSelector, reduxForm } from 'redux-form';
 
 // app
 import { US_STATES } from 'common/constants';
 import Checkbox from 'components/Checkbox';
 import InputGroup from 'components/InputGroup';
+import InputTime from 'components/InputTime';
 import LabeledInput from 'components/LabeledInput';
-import { isInvalidNameSelector } from 'containers/DentistSignupPage/selectors';
 
 // local
 import styles from './styles.css';
 import dentistSignupFormValidator from './validator';
 
 /*
+Field Validators
+------------------------------------------------------------
+*/
+const requiredValidator = (name) => (value) => {
+  return value !== null && value !== undefined
+    ? undefined // all good
+    : `Please enter a ${name}.`;
+}
+
+const minValidator = (min) => (value) => {
+  return isFinite(value) === true && value >= min
+    ? undefined // all good
+    : `Please enter an amount above ${min}.`;
+}
+
+/*
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
-  return {
-    isInvalidName: isInvalidNameSelector(state),
-  };
-}
+const valueSelector = formValueSelector('dentist-signup');
+
+const mapStateToProps = (state) => ({
+  officeClosed: {
+    monday: valueSelector(state, 'hours-monday') === false,
+    tuesday: valueSelector(state, 'hours-tuesday') === false,
+    wednesday: valueSelector(state, 'hours-wednesday') === false,
+    thursday: valueSelector(state, 'hours-thursday') === false,
+    friday: valueSelector(state, 'hours-friday') === false,
+    saturday: valueSelector(state, 'hours-saturday') === false,
+    sunday: valueSelector(state, 'hours-sunday') === false,
+  },
+  optedIntoMarketplace: valueSelector(state, 'marketplaceOptIn'),
+});
 
 
 /*
 Signup Form
 ================================================================================
 */
+@connect(mapStateToProps, null)
 @reduxForm({
   form: 'dentist-signup',
   validate: dentistSignupFormValidator,
 })
-@connect(mapStateToProps, null)
 @CSSModules(styles)
 class DentistSignupForm extends React.Component {
 
@@ -63,6 +86,9 @@ class DentistSignupForm extends React.Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
+    initialValues: React.PropTypes.object.isRequired,
+    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
@@ -71,7 +97,8 @@ class DentistSignupForm extends React.Component {
     })).isRequired,
 
     // mapped - state
-    isInvalidName: React.PropTypes.bool,
+    officeClosed: React.PropTypes.object,
+    optedIntoMarketplace: React.PropTypes.bool,
 
     // redux form
     error: React.PropTypes.object,
@@ -102,10 +129,12 @@ class DentistSignupForm extends React.Component {
     const {
       // passed in - state
       dentistSpecialties,
+      pricingCodes,
       services,
 
       // mapped - state
-      isInvalidName,
+      officeClosed,
+      optedIntoMarketplace,
 
       // redux form
       error,
@@ -113,9 +142,32 @@ class DentistSignupForm extends React.Component {
       submitting
     } = this.props;
 
-    // TODO: Should the Pricing Codes and/or Services be sorted at all
-    //       (alphabetically, etc)?
-    //         - If so, do this in the Reducer.
+    const pricingCodesContent = pricingCodes.map((pricingCode) => {
+      return (
+        <div className="row" styleName="pricing-codes__entry" key={pricingCode}>
+          <div className="col-sm-6">
+            <div styleName="pricing-codes__entry__code">
+              {pricingCode}
+            </div>
+          </div>
+          <div className="col-sm-6">
+            <Row>
+              <Field
+                name={`priceCode-${pricingCode}`}
+                type="number"
+                component={InputGroup}
+                leftAddon="$"
+                validate={[
+                  requiredValidator('Price Code Amount'),
+                  minValidator(0)
+                ]}
+              />
+            </Row>
+          </div>
+        </div>
+      );
+    });
+
     const servicesContent = services.map((service) => {
       // Remove all whitespace and "-" in the string.  `fieldName` will still
       // be unique due to the inclusion of `service.id`.
@@ -152,7 +204,35 @@ class DentistSignupForm extends React.Component {
           />
 
           <Field
-            name="website"
+            name="specialtyId"
+            type="select"
+            label="Office Specialty"
+            component={LabeledInput}
+            className="col-sm-6"
+          >
+            <option value="">Select an Specialty</option>
+            {dentistSpecialties.map((specialty, index) => (
+              <option value={specialty.id} key={index}>
+                {specialty.name}
+              </option>
+            ))}
+          </Field>
+        </Row>
+
+        <Row>
+          <Field
+            name="phone"
+            type="text"
+            mask="(999) 999-9999"
+            maskChar=" "
+            component={LabeledInput}
+            label="Office Phone Number"
+            placeholder=""
+            className="col-sm-6"
+          />
+
+          <Field
+            name="url"
             type="text"
             component={LabeledInput}
             label="Website URL"
@@ -172,12 +252,10 @@ class DentistSignupForm extends React.Component {
           />
 
           <Field
-            name="phone"
+            name="confirmEmail"
             type="text"
-            mask="(999) 999-9999"
-            maskChar=" "
             component={LabeledInput}
-            label="Office Phone Number"
+            label="Confirm the Email Address"
             placeholder=""
             className="col-sm-6"
           />
@@ -209,7 +287,7 @@ class DentistSignupForm extends React.Component {
 
         <Row>
           <Field
-            name="profileMessage"
+            name="message"
             type="textarea"
             component={LabeledInput}
             label="Office Profile Message"
@@ -272,37 +350,9 @@ class DentistSignupForm extends React.Component {
         <hr styleName="spacer" />
 
         {/*
-        Marketplace Opt In
-        ------------------------------------------------------------
-        TODO: Automatically show / hide the services & office hours if the
-              opt-in checkbox is checked / unchecked (respectively)?
-                - If so, it'd be best to default the opt-in checkbox to checked
-                  so that the services & office hours are shown by default.
-        TODO: Move down the form so it's right above services / office hours?
-        */}
-        <FormGroup>
-          <div className="col-sm-12">
-            <ControlLabel>
-              Include Office On Our Public Marketplace Listings?
-            </ControlLabel>
-            <Field
-              name="marketplaceOptIn"
-              component={Checkbox}
-            >
-              <span>Yes, please include my office on the Dental HQ Marketplace listing.</span>
-            </Field>
-          </div>
-        </FormGroup>
-
-        <hr styleName="spacer" />
-
-        {/*
         Image Uploaders
         ------------------------------------------------------------
-        TODO
         */}
-        <p>TODO: Currently this is only mocked up on the frontend, and is not hooked up to the backend.</p>
-
         <Row>
           <div className="col-sm-4">
             <FormGroup>
@@ -369,14 +419,8 @@ class DentistSignupForm extends React.Component {
         {/*
         Pricing
         ------------------------------------------------------------
-        TODO
-
-        TODO: Are pricing code names editable / customizable on a per-dentist
-              or per-office basis?  If so, do dentists need the ability to
-              add / edit pricing codes?
+        TODO: Pull pricing codes from the backend.  See `app/containers/DentistSignupPage/sagas.js`.
         */}
-        <p>TODO: Currently this is only mocked up on the frontend, and is not hooked up to the backend.</p>
-
         <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
 
         <div className="row" styleName="pricing-codes">
@@ -384,84 +428,14 @@ class DentistSignupForm extends React.Component {
 
             <div className="row" styleName="pricing-codes__titles">
               <div className="col-sm-6">
-                Pricing Code
+                Pricing Codes
               </div>
               <div className="col-sm-6">
                 Price
               </div>
             </div>
 
-            <div className="row" styleName="pricing-codes__entry">
-              <div className="col-sm-6">
-                <div styleName="pricing-codes__entry__code">
-                  D0120 (Example)
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <Row>
-                  <Field
-                    name="priceCode-0"
-                    type="number"
-                    component={InputGroup}
-                    leftAddon="$"
-                  />
-                </Row>
-              </div>
-            </div>
-
-            <div className="row" styleName="pricing-codes__entry">
-              <div className="col-sm-6">
-                <div styleName="pricing-codes__entry__code">
-                  D0140 (Example)
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <Row>
-                  <Field
-                    name="priceCode-1"
-                    type="number"
-                    component={InputGroup}
-                    leftAddon="$"
-                  />
-                </Row>
-              </div>
-            </div>
-
-            <div className="row" styleName="pricing-codes__entry">
-              <div className="col-sm-6">
-                <div styleName="pricing-codes__entry__code">
-                  D0150 (Example)
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <Row>
-                  <Field
-                    name="priceCode-2"
-                    type="number"
-                    component={InputGroup}
-                    leftAddon="$"
-                  />
-                </Row>
-              </div>
-            </div>
-
-            <div className="row" styleName="pricing-codes__entry">
-              <div className="col-sm-6">
-                <div styleName="pricing-codes__entry__code">
-                  D0220 (Example)
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <Row>
-                  <Field
-                    name="priceCode-3"
-                    type="number"
-                    component={InputGroup}
-                    leftAddon="$"
-                  />
-                </Row>
-              </div>
-            </div>
+            {pricingCodesContent}
 
           {/* End Pricing Codes Wrapper Column*/}
           </div>
@@ -478,40 +452,49 @@ class DentistSignupForm extends React.Component {
           </p>
         </div>
 
-        <Row>
-          <Field
-            name="adultMonthlyFee"
-            type="text"
-            component={LabeledInput}
-            label="Recommended Adult Monthly Membership Fee"
-            placeholder=""
-            className="col-sm-8"
-            width={6}
-          />
-        </Row>
+        <FormGroup>
+          <div className="col-sm-8">
+            <ControlLabel>Recommended Adult Monthly Membership Fee:</ControlLabel>
+            <Row>
+              <Field
+                name="adultMonthlyFee"
+                type="number"
+                component={InputGroup}
+                leftAddon="$"
+                width={6}
+              />
+            </Row>
+          </div>
+        </FormGroup>
 
-        <Row>
-          <Field
-            name="childMonthlyFee"
-            type="text"
-            component={LabeledInput}
-            label="Recommended Child Monthly Membership Fee"
-            placeholder=""
-            className="col-sm-8"
-            width={6}
-          />
-        </Row>
+        <FormGroup>
+          <div className="col-sm-8">
+            <ControlLabel>Recommended Child Monthly Membership Fee:</ControlLabel>
+            <Row>
+              <Field
+                name="childMonthlyFee"
+                type="number"
+                component={InputGroup}
+                leftAddon="$"
+                width={6}
+              />
+            </Row>
+          </div>
+        </FormGroup>
 
-        <Row>
-          <Field
-            name="adultYearlyFee"
-            type="text"
-            component={LabeledInput}
-            label="Recommended Adult Annual Membership Fee"
-            placeholder=""
-            className="col-sm-8"
-            width={6}
-          />
+        <FormGroup>
+          <div className="col-sm-8">
+            <ControlLabel>Recommended Adult Annual Membership Fee:</ControlLabel>
+            <Row>
+              <Field
+                name="adultYearlyFee"
+                type="number"
+                component={InputGroup}
+                leftAddon="$"
+                width={6}
+              />
+            </Row>
+          </div>
 
           <div className="col-sm-4">
             <div styleName="activation-checkbox--align">
@@ -519,22 +502,25 @@ class DentistSignupForm extends React.Component {
                 name="adultYearlyFeeActivated"
                 component={Checkbox}
               >
-                <span>Activate this offer.</span>
+                Activate this offer.
               </Field>
             </div>
           </div>
-        </Row>
+        </FormGroup>
 
-        <Row>
-          <Field
-            name="childYearlyFee"
-            type="text"
-            component={LabeledInput}
-            label="Recommended Child Annual Membership Fee"
-            placeholder=""
-            className="col-sm-8"
-            width={6}
-          />
+        <FormGroup>
+          <div className="col-sm-8">
+            <ControlLabel>Recommended Child Annual Membership Fee:</ControlLabel>
+            <Row>
+              <Field
+                name="childYearlyFee"
+                type="number"
+                component={InputGroup}
+                leftAddon="$"
+                width={6}
+              />
+            </Row>
+          </div>
 
           <div className="col-sm-4">
             <div styleName="activation-checkbox--align">
@@ -542,11 +528,11 @@ class DentistSignupForm extends React.Component {
                 name="childYearlyFeeActivated"
                 component={Checkbox}
               >
-                <span>Activate this offer.</span>
+                Activate this offer.
               </Field>
             </div>
           </div>
-        </Row>
+        </FormGroup>
 
         <FormGroup>
           <div className="col-sm-8">
@@ -556,7 +542,7 @@ class DentistSignupForm extends React.Component {
                 name="treatmentDiscount"
                 type="number"
                 component={InputGroup}
-                leftAddon="$"
+                leftAddon="%"
                 width={6}
               />
             </Row>
@@ -570,6 +556,26 @@ class DentistSignupForm extends React.Component {
         <hr styleName="spacer" />
 
         {/*
+        Marketplace Opt In
+        ------------------------------------------------------------
+        */}
+        <FormGroup>
+          <div className="col-sm-12">
+            <ControlLabel>
+              Include Office On Our Public Marketplace Listings?
+            </ControlLabel>
+            <Field
+              name="marketplaceOptIn"
+              component={Checkbox}
+            >
+              Yes, please include my office on the Dental HQ Marketplace listing.
+            </Field>
+          </div>
+        </FormGroup>
+
+        <hr styleName="spacer" />
+
+        {/*
         Services
         ------------------------------------------------------------
         */}
@@ -577,12 +583,14 @@ class DentistSignupForm extends React.Component {
           <ControlLabel>Services Offered:</ControlLabel>
 
           <p styleName="field-instructions">
-            *Leave blank if not participating in Public Marketplace.
-          </p>
+            *Specialties are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
+          </p>                
 
-          <Row>
-            {servicesContent}
-          </Row>
+          {optedIntoMarketplace && (
+            <Row>
+              {servicesContent}
+            </Row>
+          )}
         </div>
 
         <hr styleName="spacer" />
@@ -590,160 +598,229 @@ class DentistSignupForm extends React.Component {
         {/*
         Hours
         ------------------------------------------------------------
-        // TODO: Create TimeInput, and possibly a DayTimeInput to wrap it (and
-        //       handle things like disabling the start / end TimeInputs if the
-        //       day isn't checked).
         */}
         <div>
-          <p>TODO: Create custom time input controls.</p>
-
           <ControlLabel>Office Operating Hours:</ControlLabel>
 
           <p styleName="field-instructions">
-            *Leave blank if not participating in Public Marketplace.
+            *Office Hours are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
           </p>
 
-          <Row>
-            <div className="col-sm-offset-5 col-sm-3">
-              <ControlLabel>Open:</ControlLabel>
-            </div>
-            <div className="col-sm-3">
-              <ControlLabel>Close:</ControlLabel>
-            </div>
-          </Row>
+          {optedIntoMarketplace && (
+            <div>
+              <Row>
+                <div className="col-sm-offset-4 col-sm-4">
+                  <ControlLabel>Open:</ControlLabel>
+                </div>
+                <div className="col-sm-4">
+                  <ControlLabel>Close:</ControlLabel>
+                </div>
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Monday"
-                component={Checkbox}
-              >
-                <span>Monday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-monday-open"
+                    component={Checkbox}
+                  >
+                    <span>Monday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-monday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.monday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-monday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="5:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.monday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Tuesday"
-                component={Checkbox}
-              >
-                <span>Tuesday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-tuesday-open"
+                    component={Checkbox}
+                  >
+                    <span>Tuesday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-tuesday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.tuesday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-tuesday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="5:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.tuesday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Wednesday"
-                component={Checkbox}
-              >
-                <span>Wednesday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-wednesday-open"
+                    component={Checkbox}
+                  >
+                    <span>Wednesday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-wednesday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.wednesday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-wednesday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="5:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.wednesday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Thursday"
-                component={Checkbox}
-              >
-                <span>Thursday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-thursday-open"
+                    component={Checkbox}
+                  >
+                    <span>Thursday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-thursday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.thursday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-thursday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="5:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.thursday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Friday"
-                component={Checkbox}
-              >
-                <span>Friday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-friday-open"
+                    component={Checkbox}
+                  >
+                    <span>Friday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-friday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.friday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-friday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="3:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.friday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Saturday"
-                component={Checkbox}
-              >
-                <span>Saturday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-saturday-open"
+                    component={Checkbox}
+                  >
+                    <span>Saturday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-saturday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.saturday}
+                />
 
-            <div className="col-sm-3">
-              TODO
-            </div>
-          </Row>
+                <Field
+                  name="hours-saturday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="3:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.saturday}
+                />
+              </Row>
 
-          <Row>
-            <div className="col-sm-offset-1 col-sm-4">
-              <Field
-                name="hours-Sunday"
-                component={Checkbox}
-              >
-                <span>Sunday</span>
-              </Field>
-            </div>
+              <Row>
+                <div className="col-sm-4">
+                  <Field
+                    name="hours-sunday-open"
+                    component={Checkbox}
+                  >
+                    <span>Sunday</span>
+                  </Field>
+                </div>
 
-            <div className="col-sm-3">
-              TODO
-            </div>
+                <Field
+                  name="hours-sunday-start"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="9:00"
+                  defaultToAM={true}
+                  disabled={officeClosed.sunday}
+                />
 
-            <div className="col-sm-3">
-              TODO
+                <Field
+                  name="hours-sunday-end"
+                  component={InputTime}
+                  className="col-sm-4"
+                  placeholder="3:00"
+                  defaultToPM={true}
+                  disabled={officeClosed.sunday}
+                />
+              </Row>
             </div>
-          </Row>
+          )}
 
         {/* End Hours */}
         </div>
@@ -776,21 +853,3 @@ class DentistSignupForm extends React.Component {
 }
 
 export default DentistSignupForm;
-
-
-/*
-          <Field
-            name="specialtyId"
-            type="select"
-            label="Specialty"
-            component={LabeledInput}
-            className="col-sm-4"
-          >
-            <option value="">Select an Specialty</option>
-            {dentistSpecialties.map((specialty, index) => (
-              <option value={specialty.id} key={index}>
-                {specialty.name}
-              </option>
-            ))}
-          </Field>
-*/

@@ -34,12 +34,14 @@ import {
 import {
   clearSignupStatus,
   dentistSpecialtiesRequest,
+  pricingCodesRequest,
   signupRequest,
 } from './actions';
 import {
   dentistSpecialtiesSelector,
   fullNameSelector,
   isSignedUpSelector,
+  pricingCodesSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -51,6 +53,7 @@ function mapStateToProps (state) {
   return {
     // fetch
     dentistSpecialties: dentistSpecialtiesSelector(state),
+    pricingCodes: pricingCodesSelector(state),
     services: selectServices(state),
 
     // signup
@@ -63,6 +66,7 @@ function mapDispatchToProps (dispatch) {
   return {
     // fetch
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
+    getPricingCodes: () => dispatch(pricingCodesRequest()),
     getServices: () => dispatch(requestServices()),
 
     // signup
@@ -90,6 +94,8 @@ export default class SignupPage extends Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
+    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
@@ -113,6 +119,7 @@ export default class SignupPage extends Component {
 
   componentWillMount () {
     this.props.getDentistSpecialties();
+    this.props.getPricingCodes();
     this.props.getServices();
   }
 
@@ -133,6 +140,7 @@ export default class SignupPage extends Component {
     const {
       // fetch
       dentistSpecialties,
+      pricingCodes,
       services,
 
       // signup
@@ -140,7 +148,17 @@ export default class SignupPage extends Component {
       isSignedUp,
     } = this.props;
 
-    console.log("Page:", services);
+    const initialDentistSignupFormValues = {
+      "hours-monday-open": true,
+      "hours-tuesday-open": true,
+      "hours-wednesday-open": true,
+      "hours-thursday-open": true,
+      "hours-friday-open": true,
+      "hours-saturday-open": false,
+      "hours-sunday-open": false,
+
+      marketplaceOptIn: true,
+    };
 
     const borderContent = (
       <span className="text-uppercase">
@@ -165,7 +183,10 @@ export default class SignupPage extends Component {
 
                 <DentistSignupForm
                   dentistSpecialties={dentistSpecialties}
+                  pricingCodes={pricingCodes}
                   services={services}
+
+                  initialValues={initialDentistSignupFormValues}
                   onSubmit={this.onSignupRequest}
                 />
               </div>

@@ -21,6 +21,11 @@ const dentistSpecialtiesSelector = createSelector(
   (substate) => get(substate, 'dentistSpecialties')
 );
 
+const pricingCodesSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'pricingCodes'),
+);
+
 /*
 Signup Selectors
 ------------------------------------------------------------
@@ -36,41 +41,6 @@ const isSignedUpSelector = createSelector(
 );
 
 /*
-Signup Form Selectors
-------------------------------------------------------------
-*/
-const formSelector = state => get(state, 'form.dentist-signup.syncErrors');
-
-const firstNameErrorSelector = createSelector(
-  formSelector,
-  (substate) => get(substate, 'firstName'),
-);
-
-const lastNameErrorSelector = createSelector(
-  formSelector,
-  (substate) => get(substate, 'lastName'),
-);
-
-const isFirstNameTouched = createSelector(
-  formSelector,
-  (substate) => get(substate, 'firstName.touched'),
-);
-
-const isLastNameTouched = createSelector(
-  formSelector,
-  (substate) => get(substate, 'lastName.touched'),
-);
-
-const isInvalidNameSelector = createSelector(
-  firstNameErrorSelector,
-  lastNameErrorSelector,
-  isFirstNameTouched,
-  isLastNameTouched,
-  (firstName, lastName, firstNameTouched, lastNameTouched) =>
-    (!!(firstName || lastName) && (firstNameTouched || lastNameTouched))
-);
-
-/*
 Exports
 ------------------------------------------------------------
 */
@@ -79,11 +49,9 @@ export default domainSelector;
 export {
   // fetch
   dentistSpecialtiesSelector,
+  pricingCodesSelector,
 
   // signup
   fullNameSelector,
   isSignedUpSelector,
-
-  // signup form
-  isInvalidNameSelector,
 };

@@ -8,24 +8,26 @@ import CSSModules from 'react-css-modules';
 import styles from './index.css';
 
 
-const Checkbox = ({ input, meta: { touched, error }, children }) => (
-  <FormGroup className={touched && error ? 'has-error' : ''}>
-    <Col sm={12}>
-      <label styleName="checkbox-label" htmlFor={input.name}>
-        <FormControl
-          {...input}
-          checked={input.value}
-          type="checkbox"
-          styleName="checkbox"
-        />
-        <span>
-          {children}
-        </span>
-        {touched && error && <HelpBlock>{error}</HelpBlock>}
-      </label>
-    </Col>
-  </FormGroup>
-);
+const Checkbox = ({ input, meta: { touched, error }, children }) => {
+  return (
+    <FormGroup className={touched && error ? 'has-error' : ''}>
+      <Col sm={12}>
+        <label styleName="checkbox-label" htmlFor={input.name}>
+          <FormControl
+            {...input}
+            checked={input.value}
+            type="checkbox"
+            styleName="checkbox"
+          />
+          <span>
+            {children}
+          </span>
+          {touched && error && <HelpBlock>{error}</HelpBlock>}
+        </label>
+      </Col>
+    </FormGroup>
+  );
+}
 
 
 Checkbox.propTypes = {

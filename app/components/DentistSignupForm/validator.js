@@ -9,17 +9,36 @@ Imports
 */
 // app
 import {
+  US_STATES
+} from 'common/constants';
+import {
   validatorFactory
 } from 'utils/reduxForm';
 
 /*
 Schema
-------------------------------------------------------------
+================================================================================
 */
 const schema = {
+
+  /*
+  Office Info
+  ------------------------------------------------------------
+  */
+  officeName: { presence: true },
+  specialtyId: { presence: { message: '^Please select a Specialty' } },
+  phone: {
+    presence: true,
+    format: {
+      pattern: /\(\d{3}\) \d{3}-\d{4}?/,
+      message: '^Please enter a 10-digit US phone number.'
+    }
+  },
+  url: { presence: true, url: true },
+  message: { presence: true },
+
   email: { presence: true, email: true },
   confirmEmail: { presence: true, email: true, equality: 'email' },
-
   password: {
     presence: true,
     format: {
@@ -29,18 +48,15 @@ const schema = {
   },
   confirmPassword: { presence: true, equality: 'password' },
 
-  firstName: { presence: true },
-  // middleName is optional
-  lastName: { presence: true },
-
-  phone: {
+  address: { presence: true },
+  city: { presence: true },
+  state: {
     presence: true,
-    format: {
-      pattern: /\(\d{3}\) \d{3}-\d{4}?/,
-      message: '^Please enter a 10-digit US phone number.'
+    inclusion: {
+      within: Object.keys(US_STATES),
+      message: '^State can\'t be blank',
     }
   },
-  specialtyId: { presence: { message: '^Please select an Specialty' } },
   zipCode: {
     presence: true,
     format: {
@@ -48,6 +64,75 @@ const schema = {
       message: '^Please enter a 5-digit US zip code.',
     }
   },
+
+  /*
+  Images
+  ------------------------------------------------------------
+  */
+  // TODO: require images?
+  // TODO: need to actually upload them first...
+
+  /*
+  Pricing
+  ------------------------------------------------------------
+  */
+  // Each priceCode's price is validated at the field level.
+  adultMonthlyFee: {
+    presence: true,
+    numericality: {
+      greaterThanOrEqualTo: 0,
+      noStrings: true,
+      strict: true,
+    },
+  },
+  childMonthlyFee: {
+    presence: true,
+    numericality: {
+      greaterThanOrEqualTo: 0,
+      noStrings: true,
+      strict: true,
+    },
+  },
+  adultYearlyFee: {
+    presence: true,
+    numericality: {
+      greaterThanOrEqualTo: 0,
+      noStrings: true,
+      strict: true,
+    },
+  },
+  // adultYearlyFeeActivated is optional
+  childYearlyFee: {
+    presence: true,
+    numericality: {
+      greaterThanOrEqualTo: 0,
+      noStrings: true,
+      strict: true,
+    },
+  },
+  // childYearlyFeeActivated is optional
+
+  /*
+  Marketplace Opt In
+  ------------------------------------------------------------
+  */
+  // marketplaceOptIn is optional
+
+  /*
+  Services
+  ------------------------------------------------------------
+  */
+  // services are optional
+
+  /*
+  Hours
+  ------------------------------------------------------------
+  */
+  // hours-[dayName]-open are optional
+
+  // Can't validate the hours-[dayName]-start and hours-[dayName]-end since this
+  // can't be used to compare fields.
+
 };
 
 export default validatorFactory(schema);

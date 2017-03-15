@@ -59,7 +59,15 @@ export default function appReducer (state = initialState, action) {
     case SERVICES_REQUEST_SUCCESS:
       return {
         ...state,
-        services: payload.data,
+        services: payload.data.sort((serviceA, serviceB) => {
+          if (serviceA.name < serviceB.name) {
+            return -1;
+          }
+          else if (serviceA.name > serviceB.name) {
+            return 1;
+          }
+          return 0; // serviceA === serviceB
+        }),
       };
 
     case CHANGE_PAGE_TITLE:

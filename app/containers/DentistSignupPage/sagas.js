@@ -18,11 +18,19 @@ import request from 'utils/request';
 
 // local
 import {
-  DENTIST_SIGNUP_REQUEST,
+  // fetch
   DENTIST_SPECIALTIES_REQUEST,
+  PRICING_CODES_REQUEST,
+
+  // signup
+  DENTIST_SIGNUP_REQUEST,
 } from './constants';
 import {
+  // fetch
   dentistSpecialtiesSuccess,
+  pricingCodesSuccess,
+
+  // signup
   signupSuccess,
 } from './actions';
 
@@ -38,11 +46,13 @@ export default [
 
 function* main () {
   const watcherA = yield fork(fetchDentistSpecialties);
-  const watcherB = yield fork(signupWatcher);
+  const watcherB = yield fork(fetchPricingCodes);
+  const watcherC = yield fork(signupWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
+  yield cancel(watcherC);
 }
 
 
@@ -55,6 +65,38 @@ function* fetchDentistSpecialties () {
     try {
       const response = yield call(request, '/api/v1/dentist-specialties');
       yield put(dentistSpecialtiesSuccess(response.data));
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
+
+function* fetchPricingCodes () {
+  yield* takeLatest(PRICING_CODES_REQUEST, function* handler() {
+    try {
+      // TODO: Implement this once the API endpoint is available.
+      // const response = yield call(request, '...TODO...');
+      // yield put pricingCodesSuccess(response.data);
+
+      yield put(pricingCodesSuccess([
+        "D0120",
+        "D0140",
+        "D0150",
+        "D0220",
+        "D0272",
+        "D0274",
+        "D0330",
+        "D1110",
+        "D1120",
+        "D1206",
+        "D2391",
+        "D2392",
+        "D2750",
+        "D3330",
+        "D4341",
+        "D4910",
+        "D7140",
+      ]));
     } catch (e) {
       console.log(e);
     }

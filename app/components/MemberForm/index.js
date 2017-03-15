@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
 Member Form
 ================================================================================
 */
-@connect(mapStateToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @reduxForm({
   form: 'familyMember',
   enableReinitialize: true,
@@ -60,6 +60,7 @@ export default class MemberForm extends React.Component {
 
   static propTypes = {
     // form related
+    initialValues: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
