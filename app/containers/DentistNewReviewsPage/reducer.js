@@ -48,8 +48,8 @@ function dentistNewReviewsPageReducer (state = initialState, action) {
 
           var patientReviews = patient.reviews.map((review) => {
             return {
+              reviewer: patient,
               review: review,
-              patient: patient,
             };
           });
 

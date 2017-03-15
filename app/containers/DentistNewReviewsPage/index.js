@@ -32,7 +32,7 @@ import { selectPatients } from 'containers/DentistMembersPage/selectors';
 
 import {
   selectDataLoaded,
-  selectNewReviews,
+  selectRecentReviewers,
 } from './selectors';
 import styles from './styles.css';
 
@@ -48,7 +48,7 @@ function mapStateToProps (state) {
     // page state
     dataLoaded: selectDataLoaded(state),
     patients: selectPatients(state),
-    newReviews: selectNewReviews(state),
+    recentReviewers: selectRecentReviewers(state),
   };
 }
 
@@ -84,7 +84,7 @@ class DentistNewReviewsPage extends React.Component {
     // state - page
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
-    newReviews: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients (and thus patientReviews) are loaded
+    recentReviewers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the reviews
 
     // dispatch - page
     fetchPatients: React.PropTypes.func.isRequired,
@@ -118,7 +118,7 @@ class DentistNewReviewsPage extends React.Component {
     const {
       dataLoaded,
       patients,
-      newReviews,
+      recentReviewers,
       user,
     } = this.props;
 
@@ -154,7 +154,7 @@ class DentistNewReviewsPage extends React.Component {
       );
     }
 
-    if (newReviews.length === 0) {
+    if (recentReviewers.length === 0) {
       return (
         <div>
           {/* TODO */}

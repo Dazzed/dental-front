@@ -33,7 +33,7 @@ const selectPatientReviews = createSelector(
 const selectNewReviews = createSelector(
   selectPatientReviews,
   (patientReviews) => {
-    // precondition: the patient reviews must already be loaded
+    // precondition: the patient's reviews must already be loaded
     if (patientReviews === null) {
       return null;
     }
@@ -41,6 +41,37 @@ const selectNewReviews = createSelector(
     const oneWeekAgo = moment().subtract('days', 7);
     return patientReviews.filter((patientReview) => {
       return moment(patientReview.review.createdAt).isSameOrAfter(oneWeekAgo, 'day');
+    });
+  }
+);
+
+const selectRecentReviewers = createSelector(
+  selectNewReviews,
+  (newReviews) => {
+    // precondition: the patient's reviews must already be loaded
+    if (newReviews === null) {
+      return null;
+    }
+
+    const recentReviewersById = newReviews.reduce((recentReviewersCollector, newReview) => {
+      const reviewer = newReview.reviewer;
+      const review = newReview.review;
+
+      if (recentReviewersCollector.hasOwnProperty(reviewer.id) === false) {
+        recentReviewersCollector[reviewer.id] = {
+          reviewer: reviewer,
+          reviews: [],
+        };
+      }
+
+      recentReviewersCollector[reviewer.id].reviews.push(review);
+
+      return recentReviewersCollector;
+    }, {});
+
+    // convert the object to an array
+    return Object.keys(recentReviewersById).map((id) => {
+      return recentReviewersById[id];
     });
   }
 );
@@ -68,4 +99,5 @@ export {
   selectDataLoaded,
   selectNewReviews,
   selectPatientReviews,
+  selectRecentReviewers,
 };
