@@ -23,13 +23,16 @@ import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
+import { fetchPatients } from 'containers/DentistMembersPage/actions';
+import { selectPatients } from 'containers/DentistMembersPage/selectors';
 
-// local
+// TODO: Refactor common dentist-dashboard actions / selectors out into an
+//       independent file?  Or possibly import them from the DentistMembersPage
+//       into the local './actions' and './selectors' files?
+
 import {
-  // TODO
-} from './actions';
-import {
-  // TODO
+  selectDataLoaded,
+  selectNewReviews,
 } from './selectors';
 import styles from './styles.css';
 
@@ -39,15 +42,23 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    // app state
     user: selectCurrentUser(state),
-    // TODO
+
+    // page state
+    dataLoaded: selectDataLoaded(state),
+    patients: selectPatients(state),
+    newReviews: selectNewReviews(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app actions
     changePageTitle: (title) => dispatch(changePageTitle(title)),
-    // TODO
+
+    // page actions
+    fetchPatients: () => dispatch(fetchPatients()),
   };
 }
 
@@ -57,20 +68,30 @@ New Reviews
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 class DentistNewReviewsPage extends React.Component {
 
   static propTypes = {
-    // state
+    // state - app
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
     ]),
-    // TODO
 
-    // dispatch
+    // dispatch - app
     changePageTitle: React.PropTypes.func.isRequired,
-    // TODO
+
+    // state - page
+    dataLoaded: React.PropTypes.bool.isRequired,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
+    newReviews: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients (and thus patientReviews) are loaded
+
+    // dispatch - page
+    fetchPatients: React.PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    this.props.fetchPatients();
   }
 
   componentDidMount() {
@@ -81,13 +102,13 @@ class DentistNewReviewsPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  // TODO
+  searchForMember = (name) => {
+    // TODO
+  }
 
-  /*
-  Form Events
-  ------------------------------------------------------------
-  */
-  // TODO
+  sortMembers = (criteria) => {
+    // TODO
+  }
 
   /*
   Render
@@ -95,20 +116,56 @@ class DentistNewReviewsPage extends React.Component {
   */
   render () {
     const {
-      // TODO
+      dataLoaded,
+      patients,
+      newReviews,
+      user,
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
-    // TODO
-    if (false) {
+    if (dataLoaded === false) {
       return (
         <div>
           {/* TODO */}
           <DentistDashboardHeader revenueToDate="$100,000" />
           <DentistDashboardTabs active="new-reviews" />
 
-          <div styleName="content">
+          <div styleName="content content--filler">
             <LoadingSpinner showOnlyIcon={false} />
+          </div>
+        </div>
+      );
+    }
+
+    // precondition: there are no patients, thus there can be no reviews
+    if (patients.length === 0) {
+      return (
+        <div>
+          {/* TODO */}
+          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardTabs active="new-reviews" />
+
+          <div styleName="content content--filler">
+            <p>
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before they can start leaving you five star reviews!
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    if (newReviews.length === 0) {
+      return (
+        <div>
+          {/* TODO */}
+          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardTabs active="new-reviews" />
+
+          <div styleName="content content--filler">
+            {/* TODO: add link to dentist review page in dentist marketplace? */}
+            <p>
+              No new reviews were posted by your patients in the past 7 days.  Great job keeping up with your patients!
+            </p>
           </div>
         </div>
       );
@@ -121,15 +178,12 @@ class DentistNewReviewsPage extends React.Component {
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
-          {/* TODO: remove */}
-          Dentist New Reviews Page
+          TODO: list reviews here
 
           {/* TODO: sort by */}
           {/* TODO: list reviews */}
 
         </div>
-
-        {/* TODO: modals */}
       </div>
     );
   }
