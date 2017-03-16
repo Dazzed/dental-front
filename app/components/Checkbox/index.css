@@ -5,10 +5,13 @@
   font-size: 1.375rem;
   width: 1.375rem;
   height: 1.375rem;
+  cursor: pointer;
 }
 
 .checkbox-label {
-  font-weight: normal;
+  margin-bottom: 0;
+
+  font-weight: 300;
 
   span {
     vertical-align: middle;

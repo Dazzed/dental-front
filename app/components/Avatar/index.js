@@ -33,26 +33,15 @@ class Avatar extends React.Component {
   }
 
   render () {
-    const { size, url } = this.props;
+    let { size, url } = this.props;
 
-    let sizeInRem = "6rem"; // default value if size isn't set or invalid
-
-    if (isInteger(size)) {
-      sizeInRem = size + "rem";
-    }
-    else if (size === "lg" || size === "large") {
-      sizeInRem = "12rem";
-    }
-    else if (size === "md" || size === "medium") {
-      sizeInRem = "6rem";
-    }
-    else if (size === "sm" || size === "small") {
-      sizeInRem = "3rem";
+    if (size === undefined) {
+      size = "6rem";
     }
 
-    const wrapperStyleMap = {
-      width: sizeInRem,
-      height: sizeInRem,
+    const wrapperStyles = {
+      width: size,
+      height: size,
     };
 
     const avatar = url
@@ -64,7 +53,7 @@ class Avatar extends React.Component {
                     );
 
     return (
-      <div styleName="avatar__wrapper" style={wrapperStyleMap}>
+      <div styleName="avatar__wrapper" style={wrapperStyles}>
         {avatar}
       </div>
     );

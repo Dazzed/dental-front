@@ -1,0 +1,30 @@
+/*
+Review Score Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Review Score
+================================================================================
+*/
+.review-score {
+  display: inline-block;
+}
+
+.review-score__icon {
+  display: inline-block;
+  height: 2rem;
+  margin-right: 0.5rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

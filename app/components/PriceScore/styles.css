@@ -1,0 +1,30 @@
+/*
+Price Score Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Price Score
+================================================================================
+*/
+.price-score {
+  display: inline-block;
+}
+
+.price-score__icon {
+  display: inline-block;
+  height: 2rem;
+  margin-right: 0.5rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

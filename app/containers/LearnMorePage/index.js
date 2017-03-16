@@ -66,6 +66,7 @@ export default class LearnMorePage extends React.Component {
               affordable monthly memberships.
             </p>
 
+            {/* TODO: dentist contact link */}
             <input type="button" styleName="large-button__inverse" value="CONTACT US &gt;" />
           </div>
         </div>

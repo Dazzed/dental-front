@@ -31,7 +31,7 @@ function selectComponent (type, mask, maskChar) {
  *
  */
 const LabeledInput = ({
-  input, label, type, meta, width, children, className, mask, maskChar, placeholder,
+  input, label, type, meta, width, children, className, mask, maskChar, placeholder, rows,
 }) => {
   const rootClassName = classnames({
     'has-error': meta.touched && meta.error,
@@ -40,6 +40,10 @@ const LabeledInput = ({
   const placeholderText = placeholder !== undefined
                        ? placeholder
                        : label;
+
+  const rowsAttr = type === 'textarea'
+                 ? { rows: `${rows}` }
+                 : {};
 
   return (
     <div className={className || 'col-md-12'}>
@@ -52,6 +56,7 @@ const LabeledInput = ({
             {...input}
             {...selectComponent(type, mask, maskChar)}
             placeholder={placeholderText}
+            {...rowsAttr}
           >
             {children}
           </FormControl>
@@ -75,6 +80,7 @@ LabeledInput.propTypes = {
   mask: React.PropTypes.string,
   maskChar: React.PropTypes.string,
   placeholder: React.PropTypes.string,
+  rows: React.PropTypes.number,
 };
 
 

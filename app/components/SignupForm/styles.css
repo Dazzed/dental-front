@@ -1,5 +1,5 @@
 /*
-Signup Form Styles
+Patient Signup Form Styles
 ================================================================================
 */
 
@@ -44,4 +44,10 @@ Signup Form
 .spacer {
   margin-top: 1rem;
   margin-bottom: 2.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+
+  font-weight: 300;
 }

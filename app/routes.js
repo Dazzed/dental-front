@@ -99,12 +99,16 @@ export default function createRoutes (store) {
       name: 'dentistSignupPage',
       getComponent (nextState, cb) {
         Promise.all([
+          System.import('containers/App/sagas'),
+
           System.import('containers/DentistSignupPage/reducer'),
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([ reducer, sagas, component ]) => {
-            injectReducer('dentistSignup', reducer.default);
+          .then(([ appSagas, reducer, sagas, component ]) => {
+            injectSagas(appSagas.default);
+
+            injectReducer('dentistSignupPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
@@ -182,6 +186,86 @@ export default function createRoutes (store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([ component ]) => {
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/members',
+      name: 'dentistMembersPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+          System.import('containers/DentistMembersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('dentistMembersPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/new-members',
+      name: 'dentistNewMembersPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+
+          System.import('containers/DentistNewMembersPage/reducer'),
+          System.import('containers/DentistNewMembersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          dentistMembersReducer,
+          dentistMembersSagas,
+          
+          reducer,
+          component
+        ]) => {
+          injectReducer('dentistMembersPage', dentistMembersReducer.default);
+          injectSagas(dentistMembersSagas.default);
+
+          injectReducer('dentistNewMembersPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/dentist/new-reviews',
+      name: 'dentistNewReviewsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+
+          System.import('containers/DentistNewReviewsPage/reducer'),
+          System.import('containers/DentistNewReviewsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          dentistMembersReducer,
+          dentistMembersSagas,
+
+          reducer,
+          component
+        ]) => {
+          injectReducer('dentistMembersPage', dentistMembersReducer.default);
+          injectSagas(dentistMembersSagas.default);
+
+          injectReducer('dentistNewReviewsPage', reducer.default);
           renderRoute(component);
         });
 

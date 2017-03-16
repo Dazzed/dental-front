@@ -1,0 +1,120 @@
+/*
+Dentist Signup Form Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page-Wide
+================================================================================
+*/
+.large-button--secondary {
+  border: 1px solid $color-secondary-highlight;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-secondary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-secondary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/*
+Signup Form
+================================================================================
+*/
+.spacer {
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* needed since FormGroup is not in a Row, so the margins overlap instead of stacking */
+.spacer--after-form-group {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+
+  font-weight: 300;
+
+  &:last-child {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/*
+Image Uploader
+------------------------------------------------------------
+*/
+.image-uploader {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+
+  color: $color-white;
+  background-color: rgba(189, 187, 187, 0.3); /* $color-secondary-lowlight in rgba form */
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(189, 187, 187, 0.5); /* $color-secondary-lowlight in rgba form */
+  }
+}
+
+.image-uploader__plus-icon {
+  position: relative;
+  left: calc(50% - 24px);
+  top: calc(50% - 24px);
+}
+
+/*
+Pricing Codes
+------------------------------------------------------------
+*/
+.pricing-codes {}
+
+.pricing-codes__titles {
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dotted $color-secondary-lowlight;
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry {
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry__code {
+  padding-top: 9px; /*  = (   pricing code amount input height [40px]
+                            - pricing code name line height    [22px]
+                          ) / 2
+                    */
+}
+
+.activation-checkbox--align {
+  padding-top: 48px; /* =   annual membership fee label height        [41px]
+                          + (   annual membership fee input height    [40px]
+                              - activation checkbox form group height [26px]
+                            ) / 2
+                     */
+}

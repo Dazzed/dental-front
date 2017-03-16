@@ -8,7 +8,6 @@ import {
 import {
   SET_AUTH_STATE,
   SET_USER_DATA,
-  DENTIST_SPECIALTIES_SUCCESS,
   SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
 } from './constants';
@@ -17,7 +16,6 @@ import {
 const initialState = {
   loggedIn: !!getItem('auth_token'),
   currentUser: false,
-  dentistSpecialties: [],
   services: [],
   pageTitle: null,
 };
@@ -58,16 +56,18 @@ export default function appReducer (state = initialState, action) {
             }
       };
 
-    case DENTIST_SPECIALTIES_SUCCESS:
-      return {
-        ...state,
-        dentistSpecialties: payload.data,
-      };
-
     case SERVICES_REQUEST_SUCCESS:
       return {
         ...state,
-        services: payload.data,
+        services: payload.data.sort((serviceA, serviceB) => {
+          if (serviceA.name < serviceB.name) {
+            return -1;
+          }
+          else if (serviceA.name > serviceB.name) {
+            return 1;
+          }
+          return 0; // serviceA === serviceB
+        }),
       };
 
     case CHANGE_PAGE_TITLE:

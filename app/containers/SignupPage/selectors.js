@@ -1,5 +1,5 @@
 /*
-Signup Page Selectors
+Patient Signup Page Selectors
 ================================================================================
 */
 

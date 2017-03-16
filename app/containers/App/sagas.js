@@ -6,27 +6,12 @@ import { actions as toastrActions } from 'react-redux-toastr';
 import request from 'utils/request';
 
 import {
-  dentistSpecialtiesSuccess,
   requestServicesSuccess,
 } from './actions';
 
 import {
-  DENTIST_SPECIALTIES_REQUEST,
   SERVICES_REQUEST,
 } from './constants';
-
-
-function* loadDentistSpecialties () {
-  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* handler () {
-    try {
-      const specialties = yield call(request, '/api/v1/dentist-specialties');
-      yield put(dentistSpecialtiesSuccess(specialties));
-    } catch (e) {
-      console.log(e);
-    }
-  });
-}
-
 
 function* requestServices () {
   yield* takeLatest(SERVICES_REQUEST, function* handler () {
@@ -47,7 +32,6 @@ function* toastrRemover () {
 
 
 export default [
-  loadDentistSpecialties,
   requestServices,
   toastrRemover,
 ];

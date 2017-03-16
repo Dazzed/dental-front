@@ -48,4 +48,12 @@ Page Header
   font-size: 1.5rem;
   line-height: 1.5rem;
   text-align: center;
+
+  a {
+    color: #FFF;
+
+    &:hover {
+      color: #FFF;
+    }
+  }
 }

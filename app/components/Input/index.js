@@ -46,7 +46,7 @@ const Input =
 
 Input.propTypes = {
   input: React.PropTypes.object.isRequired,
-  label: React.PropTypes.string.isRequired,
+  label: React.PropTypes.string,
   type: React.PropTypes.string.isRequired,
   meta: React.PropTypes.object.isRequired,
   width: React.PropTypes.number,

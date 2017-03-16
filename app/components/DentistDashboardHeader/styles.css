@@ -1,0 +1,128 @@
+/*
+Dentist Dashboard Header Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.large-title {
+  margin-bottom: 1.5rem;
+
+  font-size: 3rem;
+  text-transform: capitalize;
+}
+
+
+/*
+Dentist Dashboard Header
+================================================================================
+*/
+.dentist-dashboard-header {}
+
+.dentist-dashboard-header__section {
+  margin-bottom: 2rem;
+}
+
+/*
+Dentist Info
+------------------------------------------------------------
+*/
+.dentist {}
+
+.dentist__name {
+  margin: 0 0 0.5rem 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 4rem;
+}
+
+.dentist__scores {
+  margin-bottom: 1rem;
+}
+
+.dentist__address {
+  margin-bottom: 0.5rem;
+
+  color: #646569;
+}
+
+.dentist__contact {
+  margin-bottom: 0.5rem;
+
+  font-size: 1.125rem;
+}
+
+
+/*
+Quick Links
+------------------------------------------------------------
+*/
+.quick-links {
+  padding-left: 0;
+  margin-bottom: 0;
+
+  list-style: none;
+
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.quick-links__link {
+  display: inline-block;
+  margin: 0.125rem 0;
+
+  color: $color-primary-lowlight;
+
+  font-weight: bold;
+
+  &:hover {
+    color: $color-primary-lowlight;
+  }
+}
+
+/*
+Metrics
+------------------------------------------------------------
+*/
+.metrics {
+  color: $color-primary-lowlight;
+}
+
+.metrics__title {
+  margin-top: 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 2rem;
+}
+
+.metrics__entry {
+  margin-bottom: 0.5rem;
+}
+
+.metrics__value {
+  color: $color-primary-highlight;
+
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+/*
+Member Search
+------------------------------------------------------------
+*/
+.search-col {
+  top: 48px;
+}
+

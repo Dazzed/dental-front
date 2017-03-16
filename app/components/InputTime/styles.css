@@ -1,0 +1,36 @@
+/*
+Input Time Component Styles
+================================================================================
+*/
+
+/*
+Import
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Input Time
+================================================================================
+*/
+.input-time {}
+
+.input-time__time {
+  display: inline-block;
+  width: calc(100% - 62px);
+
+  vertical-align: top;
+}
+
+.input-time__am-pm {
+  display: inline-block;
+  padding-left: 1rem;
+
+  :global(.checkbox) {
+    height: 22px;
+    min-height: 22px;
+    padding-top: 0px;
+  }
+}

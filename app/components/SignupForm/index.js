@@ -1,5 +1,5 @@
 /*
-Signup Form Component
+Patient Signup Form Component
 ================================================================================
 */
 
@@ -44,14 +44,25 @@ Signup Form
 class SignupForm extends React.Component {
 
   static propTypes = {
+    // passed from parent
+    offices: React.PropTypes.array,
+
+    // redux form
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
-    offices: React.PropTypes.array,
   };
 
   render () {
-    const { error, handleSubmit, submitting, offices } = this.props;
+    const {
+      // passed from parent
+      offices,
+
+      // redux form
+      error,
+      handleSubmit,
+      submitting
+    } = this.props;
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -154,7 +165,7 @@ class SignupForm extends React.Component {
             mask="99999"
             maskChar=" "
             component={LabeledInput}
-            label="Zip code"
+            label="Zip Code"
             placeholder=""
             className="col-sm-4"
           />
@@ -250,8 +261,8 @@ class SignupForm extends React.Component {
           />
 
           <div className="col-sm-12">
-            <h5 className="text-center">
-              Password should have at least 6 characters, upper case, lower case and numbers.
+            <h5 styleName="field-instructions">
+              *Password must be at least 8 characters and include one (1) special character and one (1) capital letter.
             </h5>
           </div>
         </Row>

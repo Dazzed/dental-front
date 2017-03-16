@@ -68,11 +68,6 @@ const selectSignupCompleteState = createSelector(
   )
 );
 
-const selectDentistSpecialties = createSelector(
-  selectGlobal,
-  (substate) => get(substate, 'dentistSpecialties')
-);
-
 const selectServices = createSelector(
   selectGlobal,
   (substate) => get(substate, 'services')
@@ -94,7 +89,6 @@ export {
   selectAuthLoadingState,
   selectSignupCompleteState,
   selectCurrentUser,
-  selectDentistSpecialties,
   selectPageTitle,
   selectServices,
 };

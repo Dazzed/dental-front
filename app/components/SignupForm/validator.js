@@ -1,5 +1,5 @@
 /*
-Signup Form Validator
+Patient Signup Form Validator
 ================================================================================
 */
 
@@ -80,9 +80,8 @@ const schema = {
   password: {
     presence: true,
     format: {
-      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d\$\/\*!]{6,}$/,
-      message: `^Password should have at least 6 characters, upper case,
-        lower case and numbers.`,
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\$\/\*!]{8,}$/,
+      message: `^Password must be at least 8 characters and include one (1) special character and one (1) capital letter.`,
     }
   },
   confirmPassword: { presence: true, equality: 'password' },

@@ -1,5 +1,5 @@
 /*
-Signup Page Reducers
+Patient Signup Page Reducers
 ================================================================================
 */
 
@@ -9,9 +9,12 @@ Imports
 */
 // local
 import {
+  // fetch
+  FETCH_OFFICES_SUCCESS,
+
+  // signup
   SIGNUP_SUCCESS,
   CLEAR_SIGNUP_STATUS,
-  FETCH_OFFICES_SUCCESS,
 } from './constants';
 
 
@@ -25,9 +28,12 @@ Initial State
 ------------------------------------------------------------
 */
 const initialState = {
+  // fetch
+  offices: [],
+
+  // signup
   patientCreated: false,
   fullName: '',
-  offices: [],
 }; 
 
 export default function reducer (state = initialState, action) {
