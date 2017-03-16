@@ -27,30 +27,42 @@ Page Wide
 Dentist Dashboard Header
 ================================================================================
 */
-.dentist-dashboard-header {
+.dentist-dashboard-header {}
+
+.dentist-dashboard-header__section {
   margin-bottom: 2rem;
 }
 
 /*
-Finance Summary
+Dentist Info
 ------------------------------------------------------------
 */
-.finance-summary {
-  color: $color-primary-lowlight;
-}
+.dentist {}
 
-.finance-summary__title {
+.dentist__name {
+  margin: 0 0 0.5rem 0;
+
   color: $color-primary-highlight;
 
-  font-size: 2rem;
+  font-size: 4rem;
 }
 
-.finance-summary__amount {
-  color: $color-primary-highlight;
+.dentist__scores {
+  margin-bottom: 1rem;
+}
+
+.dentist__address {
+  margin-bottom: 0.5rem;
+
+  color: #646569;
+}
+
+.dentist__contact {
+  margin-bottom: 0.5rem;
 
   font-size: 1.125rem;
-  font-weight: bold;
 }
+
 
 /*
 Quick Links
@@ -78,3 +90,39 @@ Quick Links
     color: $color-primary-lowlight;
   }
 }
+
+/*
+Metrics
+------------------------------------------------------------
+*/
+.metrics {
+  color: $color-primary-lowlight;
+}
+
+.metrics__title {
+  margin-top: 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 2rem;
+}
+
+.metrics__entry {
+  margin-bottom: 0.5rem;
+}
+
+.metrics__value {
+  color: $color-primary-highlight;
+
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+/*
+Member Search
+------------------------------------------------------------
+*/
+.search-col {
+  top: 48px;
+}
+

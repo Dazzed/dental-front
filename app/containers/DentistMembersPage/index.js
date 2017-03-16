@@ -156,8 +156,7 @@ class DentistMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          {/* TODO */}
-          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="members" />
 
           <div styleName="content">
@@ -169,8 +168,7 @@ class DentistMembersPage extends React.Component {
 
     return (
       <div>
-        {/* TODO */}
-        <DentistDashboardHeader revenueToDate="$100,000" />
+        <DentistDashboardHeader user={user} />
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">

@@ -106,8 +106,6 @@ class PatientsList extends React.Component {
       getAdditionalMembershipContent,
     } = this.props;
 
-    console.log(patients);
-
     const patientRows = patients.map((patient) => {
       const {
         avatar,

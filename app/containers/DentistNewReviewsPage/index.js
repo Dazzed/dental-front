@@ -181,8 +181,7 @@ class DentistNewReviewsPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          {/* TODO */}
-          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -196,8 +195,7 @@ class DentistNewReviewsPage extends React.Component {
     if (patients.length === 0) {
       return (
         <div>
-          {/* TODO */}
-          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -213,8 +211,7 @@ class DentistNewReviewsPage extends React.Component {
     if (Object.keys(recentReviewers).length === 0) {
       return (
         <div>
-          {/* TODO */}
-          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -237,8 +234,7 @@ class DentistNewReviewsPage extends React.Component {
 
     return (
       <div>
-        {/* TODO */}
-        <DentistDashboardHeader revenueToDate="$100,000" />
+        <DentistDashboardHeader user={user} />
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">

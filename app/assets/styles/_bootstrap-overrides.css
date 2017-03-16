@@ -166,7 +166,7 @@
 }
 
 :global(.input-group-addon) {
-  height: 40px;
+  height: 2.5rem;
   border: 1px solid rgba(189, 187, 187, 0.3); // $color-secondary-lowlight in rgba form
   border-radius: 0.75rem;
 
@@ -174,6 +174,47 @@
   box-shadow: none;
 
   font-size: 1rem;
+}
+
+:global(.input-group-btn > .btn) {
+  height: 2.5rem;
+  border: 1px solid rgba(189, 187, 187, 0.5); // $color-secondary-lowlight in rgba form
+  border-radius: 0.75rem;
+
+  color: #646569; /* $color-primary-lowlight */
+  box-shadow: none;
+
+  font-size: 1rem;
+}
+
+:global(.form-control--large) {
+  /* a 20% increase */
+  height: 3rem;
+  font-size: 1.2rem;
+
+  &::-webkit-input-placeholder {
+    font-size: 0.9rem;
+  }
+
+  &:-moz-placeholder { /* Firefox 18- */
+    font-size: 0.9rem;
+  }
+
+  &::-moz-placeholder { /* Firefox 19+ */
+    font-size: 0.9rem;
+  }
+
+  &:-ms-input-placeholder {
+    font-size: 0.9rem;
+  }
+}
+
+:global(.form-control--large + .input-group-addon),
+:global(.form-control--large + .input-group-btn > .btn) {
+  /* a 20% increase */
+  height: 3rem;
+  width: 3.15rem;
+  font-size: 1.2rem;
 }
 
 :global(.help-block) {

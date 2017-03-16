@@ -95,7 +95,7 @@ class DentistNewMembersPage extends React.Component {
   */
   render () {
     const {
-      // TODO
+      user,
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
@@ -103,8 +103,7 @@ class DentistNewMembersPage extends React.Component {
     if (false) {
       return (
         <div>
-          {/* TODO */}
-          <DentistDashboardHeader revenueToDate="$100,000" />
+          <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="new-members" />
 
           <div styleName="content">
@@ -116,8 +115,7 @@ class DentistNewMembersPage extends React.Component {
 
     return (
       <div>
-        {/* TODO */}
-        <DentistDashboardHeader revenueToDate="$100,000" />
+        <DentistDashboardHeader user={user} />
         <DentistDashboardTabs active="new-members" />
 
         <div styleName="content">
