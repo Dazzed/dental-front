@@ -1,7 +1,6 @@
 /*
 Patient Reviewers List Component Styles
 ================================================================================
-TODO: Copy / paste in updated sections from `components/PatientsList/styles.css`
 */
 
 /*
@@ -37,10 +36,6 @@ Page Wide
   }
 }
 
-.button__icon {
-  margin-left: 0.5rem;
-}
-
 
 /*
 Patient Reviewers List
@@ -60,10 +55,6 @@ Patient List
   background-color: rgb(250, 250, 250);
 }
 
-/*
-List Spacing
-------------------------------------------------------------
-*/
 .divided-row {
   margin-top: 1rem;
   border-top: 1px solid $color-secondary-lowlight;
@@ -94,7 +85,6 @@ Member Overview
 ------------------------------------------------------------
 */
 .member-overview {
-  /* TODO: default font-size bump + gray color */
   color: $color-primary-lowlight;
 
   font-size: 1.125rem;
@@ -102,7 +92,6 @@ Member Overview
 }
 
 .member-overview__name {
-  /* TODO: size + color */
   display: inline-block;
   margin: 0;
 
@@ -131,14 +120,20 @@ Member Overview
   color: $color-red;
 }
 
-.member-overview__info,
-.member-overview__details-toggle {
+.member-overview__info {
   color: $color-black;
 
   font-weight: bold;
 }
 
 .member-overview__email {
+  font-weight: bold;
+}
+
+.member-overview__details-toggle {
+  color: $color-black;
+
+  cursor: pointer;
   font-weight: bold;
 }
 

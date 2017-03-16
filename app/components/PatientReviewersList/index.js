@@ -240,9 +240,7 @@ class PatientReviewersList extends React.Component {
             <div className="col-sm-2">
               <div styleName="member-avatar">
                 <Avatar url={avatar} size={'100%'} />
-
-                {/* TODO: external vs. internal??? */}
-                <p styleName="member-category">External</p>
+                <p styleName="member-category">External</p> {/* TODO: external vs. internal??? */}
               </div>
             </div>
 
@@ -289,7 +287,7 @@ class PatientReviewersList extends React.Component {
                       <a href={`mailto:${email}`} styleName="member-overview__email">{email}</a>
                     </div>
                     <div className="col-sm-3">
-                      <span styleName="member-overview__details-toggle" onClick={this.toggleMemberDetails}>
+                      <span styleName="member-overview__details-toggle  text-right" onClick={this.toggleMemberDetails}>
                         Member Details
                         {' '}
                         {this.state.showMemberDetails
