@@ -21,6 +21,7 @@ import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
+import PatientReviewersList from 'components/PatientReviewersList';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchPatients } from 'containers/DentistMembersPage/actions';
@@ -102,6 +103,34 @@ class DentistNewReviewsPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
+  addMember = (patient) => {
+    // TODO
+  }
+
+  toggleCancelationFee = (patient) => {
+    // TODO
+  }
+
+  toggleReEnrollmentFee = (patient) => {
+    // TODO
+  }
+
+  updateMember = (patient, member) => {
+    // TODO
+  }
+
+  cancelMember = (patient, member) => {
+    // TODO
+  }
+
+  renewMember = (patient, member) => {
+    // TODO
+  }
+
+  reEnrollMember = (patient, member) => {
+    // TODO
+  }
+
   searchForMember = (name) => {
     // TODO
   }
@@ -122,6 +151,10 @@ class DentistNewReviewsPage extends React.Component {
       user,
     } = this.props;
 
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
     // precondition: the data must be loaded, otherwise wait for it
     if (dataLoaded === false) {
       return (
@@ -154,6 +187,7 @@ class DentistNewReviewsPage extends React.Component {
       );
     }
 
+    // precondition: there are no recent reviews
     if (recentReviewers.length === 0) {
       return (
         <div>
@@ -170,7 +204,11 @@ class DentistNewReviewsPage extends React.Component {
         </div>
       );
     }
-
+    
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
     return (
       <div>
         {/* TODO */}
@@ -178,12 +216,22 @@ class DentistNewReviewsPage extends React.Component {
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
-          TODO: list reviews here
-
           {/* TODO: sort by */}
-          {/* TODO: list reviews */}
 
+          <PatientReviewersList
+            reviewers={recentReviewers}
+
+            onAddMember={this.addMember}
+            onCancelMember={this.cancelMember}
+            onReEnrollMember={this.reEnrollMember}
+            onRenewMember={this.renewMember}
+            onToggleCancelationFee={this.toggleCancelationFee}
+            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
+            onUpdateMember={this.updateMember}
+          />
         </div>
+
+        {/* TODO: modals */}
       </div>
     );
   }

@@ -127,6 +127,14 @@ class DentistMembersPage extends React.Component {
     // TODO
   }
 
+  searchForMember = (name) => {
+    // TODO
+  }
+
+  sortMembers = (criteria) => {
+    // TODO
+  }
+
   /*
   Form Events
   ------------------------------------------------------------
@@ -172,13 +180,12 @@ class DentistMembersPage extends React.Component {
             patients={patients}
 
             onAddMember={this.addMember}
+            onCancelMember={this.cancelMember}
+            onReEnrollMember={this.reEnrollMember}
+            onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-
             onUpdateMember={this.updateMember}
-            onCancelMember={this.cancelMember}
-            onRenewMember={this.renewMember}
-            onReEnrollMember={this.reEnrollMember}
           />
         </div>
 

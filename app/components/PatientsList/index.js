@@ -34,15 +34,15 @@ class PatientsList extends React.Component {
 
   static propTypes = {
     // passed in
-    patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     onAddMember: React.PropTypes.func.isRequired,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     onToggleCancelationFee: React.PropTypes.func.isRequired,
     onToggleReEnrollmentFee: React.PropTypes.func.isRequired,
 
-    onUpdateMember: React.PropTypes.func.isRequired,
-    onRenewMember: React.PropTypes.func.isRequired,
     onReEnrollMember: React.PropTypes.func.isRequired,
+    onRenewMember: React.PropTypes.func.isRequired,
+    onUpdateMember: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -82,16 +82,20 @@ class PatientsList extends React.Component {
 
   // NOTE: The following functions must be bound to the patient and member in
   //       the member specific event attributes.
-  onUpdateClick = (patient, member) => {
-    this.props.onUpdateMember(patient, member);
+  onReEnrollClick = (patient, member) => {
+    this.props.onReEnrollMember(patient, member);
   }
   onRenewClick = (patient, member) => {
     this.props.onRenewMember(patient, member);
   }
-  onReEnrollClick = (patient, member) => {
-    this.props.onReEnrollMember(patient, member);
+  onUpdateClick = (patient, member) => {
+    this.props.onUpdateMember(patient, member);
   }
 
+  /*
+  Render
+  ------------------------------------------------------------
+  */
   render () {
     const {
       patients
@@ -99,7 +103,6 @@ class PatientsList extends React.Component {
 
     const patientRows = patients.map((patient) => {
       const {
-        // TODO
         avatar,
         contactMethod,
         createdAt,

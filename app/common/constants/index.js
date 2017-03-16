@@ -41,6 +41,12 @@ export const PREFERRED_CONTACT_METHODS = {
   phone: 'Phone',
 };
 
+export const PREFERRED_CONTACT_METHODS_DENTIST_POV = {
+  office: 'They will contact you',
+  email: 'Email',
+  phone: 'Phone',
+};
+
 export const SEX_TYPES = {
   M: 'Male',
   F: 'Female',
