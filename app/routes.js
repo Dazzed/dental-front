@@ -26,7 +26,7 @@ const loadModule = (cb) => (componentModule) => {
 export default function createRoutes (store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const {
-    injectReducer, injectSagas, redirectToDashboard, redirectToLogin
+    injectReducer, injectSagas, redirectToDashboard, redirectToLogin, redirectTo404
   } = getHooks(store);
 
   return [
@@ -313,6 +313,14 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/error/404-not-found',
+      name: 'notFoundPage',
+      getComponent (nextState, cb) {
+        System.import('containers/NotFoundPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '/learn-more',
       name: 'learnMore',
       getComponent (nextState, cb) {
@@ -428,8 +436,9 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectTo404,
       path: '*',
-      name: 'notfound',
+      name: '404',
       getComponent (nextState, cb) {
         System.import('containers/NotFoundPage')
           .then(loadModule(cb))

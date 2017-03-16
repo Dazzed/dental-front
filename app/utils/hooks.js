@@ -74,6 +74,12 @@ function redirectToDashboard (store) {
   };
 }
 
+function redirectTo404 (store) {
+  return (nextState, replace) => {
+    replace('/error/404-not-found');
+  };
+}
+
 /**
  * Helper for creating injectors
  */
@@ -83,5 +89,6 @@ export default function getHooks (store) {
     injectSagas: injectAsyncSagas(store),
     redirectToLogin: redirectToLogin(store),
     redirectToDashboard: redirectToDashboard(store),
+    redirectTo404: redirectTo404(store),
   };
 }

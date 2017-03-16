@@ -1,11 +1,24 @@
+/*
+Not Found Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
 @import '../../assets/styles/variables';
 
-.wrapper {
-  min-height: 100%;
-  background-color: $green;
-  color: $white;
+
+/*
+Page-Wide
+================================================================================
+*/
+.container-wrapper {
+  min-height: $body-height;
 }
 
-.container {
-  padding-top: 2rem;
+.content-wrapper {
+  margin: 2rem 0;
 }

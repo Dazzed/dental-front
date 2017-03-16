@@ -57,13 +57,14 @@ export default class NavBar extends React.Component {
   };
 
   returnLinks = {
-    '/accounts/login': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/accounts/signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/complete-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/dentist-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/login': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/logout': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/learn-more': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/error/404-not-found': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/faq': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/learn-more': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/privacy': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/subscribe': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/terms': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),

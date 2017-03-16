@@ -27,11 +27,12 @@ import styles from './styles.css';
 
 const staticPages = [
   '/',
-  '/terms',
+  '/accounts/complete-signup',
+  '/error/404-not-found',
   '/faq',
   '/legal',
   '/privacy',
-  '/accounts/complete-signup',
+  '/terms',
 ];
 
 const mapDispatchToProps = {

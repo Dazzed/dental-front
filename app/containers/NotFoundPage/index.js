@@ -1,32 +1,46 @@
-/**
- * NotFoundPage
- *
- * This is the page we show when the user visits a url that doesn't have a route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a neccessity for you then you can refactor it and remove
- * the linting exception.
- */
+/*
+Not Found Page
+================================================================================
+Route: Any Invalid Route
+*/
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// libs
 import React from 'react';
 import CSSModules from 'react-css-modules';
+import { Link } from 'react-router';
 
+// app
+import PageHeader from 'components/PageHeader';
+
+// local
 import styles from './styles.css';
 
-
+/*
+Not Found
+================================================================================
+*/
 @CSSModules(styles)
-class NotFound extends React.Component {
-
-  render () {
+export default class NotFoundPage extends React.Component {
+  render() {
     return (
-      <div styleName="wrapper">
-        <div className="container" styleName="container">
-          <h1>Sorry, the page you're looking for doesn't exist!</h1>
+      <div styleName="container-wrapper">
+        <PageHeader title="Page Not Found" />
+
+        <div className="container">
+          <div className="col-md-12">
+            <div styleName="content-wrapper">
+              <p className="text-center">
+                Sorry, the page you are looking for does not exist!
+              </p>
+            </div>
+          </div>
         </div>
+
       </div>
     );
   }
 }
-
-export default NotFound;
