@@ -1,0 +1,83 @@
+/*
+Patient Reviews Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.button--wide {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.5rem 2rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.divided-row {
+  margin-top: 1rem;
+  border-top: 1px solid $color-secondary-lowlight;
+  padding-top: 1rem;
+}
+
+
+/*
+Patient Reviews
+================================================================================
+*/
+.review {
+  font-size: 1.125rem;
+}
+
+.review__header {
+  margin-bottom: 1rem;
+}
+
+.review__date {
+  margin-top: 4px;
+
+  color: $color-primary-lowlight;
+
+  font-weight: 300;
+  text-align: right;
+}
+
+.review__info {
+  color: $color-black;
+
+  font-weight: bold;
+}
+
+.review__message {
+  margin-bottom: 1.5rem;
+
+  color: $color-black;
+
+  text-align: justify;
+}
+
+.review__reply {
+  margin-bottom: 1.5rem;
+}

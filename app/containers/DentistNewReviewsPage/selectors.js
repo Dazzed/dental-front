@@ -53,7 +53,8 @@ const selectRecentReviewers = createSelector(
       return null;
     }
 
-    const recentReviewersById = newReviews.reduce((recentReviewersCollector, newReview) => {
+    // {reviewer, reviews} indexed by `reviewer.id`
+    return newReviews.reduce((recentReviewersCollector, newReview) => {
       const reviewer = newReview.reviewer;
       const review = newReview.review;
 
@@ -68,11 +69,6 @@ const selectRecentReviewers = createSelector(
 
       return recentReviewersCollector;
     }, {});
-
-    // convert the object to an array
-    return Object.keys(recentReviewersById).map((id) => {
-      return recentReviewersById[id];
-    });
   }
 );
 

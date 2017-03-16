@@ -33,10 +33,14 @@ Patients List
 class PatientsList extends React.Component {
 
   static propTypes = {
-    // passed in
-    onAddMember: React.PropTypes.func.isRequired,
+    // passed in - data
     patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
+    // passed in - higher order functions
+    getAdditionalMembershipContent: React.PropTypes.func,
+
+    // passed in - event handlers
+    onAddMember: React.PropTypes.func.isRequired,
     onToggleCancelationFee: React.PropTypes.func.isRequired,
     onToggleReEnrollmentFee: React.PropTypes.func.isRequired,
 
@@ -98,8 +102,11 @@ class PatientsList extends React.Component {
   */
   render () {
     const {
-      patients
+      patients,
+      getAdditionalMembershipContent,
     } = this.props;
+
+    console.log(patients);
 
     const patientRows = patients.map((patient) => {
       const {
@@ -159,6 +166,11 @@ class PatientsList extends React.Component {
       ).toFixed(2);
 
       const paymentDueDate = moment(subscription.endAt).format("MMM D, YYYY");
+
+      let additionalMembershipContent = null;
+      if (getAdditionalMembershipContent) {
+        additionalMembershipContent = getAdditionalMembershipContent(patient);
+      }
 
       return (
         <div key={id} styleName="patient-list__entry">
@@ -317,6 +329,8 @@ class PatientsList extends React.Component {
             </div>
           {/* End Patient Row */}
           </div>
+
+          {additionalMembershipContent}
 
         {/* End Wrapper Div */}
         </div>

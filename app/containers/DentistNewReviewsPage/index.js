@@ -21,7 +21,8 @@ import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
-import PatientReviewersList from 'components/PatientReviewersList';
+import PatientsList from 'components/PatientsList';
+import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import { fetchPatients } from 'containers/DentistMembersPage/actions';
@@ -85,7 +86,7 @@ class DentistNewReviewsPage extends React.Component {
     // state - page
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
-    recentReviewers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the reviews
+    recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
 
     // dispatch - page
     fetchPatients: React.PropTypes.func.isRequired,
@@ -107,18 +108,6 @@ class DentistNewReviewsPage extends React.Component {
     // TODO
   }
 
-  toggleCancelationFee = (patient) => {
-    // TODO
-  }
-
-  toggleReEnrollmentFee = (patient) => {
-    // TODO
-  }
-
-  updateMember = (patient, member) => {
-    // TODO
-  }
-
   cancelMember = (patient, member) => {
     // TODO
   }
@@ -137,6 +126,39 @@ class DentistNewReviewsPage extends React.Component {
 
   sortMembers = (criteria) => {
     // TODO
+  }
+
+  toggleCancelationFee = (patient) => {
+    // TODO
+  }
+
+  toggleReEnrollmentFee = (patient) => {
+    // TODO
+  }
+
+  updateMember = (patient, member) => {
+    // TODO
+  }
+
+  /*
+  UI Functions
+  ------------------------------------------------------------
+  */
+  getRecentPatientReviews = (patient) => {
+    const {
+      recentReviewers,
+    } = this.props;
+
+    // precondition: the patient is not a recent reviewer
+    if (recentReviewers.hasOwnProperty(patient.id) === false) {
+      return null;
+    }
+
+    const reviews = recentReviewers[patient.id].reviews;
+
+    return (
+      <PatientReviews reviewer={patient} reviews={reviews} />
+    );
   }
 
   /*
@@ -187,8 +209,8 @@ class DentistNewReviewsPage extends React.Component {
       );
     }
 
-    // precondition: there are no recent reviews
-    if (recentReviewers.length === 0) {
+    // precondition: there are no recent reviewers
+    if (Object.keys(recentReviewers).length === 0) {
       return (
         <div>
           {/* TODO */}
@@ -209,6 +231,10 @@ class DentistNewReviewsPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
+    const recentReviewerPatients = Object.keys(recentReviewers).map((key) => {
+      return recentReviewers[key].reviewer;
+    });
+
     return (
       <div>
         {/* TODO */}
@@ -218,8 +244,10 @@ class DentistNewReviewsPage extends React.Component {
         <div styleName="content">
           {/* TODO: sort by */}
 
-          <PatientReviewersList
-            reviewers={recentReviewers}
+          <PatientsList
+            patients={recentReviewerPatients}
+
+            getAdditionalMembershipContent={this.getRecentPatientReviews}
 
             onAddMember={this.addMember}
             onCancelMember={this.cancelMember}
