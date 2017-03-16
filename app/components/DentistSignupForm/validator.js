@@ -34,7 +34,7 @@ const schema = {
       message: '^Please enter a 10-digit US phone number.'
     }
   },
-  url: { presence: true, url: true },
+  url: { presence: { message: '^URL can\'t be blank' }, url: true },
   message: { presence: true },
 
   email: { presence: true, email: true },
@@ -51,10 +51,10 @@ const schema = {
   address: { presence: true },
   city: { presence: true },
   state: {
-    presence: true,
+    presence: { message: '^Please select a State' },
     inclusion: {
       within: Object.keys(US_STATES),
-      message: '^State can\'t be blank',
+      message: '^Please select a State',
     }
   },
   zipCode: {
