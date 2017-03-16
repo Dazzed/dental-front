@@ -8,8 +8,8 @@ Imports
 ------------------------------------------------------------
 */
 // lib
-import { createSelector } from 'reselect';
 import moment from 'moment';
+import { createSelector } from 'reselect';
 
 // app
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -38,7 +38,7 @@ const selectNewReviews = createSelector(
       return null;
     }
 
-    const oneWeekAgo = moment().subtract('days', 7);
+    const oneWeekAgo = moment().subtract(7, 'days');
     return patientReviews.filter((patientReview) => {
       return moment(patientReview.review.createdAt).isSameOrAfter(oneWeekAgo, 'day');
     });

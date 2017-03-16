@@ -12,7 +12,6 @@ import {
   FETCH_PATIENTS_SUCCESS
 } from 'containers/DentistMembersPage/constants';
 
-
 /*
 Initial State
 ------------------------------------------------------------
@@ -55,8 +54,7 @@ function dentistNewReviewsPageReducer (state = initialState, action) {
 
           return patientReviews.concat(reviewsCollector);
         }, []),
-      }
-
+      };
 
     /*
     Default Reducer

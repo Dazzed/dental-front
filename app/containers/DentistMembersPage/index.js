@@ -103,18 +103,6 @@ class DentistMembersPage extends React.Component {
     // TODO
   }
 
-  toggleCancelationFee = (patient) => {
-    // TODO
-  }
-
-  toggleReEnrollmentFee = (patient) => {
-    // TODO
-  }
-
-  updateMember = (patient, member) => {
-    // TODO
-  }
-
   cancelMember = (patient, member) => {
     // TODO
   }
@@ -135,11 +123,17 @@ class DentistMembersPage extends React.Component {
     // TODO
   }
 
-  /*
-  Form Events
-  ------------------------------------------------------------
-  */
-  // TODO
+  toggleCancelationFee = (patient) => {
+    // TODO
+  }
+
+  toggleReEnrollmentFee = (patient) => {
+    // TODO
+  }
+
+  updateMember = (patient, member) => {
+    // TODO
+  }
 
   /*
   Render
@@ -152,6 +146,10 @@ class DentistMembersPage extends React.Component {
       user,
     } = this.props;
 
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
     // precondition: the data must be loaded, otherwise wait for it
     if (dataLoaded === false) {
       return (
@@ -159,13 +157,33 @@ class DentistMembersPage extends React.Component {
           <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="members" />
 
-          <div styleName="content">
+          <div styleName="content content--filler">
             <LoadingSpinner showOnlyIcon={false} />
           </div>
         </div>
       );
     }
 
+    // precondition: there are no patients to list
+    if (patients.length === 0) {
+      return (
+        <div>
+          <DentistDashboardHeader user={user} />
+          <DentistDashboardTabs active="members" />
+
+          <div styleName="content content--filler">
+            <p>
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before you can see them here in your dashboard.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
     return (
       <div>
         <DentistDashboardHeader user={user} />

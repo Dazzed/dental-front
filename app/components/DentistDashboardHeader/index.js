@@ -83,8 +83,6 @@ class DentistDashboardHeader extends React.Component {
 //      zipCode,
     } = user;
 
-    console.log(user);
-
     // TODO
     /*
     const {

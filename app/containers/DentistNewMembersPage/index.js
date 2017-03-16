@@ -21,15 +21,20 @@ import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
+import PatientsList from 'components/PatientsList';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
+import { fetchPatients } from 'containers/DentistMembersPage/actions';
+import { selectPatients } from 'containers/DentistMembersPage/selectors';
+
+// TODO: Refactor common dentist-dashboard actions / selectors out into an
+//       independent file?  Or possibly import them from the DentistMembersPage
+//       into the local './actions' and './selectors' files?
 
 // local
 import {
-  // TODO
-} from './actions';
-import {
-  // TODO
+  selectDataLoaded,
+  selectPatientsWithNewMembers,
 } from './selectors';
 import styles from './styles.css';
 
@@ -39,15 +44,23 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    // app state
     user: selectCurrentUser(state),
-    // TODO
+    
+    // page state
+    dataLoaded: selectDataLoaded(state),
+    patients: selectPatients(state),
+    patientsWithNewMembers: selectPatientsWithNewMembers(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app actions
     changePageTitle: (title) => dispatch(changePageTitle(title)),
-    // TODO
+
+    // page actions
+    fetchPatients: () => dispatch(fetchPatients()),
   };
 }
 
@@ -57,20 +70,30 @@ New Members
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 class DentistNewMembersPage extends React.Component {
 
   static propTypes = {
-    // state
+    // state - app
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
     ]),
-    // TODO
 
-    // dispatch
+    // dispatch - app
     changePageTitle: React.PropTypes.func.isRequired,
-    // TODO
+
+    // state - page
+    dataLoaded: React.PropTypes.bool.isRequired,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
+    patientsWithNewMembers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the member lists
+
+    // dispatch - page
+    fetchPatients: React.PropTypes.func.isRequired,
+  }
+
+  componentWillMount() {
+    this.props.fetchPatients();
   }
 
   componentDidMount() {
@@ -81,13 +104,41 @@ class DentistNewMembersPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  // TODO
+  addMember = (patient) => {
+    // TODO
+  }
 
-  /*
-  Form Events
-  ------------------------------------------------------------
-  */
-  // TODO
+  cancelMember = (patient, member) => {
+    // TODO
+  }
+
+  renewMember = (patient, member) => {
+    // TODO
+  }
+
+  reEnrollMember = (patient, member) => {
+    // TODO
+  }
+
+  searchForMember = (name) => {
+    // TODO
+  }
+
+  sortMembers = (criteria) => {
+    // TODO
+  }
+
+  toggleCancelationFee = (patient) => {
+    // TODO
+  }
+
+  toggleReEnrollmentFee = (patient) => {
+    // TODO
+  }
+
+  updateMember = (patient, member) => {
+    // TODO
+  }
 
   /*
   Render
@@ -95,36 +146,85 @@ class DentistNewMembersPage extends React.Component {
   */
   render () {
     const {
+      dataLoaded,
+      patientsWithNewMembers,
+      patients,
       user,
     } = this.props;
 
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
     // precondition: the data must be loaded, otherwise wait for it
-    // TODO
-    if (false) {
+    if (dataLoaded === false) {
       return (
         <div>
           <DentistDashboardHeader user={user} />
           <DentistDashboardTabs active="new-members" />
 
-          <div styleName="content">
+          <div styleName="content content--filler">
             <LoadingSpinner showOnlyIcon={false} />
           </div>
         </div>
       );
     }
 
+    // precondition: there are no patients, thus there can be no new ones
+    if (patients.length === 0) {
+      return (
+        <div>
+          <DentistDashboardHeader user={user} />
+          <DentistDashboardTabs active="new-members" />
+
+          <div styleName="content content--filler">
+            <p>
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  You can now start signing up your patients to see them here!
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // precondition: there are no new members
+    if (patientsWithNewMembers.length === 0) {
+      return (
+        <div>
+          <DentistDashboardHeader user={user} />
+          <DentistDashboardTabs active="new-members" />
+
+          <div styleName="content content--filler">
+            <p>
+              You haven't signed up any new members in the last 30 days.  Seems like your existing patients are giving you quite a handful!
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
     return (
       <div>
         <DentistDashboardHeader user={user} />
         <DentistDashboardTabs active="new-members" />
 
         <div styleName="content">
-          {/* TODO: remove */}
-          Dentist New Members Page
-
           {/* TODO: sort by */}
-          {/* TODO: list members */}
 
+          <PatientsList
+            patients={patientsWithNewMembers}
+
+            onAddMember={this.addMember}
+            onCancelMember={this.cancelMember}
+            onReEnrollMember={this.reEnrollMember}
+            onRenewMember={this.renewMember}
+            onToggleCancelationFee={this.toggleCancelationFee}
+            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
+            onUpdateMember={this.updateMember}
+          />
         </div>
 
         {/* TODO: modals */}

@@ -216,16 +216,26 @@ export default function createRoutes (store) {
       name: 'dentistNewMembersPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+
           System.import('containers/DentistNewMembersPage/reducer'),
-          System.import('containers/DentistNewMembersPage/sagas'),
           System.import('containers/DentistNewMembersPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([
+          dentistMembersReducer,
+          dentistMembersSagas,
+          
+          reducer,
+          component
+        ]) => {
+          injectReducer('dentistMembersPage', dentistMembersReducer.default);
+          injectSagas(dentistMembersSagas.default);
+
           injectReducer('dentistNewMembersPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 

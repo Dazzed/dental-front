@@ -21,9 +21,6 @@ Page Wide
   background-color: $color-secondary-background;
 }
 
-
-/*
-New Members
-================================================================================
-*/
-/* TODO */
+.content--filler {
+  min-height: 500px;
+}

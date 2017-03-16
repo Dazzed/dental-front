@@ -8,7 +8,12 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import { createSelector } from 'reselect';
+
+// app
+import { selectCurrentUser } from 'containers/App/selectors';
+import { selectPatients } from 'containers/DentistMembersPage/selectors';
 
 /*
 Selectors
@@ -16,22 +21,37 @@ Selectors
 */
 const domainSelector = state => state.dentistNewMembersPage;
 
-// TODO
-
-// EXAMPLE
 /*
-const dentistSelector = createSelector(
-  domainSelector,
-  (substate) => { return substate.dentist; }
-);
+New Members
+------------------------------------------------------------
 */
+const selectPatientsWithNewMembers = createSelector(
+  domainSelector,
+  (substate) => substate.patientsWithNewMembers
+);
+
+/*
+Data Loaded
+------------------------------------------------------------
+*/
+const selectDataLoaded = createSelector(
+  selectCurrentUser,
+  selectPatients,
+  selectPatientsWithNewMembers,
+  (user, patients, patientsWithNewMembers) => {
+    return user !== false && patients !== null && patientsWithNewMembers !== null;
+  }
+);
+ 
  
 /*
 Export
 ------------------------------------------------------------
 */
- export default domainSelector;
+export default domainSelector;
 
 export {
-  // TODO
+  selectDataLoaded,
+  selectPatientMembers,
+  selectPatientsWithNewMembers,
 };
