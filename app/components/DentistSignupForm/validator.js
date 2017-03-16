@@ -53,7 +53,7 @@ const schema = {
   ------------------------------------------------------------
   */
   "officeInfo.officeName": { presence: true },
-  "officeInfo.url": { presence: true, url: true },
+  "officeInfo.url": { presence: { message: '^URL can\'t be blank' }, url: true },
   "officeInfo.email": { presence: true, email: true },
   "officeInfo.phone": {
     presence: true,
@@ -70,7 +70,7 @@ const schema = {
     presence: true,
     inclusion: {
       within: Object.keys(US_STATES),
-      message: '^State can\'t be blank',
+      message: '^Please select a State',
     }
   },
   "officeInfo.zipCode": {
