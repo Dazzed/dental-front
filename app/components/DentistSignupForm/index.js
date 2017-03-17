@@ -21,6 +21,7 @@ import { Field, formValueSelector, reduxForm } from 'redux-form';
 // app
 import { US_STATES } from 'common/constants';
 import Checkbox from 'components/Checkbox';
+import Input from 'components/Input';
 import InputGroup from 'components/InputGroup';
 import InputTime from 'components/InputTime';
 import LabeledInput from 'components/LabeledInput';
@@ -188,6 +189,42 @@ class DentistSignupForm extends React.Component {
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
+
+        {/*
+        User Info
+        ------------------------------------------------------------
+        */}
+        <FormGroup>
+          <div className="col-sm-12">
+            <ControlLabel>Your Name:</ControlLabel>
+          </div>
+
+          <Field
+            name="firstName"
+            type="text"
+            component={Input}
+            label="First Name"
+            width={4}
+          />
+
+          <Field
+            name="middleName"
+            type="text"
+            component={Input}
+            label="Middle Name (optional)"
+            width={4}
+          />
+
+          <Field
+            name="lastName"
+            type="text"
+            component={Input}
+            label="Last Name"
+            width={4}
+          />
+        </FormGroup>
+
+        <hr styleName="spacer--after-form-group" />
 
         {/*
         Office Info

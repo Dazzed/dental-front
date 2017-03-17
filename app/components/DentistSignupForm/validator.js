@@ -22,6 +22,14 @@ Schema
 const schema = {
 
   /*
+  User Info
+  ------------------------------------------------------------
+  */
+  firstName: { presence: true },
+  // middleName is optional
+  lastName: { presence: true },
+
+  /*
   Office Info
   ------------------------------------------------------------
   */
