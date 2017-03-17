@@ -107,6 +107,30 @@ export function validatorFactory (schema) {
     /* eslint-enable no-return-assign */
     // In case of no errors, we need to return empty object at least,
     // Otherwise, redux-form complains
+
+    // Handle redux-forms that use <FormSection> to create nested forms.
+    forEach(errors, (msg, key) => {
+      const keyParts = key.split(".");
+      if (keyParts.length > 1) {
+
+        let parent = errors;
+        forEach(keyParts, (keyPart, i) => {
+          if (parent.hasOwnProperty(keyPart) === false) {
+            parent[keyPart] = {};
+          }
+
+          if (i === keyParts.length - 1) {
+            parent[keyPart] = msg;
+          }
+
+          parent = parent[keyPart];
+        });
+
+        delete errors[key]; // delete the combined key
+
+      }
+    });
+
     return errors || {};
   };
 }

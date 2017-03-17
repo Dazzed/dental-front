@@ -141,6 +141,8 @@ export default class SignupPage extends Component {
   ------------------------------------------------------------
   */
   onSignupRequest = (data) => {
+    // TODO: Do this data normalization within the DentistSignupForm itself.
+
     // The User needs a zipCode.
     data.user.zipCode = data.officeInfo.zipCode;
 
