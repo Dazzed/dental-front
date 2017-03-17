@@ -81,7 +81,6 @@ const schema = {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
-      noStrings: true,
       strict: true,
     },
   },
@@ -89,7 +88,6 @@ const schema = {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
-      noStrings: true,
       strict: true,
     },
   },
@@ -97,7 +95,6 @@ const schema = {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
-      noStrings: true,
       strict: true,
     },
   },
@@ -106,7 +103,6 @@ const schema = {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
-      noStrings: true,
       strict: true,
     },
   },
