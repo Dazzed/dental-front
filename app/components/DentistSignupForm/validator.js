@@ -109,14 +109,12 @@ const schema = {
     },
   },
   "pricing.adultYearlyFee": {
-    presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,
     },
   },
   "pricing.childYearlyFee": {
-    presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,

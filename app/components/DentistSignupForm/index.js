@@ -60,15 +60,28 @@ const valueSelector = formValueSelector('dentist-signup');
 const mapStateToProps = (state) => {
   const {
     marketplace,
+    pricing,
     workingHours,
-  } = valueSelector(state, 'marketplace', 'workingHours');
+  } = valueSelector(state, 'marketplace', 'pricing', 'workingHours');
 
   // precondition: Redux-form hasn't initialized yet.  Note that the
   // `intitialValues` prop is also unavailable, so just provide a sane guess
   // while the page loads.
-  if (marketplace === undefined && workingHours === undefined) {
+  if ( marketplace === undefined
+    && pricing === undefined
+    && workingHours === undefined
+  ) {
     return {
+      // marketplace
       optedIntoMarketplace: true,
+
+      // pricing
+      yearlyFeeActivated: {
+        adult: false,
+        child: false,
+      },
+
+      // working hours
       officeClosed: {
         monday: true,
         tuesday: true,
@@ -82,7 +95,16 @@ const mapStateToProps = (state) => {
   }
 
   return {
+    // marketplace
     optedIntoMarketplace: marketplace.optIn === true,
+
+    // pricing
+    yearlyFeeActivated: {
+      adult: pricing.adultYearlyFeeActivated,
+      child: pricing.childYearlyFeeActivated,
+    },
+
+    // working hours
     officeClosed: {
       monday:    workingHours.monday === undefined    || workingHours.monday.open === false,
       tuesday:   workingHours.tuesday === undefined   || workingHours.tuesday.open === false,
@@ -128,8 +150,9 @@ class DentistSignupForm extends React.Component {
     })).isRequired,
 
     // mapped - state
-    officeClosed: React.PropTypes.object,
-    optedIntoMarketplace: React.PropTypes.bool,
+    officeClosed: React.PropTypes.object.isRequired,
+    optedIntoMarketplace: React.PropTypes.bool.isRequired,
+    yearlyFeeActivated: React.PropTypes.object.isRequired,
 
     // redux form
     error: React.PropTypes.object,
@@ -170,6 +193,7 @@ class DentistSignupForm extends React.Component {
       // mapped - state
       officeClosed,
       optedIntoMarketplace,
+      yearlyFeeActivated,
 
       // redux form
       error,
@@ -575,6 +599,7 @@ class DentistSignupForm extends React.Component {
                   component={InputGroup}
                   leftAddon="$"
                   width={6}
+                  disabled={!yearlyFeeActivated.adult}
                 />
               </Row>
             </div>
@@ -601,6 +626,7 @@ class DentistSignupForm extends React.Component {
                   component={InputGroup}
                   leftAddon="$"
                   width={6}
+                  disabled={!yearlyFeeActivated.child}
                 />
               </Row>
             </div>

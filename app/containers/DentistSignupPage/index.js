@@ -204,6 +204,11 @@ export default class SignupPage extends Component {
         optIn: true,
       },
 
+      pricing: {
+        adultYearlyFeeActivated: false,
+        childYearlyFeeActivated: false,
+      },
+
       workingHours: {
         monday: {
           isOpen: true,
