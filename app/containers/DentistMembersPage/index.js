@@ -66,7 +66,7 @@ Members
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 class DentistMembersPage extends React.Component {
 
   static propTypes = {

@@ -72,7 +72,7 @@ function mapDispatchToProps (dispatch) {
     // signup
     changeRoute: (url) => dispatch(push(url)),
     clearSignupStatus: () => dispatch(clearSignupStatus()),
-    onSignupRequest: (data) => dispatch(signupRequest(omit(data, 'unknown'))),
+    makeSignupRequest: (data) => dispatch(signupRequest(omit(data, 'unknown'))),
   };
 }
 
@@ -114,7 +114,7 @@ export default class SignupPage extends Component {
     // signup - dispatch
     changeRoute: React.PropTypes.func.isRequired,
     clearSignupStatus: React.PropTypes.func.isRequired,
-    onSignupRequest: React.PropTypes.func.isRequired,
+    makeSignupRequest: React.PropTypes.func.isRequired,
   };
 
   componentWillMount () {
@@ -123,6 +123,10 @@ export default class SignupPage extends Component {
     this.props.getServices();
   }
 
+  /*
+  Actions
+  ------------------------------------------------------------
+  */
   goToHomePage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/');
@@ -132,9 +136,54 @@ export default class SignupPage extends Component {
     this.props.changeRoute('/accounts/login');
   }
 
+  /*
+  Events
+  ------------------------------------------------------------
+  */
   onSignupRequest = (data) => {
-    this.props.onSignupRequest(data);
+    // The User needs a zipCode.
+    data.user.zipCode = data.officeInfo.zipCode;
+
+    // Normalize pricing values.
+    data.pricing = {
+      ...data.pricing, // just incase another field is accidentally added to the form but not added here
+
+      codes: data.pricing.codes.map((priceCodeAmount) => {
+        return parseFloat(priceCodeAmount).toFixed(2);
+      }),
+
+      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee).toFixed(2),
+      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee).toFixed(2),
+      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2),
+      childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2),
+
+      adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated || false,
+      childYearlyFeeActivated: data.pricing.childYearlyFeeActivated || false,
+
+      treatmentDiscount: data.pricing.treatmentDiscount,
+    };
+
+    // The server needs an array of Service ids. Redux-Form will only included
+    // checked Services, so no filtering is necessary.
+    data.services = Object.keys(data.services);
+
+    // The server needs an array of WorkingHours objects, not an object of them
+    // indexed by day name.
+    data.workingHours = Object.keys(data.workingHours).map((dayName) => {
+      const dayHours = data.workingHours[dayName];
+      dayHours.day = dayName;
+
+      if (dayHours.isOpen === false) {
+        delete dayHours.startAt;
+        delete dayHours.endAt;
+      }
+
+      return dayHours;
+    });
+
+    this.props.makeSignupRequest(data);
   }
+   
 
   render () {
     const {
@@ -149,15 +198,47 @@ export default class SignupPage extends Component {
     } = this.props;
 
     const initialDentistSignupFormValues = {
-      "hours-monday-open": true,
-      "hours-tuesday-open": true,
-      "hours-wednesday-open": true,
-      "hours-thursday-open": true,
-      "hours-friday-open": true,
-      "hours-saturday-open": false,
-      "hours-sunday-open": false,
+      marketplace: {
+        optIn: true,
+      },
 
-      marketplaceOptIn: true,
+      workingHours: {
+        monday: {
+          isOpen: true,
+          startAt: "09:00:00",
+          endAt:   "17:00:00",
+        },
+        tuesday: {
+          isOpen: true,
+          startAt: "09:00:00",
+          endAt:   "17:00:00",
+        },
+        wednesday: {
+          isOpen: true,
+          startAt: "09:00:00",
+          endAt:   "17:00:00",
+        },
+        thursday: {
+          isOpen: true,
+          startAt: "09:00:00",
+          endAt:   "17:00:00",
+        },
+        friday: {
+          isOpen: true,
+          startAt: "09:00:00",
+          endAt:   "17:00:00",
+        },
+        saturday: {
+          isOpen: false,
+          startAt: "10:00:00",
+          endAt:   "14:00:00",
+        },
+        sunday: {
+          isOpen: false,
+          startAt: "10:00:00",
+          endAt:   "14:00:00",
+        },
+      }
     };
 
     const borderContent = (

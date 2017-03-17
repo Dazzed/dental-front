@@ -20,52 +20,60 @@ Schema
 ================================================================================
 */
 const schema = {
-
   /*
   User Info
   ------------------------------------------------------------
   */
-  firstName: { presence: true },
-  // middleName is optional
-  lastName: { presence: true },
+  "user.firstName": { presence: true },
+  // "user.middleName" is optional
+  "user.lastName": { presence: true },
 
-  /*
-  Office Info
-  ------------------------------------------------------------
-  */
-  officeName: { presence: true },
-  specialtyId: { presence: { message: '^Please select a Specialty' } },
-  phone: {
+  "user.phone": {
     presence: true,
     format: {
       pattern: /\(\d{3}\) \d{3}-\d{4}?/,
       message: '^Please enter a 10-digit US phone number.'
     }
   },
-  url: { presence: true, url: true },
-  message: { presence: true },
+  "user.specialtyId": { presence: { message: '^Please select a Specialty' } },
 
-  email: { presence: true, email: true },
-  confirmEmail: { presence: true, email: true, equality: 'email' },
-  password: {
+  "user.email": { presence: true, email: true },
+  "user.confirmEmail": { presence: true, email: true, equality: 'email' },
+  "user.password": {
     presence: true,
     format: {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\$\/\*!]{8,}$/,
       message: `^Password must be at least 8 characters and include one (1) special character and one (1) capital letter.`,
     }
   },
-  confirmPassword: { presence: true, equality: 'password' },
+  "user.confirmPassword": { presence: true, equality: 'password' },
 
-  address: { presence: true },
-  city: { presence: true },
-  state: {
+  /*
+  Office Info
+  ------------------------------------------------------------
+  */
+  "officeInfo.officeName": { presence: true },
+  "officeInfo.url": { presence: true, url: true },
+  "officeInfo.email": { presence: true, email: true },
+  "officeInfo.phone": {
+    presence: true,
+    format: {
+      pattern: /\(\d{3}\) \d{3}-\d{4}?/,
+      message: '^Please enter a 10-digit US phone number.'
+    }
+  },
+  "officeInfo.message": { presence: true },
+
+  "officeInfo.address": { presence: true },
+  "officeInfo.city": { presence: true },
+  "officeInfo.state": {
     presence: true,
     inclusion: {
       within: Object.keys(US_STATES),
       message: '^State can\'t be blank',
     }
   },
-  zipCode: {
+  "officeInfo.zipCode": {
     presence: true,
     format: {
       pattern: /\d{5}?/,
@@ -85,42 +93,54 @@ const schema = {
   ------------------------------------------------------------
   */
   // Each priceCode's price is validated at the field level.
-  adultMonthlyFee: {
+
+  "pricing.adultMonthlyFee": {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,
     },
   },
-  childMonthlyFee: {
+  "pricing.childMonthlyFee": {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,
     },
   },
-  adultYearlyFee: {
+  "pricing.adultYearlyFee": {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,
     },
   },
-  // adultYearlyFeeActivated is optional
-  childYearlyFee: {
+  "pricing.childYearlyFee": {
     presence: true,
     numericality: {
       greaterThanOrEqualTo: 0,
       strict: true,
     },
   },
-  // childYearlyFeeActivated is optional
+
+  // "pricing.adultYearlyFeeActivated" is optional
+  // "pricing.childYearlyFeeActivated" is optional
+
+  "pricing.treatmentDiscount": {
+    presence: true,
+    numericality: {
+      onlyInteger: true,
+      greaterThanOrEqualTo: 0,
+      lessThanOrEqualTo: 100,
+      strict: true,
+    }
+  },
 
   /*
   Marketplace Opt In
   ------------------------------------------------------------
   */
-  // marketplaceOptIn is optional
+  // "marketplace.optIn" is optional
 
   /*
   Services
@@ -129,14 +149,12 @@ const schema = {
   // services are optional
 
   /*
-  Hours
+  Working Hours
   ------------------------------------------------------------
   */
-  // hours-[dayName]-open are optional
-
-  // Can't validate the hours-[dayName]-start and hours-[dayName]-end since this
-  // can't be used to compare fields.
-
+  // "workingHours.[dayName].open" are all optional
+  // "workingHours.[dayName].start" depends on if it's open or not
+  // "workingHours.[dayName].end" depends on if it's open or not
 };
 
 export default validatorFactory(schema);

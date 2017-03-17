@@ -1,7 +1,12 @@
 /*
 Input Time Component
 ================================================================================
-NOTE: For use with the `redux-forms` library.
+For use with the `redux-forms` library.
+
+NOTE: The input / output values are on 24hr time string w/ hours, minutes, and
+      seconds: `HH:MM:SS`.  The seconds portion is always ":00" on time values
+      coming in or going out of the component, and is always truncated away
+      on time values within the component.
 */
 
 /*
@@ -37,7 +42,6 @@ class InputTime extends React.Component {
     meta: React.PropTypes.object.isRequired,
     width: React.PropTypes.number,
     disabled: React.PropTypes.bool,
-    defaultValue: React.PropTypes.any,
     placeholder: React.PropTypes.string,
     defaultToAM: React.PropTypes.bool,
     defaultToPM: React.PropTypes.bool,
@@ -53,7 +57,7 @@ class InputTime extends React.Component {
     };
 
     if (this.props.input.value) {
-      const dateTime = moment(this.props.input.value);
+      const dateTime = moment(this.props.input.value, "HH:mm:ss");
       const amORpm = dateTime.format("A");
 
       timeComponents = {
@@ -76,34 +80,20 @@ class InputTime extends React.Component {
     if ( timeComponents.time !== null
       && (timeComponents.am === true || timeComponents.pm === true)
     ) {
-      const timeParts = timeComponents.time.split(":");
-      let hours = parseInt(timeParts[0]);
-      const minutes = parseInt(timeParts[1]);
+      let timeString = timeComponents.time + " ";
+      timeString +=   timeComponents.am
+                    ? "AM"
+                    : "PM";
+      const dateTime = moment(timeString, "hh:mm A");
 
-      // convert from 12 to 24 hour time
-      if (timeComponents.am === true && hours === 12) {
-        hours = 0;
-      }
-      if (timeComponents.pm === true && hours !== 12) {
-        hours = hours + 12;
-      }
 
-      const dateTime = moment().set({
-        hours: hours,
-        minutes: minutes,
-        seconds: 0,
-        milliseconds: 0,
-      });
-
-      this.props.input.onChange(dateTime.toISOString());
+      this.props.input.onChange(dateTime.format("HH:mm:ss"));
     }
   }
 
   onTimeChange = (evt) => {
     let { timeComponents } = this.state;
     timeComponents.time = evt.target.value;
-
-    console.log(evt.target.value);
 
     this.onAnyChange(timeComponents);
   }
@@ -169,7 +159,7 @@ class InputTime extends React.Component {
                 onChange={this.onTimeChange}
                 type="text"
                 placeholder={placeholderText}
-                value={timeComponents.time || ""}
+                value={timeComponents.time || ''}
                 disabled={disabled}
               />
             </div>
