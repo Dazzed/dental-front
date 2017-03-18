@@ -19,7 +19,7 @@ import NavBar from 'components/NavBar';
 import Footer from 'components/Footer';
 import PageHeader from 'components/PageHeader';
 
-import { selectUserType, selectPageTitle } from 'containers/App/selectors';
+import { selectCurrentUser, selectPageTitle } from 'containers/App/selectors';
 import browserDetector from 'utils/browserDetector';
 
 import * as actions from './actions';
@@ -42,7 +42,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps (state) {
   return {
-    userType: selectUserType(state),
+    user: selectCurrentUser(state),
     pageTitle: selectPageTitle(state),
   };
 }
@@ -55,7 +55,10 @@ export default class App extends Component {
   static propTypes = {
     children: React.PropTypes.node,
     loadUserFromToken: React.PropTypes.func,
-    userType: React.PropTypes.string,
+    user: React.PropTypes.oneOfType([
+      React.PropTypes.bool, // will be `false` until loaded
+      React.PropTypes.object,
+    ]),
     pageTitle: React.PropTypes.string,
     location: React.PropTypes.object,
   };
@@ -71,7 +74,7 @@ export default class App extends Component {
   }
 
   render () {
-    const { userType, pageTitle, location: { pathname } } = this.props;
+    const { user, pageTitle, location: { pathname } } = this.props;
 
     // NOTE: Hardcoded here to avoid the common layout
     if (pathname === '/') {
@@ -81,11 +84,11 @@ export default class App extends Component {
     let content = null;
     const childComponents = React.Children.toArray(this.props.children);
     const title = pageTitle
-                ? <PageHeader title={pageTitle} userType={userType} />
+                ? <PageHeader pathname={pathname} title={pageTitle} user={user} />
                 : null;
 
     // the visitor is a logged in user AND is not on a static page
-    const onUserPage = userType && staticPages.indexOf(pathname) < 0;
+    const onUserPage = user && user.type && staticPages.indexOf(pathname) < 0;
     if (onUserPage) {
       content = (
         <div styleName="container-wrapper">
