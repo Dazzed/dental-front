@@ -142,9 +142,21 @@ export default class SignupPage extends Component {
   */
   onSignupRequest = (data) => {
     // TODO: Do this data normalization within the DentistSignupForm itself.
+    // TODO: Will need to move the fields about children from officeInfo to
+    //       services when the data is loaded.
 
     // The User needs a zipCode.
     data.user.zipCode = data.officeInfo.zipCode;
+
+    // Move the fields about children from services to officeInfo.
+    data.officeInfo.acceptsChildren = data.services.acceptsChildren;
+    delete data.services.acceptsChildren;
+    data.officeInfo.childStartingAge = data.services.childStartingAge;
+    delete data.services.childStartingAge;
+
+    if (data.officeInfo.acceptsChildren === false) {
+      delete data.officeInfo.childStartingAge;
+    }
 
     // Normalize pricing values.
     data.pricing = {

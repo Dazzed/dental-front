@@ -145,6 +145,15 @@ const schema = {
   ------------------------------------------------------------
   */
   // services are optional
+  // acceptsChildren is optional
+
+  "services.childStartingAge": {
+    numericality: {
+      onlyInteger: true,
+      greaterThanOrEqualTo: 0,
+      strict: true,
+    }
+  },
 
   /*
   Working Hours

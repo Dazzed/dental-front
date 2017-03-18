@@ -100,8 +100,8 @@ const mapStateToProps = (state) => {
 
     // pricing
     yearlyFeeActivated: {
-      adult: pricing.adultYearlyFeeActivated,
-      child: pricing.childYearlyFeeActivated,
+      adult: pricing.adultYearlyFeeActivated === true,
+      child: pricing.childYearlyFeeActivated === true,
     },
 
     // working hours
@@ -692,30 +692,59 @@ class DentistSignupForm extends React.Component {
         ------------------------------------------------------------
         */}
         <FormSection name="services">
-          <div>
-            <ControlLabel>Services Offered:</ControlLabel>
+          <ControlLabel>Services Offered:</ControlLabel>
 
-            <p styleName="field-instructions">
-              *Specialties are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
-            </p>                
+          <p styleName="field-instructions">
+            *Specialties are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
+          </p>
 
-            {optedIntoMarketplace && (
+          {optedIntoMarketplace && (
+            <Row>
+              {services.map((service) => {
+                return (
+                  <div className="col-sm-4" key={service.id}>
+                    <Field
+                      name={service.id.toString()}
+                      component={Checkbox}
+                    >
+                      <span>{service.name}</span>
+                    </Field>
+                  </div>
+                );
+              })}
+            </Row>
+          )}
+
+          <FormGroup>
+            <div className="col-sm-12">
+              <ControlLabel>
+                Children:
+              </ControlLabel>
+
               <Row>
-                {services.map((service) => {
-                  return (
-                    <div className="col-sm-4" key={service.id}>
-                      <Field
-                        name={service.id.toString()}
-                        component={Checkbox}
-                      >
-                        <span>{service.name}</span>
-                      </Field>
-                    </div>
-                  );
-                })}
+                <div className="col-sm-4">
+                  <Field
+                    name="acceptsChildren"
+                    component={Checkbox}
+                  >
+                    Accepts Children
+                  </Field>
+                </div>
+                <div className="col-sm-4">
+                  <Row>
+                    <Field
+                      name="childStartingAge"
+                      type="number"
+                      component={Input}
+                      label="Starting Age"
+                      width={12}
+                    />
+                  </Row>
+                </div>
               </Row>
-            )}
-          </div>
+
+            </div>
+          </FormGroup>
 
           <hr styleName="spacer" />
         </FormSection>
@@ -725,233 +754,229 @@ class DentistSignupForm extends React.Component {
         ------------------------------------------------------------
         */}
         <FormSection name="workingHours">
-          <div>
-            <ControlLabel>Office Operating Hours:</ControlLabel>
+          <ControlLabel>Office Operating Hours:</ControlLabel>
 
-            <p styleName="field-instructions">
-              *Office Hours are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
-            </p>
+          <p styleName="field-instructions">
+            *Office Hours are only used in the Public Marketplace to help match new patients to the best dentist for their needs.   You can opt in or out of the Public Marketplace above.
+          </p>
 
-            {optedIntoMarketplace && (
-              <div>
+          {optedIntoMarketplace && (
+            <div>
 
+              <Row>
+                <div className="col-sm-offset-4 col-sm-4">
+                  <ControlLabel>Open:</ControlLabel>
+                </div>
+                <div className="col-sm-4">
+                  <ControlLabel>Close:</ControlLabel>
+                </div>
+              </Row>
+
+              <FormSection name="monday">
                 <Row>
-                  <div className="col-sm-offset-4 col-sm-4">
-                    <ControlLabel>Open:</ControlLabel>
-                  </div>
                   <div className="col-sm-4">
-                    <ControlLabel>Close:</ControlLabel>
+                    <Field
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Monday</span>
+                    </Field>
                   </div>
+
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.monday}
+                  />
+
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.monday}
+                  />
                 </Row>
+              </FormSection>
 
-                <FormSection name="monday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Monday</span>
-                      </Field>
-                    </div>
-
+              <FormSection name="tuesday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.monday}
-                    />
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Tuesday</span>
+                    </Field>
+                  </div>
 
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.tuesday}
+                  />
+
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.tuesday}
+                  />
+                </Row>
+              </FormSection>
+
+              <FormSection name="wednesday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.monday}
-                    />
-                  </Row>
-                </FormSection>
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Wednesday</span>
+                    </Field>
+                  </div>
 
-                <FormSection name="tuesday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Tuesday</span>
-                      </Field>
-                    </div>
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.wednesday}
+                  />
 
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.wednesday}
+                  />
+                </Row>
+              </FormSection>
+
+              <FormSection name="thursday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.tuesday}
-                    />
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Thursday</span>
+                    </Field>
+                  </div>
 
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.thursday}
+                  />
+
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.thursday}
+                  />
+                </Row>
+              </FormSection>
+
+              <FormSection name="friday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.tuesday}
-                    />
-                  </Row>
-                </FormSection>
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Friday</span>
+                    </Field>
+                  </div>
 
-                <FormSection name="wednesday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Wednesday</span>
-                      </Field>
-                    </div>
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.friday}
+                  />
 
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.friday}
+                  />
+                </Row>
+              </FormSection>
+
+              <FormSection name="saturday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.wednesday}
-                    />
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Saturday</span>
+                    </Field>
+                  </div>
 
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.saturday}
+                  />
+
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.saturday}
+                  />
+                </Row>
+              </FormSection>
+
+              <FormSection name="sunday">
+                <Row>
+                  <div className="col-sm-4">
                     <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.wednesday}
-                    />
-                  </Row>
-                </FormSection>
+                      name="isOpen"
+                      component={Checkbox}
+                    >
+                      <span>Sunday</span>
+                    </Field>
+                  </div>
 
-                <FormSection name="thursday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Thursday</span>
-                      </Field>
-                    </div>
+                  <Field
+                    name="startAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToAM={true}
+                    disabled={officeClosed.sunday}
+                  />
 
-                    <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.thursday}
-                    />
+                  <Field
+                    name="endAt"
+                    component={InputTime}
+                    className="col-sm-4"
+                    defaultToPM={true}
+                    disabled={officeClosed.sunday}
+                  />
+                </Row>
+              </FormSection>
 
-                    <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.thursday}
-                    />
-                  </Row>
-                </FormSection>
-
-                <FormSection name="friday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Friday</span>
-                      </Field>
-                    </div>
-
-                    <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.friday}
-                    />
-
-                    <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.friday}
-                    />
-                  </Row>
-                </FormSection>
-
-                <FormSection name="saturday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Saturday</span>
-                      </Field>
-                    </div>
-
-                    <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.saturday}
-                    />
-
-                    <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.saturday}
-                    />
-                  </Row>
-                </FormSection>
-
-                <FormSection name="sunday">
-                  <Row>
-                    <div className="col-sm-4">
-                      <Field
-                        name="isOpen"
-                        component={Checkbox}
-                      >
-                        <span>Sunday</span>
-                      </Field>
-                    </div>
-
-                    <Field
-                      name="startAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToAM={true}
-                      disabled={officeClosed.sunday}
-                    />
-
-                    <Field
-                      name="endAt"
-                      component={InputTime}
-                      className="col-sm-4"
-                      defaultToPM={true}
-                      disabled={officeClosed.sunday}
-                    />
-                  </Row>
-                </FormSection>
-
-              </div>
-            )}
-
-          {/* End Hours */}
-          </div>
+            </div>
+          )}
 
           <hr styleName="spacer" />
         </FormSection>
