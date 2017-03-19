@@ -56,18 +56,6 @@ const selectAuthLoadingState = createSelector(
   (substate) => substate.loggedIn && !substate.currentUser,
 );
 
-// Test if signup process is all complete by checking some required fields
-const selectSignupCompleteState = createSelector(
-  selectGlobal,
-  (substate) => (
-    get(substate, 'currentUser.type') === 'dentist' ||
-    (
-      !!get(substate, 'currentUser.birthDate') &&
-      !!get(substate, 'currentUser.phone')
-    )
-  )
-);
-
 const selectServices = createSelector(
   selectGlobal,
   (substate) => get(substate, 'services')
@@ -87,7 +75,6 @@ export {
   selectUserNameParts,
   selectAuthState,
   selectAuthLoadingState,
-  selectSignupCompleteState,
   selectCurrentUser,
   selectPageTitle,
   selectServices,

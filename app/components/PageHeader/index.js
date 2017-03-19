@@ -38,35 +38,65 @@ function PageHeader ({ borderContent, children, pathname, title, user }) {
   }
 
   if (user && user.type) {
-    borderContent = (
-      <div styleName="border-content--user">
-        <div className="pull-left">
-          Welcome
-          {' '}
-          <span styleName="user-name">
-            {user.firstName} {user.lastName}
-          </span>
-        </div>
+    if (user.type === "dentist") {
+      borderContent = (
+        <div styleName="border-content--user">
+          <div className="pull-left">
+            Welcome
+            {' '}
+            <span styleName="user-name">
+              {user.firstName} {user.lastName}
+            </span>
+          </div>
 
-        <div className="pull-right">
-          <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
-            <Link to="/dentist/new-members">Dashboard</Link>
-          </span>
-          |
-          <span styleName="header-link">
-            <Link to="/faq">Help &amp; FAQ</Link>
-          </span>
-          |
-          <span styleName="header-link">
-            <Link to="/contact-admin">Contact Admin</Link>
-          </span>
-          |
-          <span styleName="header-link">
-            <Link to="/accounts/logout">Logout</Link>
-          </span>
+          <div className="pull-right">
+            <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
+              <Link to="/dentist/new-members">Dashboard</Link>
+            </span>
+            |
+            <span styleName="header-link">
+              <Link to="/faq">Help &amp; FAQ</Link>
+            </span>
+            |
+            <span styleName={"header-link" + (pathname === "/dentist/contact-support" > -1 ? " header-link--current" : "")}>
+              <Link to="/dentist/contact-support">Contact Admin</Link>
+            </span>
+            |
+            <span styleName="header-link">
+              <Link to="/accounts/logout">Logout</Link>
+            </span>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    else {
+      borderContent = (
+        <div styleName="border-content--user">
+          <div className="pull-left">
+            Welcome
+            {' '}
+            <span styleName="user-name">
+              {user.firstName} {user.lastName}
+            </span>
+          </div>
+
+          <div className="pull-right">
+            <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
+              <Link to="/dentist/new-members">Dashboard</Link>
+            </span>
+            |
+            <span styleName="header-link">
+              <Link to="/faq">Help &amp; FAQ</Link>
+            </span>
+            |
+            <span styleName="header-link">
+              <Link to="/accounts/logout">Logout</Link>
+            </span>
+          </div>
+        </div>
+      );
+    }
   }
 
   return (

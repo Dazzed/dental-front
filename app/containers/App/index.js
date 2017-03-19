@@ -27,7 +27,6 @@ import styles from './styles.css';
 
 const staticPages = [
   '/',
-  '/accounts/complete-signup',
   '/error/404-not-found',
   '/faq',
   '/legal',

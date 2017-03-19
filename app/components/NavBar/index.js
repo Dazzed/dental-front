@@ -57,7 +57,6 @@ export default class NavBar extends React.Component {
   };
 
   returnLinks = {
-    '/accounts/complete-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/dentist-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/login': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
     '/accounts/logout': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),

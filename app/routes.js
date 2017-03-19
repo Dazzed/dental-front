@@ -76,24 +76,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      // TODO: DELETE this page
-      onEnter: redirectToLogin,
-      path: '/accounts/complete-signup',
-      name: 'signupFinalPage',
-      getComponent (nextState, cb) {
-        Promise.all([
-          System.import('containers/SignupFinalPage/reducer'),
-          System.import('containers/SignupFinalPage/sagas'),
-          System.import('containers/SignupFinalPage')
-        ])
-          .then(([ reducer, sagas, component ]) => {
-            injectReducer('signupFinal', reducer.default);
-            injectSagas(sagas.default);
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
-      },
-    }, {
       onEnter: redirectToDashboard,
       path: '/accounts/dentist-signup',
       name: 'dentistSignupPage',
@@ -192,6 +174,28 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
+      path: '/dentist/contact-support',
+      name: 'contactSupportPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/ContactSupportPage/reducer'),
+          System.import('containers/ContactSupportPage/sagas'),
+          System.import('containers/ContactSupportPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('contactSupportPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/dentist/members',
       name: 'dentistMembersPage',
       getComponent (nextState, cb) {
@@ -212,6 +216,7 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
       path: '/dentist/new-members',
       name: 'dentistNewMembersPage',
       getComponent (nextState, cb) {
@@ -242,6 +247,7 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
       path: '/dentist/new-reviews',
       name: 'dentistNewReviewsPage',
       getComponent (nextState, cb) {
@@ -266,26 +272,6 @@ export default function createRoutes (store) {
           injectSagas(dentistMembersSagas.default);
 
           injectReducer('dentistNewReviewsPage', reducer.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
-      path: '/dentist/contact-support',
-      name: 'contactSupportPage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/ContactSupportPage/reducer'),
-          System.import('containers/ContactSupportPage/sagas'),
-          System.import('containers/ContactSupportPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('contactSupportPage', reducer.default);
-          injectSagas(sagas.default);
           renderRoute(component);
         });
 

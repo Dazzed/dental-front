@@ -10,7 +10,6 @@ import { getItem, removeItem } from 'utils/localStorage';
 
 import {
   selectCurrentUser,
-  selectSignupCompleteState,
   selectUserType,
 } from 'containers/App/selectors';
 
@@ -29,10 +28,9 @@ function* refreshAuthFlow () {
 function* loadUserFromToken () {
   const requestURL = '/api/v1/users/me';
   const user = yield select(selectCurrentUser);
-  const isFullyLoaded = yield select(selectSignupCompleteState);
   const authToken = getItem('auth_token');
 
-  if ((user && isFullyLoaded) || !authToken) {
+  if (user || !authToken) {
     return;
   }
 
@@ -44,28 +42,21 @@ function* loadUserFromToken () {
       // This is mainly for the step after login page
       const nextPathName = yield select(selectNextPathname);
       const currentPath = yield select(selectCurrentPath);
-      const isSignupComplete = yield select(selectSignupCompleteState);
       const userType = yield select(selectUserType);
       const redirectPaths = [
         '/accounts/login',
         '/accounts/signup',
-        '/accounts/dentist-signup',
-        '/accounts/complete-signup'
+        '/accounts/dentist-signup'
       ];
 
       if (nextPathName) {
         yield put(replace(nextPathName));
-      } else if (!isSignupComplete) {
-        yield put(replace('/accounts/complete-signup'));
-      } else if (isSignupComplete && redirectPaths.indexOf(currentPath) > -1) {
+      } else if (redirectPaths.indexOf(currentPath) > -1) {
         if (userType === USER_TYPES.CLIENT) {
           yield put(replace('/your-profile'));
         }
         else if (userType === USER_TYPES.DENTIST) {
-          // TODO
-          // yield put(replace('/dentist-dashboard'));
-
-          yield put(replace('/dashboard'));
+          yield put (replace('/dentist/new-members'));
         }
       }
     }

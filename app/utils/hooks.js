@@ -4,7 +4,6 @@ import { selectCurrentPath } from 'common/selectors/router.selector';
 import {
   selectAuthState,
   selectAuthLoadingState,
-  selectSignupCompleteState,
   selectUserType,
 } from 'containers/App/selectors';
 import createReducer from '../reducers';
@@ -38,22 +37,6 @@ function redirectToLogin (store) {
       });
       return;
     }
-
-    // In the process of loading user details from auth token
-    // Let's wait (do nothing here in this hook)
-    const loadingFromToken = selectAuthLoadingState(store.getState());
-    if (loadingFromToken) {
-      return;
-    }
-
-    // Check the signup complete state, if not yet completed full signup
-    // Redirect to /accoutns/complete-signup
-    const currentPath = selectCurrentPath(store.getState());
-    const signupFinalPath = '/accounts/complete-signup';
-    const isSignupComplete = selectSignupCompleteState(store.getState());
-    if (!isSignupComplete && currentPath !== signupFinalPath) {
-      replace(signupFinalPath);
-    }
   };
 }
 
@@ -66,10 +49,7 @@ function redirectToDashboard (store) {
       replace('/your-profile');
     }
     else if (isLoggedIn && userType === USER_TYPES.DENTIST) {
-      // TODO
-      // replace('/dentist-dashboard');
-
-      replace('/dashboard');
+      replace('/dentist/new-members');
     }
   };
 }
