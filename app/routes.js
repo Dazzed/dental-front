@@ -179,16 +179,12 @@ export default function createRoutes (store) {
       name: 'contactSupportPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/ContactSupportPage/reducer'),
-          System.import('containers/ContactSupportPage/sagas'),
           System.import('containers/ContactSupportPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('contactSupportPage', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([ component ]) => {
           renderRoute(component);
         });
 

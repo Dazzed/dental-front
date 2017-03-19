@@ -1,0 +1,136 @@
+/*
+Contact Support Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  min-height: 400px;
+  padding: calc(2rem + 46px) 2rem 2rem 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.divided-row {
+  margin-top: 1rem;
+  border-top: 1px solid $color-secondary-lowlight;
+  padding-top: 1rem;
+}
+
+
+/*
+Contact Support
+================================================================================
+*/
+
+/*
+Tabs
+------------------------------------------------------------
+*/
+.tabs {
+  :global .nav-tabs {
+    border: none;
+
+    text-align: left;
+  }
+
+  :global .nav-tabs > li {
+    float: none;
+    display: inline-block;
+    margin-bottom: 0;
+
+    & > a {
+      margin: 0 2rem 0.5rem 0;
+      border: none;
+      border-radius: 1rem 1rem 0 0;
+      padding: 1rem 3rem;
+
+      color: $color-primary-highlight;
+      background-color: $color-primary-background;
+
+      font-size: 1.25rem;
+
+      &:hover {
+        background-color: $color-primary-background-hover;
+      }
+
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:last-child > a {
+      margin-right: 0;
+    }
+
+    &.active > a {
+      margin-bottom: 0;
+      padding-bottom: 1.5rem;
+
+      background-color: $color-secondary-background;
+
+      &:focus,
+      &:hover {
+        border: 0;
+
+        color: $color-primary-highlight;
+      }
+    }
+  }
+}
+
+/*
+Admin Contact Entry
+------------------------------------------------------------
+*/
+.admin {
+  padding: 1rem;
+  border-radius: 1rem;
+
+  background-color: rgb(250, 250, 250);
+}
+
+.admin-avatar {
+  max-width: 124px;
+  margin: -46px auto 0 auto; /* -46px = admin-avatar height - admin-overview height */
+}
+
+.admin-overview {
+  color: $color-primary-lowlight;
+
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+
+.admin-overview__name {
+  display: inline-block;
+  margin: 0;
+
+  color: $color-primary-highlight;
+
+  small {
+    color: $color-primary-highlight;
+  }
+}
+
+.admin-overview__info {
+  color: $color-black;
+
+  font-weight: bold;
+}
+
+.admin-overview__email {
+  font-weight: bold;
+}
