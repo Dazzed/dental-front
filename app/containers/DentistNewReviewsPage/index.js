@@ -124,10 +124,6 @@ class DentistNewReviewsPage extends React.Component {
     // TODO
   }
 
-  sortMembers = (criteria) => {
-    // TODO
-  }
-
   toggleCancelationFee = (patient) => {
     // TODO
   }
@@ -238,8 +234,6 @@ class DentistNewReviewsPage extends React.Component {
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
-          {/* TODO: sort by */}
-
           <PatientsList
             patients={recentReviewerPatients}
 
