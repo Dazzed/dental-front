@@ -175,11 +175,11 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
-      path: '/dentist/contact-support',
-      name: 'contactSupportPage',
+      path: '/dentist/contact-admin',
+      name: 'contactAdminPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/ContactSupportPage'),
+          System.import('containers/ContactAdminPage'),
         ]);
 
         const renderRoute = loadModule(cb);

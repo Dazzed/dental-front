@@ -58,8 +58,8 @@ function PageHeader ({ borderContent, children, pathname, title, user }) {
               <Link to="/faq">Help &amp; FAQ</Link>
             </span>
             |
-            <span styleName={"header-link" + (pathname === "/dentist/contact-support" > -1 ? " header-link--current" : "")}>
-              <Link to="/dentist/contact-support">Contact Admin</Link>
+            <span styleName={"header-link" + (pathname === "/dentist/contact-admin" ? " header-link--current" : "")}>
+              <Link to="/dentist/contact-admin">Contact Admin</Link>
             </span>
             |
             <span styleName="header-link">

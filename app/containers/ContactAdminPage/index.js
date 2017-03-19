@@ -1,5 +1,5 @@
 /*
-Contact Support Page
+Contact Admin Page
 ================================================================================
 */
 
@@ -35,12 +35,12 @@ function mapDispatchToProps (dispatch) {
 
 
 /*
-Contact Support
+Contact Admin
 ================================================================================
 */
 @connect(null, mapDispatchToProps)
 @CSSModules(styles)
-export default class ContactSupportPage extends Component {
+export default class ContactAdminPage extends Component {
 
   static propTypes = {
     changePageTitle: React.PropTypes.func.isRequired,
