@@ -36,7 +36,7 @@ Field Validators
 const requiredValidator = (name) => (value) => {
   return value !== null && value !== undefined
     ? undefined // all good
-    : `Please enter a ${name}.`;
+    : `Please enter a(n) ${name}.`;
 }
 
 const minValidator = (min) => (value) => {
@@ -158,7 +158,7 @@ class DentistSignupForm extends React.Component {
                 component={InputGroup}
                 leftAddon="$"
                 validate={[
-                  requiredValidator('Price Code Amount'),
+                  requiredValidator('Amount'),
                   minValidator(0)
                 ]}
               />
@@ -210,7 +210,7 @@ class DentistSignupForm extends React.Component {
             component={LabeledInput}
             className="col-sm-6"
           >
-            <option value="">Select an Specialty</option>
+            <option value="">Select a Specialty</option>
             {dentistSpecialties.map((specialty, index) => (
               <option value={specialty.id} key={index}>
                 {specialty.name}
