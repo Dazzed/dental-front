@@ -21,8 +21,6 @@ import { push } from 'react-router-redux';
 // app
 import logo from 'assets/images/logo.png';
 // import logo from 'assets/images/wells-family-dentistry-logo.png';
-import AnonymousHeaderNav from 'components/AnonymousHeaderNav';
-import LoggedInHeaderNav from 'components/LoggedInHeaderNav';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
@@ -76,15 +74,6 @@ export default class NavBar extends React.Component {
                      ? this.returnLinks[this.props.pathname]
                      : null;
 
-    let usersHeaderItems = (
-      <AnonymousHeaderNav pathname={this.props.pathname} />
-    );
-    if (this.props.loggedInUser) {
-      usersHeaderItems = (
-        <LoggedInHeaderNav fullName={fullName} avatar={avatar} />
-      );
-    }
-
     return (
       <Navbar fixedTop styleName="navbar">
         <div className="row" styleName="navbar__row">
@@ -100,9 +89,6 @@ export default class NavBar extends React.Component {
             </div>
           </div>
           
-          <div className="col-md-4" styleName="navbar__col">
-            {usersHeaderItems}
-          </div>
         </div>
       </Navbar>
     );
