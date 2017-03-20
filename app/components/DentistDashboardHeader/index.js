@@ -47,14 +47,32 @@ class DentistDashboardHeader extends React.Component {
       React.PropTypes.bool,
       React.PropTypes.object,
     ]),
+
+    // padded in - actions
+    onMemberSearch: React.PropTypes.func.isRequired,
+  }
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      memberSearchTerm: '',
+    };
   }
 
   /*
   Component Actions
   ------------------------------------------------------------
   */
-  onMemberSearch = (name) => {
-    // TODO
+  onMemberSearch = () => {
+    this.props.onMemberSearch(this.state.memberSearchTerm);
+  }
+
+  updateMemberSearchTerm = (evt) => {
+    this.setState({
+      ...this.state,
+      memberSearchTerm: evt.target.value,
+    })
   }
 
   /*
@@ -65,6 +83,10 @@ class DentistDashboardHeader extends React.Component {
     const {
       user,
     } = this.props;
+
+    const {
+      memberSearchTerm,
+    } = this.state;
 
     // TODO: The current test account doesn't have a full address. [MOCKUP]
     // TODO: Dentist users don't have a `metrics` field yet. [MOCKUP]
@@ -225,8 +247,10 @@ class DentistDashboardHeader extends React.Component {
                   type="text"
                   placeholder="SEARCH FOR MEMBER"
                   className="form-control--large"
+                  value={memberSearchTerm}
+                  onChange={this.updateMemberSearchTerm}
                 />
-                <InputGroup.Button>
+                <InputGroup.Button onClick={this.onMemberSearch}>
                   <span className="btn btn-default">
                     <FaSearch />
                   </span>

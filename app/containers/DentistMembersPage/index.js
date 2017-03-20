@@ -28,10 +28,12 @@ import { selectCurrentUser } from 'containers/App/selectors';
 // local
 import {
   fetchPatients,
+  searchMembers,
+  sortMembers,
 } from './actions';
 import {
   selectDataLoaded,
-  selectPatients,
+  selectProcessedPatients,
 } from './selectors';
 import styles from './styles.css';
 
@@ -46,7 +48,7 @@ function mapStateToProps (state) {
 
     // page state
     dataLoaded: selectDataLoaded(state),
-    patients: selectPatients(state),
+    patients: selectProcessedPatients(state),
   };
 }
 
@@ -57,6 +59,8 @@ function mapDispatchToProps (dispatch) {
     
     // page actions
     fetchPatients: () => dispatch(fetchPatients()),
+    searchMembers: (name) => dispatch(searchMembers(name)),
+    sortMembers: (status) => dispatch(sortMembers(status)),
   };
 }
 
@@ -85,6 +89,8 @@ class DentistMembersPage extends React.Component {
 
     // dispatch - page
     fetchPatients: React.PropTypes.func.isRequired,
+    searchMembers: React.PropTypes.func.isRequired,
+    sortMembers: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -115,14 +121,6 @@ class DentistMembersPage extends React.Component {
     // TODO
   }
 
-  searchForMember = (name) => {
-    // TODO
-  }
-
-  sortMembers = (criteria) => {
-    // TODO
-  }
-
   toggleCancelationFee = (patient) => {
     // TODO
   }
@@ -133,6 +131,14 @@ class DentistMembersPage extends React.Component {
 
   updateMember = (patient, member) => {
     // TODO
+  }
+
+  /*
+  Events
+  ------------------------------------------------------------
+  */
+  onSortSelect = (evt) => {
+    this.props.sortMembers(evt.target.value);
   }
 
   /*
@@ -154,7 +160,10 @@ class DentistMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
@@ -168,7 +177,10 @@ class DentistMembersPage extends React.Component {
     if (patients.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
@@ -186,11 +198,22 @@ class DentistMembersPage extends React.Component {
     */
     return (
       <div>
-        <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">
-          {/* TODO: sort by */}
+          <div styleName="patient-sort">
+            <span>Sort By: </span>
+
+            <select styleName="patient-sort__selector" onChange={this.onSortSelect}>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="late">Late</option>
+            </select>
+          </div>
 
           <PatientsList
             patients={patients}

@@ -25,7 +25,10 @@ import PatientsList from 'components/PatientsList';
 import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
-import { fetchPatients } from 'containers/DentistMembersPage/actions';
+import {
+  fetchPatients,
+  searchMembers,
+} from 'containers/DentistMembersPage/actions';
 import { selectPatients } from 'containers/DentistMembersPage/selectors';
 
 // TODO: Refactor common dentist-dashboard actions / selectors out into an
@@ -61,6 +64,7 @@ function mapDispatchToProps (dispatch) {
 
     // page actions
     fetchPatients: () => dispatch(fetchPatients()),
+    searchMembers: (name) => dispatch(searchMembers(name)),
   };
 }
 
@@ -90,6 +94,7 @@ class DentistNewReviewsPage extends React.Component {
 
     // dispatch - page
     fetchPatients: React.PropTypes.func.isRequired,
+    searchMembers: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -117,10 +122,6 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   reEnrollMember = (patient, member) => {
-    // TODO
-  }
-
-  searchForMember = (name) => {
     // TODO
   }
 
@@ -177,7 +178,10 @@ class DentistNewReviewsPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -191,7 +195,10 @@ class DentistNewReviewsPage extends React.Component {
     if (patients.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -207,7 +214,10 @@ class DentistNewReviewsPage extends React.Component {
     if (Object.keys(recentReviewers).length === 0) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -230,7 +240,10 @@ class DentistNewReviewsPage extends React.Component {
 
     return (
       <div>
-        <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">

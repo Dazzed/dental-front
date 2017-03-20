@@ -9,7 +9,9 @@ Imports
 */
 // local
 import {
-  FETCH_PATIENTS_SUCCESS
+  FETCH_PATIENTS_SUCCESS,
+  SEARCH_MEMBERS,
+  SORT_MEMBERS,
 } from './constants';
 
 /*
@@ -18,6 +20,8 @@ Initial State
 */
 const initialState = {
   patients: null,
+  searchName: null,
+  sortStatus: null,
 };
 
 
@@ -36,6 +40,26 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         patients: action.payload,
+      };
+
+    /*
+    Members Reducers
+    ------------------------------------------------------------
+    */
+    case SEARCH_MEMBERS:
+      return {
+        ...state,
+        searchName: action.name !== ""
+                      ? action.name.toLowerCase()
+                      : null,
+      };
+
+    case SORT_MEMBERS:
+      return {
+        ...state,
+        sortStatus: action.status !== ""
+                      ? action.status.toLowerCase()
+                      : null,
       };
 
     /*

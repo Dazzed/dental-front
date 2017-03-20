@@ -13,7 +13,10 @@ import { createSelector } from 'reselect';
 
 // app
 import { selectCurrentUser } from 'containers/App/selectors';
-import { selectPatients } from 'containers/DentistMembersPage/selectors';
+import {
+  selectPatients,
+  selectProcessedPatients,
+} from 'containers/DentistMembersPage/selectors';
 
 /*
 Selectors
@@ -26,8 +29,30 @@ New Members
 ------------------------------------------------------------
 */
 const selectPatientsWithNewMembers = createSelector(
-  domainSelector,
-  (substate) => substate.patientsWithNewMembers
+  selectProcessedPatients,
+  (patients) => {
+    // precondition: patients are loaded
+    if (patients === null) {
+      return null;
+    }
+
+    const oneMonthAgo = moment().subtract(30, 'days');
+    return patients.filter((patient) => {
+      const patientCreatedAt = moment(patient.createdAt);
+      let patientIsNew = patientCreatedAt.isSameOrAfter(oneMonthAgo, 'day');
+
+      return patient.members.reduce((anyMemberIsNew, member) => {
+        // precondition: skip checking other members if one is already new,
+        // since all of a patient's members will be included in the results
+        if (anyMemberIsNew === true) {
+          return true;
+        }            
+
+        const memberCreatedAt = moment(member.createdAt);
+        return memberCreatedAt.isSameOrAfter(oneMonthAgo, 'day');
+      }, patientIsNew);
+    });
+  }
 );
 
 /*
@@ -37,9 +62,8 @@ Data Loaded
 const selectDataLoaded = createSelector(
   selectCurrentUser,
   selectPatients,
-  selectPatientsWithNewMembers,
-  (user, patients, patientsWithNewMembers) => {
-    return user !== false && patients !== null && patientsWithNewMembers !== null;
+  (user, patients) => {
+    return user !== false && patients !== null;
   }
 );
  

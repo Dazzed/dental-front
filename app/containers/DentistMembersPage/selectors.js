@@ -28,6 +28,47 @@ const selectPatients = createSelector(
   (substate) => substate.patients
 );
 
+const selectMemberSearchTerm = createSelector(
+  domainSelector,
+  (substate) => substate.searchName
+);
+
+const selectMemberSortTerm = createSelector(
+  domainSelector,
+  (substate) => substate.sortStatus
+);
+
+const selectProcessedPatients = createSelector(
+  selectPatients,
+  selectMemberSearchTerm,
+  selectMemberSortTerm,
+  (patients, searchName, sortStatus) => {
+    // precondition: patients are null
+    if (patients === null) {
+      return patients;
+    }
+
+    let processedPatients = patients;
+
+    if (searchName !== null) {
+      processedPatients = patients.filter((patient) => {
+        const matchesPatient = (patient.firstName + ' ' + patient.lastName).toLowerCase().indexOf(searchName) > -1;
+        const matchesAnyMember = patient.members.some((member) => {
+          return (member.firstName + ' ' + member.lastName).toLowerCase().indexOf(searchName) > -1;
+        });
+
+        return matchesPatient || matchesAnyMember;
+      });
+    }
+
+    if (sortStatus !== null) {
+      // TODO: sort
+    }
+
+    return processedPatients;
+  }
+);
+
 /*
 Data Loaded
 ------------------------------------------------------------
@@ -48,5 +89,8 @@ Export
 
 export {
   selectDataLoaded,
+  selectMemberSearchTerm,
+  selectMemberSortTerm,
   selectPatients,
+  selectProcessedPatients,
 };

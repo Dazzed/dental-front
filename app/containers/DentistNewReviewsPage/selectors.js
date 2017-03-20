@@ -13,7 +13,10 @@ import { createSelector } from 'reselect';
 
 // app
 import { selectCurrentUser } from 'containers/App/selectors';
-import { selectPatients } from 'containers/DentistMembersPage/selectors';
+import {
+  selectPatients,
+  selectProcessedPatients,
+} from 'containers/DentistMembersPage/selectors';
 
 /*
 Selectors
@@ -26,8 +29,29 @@ Reviews
 ------------------------------------------------------------
 */
 const selectPatientReviews = createSelector(
-  domainSelector,
-  (substate) => substate.patientReviews
+  selectProcessedPatients,
+  (patients) => {
+    // precondition: patients are loaded
+    if (patients === null) {
+      return null;
+    }
+
+    return patients.reduce((reviewsCollector, patient) => {
+      // precondition: the patient has written a review
+      if (!Array.isArray(patient.reviews) || patient.reviews.length === 0) {
+        return reviewsAccumulator;
+      }
+
+      var patientReviews = patient.reviews.map((review) => {
+        return {
+          reviewer: patient,
+          review: review,
+        };
+      });
+
+      return patientReviews.concat(reviewsCollector);
+    }, []);
+  }
 );
 
 const selectNewReviews = createSelector(
@@ -79,9 +103,8 @@ Data Loaded
 const selectDataLoaded = createSelector(
   selectCurrentUser,
   selectPatients,
-  selectPatientReviews,
-  (user, patients, patientReviews) => {
-    return user !== false && patients !== null && patientReviews !== null;
+  (user, patients) => {
+    return user !== false && patients !== null;
   }
 );
  

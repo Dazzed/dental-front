@@ -24,7 +24,11 @@ import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import PatientsList from 'components/PatientsList';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
-import { fetchPatients } from 'containers/DentistMembersPage/actions';
+import {
+  fetchPatients,
+  searchMembers,
+  sortMembers,
+} from 'containers/DentistMembersPage/actions';
 import { selectPatients } from 'containers/DentistMembersPage/selectors';
 
 // TODO: Refactor common dentist-dashboard actions / selectors out into an
@@ -61,6 +65,8 @@ function mapDispatchToProps (dispatch) {
 
     // page actions
     fetchPatients: () => dispatch(fetchPatients()),
+    searchMembers: (name) => dispatch(searchMembers(name)),
+    sortMembers: (status) => dispatch(sortMembers(status)),
   };
 }
 
@@ -90,6 +96,8 @@ class DentistNewMembersPage extends React.Component {
 
     // dispatch - page
     fetchPatients: React.PropTypes.func.isRequired,
+    searchMembers: React.PropTypes.func.isRequired,
+    sortMembers: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -117,14 +125,6 @@ class DentistNewMembersPage extends React.Component {
   }
 
   reEnrollMember = (patient, member) => {
-    // TODO
-  }
-
-  searchForMember = (name) => {
-    // TODO
-  }
-
-  sortMembers = (criteria) => {
     // TODO
   }
 
@@ -160,7 +160,10 @@ class DentistNewMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-members" />
 
           <div styleName="content content--filler">
@@ -174,7 +177,10 @@ class DentistNewMembersPage extends React.Component {
     if (patients.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-members" />
 
           <div styleName="content content--filler">
@@ -190,7 +196,10 @@ class DentistNewMembersPage extends React.Component {
     if (patientsWithNewMembers.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
           <DentistDashboardTabs active="new-members" />
 
           <div styleName="content content--filler">
@@ -208,7 +217,10 @@ class DentistNewMembersPage extends React.Component {
     */
     return (
       <div>
-        <DentistDashboardHeader user={user} />
+          <DentistDashboardHeader
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+          />
         <DentistDashboardTabs active="new-members" />
 
         <div styleName="content">

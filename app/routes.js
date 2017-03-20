@@ -220,7 +220,6 @@ export default function createRoutes (store) {
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
 
-          System.import('containers/DentistNewMembersPage/reducer'),
           System.import('containers/DentistNewMembersPage'),
         ]);
 
@@ -230,13 +229,11 @@ export default function createRoutes (store) {
           dentistMembersReducer,
           dentistMembersSagas,
           
-          reducer,
           component
         ]) => {
           injectReducer('dentistMembersPage', dentistMembersReducer.default);
           injectSagas(dentistMembersSagas.default);
 
-          injectReducer('dentistNewMembersPage', reducer.default);
           renderRoute(component);
         });
 
@@ -251,7 +248,6 @@ export default function createRoutes (store) {
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
 
-          System.import('containers/DentistNewReviewsPage/reducer'),
           System.import('containers/DentistNewReviewsPage'),
         ]);
 
@@ -261,13 +257,11 @@ export default function createRoutes (store) {
           dentistMembersReducer,
           dentistMembersSagas,
 
-          reducer,
           component
         ]) => {
           injectReducer('dentistMembersPage', dentistMembersReducer.default);
           injectSagas(dentistMembersSagas.default);
 
-          injectReducer('dentistNewReviewsPage', reducer.default);
           renderRoute(component);
         });
 
