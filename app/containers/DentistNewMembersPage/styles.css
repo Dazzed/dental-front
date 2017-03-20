@@ -24,3 +24,25 @@ Page Wide
 .content--filler {
   min-height: 500px;
 }
+
+/*
+Dentist New Members
+================================================================================
+*/
+.patient-sort {
+  padding-bottom: 2rem;
+
+  color: $color-primary-lowlight;
+
+  font-weight: 300;
+  text-align: right;
+}
+
+.patient-sort__selector {
+  color: $color-primary-highlight;
+
+  outline: 0;
+
+  cursor: pointer;
+  font-weight: bold;
+}
