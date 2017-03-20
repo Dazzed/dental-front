@@ -141,6 +141,14 @@ class DentistNewMembersPage extends React.Component {
   }
 
   /*
+  Events
+  ------------------------------------------------------------
+  */
+  onSortSelect = (evt) => {
+    this.props.sortMembers(evt.target.value);
+  }
+
+  /*
   Render
   ------------------------------------------------------------
   */
@@ -224,7 +232,15 @@ class DentistNewMembersPage extends React.Component {
         <DentistDashboardTabs active="new-members" />
 
         <div styleName="content">
-          {/* TODO: sort by */}
+          <div styleName="patient-sort">
+            <span>Sort By: </span>
+
+            <select styleName="patient-sort__selector" onChange={this.onSortSelect}>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="late">Late</option>
+            </select>
+          </div>
 
           <PatientsList
             patients={patientsWithNewMembers}
