@@ -29,11 +29,11 @@ import {
   searchMembers,
   sortMembers,
 } from 'containers/DentistMembersPage/actions';
-import { selectPatients } from 'containers/DentistMembersPage/selectors';
-
-// TODO: Refactor common dentist-dashboard actions / selectors out into an
-//       independent file?  Or possibly import them from the DentistMembersPage
-//       into the local './actions' and './selectors' files?
+import {
+  selectMemberSearchTerm,
+  selectMemberSortTerm,
+  selectPatients,
+} from 'containers/DentistMembersPage/selectors';
 
 // local
 import {
@@ -52,6 +52,8 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
     
     // page state
+    currentSearchTerm: selectMemberSearchTerm(state),
+    currentSortTerm: selectMemberSortTerm(state),
     dataLoaded: selectDataLoaded(state),
     patients: selectPatients(state),
     patientsWithNewMembers: selectPatientsWithNewMembers(state),
@@ -90,6 +92,8 @@ class DentistNewMembersPage extends React.Component {
     changePageTitle: React.PropTypes.func.isRequired,
 
     // state - page
+    currentSearchTerm: React.PropTypes.string,
+    currentSortTerm: React.PropTypes.string,
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
     patientsWithNewMembers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the member lists
@@ -158,6 +162,8 @@ class DentistNewMembersPage extends React.Component {
   */
   render () {
     const {
+      currentSearchTerm,
+      currentSortTerm,
       dataLoaded,
       patientsWithNewMembers,
       patients,
@@ -172,10 +178,6 @@ class DentistNewMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-          />
           <DentistDashboardTabs active="new-members" />
 
           <div styleName="content content--filler">
@@ -190,6 +192,7 @@ class DentistNewMembersPage extends React.Component {
       return (
         <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -209,6 +212,7 @@ class DentistNewMembersPage extends React.Component {
       return (
         <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -230,6 +234,7 @@ class DentistNewMembersPage extends React.Component {
     return (
       <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -239,7 +244,7 @@ class DentistNewMembersPage extends React.Component {
           <div styleName="patient-sort">
             <span>Sort By: </span>
 
-            <select styleName="patient-sort__selector" onChange={this.onSortSelect}>
+            <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
               <option value="late">Late</option>

@@ -50,20 +50,25 @@ const selectProcessedPatients = createSelector(
 
     let processedPatients = patients;
 
+    // search
     if (searchName !== null) {
+      searchName = searchName.toLowerCase();
+
       processedPatients = patients.filter((patient) => {
-        const matchesPatient = (patient.firstName + ' ' + patient.lastName).toLowerCase().indexOf(searchName) > -1;
+        const patientName = patient.firstName + ' ' + patient.lastName;
+        const matchesPatient = patientName.toLowerCase().indexOf(searchName) > -1;
+
         const matchesAnyMember = patient.members.some((member) => {
-          return (member.firstName + ' ' + member.lastName).toLowerCase().indexOf(searchName) > -1;
+          const memberName = member.firstName + ' ' + member.lastName;
+          return memberName.toLowerCase().indexOf(searchName) > -1;
         });
 
         return matchesPatient || matchesAnyMember;
       });
     }
 
-    if (sortStatus !== null) {
-      // TODO: sort
-    }
+    // sort
+    // TODO
 
     return processedPatients;
   }

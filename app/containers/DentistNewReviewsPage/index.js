@@ -29,11 +29,10 @@ import {
   fetchPatients,
   searchMembers,
 } from 'containers/DentistMembersPage/actions';
-import { selectPatients } from 'containers/DentistMembersPage/selectors';
-
-// TODO: Refactor common dentist-dashboard actions / selectors out into an
-//       independent file?  Or possibly import them from the DentistMembersPage
-//       into the local './actions' and './selectors' files?
+import {
+  selectMemberSearchTerm,
+  selectPatients,
+} from 'containers/DentistMembersPage/selectors';
 
 import {
   selectDataLoaded,
@@ -51,6 +50,7 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // page state
+    currentSearchTerm: selectMemberSearchTerm(state),
     dataLoaded: selectDataLoaded(state),
     patients: selectPatients(state),
     recentReviewers: selectRecentReviewers(state),
@@ -88,6 +88,7 @@ class DentistNewReviewsPage extends React.Component {
     changePageTitle: React.PropTypes.func.isRequired,
 
     // state - page
+    currentSearchTerm: React.PropTypes.string,
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
     recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
@@ -168,6 +169,7 @@ class DentistNewReviewsPage extends React.Component {
   */
   render () {
     const {
+      currentSearchTerm,
       dataLoaded,
       patients,
       recentReviewers,
@@ -182,10 +184,6 @@ class DentistNewReviewsPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-          />
           <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
@@ -200,6 +198,7 @@ class DentistNewReviewsPage extends React.Component {
       return (
         <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -219,6 +218,7 @@ class DentistNewReviewsPage extends React.Component {
       return (
         <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -245,6 +245,7 @@ class DentistNewReviewsPage extends React.Component {
     return (
       <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />

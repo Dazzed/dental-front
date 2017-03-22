@@ -21,7 +21,7 @@ Initial State
 const initialState = {
   patients: null,
   searchName: null,
-  sortStatus: null,
+  sortStatus: "active",
 };
 
 
@@ -50,16 +50,14 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         searchName: action.name !== ""
-                      ? action.name.toLowerCase()
+                      ? action.name
                       : null,
       };
 
     case SORT_MEMBERS:
       return {
         ...state,
-        sortStatus: action.status !== ""
-                      ? action.status.toLowerCase()
-                      : null,
+        sortStatus: action.status,
       };
 
     /*

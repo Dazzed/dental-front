@@ -43,6 +43,7 @@ class DentistDashboardHeader extends React.Component {
 
   static propTypes = {
     // passed in - data
+    currentSearchTerm: React.PropTypes.string,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -56,7 +57,9 @@ class DentistDashboardHeader extends React.Component {
     super(props);
 
     this.state = {
-      memberSearchTerm: '',
+      memberSearchTerm: this.props.currentSearchTerm !== null
+                          ? this.props.currentSearchTerm
+                          : '',
     };
   }
 

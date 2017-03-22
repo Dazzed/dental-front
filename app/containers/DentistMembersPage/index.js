@@ -33,6 +33,8 @@ import {
 } from './actions';
 import {
   selectDataLoaded,
+  selectMemberSearchTerm,
+  selectMemberSortTerm,
   selectProcessedPatients,
 } from './selectors';
 import styles from './styles.css';
@@ -47,6 +49,8 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // page state
+    currentSearchTerm: selectMemberSearchTerm(state),
+    currentSortTerm: selectMemberSortTerm(state),
     dataLoaded: selectDataLoaded(state),
     patients: selectProcessedPatients(state),
   };
@@ -84,6 +88,8 @@ class DentistMembersPage extends React.Component {
     changePageTitle: React.PropTypes.func.isRequired,
 
     // state - page
+    currentSearchTerm: React.PropTypes.string,
+    currentSortTerm: React.PropTypes.string,
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
 
@@ -151,6 +157,8 @@ class DentistMembersPage extends React.Component {
   */
   render () {
     const {
+      currentSearchTerm,
+      currentSortTerm,
       dataLoaded,
       patients,
       user,
@@ -164,10 +172,6 @@ class DentistMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardHeader
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-          />
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
@@ -182,6 +186,7 @@ class DentistMembersPage extends React.Component {
       return (
         <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -203,6 +208,7 @@ class DentistMembersPage extends React.Component {
     return (
       <div>
           <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -212,7 +218,7 @@ class DentistMembersPage extends React.Component {
           <div styleName="patient-sort">
             <span>Sort By: </span>
 
-            <select styleName="patient-sort__selector" onChange={this.onSortSelect}>
+            <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
               <option value="late">Late</option>
