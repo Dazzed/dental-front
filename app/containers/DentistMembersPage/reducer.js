@@ -13,6 +13,7 @@ import findIndex from 'lodash/findIndex';
 // local
 import {
   // fetch
+  FETCH_DENTIST_INFO_SUCCESS,
   FETCH_PATIENTS_SUCCESS,
 
   // search / sort patients
@@ -35,6 +36,7 @@ Initial State
 */
 const initialState = {
   // fetch
+  dentistInfo: null,
   patients: null,
 
   // search / sort patients
@@ -55,12 +57,17 @@ Reducers
 function dentistMembersPageReducer (state = initialState, action) {
   let memberIdx, patientIdx, prevStatePatient, newStatePatient;
 
-  switch (action.type) {
-    
+  switch (action.type) {    
     /*
     Fetch
     ------------------------------------------------------------
     */
+    case FETCH_DENTIST_INFO_SUCCESS:      
+      return {
+        ...state,
+        dentistInfo: action.payload,
+      };
+
     case FETCH_PATIENTS_SUCCESS:
       return {
         ...state,

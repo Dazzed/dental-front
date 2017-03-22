@@ -9,6 +9,10 @@ Imports
 */
 // local
 import {
+  FETCH_DENTIST_INFO_REQUEST,
+  FETCH_DENTIST_INFO_SUCCESS,
+  FETCH_DENTIST_INFO_ERROR,
+
   FETCH_PATIENTS_REQUEST,
   FETCH_PATIENTS_SUCCESS,
   FETCH_PATIENTS_ERROR,
@@ -25,6 +29,30 @@ import {
   REMOVE_MEMBER_REQUEST,
   REMOVE_MEMBER_SUCCESS,
 } from './constants';
+
+/*
+Fetch Dentist Info
+------------------------------------------------------------
+*/
+export function fetchDentistInfo () {
+  return {
+    type: FETCH_DENTIST_INFO_REQUEST,
+  };
+}
+
+export function fetchDentistInfoSuccess (payload) {
+  return {
+    type: FETCH_DENTIST_INFO_SUCCESS,
+    payload,
+  };
+}
+
+export function fetchDentistInfoError (payload) {
+  return {
+    type: FETCH_DENTIST_INFO_ERROR,
+    payload,
+  };
+}
 
 /*
 Fetch Patients

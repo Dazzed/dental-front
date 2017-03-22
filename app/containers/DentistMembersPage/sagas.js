@@ -21,6 +21,8 @@ import request from 'utils/request';
 
 // local
 import {
+  fetchDentistInfoSuccess,
+  fetchDentistInfoError,
   fetchPatientsSuccess,
   fetchPatientsError,
 
@@ -29,6 +31,7 @@ import {
   setRemovedMember,
 } from './actions';
 import {
+  FETCH_DENTIST_INFO_REQUEST,
   FETCH_PATIENTS_REQUEST,
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
@@ -45,18 +48,36 @@ export default [
 ];
 
 function* main () {
-  const watcherA = yield fork(patientsFetcher);
-  const watcherB = yield fork(submitMemberFormWatcher);
-  const watcherC = yield fork(removeMemberWatcher);
+  const watcherA = yield fork(dentistInfoFetcher);
+  const watcherB = yield fork(patientsFetcher);
+  const watcherC = yield fork(submitMemberFormWatcher);
+  const watcherD = yield fork(removeMemberWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
+  yield cancel(watcherD);
 }
 
 /*
-Fetch
+Fetch Dentist Info
+------------------------------------------------------------
+*/
+function* dentistInfoFetcher () {
+  yield* takeLatest(FETCH_DENTIST_INFO_REQUEST, function* handler() {
+    try {
+      const response = yield call(request, '/api/v1/users/me/dentist-info')
+      yield put(fetchDentistInfoSuccess(response.data));
+    }
+    catch (error) {
+      yield put(fetchDentistInfoError(error));
+    }
+  });
+}
+
+/*
+Fetch Patients
 ------------------------------------------------------------
 */
 function* patientsFetcher () {

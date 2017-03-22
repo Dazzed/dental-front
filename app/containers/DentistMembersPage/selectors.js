@@ -37,6 +37,11 @@ const selectMemberSortTerm = createSelector(
 Fetch
 ------------------------------------------------------------
 */
+const selectDentistInfo = createSelector(
+  domainSelector,
+  (substate) => substate.dentistInfo
+);
+
 const selectPatients = createSelector(
   domainSelector,
   (substate) => substate.patients
@@ -106,9 +111,10 @@ const selectProcessedPatients = createSelector(
 
 const selectDataLoaded = createSelector(
   selectCurrentUser,
+  selectDentistInfo,
   selectPatients,
-  (user, patients) => {
-    return user !== false && patients !== null;
+  (user, dentistInfo, patients) => {
+    return user !== false && dentistInfo !== null && patients !== null;
   }
 );
 
@@ -144,6 +150,7 @@ export {
   selectMemberSortTerm,
 
   // fetch
+  selectDentistInfo,
   selectPatients,
   selectProcessedPatients,
   selectDataLoaded,

@@ -6,9 +6,6 @@ TODO: Waiting on backend changes to implement some info fields.
 
 TODO: Displaying a mocked up PriceScore is blocked by missing icons in the
       PriceScore component.
-
-TODO: My current dentist test account doesn't have a proper address, so those
-      values are mocked up.
 */
 
 /*
@@ -44,13 +41,14 @@ class DentistDashboardHeader extends React.Component {
   static propTypes = {
     // passed in - data
     currentSearchTerm: React.PropTypes.string,
+    dentistInfo: React.PropTypes.object,
     patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
     ]),
 
-    // padded in - actions
+    // passed in - actions
     onMemberSearch: React.PropTypes.func.isRequired,
   }
 
@@ -85,6 +83,7 @@ class DentistDashboardHeader extends React.Component {
   */
   render() {
     const {
+      dentistInfo,
       patients,
       user,
     } = this.props;
@@ -93,38 +92,28 @@ class DentistDashboardHeader extends React.Component {
       memberSearchTerm,
     } = this.state;
 
-    // TODO: The current test account doesn't have a full address. [MOCKUP]
+    const {
+      email,
+      phone,
+
+      officeName,
+      address,
+      city,
+      state,
+      zipCode,
+    } = dentistInfo;
+
     // TODO: Dentist users don't have a `metrics` field yet. [MOCKUP]
     // TODO: Dentist users don't have a `ratings` field yet. [MOCKUP]
     const {
-//      address,
       avatar,
-//      city,
-      email,
       firstName,
       lastName,
 //      metrics,
-      phone,
 //      ratings,
 //      state,
 //      zipCode,
     } = user;
-
-    // TODO
-    /*
-    const {
-      reviewScore,
-      priceScore,
-    } = ratings;
-    */
-    const reviewScore = 4.5;
-    const priceScore = 4.0;
-
-    // TODO - set directly from user's fields (above)
-    const address = "123 Sunshine Lane";
-    const city = "Smallville";
-    const state = "ID";
-    const zipCode = "57392";
 
     const activeMemberCount = patients.reduce(
       (activeMemberCounter, patient) => {
@@ -144,6 +133,16 @@ class DentistDashboardHeader extends React.Component {
 
     // TODO
     /*
+    const {
+      reviewScore,
+      priceScore,
+    } = ratings;
+    */
+    const reviewScore = 4.5;
+    const priceScore = 4.0;
+
+    // TODO
+    /*
     let {
       prevMonthRevenue,
       lifetimeRevenue,
@@ -154,11 +153,10 @@ class DentistDashboardHeader extends React.Component {
 
     // Shoutout to the internet!  How to convert an number into a USD string:
     // http://stackoverflow.com/a/14428340
-    prevMonthRevenue = prevMonthRevenue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-    prevMonthRevenue = prevMonthRevenue.substr(0, prevMonthRevenue.length - 3);
-
+    prevMonthRevenue = prevMonthRevenue.toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    prevMonthRevenue = prevMonthRevenue.substr(0, prevMonthRevenue.length - 3); // remove the cents
     lifetimeRevenue = lifetimeRevenue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-    lifetimeRevenue = lifetimeRevenue.substr(0, lifetimeRevenue.length - 3);
+    lifetimeRevenue = lifetimeRevenue.substr(0, lifetimeRevenue.length - 3); // remove the cents
 
     return (
       <div styleName="dentist-dashboard-header">
@@ -185,6 +183,8 @@ class DentistDashboardHeader extends React.Component {
                 </div>
 
                 <p styleName="dentist__address">
+                  {officeName}
+                  <br />
                   {address}
                   <br />
                   {city}, {state} {zipCode}

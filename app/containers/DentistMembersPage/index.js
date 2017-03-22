@@ -29,6 +29,7 @@ import { selectCurrentUser } from 'containers/App/selectors';
 // local
 import {
   // fetch
+  fetchDentistInfo,
   fetchPatients,
 
   // search / sort patients
@@ -46,6 +47,7 @@ import {
 import {
   // fetch
   selectDataLoaded,
+  selectDentistInfo,
   selectProcessedPatients,
 
   // search / sort patients
@@ -67,6 +69,7 @@ function mapStateToProps (state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
+    dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
     user: selectCurrentUser(state),
 
@@ -87,6 +90,7 @@ function mapDispatchToProps (dispatch) {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
     
     // fetch
+    fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
 
     // search / sort patients
@@ -126,6 +130,7 @@ class DentistMembersPage extends React.Component {
     ]).isRequired,
 
     // fetch - dispatch
+    fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
 
     // search / sort patients - state
@@ -152,6 +157,7 @@ class DentistMembersPage extends React.Component {
   }
 
   componentWillMount() {
+    this.props.fetchDentistInfo();
     this.props.fetchPatients();
   }
 
@@ -221,6 +227,7 @@ class DentistMembersPage extends React.Component {
     const {
       // fetch
       dataLoaded,
+      dentistInfo,
       patients,
       user,
 
@@ -256,6 +263,7 @@ class DentistMembersPage extends React.Component {
         <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
             patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
@@ -279,6 +287,7 @@ class DentistMembersPage extends React.Component {
       <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
             patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
