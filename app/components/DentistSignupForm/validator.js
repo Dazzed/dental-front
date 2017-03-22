@@ -53,7 +53,10 @@ const schema = {
   ------------------------------------------------------------
   */
   "officeInfo.officeName": { presence: true },
-  "officeInfo.url": { presence: { message: '^URL can\'t be blank' }, url: true },
+  "officeInfo.url": {
+    presence: { message: '^Website URL can\'t be blank' },
+    url: { message: '^Please enter the full URL, including the "http://". For example: "https://mydentistrysite.com".' },
+  },
   "officeInfo.email": { presence: true, email: true },
   "officeInfo.phone": {
     presence: true,

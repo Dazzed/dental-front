@@ -418,7 +418,7 @@ class DentistSignupForm extends React.Component {
               type="text"
               component={LabeledInput}
               label="Website URL"
-              placeholder=""
+              placeholder="https://mydentistrysite.com"
               className="col-sm-6"
             />
           </Row>
