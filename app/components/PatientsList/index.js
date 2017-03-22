@@ -151,17 +151,7 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format("MMM D, YYYY");
 
-      const paymentDueAmount = (
-          // patient's fee
-          parseFloat(subscription.total)
-
-          // sum of family members' fees
-        + members.reduce(function(currentTotal, member) {
-            return currentTotal + parseFloat(member.subscription.total);
-          }, 0)
-
-        // ensure that there are 2 decimal places (EX: "0.00" instead of "0")
-      ).toFixed(2);
+      const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
 
       const paymentDueDate = moment(subscription.endAt).format("MMM D, YYYY");
 
