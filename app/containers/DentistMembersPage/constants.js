@@ -11,3 +11,12 @@ export const FETCH_PATIENTS_ERROR   = 'app/DentistMembersPage/FETCH_PATIENTS_ERR
 
 export const SEARCH_MEMBERS   = 'app/DentistMembersPage/SEARCH_MEMBERS';
 export const SORT_MEMBERS   = 'app/DentistMembersPage/SORT_MEMBERS';
+
+export const SET_EDITING_MEMBER   = 'app/DentistMembersPage/SET_EDITING_MEMBER';
+export const CLEAR_EDITING_MEMBER = 'app/DentistMembersPage/CLEAR_EDITING_MEMBER';
+export const SUBMIT_MEMBER_FORM   = 'app/DentistMembersPage/SUBMIT_MEMBER_FORM';
+export const ADD_MEMBER_SUCCESS   = 'app/DentistMembersPage/ADD_MEMBER_SUCCESS';
+export const EDIT_MEMBER_SUCCESS  = 'app/DentistMembersPage/EDIT_MEMBER_SUCCESS';
+
+export const REMOVE_MEMBER_REQUEST = 'app/DentistMembersPage/REMOVE_MEMBER_REQUEST';
+export const REMOVE_MEMBER_SUCCESS = 'app/DentistMembersPage/REMOVE_MEMBER_SUCCESS';

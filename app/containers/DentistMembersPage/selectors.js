@@ -14,20 +14,15 @@ import { createSelector } from 'reselect';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 /*
-Domain Selector
-------------------------------------------------------------
+Selectors
+================================================================================
 */
 const domainSelector = state => state.dentistMembersPage;
 
 /*
-Patients
+Search / Sort Patients
 ------------------------------------------------------------
 */
-const selectPatients = createSelector(
-  domainSelector,
-  (substate) => substate.patients
-);
-
 const selectMemberSearchTerm = createSelector(
   domainSelector,
   (substate) => substate.searchName
@@ -36,6 +31,15 @@ const selectMemberSearchTerm = createSelector(
 const selectMemberSortTerm = createSelector(
   domainSelector,
   (substate) => substate.sortStatus
+);
+
+/*
+Fetch
+------------------------------------------------------------
+*/
+const selectPatients = createSelector(
+  domainSelector,
+  (substate) => substate.patients
 );
 
 const selectProcessedPatients = createSelector(
@@ -100,10 +104,6 @@ const selectProcessedPatients = createSelector(
   }
 );
 
-/*
-Data Loaded
-------------------------------------------------------------
-*/
 const selectDataLoaded = createSelector(
   selectCurrentUser,
   selectPatients,
@@ -111,6 +111,26 @@ const selectDataLoaded = createSelector(
     return user !== false && patients !== null;
   }
 );
+
+/*
+Add / Edit Member
+------------------------------------------------------------
+*/
+const selectEditingActive = createSelector(
+  domainSelector,
+  substate => substate.editingActive,
+);
+
+const selectEditingMember = createSelector(
+  domainSelector,
+  subtate => subtate.editingMember,
+);
+
+const selectEditingPatient = createSelector(
+  domainSelector,
+  substate => substate.editingPatient,
+);
+
  
 /*
 Export
@@ -119,9 +139,17 @@ Export
  export default domainSelector;
 
 export {
-  selectDataLoaded,
+  // search / sort patients
   selectMemberSearchTerm,
   selectMemberSortTerm,
+
+  // fetch
   selectPatients,
   selectProcessedPatients,
+  selectDataLoaded,
+
+  // add / edit member
+  selectEditingActive,
+  selectEditingMember,
+  selectEditingPatient,
 };

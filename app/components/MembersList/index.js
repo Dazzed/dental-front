@@ -139,27 +139,29 @@ export default class MembersList extends React.Component {
           </div>
         </div>
         <div className="col-sm-3">
-          <div styleName="member__detail">
-            {/*
-              TODO: choose button types based on membership info's `status`:
-                - active monthly => Update & X
-                - active yearly => Update & Renew
-                - inactive => Re-Enroll
-                - late => ???
-            */}
-            <input
-              type="button"
-              styleName="button--small"
-              value="UPDATE"
-              onClick={this.onUpdateClick.bind(this, patient, member)}
-            />
-            <input
-              type="button"
-              styleName="button--small"
-              value="X"
-              onClick={this.onRemoveClick.bind(this, patient, member)}
-            />
-          </div>
+          {id !== patient.id && (
+            <div styleName="member__detail">
+              {/*
+                TODO: choose button types based on membership info's `status`:
+                  - active monthly => Update & X
+                  - active yearly => Update & Renew
+                  - inactive => Re-Enroll
+                  - late => ???
+              */}
+              <input
+                type="button"
+                styleName="button--small"
+                value="UPDATE"
+                onClick={this.onUpdateClick.bind(this, patient, member)}
+              />
+              <input
+                type="button"
+                styleName="button--small"
+                value="X"
+                onClick={this.onRemoveClick.bind(this, patient, member)}
+              />
+            </div>
+          )}
         </div>
       </div>
     );

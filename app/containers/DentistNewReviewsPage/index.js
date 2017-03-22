@@ -21,20 +21,41 @@ import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
+import MemberForm from 'components/MemberForm';
 import PatientsList from 'components/PatientsList';
 import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import {
+  // fetch
   fetchPatients,
+
+  // search / sort patients
   searchMembers,
+
+  // add / edit member
+  setEditingMember,
+  clearEditingMember,
+  submitMemberForm,
+
+  // remove member
+  setRemovingMember,
 } from 'containers/DentistMembersPage/actions';
 import {
-  selectMemberSearchTerm,
+  // fetch
   selectPatients,
+
+  // search / sort patients
+  selectMemberSearchTerm,
+
+  // add / edit member
+  selectEditingActive,
+  selectEditingMember,
+  selectEditingPatient,
 } from 'containers/DentistMembersPage/selectors';
 
 import {
+  // fetch
   selectDataLoaded,
   selectRecentReviewers,
 } from './selectors';
@@ -46,25 +67,41 @@ Redux
 */
 function mapStateToProps (state) {
   return {
-    // app state
-    user: selectCurrentUser(state),
-
-    // page state
-    currentSearchTerm: selectMemberSearchTerm(state),
+    // fetch
     dataLoaded: selectDataLoaded(state),
     patients: selectPatients(state),
     recentReviewers: selectRecentReviewers(state),
+    user: selectCurrentUser(state),
+
+    // search / sort patients
+    currentSearchTerm: selectMemberSearchTerm(state),
+
+    // add / edit member
+    editingActive: selectEditingActive(state),
+    editingMember: selectEditingMember(state),
+    editingPatient: selectEditingPatient(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    // app actions
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
-    // page actions
+    // fetch
     fetchPatients: () => dispatch(fetchPatients()),
+
+    // search / sort patients
     searchMembers: (name) => dispatch(searchMembers(name)),
+
+    // add / edit member
+    resetForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (patient, member) => dispatch(setEditingMember(patient, member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
+
+    // remove member
+    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
   };
 }
 
@@ -78,24 +115,40 @@ New Reviews
 class DentistNewReviewsPage extends React.Component {
 
   static propTypes = {
-    // state - app
+    // app - dispatch
+    changePageTitle: React.PropTypes.func.isRequired,
+
+    // fetch - state
+    dataLoaded: React.PropTypes.bool.isRequired,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
+    recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
     ]),
 
-    // dispatch - app
-    changePageTitle: React.PropTypes.func.isRequired,
-
-    // state - page
-    currentSearchTerm: React.PropTypes.string,
-    dataLoaded: React.PropTypes.bool.isRequired,
-    patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
-    recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
-
-    // dispatch - page
+    // fetch - dispatch
     fetchPatients: React.PropTypes.func.isRequired,
+
+    // search / sort patients - state
+    currentSearchTerm: React.PropTypes.string,
+
+    // search / sort patients - dispatch
     searchMembers: React.PropTypes.func.isRequired,
+
+    // add / edit member - state
+    editingActive: React.PropTypes.bool.isRequired,
+    editingMember: React.PropTypes.object,
+    editingPatient: React.PropTypes.object,
+
+    // add / edit member - dispatch
+    resetForm: React.PropTypes.func.isRequired,
+    setEditingMember: React.PropTypes.func.isRequired,
+    clearEditingMember: React.PropTypes.func.isRequired,
+    submitMemberForm: React.PropTypes.func.isRequired,
+
+    // remove member - dispatch
+    setRemovingMember: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -111,8 +164,8 @@ class DentistNewReviewsPage extends React.Component {
   ------------------------------------------------------------
   */
   addMember = (patient) => {
-    /* TODO, verified it's called */
-    alert('TODO: add member');
+    this.props.resetForm();
+    this.props.setEditingMember(patient, null);
   }
 
   reEnrollMember = (patient, member) => {
@@ -121,8 +174,7 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   removeMember = (patient, member) => {
-    /* TODO, verified it's called */
-    alert('TODO: remove member');
+    this.props.setRemovingMember(patient, member);
   }
 
   renewMember = (patient, member) => {
@@ -141,8 +193,20 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   updateMember = (patient, member) => {
-    /* TODO, verified it's called */
-    alert('TODO: update member');
+    this.props.resetForm();
+    this.props.setEditingMember(patient, member);
+  }
+
+  /*
+  Events
+  ------------------------------------------------------------
+  */
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
+  }
+
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(this.props.editingPatient, values);
   }
 
   /*
@@ -172,11 +236,18 @@ class DentistNewReviewsPage extends React.Component {
   */
   render () {
     const {
-      currentSearchTerm,
+      // fetch
       dataLoaded,
       patients,
       recentReviewers,
       user,
+
+      // search / sort patients
+      currentSearchTerm,
+
+      // add / edit member
+      editingActive,
+      editingMember,
     } = this.props;
 
     /*
@@ -288,7 +359,14 @@ class DentistNewReviewsPage extends React.Component {
           />
         </div>
 
-        {/* TODO: modals */}
+        {/* displayed in a modal */}
+        <MemberForm
+          show={editingActive}
+          onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember}
+          onSubmit={this.handleMemberFormSubmit}
+        />
       </div>
     );
   }

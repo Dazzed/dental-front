@@ -24,9 +24,6 @@ import {
 } from 'common/constants';
 import renderDatePicker from 'components/DatePicker';
 import LabeledInput from 'components/LabeledInput';
-import {
-  editingMemberSelector
-} from 'containers/YourFamilyPage/selectors';
 
 // local
 import styles from './styles.css';
@@ -36,10 +33,6 @@ import MemberValidator from './validator';
 Redux
 ------------------------------------------------------------
 */
-const mapStateToProps = (state) => ({
-  initialValues: editingMemberSelector(state),
-});
-
 const mapDispatchToProps = (dispatch) => ({
   submit: () => dispatch(submitForm('familyMember')),
 });
@@ -49,7 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
 Member Form
 ================================================================================
 */
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(null, mapDispatchToProps)
 @reduxForm({
   form: 'familyMember',
   enableReinitialize: true,
@@ -83,9 +76,9 @@ export default class MemberForm extends React.Component {
       onCancel,
     } = this.props;
 
-    let title = "Edit Your Family Member";
+    let title = "Edit Member";
     if (initialValues === null) {
-      title = "Add A Family Member";
+      title = "Add Member";
     }
 
     return (

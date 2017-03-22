@@ -17,4 +17,3 @@ export const EDIT_MEMBER_SUCCESS  = 'app/YourFamilyPage/EDIT_MEMBER_SUCCESS';
 
 export const REMOVE_MEMBER_REQUEST = 'app/YourFamilyPage/REMOVE_MEMBER_REQUEST';
 export const REMOVE_MEMBER_SUCCESS = 'app/YourFamilyPage/REMOVE_MEMBER_SUCCESS';
-

@@ -18,8 +18,6 @@ import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
 // app
 import request from 'utils/request';
-import { setUserData } from 'containers/App/actions';
-import { requestPendingAmount } from 'containers/Authorize.net/actions';
 
 // local
 import {
@@ -80,13 +78,12 @@ Add / Edit Member
 function* submitMemberFormWatcher () {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
-    const memberId = payload.id;
 
-    if (memberId === undefined) {
+    if (payload.id === undefined) {
       yield submitAddMemberForm(payload, userId);
     }
     else {
-      yield submitEditMemberForm(payload, userId, memberId);
+      yield submitEditMemberForm(payload, userId);
     }
   }
 }
@@ -104,7 +101,6 @@ function* submitAddMemberForm(payload, userId) {
     yield put(toastrActions.success('', message));
 
     yield put(setAddedMember(response.data, userId));
-    yield put(requestPendingAmount(userId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
@@ -114,9 +110,9 @@ function* submitAddMemberForm(payload, userId) {
   }
 }
 
-function* submitEditMemberForm (payload, userId, memberId) {
+function* submitEditMemberForm (payload, userId) {
   try {
-    const requestURL = `/api/v1/users/${userId}/members/${memberId}`;
+    const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -127,7 +123,6 @@ function* submitEditMemberForm (payload, userId, memberId) {
     yield put(toastrActions.success('', message));
 
     yield put(setEditedMember(response.data, userId));
-    yield put(requestPendingAmount(userId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
@@ -158,7 +153,6 @@ function* removeMemberWatcher () {
       yield put(toastrActions.success('', message));
 
       yield put(setRemovedMember(payload.id, userId));
-      yield put(requestPendingAmount(userId));
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));

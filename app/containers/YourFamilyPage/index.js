@@ -45,6 +45,7 @@ import {
 
   // add / edit member
   editingActiveSelector,
+  editingMemberSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -60,6 +61,7 @@ function mapStateToProps (state) {
 
     // add / edit member
     editingActive: editingActiveSelector(state),
+    editingMember: editingMemberSelector(state),
   };
 }
 
@@ -110,6 +112,7 @@ class YourFamilyPage extends React.Component {
 
     // add / edit member - state
     editingActive: React.PropTypes.bool.isRequired,
+    editingMember: React.PropTypes.object,
 
     // add / edit member - dispatch
     resetForm: React.PropTypes.func.isRequired,
@@ -167,6 +170,7 @@ class YourFamilyPage extends React.Component {
 
       // add / edit member
       editingActive,
+      editingMember,
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
@@ -207,6 +211,8 @@ class YourFamilyPage extends React.Component {
         <MemberForm
           show={editingActive}
           onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember}
           onSubmit={this.handleMemberFormSubmit}
         />
       </div>

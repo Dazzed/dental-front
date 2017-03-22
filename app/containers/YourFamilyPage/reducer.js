@@ -30,7 +30,6 @@ const initialState = {
   familyMembers: null,
   editingActive: false,
   editingMember: null,
-  removingMember: null,
 };
 
 /*
@@ -40,11 +39,12 @@ Reducer
 function yourFamilyPageReducer (state = initialState, action) {
   let memberIdx;
 
-  /*
-  Fetch
-  ------------------------------------------------------------
-  */
   switch (action.type) {
+
+    /*
+    Fetch
+    ------------------------------------------------------------
+    */
     case FAMILY_MEMBERS_SUCCESS:
       return {
         ...state,
@@ -115,6 +115,7 @@ function yourFamilyPageReducer (state = initialState, action) {
     */
     default:
       return state;
+
   }
 }
 
