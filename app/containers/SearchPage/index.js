@@ -23,6 +23,7 @@ import { push } from 'react-router-redux';
 import logo from 'assets/images/wells-family-dentistry-logo.png';
 import PageHeader from 'components/PageHeader';
 import DentistCard from 'components/DentistCard';
+import GoogleMaps from 'components/GoogleMaps';
 
 
 // local
@@ -80,6 +81,8 @@ export default class SearchPage extends Component {
         city: PropTypes.string.isRequired,
         state: PropTypes.string.isRequired,
         zipCode: PropTypes.string.isRequired,
+        lat: PropTypes.number.isRequired,
+        lng: PropTypes.number.isRequired,
       }).isRequired,
     })).isRequired,
   };
@@ -116,6 +119,24 @@ export default class SearchPage extends Component {
     );
   }
 
+  renderMap() {
+    const { searchResults } = this.props;
+    const markerArray = [];
+
+    if (searchResults.length > 0) {
+      for (let i = 0; i < searchResults.length; i++) {
+        markerArray.push({
+          lat: searchResults[i].dentistInfo.lat,
+          lng: searchResults[i].dentistInfo.lng,
+        });
+      }
+
+      return <GoogleMaps markers={markerArray} />;
+    }
+
+    return false;
+  }
+
   render () {
     const borderContent = (
       <span className="text-uppercase">
@@ -135,7 +156,7 @@ export default class SearchPage extends Component {
               {this.renderResults()}
             </div>
             <div className="col-md-6">
-
+              {this.renderMap()}
             </div>
           </div>
         </div>
