@@ -182,11 +182,13 @@ class SignupForm extends React.Component {
             className="col-sm-4"
           >
             <option value="">Select dental office</option>
-            {offices.map(e =>
-              <option value={e.id} key={e.id}>
-                {e.officeName}
-              </option>
-            )}
+            {offices.map((office) => {
+              return (
+                <option value={office.id} key={office.id}>
+                  {office.officeName}
+                </option>
+              );
+            })}
           </Field>
 
           <Field

@@ -71,7 +71,7 @@ Family
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class FamilyPage extends React.Component {
+class YourFamilyPage extends React.Component {
 
   static propTypes = {
     // state
@@ -183,4 +183,4 @@ class FamilyPage extends React.Component {
 
 }
 
-export default FamilyPage;
+export default YourFamilyPage;

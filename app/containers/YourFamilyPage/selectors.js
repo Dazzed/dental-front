@@ -17,7 +17,7 @@ import { selectCurrentUser } from 'containers/App/selectors';
 Selectors
 ------------------------------------------------------------
 */
-const domainSelector = state => state.familyPage;
+const domainSelector = state => state.yourFamilyPage;
 
 const familyMembersSelector = createSelector(
   domainSelector,

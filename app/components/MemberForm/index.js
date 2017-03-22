@@ -26,7 +26,7 @@ import renderDatePicker from 'components/DatePicker';
 import LabeledInput from 'components/LabeledInput';
 import {
   editingMemberSelector
-} from 'containers/FamilyPage/selectors';
+} from 'containers/YourFamilyPage/selectors';
 
 // local
 import styles from './styles.css';
