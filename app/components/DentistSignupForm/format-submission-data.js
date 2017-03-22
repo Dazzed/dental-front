@@ -54,7 +54,7 @@ const formatDentistSignupFormSubmissionData = (data) => {
   // The server needs an array of Service ids. Redux-Form will only included
   // checked Services, so no filtering is necessary.
   data.services = Object.keys(data.services).map((serviceId) => {
-    return serviceId.subStr(8); // "service-51" => "51"
+    return serviceId.substr(8); // "service-51" => "51"
   });
 
   // The server needs an array of WorkingHours objects, not an object of them
