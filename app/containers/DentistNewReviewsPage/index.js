@@ -249,18 +249,16 @@ class DentistNewReviewsPage extends React.Component {
         const mostRecentReviewA = recentReviewers[reviewerA.id].reviews[0];
         const mostRecentReviewB = recentReviewers[reviewerB.id].reviews[0];
 
-        if (mostRecentReviewA.createdAt < mostRecentReviewB.createdAt) {
+        if (mostRecentReviewA.createdAt > mostRecentReviewB.createdAt) {
           return -1;
         }
-        else if (mostRecentReviewA > mostRecentReviewB) {
+        else if (mostRecentReviewA.createdAt < mostRecentReviewB.createdAt) {
           return 1;
         }
 
         return 0;
       });
 
-    console.log(recentReviewers);
-    console.log(recentReviewerPatients);
 
     return (
       <div>
