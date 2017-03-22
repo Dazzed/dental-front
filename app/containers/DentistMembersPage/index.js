@@ -112,35 +112,38 @@ class DentistMembersPage extends React.Component {
   ------------------------------------------------------------
   */
   addMember = (patient) => {
-    // TODO
-  }
-
-  cancelMember = (patient, member) => {
-    // TODO
+    /* TODO, verified it's called */
+    alert('TODO: add member');
   }
 
   reEnrollMember = (patient, member) => {
-    // TODO
+    /* TODO, UNVERIFIED */
+    alert('TODO: re-enroll member');
   }
 
   removeMember = (patient, member) => {
-    // TODO
+    /* TODO, verified it's called */
+    alert('TODO: remove member');
   }
 
   renewMember = (patient, member) => {
-    // TODO
+    /* TODO, UNVERIFIED */
+    alert('TODO: renewMember');
   }
 
   toggleCancelationFee = (patient) => {
-    // TODO
+    /* TODO, verified it's called */
+    alert('TODO: toggle cancelation fee');
   }
 
   toggleReEnrollmentFee = (patient) => {
-    // TODO
+    /* TODO, verified it's called */
+    alert('TODO: toggle re-enrollment fee');
   }
 
   updateMember = (patient, member) => {
-    // TODO
+    /* TODO, verified it's called */
+    alert('TODO: update member');
   }
 
   /*
@@ -231,7 +234,6 @@ class DentistMembersPage extends React.Component {
             patients={patients}
 
             onAddMember={this.addMember}
-            onCancelMember={this.cancelMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
             onRenewMember={this.renewMember}
