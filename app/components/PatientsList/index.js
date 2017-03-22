@@ -17,10 +17,10 @@ import FaCaretRight from 'react-icons/lib/fa/caret-right';
 
 // app
 import {
-  MEMBER_RELATIONSHIP_TYPES,
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
 import Avatar from 'components/Avatar';
+import MembersList from 'components/MembersList';
 
 // local
 import styles from './styles.css';
@@ -45,6 +45,7 @@ class PatientsList extends React.Component {
     onToggleReEnrollmentFee: React.PropTypes.func.isRequired,
 
     onReEnrollMember: React.PropTypes.func.isRequired,
+    onRemoveMember: React.PropTypes.func.isRequired,
     onRenewMember: React.PropTypes.func.isRequired,
     onUpdateMember: React.PropTypes.func.isRequired,
   }
@@ -53,7 +54,7 @@ class PatientsList extends React.Component {
     super(props);
 
     this.state = {
-      showMemberDetails: false,
+      showMemberDetails: {},
     };
   }
 
@@ -61,10 +62,16 @@ class PatientsList extends React.Component {
   State Actions
   ------------------------------------------------------------
   */
-  toggleMemberDetails = () => {
+  toggleMemberDetails = (memberId) => () => {
+    let showMemberDetails = {
+      ...this.state.showMemberDetails,
+    };
+
+    showMemberDetails[memberId] = !this.state.showMemberDetails[memberId];
+
     this.setState({
       ...this.state,
-      showMemberDetails: !this.state.showMemberDetails
+      showMemberDetails,
     })
   }
 
@@ -77,23 +84,13 @@ class PatientsList extends React.Component {
   onAddClick = (patient) => {
     this.props.onAddMember(patient);
   }
+
   onCancelationFeeClick = (patient) => {
     this.props.onToggleCancelationFee(patient);
   }
+
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient);
-  }
-
-  // NOTE: The following functions must be bound to the patient and member in
-  //       the member specific event attributes.
-  onReEnrollClick = (patient, member) => {
-    this.props.onReEnrollMember(patient, member);
-  }
-  onRenewClick = (patient, member) => {
-    this.props.onRenewMember(patient, member);
-  }
-  onUpdateClick = (patient, member) => {
-    this.props.onUpdateMember(patient, member);
   }
 
   /*
@@ -102,8 +99,17 @@ class PatientsList extends React.Component {
   */
   render () {
     const {
+      // passed in - data
       patients,
+
+      // passed in - higher order functions
       getAdditionalMembershipContent,
+
+      // passed in - event handlers
+      onReEnrollMember,
+      onRemoveMember,
+      onRenewMember,
+      onUpdateMember,
     } = this.props;
 
     const patientRows = patients.map((patient) => {
@@ -120,22 +126,22 @@ class PatientsList extends React.Component {
         subscription,
       } = patient;
 
-      let statusStyle = "member-overview__status";
+      let statusStyle = "status";
       switch(subscription.status) {
         case "active":
-          statusStyle += " member-overview__status--active";
+          statusStyle += " status--active";
           break;
 
         case "past_due":
-          statusStyle += " member-overview__status--past-due";
+          statusStyle += " status--past-due";
           break;
 
         case "canceled":
-          statusStyle += " member-overview__status--canceled";
+          statusStyle += " status--canceled";
           break;
 
         case "inactive":
-          statusStyle += " member-overview__status--inactive";
+          statusStyle += " status--inactive";
           break;
 
         default:
@@ -187,7 +193,9 @@ class PatientsList extends React.Component {
                   <div className="col-sm-7">
                     <h3 styleName="member-overview__name">{firstName} {lastName}</h3>
                     {' '}
-                    <span styleName={statusStyle}>({subscription.status})</span>
+                    <span styleName={"member-overview__status " + statusStyle}>
+                      ({subscription.status})
+                    </span>
                   </div>
                   <div className="col-sm-5 text-right">
                     Member Since:
@@ -218,10 +226,10 @@ class PatientsList extends React.Component {
                       <a href={`mailto:${email}`} styleName="member-overview__email">{email}</a>
                     </div>
                     <div className="col-sm-3 text-right">
-                      <span styleName="member-overview__details-toggle" onClick={this.toggleMemberDetails}>
+                      <span styleName="member-overview__details-toggle" onClick={this.toggleMemberDetails(id)}>
                         Member Details
                         {' '}
-                        {this.state.showMemberDetails
+                        {this.state.showMemberDetails[id]
                            ? <FaCaretDown />
                            : <FaCaretRight />
                         }
@@ -237,79 +245,89 @@ class PatientsList extends React.Component {
               Member Details
               ------------------------------------------------------------
               */}
-              {this.state.showMemberDetails && (
-                <div className="row">
-                  
-                  {/*
-                  Family Members List
-                  ------------------------------------------------------------
-                  */}
-                  <div className="col-sm-8">
-                    {/* TODO: make a dentist oriented version of the family members list and include it here */}
-                  </div>
-                                   
-                  <div className="col-sm-4">
+              {this.state.showMemberDetails[id] && (
+                <div styleName="divided-row">
+                  <div className="row">
+                    
                     {/*
-                    Subscription Overview
-                    ------------------------------------------------------------
-                    TODO: Clarify what values to show for each member status, and
-                          how to calculate them.
-                    */}
-                    <div styleName="subscription-overview">
-                      <p>
-                        Membership:
-                        {' '}
-                        {/* TODO: set a colored status style similar to the membership-overview status */}
-                        <span>{subscription.status}</span>
-                      </p>
-                      <p>
-                        Recurring Payment Date:
-                        {' '}
-                        <span styleName="subscription-overview__info">{paymentDueDate}</span>
-                      </p>
-                      <p>
-                        Total Monthly Payment:
-                        {' '}
-                        <span styleName="subscription-overview__info">${paymentDueAmount}</span>
-                      </p>
-                    </div>
-
-                    {/*
-                    Controls
+                    Family Members List
                     ------------------------------------------------------------
                     */}
-                    <div styleName="controls">
-                      <p>
-                        <input
-                          type="button"
-                          styleName="button--wide"
-                          value="ADD MEMBER"
-                          onClick={this.onAddClick.bind(this, patient)}
-                        />
-                      </p>
-                      <p>
-                        <label>
+                    <div className="col-sm-9">
+                      <MembersList
+                        patient={patient}
+
+                        onReEnrollMember={onReEnrollMember}
+                        onRemoveMember={onRemoveMember}
+                        onRenewMember={onRenewMember}
+                        onUpdateMember={onUpdateMember}
+                      />
+                    </div>
+                                     
+                    <div className="col-sm-3">
+                      {/*
+                      Subscription Overview
+                      ------------------------------------------------------------
+                      TODO: Clarify what values to show for each member status, and
+                            how to calculate them.
+                      */}
+                      <div styleName="subscription-overview">
+                        <p>
+                          Membership:
+                          <br />
+                          <span styleName={statusStyle}>{subscription.status}</span>
+                        </p>
+                        <p>
+                          Recurring Payment Date:
+                          <br />
+                          <span styleName="subscription-overview__info">{paymentDueDate}</span>
+                        </p>
+                        <p>
+                          Total Monthly Payment:
+                          <br />
+                          <span styleName="subscription-overview__info">${paymentDueAmount}</span>
+                        </p>
+                      </div>
+
+                      {/*
+                      Controls
+                      ------------------------------------------------------------
+                      */}
+                      <div styleName="controls">
+                        <p>
                           <input
-                            type="checkbox"
-                            onChange={this.onCancelationFeeClick.bind(this, patient)}
+                            type="button"
+                            styleName="button--wide"
+                            value="ADD MEMBER"
+                            onClick={this.onAddClick.bind(this, patient)}
                           />
-                          Waive Cancellation Fee
-                        </label>
-                      </p>
-                      <p>
-                        <label>
-                          <input
-                            type="checkbox"
-                            onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
-                          />
-                          Waive Re-enrollment Fee
-                        </label>
-                      </p>
+                        </p>
+                        <p>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={this.onCancelationFeeClick.bind(this, patient)}
+                            />
+                            Waive Cancellation Fee
+                          </label>
+                        </p>
+                        <p>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
+                            />
+                            Waive Re-enrollment Fee
+                          </label>
+                        </p>
+                      </div>
+
+                    {/* End Right Col */}
                     </div>
 
-                  {/* End Right Col */}
+                  {/* End Member Details Row */}
                   </div>
-                {/* End Member Details Row */}
+                {/* End Divided Row */}
                 </div>
               )}
                

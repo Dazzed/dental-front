@@ -72,7 +72,7 @@ class PatientReviews extends React.Component {
               &#8220;{message}&#8221;
             </p>
 
-            <div styleName="review__reply">
+            <div>
               <a href={`mailto:${email}`}>
                 <input
                   type="button"

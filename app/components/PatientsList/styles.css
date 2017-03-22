@@ -57,8 +57,37 @@ Patient List
 .patient-list__entry {
   padding: 1rem;
   border-radius: 1rem;
+  margin-bottom: 5rem;
 
   background-color: rgb(250, 250, 250);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/*
+Status
+------------------------------------------------------------
+*/
+.status {
+  color: $color-black;
+
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.status--active {
+  color: $color-secondary-highlight;
+}
+.status--past-due {
+  /* TODO: choose a better yellow, see MembersList css */
+  color: yellow;
+}
+.status--canceled {
+  color: $color-red;
+}
+.status--inactive {
+  color: $color-red;
 }
 
 /*
@@ -98,25 +127,7 @@ Member Overview
 }
 
 .member-overview__status {
-  font-weight: normal;
-  text-transform: capitalize;
   vertical-align: text-bottom;
-}
-.member-overview__status {
-  color: $color-black;
-}
-.member-overview__status--active {
-  color: $color-secondary-highlight;
-}
-.member-overview__status--past-due {
-  /* TODO: choose a better yellow */
-  color: yellow;
-}
-.member-overview__status--canceled {
-  color: $color-red;
-}
-.member-overview__status--inactive {
-  color: $color-red;
 }
 
 .member-overview__info {
@@ -141,11 +152,15 @@ Subscription Overview
 ------------------------------------------------------------
 */
 .subscription-overview {
-  /* TODO */
+  color: $color-primary-lowlight;
+
+  font-weight: 300;
 }
 
 .subscription-overview__info {
-  /* TODO */
+  color: $color-black;
+
+  font-weight: bold;
 }
 
 /*
@@ -153,5 +168,12 @@ Controls
 ------------------------------------------------------------
 */
 .controls {
-  /* TODO */
+  color: $color-primary-lowlight;
+
+  font-weight: 300;
+
+  label {
+    cursor: pointer;
+    font-weight: 300;
+  }
 }

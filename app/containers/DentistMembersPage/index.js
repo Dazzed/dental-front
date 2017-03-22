@@ -113,11 +113,15 @@ class DentistMembersPage extends React.Component {
     // TODO
   }
 
-  renewMember = (patient, member) => {
+  reEnrollMember = (patient, member) => {
     // TODO
   }
 
-  reEnrollMember = (patient, member) => {
+  removeMember = (patient, member) => {
+    // TODO
+  }
+
+  renewMember = (patient, member) => {
     // TODO
   }
 
@@ -221,6 +225,7 @@ class DentistMembersPage extends React.Component {
             onAddMember={this.addMember}
             onCancelMember={this.cancelMember}
             onReEnrollMember={this.reEnrollMember}
+            onRemoveMember={this.removeMember}
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
