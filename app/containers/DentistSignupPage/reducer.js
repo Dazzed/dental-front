@@ -63,7 +63,20 @@ export default function reducer (state = initialState, action) {
     case PRICING_CODES_SUCCESS:
       return {
         ...state,
-        pricingCodes: action.payload,
+        pricingCodes: action.payload
+          .map((priceCode) => {
+            return priceCode.code;
+          })
+          .sort((priceCodeNameA, priceCodeNameB) => {
+            if (priceCodeNameA < priceCodeNameB) {
+              return -1;
+            }
+            else if (priceCodeNameA > priceCodeNameB) {
+              return 1;
+            }
+
+            return 0;
+          }),
       };
 
     /*
