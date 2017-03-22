@@ -130,6 +130,9 @@ class YourDentistPage extends React.Component {
   ------------------------------------------------------------
   */
   handleReviewFormSubmit = (values) => {
+    // TODO: titles were removed from reviews
+    // fake a title to prevent backend errors
+    values.title = "My Review";
     this.props.submitReviewForm(values, this.props.dentist.id);
   }
 
@@ -187,7 +190,7 @@ class YourDentistPage extends React.Component {
                 </h2>
 
                 {/* TODO: dentist does not provide rating info */}
-                <ReviewScore score={dentist.dentistInfo.rating} />
+                <ReviewScore score={dentist.rating} />
               </div>
             </div>
 
@@ -199,7 +202,7 @@ class YourDentistPage extends React.Component {
               <div styleName="profile-content__user-action-buttons">
                 <p>
                   {/* TODO: Verify this works. */}
-                  <a href={"mailto:" + dentist.dentistInfo.email}>
+                  <a href={"mailto:" + dentist.email}>
                     <input
                       type="button"
                       styleName="button--full-width"
@@ -236,16 +239,16 @@ class YourDentistPage extends React.Component {
 
                 <p styleName="detail__content">
                   {/* TODO: verify this works */}
-                  {dentist.dentistInfo.officeName}
+                  {dentist.officeName}
                   <br />
-                  {dentist.dentistInfo.address}
+                  {dentist.address}
                   <br />
-                  {dentist.dentistInfo.city}, {dentist.dentistInfo.state} {dentist.dentistInfo.zipCode}
+                  {dentist.city}, {dentist.state} {dentist.zipCode}
                 </p>
 
                 <p styleName="detail__content">
                   {/* TODO: verify this works */}
-                  <a href={"tel:" + dentist.dentistInfo.phone}>{dentist.dentistInfo.phone}</a>
+                  <a href={"tel:" + dentist.phone}>{dentist.phone}</a>
                 </p>
               </div>
 
@@ -256,7 +259,7 @@ class YourDentistPage extends React.Component {
 
                 <p styleName="detail__content">
                   {/* TODO: verify this works */}
-                  <a href={dentist.dentistInfo.url}>{dentist.dentistInfo.url}</a>
+                  <a href={dentist.url}>{dentist.url}</a>
                 </p>
               </div>
 
