@@ -15,6 +15,7 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 
 // app
+import contactAdminProfilePhoto from 'assets/images/contact-admin-profile-photo.jpg';
 import Avatar from 'components/Avatar';
 import {
   changePageTitle,
@@ -67,7 +68,7 @@ export default class ContactAdminPage extends Component {
               */}
               <div className="col-sm-2">
                 <div styleName="admin-avatar">
-                  <Avatar url={null} size={'100%'} />
+                  <Avatar url={contactAdminProfilePhoto} size={'100%'} />
                 </div>
               </div>
 
