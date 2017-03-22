@@ -111,49 +111,49 @@ const mapStateToProps = (state) => {
   };
 
   if (pricing.codes) {
-    const D1110 = parseFloat(pricing.codes.D1110);
     const D0120 = parseFloat(pricing.codes.D0120);
+    const D0140 = parseFloat(pricing.codes.D0140);
+    const D0220 = parseFloat(pricing.codes.D0220);
+    const D0272 = parseFloat(pricing.codes.D0272);
     const D0274 = parseFloat(pricing.codes.D0274);
     const D0330 = parseFloat(pricing.codes.D0330);
-    const D0220 = parseFloat(pricing.codes.D0220);
-    const D0140 = parseFloat(pricing.codes.D0140);
+    const D1110 = parseFloat(pricing.codes.D1110);
     const D1120 = parseFloat(pricing.codes.D1120);
-    const D0272 = parseFloat(pricing.codes.D0272);
     const D1206 = parseFloat(pricing.codes.D1206);
 
-    if ( isNaN(D1110) === false
-      && isNaN(D0120) === false
+    if ( isNaN(D0120) === false
+      && isNaN(D0140) === false
+      && isNaN(D0220) === false
       && isNaN(D0274) === false
       && isNaN(D0330) === false
-      && isNaN(D0220) === false
-      && isNaN(D0140) === false
+      && isNaN(D1110) === false
     ) {
       baseRecommendedFee.adult = (
-          D1110 * 2
-        + D0120 * 2
-        + D0274
-        + D0330 * 0.3
-        + D0220
+          (D0120 * 2)
         + D0140
+        + D0220
+        + D0274
+        + (D0330 * 0.3)
+        + (D1110 * 2)
       );
     }
 
-    if ( isNaN(D1120) === false
-      && isNaN(D0120) === false
+    if ( isNaN(D0120) === false
+      && isNaN(D0140) === false
+      && isNaN(D0220) === false
       && isNaN(D0272) === false
       && isNaN(D0330) === false
-      && isNaN(D0220) === false
-      && isNaN(D0140) === false
+      && isNaN(D1120) === false
       && isNaN(D1206) === false
     ) {
       baseRecommendedFee.child = (
-          pricing.codes.D1120 * 2
-        + pricing.codes.D0120 * 2
-        + pricing.codes.D0272
-        + pricing.codes.D0330 * 0.3
-        + pricing.codes.D0220
-        + pricing.codes.D0140
-        + pricing.codes.D1206
+          (D0120 * 2)
+        + D0140
+        + D0220
+        + D0272
+        + (D0330 * 0.3)
+        + (D1120 * 2)
+        + D1206
       );
     }
   }
@@ -582,7 +582,6 @@ class DentistSignupForm extends React.Component {
         {/*
         Pricing
         ------------------------------------------------------------
-        TODO: Pull pricing codes from the backend.  See `app/containers/DentistSignupPage/sagas.js`.
         */}
         <FormSection name="pricing">
 
