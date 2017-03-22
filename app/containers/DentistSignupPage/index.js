@@ -158,12 +158,17 @@ export default class SignupPage extends Component {
       delete data.officeInfo.childStartingAge;
     }
 
-    // Normalize pricing values.
+    // Normalize pricing values.  Reformat the pricing codes from an object
+    // with code => amount entries to an array of objects, one per price code.
     data.pricing = {
       ...data.pricing, // just incase another field is accidentally added to the form but not added here
 
-      codes: data.pricing.codes.map((priceCodeAmount) => {
-        return parseFloat(priceCodeAmount).toFixed(2);
+      codes: Object.keys(data.pricing.codes).map((code) => {
+        const amount = data.pricing.codes[code];
+        return {
+          code: code.substr(1), // "D1234" => "1234"
+          amount: parseFloat(amount).toFixed(2),
+        };
       }),
 
       adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee).toFixed(2),
@@ -171,15 +176,25 @@ export default class SignupPage extends Component {
       adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2),
       childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2),
 
-      adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated || false,
-      childYearlyFeeActivated: data.pricing.childYearlyFeeActivated || false,
+      adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated === true || false,
+      childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true || false,
 
       treatmentDiscount: data.pricing.treatmentDiscount,
     };
 
+    // Remove unactivated yearly fee amounts.
+    if (data.pricing.adultYearlyFeeActivated === false) {
+      delete data.pricing.adultYearlyFee;
+    }
+    if (data.pricing.childYearlyFeeActivated === false) {
+      delete data.pricing.childYearlyFee;
+    }
+
     // The server needs an array of Service ids. Redux-Form will only included
     // checked Services, so no filtering is necessary.
-    data.services = Object.keys(data.services);
+    data.services = Object.keys(data.services).map((serviceId) => {
+      return serviceId.subStr(8); // "service-51" => "51"
+    });
 
     // The server needs an array of WorkingHours objects, not an object of them
     // indexed by day name.

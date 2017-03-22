@@ -40,7 +40,7 @@ Field Validators
 ------------------------------------------------------------
 */
 const requiredValidator = (name) => (value) => {
-  return value !== null && value !== undefined
+  return value !== undefined
     ? undefined // all good
     : `Please enter a(n) ${name}.`;
 }
@@ -518,17 +518,19 @@ class DentistSignupForm extends React.Component {
                 </div>
 
                 {pricingCodes.map((pricingCode) => {
+                  const pricingCodeName = "D" + pricingCode;
+
                   return (
-                    <div className="row" styleName="pricing-codes__entry" key={pricingCode}>
+                    <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
                       <div className="col-sm-6">
                         <div styleName="pricing-codes__entry__code">
-                          {pricingCode}
+                          {pricingCodeName}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <Row>
                           <Field
-                            name={pricingCode}
+                            name={pricingCodeName}
                             type="number"
                             component={InputGroup}
                             leftAddon="$"
@@ -701,10 +703,12 @@ class DentistSignupForm extends React.Component {
           {optedIntoMarketplace && (
             <Row>
               {services.map((service) => {
+                const serviceKey = "service-" + service.id;
+
                 return (
-                  <div className="col-sm-4" key={service.id}>
+                  <div className="col-sm-4" key={serviceKey}>
                     <Field
-                      name={service.id.toString()}
+                      name={serviceKey}
                       component={Checkbox}
                     >
                       <span>{service.name}</span>
