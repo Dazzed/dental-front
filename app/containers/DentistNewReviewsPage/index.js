@@ -240,9 +240,27 @@ class DentistNewReviewsPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
-    const recentReviewerPatients = Object.keys(recentReviewers).map((key) => {
-      return recentReviewers[key].reviewer;
-    });
+    const recentReviewerPatients = Object.keys(recentReviewers)
+      .map((reviewerId) => {
+        return recentReviewers[reviewerId].reviewer;
+      })
+      .sort((reviewerA, reviewerB) => {
+        // NOTE: Reviews are already sorted from most recent to least.
+        const mostRecentReviewA = recentReviewers[reviewerA.id].reviews[0];
+        const mostRecentReviewB = recentReviewers[reviewerB.id].reviews[0];
+
+        if (mostRecentReviewA.createdAt < mostRecentReviewB.createdAt) {
+          return -1;
+        }
+        else if (mostRecentReviewA > mostRecentReviewB) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+    console.log(recentReviewers);
+    console.log(recentReviewerPatients);
 
     return (
       <div>

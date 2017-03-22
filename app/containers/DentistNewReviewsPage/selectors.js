@@ -78,7 +78,7 @@ const selectRecentReviewers = createSelector(
     }
 
     // {reviewer, reviews} indexed by `reviewer.id`
-    return newReviews.reduce((recentReviewersCollector, newReview) => {
+    const recentReviewers = newReviews.reduce((recentReviewersCollector, newReview) => {
       const reviewer = newReview.reviewer;
       const review = newReview.review;
 
@@ -93,6 +93,29 @@ const selectRecentReviewers = createSelector(
 
       return recentReviewersCollector;
     }, {});
+
+    // Order each reviews array from most recent to least.  String comparisons
+    // will work since ISO date-times include all digits in all fields, even if
+    // the leading one is 0.
+    for (let reviewerId in recentReviewers) {
+      if (recentReviewers.hasOwnProperty(reviewerId)) {
+
+        const reviews = recentReviewers[reviewerId].reviews;
+        recentReviewers[reviewerId].reviews = reviews.sort((reviewA, reviewB) => {
+          if (reviewA.createdAt > reviewB.createdAt) {
+            return -1;
+          }
+          else if (reviewA.createdAt < reviewB.createdAt) {
+            return 1;
+          }
+
+          return 0;
+        });
+
+      }
+    }
+
+    return recentReviewers;
   }
 );
 

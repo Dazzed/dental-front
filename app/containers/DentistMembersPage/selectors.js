@@ -68,7 +68,33 @@ const selectProcessedPatients = createSelector(
     }
 
     // sort
-    // TODO
+    // TODO: Once individual member subscription status' are available, the
+    //       sort should take those into account.
+    processedPatients = processedPatients.sort((patientA, patientB) => {
+      // one matches, the other doesn't
+      const matchA = patientA.subscription.status === sortStatus;
+      const matchB = patientB.subscription.status === sortStatus;
+
+      if (matchA === false && matchB === true) {
+        return -1;
+      }
+      else if (matchA === true && matchB === false) {
+        return 1;
+      }
+
+      // both match or both don't match
+      const nameA = patientA.firstName + ' ' + patientA.lastName;
+      const nameB = patientB.firstName + ' ' + patientB.lastName;
+
+      if (nameA < nameB) {
+        return -1
+      }
+      else if (nameA > nameB) {
+        return 1;
+      }
+
+      return 0;
+    });
 
     return processedPatients;
   }
