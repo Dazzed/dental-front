@@ -28,15 +28,23 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
+  // fetch
   fetchFamilyMembers,
+
+  // add / edit member
   setEditingMember,
   clearEditingMember,
   submitMemberForm,
+
+  // remove member
   setRemovingMember,
 } from './actions';
 import {
-  editingActiveSelector,
+  // fetch
   membersSelector,
+
+  // add / edit member
+  editingActiveSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -46,20 +54,30 @@ Redux
 */
 function mapStateToProps (state) {
   return {
-    editingActive: editingActiveSelector(state),
+    // fetch
     members: membersSelector(state),
     user: selectCurrentUser(state),
+
+    // add / edit member
+    editingActive: editingActiveSelector(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
+
+    // fetch
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
+
+    // add / edit member
     resetForm: () => dispatch(resetForm('familyMember')),
     setEditingMember: (member) => dispatch(setEditingMember(member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+
+    // remove member
     setRemovingMember: (member, userId) => dispatch(setRemovingMember(member, userId)),
   };
 }
@@ -74,8 +92,10 @@ Family
 class YourFamilyPage extends React.Component {
 
   static propTypes = {
-    // state
-    editingActive: React.PropTypes.bool.isRequired,
+    // app - dispatch
+    changePageTitle: React.PropTypes.func.isRequired,
+
+    // fetch - state
     members: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
@@ -85,13 +105,19 @@ class YourFamilyPage extends React.Component {
       React.PropTypes.object,
     ]),
 
-    // dispatch
-    changePageTitle: React.PropTypes.func.isRequired,
+    // fetch - dispatch
     fetchFamilyMembers: React.PropTypes.func.isRequired,
+
+    // add / edit member - state
+    editingActive: React.PropTypes.bool.isRequired,
+
+    // add / edit member - dispatch
     resetForm: React.PropTypes.func.isRequired,
     setEditingMember: React.PropTypes.func.isRequired,
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
+
+    // remove member - dispatch
     setRemovingMember: React.PropTypes.func.isRequired,
   }
 
@@ -135,7 +161,13 @@ class YourFamilyPage extends React.Component {
   ------------------------------------------------------------
   */
   render () {
-    const { editingActive, members } = this.props;
+    const {
+      // fetch
+      members,
+
+      // add / edit member
+      editingActive,
+    } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
     if (members === false) {

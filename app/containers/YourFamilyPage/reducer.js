@@ -35,11 +35,15 @@ const initialState = {
 
 /*
 Reducer
-------------------------------------------------------------
+================================================================================
 */
 function yourFamilyPageReducer (state = initialState, action) {
   let memberIdx;
 
+  /*
+  Fetch
+  ------------------------------------------------------------
+  */
   switch (action.type) {
     case FAMILY_MEMBERS_SUCCESS:
       return {
@@ -47,6 +51,10 @@ function yourFamilyPageReducer (state = initialState, action) {
         familyMembers: action.payload,
       };
 
+    /*
+    Add / Edit Member
+    ------------------------------------------------------------
+    */
     case SET_EDITING_MEMBER:
       return {
         ...state,
@@ -86,6 +94,10 @@ function yourFamilyPageReducer (state = initialState, action) {
         editingMember: null,
       };
 
+    /*
+    Remove Member
+    ------------------------------------------------------------
+    */
     case REMOVE_MEMBER_SUCCESS:
       memberIdx = findIndex(state.familyMembers, { id: action.memberId });
 
@@ -97,6 +109,10 @@ function yourFamilyPageReducer (state = initialState, action) {
         ],
       };
 
+    /*
+    Default
+    ------------------------------------------------------------
+    */
     default:
       return state;
   }

@@ -23,9 +23,12 @@ import request from 'utils/request';
 import {
   setDentist,
   setDentistErrors,
+
+  setSentReview,
 } from './actions';
 import {
   DENTIST_REQUEST,
+  SUBMIT_REVIEW_FORM,
 } from './constants';
 
 
@@ -41,11 +44,17 @@ export default [
 
 function* main () {
   const watcherA = yield fork(dentistFetcher);
+  const watcherB = yield fork(submitReviewFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
+  yield cancel(watcherB);
 }
 
+/*
+Fetch
+------------------------------------------------------------
+*/
 function* dentistFetcher () {
   yield* takeLatest(DENTIST_REQUEST, function* handler () {
     try {
@@ -55,4 +64,34 @@ function* dentistFetcher () {
       yield put(setDentistErrors(err));
     }
   });
+}
+
+/*
+Send Review
+------------------------------------------------------------
+*/
+function* submitReviewFormWatcher() {
+  while (true) {
+    const { payload, dentistId } = yield take(SUBMIT_REVIEW_FORM);
+
+    try {
+      const requestURL = `/api/v1/dentists/${dentistId}/review`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = "Your review has been submitted.";
+      yield put(toastrActions.success('', message));
+
+      yield put(setSentReview(response.data, dentistId));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('sendReview'));
+    }
+  }
 }

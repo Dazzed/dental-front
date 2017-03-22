@@ -241,4 +241,3 @@ export default class MemberForm extends React.Component {
     );
   }
 }
-

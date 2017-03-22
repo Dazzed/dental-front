@@ -20,15 +20,27 @@ import { reset as resetForm } from 'redux-form';
 import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
+import ReviewForm from 'components/ReviewForm';
+import ReviewScore from 'components/ReviewScore';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
+  // fetch
   fetchDentist,
+
+  // send review
+  setEditingReview,
+  clearEditingReview,
+  submitReviewForm,
 } from './actions';
 import {
+  // fetch
   dentistSelector,
+
+  // send review
+  editingActiveSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -38,17 +50,28 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    // fetch
     dentist: dentistSelector(state),
     user: selectCurrentUser(state),
+
+    // send review
+    editingActive: editingActiveSelector(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
+
+    // fetch
     fetchDentist: () => dispatch(fetchDentist()),
-    resetForm: () => dispatch(resetForm('TODO')),
-    // TODO
+
+    // send review
+    resetForm: () => dispatch(resetForm('sendReview')),
+    setEditingReview: (review) => dispatch(setEditingReview(review)),
+    clearEditingReview: () => dispatch(clearEditingReview()),
+    submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
   };
 }
 
@@ -62,7 +85,10 @@ Dentist
 class YourDentistPage extends React.Component {
 
   static propTypes = {
-    // state
+    // app - dispatch
+    changePageTitle: React.PropTypes.func.isRequired,
+
+    // fetch - state
     dentist: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -72,10 +98,17 @@ class YourDentistPage extends React.Component {
       React.PropTypes.object,
     ]),
 
-    // dispatch
-    changePageTitle: React.PropTypes.func.isRequired,
+    // fetch - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
+
+    // send review - state
+    editingActive: React.PropTypes.bool.isRequired,
+
+    // send review - dispatch
     resetForm: React.PropTypes.func.isRequired,
+    setEditingReview: React.PropTypes.func.isRequired,
+    clearEditingReview: React.PropTypes.func.isRequired,
+    submitReviewForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -87,30 +120,36 @@ class YourDentistPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  sendMessage = () => {
-    // TODO
-  }
-
   writeReview = () => {
-    // TODO
-  }
-
-  changeDentist = () => {
-    // TODO
+    this.props.resetForm();
+    this.props.setEditingReview(null);
   }
 
   /*
   Form Events
   ------------------------------------------------------------
   */
-  // TODO
+  handleReviewFormSubmit = (values) => {
+    this.props.submitReviewForm(values, this.props.dentist.id);
+  }
+
+  cancelReviewFormAction = () => {
+    this.props.clearEditingReview();
+  }
 
   /*
   Render
   ------------------------------------------------------------
   */
   render () {
-    const { dentist, user } = this.props;
+    const {
+      // fetch
+      dentist,
+      user,
+
+      // send review
+      editingActive,
+    } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
     if (dentist === false) {
@@ -147,7 +186,8 @@ class YourDentistPage extends React.Component {
                   {dentist.firstName} {dentist.lastName}
                 </h2>
 
-                <p>TODO: Rating</p>
+                {/* TODO: dentist does not provide rating info */}
+                <ReviewScore score={dentist.dentistInfo.rating} />
               </div>
             </div>
 
@@ -158,12 +198,15 @@ class YourDentistPage extends React.Component {
             <div className="col-md-3" styleName="profile-content-wrapper">
               <div styleName="profile-content__user-action-buttons">
                 <p>
-                  <input
-                    type="button"
-                    styleName="button--full-width"
-                    value="SEND A MESSAGE"
-                    onClick={this.sendMessage}
-                  />
+                  {/* TODO: Verify this works. */}
+                  <a href={"mailto:" + dentist.dentistInfo.email}>
+                    <input
+                      type="button"
+                      styleName="button--full-width"
+                      value="SEND A MESSAGE"
+                      onClick={this.sendMessage}
+                    />
+                  </a>
                 </p>
 
                 <p>
@@ -172,15 +215,6 @@ class YourDentistPage extends React.Component {
                     styleName="button--full-width"
                     value="WRITE A REVIEW"
                     onClick={this.writeReview}
-                  />
-                </p>
-
-                <p>
-                  <input
-                    type="button"
-                    styleName="button--lowlight--full-width"
-                    value="CHANGE DENTIST"
-                    onClick={this.changeDentist}
                   />
                 </p>
               </div>
@@ -201,16 +235,17 @@ class YourDentistPage extends React.Component {
                 </h3>
 
                 <p styleName="detail__content">
-                  {/* TODO: {dentist.address} */}
-                  Wells Family Dental
+                  {/* TODO: verify this works */}
+                  {dentist.dentistInfo.officeName}
                   <br />
-                  123 Address Street
+                  {dentist.dentistInfo.address}
                   <br />
-                  Cityname, North Carolina 12345
+                  {dentist.dentistInfo.city}, {dentist.dentistInfo.state} {dentist.dentistInfo.zipCode}
                 </p>
 
                 <p styleName="detail__content">
-                  <a href="tel:450-512-2111">450-512-2111</a>
+                  {/* TODO: verify this works */}
+                  <a href={"tel:" + dentist.dentistInfo.phone}>{dentist.dentistInfo.phone}</a>
                 </p>
               </div>
 
@@ -220,8 +255,8 @@ class YourDentistPage extends React.Component {
                 </h3>
 
                 <p styleName="detail__content">
-                  {/* TODO: {dentist.website} */}
-                  <a href="https://google.com">WellsFamilyDental.com</a>
+                  {/* TODO: verify this works */}
+                  <a href={dentist.dentistInfo.url}>{dentist.dentistInfo.url}</a>
                 </p>
               </div>
 
@@ -230,17 +265,21 @@ class YourDentistPage extends React.Component {
                   Hours
                 </h3>
 
+                {/* TODO */}
                 <p styleName="detail__content">
-                  {/* {dentist.hours[0]} */}
-                  Monday - Thursday: 8AM - 6PM
+                  Monday: TODO
                   <br />
-                  {/* {dentist.hours[1]} */}
-                  Friday: 8AM - 4PM
-                </p>
-
-                <p styleName="detail__content">
-                  {/* {dentist.hours[2]} */}
-                  Closed Saturday &amp; Sunday
+                  Tuesday: TODO
+                  <br />
+                  Wednesday: TODO
+                  <br />
+                  Thursday: TODO
+                  <br />
+                  Friday: TODO
+                  <br />
+                  Saturday: TODO
+                  <br />
+                  Sunday: TODO
                 </p>
               </div>
 
@@ -252,7 +291,7 @@ class YourDentistPage extends React.Component {
             */}
             <div className="col-md-6">
               {/* TODO */}
-              TODO: need address for map...
+              TODO: Map goes here...
             </div>
 
           </div>
@@ -270,7 +309,7 @@ class YourDentistPage extends React.Component {
                 </h3>
 
                 <div className="row" styleName="detail__content">
-                  {/* TODO: {dentist.services} */}
+                  {/* TODO */}
 
                   <div className="col-md-3">
                     Cleanings &amp; Prevention
@@ -326,9 +365,20 @@ class YourDentistPage extends React.Component {
               </div>
             </div>
 
+          {/* End Last Row */}
           </div>
 
+        {/* End Content */}
         </div>
+
+        {/* displayed in a modal */}
+        <ReviewForm
+          show={editingActive}
+          onCancel={this.cancelReviewFormAction}
+          onSubmit={this.handleReviewFormSubmit}
+        />
+
+      {/* End Wrapper Div */}
       </div>
     );
   }

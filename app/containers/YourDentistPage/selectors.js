@@ -12,13 +12,33 @@ import { createSelector } from 'reselect';
 
 /*
 Selectors
-------------------------------------------------------------
+================================================================================
 */
 const domainSelector = state => state.yourDentistPage;
 
+/*
+Fetch
+------------------------------------------------------------
+*/
 const dentistSelector = createSelector(
   domainSelector,
   (substate) => { return substate.dentist; }
+);
+
+/*
+Send Review
+------------------------------------------------------------
+*/
+const editingActiveSelector = createSelector(
+  domainSelector,
+  (substate) => {
+    return substate.editingActive;
+  }
+);
+
+const editingReviewSelector = createSelector(
+  domainSelector,
+  substate => substate.editingReview,
 );
 
 /*
@@ -29,4 +49,7 @@ export default domainSelector;
 
 export {
   dentistSelector,
+
+  editingActiveSelector,
+  editingReviewSelector,
 };
