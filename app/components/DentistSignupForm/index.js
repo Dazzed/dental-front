@@ -81,6 +81,17 @@ const mapStateToProps = (state) => {
         child: false,
       },
 
+      recommendedFees: {
+        monthly: {
+          adult: "",
+          child: "",
+        },
+        yearly: {
+          adult: "",
+          child: "",
+        },
+      },
+
       // working hours
       officeClosed: {
         monday: true,
@@ -94,6 +105,59 @@ const mapStateToProps = (state) => {
     };
   }
 
+  const baseRecommendedFee = {
+    adult: null,
+    child: null,
+  };
+
+  if (pricing.codes) {
+    const D1110 = parseFloat(pricing.codes.D1110);
+    const D0120 = parseFloat(pricing.codes.D0120);
+    const D0274 = parseFloat(pricing.codes.D0274);
+    const D0330 = parseFloat(pricing.codes.D0330);
+    const D0220 = parseFloat(pricing.codes.D0220);
+    const D0140 = parseFloat(pricing.codes.D0140);
+    const D1120 = parseFloat(pricing.codes.D1120);
+    const D0272 = parseFloat(pricing.codes.D0272);
+    const D1206 = parseFloat(pricing.codes.D1206);
+
+    if ( isNaN(D1110) === false
+      && isNaN(D0120) === false
+      && isNaN(D0274) === false
+      && isNaN(D0330) === false
+      && isNaN(D0220) === false
+      && isNaN(D0140) === false
+    ) {
+      baseRecommendedFee.adult = (
+          D1110 * 2
+        + D0120 * 2
+        + D0274
+        + D0330 * 0.3
+        + D0220
+        + D0140
+      );
+    }
+
+    if ( isNaN(D1120) === false
+      && isNaN(D0120) === false
+      && isNaN(D0272) === false
+      && isNaN(D0330) === false
+      && isNaN(D0220) === false
+      && isNaN(D0140) === false
+      && isNaN(D1206) === false
+    ) {
+      baseRecommendedFee.child = (
+          pricing.codes.D1120 * 2
+        + pricing.codes.D0120 * 2
+        + pricing.codes.D0272
+        + pricing.codes.D0330 * 0.3
+        + pricing.codes.D0220
+        + pricing.codes.D0140
+        + pricing.codes.D1206
+      );
+    }
+  }
+
   return {
     // marketplace
     optedIntoMarketplace: marketplace.optIn === true,
@@ -102,6 +166,25 @@ const mapStateToProps = (state) => {
     yearlyFeeActivated: {
       adult: pricing.adultYearlyFeeActivated === true,
       child: pricing.childYearlyFeeActivated === true,
+    },
+
+    recommendedFees: {
+      monthly: {
+        adult: baseRecommendedFee.adult !== null
+                 ? (baseRecommendedFee.adult * 0.75 / 12).toFixed(2)
+                 : null,
+        child: baseRecommendedFee.child !== null
+                 ? (baseRecommendedFee.child * 0.7 / 12).toFixed(2)
+                 : null,
+      },
+      yearly: {
+        adult: baseRecommendedFee.adult !== null
+                 ? (baseRecommendedFee.adult * 0.7).toFixed(2)
+                 : null,
+        child: baseRecommendedFee.child !== null
+                 ? (baseRecommendedFee.child * 0.65).toFixed(2)
+                 : null,
+      },
     },
 
     // working hours
@@ -191,6 +274,7 @@ class DentistSignupForm extends React.Component {
       services,
 
       // mapped - state
+      recommendedFees,
       officeClosed,
       optedIntoMarketplace,
       yearlyFeeActivated,
@@ -574,6 +658,18 @@ class DentistSignupForm extends React.Component {
                 />
               </Row>
             </div>
+
+            <div className="col-sm-4">
+              {recommendedFees.monthly.adult && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.monthly.adult}
+                  </span>
+                </p>
+              )}
+            </div>
           </FormGroup>
 
           <FormGroup>
@@ -588,6 +684,18 @@ class DentistSignupForm extends React.Component {
                   width={6}
                 />
               </Row>
+            </div>
+
+            <div className="col-sm-4">
+              {recommendedFees.monthly.child && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.monthly.child}
+                  </span>
+                </p>
+              )}
             </div>
           </FormGroup>
 
@@ -607,7 +715,17 @@ class DentistSignupForm extends React.Component {
             </div>
 
             <div className="col-sm-4">
-              <div styleName="activation-checkbox--align">
+              {recommendedFees.yearly.adult && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.yearly.adult}
+                  </span>
+                </p>
+              )}
+
+              <div styleName="fees__activation-checkbox">
                 <Field
                   name="adultYearlyFeeActivated"
                   component={Checkbox}
@@ -634,7 +752,17 @@ class DentistSignupForm extends React.Component {
             </div>
 
             <div className="col-sm-4">
-              <div styleName="activation-checkbox--align">
+              {recommendedFees.yearly.child && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.yearly.child}
+                  </span>
+                </p>
+              )}
+
+              <div styleName="fees__activation-checkbox">
                 <Field
                   name="childYearlyFeeActivated"
                   component={Checkbox}
