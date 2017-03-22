@@ -27,7 +27,7 @@ import { Link } from 'react-router';
 
 // app
 import Avatar from 'components/Avatar';
-// import PriceScore from 'components/PriceScore'; // TODO
+import PriceScore from 'components/PriceScore';
 import ReviewScore from 'components/ReviewScore';
 
 // local
@@ -180,8 +180,7 @@ class DentistDashboardHeader extends React.Component {
                 
                 <div styleName="dentist__scores">
                   <ReviewScore score={reviewScore} />
-                  {/* TODO, also horizontal bar separating the two scores */}
-                  {/*<PriceScore score={priceScore} /> */}
+                  <PriceScore score={priceScore} />
                 </div>
 
                 <p styleName="dentist__address">

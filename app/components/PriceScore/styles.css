@@ -21,7 +21,7 @@ Price Score
 
 .price-score__icon {
   display: inline-block;
-  height: 2rem;
+  height: 2.5rem;
   margin-right: 0.5rem;
 
   &:last-child {

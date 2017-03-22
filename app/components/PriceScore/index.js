@@ -1,7 +1,6 @@
 /*
 Price Score Component
 ================================================================================
-TODO: Waiting on Dollar rating icons to finish up this component.
 */
 
 /*
@@ -14,7 +13,6 @@ import CSSModules from 'react-css-modules';
 
 // app
 import dollarRatingEmpty from 'assets/images/dollar-rating-empty.png';
-import dollarRatingHalf from 'assets/images/dollar-rating-half.png';
 import dollarRatingFull from 'assets/images/dollar-rating-full.png';
 
 // local
@@ -65,9 +63,6 @@ class PriceScore extends React.Component {
     let dollarIndex = 0;
     for (; dollarIndex < normalizedScore; dollarIndex++) {
       dollarRatingUrls[dollarIndex] = dollarRatingFull;
-    }
-    if (dollarIndex === normalizedScore) {
-      dollarRatingUrls[dollarIndex] = dollarRatingHalf;
     }
 
     // build the dollar rating <img>s
