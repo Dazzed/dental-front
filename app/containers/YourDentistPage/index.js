@@ -203,17 +203,6 @@ class YourDentistPage extends React.Component {
             <div className="col-md-3" styleName="profile-content-wrapper">
               <div styleName="profile-content__user-action-buttons">
                 <p>
-                  <a href={"mailto:" + dentist.dentistInfo.email}>
-                    <input
-                      type="button"
-                      styleName="button--full-width"
-                      value="SEND A MESSAGE"
-                      onClick={this.sendMessage}
-                    />
-                  </a>
-                </p>
-
-                <p>
                   <input
                     type="button"
                     styleName="button--full-width"
