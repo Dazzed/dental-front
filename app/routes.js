@@ -228,7 +228,7 @@ export default function createRoutes (store) {
         importModules.then(([
           dentistMembersReducer,
           dentistMembersSagas,
-          
+
           component
         ]) => {
           injectReducer('dentistMembersPage', dentistMembersReducer.default);
@@ -334,6 +334,26 @@ export default function createRoutes (store) {
 
         importModules.then(([ reducer, sagas, component ]) => {
           injectReducer('subscribe', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/search',
+      name: 'search',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/SearchPage/reducer'),
+          System.import('containers/SearchPage/sagas'),
+          System.import('containers/SearchPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('search', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

@@ -63,6 +63,7 @@ export default class HomePage extends React.Component {
 
     this.state = {
       showMarketingVideo: false,
+      zipCode: '',
     };
   }
 
@@ -78,10 +79,15 @@ export default class HomePage extends React.Component {
     this.props.changeRoute('/accounts/login');
   }
 
+  handleSearchInputChange = (e) => {
+    this.setState({
+      zipCode: e.target.value,
+    });
+  }
+
   performDentistSearch = (e) => {
-    // TODO: grab the input text from the event and pass it on to the search page
     e.preventDefault(); // default = form submission
-    this.props.changeRoute('/search');
+    this.props.changeRoute(`/search?q=${this.state.zipCode}`);
   }
 
   toggleMarketingVideo = () => {
@@ -125,7 +131,14 @@ export default class HomePage extends React.Component {
           </header>
 
           <form noValidate onSubmit={this.performDentistSearch}>
-            <input type="text" styleName="search" placeholder="Enter your location, zip code, dentist name, etc." required />
+            <input
+              type="text"
+              styleName="search"
+              placeholder="Enter your location, zip code, dentist name, etc."
+              value={this.state.zipCode}
+              onChange={this.handleSearchInputChange}
+              required
+            />
             <br />
             <input type="submit" styleName="button" value="GET STARTED" />
           </form>

@@ -1,0 +1,73 @@
+.dentist-list-item {
+  list-style-type: none;
+  background: #F8F7F5;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 40px;
+
+  .left,
+  .right {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .left {
+    .avatar {
+      height: 105px;
+      width: 105px;
+      border-radius: 50%;
+      border: 4px solid #444;
+      margin: -35px auto 20px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .rating {
+      img {
+        height: 1.2rem;
+
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .right {
+    margin-left: 30px;
+
+    .name {
+      color: #01A1DD;
+      font-size: 1.2rem;
+    }
+
+    .type {
+      text-transform: uppercase;
+      font-size: .75rem;
+    }
+
+    .location {
+      font-size: .7rem;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .affordability {
+      font-size: .7rem;
+      font-weight: 600;
+      color: #01A1DD;
+    }
+
+    .plan-cost {
+      text-transform: uppercase;
+      color: #01A1DD;
+      margin-top: 4px;
+
+      .price {
+        font-weight: 600;
+        font-size: 1.4em;
+        margin-left: 4px;
+      }
+    }
+  }
+}
