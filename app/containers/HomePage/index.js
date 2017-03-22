@@ -31,6 +31,7 @@ import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
 import toothIcon from 'assets/images/tooth-icon.png';
 import marketingVideo from 'assets/videos/marketing-video.mp4';
 import Footer from 'components/Footer';
+import SearchForm from 'containers/SearchForm';
 
 // local
 import styles from './styles.css';
@@ -63,7 +64,6 @@ export default class HomePage extends React.Component {
 
     this.state = {
       showMarketingVideo: false,
-      zipCode: '',
     };
   }
 
@@ -77,17 +77,6 @@ export default class HomePage extends React.Component {
 
   goToLogin = () => {
     this.props.changeRoute('/accounts/login');
-  }
-
-  handleSearchInputChange = (e) => {
-    this.setState({
-      zipCode: e.target.value,
-    });
-  }
-
-  performDentistSearch = (e) => {
-    e.preventDefault(); // default = form submission
-    this.props.changeRoute(`/search?q=${this.state.zipCode}`);
   }
 
   toggleMarketingVideo = () => {
@@ -130,18 +119,7 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          <form noValidate onSubmit={this.performDentistSearch}>
-            <input
-              type="text"
-              styleName="search"
-              placeholder="Enter your location, zip code, dentist name, etc."
-              value={this.state.zipCode}
-              onChange={this.handleSearchInputChange}
-              required
-            />
-            <br />
-            <input type="submit" styleName="button" value="GET STARTED" />
-          </form>
+          <SearchForm />
 
           <div styleName="next-section-cover">
             <h3>

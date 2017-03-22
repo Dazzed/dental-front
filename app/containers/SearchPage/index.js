@@ -24,6 +24,7 @@ import logo from 'assets/images/wells-family-dentistry-logo.png';
 import PageHeader from 'components/PageHeader';
 import DentistCard from 'components/DentistCard';
 import GoogleMaps from 'components/GoogleMaps';
+import SearchForm from 'containers/SearchForm';
 
 
 // local
@@ -88,12 +89,12 @@ export default class SearchPage extends Component {
   };
 
   componentWillMount () {
-    this.props.getSearch(this.props.location.query);
+    this.props.getSearch(this.props.location.query.q);
   }
 
   componentWillReceiveProps (nextProps) {
     if (this.props.location.query !== nextProps.location.query) {
-      this.props.getSearch(nextProps.location.query);
+      this.props.getSearch(nextProps.location.query.q);
     }
   }
 
@@ -140,15 +141,13 @@ export default class SearchPage extends Component {
   render () {
     const borderContent = (
       <span className="text-uppercase">
-        Please enter your office details here.  Questions?{' '}
-        <Link to="/todo"><strong>Contact us here &gt;</strong></Link>
-        {/* TODO: dentist contact link */}
+        {/* TODO: Add in filters */}
       </span>
     );
 
     return (
       <div styleName="container-wrapper">
-        <PageHeader title="Signup for a Dentist Account" borderContent={borderContent} />
+        <PageHeader children={<SearchForm header />} borderContent={borderContent} />
 
         <div className="container">
           <div className="row">

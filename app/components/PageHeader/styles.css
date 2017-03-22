@@ -35,6 +35,26 @@ Page Header
     font-size: 3rem;
     text-transform: capitalize;
   }
+
+  form {
+    br {
+      display: none;
+    }
+
+    input[type=text] {
+      margin-right: 10px;
+    }
+
+    input[type=submit] {
+      background-color: $color-secondary-highlight;
+      border-color: $color-secondary-highlight;
+
+      &:hover {
+        color: $color-secondary-highlight;
+        background-color: $color-white;
+      }
+    }
+  }
 }
 
 .border-content {
