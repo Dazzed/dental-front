@@ -44,6 +44,7 @@ class DentistDashboardHeader extends React.Component {
   static propTypes = {
     // passed in - data
     currentSearchTerm: React.PropTypes.string,
+    patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -84,6 +85,7 @@ class DentistDashboardHeader extends React.Component {
   */
   render() {
     const {
+      patients,
       user,
     } = this.props;
 
@@ -101,7 +103,7 @@ class DentistDashboardHeader extends React.Component {
       email,
       firstName,
       lastName,
-      metrics,
+//      metrics,
       phone,
 //      ratings,
 //      state,
@@ -124,15 +126,29 @@ class DentistDashboardHeader extends React.Component {
     const state = "ID";
     const zipCode = "57392";
 
+    const activeMemberCount = patients.reduce(
+      (activeMemberCounter, patient) => {
+        if (patient.subscription.status === "active") {
+          // TODO: Members don't have their individual subscription info /
+          //       membership fields, so they can't be investigated as active or
+          //       not on an individual basis.  Once this is available, only
+          //       add family members to the count if they are individually
+          //       active.
+          activeMemberCounter += 1 + patient.members.length; // patient + family members
+        }
+
+        return activeMemberCounter;
+      },
+      0
+    );
+
     // TODO
     /*
     let {
-      activeMembers,
       prevMonthRevenue,
       lifetimeRevenue,
     } = metrics;
     */
-    let activeMembers = 50;
     let prevMonthRevenue = 9781.50;
     let lifetimeRevenue = 197810.01;
 
@@ -224,7 +240,7 @@ class DentistDashboardHeader extends React.Component {
               <p styleName="metrics__entry">
                 Total Active Members:
                 {' '}
-                <strong styleName="metrics__value">{activeMembers}</strong>
+                <strong styleName="metrics__value">{activeMemberCount}</strong>
               </p>
               <p styleName="metrics__entry">
                 Total Prior Month Revenue:

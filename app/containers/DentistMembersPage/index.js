@@ -187,6 +187,7 @@ class DentistMembersPage extends React.Component {
         <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
@@ -209,6 +210,7 @@ class DentistMembersPage extends React.Component {
       <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
           />
