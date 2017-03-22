@@ -15,10 +15,14 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 /*
 Selectors
+================================================================================
+*/
+const domainSelector = state => state.yourFamilyPage;
+
+/*
+Fetch
 ------------------------------------------------------------
 */
-const domainSelector = state => state.familyPage;
-
 const familyMembersSelector = createSelector(
   domainSelector,
   (substate) => { return substate.familyMembers; }
@@ -60,6 +64,10 @@ const membersSelector = createSelector(
   }
 );
 
+/*
+Add / Edit Member
+------------------------------------------------------------
+*/
 const editingActiveSelector = createSelector(
   domainSelector,
   substate => substate.editingActive,

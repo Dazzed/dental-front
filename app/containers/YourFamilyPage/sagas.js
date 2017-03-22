@@ -58,6 +58,10 @@ function* main () {
   yield cancel(watcherC);
 }
 
+/*
+Fetch
+------------------------------------------------------------
+*/
 function* familyMembersFetcher () {
   yield* takeLatest(FAMILY_MEMBERS_REQUEST, function* handler () {
     try {
@@ -69,6 +73,10 @@ function* familyMembersFetcher () {
   });
 }
 
+/*
+Add / Edit Member
+------------------------------------------------------------
+*/
 function* submitMemberFormWatcher () {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
@@ -129,6 +137,10 @@ function* submitEditMemberForm (payload, userId, memberId) {
   }
 }
 
+/*
+Remove Member
+------------------------------------------------------------
+*/
 function* removeMemberWatcher () {
   while (true) {
     const { payload, userId } = yield take(REMOVE_MEMBER_REQUEST);

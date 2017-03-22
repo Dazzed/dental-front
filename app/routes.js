@@ -371,18 +371,18 @@ export default function createRoutes (store) {
     }, {
       onEnter: redirectToLogin,
       path: '/your-family',
-      name: 'familyPage',
+      name: 'yourFamilyPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/FamilyPage/reducer'),
-          System.import('containers/FamilyPage/sagas'),
-          System.import('containers/FamilyPage'),
+          System.import('containers/YourFamilyPage/reducer'),
+          System.import('containers/YourFamilyPage/sagas'),
+          System.import('containers/YourFamilyPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('familyPage', reducer.default);
+          injectReducer('yourFamilyPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });
