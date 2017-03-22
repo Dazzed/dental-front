@@ -111,10 +111,27 @@ Pricing Codes
                     */
 }
 
-.activation-checkbox--align {
+.fees__recommended {
+  font-weight: 300;
+}
+
+.fees__recommended__amount {
+  font-weight: normal;
+}
+
+.fees__activation-checkbox {
   padding-top: 48px; /* =   annual membership fee label height        [41px]
                           + (   annual membership fee input height    [40px]
                               - activation checkbox form group height [26px]
                             ) / 2
+                     */
+}
+
+.fees__recommended + .fees__activation-checkbox {
+  padding-top: 16px; /* =   annual membership fee label height        [41px]
+                          + (   annual membership fee input height    [40px]
+                              - activation checkbox form group height [26px]
+                            ) / 2
+                          - recommended fees height & padding         [32px]
                      */
 }

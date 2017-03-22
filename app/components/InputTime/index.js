@@ -61,7 +61,7 @@ class InputTime extends React.Component {
       const amORpm = dateTime.format("A");
 
       timeComponents = {
-        time: dateTime.format("hh:mm"),
+        time: dateTime.format("h:mm"),
         am: amORpm === "AM",
         pm: amORpm === "PM",
       };
@@ -84,7 +84,7 @@ class InputTime extends React.Component {
       timeString +=   timeComponents.am
                     ? "AM"
                     : "PM";
-      const dateTime = moment(timeString, "hh:mm A");
+      const dateTime = moment(timeString, "h:mm A");
 
 
       this.props.input.onChange(dateTime.format("HH:mm:ss"));

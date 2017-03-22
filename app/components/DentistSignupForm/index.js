@@ -40,7 +40,7 @@ Field Validators
 ------------------------------------------------------------
 */
 const requiredValidator = (name) => (value) => {
-  return value !== null && value !== undefined
+  return value !== undefined
     ? undefined // all good
     : `Please enter a(n) ${name}.`;
 }
@@ -81,6 +81,17 @@ const mapStateToProps = (state) => {
         child: false,
       },
 
+      recommendedFees: {
+        monthly: {
+          adult: "",
+          child: "",
+        },
+        yearly: {
+          adult: "",
+          child: "",
+        },
+      },
+
       // working hours
       officeClosed: {
         monday: true,
@@ -94,6 +105,59 @@ const mapStateToProps = (state) => {
     };
   }
 
+  const baseRecommendedFee = {
+    adult: null,
+    child: null,
+  };
+
+  if (pricing.codes) {
+    const D0120 = parseFloat(pricing.codes.D0120);
+    const D0140 = parseFloat(pricing.codes.D0140);
+    const D0220 = parseFloat(pricing.codes.D0220);
+    const D0272 = parseFloat(pricing.codes.D0272);
+    const D0274 = parseFloat(pricing.codes.D0274);
+    const D0330 = parseFloat(pricing.codes.D0330);
+    const D1110 = parseFloat(pricing.codes.D1110);
+    const D1120 = parseFloat(pricing.codes.D1120);
+    const D1206 = parseFloat(pricing.codes.D1206);
+
+    if ( isNaN(D0120) === false
+      && isNaN(D0140) === false
+      && isNaN(D0220) === false
+      && isNaN(D0274) === false
+      && isNaN(D0330) === false
+      && isNaN(D1110) === false
+    ) {
+      baseRecommendedFee.adult = (
+          (D0120 * 2)
+        + D0140
+        + D0220
+        + D0274
+        + (D0330 * 0.3)
+        + (D1110 * 2)
+      );
+    }
+
+    if ( isNaN(D0120) === false
+      && isNaN(D0140) === false
+      && isNaN(D0220) === false
+      && isNaN(D0272) === false
+      && isNaN(D0330) === false
+      && isNaN(D1120) === false
+      && isNaN(D1206) === false
+    ) {
+      baseRecommendedFee.child = (
+          (D0120 * 2)
+        + D0140
+        + D0220
+        + D0272
+        + (D0330 * 0.3)
+        + (D1120 * 2)
+        + D1206
+      );
+    }
+  }
+
   return {
     // marketplace
     optedIntoMarketplace: marketplace.optIn === true,
@@ -102,6 +166,25 @@ const mapStateToProps = (state) => {
     yearlyFeeActivated: {
       adult: pricing.adultYearlyFeeActivated === true,
       child: pricing.childYearlyFeeActivated === true,
+    },
+
+    recommendedFees: {
+      monthly: {
+        adult: baseRecommendedFee.adult !== null
+                 ? (baseRecommendedFee.adult * 0.75 / 12).toFixed(2)
+                 : null,
+        child: baseRecommendedFee.child !== null
+                 ? (baseRecommendedFee.child * 0.7 / 12).toFixed(2)
+                 : null,
+      },
+      yearly: {
+        adult: baseRecommendedFee.adult !== null
+                 ? (baseRecommendedFee.adult * 0.7).toFixed(2)
+                 : null,
+        child: baseRecommendedFee.child !== null
+                 ? (baseRecommendedFee.child * 0.65).toFixed(2)
+                 : null,
+      },
     },
 
     // working hours
@@ -191,6 +274,7 @@ class DentistSignupForm extends React.Component {
       services,
 
       // mapped - state
+      recommendedFees,
       officeClosed,
       optedIntoMarketplace,
       yearlyFeeActivated,
@@ -498,7 +582,6 @@ class DentistSignupForm extends React.Component {
         {/*
         Pricing
         ------------------------------------------------------------
-        TODO: Pull pricing codes from the backend.  See `app/containers/DentistSignupPage/sagas.js`.
         */}
         <FormSection name="pricing">
 
@@ -518,17 +601,19 @@ class DentistSignupForm extends React.Component {
                 </div>
 
                 {pricingCodes.map((pricingCode) => {
+                  const pricingCodeName = "D" + pricingCode;
+
                   return (
-                    <div className="row" styleName="pricing-codes__entry" key={pricingCode}>
+                    <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
                       <div className="col-sm-6">
                         <div styleName="pricing-codes__entry__code">
-                          {pricingCode}
+                          {pricingCodeName}
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <Row>
                           <Field
-                            name={pricingCode}
+                            name={pricingCodeName}
                             type="number"
                             component={InputGroup}
                             leftAddon="$"
@@ -572,6 +657,18 @@ class DentistSignupForm extends React.Component {
                 />
               </Row>
             </div>
+
+            <div className="col-sm-4">
+              {recommendedFees.monthly.adult && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.monthly.adult}
+                  </span>
+                </p>
+              )}
+            </div>
           </FormGroup>
 
           <FormGroup>
@@ -586,6 +683,18 @@ class DentistSignupForm extends React.Component {
                   width={6}
                 />
               </Row>
+            </div>
+
+            <div className="col-sm-4">
+              {recommendedFees.monthly.child && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.monthly.child}
+                  </span>
+                </p>
+              )}
             </div>
           </FormGroup>
 
@@ -605,7 +714,17 @@ class DentistSignupForm extends React.Component {
             </div>
 
             <div className="col-sm-4">
-              <div styleName="activation-checkbox--align">
+              {recommendedFees.yearly.adult && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.yearly.adult}
+                  </span>
+                </p>
+              )}
+
+              <div styleName="fees__activation-checkbox">
                 <Field
                   name="adultYearlyFeeActivated"
                   component={Checkbox}
@@ -632,7 +751,17 @@ class DentistSignupForm extends React.Component {
             </div>
 
             <div className="col-sm-4">
-              <div styleName="activation-checkbox--align">
+              {recommendedFees.yearly.child && (
+                <p styleName="fees__recommended">
+                  Our Recommendation:
+                  {' '}
+                  <span styleName="fees__recommended__amount">
+                    ${recommendedFees.yearly.child}
+                  </span>
+                </p>
+              )}
+
+              <div styleName="fees__activation-checkbox">
                 <Field
                   name="childYearlyFeeActivated"
                   component={Checkbox}
@@ -701,10 +830,12 @@ class DentistSignupForm extends React.Component {
           {optedIntoMarketplace && (
             <Row>
               {services.map((service) => {
+                const serviceKey = "service-" + service.id;
+
                 return (
-                  <div className="col-sm-4" key={service.id}>
+                  <div className="col-sm-4" key={serviceKey}>
                     <Field
-                      name={service.id.toString()}
+                      name={serviceKey}
                       component={Checkbox}
                     >
                       <span>{service.name}</span>

@@ -39,7 +39,7 @@ const selectPatientReviews = createSelector(
     return patients.reduce((reviewsCollector, patient) => {
       // precondition: the patient has written a review
       if (!Array.isArray(patient.reviews) || patient.reviews.length === 0) {
-        return reviewsAccumulator;
+        return reviewsCollector;
       }
 
       var patientReviews = patient.reviews.map((review) => {

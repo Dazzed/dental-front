@@ -174,7 +174,6 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
-      onEnter: redirectToLogin,
       path: '/dentist/contact-admin',
       name: 'contactAdminPage',
       getComponent (nextState, cb) {

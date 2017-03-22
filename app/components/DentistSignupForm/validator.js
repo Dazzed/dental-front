@@ -38,7 +38,7 @@ const schema = {
   "user.specialtyId": { presence: { message: '^Please select a Specialty' } },
 
   "user.email": { presence: true, email: true },
-  "user.confirmEmail": { presence: true, email: true, equality: 'email' },
+  "user.confirmEmail": { presence: true, email: true, equality: 'user.email' },
   "user.password": {
     presence: true,
     format: {
@@ -46,7 +46,7 @@ const schema = {
       message: `^Password must be at least 8 characters and include one (1) special character and one (1) capital letter.`,
     }
   },
-  "user.confirmPassword": { presence: true, equality: 'password' },
+  "user.confirmPassword": { presence: true, equality: 'user.password' },
 
   /*
   Office Info
