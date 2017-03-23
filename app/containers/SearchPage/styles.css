@@ -1,5 +1,5 @@
 /*
-Price Score Component Styles
+Search Page Styles
 ================================================================================
 */
 
@@ -12,19 +12,25 @@ Imports
 
 
 /*
-Price Score
+Page-Wide
 ================================================================================
 */
-.price-score {
-  display: inline-block;
+.container-wrapper {
+  min-height: $body-height;
 }
 
-.price-score__icon {
-  display: inline-block;
-  height: 2.5rem;
-  margin-right: 0.5rem;
+.large-title {
+  margin-bottom: 2.5rem;
 
-  &:last-child {
-    margin-right: 0;
-  }
+  font-size: 3rem;
+  text-transform: capitalize;
+}
+
+
+/*
+Dentist List
+================================================================================
+*/
+.dentist-list {
+  margin-top: 40px;
 }

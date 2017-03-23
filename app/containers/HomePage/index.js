@@ -31,6 +31,7 @@ import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
 import toothIcon from 'assets/images/tooth-icon.png';
 import marketingVideo from 'assets/videos/marketing-video.mp4';
 import Footer from 'components/Footer';
+import SearchForm from 'containers/SearchForm';
 
 // local
 import styles from './styles.css';
@@ -78,12 +79,6 @@ export default class HomePage extends React.Component {
     this.props.changeRoute('/accounts/login');
   }
 
-  performDentistSearch = (e) => {
-    // TODO: grab the input text from the event and pass it on to the search page
-    e.preventDefault(); // default = form submission
-    this.props.changeRoute('/search');
-  }
-
   toggleMarketingVideo = () => {
     this.setState({
       ...this.state,
@@ -124,11 +119,7 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          <form noValidate onSubmit={this.performDentistSearch}>
-            <input type="text" styleName="search" placeholder="Enter your location, zip code, dentist name, etc." required />
-            <br />
-            <input type="submit" styleName="button" value="GET STARTED" />
-          </form>
+          <SearchForm />
 
           <div styleName="next-section-cover">
             <h3>

@@ -1,0 +1,33 @@
+/*
+Google Maps Component Styles
+================================================================================
+*/
+
+.map-wrapper {
+  height: 600px;
+  max-width: 400px;
+  width: 100%;
+  margin: 40px auto;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.default-marker {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #01A1DD;
+  background-origin: center;
+  background-position: 0;
+
+  &.active,
+  &:hover {
+    background-image: url(assets/images/office-location.png);
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    background-size: 50px 50px;
+    margin-top: -10px;
+    margin-left: -10px;
+  }
+}

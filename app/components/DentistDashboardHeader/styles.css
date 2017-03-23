@@ -49,6 +49,18 @@ Dentist Info
 
 .dentist__scores {
   margin-bottom: 1rem;
+
+  > * {
+    padding-right: 2.5rem;
+    border-right: 0.25rem solid $color-primary-highlight;
+    margin-right: 2.5rem;
+
+    &:last-child {
+      padding-right: 0;
+      border-right: none;
+      margin-right: 0;
+    }
+  }
 }
 
 .dentist__address {
