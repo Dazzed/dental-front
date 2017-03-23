@@ -8,13 +8,21 @@
     width: 100%;
     height: calc(100% - 53px);
     color: #444 !important;
-  }
 
-  #app {
-    height: 100%;
-
-    & > div {
+    #app {
       height: 100%;
+
+      h1, .h1,
+      h2, .h2,
+      h3, .h3,
+      h4, .h4,
+      h5, .h5 {
+        font-family: 'Kabel', 'Open Sans', Helvetica, Arial, sans-serif;
+      }
+
+      & > div {
+        height: 100%;
+      }
     }
   }
 }

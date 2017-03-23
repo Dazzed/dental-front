@@ -115,3 +115,32 @@
   font-weight: 700;
   font-style: italic;
 }
+
+/* Kabel font definition */
+@font-face {
+  font-family: 'Kabel';
+  src: url('../fonts/Kabel/Kabel-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kabel';
+  src: url('../fonts/Kabel/Kabel-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kabel';
+  src: url('../fonts/Kabel/Kabel-Bold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Kabel';
+  src: url('../fonts/Kabel/Kabel-ExtraBold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
