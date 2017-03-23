@@ -1,9 +1,18 @@
+/*
+Dentist Card Component Styles
+================================================================================
+*/
+
 .dentist-list-item {
   list-style-type: none;
   background: #F8F7F5;
   padding: 14px 18px;
   border-radius: 10px;
   margin-bottom: 40px;
+
+  &.active {
+    background: #E6F2F8;
+  }
 
   .left,
   .right {

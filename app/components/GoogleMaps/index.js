@@ -14,6 +14,7 @@ import styles from './styles.css';
 function GoogleMaps(props) {
   const {
     markers,
+    updateActiveId,
   } = props;
 
   function renderMarkers() {
@@ -21,8 +22,10 @@ function GoogleMaps(props) {
       return (
         <MapMarker
           key={i}
+          id={marker.id}
           lat={marker.lat}
           lng={marker.lng}
+          updateActiveId={updateActiveId}
         />
       )
     });
@@ -57,6 +60,7 @@ function GoogleMaps(props) {
 
 GoogleMaps.propTypes = {
   markers: PropTypes.array.isRequired,
+  updateActiveId: PropTypes.func.isRequired,
 };
 
 export default CSSModules(styles)(GoogleMaps);

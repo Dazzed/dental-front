@@ -18,10 +18,11 @@ function DentistCard(props) {
     affordability,
     planStartingCost,
     avatar,
+    active,
   } = props;
 
   return (
-    <li styleName="dentist-list-item">
+    <li styleName={`dentist-list-item ${active ? 'active' : ''}`}>
       <div styleName="left">
         <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
         <div styleName="rating">
@@ -43,6 +44,7 @@ function DentistCard(props) {
 
 DentistCard.propTypes = {
   id: PropTypes.number.isRequired,
+  active: PropTypes.bool,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   avatar: PropTypes.string,
@@ -56,4 +58,4 @@ DentistCard.propTypes = {
   }).isRequired,
 };
 
-export default CSSModules(styles)(DentistCard);
+export default CSSModules(styles, { allowMultiple: true })(DentistCard);

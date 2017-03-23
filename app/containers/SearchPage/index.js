@@ -88,6 +88,14 @@ export default class SearchPage extends Component {
     })).isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeResultId: null,
+    };
+  }
+
   componentWillMount () {
     this.props.getSearch(this.props.location.query.q);
   }
@@ -98,6 +106,12 @@ export default class SearchPage extends Component {
     }
   }
 
+  updateActiveResultId = (id) => {
+    this.setState({
+      activeResultId: id,
+    });
+  }
+
   renderResults() {
     const { searchResults } = this.props;
 
@@ -106,7 +120,13 @@ export default class SearchPage extends Component {
         <ul styleName='dentist-list'>
           {
             searchResults.map((dentist) => {
-              return <DentistCard key={dentist.id} {...dentist} />;
+              return (
+                <DentistCard
+                  {...dentist}
+                  key={dentist.id}
+                  active={dentist.id === this.state.activeResultId}
+                />
+              )
             })
           }
         </ul>
@@ -127,12 +147,13 @@ export default class SearchPage extends Component {
     if (searchResults.length > 0) {
       for (let i = 0; i < searchResults.length; i++) {
         markerArray.push({
+          id: searchResults[i].id,
           lat: searchResults[i].dentistInfo.lat,
           lng: searchResults[i].dentistInfo.lng,
         });
       }
 
-      return <GoogleMaps markers={markerArray} />;
+      return <GoogleMaps markers={markerArray} updateActiveId={this.updateActiveResultId} />;
     }
 
     return false;
