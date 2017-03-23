@@ -115,6 +115,18 @@ Your Dentist
   border-bottom: 1px solid $color-primary-lowlight;
 }
 
-.detail__content {
+.detail__content {}
 
+/* Work Hours
+ * ------------------------------------------------------ */
+.work-hours__day {
+  display: inline-block;
+  width: 90px;
+  margin-right: 10px;
+}
+
+.work-hours__hour {
+  display: inline-block;
+  width: 70px;
+  margin: 0 10px;
 }

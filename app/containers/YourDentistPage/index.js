@@ -9,6 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
@@ -169,6 +170,35 @@ class YourDentistPage extends React.Component {
       );
     }
 
+    const workHours = dentist.dentistInfo.workingHours.reduce(
+      (workHoursObj, dayWorkHours) => {
+        const {
+          day,
+          endAt,
+          isOpen,
+          startAt,
+        } = dayWorkHours;
+
+        if (isOpen === true) {
+          const prettyStartAt = moment(startAt, "HH:mm:ss").format("h:mm A");
+          const prettyEndAt = moment(endAt, "HH:mm:ss").format("h:mm A");
+          workHoursObj[day] = (
+            <span>
+              <span styleName="work-hours__hour">{prettyStartAt}</span>
+              {' to '}
+              <span styleName="work-hours__hour">{prettyEndAt}</span>
+            </span>
+          );
+        }
+        else {
+          workHoursObj[day] = (<span styleName="work-hours__hour">Closed</span>);
+        }
+
+        return workHoursObj;
+      },
+      {}
+    );
+
     return (
       <div>
         <PatientDashboardTabs active="dentist" />
@@ -191,7 +221,6 @@ class YourDentistPage extends React.Component {
                   {dentist.firstName} {dentist.lastName}
                 </h2>
 
-                {/* TODO: dentist does not provide rating info */}
                 <ReviewScore score={dentist.rating} />
               </div>
             </div>
@@ -255,21 +284,33 @@ class YourDentistPage extends React.Component {
                   Hours
                 </h3>
 
-                {/* TODO */}
                 <p styleName="detail__content">
-                  Monday: TODO
+                  <span styleName="work-hours__day">Monday:</span>
+                  {workHours.monday}
                   <br />
-                  Tuesday: TODO
+
+                  <span styleName="work-hours__day">Tuesday:</span>
+                  {workHours.tuesday}
                   <br />
-                  Wednesday: TODO
+
+                  <span styleName="work-hours__day">Wednesday:</span>
+                  {workHours.wednesday}
                   <br />
-                  Thursday: TODO
+
+                  <span styleName="work-hours__day">Thursday:</span>
+                  {workHours.thursday}
                   <br />
-                  Friday: TODO
+
+                  <span styleName="work-hours__day">Friday:</span>
+                  {workHours.friday}
                   <br />
-                  Saturday: TODO
+
+                  <span styleName="work-hours__day">Saturday:</span>
+                  {workHours.saturday}
                   <br />
-                  Sunday: TODO
+
+                  <span styleName="work-hours__day">Sunday:</span>
+                  {workHours.sunday}
                 </p>
               </div>
 
