@@ -1,18 +1,20 @@
-:global(html),
-:global(body) {
-  font-family: Lato;
-  font-size: 16px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: calc(100% - 53px);
-  color: #444 !important;
-}
+:global {
+  html,
+  body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: calc(100% - 53px);
+    color: #444 !important;
+  }
 
-:global(#app) {
-  height: 100%;
-
-  & > div {
+  #app {
     height: 100%;
+
+    & > div {
+      height: 100%;
+    }
   }
 }

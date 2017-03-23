@@ -1,6 +1,6 @@
+@import 'font-face';
 @import 'utility';
 @import 'variables';
 @import 'mixins';
 @import 'scaffolding';
 @import 'bootstrap-overrides';
-@import 'font-face';
