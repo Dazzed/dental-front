@@ -23,6 +23,7 @@ function GoogleMaps(props) {
         <MapMarker
           key={i}
           id={marker.id}
+          active={marker.active}
           lat={marker.lat}
           lng={marker.lng}
           updateActiveId={updateActiveId}

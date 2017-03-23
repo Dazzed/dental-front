@@ -125,6 +125,7 @@ export default class SearchPage extends Component {
                   {...dentist}
                   key={dentist.id}
                   active={dentist.id === this.state.activeResultId}
+                  updateActiveId={this.updateActiveResultId}
                 />
               )
             })
@@ -148,6 +149,7 @@ export default class SearchPage extends Component {
       for (let i = 0; i < searchResults.length; i++) {
         markerArray.push({
           id: searchResults[i].id,
+          active: searchResults[i].id === this.state.activeResultId,
           lat: searchResults[i].dentistInfo.lat,
           lng: searchResults[i].dentistInfo.lng,
         });

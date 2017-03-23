@@ -20,6 +20,7 @@ Google Maps Component Styles
   background-origin: center;
   background-position: 0;
 
+  &.active,
   &:hover {
     background-image: url(assets/images/office-location.png);
     background-color: transparent;
