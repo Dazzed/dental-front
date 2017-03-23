@@ -28,6 +28,7 @@ import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import {
   // fetch
+  fetchDentistInfo,
   fetchPatients,
 
   // search / sort patients
@@ -43,7 +44,8 @@ import {
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
-  selectPatients,
+  selectDentistInfo,
+  selectProcessedPatients,
 
   // search / sort patients
   selectMemberSearchTerm,
@@ -69,7 +71,8 @@ function mapStateToProps (state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
-    patients: selectPatients(state),
+    dentistInfo: selectDentistInfo(state),
+    patients: selectProcessedPatients(state),
     recentReviewers: selectRecentReviewers(state),
     user: selectCurrentUser(state),
 
@@ -89,6 +92,7 @@ function mapDispatchToProps (dispatch) {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
     // fetch
+    fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
 
     // search / sort patients
@@ -128,6 +132,7 @@ class DentistNewReviewsPage extends React.Component {
     ]),
 
     // fetch - dispatch
+    fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
 
     // search / sort patients - state
@@ -152,6 +157,7 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   componentWillMount() {
+    this.props.fetchDentistInfo();
     this.props.fetchPatients();
   }
 
@@ -238,6 +244,7 @@ class DentistNewReviewsPage extends React.Component {
     const {
       // fetch
       dataLoaded,
+      dentistInfo,
       patients,
       recentReviewers,
       user,
@@ -273,6 +280,7 @@ class DentistNewReviewsPage extends React.Component {
         <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
             patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
@@ -294,6 +302,7 @@ class DentistNewReviewsPage extends React.Component {
         <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
             patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}
@@ -337,6 +346,7 @@ class DentistNewReviewsPage extends React.Component {
       <div>
           <DentistDashboardHeader
             currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
             patients={patients}
             user={user}
             onMemberSearch={this.props.searchMembers}

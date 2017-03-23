@@ -4,8 +4,7 @@ Dentist Dashboard Header Component
 TODO: Waiting on backend changes to implement some info fields.
       https://trello.com/c/uyJH3pNy/50-all-members-page
 
-TODO: Displaying a mocked up PriceScore is blocked by missing icons in the
-      PriceScore component.
+        - need `revewScore`, `priceScore`, and metrics
 */
 
 /*
@@ -103,16 +102,12 @@ class DentistDashboardHeader extends React.Component {
       zipCode,
     } = dentistInfo;
 
-    // TODO: Dentist users don't have a `metrics` field yet. [MOCKUP]
-    // TODO: Dentist users don't have a `ratings` field yet. [MOCKUP]
     const {
       avatar,
       firstName,
       lastName,
-//      metrics,
-//      ratings,
-//      state,
-//      zipCode,
+//      metrics, // TODO: backend needs to provide this
+//      ratings, // TODO: backend needs to provide this
     } = user;
 
     const activeMemberCount = patients.reduce(
@@ -153,7 +148,7 @@ class DentistDashboardHeader extends React.Component {
 
     // Shoutout to the internet!  How to convert an number into a USD string:
     // http://stackoverflow.com/a/14428340
-    prevMonthRevenue = prevMonthRevenue.toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    prevMonthRevenue = prevMonthRevenue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     prevMonthRevenue = prevMonthRevenue.substr(0, prevMonthRevenue.length - 3); // remove the cents
     lifetimeRevenue = lifetimeRevenue.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     lifetimeRevenue = lifetimeRevenue.substr(0, lifetimeRevenue.length - 3); // remove the cents
