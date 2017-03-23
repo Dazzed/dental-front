@@ -125,6 +125,7 @@ Props
 ------------------------------------------------------------
 */
 PageHeader.propTypes = {
+  children: React.PropTypes.node,
   borderContent: React.PropTypes.node,
   pathname: React.PropTypes.string,
   title: PropTypes.string,

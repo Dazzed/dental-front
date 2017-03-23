@@ -197,61 +197,6 @@ First Block
     }
   }
 
-  form {
-    .search {
-      width: 34rem;
-      border: 1px solid $color-white;
-      border-radius: 0.5rem;
-      padding: 1rem 2rem;
-
-      color: $color-primary-lowlight;
-      background-color: rgba(255, 255, 255, 0.6);
-
-      &:hover,
-      &:active,
-      &:focus,
-      &:valid {
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-
-      &::-webkit-input-placeholder {
-        opacity: 1;
-        color: $color-primary-lowlight;
-
-        text-align: center;
-      }
-
-      &:-moz-placeholder { /* Firefox 18- */
-        opacity: 1;
-        color: $color-primary-lowlight;
-
-        text-align: center;
-      }
-
-      &::-moz-placeholder { /* Firefox 19+ */
-        opacity: 1;
-        color: $color-primary-lowlight;
-
-        text-align: center;
-      }
-
-      &:-ms-input-placeholder {
-        opacity: 1;
-        color: $color-primary-lowlight;
-
-        text-align: center;
-      }
-    }
-
-    .button {
-      margin-top: 1rem;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-    }
-  }
-
   .next-section-cover {
     margin-top: 5rem;
     padding: 2rem 0 1rem 0;
