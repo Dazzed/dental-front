@@ -36,8 +36,9 @@ export default class SearchForm extends Component {
   constructor (props) {
     super(props);
 
+    // Intentionally forking props here
     this.state = {
-      query: '',
+      query: this.props.query || '',
     };
   }
 
@@ -75,4 +76,5 @@ export default class SearchForm extends Component {
 SearchForm.propTypes = {
   changeRoute: PropTypes.func,
   header: PropTypes.bool,
+  query: PropTypes.string,
 };

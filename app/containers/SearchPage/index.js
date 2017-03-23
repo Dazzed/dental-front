@@ -101,7 +101,7 @@ export default class SearchPage extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.location.query !== nextProps.location.query) {
+    if (this.props.location.query.q !== nextProps.location.query.q) {
       this.props.getSearch(nextProps.location.query.q);
     }
   }
@@ -170,7 +170,7 @@ export default class SearchPage extends Component {
 
     return (
       <div styleName="container-wrapper">
-        <PageHeader children={<SearchForm header />} borderContent={borderContent} />
+        <PageHeader children={<SearchForm header query={this.props.location.query.q} />} borderContent={borderContent} />
 
         <div className="container">
           <div className="row">
