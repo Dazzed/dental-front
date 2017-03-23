@@ -320,26 +320,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/subscribe',
-      name: 'subscribePage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/SubscribePage/reducer'),
-          System.import('containers/SubscribePage/sagas'),
-          System.import('containers/SubscribePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('subscribe', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
       path: '/search',
       name: 'search',
       getComponent (nextState, cb) {
@@ -353,6 +333,26 @@ export default function createRoutes (store) {
 
         importModules.then(([ reducer, sagas, component ]) => {
           injectReducer('search', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/subscribe',
+      name: 'subscribePage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/SubscribePage/reducer'),
+          System.import('containers/SubscribePage/sagas'),
+          System.import('containers/SubscribePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('subscribe', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import Col from 'react-bootstrap/lib/Col';
-import formatState from 'utils/formatState';
+import { US_STATES } from 'common/constants';
 
 import ReviewScore from 'components/ReviewScore';
 
@@ -37,7 +37,7 @@ function DentistCard(props) {
         <div styleName="name">{firstName} {lastName}</div>
         <div styleName="type">{type}</div>
 
-        <div styleName="location">{dentistInfo.city}, {formatState(dentistInfo.state)}</div>
+        <div styleName="location">{dentistInfo.city}, {US_STATES[dentistInfo.state]}</div>
         <div styleName="affordability">Affordability {affordability}/5</div>
 
         <div styleName="plan-cost">Plans starting at: <span styleName="price">${planStartingCost}</span></div>
