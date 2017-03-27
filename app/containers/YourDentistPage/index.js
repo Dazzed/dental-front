@@ -131,11 +131,6 @@ class YourDentistPage extends React.Component {
   ------------------------------------------------------------
   */
   handleReviewFormSubmit = (values) => {
-    // TODO: Titles were removed from reviews... need a backend change to
-    //       address this.
-    //
-    // In the meantime, fake a title to prevent backend errors.
-    values.title = "My Review";
     this.props.submitReviewForm(values, this.props.dentist.id);
   }
 
