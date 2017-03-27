@@ -1,5 +1,5 @@
 /*
-Member Form Component
+Member Form Modal Component
 ================================================================================
 */
 
@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 /*
-Member Form
+Member Form Modal
 ================================================================================
 */
 @connect(null, mapDispatchToProps)
@@ -49,7 +49,7 @@ Member Form
   validate: MemberValidator,
 })
 @CSSModules(styles)
-export default class MemberForm extends React.Component {
+export default class MemberFormModal extends React.Component {
 
   static propTypes = {
     // form related

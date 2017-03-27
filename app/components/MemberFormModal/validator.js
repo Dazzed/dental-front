@@ -1,5 +1,5 @@
 /*
-Member Form Validator
+Member Form Modal Validator
 ================================================================================
 */
 

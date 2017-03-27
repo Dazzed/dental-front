@@ -21,7 +21,7 @@ import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
-import MemberForm from 'components/MemberForm';
+import MemberFormModal from 'components/MemberFormModal';
 import PatientsList from 'components/PatientsList';
 import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
@@ -369,8 +369,7 @@ class DentistNewReviewsPage extends React.Component {
           />
         </div>
 
-        {/* displayed in a modal */}
-        <MemberForm
+        <MemberFormModal
           show={editingActive}
           onCancel={this.cancelMemberFormAction}
 

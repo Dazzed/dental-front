@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Well from 'react-bootstrap/lib/Well';
 
-import MemberForm from 'components/MemberForm';
+import MemberForm from 'components/MemberFormModal';
 
 import { memberFormOpenedSelector } from 'containers/Dashboard/selectors';
 import {

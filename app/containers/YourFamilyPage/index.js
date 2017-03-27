@@ -21,7 +21,7 @@ import { reset as resetForm } from 'redux-form';
 import { MEMBER_RELATIONSHIP_TYPES } from 'common/constants';
 import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
-import MemberForm from 'components/MemberForm';
+import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -207,8 +207,7 @@ class YourFamilyPage extends React.Component {
           />          
         </div>
 
-        {/* displayed in a modal */}
-        <MemberForm
+        <MemberFormModal
           show={editingActive}
           onCancel={this.cancelMemberFormAction}
 

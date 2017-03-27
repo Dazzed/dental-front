@@ -14,7 +14,7 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaStar from 'react-icons/lib/fa/star';
 import Rating from 'react-rating';
 import moment from 'moment';
-import MemberForm from 'components/MemberForm';
+import MemberForm from 'components/MemberFormModal';
 import PaymentForm from 'containers/Authorize.net';
 
 import WriteMessageModal from 'components/WriteMessageModal';
