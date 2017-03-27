@@ -7,12 +7,6 @@
   color: $link-color;
 }
 
-:global(.modal-title) {
-  font-size: 2rem;
-  line-height: 1;
-  text-align: center;
-}
-
 :global(.popover-title) {
   text-align: center;
 }
@@ -293,3 +287,100 @@
 }
 
 /** END OF REACT-AUTOSUGGEST **/
+
+/*
+Modal
+================================================================================
+*/
+:global{
+  /*
+  Modal Header
+  ------------------------------------------------------------
+  */
+  .modal-header {
+    padding: 3rem;
+    border: none;
+
+    /* TODO: Remove `!important` on `button` styles (above), then remove them here. */
+    .close {
+      position: absolute;
+      top: -1rem;
+      right: -1rem;
+      width: 3rem;
+      height: 3rem;
+      margin: 0;
+      padding: 0.5rem 0.9rem !important;
+      border-radius: 100%;
+
+      opacity: 1;
+      background-color: $color-primary-lowlight;
+      color: $color-white;
+
+      font-size: 2rem;
+      font-weight: normal;
+      text-shadow: none;
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
+
+    .modal-title {
+      float: left;
+
+      color: $color-primary-highlight;
+
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+  }
+
+  /*
+  Modal Body
+  ------------------------------------------------------------
+  */
+  .modal-body {
+    padding: 0 3rem 3rem 3rem;
+    border: none;
+  }
+
+  /*
+  Modal Footer
+  ------------------------------------------------------------
+  */
+  .modal-footer {
+    padding: 0 3rem 3rem 3rem;
+    border: none;
+  }
+
+  /*
+  Modal Control
+  ------------------------------------------------------------
+  */
+  .modal-controls {
+    float: right;
+  }
+
+  .modal-control {
+    border: 1px solid $color-primary-highlight;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    color: $color-white;
+    background-color: $color-primary-highlight;
+
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+
+    &:hover {
+      color: $color-primary-highlight;
+      background-color: $color-white;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+} /* End Modal Styles */

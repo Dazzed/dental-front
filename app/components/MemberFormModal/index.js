@@ -77,8 +77,10 @@ export default class MemberFormModal extends React.Component {
     } = this.props;
 
     let title = "Edit Member";
+    let saveText = "Save Member";
     if (initialValues === null) {
       title = "Add Member";
+      saveText = "Save and Checkout";
     }
 
     return (
@@ -94,6 +96,16 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
+
+          <div className="modal-controls">
+            <input
+              type="button"
+              className="modal-control"
+              disabled={submitting}
+              onClick={submit}
+              value={saveText}
+            />
+          </div>
         </Modal.Header>
 
         {/*
@@ -183,7 +195,7 @@ export default class MemberFormModal extends React.Component {
               </Field>
             </Row>
 
-            <Row className="form-group">
+            <div className="form-group">
               <Field
                 name="phone"
                 type="text"
@@ -201,35 +213,10 @@ export default class MemberFormModal extends React.Component {
                 label="Email"
                 className="col-md-6"
               />
-            </Row>
+            </div>
           </form>
         </Modal.Body>
 
-        {/*
-        Modal Footer
-        ------------------------------------------------------------
-        */}
-        <Modal.Footer>
-          <div styleName="modal-controls">
-            <button
-              type="button"
-              disabled={submitting}
-              styleName="button--short--lowlight"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              disabled={submitting}
-              styleName="button--short"
-              onClick={submit}
-            >
-              Save
-            </button>
-          </div>
-        </Modal.Footer>
       </Modal>
     );
   }

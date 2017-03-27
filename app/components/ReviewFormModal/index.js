@@ -123,11 +123,11 @@ export default class ReviewFormModal extends React.Component {
             className="form-horizontal"
           >
             <FormGroup>
-              <div className="col-sm-offset-2 col-sm-8">
+              <div className="col-sm-12">
                 <ControlLabel>Review Score:</ControlLabel>
               </div>
 
-              <div className="col-sm-offset-2 col-sm-4">
+              <div className="col-sm-6 col-md-4">
                 <div className="row">
                   <Field
                     name="rating"
@@ -138,7 +138,7 @@ export default class ReviewFormModal extends React.Component {
                 </div>
               </div>
 
-              <div className="col-sm-4">
+              <div className="col-sm-6 col-md-4">
                 <ReviewScore score={score} />
               </div>
             </FormGroup>
@@ -150,7 +150,7 @@ export default class ReviewFormModal extends React.Component {
                 component={LabeledInput}
                 label="Write Your Review"
                 placeholder=""
-                className="col-sm-offset-2 col-sm-8"
+                className="col-sm-12"
                 rows={5}
               />
             </div>
@@ -162,24 +162,14 @@ export default class ReviewFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Footer>
-          <div styleName="modal-controls">
-            <button
+          <div className="modal-controls">
+            <input
               type="button"
+              className="modal-control"
               disabled={submitting}
-              styleName="button--short--lowlight"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              disabled={submitting}
-              styleName="button--short"
               onClick={submit}
-            >
-              Submit
-            </button>
+              value="Submit"
+            />
           </div>
         </Modal.Footer>
       </Modal>

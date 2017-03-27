@@ -156,6 +156,7 @@ export default class HomePage extends React.Component {
                   onHide={this.toggleMarketingVideo}
                   show={this.state.showMarketingVideo}
                 >
+                  <Modal.Header closeButton />
                   <Modal.Body>
                     <video
                       autoPlay
