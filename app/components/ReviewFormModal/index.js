@@ -1,5 +1,5 @@
 /*
-Review Form Component
+Review Form Modal Component
 ================================================================================
 */
 
@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 /*
-Review Form
+Review Form Modal
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
@@ -66,7 +66,7 @@ Review Form
   validate: ReviewValidator,
 })
 @CSSModules(styles)
-export default class ReviewForm extends React.Component {
+export default class ReviewFormModal extends React.Component {
 
   static propTypes = {
     // form related

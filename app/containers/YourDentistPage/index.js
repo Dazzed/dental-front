@@ -21,7 +21,7 @@ import { reset as resetForm } from 'redux-form';
 import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
-import ReviewForm from 'components/ReviewForm';
+import ReviewFormModal from 'components/ReviewFormModal';
 import ReviewScore from 'components/ReviewScore';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -397,8 +397,7 @@ class YourDentistPage extends React.Component {
         {/* End Content */}
         </div>
 
-        {/* displayed in a modal */}
-        <ReviewForm
+        <ReviewFormModal
           show={editingActive}
           onCancel={this.cancelReviewFormAction}
           onSubmit={this.handleReviewFormSubmit}
