@@ -14,6 +14,7 @@ import { createSelector } from 'reselect';
 // app
 import { selectCurrentUser } from 'containers/App/selectors';
 import {
+  selectDentistInfo,
   selectPatients,
   selectProcessedPatients,
 } from 'containers/DentistMembersPage/selectors';
@@ -61,9 +62,10 @@ Data Loaded
 */
 const selectDataLoaded = createSelector(
   selectCurrentUser,
+  selectDentistInfo,
   selectPatients,
-  (user, patients) => {
-    return user !== false && patients !== null;
+  (user, dentistInfo, patients) => {
+    return user !== false && dentistInfo !== null && patients !== null;
   }
 );
  
