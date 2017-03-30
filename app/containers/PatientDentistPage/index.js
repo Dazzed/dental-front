@@ -152,6 +152,8 @@ class PatientDentistPage extends React.Component {
       editingActive,
     } = this.props;
 
+    console.log(dentist);
+
     // precondition: the data must be loaded, otherwise wait for it
     if (dentist === false) {
       return (

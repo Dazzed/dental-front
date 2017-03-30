@@ -21,9 +21,10 @@ const dashboardPages = [
   '/dentist/new-members',
   '/dentist/new-reviews',
 
+  '/patient/membership-info',
   '/patient/profile',
   '/patient/your-dentist',
-  '/patient/your-family',
+  '/patient/your-reviews',
 ];
 
 

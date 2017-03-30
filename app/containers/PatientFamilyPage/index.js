@@ -1,7 +1,7 @@
 /*
 Patient Family Page
 ================================================================================
-Route: `/patient/your-family`
+TODO: Delete this page after the new patient dashboard pages are created.
 */
 
 /*

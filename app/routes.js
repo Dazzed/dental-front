@@ -334,6 +334,43 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
+      path: '/patient/membership-info',
+      name: 'patientMembershipInfoPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PatientDentistPage/reducer'),
+          System.import('containers/PatientDentistPage/sagas'),
+
+          System.import('containers/PatientProfilePage/reducer'),
+          System.import('containers/PatientProfilePage/sagas'),
+
+          System.import('containers/PatientMembershipInfoPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          dentistReducer,
+          dentistSagas,
+
+          membersReducer,
+          membersSagas,
+
+          component
+        ]) => {
+          injectReducer('patientDentistPage', dentistReducer.default);
+          injectSagas(dentistSagas.default);
+
+          injectReducer('patientProfilePage', membersReducer.default);
+          injectSagas(membersSagas.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/patient/your-dentist',
       name: 'patientDentistPage',
       getComponent (nextState, cb) {
@@ -355,20 +392,36 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
-      path: '/patient/your-family',
-      name: 'patientFamilyPage',
+      path: '/patient/your-reviews',
+      name: 'patientReviewsPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/PatientFamilyPage/reducer'),
-          System.import('containers/PatientFamilyPage/sagas'),
-          System.import('containers/PatientFamilyPage'),
+          System.import('containers/PatientDentistPage/reducer'),
+          System.import('containers/PatientDentistPage/sagas'),
+
+          System.import('containers/PatientProfilePage/reducer'),
+          System.import('containers/PatientProfilePage/sagas'),
+
+          System.import('containers/PatientReviewsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('patientFamilyPage', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([
+          dentistReducer,
+          dentistSagas,
+
+          membersReducer,
+          membersSagas,
+
+          component
+        ]) => {
+          injectReducer('patientDentistPage', dentistReducer.default);
+          injectSagas(dentistSagas.default);
+
+          injectReducer('patientProfilePage', membersReducer.default);
+          injectSagas(membersSagas.default);
+
           renderRoute(component);
         });
 
