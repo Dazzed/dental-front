@@ -27,7 +27,7 @@ import LabeledInput from 'components/LabeledInput';
 import ReviewScore from 'components/ReviewScore';
 import {
   editingReviewSelector,
-} from 'containers/YourDentistPage/selectors';
+} from 'containers/PatientDentistPage/selectors';
 
 // local
 import styles from './styles.css';

@@ -44,16 +44,16 @@ export default class PatientDashboardTabs extends React.Component {
 
   selectTab = (key) => {
     switch (key) {
-      case 'profile':
-        this.props.changeRoute('/your-profile');
+      case 'dentist':
+        this.props.changeRoute('/patient/your-dentist');
         break;
 
       case 'family':
-        this.props.changeRoute('/your-family');
+        this.props.changeRoute('/patient/your-family');
         break;
 
-      case 'dentist':
-        this.props.changeRoute('/your-dentist');
+      case 'profile':
+        this.props.changeRoute('/patient/profile');
         break;
 
       default:
@@ -69,7 +69,7 @@ export default class PatientDashboardTabs extends React.Component {
     //       content.  The tabs are just there for navigation.
     return (
       <Tabs activeKey={active} onSelect={this.selectTab} id="patient-dashboard-tabs" styleName="tabs">
-        <Tab eventKey={'profile'} title="Your Profile"></Tab>
+        <Tab eventKey={'profile'} title="Profile"></Tab>
         <Tab eventKey={'family'} title="Your Family Members"></Tab>
         <Tab eventKey={'dentist'} title="Your Dentist"></Tab>
       </Tabs>

@@ -1,7 +1,7 @@
 /*
 Patient Profile Page
 ================================================================================
-Route: `/your-profile`
+Route: `/patient/profile`
 */
 
 /*
@@ -59,7 +59,7 @@ Profile
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class YourProfilePage extends React.Component {
+class PatientProfilePage extends React.Component {
 
   static propTypes = {
     // state
@@ -278,4 +278,4 @@ class YourProfilePage extends React.Component {
   }
 }
 
-export default YourProfilePage;
+export default PatientProfilePage;

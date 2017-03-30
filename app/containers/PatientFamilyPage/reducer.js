@@ -36,7 +36,7 @@ const initialState = {
 Reducer
 ================================================================================
 */
-function yourFamilyPageReducer (state = initialState, action) {
+function patientFamilyPageReducer (state = initialState, action) {
   let memberIdx;
 
   switch (action.type) {
@@ -119,4 +119,4 @@ function yourFamilyPageReducer (state = initialState, action) {
   }
 }
 
-export default yourFamilyPageReducer;
+export default patientFamilyPageReducer;

@@ -46,7 +46,7 @@ function redirectToDashboard (store) {
     const userType = selectUserType(store.getState());
 
     if (isLoggedIn && userType === USER_TYPES.CLIENT) {
-      replace('/your-profile');
+      replace('/patient/profile');
     }
     else if (isLoggedIn && userType === USER_TYPES.DENTIST) {
       replace('/dentist/new-members');

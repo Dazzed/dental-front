@@ -1,7 +1,7 @@
 /*
 Patient Family Page
 ================================================================================
-Route: `/your-family`
+Route: `/patient/your-family`
 */
 
 /*
@@ -91,7 +91,7 @@ Family
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class YourFamilyPage extends React.Component {
+class PatientFamilyPage extends React.Component {
 
   static propTypes = {
     // app - dispatch
@@ -220,4 +220,4 @@ class YourFamilyPage extends React.Component {
 
 }
 
-export default YourFamilyPage;
+export default PatientFamilyPage;

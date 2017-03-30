@@ -1,5 +1,5 @@
 /*
-Your Profile Page Selectors
+Patient Family Member Page Selectors
 ================================================================================
 */
 
@@ -15,10 +15,14 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 /*
 Selectors
+================================================================================
+*/
+const domainSelector = state => state.patientFamilyPage;
+
+/*
+Fetch
 ------------------------------------------------------------
 */
-const domainSelector = state => state.yourProfilePage;
-
 const familyMembersSelector = createSelector(
   domainSelector,
   (substate) => { return substate.familyMembers; }
@@ -61,6 +65,20 @@ const membersSelector = createSelector(
 );
 
 /*
+Add / Edit Member
+------------------------------------------------------------
+*/
+const editingActiveSelector = createSelector(
+  domainSelector,
+  substate => substate.editingActive,
+);
+
+const editingMemberSelector = createSelector(
+  domainSelector,
+  subtate => subtate.editingMember,
+);
+
+/*
 Export
 ------------------------------------------------------------
 */
@@ -69,4 +87,7 @@ export default domainSelector;
 export {
   familyMembersSelector,
   membersSelector,
+
+  editingActiveSelector,
+  editingMemberSelector,
 };

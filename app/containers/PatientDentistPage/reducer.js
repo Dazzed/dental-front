@@ -1,5 +1,5 @@
 /*
-Your Dentist Page Reducer
+Patients Dentist Page Reducer
 ================================================================================
 */
 
@@ -30,7 +30,7 @@ const initialState = {
 Reducer
 ================================================================================
 */
-function yourDentistPageReducer (state = initialState, action) {
+function patientDentistPageReducer (state = initialState, action) {
   switch (action.type) {
     /*
     Fetch
@@ -77,4 +77,4 @@ function yourDentistPageReducer (state = initialState, action) {
   }
 }
 
-export default yourDentistPageReducer;
+export default patientDentistPageReducer;

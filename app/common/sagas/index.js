@@ -53,7 +53,7 @@ function* loadUserFromToken () {
         yield put(replace(nextPathName));
       } else if (redirectPaths.indexOf(currentPath) > -1) {
         if (userType === USER_TYPES.CLIENT) {
-          yield put(replace('/your-profile'));
+          yield put(replace('/patient/profile'));
         }
         else if (userType === USER_TYPES.DENTIST) {
           yield put (replace('/dentist/new-members'));

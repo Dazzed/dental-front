@@ -1,5 +1,5 @@
 /*
-Your Profile Page Reducer
+Patient Profile Page Reducer
 ================================================================================
 */
 
@@ -24,7 +24,7 @@ const initialState = {
 Reducer
 ------------------------------------------------------------
 */
-function yourProfilePageReducer (state = initialState, action) {
+function patientProfilePageReducer (state = initialState, action) {
   let memberIdx;
 
   switch (action.type) {
@@ -39,4 +39,4 @@ function yourProfilePageReducer (state = initialState, action) {
   }
 }
 
-export default yourProfilePageReducer;
+export default patientProfilePageReducer;

@@ -1,7 +1,7 @@
 /*
-Patient Dentist Page
+Patients Dentist Page
 ================================================================================
-Route: `/your-dentist`
+Route: `/patient/your-dentist`
 */
 
 /*
@@ -83,7 +83,7 @@ Dentist
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
-class YourDentistPage extends React.Component {
+class PatientDentistPage extends React.Component {
 
   static propTypes = {
     // app - dispatch
@@ -409,4 +409,4 @@ class YourDentistPage extends React.Component {
   }
 }
 
-export default YourDentistPage;
+export default PatientDentistPage;

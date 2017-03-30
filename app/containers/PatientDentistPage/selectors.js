@@ -1,5 +1,5 @@
 /*
-Your Dentist Page Selectors
+Patients Dentist Page Selectors
 ================================================================================
 */
 
@@ -14,7 +14,7 @@ import { createSelector } from 'reselect';
 Selectors
 ================================================================================
 */
-const domainSelector = state => state.yourDentistPage;
+const domainSelector = state => state.patientDentistPage;
 
 /*
 Fetch

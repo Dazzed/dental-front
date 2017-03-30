@@ -312,6 +312,69 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
+      path: '/patient/profile',
+      name: 'patientProfilePage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PatientProfilePage/reducer'),
+          System.import('containers/PatientProfilePage/sagas'),
+          System.import('containers/PatientProfilePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('patientProfilePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/patient/your-dentist',
+      name: 'patientDentistPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PatientDentistPage/reducer'),
+          System.import('containers/PatientDentistPage/sagas'),
+          System.import('containers/PatientDentistPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('patientDentistPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/patient/your-family',
+      name: 'patientFamilyPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PatientFamilyPage/reducer'),
+          System.import('containers/PatientFamilyPage/sagas'),
+          System.import('containers/PatientFamilyPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('patientFamilyPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/privacy',
       name: 'privacy',
       getComponent (nextState, cb) {
@@ -366,69 +429,6 @@ export default function createRoutes (store) {
         System.import('containers/TermsPage')
           .then(loadModule(cb))
           .catch(errorLoading);
-      },
-    }, {
-      onEnter: redirectToLogin,
-      path: '/your-dentist',
-      name: 'yourDentistPage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/YourDentistPage/reducer'),
-          System.import('containers/YourDentistPage/sagas'),
-          System.import('containers/YourDentistPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('yourDentistPage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
-      onEnter: redirectToLogin,
-      path: '/your-family',
-      name: 'yourFamilyPage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/YourFamilyPage/reducer'),
-          System.import('containers/YourFamilyPage/sagas'),
-          System.import('containers/YourFamilyPage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('yourFamilyPage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
-      },
-    }, {
-      onEnter: redirectToLogin,
-      path: '/your-profile',
-      name: 'yourProfilePage',
-      getComponent (nextState, cb) {
-        const importModules = Promise.all([
-          System.import('containers/YourProfilePage/reducer'),
-          System.import('containers/YourProfilePage/sagas'),
-          System.import('containers/YourProfilePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('yourProfilePage', reducer.default);
-          injectSagas(sagas.default);
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
       },
     }, {
       onEnter: redirectTo404,
