@@ -18,6 +18,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
+import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
@@ -33,10 +34,19 @@ import {
 import {
   // fetch
   fetchFamilyMembers,
+
+  // add member
+  setEditingMember,
+  clearEditingMember,
+  submitMemberForm,
 } from 'containers/PatientProfilePage/actions';
 import {
   // fetch
   membersSelector,
+
+  // add member
+  editingActiveSelector,
+  editingMemberSelector,
 } from 'containers/PatientProfilePage/selectors';
 
 // local
@@ -57,6 +67,10 @@ function mapStateToProps (state) {
     dentist: dentistSelector(state),
     members: membersSelector(state),
     user: selectCurrentUser(state),
+
+    // add member
+    editingActive: editingActiveSelector(state),
+    editingMember: editingMemberSelector(state),
   };
 }
 
@@ -68,6 +82,12 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchDentist: () => dispatch(fetchDentist()),
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
+
+    // add member
+    resetForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
   };
 }
 
@@ -102,12 +122,43 @@ class PatientMembershipInfoPage extends React.Component {
     // fetch - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
     fetchFamilyMembers: React.PropTypes.func.isRequired,
+
+    // add member - state
+    editingActive: React.PropTypes.bool.isRequired,
+    editingMember: React.PropTypes.object,
+
+    // add member - dispatch
+    resetForm: React.PropTypes.func.isRequired,
+    setEditingMember: React.PropTypes.func.isRequired,
+    clearEditingMember: React.PropTypes.func.isRequired,
+    submitMemberForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
     this.props.changePageTitle('Your Membership Information');
     this.props.fetchDentist();
     this.props.fetchFamilyMembers();
+  }
+
+  /*
+  Page Actions
+  ------------------------------------------------------------
+  */
+  addMember = () => {
+    this.props.resetForm();
+    this.props.setEditingMember(null);
+  }
+
+  /*
+  Events
+  ------------------------------------------------------------
+  */
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(values, this.props.user.id);
+  }
+
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
   }
 
   /*
@@ -121,6 +172,10 @@ class PatientMembershipInfoPage extends React.Component {
       dentist,
       members,
       user,
+
+      // add member
+      editingActive,
+      editingMember,
     } = this.props;
 
     // TODO: replace the mockup data with real data once it's available
@@ -257,9 +312,27 @@ class PatientMembershipInfoPage extends React.Component {
           {/* End Membership Info */}
           </div>
 
+          <div styleName="add-family-member-wrapper">
+            <input
+              type="button"
+              styleName="button"
+              value="ADD FAMILY MEMBER +"
+              onClick={this.addMember}
+            />
+          </div>
 
         {/* End Content */}
         </div>
+
+        <MemberFormModal
+          show={editingActive}
+          onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember}
+          onSubmit={this.handleMemberFormSubmit}
+        />
+
+
       {/* End Wrapper Div */}
       </div>
     );

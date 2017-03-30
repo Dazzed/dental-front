@@ -26,6 +26,8 @@ import {
 } from './actions';
 import {
   FAMILY_MEMBERS_REQUEST,
+  SUBMIT_MEMBER_FORM,
+  REMOVE_MEMBER_REQUEST,
 } from './constants';
 
 
@@ -41,11 +43,19 @@ export default [
 
 function* main () {
   const watcherA = yield fork(familyMembersFetcher);
+  const watcherB = yield fork(submitMemberFormWatcher);
+  const watcherC = yield fork(removeMemberWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
+  yield cancel(watcherB);
+  yield cancel(watcherC);
 }
 
+/*
+Fetch
+------------------------------------------------------------
+*/
 function* familyMembersFetcher () {
   yield* takeLatest(FAMILY_MEMBERS_REQUEST, function* handler () {
     try {
@@ -55,4 +65,93 @@ function* familyMembersFetcher () {
       yield put(setFamilyMembersErrors(err));
     }
   });
+}
+
+/*
+Add / Edit Member
+------------------------------------------------------------
+*/
+function* submitMemberFormWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
+
+    if (payload.id === undefined) {
+      yield submitAddMemberForm(payload, userId);
+    }
+    else {
+      yield submitEditMemberForm(payload, userId);
+    }
+  }
+}
+
+function* submitAddMemberForm(payload, userId) {
+  try {
+    const requestURL = `/api/v1/users/${userId}/members`;
+    const params = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    };
+
+    const response = yield call(request, requestURL, params);
+    const message = `'${payload.firstName} ${payload.lastName}' has been added.`;
+    yield put(toastrActions.success('', message));
+
+    yield put(setAddedMember(response.data, userId));
+
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    yield put(stopSubmit('familyMember', errors));
+  }
+}
+
+function* submitEditMemberForm (payload, userId) {
+  try {
+    const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    const params = {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    };
+
+    const response = yield call(request, requestURL, params);
+    const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
+    yield put(toastrActions.success('', message));
+
+    yield put(setEditedMember(response.data, userId));
+
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    yield put(stopSubmit('familyMember', errors));
+  }
+}
+
+/*
+Remove Member
+------------------------------------------------------------
+*/
+function* removeMemberWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(REMOVE_MEMBER_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+      const params = {
+        method: 'DELETE',
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `'${payload.firstName} ${payload.lastName}'
+        has been deleted.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setRemovedMember(payload.id, userId));
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
 }

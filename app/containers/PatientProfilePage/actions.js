@@ -12,6 +12,15 @@ import {
   FAMILY_MEMBERS_REQUEST,
   FAMILY_MEMBERS_SUCCESS,
   FAMILY_MEMBERS_ERROR,
+
+  SET_EDITING_MEMBER,
+  CLEAR_EDITING_MEMBER,
+  SUBMIT_MEMBER_FORM,
+  ADD_MEMBER_SUCCESS,
+  EDIT_MEMBER_SUCCESS,
+
+  REMOVE_MEMBER_REQUEST,
+  REMOVE_MEMBER_SUCCESS,
 } from './constants';
 
 /*
@@ -36,4 +45,65 @@ export function setFamilyMembersErrors (payload) {
     type: FAMILY_MEMBERS_ERROR,
     payload,
   };
+}
+
+/*
+Add / Edit Member
+------------------------------------------------------------
+*/
+export function setEditingMember (member) {
+  return {
+    type: SET_EDITING_MEMBER,
+    member
+  };
+}
+
+export function clearEditingMember () {
+  return {
+    type: CLEAR_EDITING_MEMBER,
+  };
+}
+
+export function submitMemberForm (payload, userId) {
+  return {
+    type: SUBMIT_MEMBER_FORM,
+    payload,
+    userId,
+  };
+}
+
+export function setAddedMember (payload, userId) {
+  return {
+    type: ADD_MEMBER_SUCCESS,
+    payload,
+    userId,
+  };
+}
+
+export function setEditedMember (payload, userId) {
+  return {
+    type: EDIT_MEMBER_SUCCESS,
+    payload,
+    userId,
+  };
+}
+
+/*
+Remove Member 
+------------------------------------------------------------
+*/
+export function setRemovingMember (payload, userId) {
+  return {
+    type: REMOVE_MEMBER_REQUEST,
+    payload,
+    userId,
+  };
+}
+
+export function setRemovedMember (memberId, userId) {
+  return {
+    type: REMOVE_MEMBER_SUCCESS,
+    memberId,
+    userId,
+  }
 }
