@@ -20,6 +20,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
+import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import ReviewFormModal from 'components/ReviewFormModal';
 import ReviewScore from 'components/ReviewScore';
@@ -152,8 +153,6 @@ class PatientDentistPage extends React.Component {
       editingActive,
     } = this.props;
 
-    console.log(dentist);
-
     // precondition: the data must be loaded, otherwise wait for it
     if (dentist === false) {
       return (
@@ -198,6 +197,7 @@ class PatientDentistPage extends React.Component {
 
     return (
       <div>
+        <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="dentist" />
 
         <div styleName="content">

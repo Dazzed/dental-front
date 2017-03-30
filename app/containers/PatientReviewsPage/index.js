@@ -17,6 +17,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
+import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -171,6 +172,7 @@ class PatientReviewsPage extends React.Component {
     */
     return (
       <div>
+        <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="reviews" />
 
         <div styleName="content">

@@ -1,0 +1,36 @@
+/*
+Patient Dashboard Header Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Patient Dashboard Header
+================================================================================
+*/
+.patient-dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.user {}
+
+.user__name {
+  margin: 1.5rem 0 0.5rem 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 4rem;
+}
+
+.user__info {}
+
+.user__info-label {
+  font-weight: bold;
+}
