@@ -56,7 +56,7 @@ function mapStateToProps (state) {
     dentist: dentistSelector(state),
     user: selectCurrentUser(state),
 
-    // send review
+    // add review
     editingReview: editingReviewSelector(state),
   };
 }
@@ -69,7 +69,7 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchDentist: () => dispatch(fetchDentist()),
 
-    // send review
+    // add review
     resetForm: () => dispatch(resetForm('sendReview')),
     setEditingReview: (review) => dispatch(setEditingReview(review)),
     clearEditingReview: () => dispatch(clearEditingReview()),
@@ -103,10 +103,10 @@ class PatientDentistPage extends React.Component {
     // fetch - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
 
-    // send review - state
+    // add review - state
     editingReview: React.PropTypes.object,
 
-    // send review - dispatch
+    // add review - dispatch
     resetForm: React.PropTypes.func.isRequired,
     setEditingReview: React.PropTypes.func.isRequired,
     clearEditingReview: React.PropTypes.func.isRequired,
@@ -122,7 +122,7 @@ class PatientDentistPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  writeReview = () => {
+  addReview = () => {
     this.props.resetForm();
     this.props.setEditingReview({});
   }
@@ -149,7 +149,7 @@ class PatientDentistPage extends React.Component {
       dentist,
       user,
 
-      // send review
+      // add review
       editingReview,
     } = this.props;
 
@@ -233,7 +233,7 @@ class PatientDentistPage extends React.Component {
                     type="button"
                     styleName="button--full-width"
                     value="WRITE A REVIEW"
-                    onClick={this.writeReview}
+                    onClick={this.addReview}
                   />
                 </p>
               </div>

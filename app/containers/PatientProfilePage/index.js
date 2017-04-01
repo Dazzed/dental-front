@@ -24,25 +24,36 @@ import FamilyMembersList from 'components/FamilyMembersList';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
+import ReviewFormModal from 'components/ReviewFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
   // fetch
+  fetchDentist,
   fetchFamilyMembers,
 
   // add / edit member
   setEditingMember,
   clearEditingMember,
   submitMemberForm,
+
+  // add review
+  setEditingReview,
+  clearEditingReview,
+  submitReviewForm,
 } from './actions';
 import {
   // fetch
+  dentistSelector,
   membersSelector,
 
   // add / edit member
   editingMemberSelector,
+
+  // add review
+  editingReviewSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -53,11 +64,15 @@ Redux
 function mapStateToProps (state) {
   return {
     // fetch
+    dentist: dentistSelector(state),
     members: membersSelector(state),
     user: selectCurrentUser(state),
 
     // add / edit member
     editingMember: editingMemberSelector(state),
+
+    // add review
+    editingReview: editingReviewSelector(state),
   };
 }
 
@@ -67,13 +82,20 @@ function mapDispatchToProps (dispatch) {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
     // fetch
+    fetchDentist: () => dispatch(fetchDentist()),
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
 
     // add / edit member
-    resetForm: () => dispatch(resetForm('familyMember')),
+    resetMemberForm: () => dispatch(resetForm('familyMember')),
     setEditingMember: (member) => dispatch(setEditingMember(member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+
+    // add review
+    resetReviewForm: () => dispatch(resetForm('sendReview')),
+    setEditingReview: (review) => dispatch(setEditingReview(review)),
+    clearEditingReview: () => dispatch(clearEditingReview()),
+    submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
   };
 }
 
@@ -90,8 +112,8 @@ class PatientProfilePage extends React.Component {
     // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
 
-
     // fetch - state
+    fetchDentist: React.PropTypes.func.isRequired,
     members: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
@@ -108,14 +130,21 @@ class PatientProfilePage extends React.Component {
     editingMember: React.PropTypes.object,
 
     // add / edit member - dispatch
-    resetForm: React.PropTypes.func.isRequired,
+    resetMemberForm: React.PropTypes.func.isRequired,
     setEditingMember: React.PropTypes.func.isRequired,
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
+
+    // add review - dispatch
+    resetReviewForm: React.PropTypes.func.isRequired,
+    setEditingReview: React.PropTypes.func.isRequired,
+    clearEditingReview: React.PropTypes.func.isRequired,
+    submitReviewForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
     this.props.changePageTitle('Your Profile');
+    this.props.fetchDentist();
     this.props.fetchFamilyMembers();
   }
 
@@ -125,7 +154,7 @@ class PatientProfilePage extends React.Component {
   */
   // members
   addMember = () => {
-    this.props.resetForm();
+    this.props.resetMemberForm();
     this.props.setEditingMember({});
   }
 
@@ -143,6 +172,12 @@ class PatientProfilePage extends React.Component {
 
   updateMember = (member) => {
     alert('TODO: update member');
+  }
+
+  // reviews
+  addReview = () => {
+    this.props.resetReviewForm();
+    this.props.setEditingReview({});
   }
 
   // other
@@ -170,6 +205,14 @@ class PatientProfilePage extends React.Component {
     this.props.clearEditingMember();
   }
 
+  handleReviewFormSubmit = (values) => {
+    this.props.submitReviewForm(values, this.props.dentist.id);
+  }
+
+  cancelReviewFormAction = () => {
+    this.props.clearEditingReview();
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -177,11 +220,15 @@ class PatientProfilePage extends React.Component {
   render () {
     const {
       // fetch
+      dentist,
       members,
       user,
 
       // add / edit member
       editingMember,
+
+      // add review
+      editingReview,
     } = this.props;
 
     /*
@@ -189,7 +236,7 @@ class PatientProfilePage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (user === false || members === false) {
+    if (user === false || members === false || dentist === false) {
       return (
         <div>
           <PatientDashboardTabs active="profile" />
@@ -305,7 +352,7 @@ class PatientProfilePage extends React.Component {
 
               <div className="col-sm-3">
                 <div className="text-right">
-                  <a href="mailto:">
+                  <a href="mailto:dentist.dentistInfo.email" target="_blank">
                     <input
                       type="button"
                       styleName="button--full-width"
@@ -317,7 +364,7 @@ class PatientProfilePage extends React.Component {
                     type="button"
                     styleName="button--full-width"
                     value="REVIEW DENTIST"
-                    onClick={this.addMember}
+                    onClick={this.addReview}
                   />
                 </div>
               </div>
@@ -438,6 +485,14 @@ class PatientProfilePage extends React.Component {
 
           initialValues={editingMember}
           onSubmit={this.handleMemberFormSubmit}
+        />
+
+        <ReviewFormModal
+          show={editingReview !== null}
+          onCancel={this.cancelReviewFormAction}
+
+          initialValues={editingReview}
+          onSubmit={this.handleReviewFormSubmit}
         />
 
       {/* End Wrapper Div */}
