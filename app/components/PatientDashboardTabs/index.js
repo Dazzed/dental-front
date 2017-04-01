@@ -75,8 +75,8 @@ export default class PatientDashboardTabs extends React.Component {
       <Tabs activeKey={active} onSelect={this.selectTab} id="patient-dashboard-tabs" styleName="tabs">
         <Tab eventKey={'profile'} title="Profile"></Tab>
         <Tab eventKey={'memberships'} title="Membership Information"></Tab>
-        <Tab eventKey={'dentist'} title="Your Dentist"></Tab>
         <Tab eventKey={'reviews'} title="Your Reviews"></Tab>
+        <Tab eventKey={'dentist'} title="Your Dentist"></Tab>
       </Tabs>
     );
   }
