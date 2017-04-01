@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
-import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';

@@ -20,6 +20,7 @@ import FaUser from 'react-icons/lib/fa/user';
 import {
   MEMBER_RELATIONSHIP_TYPES
 } from 'common/constants';
+import MembersList from 'components/MembersList';
 
 // local
 import styles from './styles.css';
@@ -29,167 +30,142 @@ import styles from './styles.css';
 Family Members List
 ================================================================================
 */
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 class FamilyMembersList extends React.Component {
 
   static propTypes = {
-    // passed in
-    members: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
-      React.PropTypes.array,
-    ]),
-    onEdit: React.PropTypes.func.isRequired,
-    onRemove: React.PropTypes.func.isRequired,
+    // passed in - data
+    patient: React.PropTypes.object.isRequired,
+
+    // passed in - event handlers
+    onAddMember: React.PropTypes.func,
+
+    onReEnrollMember: React.PropTypes.func.isRequired,
+    onRemoveMember: React.PropTypes.func.isRequired,
+    onRenewMember: React.PropTypes.func.isRequired,
+    onUpdateMember: React.PropTypes.func.isRequired,
   }
 
-  // NOTE: bind the member to this function
-  onEditClick = (member) => {
-    this.props.onEdit(member);
+  /*
+  Delegated Controls
+  ------------------------------------------------------------
+  */
+  onAddClick = () => {
+    this.props.onAddMember(this.props.patient);
   }
 
-  // NOTE: bind the member to this function
-  onRemoveClick = (member) => {
-    this.props.onRemove(member);
-  }
-
+  /*
+  Render
+  ------------------------------------------------------------
+  */
   render() {
     const {
-      members
+      patient,
+
+      // passed in - event handlers
+      onAddMember,
+
+      onReEnrollMember,
+      onRemoveMember,
+      onRenewMember,
+      onUpdateMember,
     } = this.props;
 
-    const memberRows = members.map((member) => {
-      const {
-        avatar,
-        familyRelationship,
-        firstName,
-        id,
-        lastName,
-        subscription,
-        type,
-      } = member;
+    const {
+      subscription,
+    } = patient;
 
-      const isOwner = familyRelationship === null; // Is a string key for other family members.
+    let statusStyle = "status";
+    switch(subscription.status) {
+      case "active":
+        statusStyle += " status--active";
+        break;
 
-      const profilePhoto = avatar !== null
-                         ? (<img src={avatar} alt="Member Profile Photo" />)
-                         : (<FaUser />);
+      case "past_due":
+        statusStyle += " status--past-due";
+        break;
 
-      const relationship = isOwner
-                         ? "Self"
-                         : MEMBER_RELATIONSHIP_TYPES[familyRelationship];
+      case "canceled":
+        statusStyle += " status--canceled";
+        break;
 
-      const accountOwner = isOwner
-                         ? (<div styleName="members__member__owner">Primary Account Owner</div>)
-                         : null;
+      case "inactive":
+        statusStyle += " status--inactive";
+        break;
 
-      const fee = subscription
-                ? "$" + subscription.monthly
-                : "---";
+      default:
+        // Status is unknown, so don't add anything;
+        break;
+    }
 
-      const removePopover = (
-        <Popover id="remove-popover" title="Are you sure?">
-          <p>Please confirm that you want to remove <strong>'{firstName} {lastName}'</strong> from your plan.</p>
+    const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
 
-          <div className="text-center">
-            <input
-              type="button"
-              className={styles["button--short--lowlight"]}
-              value="Confirm Removal"
-              onClick={this.onRemoveClick.bind(this, member)}
-            />
-          </div>
-        </Popover>
-      );
-
-      const controls = isOwner
-                     ? null
-                     : (<div styleName="members__member__controls">
-                          <input
-                            type="button"
-                            styleName="button--short"
-                            value="Edit"
-                            onClick={this.onEditClick.bind(this, member)}
-                          />
-
-                          <OverlayTrigger trigger="click" placement="bottom" rootClose overlay={removePopover}>
-                            <input
-                              type="button"
-                              styleName="button--short--lowlight"
-                              value="Remove"
-                            />
-                          </OverlayTrigger>
-                        </div>
-                       );
-
-      return (
-        <div className="row" styleName="members__member" key={id}>
-
-          <div className="col-sm-2">
-            <div styleName="members__member__profile">
-              {profilePhoto}
-            </div>
-          </div>
-
-          <div className="col-sm-3">
-            <div styleName="members__member__name">
-              {firstName} {lastName}
-              {accountOwner}
-            </div>
-          </div>
-
-          <div className="col-sm-2">
-            <div styleName="members__member__info">
-              {relationship}
-            </div>
-          </div>
-
-          <div className="col-sm-1">
-            <div styleName="members__member__info">
-              {type}
-            </div>
-          </div>
-
-          <div className="col-sm-1">
-            <div styleName="members__member__info">
-              {fee}
-            </div>
-          </div>
-
-          <div className="col-sm-3">
-            <div styleName="members__member__info">
-              TODO
-              {controls}
-            </div>
-          </div>
-
-        </div>
-      );
-    });
+    const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
 
     return (
-      <div className="grid" styleName="members">
-        <div className="row" styleName="members__title">
-          <div className="col-sm-2">
-            {/* profile pic */}
+      <div className="row">
+        
+        {/*
+        Family Members List
+        ------------------------------------------------------------
+        */}
+        <div className="col-sm-9">
+          <MembersList
+            patient={patient}
+
+            onReEnrollMember={onReEnrollMember}
+            onRemoveMember={onRemoveMember}
+            onRenewMember={onRenewMember}
+            onUpdateMember={onUpdateMember}
+          />
+        </div>
+                         
+        <div className="col-sm-3">
+          {/*
+          Subscription Overview
+          ------------------------------------------------------------
+          TODO: Clarify what values to show for each member status, and
+                how to calculate them.
+          */}
+          <div styleName="subscription-overview">
+            <p>
+              Membership:
+              <br />
+              <span styleName={statusStyle}>{subscription.status}</span>
+            </p>
+            <p>
+              Recurring Payment Date:
+              <br />
+              <span styleName="subscription-overview__info">{paymentDueDate}</span>
+            </p>
+            <p>
+              Total Monthly Payment:
+              <br />
+              <span styleName="subscription-overview__info">${paymentDueAmount}</span>
+            </p>
           </div>
-          <div className="col-sm-3">
-            Name
-          </div>
-          <div className="col-sm-2">
-            Relationship
-          </div>
-          <div className="col-sm-1">
-            Type
-          </div>
-          <div className="col-sm-1">
-            Fee
-          </div>
-          <div className="col-sm-3">
-            Member Since
-          </div>
+
+          {/*
+          Controls
+          ------------------------------------------------------------
+          */}
+          {onAddMember && (
+            <div styleName="controls">
+              <p>
+                <input
+                  type="button"
+                  styleName="button--wide"
+                  value="ADD MEMBER"
+                  onClick={this.onAddClick}
+                />
+              </p>
+            </div>
+          )}
+
+        {/* End Right Col */}
         </div>
 
-        {memberRows}
+      {/* End Member Details Row */}
       </div>
     );
   }

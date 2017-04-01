@@ -19,8 +19,8 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
-import FamilyMembersPlanSummary from 'components/FamilyMembersPlanSummary';
 import LoadingSpinner from 'components/LoadingSpinner';
+import FamilyMembersList from 'components/FamilyMembersList';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
@@ -126,37 +126,39 @@ class PatientProfilePage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
+  // members
   addMember = () => {
     this.props.resetForm();
     this.props.setEditingMember(null);
   }
 
-  changePaymentMethod = () => {
-    // TODO
-  }
-
-  editMember = () => {
-    // TODO
-  }
-
-  editProfile = () => {
-    // TODO
-  }
-
-  editSecuritySettings = () => {
-    // TODO
-  }
-
   reEnrollMember = () => {
-    // TODO
+    alert('TODO: re-enroll member');
   }
 
-  removeMember = () => {
-    // TODO
+  removeMember = (member) => {
+    alert('TODO: remove member');
   }
 
   renewMember = () => {
-    // TODO
+    alert('TODO: renew member');
+  }
+
+  updateMember = (member) => {
+    alert('TODO: update member');
+  }
+
+  // other
+  changePaymentMethod = () => {
+    alert('TODO: change payment method');
+  }
+
+  editProfile = () => {
+    alert('TODO: edit profile');
+  }
+
+  editSecuritySettings = () => {
+    alert('TODO: edit security settings');
   }
 
   /*
@@ -207,6 +209,8 @@ class PatientProfilePage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
+    user.members = members;
+
     const aggregateSubscription = {
       status: members.reduce(
         function(aggregateStatus, member) {
@@ -328,7 +332,16 @@ class PatientProfilePage extends React.Component {
               </div>
             </div>
 
-            <FamilyMembersPlanSummary members={members} />
+            <div styleName="patients-list-wrapper">
+              <FamilyMembersList
+                patient={user}
+
+                onReEnrollMember={this.reEnrollMember}
+                onRemoveMember={this.removeMember}
+                onRenewMember={this.renewMember}
+                onUpdateMember={this.updateMember}
+              />
+            </div>
 
           </div>
 
