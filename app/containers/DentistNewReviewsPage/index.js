@@ -222,6 +222,7 @@ class DentistNewReviewsPage extends React.Component {
   getRecentPatientReviews = (patient) => {
     const {
       recentReviewers,
+      user,
     } = this.props;
 
     // precondition: the patient is not a recent reviewer
@@ -232,7 +233,7 @@ class DentistNewReviewsPage extends React.Component {
     const reviews = recentReviewers[patient.id].reviews;
 
     return (
-      <PatientReviews reviewer={patient} reviews={reviews} />
+      <PatientReviews reviewer={patient} reviews={reviews} user={user} />
     );
   }
 

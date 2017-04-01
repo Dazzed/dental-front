@@ -27,19 +27,39 @@ Patient Reviews
 class PatientReviews extends React.Component {
 
   static propTypes = {
-    // data - passed in
+    // passed in - data
     reviewer: React.PropTypes.object.isRequired,
     reviews: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    user: React.PropTypes.object.isRequired,
+
+    // passed in - event handlers
+    onRemoveReview: React.PropTypes.func,
+    onUpdateReview: React.PropTypes.func,
+  }
+
+  /*
+  Delegated Controls
+  ------------------------------------------------------------
+  */
+  // NOTE: The following functions must be bound to the review.
+  onRemoveReviewClick = (review) => {
+    this.props.onRemoveReview(review);
+  }
+
+  onUpdateReviewClick = (review) => {
+    this.props.onUpdateReview(review);
   }
 
   /*
   Render an Individual Review
   ------------------------------------------------------------
   */
-  renderReview = (reviewer, review) => {
+  renderReview = (review) => {
     const {
-      email,
-    } = reviewer;
+      // data
+      reviewer,
+      user,
+    } = this.props;
 
     const {
       createdAt,
@@ -72,15 +92,34 @@ class PatientReviews extends React.Component {
               &#8220;{message}&#8221;
             </p>
 
-            <div>
-              <a href={`mailto:${email}`}>
+            {user.type === "client" && (
+              <div styleName="review__controls">
                 <input
                   type="button"
                   styleName="button--wide"
-                  value="REPLY TO REVIEW"
+                  value="REMOVE REVIEW"
+                  onClick={this.onRemoveReviewClick.bind(this, review)}
                 />
-              </a>
-            </div>
+                <input
+                  type="button"
+                  styleName="button--wide"
+                  value="EDIT REVIEW"
+                  onClick={this.onUpdateReviewClick.bind(this, review)}
+                />
+              </div>
+            )}
+
+            {user.type === "dentist" && (
+              <div styleName="review__controls">
+                <a href={`mailto:${reviewer.email}`}>
+                  <input
+                    type="button"
+                    styleName="button--wide"
+                    value="REPLY TO REVIEW"
+                  />
+                </a>
+              </div>
+            )}
 
           </div>
         </div>
@@ -94,7 +133,6 @@ class PatientReviews extends React.Component {
   */
   render () {
     const {
-      reviewer,
       reviews
     } = this.props;
 
@@ -103,7 +141,7 @@ class PatientReviews extends React.Component {
       return null;
     }
 
-    const patientReviewsContent = reviews.map(this.renderReview.bind(this, reviewer));
+    const patientReviewsContent = reviews.map(this.renderReview);
 
     return (
       <div>

@@ -17,6 +17,7 @@ import FaCaretRight from 'react-icons/lib/fa/caret-right';
 
 // app
 import {
+  PREFERRED_CONTACT_METHODS,
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
 import Avatar from 'components/Avatar';
@@ -41,8 +42,8 @@ class PatientsList extends React.Component {
 
     // passed in - event handlers
     onAddMember: React.PropTypes.func.isRequired,
-    onToggleCancelationFee: React.PropTypes.func.isRequired,
-    onToggleReEnrollmentFee: React.PropTypes.func.isRequired,
+    onToggleCancelationFee: React.PropTypes.func,
+    onToggleReEnrollmentFee: React.PropTypes.func,
 
     onReEnrollMember: React.PropTypes.func.isRequired,
     onRemoveMember: React.PropTypes.func.isRequired,
@@ -124,6 +125,7 @@ class PatientsList extends React.Component {
         members,
         phone,
         subscription,
+        type,
       } = patient;
 
       let statusStyle = "status";
@@ -149,17 +151,18 @@ class PatientsList extends React.Component {
           break;
       }
 
-      // TODO: might have to change to reflect the dentist's perspective
-      const contactMethodMessage = PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
+      const contactMethodMessage = type === "client"
+                                 ? PREFERRED_CONTACT_METHODS[contactMethod]
+                                 : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
 
       // TODO: test the size of members when the patient is also active on the plan
       const familySize = members.length + 1; // include the user (patient)
 
-      const memberSince = moment(createdAt).format("MMM D, YYYY");
+      const memberSince = moment(createdAt).format("MMMM D, YYYY");
 
       const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
 
-      const paymentDueDate = moment(subscription.endAt).format("MMM D, YYYY");
+      const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
 
       let additionalMembershipContent = null;
       if (getAdditionalMembershipContent) {
@@ -302,24 +305,28 @@ class PatientsList extends React.Component {
                             onClick={this.onAddClick.bind(this, patient)}
                           />
                         </p>
-                        <p>
-                          <label>
-                            <input
-                              type="checkbox"
-                              onChange={this.onCancelationFeeClick.bind(this, patient)}
-                            />
-                            Waive Cancellation Fee
-                          </label>
-                        </p>
-                        <p>
-                          <label>
-                            <input
-                              type="checkbox"
-                              onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
-                            />
-                            Waive Re-enrollment Fee
-                          </label>
-                        </p>
+                        {this.props.onToggleCancelationFee && (
+                          <p>
+                            <label>
+                              <input
+                                type="checkbox"
+                                onChange={this.onCancelationFeeClick.bind(this, patient)}
+                              />
+                              Waive Cancellation Fee
+                            </label>
+                          </p>
+                        )}
+                        {this.props.onToggleReEnrollmentFee && (
+                          <p>
+                            <label>
+                              <input
+                                type="checkbox"
+                                onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
+                              />
+                              Waive Re-enrollment Fee
+                            </label>
+                          </p>
+                        )}
                       </div>
 
                     {/* End Right Col */}

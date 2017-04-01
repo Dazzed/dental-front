@@ -16,7 +16,7 @@ Page Wide
 ================================================================================
 */
 .content {
-  padding: 2rem;
+  padding: 4.5rem 2rem 2rem 2rem;
 
   background-color: $color-secondary-background;
 }
@@ -25,8 +25,38 @@ Page Wide
   min-height: 500px;
 }
 
+.button {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 /*
 Patient Reviews
 ================================================================================
 */
-/* TODO */
+
+/*
+Add a Review
+------------------------------------------------------------
+*/
+.add-review-wrapper {
+  margin: 6rem 0 1.5rem 0;
+
+  text-align: right;
+}

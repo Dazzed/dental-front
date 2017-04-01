@@ -208,7 +208,7 @@ class PatientDentistPage extends React.Component {
             Dentist Profile
             ------------------------------------------------------------
             */}
-            <div className="col-md-12" styleName="profile-content-wrapper">
+            <div className="col-md-9" styleName="profile-content-wrapper">
               <div styleName="profile-content__avatar">
                 <Avatar url={dentist.avatar} size={"9rem"} />
               </div>
@@ -225,9 +225,7 @@ class PatientDentistPage extends React.Component {
             {/*
             User Action Buttons
             ------------------------------------------------------------
-            TODO: remove
             */}
-            {/*
             <div className="col-md-3" styleName="profile-content-wrapper">
               <div styleName="profile-content__user-action-buttons">
                 <p>
@@ -240,7 +238,6 @@ class PatientDentistPage extends React.Component {
                 </p>
               </div>
             </div>
-            */}
 
           </div>
 

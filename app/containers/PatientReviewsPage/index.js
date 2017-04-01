@@ -19,15 +19,26 @@ import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
+import PatientsList from 'components/PatientsList';
+import ReviewFormModal from 'components/ReviewFormModal';
+import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import {
   // fetch
   fetchDentist,
+
+  // send review
+  setEditingReview,
+  clearEditingReview,
+  submitReviewForm,
 } from 'containers/PatientDentistPage/actions';
 import {
   // fetch
   dentistSelector,
+
+  // send review
+  editingActiveSelector,
 } from 'containers/PatientDentistPage/selectors';
 import {
   // fetch
@@ -56,6 +67,9 @@ function mapStateToProps (state) {
     dentist: dentistSelector(state),
     members: membersSelector(state),
     user: selectCurrentUser(state),
+
+    // send review
+    editingActive: editingActiveSelector(state),
   };
 }
 
@@ -67,6 +81,12 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchDentist: () => dispatch(fetchDentist()),
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
+
+    // send review
+    resetForm: () => dispatch(resetForm('sendReview')),
+    setEditingReview: (review) => dispatch(setEditingReview(review)),
+    clearEditingReview: () => dispatch(clearEditingReview()),
+    submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
   };
 }
 
@@ -101,6 +121,15 @@ class PatientReviewsPage extends React.Component {
     // fetch - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
     fetchFamilyMembers: React.PropTypes.func.isRequired,
+
+    // send review - state
+    editingActive: React.PropTypes.bool.isRequired,
+
+    // send review - dispatch
+    resetForm: React.PropTypes.func.isRequired,
+    setEditingReview: React.PropTypes.func.isRequired,
+    clearEditingReview: React.PropTypes.func.isRequired,
+    submitReviewForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -113,24 +142,73 @@ class PatientReviewsPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  editReview = (review) => {
-    // TODO
+  // reviews
+  addReview = () => {
+    this.props.resetForm();
+    this.props.setEditingReview(null);
   }
 
   removeReview = (review) => {
-    // TODO
+    alert('TODO: remove review');
+  }
+
+  updateReview = (review) => {
+    alert('TODO: update review');
+  }
+
+  // members
+  addMember = () => {
+    alert('TODO: add member');
+  }
+
+  reEnrollMember = () => {
+    alert('TODO: re-enroll member');
+  }
+
+  removeMember = (member) => {
+    alert('TODO: remove member');
+  }
+
+  renewMember = () => {
+    alert('TODO: renew member');
+  }
+
+  updateMember = (member) => {
+    alert('TODO: update member');
   }
 
   /*
   Events
   ------------------------------------------------------------
   */
-  handleEditReviewFormSubmit = (values) => {
-    // TODO
+  handleReviewFormSubmit = (values) => {
+    this.props.submitReviewForm(values, this.props.dentist.id);
   }
 
-  cancelEditReviewFormAction = () => {
-    // TODO
+  cancelReviewFormAction = () => {
+    this.props.clearEditingReview();
+  }
+
+  /*
+  UI Functions
+  ------------------------------------------------------------
+  */
+  getReviews = () => {
+    const {
+      dentist,
+      user,
+    } = this.props;
+
+    return (
+      <PatientReviews
+        reviewer={user}
+        reviews={dentist.dentistReviews}
+        user={user}
+
+        onRemoveReview={this.removeReview}
+        onUpdateReview={this.updateReview}
+      />
+    );
   }
 
   /*
@@ -144,6 +222,9 @@ class PatientReviewsPage extends React.Component {
       dentist,
       members,
       user,
+
+      // send review
+      editingActive,
     } = this.props;
 
     /*
@@ -164,23 +245,74 @@ class PatientReviewsPage extends React.Component {
     }
 
     // precondition: there are no reviews to display
-    // TODO
+    if (dentist.dentistReviews.length === 0) {
+      return (
+        <div>
+          <PatientDashboardHeader user={user} />
+          <PatientDashboardTabs active="reviews" />
+
+          <div styleName="content content--filler">
+            <p className="text-center">
+              <input
+                type="button"
+                styleName="button"
+                value="WRITE A REVIEW"
+                onClick={this.writeReview}
+              />
+            </p>
+          </div>
+
+          <ReviewFormModal
+            show={editingActive}
+            onCancel={this.cancelReviewFormAction}
+            onSubmit={this.handleReviewFormSubmit}
+          />
+
+        {/* End Wrapper Div */}
+        </div>
+      );
+    }
 
     /*
     Main Render
     ------------------------------------------------------------
     */
+    user.members = members;
     return (
       <div>
         <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="reviews" />
 
         <div styleName="content">
-          {/* TODO */}
-          Welcome to the "Your Reviews" tab in the patient dashboard.  Still TODO.
+          <PatientsList
+            patients={[user]}
+
+            getAdditionalMembershipContent={this.getReviews}
+
+            onAddMember={this.addMember}
+            onReEnrollMember={this.reEnrollMember}
+            onRemoveMember={this.removeMember}
+            onRenewMember={this.renewMember}
+            onUpdateMember={this.updateMember}
+          />
+
+          <div styleName="add-review-wrapper">
+            <input
+              type="button"
+              styleName="button"
+              value="WRITE A NEW REVIEW"
+              onClick={this.writeReview}
+            />
+          </div>
         </div>
 
-        {/* TODO: edit revieew modal goes here */}
+        <ReviewFormModal
+          show={editingActive}
+          onCancel={this.cancelReviewFormAction}
+          onSubmit={this.handleReviewFormSubmit}
+        />
+
+      {/* End Wrapper Div */}
       </div>
     );
   }

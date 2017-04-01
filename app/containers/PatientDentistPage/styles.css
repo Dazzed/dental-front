@@ -103,7 +103,7 @@ Patients Dentist
 
   .profile-content__user-action-buttons {
     position: relative;
-    top: calc(50% - 89px); /* 89px = 179px/2 = height/2 */
+    top: calc(50% - 41px); /* 41 = 82px/2 = height/2 */
   }
 }
 

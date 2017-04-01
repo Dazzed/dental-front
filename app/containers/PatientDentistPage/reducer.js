@@ -31,15 +31,35 @@ Reducer
 ================================================================================
 */
 function patientDentistPageReducer (state = initialState, action) {
+  let reviews;
+
   switch (action.type) {
+
     /*
     Fetch
     ------------------------------------------------------------
     */
     case DENTIST_SUCCESS:
+      // Order each reviews array from most recent to least.  String comparisons
+      // will work since ISO date-times include all digits in all fields, even if
+      // the leading one is 0.
+      reviews = action.payload.dentistReviews.sort((reviewA, reviewB) => {
+        if (reviewA.createdAt > reviewB.createdAt) {
+          return -1;
+        }
+        else if (reviewA.createdAt < reviewB.createdAt) {
+          return 1;
+        }
+
+        return 0;
+      });
+
       return {
         ...state,
-        dentist: action.payload
+        dentist: {
+          ...action.payload,
+          dentistReviews: reviews,
+        },
       };
 
     /*
@@ -61,9 +81,15 @@ function patientDentistPageReducer (state = initialState, action) {
       };
 
     case SEND_REVIEW_SUCCESS:
-      // TODO: add the review to existing objects so it can be shown?
       return {
         ...state,
+        dentist: {
+          ...state.dentist,
+          dentistReviews: [
+            action.payload, // put the new review first, since it was just created
+            ...state.dentist.dentistReviews,
+          ],
+        },
         editingActive: false,
         editingReview: null,
       };
