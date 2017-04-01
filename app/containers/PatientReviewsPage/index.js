@@ -16,6 +16,7 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import LoadingSpinner from 'components/LoadingSpinner';
+import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import PatientsList from 'components/PatientsList';
@@ -27,6 +28,11 @@ import {
   // fetch
   fetchDentist,
   fetchFamilyMembers,
+
+  // add / edit member
+  setEditingMember,
+  clearEditingMember,
+  submitMemberForm,
 
   // add / edit review
   // TODO: edit
@@ -41,6 +47,9 @@ import {
   // fetch
   dentistSelector,
   membersSelector,
+
+  // add / edit member
+  editingMemberSelector,
 
   // add / edit review
   // TODO: edit
@@ -66,7 +75,16 @@ function mapStateToProps (state) {
     members: membersSelector(state),
     user: selectCurrentUser(state),
 
-    // send review
+    // add / edit member
+    editingMember: editingMemberSelector(state),
+
+    // add / edit member
+    resetMemberForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+
+    // add / edit review
     editingReview: editingReviewSelector(state),
   };
 }
@@ -80,8 +98,14 @@ function mapDispatchToProps (dispatch) {
     fetchDentist: () => dispatch(fetchDentist()),
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
 
-    // send review
-    resetForm: () => dispatch(resetForm('sendReview')),
+    // add / edit member
+    resetMemberForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+
+    // add / edit review
+    resetReviewForm: () => dispatch(resetForm('sendReview')),
     setEditingReview: (review) => dispatch(setEditingReview(review)),
     clearEditingReview: () => dispatch(clearEditingReview()),
     submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
@@ -120,11 +144,20 @@ class PatientReviewsPage extends React.Component {
     fetchDentist: React.PropTypes.func.isRequired,
     fetchFamilyMembers: React.PropTypes.func.isRequired,
 
-    // send review - state
+    // add / edit member - state
+    editingMember: React.PropTypes.object,
+
+    // add / edit member - dispatch
+    resetMemberForm: React.PropTypes.func.isRequired,
+    setEditingMember: React.PropTypes.func.isRequired,
+    clearEditingMember: React.PropTypes.func.isRequired,
+    submitMemberForm: React.PropTypes.func.isRequired,
+
+    // add / edit review - state
     editingReview: React.PropTypes.object,
 
-    // send review - dispatch
-    resetForm: React.PropTypes.func.isRequired,
+    // add / edit review - dispatch
+    resetReviewForm: React.PropTypes.func.isRequired,
     setEditingReview: React.PropTypes.func.isRequired,
     clearEditingReview: React.PropTypes.func.isRequired,
     submitReviewForm: React.PropTypes.func.isRequired,
@@ -140,9 +173,32 @@ class PatientReviewsPage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
+  // members
+  addMember = (user) => {
+    this.props.resetMemberForm();
+    this.props.setEditingMember({});
+  }
+
+  reEnrollMember = (user, member) => {
+    alert('TODO: re-enroll member');
+  }
+
+  removeMember = (user, member) => {
+    alert('TODO: remove member');
+  }
+
+  renewMember = (user, member) => {
+    alert('TODO: renew member');
+  }
+
+  updateMember = (user, member) => {
+    this.props.resetMemberForm();
+    this.props.setEditingMember(member);
+  }
+
   // reviews
   addReview = () => {
-    this.props.resetForm();
+    this.props.resetReviewForm();
     this.props.setEditingReview({});
   }
 
@@ -154,31 +210,20 @@ class PatientReviewsPage extends React.Component {
     alert('TODO: update review');
   }
 
-  // members
-  addMember = () => {
-    alert('TODO: add member');
-  }
-
-  reEnrollMember = () => {
-    alert('TODO: re-enroll member');
-  }
-
-  removeMember = (member) => {
-    alert('TODO: remove member');
-  }
-
-  renewMember = () => {
-    alert('TODO: renew member');
-  }
-
-  updateMember = (member) => {
-    alert('TODO: update member');
-  }
-
   /*
   Events
   ------------------------------------------------------------
   */
+  // members
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(values, this.props.user.id);
+  }
+
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
+  }
+
+  // reviews
   handleReviewFormSubmit = (values) => {
     this.props.submitReviewForm(values, this.props.dentist.id);
   }
@@ -221,7 +266,10 @@ class PatientReviewsPage extends React.Component {
       members,
       user,
 
-      // send review
+      // add / edit member
+      editingMember,
+
+      // add / edit review
       editingReview,
     } = this.props;
 
@@ -278,6 +326,7 @@ class PatientReviewsPage extends React.Component {
     ------------------------------------------------------------
     */
     user.members = members;
+
     return (
       <div>
         <PatientDashboardHeader user={user} />
@@ -305,6 +354,14 @@ class PatientReviewsPage extends React.Component {
             />
           </div>
         </div>
+
+        <MemberFormModal
+          show={editingMember !== null}
+          onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember}
+          onSubmit={this.handleMemberFormSubmit}
+        />
 
         <ReviewFormModal
           show={editingReview !== null}

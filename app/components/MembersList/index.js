@@ -1,6 +1,9 @@
 /*
 Members List Component
 ================================================================================
+TODO: patients add the user => members in the page,
+      but dentists don't.  Have them both do that in the reducer, and then
+      remove pushing the user to members from here
 */
 
 /*
@@ -102,8 +105,6 @@ export default class MembersList extends React.Component {
       lastName,
       subscription,
     } = member;
-
-    console.log(member);
 
     const relationship = familyRelationship !== null
                        ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
