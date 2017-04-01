@@ -100,13 +100,20 @@ export default class MembersList extends React.Component {
       firstName,
       id,
       lastName,
+      subscription,
     } = member;
+
+    console.log(member);
 
     const relationship = familyRelationship !== null
                        ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
                        : "Self";
 
     const age = moment().diff(moment(birthDate), 'years');
+
+    const subscriptionType = age <= 13
+                           ? "Child"
+                           : "Adult";
 
     return (
       <div key={id} className="row" styleName="member">
@@ -130,12 +137,12 @@ export default class MembersList extends React.Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            TODO {/* TODO: Membership Type */}
+            {subscriptionType}
           </div>
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            TODO {/* TODO: Membership Fee */}
+            ${subscription.monthly}
           </div>
         </div>
         <div className="col-sm-3">
