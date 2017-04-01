@@ -25,9 +25,6 @@ import {
 import Input from 'components/Input';
 import LabeledInput from 'components/LabeledInput';
 import ReviewScore from 'components/ReviewScore';
-import {
-  editingReviewSelector,
-} from 'containers/PatientDentistPage/selectors';
 
 // local
 import styles from './styles.css';
@@ -43,7 +40,6 @@ const mapStateToProps = (state) => {
   const score = valueSelector(state, 'rating');
 
   return {
-    initialValues: editingReviewSelector(state),
     score: score !== undefined
              ? parseInt(score)
              : 5, // default to 5 if score is undefined

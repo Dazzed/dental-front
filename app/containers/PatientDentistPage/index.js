@@ -26,24 +26,24 @@ import ReviewFormModal from 'components/ReviewFormModal';
 import ReviewScore from 'components/ReviewScore';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
-
-// local
 import {
   // fetch
   fetchDentist,
 
-  // send review
+  // add review
   setEditingReview,
   clearEditingReview,
   submitReviewForm,
-} from './actions';
+} from 'containers/PatientProfilePage/actions';
 import {
   // fetch
   dentistSelector,
 
-  // send review
-  editingActiveSelector,
-} from './selectors';
+  // add review
+  editingReviewSelector,
+} from 'containers/PatientProfilePage/selectors';
+
+// local
 import styles from './styles.css';
 
 /*
@@ -57,7 +57,7 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // send review
-    editingActive: editingActiveSelector(state),
+    editingReview: editingReviewSelector(state),
   };
 }
 
@@ -104,7 +104,7 @@ class PatientDentistPage extends React.Component {
     fetchDentist: React.PropTypes.func.isRequired,
 
     // send review - state
-    editingActive: React.PropTypes.bool.isRequired,
+    editingReview: React.PropTypes.object,
 
     // send review - dispatch
     resetForm: React.PropTypes.func.isRequired,
@@ -124,7 +124,7 @@ class PatientDentistPage extends React.Component {
   */
   writeReview = () => {
     this.props.resetForm();
-    this.props.setEditingReview(null);
+    this.props.setEditingReview({});
   }
 
   /*
@@ -150,7 +150,7 @@ class PatientDentistPage extends React.Component {
       user,
 
       // send review
-      editingActive,
+      editingReview,
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
@@ -418,8 +418,10 @@ class PatientDentistPage extends React.Component {
         </div>
 
         <ReviewFormModal
-          show={editingActive}
+          show={editingReview !== null}
           onCancel={this.cancelReviewFormAction}
+
+          initialValues={editingReview}
           onSubmit={this.handleReviewFormSubmit}
         />
 

@@ -12,8 +12,10 @@ import { createSelector } from 'reselect';
 
 // app
 import { selectCurrentUser } from 'containers/App/selectors';
-import { dentistSelector } from 'containers/PatientDentistPage/selectors';
-import { membersSelector } from 'containers/PatientProfilePage/selectors';
+import {
+  dentistSelector,
+  membersSelector,
+} from 'containers/PatientProfilePage/selectors';
 
 /*
 Selectors

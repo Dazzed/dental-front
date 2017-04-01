@@ -26,26 +26,25 @@ import { selectCurrentUser } from 'containers/App/selectors';
 import {
   // fetch
   fetchDentist,
+  fetchFamilyMembers,
 
-  // send review
+  // add / edit review
+  // TODO: edit
   setEditingReview,
   clearEditingReview,
   submitReviewForm,
-} from 'containers/PatientDentistPage/actions';
-import {
-  // fetch
-  dentistSelector,
 
-  // send review
-  editingActiveSelector,
-} from 'containers/PatientDentistPage/selectors';
-import {
-  // fetch
-  fetchFamilyMembers,
+  // remove review
+  // TODO
 } from 'containers/PatientProfilePage/actions';
 import {
   // fetch
+  dentistSelector,
   membersSelector,
+
+  // add / edit review
+  // TODO: edit
+  editingReviewSelector,
 } from 'containers/PatientProfilePage/selectors';
 
 // local
@@ -68,7 +67,7 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // send review
-    editingActive: editingActiveSelector(state),
+    editingReview: editingReviewSelector(state),
   };
 }
 
@@ -122,7 +121,7 @@ class PatientReviewsPage extends React.Component {
     fetchFamilyMembers: React.PropTypes.func.isRequired,
 
     // send review - state
-    editingActive: React.PropTypes.bool.isRequired,
+    editingReview: React.PropTypes.object,
 
     // send review - dispatch
     resetForm: React.PropTypes.func.isRequired,
@@ -144,7 +143,7 @@ class PatientReviewsPage extends React.Component {
   // reviews
   addReview = () => {
     this.props.resetForm();
-    this.props.setEditingReview(null);
+    this.props.setEditingReview({});
   }
 
   removeReview = (review) => {
@@ -223,7 +222,7 @@ class PatientReviewsPage extends React.Component {
       user,
 
       // send review
-      editingActive,
+      editingReview,
     } = this.props;
 
     /*
@@ -262,8 +261,10 @@ class PatientReviewsPage extends React.Component {
           </div>
 
           <ReviewFormModal
-            show={editingActive}
+            show={editingReview !== null}
             onCancel={this.cancelReviewFormAction}
+
+            initialValues={editingReview}
             onSubmit={this.handleReviewFormSubmit}
           />
 
@@ -306,8 +307,10 @@ class PatientReviewsPage extends React.Component {
         </div>
 
         <ReviewFormModal
-          show={editingActive}
+          show={editingReview !== null}
           onCancel={this.cancelReviewFormAction}
+
+          initialValues={editingReview}
           onSubmit={this.handleReviewFormSubmit}
         />
 

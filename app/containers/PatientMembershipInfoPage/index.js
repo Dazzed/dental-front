@@ -25,13 +25,6 @@ import { selectCurrentUser } from 'containers/App/selectors';
 import {
   // fetch
   fetchDentist,
-} from 'containers/PatientDentistPage/actions';
-import {
-  // fetch
-  dentistSelector,
-} from 'containers/PatientDentistPage/selectors';
-import {
-  // fetch
   fetchFamilyMembers,
 
   // add member
@@ -41,10 +34,10 @@ import {
 } from 'containers/PatientProfilePage/actions';
 import {
   // fetch
+  dentistSelector,
   membersSelector,
 
   // add member
-  editingActiveSelector,
   editingMemberSelector,
 } from 'containers/PatientProfilePage/selectors';
 
@@ -68,7 +61,6 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // add member
-    editingActive: editingActiveSelector(state),
     editingMember: editingMemberSelector(state),
   };
 }
@@ -123,7 +115,6 @@ class PatientMembershipInfoPage extends React.Component {
     fetchFamilyMembers: React.PropTypes.func.isRequired,
 
     // add member - state
-    editingActive: React.PropTypes.bool.isRequired,
     editingMember: React.PropTypes.object,
 
     // add member - dispatch
@@ -145,7 +136,7 @@ class PatientMembershipInfoPage extends React.Component {
   */
   addMember = () => {
     this.props.resetForm();
-    this.props.setEditingMember(null);
+    this.props.setEditingMember({});
   }
 
   /*
@@ -173,7 +164,6 @@ class PatientMembershipInfoPage extends React.Component {
       user,
 
       // add member
-      editingActive,
       editingMember,
     } = this.props;
 
@@ -324,7 +314,7 @@ class PatientMembershipInfoPage extends React.Component {
         </div>
 
         <MemberFormModal
-          show={editingActive}
+          show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember}

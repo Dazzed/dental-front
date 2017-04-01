@@ -20,7 +20,16 @@ Selectors
 const domainSelector = state => state.patientProfilePage;
 
 /*
-Fetch
+Fetch Dentist
+------------------------------------------------------------
+*/
+const dentistSelector = createSelector(
+  domainSelector,
+  (substate) => { return substate.dentist; }
+);
+
+/*
+Fetch Members
 ------------------------------------------------------------
 */
 const familyMembersSelector = createSelector(
@@ -65,17 +74,29 @@ const membersSelector = createSelector(
 );
 
 /*
-Add / Edit Member
+Add / Edit (Member or Review)
 ------------------------------------------------------------
 */
-const editingActiveSelector = createSelector(
-  domainSelector,
-  substate => substate.editingActive,
-);
-
 const editingMemberSelector = createSelector(
   domainSelector,
-  subtate => subtate.editingMember,
+  (substate) => {
+    if (substate.editingActive === 'member') {
+      return substate.editing;
+    }
+
+    return null;
+  }
+);
+
+const editingReviewSelector = createSelector(
+  domainSelector,
+  (substate) => {
+    if (substate.editingActive === 'review') {
+      return substate.editing;
+    }
+
+    return null;
+  }
 );
 
 /*
@@ -85,9 +106,14 @@ Export
 export default domainSelector;
 
 export {
+  // fetch dentist
+  dentistSelector,
+
+  // fetch members
   familyMembersSelector,
   membersSelector,
 
-  editingActiveSelector,
+  // add / edit (member or review)
   editingMemberSelector,
+  editingReviewSelector,
 };

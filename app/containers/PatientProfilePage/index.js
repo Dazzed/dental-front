@@ -42,7 +42,6 @@ import {
   membersSelector,
 
   // add / edit member
-  editingActiveSelector,
   editingMemberSelector,
 } from './selectors';
 import styles from './styles.css';
@@ -58,7 +57,6 @@ function mapStateToProps (state) {
     user: selectCurrentUser(state),
 
     // add / edit member
-    editingActive: editingActiveSelector(state),
     editingMember: editingMemberSelector(state),
   };
 }
@@ -107,7 +105,6 @@ class PatientProfilePage extends React.Component {
     fetchFamilyMembers: React.PropTypes.func.isRequired,
 
     // add / edit member - state
-    editingActive: React.PropTypes.bool.isRequired,
     editingMember: React.PropTypes.object,
 
     // add / edit member - dispatch
@@ -129,7 +126,7 @@ class PatientProfilePage extends React.Component {
   // members
   addMember = () => {
     this.props.resetForm();
-    this.props.setEditingMember(null);
+    this.props.setEditingMember({});
   }
 
   reEnrollMember = () => {
@@ -184,7 +181,6 @@ class PatientProfilePage extends React.Component {
       user,
 
       // add / edit member
-      editingActive,
       editingMember,
     } = this.props;
 
@@ -282,26 +278,50 @@ class PatientProfilePage extends React.Component {
           ------------------------------------------------------------
           */}
           <div styleName="segment">
-            <div styleName="account-status">
-              <p>
-                <span styleName="text--inline-label">Primary Account Hoder:</span>
-                <span styleName="text--primary--bold">{user.firstName} {user.lastName}</span>
-              </p>
+            <div className="row">
+              <div className="col-sm-9">
+                <div styleName="account-status">
+                  <p>
+                    <span styleName="text--inline-label">Primary Account Hoder:</span>
+                    <span styleName="text--primary--bold">{user.firstName} {user.lastName}</span>
+                  </p>
 
-              <p>
-                <span styleName="text--inline-label">Account Status:</span>
-                <span styleName="text--primary--bold">{aggregateSubscription.status}</span>
-              </p>
+                  <p>
+                    <span styleName="text--inline-label">Account Status:</span>
+                    <span styleName="text--primary--bold">{aggregateSubscription.status}</span>
+                  </p>
 
-              <p>
-                <span styleName="text--inline-label">Current Balance:</span>
-                <span styleName="text--bold">${aggregateSubscription.total}</span>
-              </p>
+                  <p>
+                    <span styleName="text--inline-label">Current Balance:</span>
+                    <span styleName="text--bold">${aggregateSubscription.total}</span>
+                  </p>
 
-              <p>
-                <span styleName="text--inline-label">Payment Due Date:</span>
-                <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
-              </p>
+                  <p>
+                    <span styleName="text--inline-label">Payment Due Date:</span>
+                    <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-sm-3">
+                <div className="text-right">
+                  <a href="mailto:">
+                    <input
+                      type="button"
+                      styleName="button--full-width"
+                      value="MESSAGE DENTIST"
+                      onClick={this.addMember}
+                    />
+                  </a>
+                  <input
+                    type="button"
+                    styleName="button--full-width"
+                    value="REVIEW DENTIST"
+                    onClick={this.addMember}
+                  />
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -312,7 +332,7 @@ class PatientProfilePage extends React.Component {
           <div styleName="segment">
 
             <div className="row">
-              <div className="col-sm-6">
+              <div className="col-sm-9">
                 <div styleName="align-with-button">
                   <p styleName="text--label">
                     Your Memberships:
@@ -320,11 +340,11 @@ class PatientProfilePage extends React.Component {
                 </div>
               </div>
 
-              <div className="col-sm-6">
-                <div styleName="add-family-member-wrapper">
+              <div className="col-sm-3">
+                <div className="text-right">
                   <input
                     type="button"
-                    styleName="button--wide"
+                    styleName="button--full-width"
                     value="ADD MEMBER"
                     onClick={this.addMember}
                   />
@@ -413,7 +433,7 @@ class PatientProfilePage extends React.Component {
         </div>
 
         <MemberFormModal
-          show={editingActive}
+          show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember}

@@ -21,13 +21,40 @@ import request from 'utils/request';
 
 // local
 import {
+  // fetch dentist
+  setDentist,
+  setDentistErrors,
+
+  // fetch members
   setFamilyMembers,
   setFamilyMembersErrors,
+
+  // add / edit member
+  setAddedMember,
+  setEditedMember,
+
+  // remove member
+  setRemovedMember,
+
+  // add / edit review
+  // TODO: edit
+  setSentReview,
+
+  // remove review
+  // TODO
 } from './actions';
 import {
+  // fetch
+  DENTIST_REQUEST,
   FAMILY_MEMBERS_REQUEST,
+
+  // add / edit / remove member
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
+
+  // add / edit / remove review
+  // TODO: edit & remove
+  SUBMIT_REVIEW_FORM,
 } from './constants';
 
 
@@ -42,18 +69,37 @@ export default [
 ];
 
 function* main () {
-  const watcherA = yield fork(familyMembersFetcher);
-  const watcherB = yield fork(submitMemberFormWatcher);
-  const watcherC = yield fork(removeMemberWatcher);
+  const watcherA = yield fork(dentistFetcher);
+  const watcherB = yield fork(familyMembersFetcher);
+  const watcherC = yield fork(submitMemberFormWatcher);
+  const watcherD = yield fork(removeMemberWatcher);
+  const watcherE = yield fork(submitReviewFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
+  yield cancel(watcherD);
+  yield cancel(watcherE);
 }
 
 /*
-Fetch
+Fetch Dentist
+------------------------------------------------------------
+*/
+function* dentistFetcher () {
+  yield* takeLatest(DENTIST_REQUEST, function* handler () {
+    try {
+      const response = yield call(request, '/api/v1/users/me/dentist');
+      yield put(setDentist(response.data));
+    } catch(err) {
+      yield put(setDentistErrors(err));
+    }
+  });
+}
+
+/*
+Fetch Members
 ------------------------------------------------------------
 */
 function* familyMembersFetcher () {
@@ -155,3 +201,40 @@ function* removeMemberWatcher () {
     }
   }
 }
+
+/*
+Add / Edit Review
+------------------------------------------------------------
+TODO: Edit
+*/
+function* submitReviewFormWatcher() {
+  while (true) {
+    const { payload, dentistId } = yield take(SUBMIT_REVIEW_FORM);
+
+    try {
+      const requestURL = `/api/v1/dentists/${dentistId}/review`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = "Your review has been submitted.";
+      yield put(toastrActions.success('', message));
+
+      yield put(setSentReview(response.data, dentistId));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('sendReview'));
+    }
+  }
+}
+
+/*
+Remove Review
+------------------------------------------------------------
+*/
+// TODO

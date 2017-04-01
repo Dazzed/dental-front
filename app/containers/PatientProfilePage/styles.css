@@ -21,32 +21,12 @@ Page Wide
   background-color: $color-secondary-background;
 }
 
-.button--wide {
-  border: 1px solid $color-primary-highlight;
-  border-radius: 0.25rem;
-  padding: 0.5rem 3rem;
-
-  color: $color-white;
-  background-color: $color-primary-highlight;
-
-  font-weight: 600;
-  line-height: normal;
-
-  &:hover {
-    color: $color-primary-highlight;
-    background-color: $color-white;
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .button--full-width {
   width: 100%;
+  margin-bottom: 0.5rem;
   border: 1px solid $color-primary-highlight;
   border-radius: 0.25rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem 3rem;
 
   color: $color-white;
   background-color: $color-primary-highlight;
@@ -56,28 +36,6 @@ Page Wide
 
   &:hover {
     color: $color-primary-highlight;
-    background-color: $color-white;
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.button--lowlight--full-width {
-  width: 100%;
-  border: 1px solid $color-primary-lowlight;
-  border-radius: 0.25rem;
-  padding: 1rem 1.5rem;
-
-  color: $color-white;
-  background-color: $color-primary-lowlight;
-
-  font-weight: 600;
-  line-height: normal;
-
-  &:hover {
-    color: $color-primary-lowlight;
     background-color: $color-white;
   }
 
@@ -175,15 +133,4 @@ Family Members List
 
 .patients-list-wrapper {
   margin-top: 2.5rem;
-}
-
-
-/*
-Add Member
-------------------------------------------------------------
-*/
-.add-family-member-wrapper {
-  margin-bottom: 0.5rem;
-
-  text-align: right;
 }

@@ -324,9 +324,13 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('patientProfilePage', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([
+          patientDashboardReducer,
+          patientDashboardSagas,
+          component
+        ]) => {
+          injectReducer('patientProfilePage', patientDashboardReducer.default);
+          injectSagas(patientDashboardSagas.default);
           renderRoute(component);
         });
 
@@ -338,32 +342,20 @@ export default function createRoutes (store) {
       name: 'patientMembershipInfoPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/PatientDentistPage/reducer'),
-          System.import('containers/PatientDentistPage/sagas'),
-
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
-
           System.import('containers/PatientMembershipInfoPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([
-          dentistReducer,
-          dentistSagas,
-
-          membersReducer,
-          membersSagas,
-
+          patientDashboardReducer,
+          patientDashboardSagas,
           component
         ]) => {
-          injectReducer('patientDentistPage', dentistReducer.default);
-          injectSagas(dentistSagas.default);
-
-          injectReducer('patientProfilePage', membersReducer.default);
-          injectSagas(membersSagas.default);
-
+          injectReducer('patientProfilePage', patientDashboardReducer.default);
+          injectSagas(patientDashboardSagas.default);
           renderRoute(component);
         });
 
@@ -375,16 +367,20 @@ export default function createRoutes (store) {
       name: 'patientDentistPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/PatientDentistPage/reducer'),
-          System.import('containers/PatientDentistPage/sagas'),
+          System.import('containers/PatientProfilePage/reducer'),
+          System.import('containers/PatientProfilePage/sagas'),
           System.import('containers/PatientDentistPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
-          injectReducer('patientDentistPage', reducer.default);
-          injectSagas(sagas.default);
+        importModules.then(([
+          patientDashboardReducer,
+          patientDashboardSagas,
+          component
+        ]) => {
+          injectReducer('patientProfilePage', patientDashboardReducer.default);
+          injectSagas(patientDashboardSagas.default);
           renderRoute(component);
         });
 
@@ -396,32 +392,20 @@ export default function createRoutes (store) {
       name: 'patientReviewsPage',
       getComponent (nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/PatientDentistPage/reducer'),
-          System.import('containers/PatientDentistPage/sagas'),
-
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
-
           System.import('containers/PatientReviewsPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([
-          dentistReducer,
-          dentistSagas,
-
-          membersReducer,
-          membersSagas,
-
+          patientDashboardReducer,
+          patientDashboardSagas,
           component
         ]) => {
-          injectReducer('patientDentistPage', dentistReducer.default);
-          injectSagas(dentistSagas.default);
-
-          injectReducer('patientProfilePage', membersReducer.default);
-          injectSagas(membersSagas.default);
-
+          injectReducer('patientProfilePage', patientDashboardReducer.default);
+          injectSagas(patientDashboardSagas.default);
           renderRoute(component);
         });
 
