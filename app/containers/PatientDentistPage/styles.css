@@ -115,7 +115,9 @@ Patients Dentist
   border-bottom: 1px solid $color-primary-lowlight;
 }
 
-.detail__content {}
+.detail__content {
+  line-height: 1.75;
+}
 
 /* Work Hours
  * ------------------------------------------------------ */
@@ -130,3 +132,30 @@ Patients Dentist
   width: 70px;
   margin: 0 10px;
 }
+
+/*
+Photos
+------------------------------------------------------------
+*/
+.photos {
+  height: 300px;
+  margin-bottom: 3rem;
+  border-radius: 3rem;
+  padding: 2rem;
+
+  background-color: $color-secondary-lowlight;
+}
+
+/*
+Map
+------------------------------------------------------------
+*/
+.map {
+  height: 300px;
+  margin-bottom: 3rem;
+  border-radius: 3rem;
+  padding: 2rem;
+
+  background-color: $color-secondary-lowlight;
+}
+ 
