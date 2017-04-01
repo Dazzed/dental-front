@@ -34,7 +34,7 @@ import ReviewValidator from './validator';
 Redux
 ------------------------------------------------------------
 */
-const valueSelector = formValueSelector('sendReview');
+const valueSelector = formValueSelector('review');
 
 const mapStateToProps = (state) => {
   const score = valueSelector(state, 'rating');
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  submit: () => dispatch(submitForm('sendReview')),
+  submit: () => dispatch(submitForm('review')),
 });
 
 
@@ -57,7 +57,7 @@ Review Form Modal
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @reduxForm({
-  form: 'sendReview',
+  form: 'review',
   enableReinitialize: true,
   validate: ReviewValidator,
 })
@@ -141,7 +141,7 @@ export default class ReviewFormModal extends React.Component {
 
             <div className="row">
               <Field
-                name="review"
+                name="message"
                 type="textarea"
                 component={LabeledInput}
                 label="Write Your Review"

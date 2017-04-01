@@ -27,11 +27,12 @@ export const REMOVE_MEMBER_REQUEST = 'app/PatientProfilePage/REMOVE_MEMBER_REQUE
 export const REMOVE_MEMBER_SUCCESS = 'app/PatientProfilePage/REMOVE_MEMBER_SUCCESS';
 
 // add / edit review
-// TODO: edit review
 export const SET_EDITING_REVIEW   = 'app/PatientProfilePage/SET_EDITING_REVIEW';
 export const CLEAR_EDITING_REVIEW = 'app/PatientProfilePage/CLEAR_EDITING_REVIEW';
 export const SUBMIT_REVIEW_FORM   = 'app/PatientProfilePage/SUBMIT_CLIENT_REVIEW_FORM';
-export const SEND_REVIEW_SUCCESS  = 'app/PatientProfilePage/SEND_REVIEW_SUCCESS';
+export const ADD_REVIEW_SUCCESS  = 'app/PatientProfilePage/ADD_REVIEW_SUCCESS';
+export const EDIT_REVIEW_SUCCESS  = 'app/PatientProfilePage/EDIT_REVIEW_SUCCESS';
 
 // remove review
-// TODO
+export const REMOVE_REVIEW_REQUEST = 'app/PatientProfilePage/REMOVE_REVIEW_REQUEST';
+export const REMOVE_REVIEW_SUCCESS = 'app/PatientProfilePage/REMOVE_REVIEW_SUCCESS';

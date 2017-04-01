@@ -74,7 +74,7 @@ const membersSelector = createSelector(
 );
 
 /*
-Add / Edit (Member or Review)
+Add / Edit Member or Review
 ------------------------------------------------------------
 */
 const editingMemberSelector = createSelector(

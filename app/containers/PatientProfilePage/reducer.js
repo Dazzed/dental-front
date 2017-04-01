@@ -31,10 +31,11 @@ import {
   // TODO: edit
   SET_EDITING_REVIEW,
   CLEAR_EDITING_REVIEW,
-  SEND_REVIEW_SUCCESS,
+  ADD_REVIEW_SUCCESS,
+  EDIT_REVIEW_SUCCESS,
 
   // remove review
-  // TODO
+  REMOVE_REVIEW_SUCCESS,
 
 } from './constants';
 
@@ -55,6 +56,7 @@ Reducer
 */
 function patientProfilePageReducer (state = initialState, action) {
   let memberIdx;
+  let reviewIdx;
   let reviews;
 
   switch (action.type) {
@@ -157,7 +159,6 @@ function patientProfilePageReducer (state = initialState, action) {
     /*
     Add / Edit Review
     ------------------------------------------------------------
-    TODO: Edit
     */
     case SET_EDITING_REVIEW:
       return {
@@ -173,14 +174,33 @@ function patientProfilePageReducer (state = initialState, action) {
         editing: null,
       };
 
-    case SEND_REVIEW_SUCCESS:
+    case ADD_REVIEW_SUCCESS:
       return {
         ...state,
         dentist: {
           ...state.dentist,
           dentistReviews: [
-            action.payload, // put the new review first, since it was just created
+            // put the new review first since it was just created
+            // so the array stays in reverse-chronological order
+            action.payload,
             ...state.dentist.dentistReviews,
+          ],
+        },
+        editingActive: false,
+        editing: null,
+      };
+
+    case EDIT_REVIEW_SUCCESS:
+      reviewIdx = findIndex(state.dentist.dentistReviews, { id: action.payload.id });
+
+      return {
+        ...state,
+        dentist: {
+          ...state.dentist,
+          dentistReviews: [
+            ...state.dentist.dentistReviews.slice(0, memberIdx),
+            action.payload,
+            ...state.dentist.dentistReviews.slice(memberIdx + 1),
           ],
         },
         editingActive: false,
@@ -191,7 +211,21 @@ function patientProfilePageReducer (state = initialState, action) {
     Remove Review
     ------------------------------------------------------------
     */
-    // TODO
+    case REMOVE_REVIEW_SUCCESS:
+      reviewIdx = findIndex(state.dentist.dentistReviews, { id: action.payload.id });
+
+      return {
+        ...state,
+        dentist: {
+          ...state.dentist,
+          dentistReviews: [
+            ...state.dentist.dentistReviews.slice(0, memberIdx),
+            ...state.dentist.dentistReviews.slice(memberIdx + 1),
+          ],
+        },
+        editingActive: false,
+        editing: null,
+      };
 
     /*
     Default

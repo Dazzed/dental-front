@@ -37,11 +37,11 @@ import {
   setRemovedMember,
 
   // add / edit review
-  // TODO: edit
-  setSentReview,
+  setAddedReview,
+  setEditedReview,
 
   // remove review
-  // TODO
+  setRemovedReview,
 } from './actions';
 import {
   // fetch
@@ -53,8 +53,8 @@ import {
   REMOVE_MEMBER_REQUEST,
 
   // add / edit / remove review
-  // TODO: edit & remove
   SUBMIT_REVIEW_FORM,
+  REMOVE_REVIEW_REQUEST,
 } from './constants';
 
 
@@ -74,6 +74,7 @@ function* main () {
   const watcherC = yield fork(submitMemberFormWatcher);
   const watcherD = yield fork(removeMemberWatcher);
   const watcherE = yield fork(submitReviewFormWatcher);
+  const watcherF = yield fork(removeReviewWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -81,6 +82,7 @@ function* main () {
   yield cancel(watcherC);
   yield cancel(watcherD);
   yield cancel(watcherE);
+  yield cancel(watcherF);
 }
 
 /*
@@ -205,36 +207,89 @@ function* removeMemberWatcher () {
 /*
 Add / Edit Review
 ------------------------------------------------------------
-TODO: Edit
 */
-function* submitReviewFormWatcher() {
+function* submitReviewFormWatcher () {
   while (true) {
     const { payload, dentistId } = yield take(SUBMIT_REVIEW_FORM);
 
-    try {
-      const requestURL = `/api/v1/dentists/${dentistId}/review`;
-      const params = {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      };
-
-      const response = yield call(request, requestURL, params);
-      const message = "Your review has been submitted.";
-      yield put(toastrActions.success('', message));
-
-      yield put(setSentReview(response.data, dentistId));
-
-    } catch (err) {
-      const errors = mapValues(err.errors, (value) => value.msg);
-
-      yield put(toastrActions.error('', 'Please fix errors on the form!'));
-      yield put(stopSubmit('sendReview'));
+    if (payload.id === undefined) {
+      yield submitAddReviewForm(payload, dentistId);
+    }
+    else {
+      yield submitEditReviewForm(payload, dentistId);
     }
   }
 }
+
+function* submitAddReviewForm(payload, dentistId) {
+  try {
+    const requestURL = `/api/v1/dentists/${dentistId}/review`;
+    const params = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    };
+
+    const response = yield call(request, requestURL, params);
+    const message = "Your review has been submitted.";
+    yield put(toastrActions.success('', message));
+
+    yield put(setAddedReview(response.data, dentistId));
+
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    yield put(stopSubmit('review', errors));
+  }
+}
+
+function* submitEditReviewForm (payload, dentistId) {
+  try {
+    const requestURL = `/api/v1/dentists/${dentistId}/review/${payload.id}`;
+    const params = {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    };
+
+    const response = yield call(request, requestURL, params);
+    const message = `Your review has been updated.`;
+    yield put(toastrActions.success('', message));
+
+    yield put(setEditedReivew(response.data, dentistId));
+
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    yield put(stopSubmit('review', errors));
+  }
+}
+
 
 /*
 Remove Review
 ------------------------------------------------------------
 */
-// TODO
+function* removeReviewWatcher () {
+  while (true) {
+    const { payload, dentistId } = yield take(REMOVE_REVIEW_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/dentists/${dentistId}/review/${payload.id}`;
+      const params = {
+        method: 'DELETE',
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `Your review has been deleted.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setRemovedReview(payload.id, dentistId));
+
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}

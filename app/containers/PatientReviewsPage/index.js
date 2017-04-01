@@ -35,13 +35,12 @@ import {
   submitMemberForm,
 
   // add / edit review
-  // TODO: edit
   setEditingReview,
   clearEditingReview,
   submitReviewForm,
 
   // remove review
-  // TODO
+  setRemovingReview,
 } from 'containers/PatientProfilePage/actions';
 import {
   // fetch
@@ -52,7 +51,6 @@ import {
   editingMemberSelector,
 
   // add / edit review
-  // TODO: edit
   editingReviewSelector,
 } from 'containers/PatientProfilePage/selectors';
 
@@ -78,12 +76,6 @@ function mapStateToProps (state) {
     // add / edit member
     editingMember: editingMemberSelector(state),
 
-    // add / edit member
-    resetMemberForm: () => dispatch(resetForm('familyMember')),
-    setEditingMember: (member) => dispatch(setEditingMember(member)),
-    clearEditingMember: () => dispatch(clearEditingMember()),
-    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
-
     // add / edit review
     editingReview: editingReviewSelector(state),
   };
@@ -105,10 +97,13 @@ function mapDispatchToProps (dispatch) {
     submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
 
     // add / edit review
-    resetReviewForm: () => dispatch(resetForm('sendReview')),
+    resetReviewForm: () => dispatch(resetForm('review')),
     setEditingReview: (review) => dispatch(setEditingReview(review)),
     clearEditingReview: () => dispatch(clearEditingReview()),
     submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
+
+    // remove review
+    setRemovingReview: (review, dentistId) => dispatch(setRemovingReview(review, dentistId)),
   };
 }
 
@@ -161,6 +156,9 @@ class PatientReviewsPage extends React.Component {
     setEditingReview: React.PropTypes.func.isRequired,
     clearEditingReview: React.PropTypes.func.isRequired,
     submitReviewForm: React.PropTypes.func.isRequired,
+
+    // removing review
+    setRemovingReview: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -203,11 +201,12 @@ class PatientReviewsPage extends React.Component {
   }
 
   removeReview = (review) => {
-    alert('TODO: remove review');
+    this.props.setRemovingReview(review, this.props.dentist.id);
   }
 
   updateReview = (review) => {
-    alert('TODO: update review');
+    this.props.resetReviewForm();
+    this.props.setEditingReview(review);
   }
 
   /*

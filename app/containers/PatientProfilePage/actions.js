@@ -31,14 +31,15 @@ import {
   REMOVE_MEMBER_SUCCESS,
 
   // add / edit review
-  // TODO: edit
   SET_EDITING_REVIEW,
   CLEAR_EDITING_REVIEW,
   SUBMIT_REVIEW_FORM,
-  SEND_REVIEW_SUCCESS,
+  ADD_REVIEW_SUCCESS,
+  EDIT_REVIEW_SUCCESS,
 
   // remove review
-  // TODO
+  REMOVE_REVIEW_REQUEST,
+  REMOVE_REVIEW_SUCCESS,
 } from './constants';
 
 /*
@@ -153,7 +154,6 @@ export function setRemovedMember (memberId, userId) {
 /*
 Add / Edit Review
 ------------------------------------------------------------
-TODO: edit review
 */
 export function setEditingReview (review) {
   return {
@@ -176,9 +176,17 @@ export function submitReviewForm (payload, dentistId) {
   };
 }
 
-export function setSentReview (payload, dentistId) {
+export function setAddedReview (payload, dentistId) {
   return {
-    type: SEND_REVIEW_SUCCESS,
+    type: ADD_REVIEW_SUCCESS,
+    payload,
+    dentistId,
+  };
+}
+
+export function setEditedReview (payload, dentistId) {
+  return {
+    type: EDIT_REVIEW_SUCCESS,
     payload,
     dentistId,
   };
@@ -187,5 +195,19 @@ export function setSentReview (payload, dentistId) {
 /*
 Remove Review
 ------------------------------------------------------------
-TODO
 */
+export function setRemovingReview (payload, dentistId) {
+  return {
+    type: REMOVE_REVIEW_REQUEST,
+    payload,
+    dentistId,
+  };
+}
+
+export function setRemovedReview (memberId, dentistId) {
+  return {
+    type: REMOVE_REVIEW_SUCCESS,
+    memberId,
+    dentistId,
+  }
+}

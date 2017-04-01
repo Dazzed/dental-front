@@ -70,7 +70,7 @@ function mapDispatchToProps (dispatch) {
     fetchDentist: () => dispatch(fetchDentist()),
 
     // add review
-    resetForm: () => dispatch(resetForm('sendReview')),
+    resetForm: () => dispatch(resetForm('review')),
     setEditingReview: (review) => dispatch(setEditingReview(review)),
     clearEditingReview: () => dispatch(clearEditingReview()),
     submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
