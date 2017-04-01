@@ -107,7 +107,8 @@ class DentistDashboardHeader extends React.Component {
       firstName,
       lastName,
 //      metrics, // TODO: backend needs to provide this
-//      ratings, // TODO: backend needs to provide this
+//      priceScore, // TODO: backend needs to provide this
+      rating,
     } = user;
 
     const activeMemberCount = patients.reduce(
@@ -127,13 +128,6 @@ class DentistDashboardHeader extends React.Component {
     );
 
     // TODO
-    /*
-    const {
-      reviewScore,
-      priceScore,
-    } = ratings;
-    */
-    const reviewScore = 4.5;
     const priceScore = 4.0;
 
     // TODO
@@ -172,7 +166,7 @@ class DentistDashboardHeader extends React.Component {
                 <h2 styleName="dentist__name">{firstName} {lastName}</h2>
                 
                 <div styleName="dentist__scores">
-                  <ReviewScore score={reviewScore} />
+                  <ReviewScore score={user.rating} />
                   <PriceScore score={priceScore} />
                 </div>
 
