@@ -21,6 +21,7 @@ import { reset as resetForm } from 'redux-form';
 import Avatar from 'components/Avatar';
 import FamilyMembersPlanSummary from 'components/FamilyMembersPlanSummary';
 import LoadingSpinner from 'components/LoadingSpinner';
+import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
@@ -28,10 +29,21 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
 import {
+  // fetch
   fetchFamilyMembers,
+
+  // add / edit member
+  setEditingMember,
+  clearEditingMember,
+  submitMemberForm,
 } from './actions';
 import {
+  // fetch
   membersSelector,
+
+  // add / edit member
+  editingActiveSelector,
+  editingMemberSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -41,16 +53,29 @@ Redux
 */
 function mapStateToProps (state) {
   return {
+    // fetch
     members: membersSelector(state),
     user: selectCurrentUser(state),
+
+    // add / edit member
+    editingActive: editingActiveSelector(state),
+    editingMember: editingMemberSelector(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
+
+    // fetch
     fetchFamilyMembers: () => dispatch(fetchFamilyMembers()),
-    resetForm: () => dispatch(resetForm('TODO')),
+
+    // add / edit member
+    resetForm: () => dispatch(resetForm('familyMember')),
+    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    clearEditingMember: () => dispatch(clearEditingMember()),
+    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
   };
 }
 
@@ -64,7 +89,11 @@ Profile
 class PatientProfilePage extends React.Component {
 
   static propTypes = {
-    // state
+    // app - dispatch
+    changePageTitle: React.PropTypes.func.isRequired,
+
+
+    // fetch - state
     members: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
@@ -74,10 +103,18 @@ class PatientProfilePage extends React.Component {
       React.PropTypes.object,
     ]),
 
-    // dispatch
-    changePageTitle: React.PropTypes.func.isRequired,
+    // fetch - dispatch
     fetchFamilyMembers: React.PropTypes.func.isRequired,
+
+    // add / edit member - state
+    editingActive: React.PropTypes.bool.isRequired,
+    editingMember: React.PropTypes.object,
+
+    // add / edit member - dispatch
     resetForm: React.PropTypes.func.isRequired,
+    setEditingMember: React.PropTypes.func.isRequired,
+    clearEditingMember: React.PropTypes.func.isRequired,
+    submitMemberForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -89,7 +126,16 @@ class PatientProfilePage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
+  addMember = () => {
+    this.props.resetForm();
+    this.props.setEditingMember(null);
+  }
+
   changePaymentMethod = () => {
+    // TODO
+  }
+
+  editMember = () => {
     // TODO
   }
 
@@ -101,11 +147,29 @@ class PatientProfilePage extends React.Component {
     // TODO
   }
 
+  reEnrollMember = () => {
+    // TODO
+  }
+
+  removeMember = () => {
+    // TODO
+  }
+
+  renewMember = () => {
+    // TODO
+  }
+
   /*
-  Form Events
+  Events
   ------------------------------------------------------------
   */
-  // TODO
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(values, this.props.user.id);
+  }
+
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
+  }
 
   /*
   Render
@@ -113,8 +177,13 @@ class PatientProfilePage extends React.Component {
   */
   render () {
     const {
+      // fetch
       members,
       user,
+
+      // add / edit member
+      editingActive,
+      editingMember,
     } = this.props;
 
     /*
@@ -238,9 +307,26 @@ class PatientProfilePage extends React.Component {
           */}
           <div styleName="segment">
 
-            <p styleName="text--label">
-              Your Memberships:
-            </p>
+            <div className="row">
+              <div className="col-sm-6">
+                <div styleName="align-with-button">
+                  <p styleName="text--label">
+                    Your Memberships:
+                  </p>
+                </div>
+              </div>
+
+              <div className="col-sm-6">
+                <div styleName="add-family-member-wrapper">
+                  <input
+                    type="button"
+                    styleName="button--wide"
+                    value="ADD MEMBER"
+                    onClick={this.addMember}
+                  />
+                </div>
+              </div>
+            </div>
 
             <FamilyMembersPlanSummary members={members} />
 
@@ -310,7 +396,18 @@ class PatientProfilePage extends React.Component {
             </div>
           </div>
 
+        {/* End Content */}
         </div>
+
+        <MemberFormModal
+          show={editingActive}
+          onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember}
+          onSubmit={this.handleMemberFormSubmit}
+        />
+
+      {/* End Wrapper Div */}
       </div>
     );
   }

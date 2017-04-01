@@ -21,6 +21,27 @@ Page Wide
   background-color: $color-secondary-background;
 }
 
+.button--wide {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.5rem 3rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .button--full-width {
   width: 100%;
   border: 1px solid $color-primary-highlight;
@@ -107,14 +128,18 @@ Patient Profile
   }
 }
 
+/*
+Account Status
+------------------------------------------------------------
+*/
 .account-status {
   font-size: 1.25rem;
 }
 
-.user-action-buttons > p:last-child {
-  margin-bottom: 0;
-}
-
+/*
+Personal Info
+------------------------------------------------------------
+*/
 .personal-info {
   p {
     margin-bottom: 1rem;
@@ -138,4 +163,23 @@ Patient Profile
       text-decoration: none;
     }
   }
+}
+
+/*
+Family Members List
+------------------------------------------------------------
+*/
+.align-with-button {
+  margin-top: 0.5rem;
+}
+
+
+/*
+Add Member
+------------------------------------------------------------
+*/
+.add-family-member-wrapper {
+  margin-bottom: 0.5rem;
+
+  text-align: right;
 }
