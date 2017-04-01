@@ -8,7 +8,8 @@ Route: `/patient/profile`
 Imports
 ------------------------------------------------------------
 */
- // lib
+// lib
+import moment from 'moment';
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
@@ -88,14 +89,6 @@ class PatientProfilePage extends React.Component {
   Page Actions
   ------------------------------------------------------------
   */
-  makePayment = () => {
-    // TODO
-  }
-
-  editPlan = () => {
-    // TODO
-  }
-
   changePaymentMethod = () => {
     // TODO
   }
@@ -105,10 +98,6 @@ class PatientProfilePage extends React.Component {
   }
 
   editSecuritySettings = () => {
-    // TODO
-  }
-
-  cancelMembership = () => {
     // TODO
   }
 
@@ -123,8 +112,15 @@ class PatientProfilePage extends React.Component {
   ------------------------------------------------------------
   */
   render () {
-    const { members, user } = this.props;
+    const {
+      members,
+      user,
+    } = this.props;
 
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
     // precondition: the data must be loaded, otherwise wait for it
     if (user === false || members === false) {
       return (
@@ -138,6 +134,69 @@ class PatientProfilePage extends React.Component {
       );
     }
 
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
+    const aggregateSubscription = {
+      status: members.reduce(
+        function(aggregateStatus, member) {
+          if ( member.subscription.status === 'past_due'
+            || aggregateStatus === 'past_due'
+          ) {
+            aggregateStatus = 'past_due';
+          }
+
+          else if (
+               member.subscription.status === 'active'
+            || aggregateStatus === 'active'
+          ) {
+            aggregateStatus = 'active';
+          }
+
+          // else
+          // member status is 'inactive' or 'canceled'
+          // aggregate status is 'inactive'
+          // leave it as is
+
+          return aggregateStatus;
+        },
+        'inactive'
+      ),
+
+      total: members.reduce(
+        function(aggregateTotal, member) {
+          return aggregateTotal + parseFloat(member.subscription.total);
+        },
+        0
+      ),
+
+      dueDate: members.reduce(
+        function(nearestPaymentDueDate, member) {
+          const memberDueDate = moment(member.subscription.endAt);
+          
+          if (memberDueDate.isBefore(nearestPaymentDueDate)) {
+            nearestPaymentDueDate = memberDueDate;
+          }
+
+          return nearestPaymentDueDate;
+        },
+        moment().add(100, 'years'), // obviously larger than any paid subscription period
+      ),
+    };
+
+    if (aggregateSubscription.status === 'active') {
+      aggregateSubscription.status = 'Active';
+    }
+    else if (aggregateSubscription.status === 'past_due') {
+      aggregateSubscription.status = 'Late';
+    }
+    else {
+      aggregateSubscription.status = 'Inactive';
+    }
+    aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
+    aggregateSubscription.dueDate = aggregateSubscription.dueDate.format("MMMM D, YYYY");
+
     return (
       <div>
         <PatientDashboardHeader user={user} />
@@ -149,57 +208,38 @@ class PatientProfilePage extends React.Component {
           Account Status
           ------------------------------------------------------------
           */}
-          <div className="row" styleName="segment">
+          <div styleName="segment">
+            <div styleName="account-status">
+              <p>
+                <span styleName="text--inline-label">Primary Account Hoder:</span>
+                <span styleName="text--primary--bold">{user.firstName} {user.lastName}</span>
+              </p>
 
-            <div className="col-md-9">
               <p>
                 <span styleName="text--inline-label">Account Status:</span>
-                <span styleName="text--primary--bold">Active{/* TODO */}</span>
+                <span styleName="text--primary--bold">{aggregateSubscription.status}</span>
               </p>
 
               <p>
                 <span styleName="text--inline-label">Current Balance:</span>
-                <span styleName="text--bold">$100{/* TODO */}</span>
+                <span styleName="text--bold">${aggregateSubscription.total}</span>
               </p>
 
               <p>
                 <span styleName="text--inline-label">Payment Due Date:</span>
-                <span styleName="text--bold">December 7, 2017{/* TODO */}</span>
+                <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
               </p>
             </div>
-
-            <div className="col-md-3">
-              <div styleName="user-action-buttons">
-                <p>
-                  <input
-                    type="button"
-                    styleName="button--full-width"
-                    value="MAKE A PAYMENT"
-                    onClick={this.makePayment}
-                  />
-                </p>
-
-                <p>
-                  <input
-                    type="button"
-                    styleName="button--lowlight--full-width"
-                    value="EDIT PLAN"
-                    onClick={this.editPlan}
-                  />
-                </p>
-              </div>
-            </div>
-
           </div>
 
           {/*
-          Plan Details
+          Your Members
           ------------------------------------------------------------
           */}
           <div styleName="segment">
 
             <p styleName="text--label">
-              Plan Details:
+              Your Memberships:
             </p>
 
             <FamilyMembersPlanSummary members={members} />
@@ -235,10 +275,6 @@ class PatientProfilePage extends React.Component {
 
                   <span styleName="personal-info__change-link" onClick={this.editSecuritySettings}>
                     Login &amp; Security Settings
-                  </span>
-
-                  <span styleName="personal-info__change-link" onClick={this.cancelMembership}>
-                    Cancel Membership
                   </span>
                 </p>
               </div>
