@@ -74,7 +74,7 @@ const membersSelector = createSelector(
 );
 
 /*
-Add / Edit: Member, Profile, or Review
+Add / Edit
 ------------------------------------------------------------
 */
 const editingMemberSelector = createSelector(
@@ -110,6 +110,17 @@ const editingReviewSelector = createSelector(
   }
 );
 
+const editingSecuritySelector = createSelector(
+  domainSelector,
+  (substate) => {
+    if (substate.editingActive === 'security') {
+      return substate.editing;
+    }
+
+    return null;
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -124,8 +135,9 @@ export {
   familyMembersSelector,
   membersSelector,
 
-  // add / edit (member, profile, or review)
+  // add / edit
   editingMemberSelector,
   editingProfileSelector,
   editingReviewSelector,
+  editingSecuritySelector,
 };

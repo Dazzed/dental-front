@@ -1,5 +1,5 @@
 /*
-Patient Profile Form Modal Component
+Account Security Form Modal Component
 ================================================================================
 */
 
@@ -16,22 +16,18 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
 // app
-import {
-  PREFERRED_CONTACT_METHODS,
-  US_STATES,
-} from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
 
 // local
 import styles from './styles.css';
-import PatientProfileValidator from './validator';
+import AccountSecurityFormValidator from './validator';
 
 /*
 Redux
 ------------------------------------------------------------
 */
 const mapDispatchToProps = (dispatch) => ({
-  submit: () => dispatch(submitForm('patientProfile')),
+  submit: () => dispatch(submitForm('accountSecurity')),
 });
 
 
@@ -41,16 +37,16 @@ Member Form Modal
 */
 @connect(null, mapDispatchToProps)
 @reduxForm({
-  form: 'patientProfile',
+  form: 'accountSecurity',
   enableReinitialize: true,
-  validate: PatientProfileValidator,
+  validate: AccountSecurityFormValidator,
 })
 @CSSModules(styles)
-export default class PatientProfileFormModal extends React.Component {
+export default class AccountSecurityFormModal extends React.Component {
 
   static propTypes = {
     // event handlers - passed in
-    goToSecurityForm: React.PropTypes.func.isRequired,
+    goToProfileForm: React.PropTypes.func.isRequired,
 
     // form related - passed in
     initialValues: React.PropTypes.object,
@@ -67,9 +63,9 @@ export default class PatientProfileFormModal extends React.Component {
   Event Handlers
   ------------------------------------------------------------
   */
-  securityFormLinkClick = (e) => {
+  profileFormLinkClick = (e) => {
     e.preventDefault();
-    this.props.goToSecurityForm();
+    this.props.goToProfileForm();
   }
 
   /*
@@ -115,86 +111,69 @@ export default class PatientProfileFormModal extends React.Component {
           >
             <Row>
               <Field
-                name="address"
+                name="newEmail"
                 type="text"
                 component={LabeledInput}
-                label="Address"
+                label="New Email Address"
                 placeholder=""
-                className="col-sm-12"
+                className="col-sm-6"
               />
 
               <Field
-                name="city"
+                name="confirmNewEmail"
                 type="text"
                 component={LabeledInput}
-                label="City"
+                label="Confirm New Email Address"
                 placeholder=""
-                className="col-sm-4"
-              />
-
-              <Field
-                name="state"
-                type="select"
-                component={LabeledInput}
-                label="State"
-                placeholder=""
-                className="col-sm-4"
-              >
-                <option value=""></option>
-                {Object.keys(US_STATES).map(key =>
-                  <option value={key} key={key}>
-                    {US_STATES[key]}
-                  </option>
-                )}
-              </Field>
-
-              <Field
-                name="zipCode"
-                type="text"
-                mask="99999"
-                maskChar=" "
-                component={LabeledInput}
-                label="Zip Code"
-                placeholder=""
-                className="col-sm-4"
+                className="col-sm-6"
               />
             </Row>
 
             <Row>
               <Field
-                name="phone"
-                type="text"
-                mask="(999) 999-9999"
-                maskChar=" "
+                name="newPassword"
+                type="password"
                 component={LabeledInput}
-                label="Phone"
+                label="New Password"
                 placeholder=""
-                className="col-sm-4"
+                className="col-sm-6"
               />
 
               <Field
-                name="contactMethod"
-                type="select"
-                label="Preferred Contact Method"
+                name="confirmNewPassword"
+                type="password"
                 component={LabeledInput}
-                className="col-md-6 col-sm-8"
-              >
-                <option value=""></option>
-                {Object.keys(PREFERRED_CONTACT_METHODS).map(key =>
-                  <option
-                    value={key}
-                    key={key}
-                  >
-                    {PREFERRED_CONTACT_METHODS[key]}
-                  </option>
-                )}
-              </Field>
+                label="Confirm New Password"
+                placeholder=""
+                className="col-sm-6"
+              />
+
+              <div className="col-sm-12">
+                <h5 styleName="field-instructions">
+                  *Password must be at least 8 characters and include one (1) special character and one (1) capital letter.
+                </h5>
+              </div>
+            </Row>
+
+            <Row>
+              <Field
+                name="oldPassword"
+                type="password"
+                component={LabeledInput}
+                label="Current Password"
+                placeholder=""
+                className="col-sm-6"
+              />
             </Row>
 
             <p styleName="field-instructions">
-              You can update your account email and password in the
+              For security, you must enter your current password to change your account's email and password.  You may leave both "New Password" fields blank if you only wish to change your email, or leave both email fields blank if you only wish to change your password.
+            </p>
+
+            <p styleName="field-instructions">
+              You can update your account address, phone number, and preferred contact method in the
               {' '}
-              <a href="#" onClick={this.securityFormLinkClick}>Login and Security Settings</a>
+              <a href="#" onClick={this.profileFormLinkClick}>Login and Security Settings</a>
               {' '}
               form.
             </p>

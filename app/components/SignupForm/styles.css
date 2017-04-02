@@ -48,6 +48,7 @@ Signup Form
 
 .field-instructions {
   margin-bottom: 1.5rem;
+  text-align: justify;
 
   font-weight: 300;
 }

@@ -56,6 +56,7 @@ Signup Form
   margin-bottom: 1.5rem;
 
   font-weight: 300;
+  text-align: justify;
 
   &:last-child {
     margin-bottom: 2.5rem;

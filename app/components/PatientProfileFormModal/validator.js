@@ -7,9 +7,6 @@ Patient Profile Form Validator
 Imports
 ------------------------------------------------------------
 */
-// libs
-import moment from 'moment';
-
 // app
 import {
   PREFERRED_CONTACT_METHODS, US_STATES

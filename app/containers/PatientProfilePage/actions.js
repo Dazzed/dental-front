@@ -45,6 +45,11 @@ import {
   // remove review
   REMOVE_REVIEW_REQUEST,
   REMOVE_REVIEW_SUCCESS,
+
+  // edit security
+  SET_EDITING_SECURITY,
+  CLEAR_EDITING_SECURITY,
+  SUBMIT_SECURITY_FORM,
 } from './constants';
 
 /*
@@ -243,3 +248,30 @@ export function setRemovedReview (reviewId, dentistId) {
     dentistId,
   }
 }
+
+/*
+Edit Security
+------------------------------------------------------------
+*/
+export function setEditingSecurity (user) {
+  return {
+    type: SET_EDITING_SECURITY,
+    user,
+  };
+}
+
+export function clearEditingSecurity () {
+  return {
+    type: CLEAR_EDITING_SECURITY,
+  };
+}
+
+export function submitSecurityForm (payload, userId) {
+  return {
+    type: SUBMIT_SECURITY_FORM,
+    payload,
+    userId,
+  };
+}
+
+// update user data at App level, see setUserData in `/app/containers/App/actions.js`

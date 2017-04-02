@@ -42,3 +42,9 @@ export const EDIT_REVIEW_SUCCESS  = 'app/PatientProfilePage/EDIT_REVIEW_SUCCESS'
 // remove review
 export const REMOVE_REVIEW_REQUEST = 'app/PatientProfilePage/REMOVE_REVIEW_REQUEST';
 export const REMOVE_REVIEW_SUCCESS = 'app/PatientProfilePage/REMOVE_REVIEW_SUCCESS';
+
+// edit security settings
+export const SET_EDITING_SECURITY   = 'app/PatientProfilePage/SET_EDITING_SECURITY';
+export const CLEAR_EDITING_SECURITY = 'app/PatientProfilePage/CLEAR_EDITING_SECURITY';
+export const SUBMIT_SECURITY_FORM   = 'app/PatientProfilePage/SUBMIT_SECURITY_FORM';
+// update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`

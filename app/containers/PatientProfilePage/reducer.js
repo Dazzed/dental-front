@@ -30,8 +30,6 @@ import {
   // edit profile
   SET_EDITING_PROFILE,
   CLEAR_EDITING_PROFILE,
-  ADD_PROFILE_SUCCESS,
-  EDIT_PROFILE_SUCCESS,
 
   // add / edit review
   SET_EDITING_REVIEW,
@@ -41,6 +39,10 @@ import {
 
   // remove review
   REMOVE_REVIEW_SUCCESS,
+
+  // edit security
+  SET_EDITING_SECURITY,
+  CLEAR_EDITING_SECURITY,
 } from './constants';
 
 /*
@@ -106,26 +108,6 @@ function patientProfilePageReducer (state = initialState, action) {
     Add / Edit Member
     ------------------------------------------------------------
     */
-    case SET_EDITING_PROFILE:
-      return {
-        ...state,
-        editingActive: 'profile',
-        editing: action.user,
-      };
-
-    case CLEAR_EDITING_PROFILE:
-      return {
-        ...state,
-        editingActive: false,
-        editing: null,
-      };
-
-    // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
-
-    /*
-    Edit Profile
-    ------------------------------------------------------------
-    */
     case SET_EDITING_MEMBER:
       return {
         ...state,
@@ -179,6 +161,26 @@ function patientProfilePageReducer (state = initialState, action) {
           ...state.familyMembers.slice(memberIdx + 1),
         ],
       };
+
+    /*
+    Edit Profile
+    ------------------------------------------------------------
+    */
+    case SET_EDITING_PROFILE:
+      return {
+        ...state,
+        editingActive: 'profile',
+        editing: action.user,
+      };
+
+    case CLEAR_EDITING_PROFILE:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
 
     /*
     Add / Edit Review
@@ -250,6 +252,26 @@ function patientProfilePageReducer (state = initialState, action) {
         editingActive: false,
         editing: null,
       };
+
+    /*
+    Edit Security
+    ------------------------------------------------------------
+    */
+    case SET_EDITING_SECURITY:
+      return {
+        ...state,
+        editingActive: 'security',
+        editing: action.user,
+      };
+
+    case CLEAR_EDITING_SECURITY:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
 
     /*
     Default

@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
+import AccountSecurityFormModal from 'components/AccountSecurityFormModal';
 import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
 import FamilyMembersList from 'components/FamilyMembersList';
@@ -49,6 +50,11 @@ import {
   setEditingReview,
   clearEditingReview,
   submitReviewForm,
+
+  // edit security
+  setEditingSecurity,
+  clearEditingSecurity,
+  submitSecurityForm,
 } from './actions';
 import {
   // fetch
@@ -63,6 +69,9 @@ import {
 
   // add / edit review
   editingReviewSelector,
+
+  // edit security
+  editingSecuritySelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -85,6 +94,9 @@ function mapStateToProps (state) {
 
     // add / edit review
     editingReview: editingReviewSelector(state),
+
+    // edit security
+    editingSecurity: editingSecuritySelector(state),
   };
 }
 
@@ -114,6 +126,12 @@ function mapDispatchToProps (dispatch) {
     setEditingReview: (review) => dispatch(setEditingReview(review)),
     clearEditingReview: () => dispatch(clearEditingReview()),
     submitReviewForm: (values, dentistId) => dispatch(submitReviewForm(values, dentistId)),
+
+    // edit security
+    resetSecurityForm: () => dispatch(resetForm('accountSecurity')),
+    setEditingSecurity: (user) => dispatch(setEditingSecurity(user)),
+    clearEditingSecurity: () => dispatch(clearEditingSecurity()),
+    submitSecurityForm: (values, userId) => dispatch(submitSecurityForm(values, userId)),
   };
 }
 
@@ -162,11 +180,23 @@ class PatientProfilePage extends React.Component {
     clearEditingProfile: React.PropTypes.func.isRequired,
     submitProfileForm: React.PropTypes.func.isRequired,
 
+    // add / edit review - state
+    editingReview: React.PropTypes.object,
+
     // add / edit review - dispatch
     resetReviewForm: React.PropTypes.func.isRequired,
     setEditingReview: React.PropTypes.func.isRequired,
     clearEditingReview: React.PropTypes.func.isRequired,
     submitReviewForm: React.PropTypes.func.isRequired,
+
+    // edit security - state
+    editingSecurity: React.PropTypes.object,
+
+    // edit security - dispatch
+    resetSecurityForm: React.PropTypes.func.isRequired,
+    setEditingSecurity: React.PropTypes.func.isRequired,
+    clearEditingSecurity: React.PropTypes.func.isRequired,
+    submitSecurityForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -202,8 +232,13 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember(member);
   }
 
+  // payments
+  updatePaymentMethod = () => {
+    alert('TODO: update payment method');
+  }
+
   // profile
-  editProfile = () => {
+  updateProfile = () => {
     this.props.resetProfileForm();
     this.props.setEditingProfile(this.props.user);
   }
@@ -214,13 +249,12 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingReview({});
   }
 
-  // other
-  changePaymentMethod = () => {
-    alert('TODO: change payment method');
-  }
+  // security
+  updateSecuritySettings = () => {
+    const user = this.props.user;
 
-  editSecuritySettings = () => {
-    alert('TODO: edit security settings');
+    this.props.resetSecurityForm();
+    this.props.setEditingSecurity();
   }
 
   /*
@@ -245,11 +279,9 @@ class PatientProfilePage extends React.Component {
     this.props.clearEditingProfile();
   }
 
-  goToSecurityForm = () => {
-    this.cancelProfileFormAction();
-    // TODO
-    alert("Go to security form.");
-//    this.editSecurity();
+  goToProfileForm = () => {
+    this.cancelSecurityFormAction();
+    this.updateProfile();
   }
 
   // reviews
@@ -259,6 +291,20 @@ class PatientProfilePage extends React.Component {
 
   cancelReviewFormAction = () => {
     this.props.clearEditingReview();
+  }
+
+  // secruity
+  handleSecurityFormSubmit = (values) => {
+    this.props.submitSecurityForm(values, this.props.user.id);
+  }
+
+  cancelSecurityFormAction = () => {
+    this.props.clearEditingSecurity();
+  }
+
+  goToSecurityForm = () => {
+    this.cancelProfileFormAction();
+    this.updateSecuritySettings();
   }
 
   /*
@@ -276,6 +322,7 @@ class PatientProfilePage extends React.Component {
       editingMember,
       editingProfile,
       editingReview,
+      editingSecurity,
     } = this.props;
 
     /*
@@ -482,11 +529,11 @@ class PatientProfilePage extends React.Component {
                 </p>
 
                 <p>
-                  <span styleName="personal-info__change-link" onClick={this.editProfile}>
+                  <span styleName="personal-info__change-link" onClick={this.updateProfile}>
                     Edit Profile
                   </span>
 
-                  <span styleName="personal-info__change-link" onClick={this.editSecuritySettings}>
+                  <span styleName="personal-info__change-link" onClick={this.updateSecuritySettings}>
                     Login &amp; Security Settings
                   </span>
                 </p>
@@ -496,8 +543,8 @@ class PatientProfilePage extends React.Component {
                 <p>
                   <span styleName="text--label">Payment Info:</span>
 
-                  <span styleName="personal-info__change-link" onClick={this.changePaymentMethod}>
-                    Edit / Add Payment Method
+                  <span styleName="personal-info__change-link" onClick={this.updatePaymentMethod}>
+                    Update Payment Method
                   </span>
                 </p>
 
@@ -525,6 +572,16 @@ class PatientProfilePage extends React.Component {
 
         {/* End Content */}
         </div>
+
+        <AccountSecurityFormModal
+          goToProfileForm={this.goToProfileForm}
+
+          show={editingSecurity !== null}
+          onCancel={this.cancelSecurityFormAction}
+
+          initialValues={editingSecurity}
+          onSubmit={this.handleSecurityFormSubmit}
+        />
 
         <MemberFormModal
           show={editingMember !== null}

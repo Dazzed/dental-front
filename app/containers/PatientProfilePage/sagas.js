@@ -19,7 +19,7 @@ import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
 // app
 import {
-  // edit profile
+  // edit profile / security
   setUserData,
 } from 'containers/App/actions';
 import request from 'utils/request';
@@ -63,6 +63,9 @@ import {
   // add / edit / remove review
   SUBMIT_REVIEW_FORM,
   REMOVE_REVIEW_REQUEST,
+
+  // edit security
+  SUBMIT_SECURITY_FORM,
 } from './constants';
 
 
@@ -84,6 +87,7 @@ function* main () {
   const watcherE = yield fork(submitProfileFormWatcher);
   const watcherF = yield fork(submitReviewFormWatcher);
   const watcherG = yield fork(removeReviewWatcher);
+  const watcherH = yield fork(submitAccountSecurityFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -93,6 +97,7 @@ function* main () {
   yield cancel(watcherE);
   yield cancel(watcherF);
   yield cancel(watcherG);
+  yield cancel(watcherH);
 }
 
 /*
@@ -240,7 +245,7 @@ function* submitProfileFormWatcher () {
       };
 
       const response = yield call(request, requestURL, params);
-      const message = `Your profile information has been updated.`;
+      const message = `Your profile has been updated.`;
       yield put(toastrActions.success('', message));
 
       yield put(setUserData(response.data));
@@ -253,7 +258,6 @@ function* submitProfileFormWatcher () {
     }
   }
 }
-
 
 /*
 Add / Edit Review
@@ -341,6 +345,45 @@ function* removeReviewWatcher () {
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+/*
+Edit Security
+------------------------------------------------------------
+*/
+function* submitAccountSecurityFormWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(SUBMIT_SECURITY_FORM);
+
+    const allowedFields = pick(
+      payload,
+      'newEmail',
+      'confirmNewEmail',
+      'newPassword',
+      'confirmNewPassword',
+      'oldPassword',
+    );
+
+    try {
+      const requestURL = `/api/v1/users/${userId}`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(allowedFields),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `Your account security information has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setUserData(response.data));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('patientProfile', errors));
     }
   }
 }
