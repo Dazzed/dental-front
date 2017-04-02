@@ -9,6 +9,7 @@ Imports
 */
 // libs
 import get from 'lodash/get';
+import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
@@ -17,6 +18,10 @@ import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
 // app
+import {
+  // edit profile
+  setUserData,
+} from 'containers/App/actions';
 import request from 'utils/request';
 
 // local
@@ -52,6 +57,9 @@ import {
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
 
+  // edit profile
+  SUBMIT_PROFILE_FORM,
+
   // add / edit / remove review
   SUBMIT_REVIEW_FORM,
   REMOVE_REVIEW_REQUEST,
@@ -73,8 +81,9 @@ function* main () {
   const watcherB = yield fork(familyMembersFetcher);
   const watcherC = yield fork(submitMemberFormWatcher);
   const watcherD = yield fork(removeMemberWatcher);
-  const watcherE = yield fork(submitReviewFormWatcher);
-  const watcherF = yield fork(removeReviewWatcher);
+  const watcherE = yield fork(submitProfileFormWatcher);
+  const watcherF = yield fork(submitReviewFormWatcher);
+  const watcherG = yield fork(removeReviewWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -83,6 +92,7 @@ function* main () {
   yield cancel(watcherD);
   yield cancel(watcherE);
   yield cancel(watcherF);
+  yield cancel(watcherG);
 }
 
 /*
@@ -203,6 +213,47 @@ function* removeMemberWatcher () {
     }
   }
 }
+
+/*
+Edit Profile
+------------------------------------------------------------
+*/
+function* submitProfileFormWatcher () {
+  while (true) {
+    const { payload, userId } = yield take(SUBMIT_PROFILE_FORM);
+
+    const allowedFields = pick(
+      payload,
+      'address',
+      'city',
+      'state',
+      'zipCode',
+      'phone',
+      'contactMethod',
+    );
+
+    try {
+      const requestURL = `/api/v1/users/${userId}`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(allowedFields),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `Your profile information has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setUserData(response.data));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('patientProfile', errors));
+    }
+  }
+}
+
 
 /*
 Add / Edit Review

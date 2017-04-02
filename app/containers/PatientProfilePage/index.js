@@ -24,6 +24,7 @@ import FamilyMembersList from 'components/FamilyMembersList';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
+import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import ReviewFormModal from 'components/ReviewFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -39,6 +40,11 @@ import {
   clearEditingMember,
   submitMemberForm,
 
+  // edit profile
+  setEditingProfile,
+  clearEditingProfile,
+  submitProfileForm,
+
   // add / edit review
   setEditingReview,
   clearEditingReview,
@@ -51,6 +57,9 @@ import {
 
   // add / edit member
   editingMemberSelector,
+
+  // edit profile
+  editingProfileSelector,
 
   // add / edit review
   editingReviewSelector,
@@ -71,6 +80,9 @@ function mapStateToProps (state) {
     // add / edit member
     editingMember: editingMemberSelector(state),
 
+    // edit profile
+    editingProfile: editingProfileSelector(state),
+
     // add / edit review
     editingReview: editingReviewSelector(state),
   };
@@ -90,6 +102,12 @@ function mapDispatchToProps (dispatch) {
     setEditingMember: (member) => dispatch(setEditingMember(member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+
+    // edit profile
+    resetProfileForm: () => dispatch(resetForm('patientProfile')),
+    setEditingProfile: (user) => dispatch(setEditingProfile(user)),
+    clearEditingProfile: () => dispatch(clearEditingProfile()),
+    submitProfileForm: (values, userId) => dispatch(submitProfileForm(values, userId)),
 
     // add / edit review
     resetReviewForm: () => dispatch(resetForm('review')),
@@ -135,6 +153,15 @@ class PatientProfilePage extends React.Component {
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
 
+    // edit profile - state
+    editingProfile: React.PropTypes.object,
+
+    // edit profile - dispatch
+    resetProfileForm: React.PropTypes.func.isRequired,
+    setEditingProfile: React.PropTypes.func.isRequired,
+    clearEditingProfile: React.PropTypes.func.isRequired,
+    submitProfileForm: React.PropTypes.func.isRequired,
+
     // add / edit review - dispatch
     resetReviewForm: React.PropTypes.func.isRequired,
     setEditingReview: React.PropTypes.func.isRequired,
@@ -175,6 +202,12 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember(member);
   }
 
+  // profile
+  editProfile = () => {
+    this.props.resetProfileForm();
+    this.props.setEditingProfile(this.props.user);
+  }
+
   // reviews
   addReview = () => {
     this.props.resetReviewForm();
@@ -184,10 +217,6 @@ class PatientProfilePage extends React.Component {
   // other
   changePaymentMethod = () => {
     alert('TODO: change payment method');
-  }
-
-  editProfile = () => {
-    alert('TODO: edit profile');
   }
 
   editSecuritySettings = () => {
@@ -205,6 +234,22 @@ class PatientProfilePage extends React.Component {
 
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
+  }
+
+  // profile
+  handleProfileFormSubmit = (values) => {
+    this.props.submitProfileForm(values, this.props.user.id);
+  }
+
+  cancelProfileFormAction = () => {
+    this.props.clearEditingProfile();
+  }
+
+  goToSecurityForm = () => {
+    this.cancelProfileFormAction();
+    // TODO
+    alert("Go to security form.");
+//    this.editSecurity();
   }
 
   // reviews
@@ -227,10 +272,9 @@ class PatientProfilePage extends React.Component {
       members,
       user,
 
-      // add / edit member
+      // add / edit
       editingMember,
-
-      // add / edit review
+      editingProfile,
       editingReview,
     } = this.props;
 
@@ -488,6 +532,16 @@ class PatientProfilePage extends React.Component {
 
           initialValues={editingMember}
           onSubmit={this.handleMemberFormSubmit}
+        />
+
+        <PatientProfileFormModal
+          goToSecurityForm={this.goToSecurityForm}
+
+          show={editingProfile !== null}
+          onCancel={this.cancelProfileFormAction}
+
+          initialValues={editingProfile}
+          onSubmit={this.handleProfileFormSubmit}
         />
 
         <ReviewFormModal

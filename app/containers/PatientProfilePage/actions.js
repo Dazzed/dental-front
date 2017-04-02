@@ -30,6 +30,11 @@ import {
   REMOVE_MEMBER_REQUEST,
   REMOVE_MEMBER_SUCCESS,
 
+  // edit profile
+  SET_EDITING_PROFILE,
+  CLEAR_EDITING_PROFILE,
+  SUBMIT_PROFILE_FORM,
+
   // add / edit review
   SET_EDITING_REVIEW,
   CLEAR_EDITING_REVIEW,
@@ -152,6 +157,33 @@ export function setRemovedMember (memberId, userId) {
 }
 
 /*
+Edit Profile
+------------------------------------------------------------
+*/
+export function setEditingProfile (user) {
+  return {
+    type: SET_EDITING_PROFILE,
+    user,
+  };
+}
+
+export function clearEditingProfile () {
+  return {
+    type: CLEAR_EDITING_PROFILE,
+  };
+}
+
+export function submitProfileForm (payload, userId) {
+  return {
+    type: SUBMIT_PROFILE_FORM,
+    payload,
+    userId,
+  };
+}
+
+// update user data at App level, see setUserData in `/app/containers/App/actions.js`
+
+/*
 Add / Edit Review
 ------------------------------------------------------------
 */
@@ -204,10 +236,10 @@ export function setRemovingReview (payload, dentistId) {
   };
 }
 
-export function setRemovedReview (memberId, dentistId) {
+export function setRemovedReview (reviewId, dentistId) {
   return {
     type: REMOVE_REVIEW_SUCCESS,
-    memberId,
+    reviewId,
     dentistId,
   }
 }

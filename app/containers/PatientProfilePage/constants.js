@@ -26,6 +26,12 @@ export const EDIT_MEMBER_SUCCESS  = 'app/PatientProfilePage/EDIT_MEMBER_SUCCESS'
 export const REMOVE_MEMBER_REQUEST = 'app/PatientProfilePage/REMOVE_MEMBER_REQUEST';
 export const REMOVE_MEMBER_SUCCESS = 'app/PatientProfilePage/REMOVE_MEMBER_SUCCESS';
 
+// edit profile
+export const SET_EDITING_PROFILE   = 'app/PatientProfilePage/SET_EDITING_PROFILE';
+export const CLEAR_EDITING_PROFILE = 'app/PatientProfilePage/CLEAR_EDITING_PROFILE';
+export const SUBMIT_PROFILE_FORM   = 'app/PatientProfilePage/SUBMIT_PROFILE_FORM';
+// update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`
+
 // add / edit review
 export const SET_EDITING_REVIEW   = 'app/PatientProfilePage/SET_EDITING_REVIEW';
 export const CLEAR_EDITING_REVIEW = 'app/PatientProfilePage/CLEAR_EDITING_REVIEW';

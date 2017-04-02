@@ -27,8 +27,13 @@ import {
   // remove member
   REMOVE_MEMBER_SUCCESS,
 
+  // edit profile
+  SET_EDITING_PROFILE,
+  CLEAR_EDITING_PROFILE,
+  ADD_PROFILE_SUCCESS,
+  EDIT_PROFILE_SUCCESS,
+
   // add / edit review
-  // TODO: edit
   SET_EDITING_REVIEW,
   CLEAR_EDITING_REVIEW,
   ADD_REVIEW_SUCCESS,
@@ -36,7 +41,6 @@ import {
 
   // remove review
   REMOVE_REVIEW_SUCCESS,
-
 } from './constants';
 
 /*
@@ -100,6 +104,26 @@ function patientProfilePageReducer (state = initialState, action) {
 
     /*
     Add / Edit Member
+    ------------------------------------------------------------
+    */
+    case SET_EDITING_PROFILE:
+      return {
+        ...state,
+        editingActive: 'profile',
+        editing: action.user,
+      };
+
+    case CLEAR_EDITING_PROFILE:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
+
+    /*
+    Edit Profile
     ------------------------------------------------------------
     */
     case SET_EDITING_MEMBER:
@@ -198,9 +222,9 @@ function patientProfilePageReducer (state = initialState, action) {
         dentist: {
           ...state.dentist,
           dentistReviews: [
-            ...state.dentist.dentistReviews.slice(0, memberIdx),
+            ...state.dentist.dentistReviews.slice(0, reviewIdx),
             action.payload,
-            ...state.dentist.dentistReviews.slice(memberIdx + 1),
+            ...state.dentist.dentistReviews.slice(reviewIdx + 1),
           ],
         },
         editingActive: false,
@@ -219,8 +243,8 @@ function patientProfilePageReducer (state = initialState, action) {
         dentist: {
           ...state.dentist,
           dentistReviews: [
-            ...state.dentist.dentistReviews.slice(0, memberIdx),
-            ...state.dentist.dentistReviews.slice(memberIdx + 1),
+            ...state.dentist.dentistReviews.slice(0, reviewIdx),
+            ...state.dentist.dentistReviews.slice(reviewIdx + 1),
           ],
         },
         editingActive: false,
