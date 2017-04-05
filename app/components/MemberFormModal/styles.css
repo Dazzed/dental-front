@@ -16,5 +16,5 @@ Page Wide
 ================================================================================
 */
 :global(.modal-body) {
-  padding-bottom: 0;
+  padding-bottom: 1.5rem;
 }

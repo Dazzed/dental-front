@@ -1,6 +1,7 @@
 /*
 Member Form Modal Component
 ================================================================================
+TODO: add a membership type field
 */
 
 /*
@@ -137,31 +138,6 @@ export default class MemberFormModal extends React.Component {
 
             <Row>
               <Field
-                name="familyRelationship"
-                type="select"
-                component={LabeledInput}
-                label="Family Relationship"
-                className="col-md-6"
-              >
-                <option value="">Select a relationship type</option>
-                {Object.keys(MEMBER_RELATIONSHIP_TYPES).map((key, index) =>
-                  <option value={key} key={index}>
-                    {MEMBER_RELATIONSHIP_TYPES[key]}
-                  </option>
-                )}
-              </Field>
-
-              <Field
-                name="birthDate"
-                type="date"
-                component={renderDatePicker}
-                label="Birthdate"
-                className="col-md-6"
-              />
-            </Row>
-
-            <Row>
-              <Field
                 name="sex"
                 type="select"
                 label="Sex"
@@ -177,43 +153,32 @@ export default class MemberFormModal extends React.Component {
               </Field>
 
               <Field
-                name="contactMethod"
+                name="birthDate"
+                type="date"
+                component={renderDatePicker}
+                label="Birthdate"
+                className="col-md-6"
+              />
+            </Row>
+
+            <Row>
+              <Field
+                name="familyRelationship"
                 type="select"
-                label="Contact method"
                 component={LabeledInput}
+                label="Family Relationship"
                 className="col-md-6"
               >
-                <option value="">Select preferred contact method</option>
-                {Object.keys(PREFERRED_CONTACT_METHODS).map(key =>
-                  <option
-                    value={key}
-                    key={key}
-                  >
-                    {PREFERRED_CONTACT_METHODS[key]}
+                <option value="">Select a relationship type</option>
+                {Object.keys(MEMBER_RELATIONSHIP_TYPES).map((key, index) =>
+                  <option value={key} key={index}>
+                    {MEMBER_RELATIONSHIP_TYPES[key]}
                   </option>
                 )}
               </Field>
+
+              {/* TODO: add membership type */}
             </Row>
-
-            <div className="form-group">
-              <Field
-                name="phone"
-                type="text"
-                mask="(999) 999-9999"
-                maskChar=" "
-                component={LabeledInput}
-                label="Phone Number"
-                className="col-md-6"
-              />
-
-              <Field
-                name="email"
-                type="text"
-                component={LabeledInput}
-                label="Email"
-                className="col-md-6"
-              />
-            </div>
           </form>
         </Modal.Body>
 
