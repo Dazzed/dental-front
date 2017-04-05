@@ -299,10 +299,22 @@ export default function createRoutes (store) {
       path: '/learn-more',
       name: 'learnMore',
       getComponent (nextState, cb) {
-        System.import('containers/LearnMorePage')
-          .then(loadModule(cb))
-          .catch(errorLoading)
-      }
+        const importModules = Promise.all([
+          System.import('containers/LearnMorePage/reducer'),
+          System.import('containers/LearnMorePage/sagas'),
+          System.import('containers/LearnMorePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component, ]) => {
+          injectReducer('learnMorePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
     }, {
       path: '/faq',
       name: 'faq',

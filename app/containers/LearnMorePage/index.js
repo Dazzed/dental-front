@@ -16,20 +16,46 @@ import FaAngleRight from 'react-icons/lib/fa/angle-right';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { reset as resetForm } from 'redux-form';
 
 // app
+import ContactUsFormModal from 'components/ContactUsFormModal';
 import PageHeader from 'components/PageHeader';
 
 // local
+import {
+  // send contact us message
+  setContactUsMessage,
+  clearContactUsMessage,
+  submitContactUsForm,
+} from './actions';
+import {
+  // send contact us message
+  editingContactUsMessageSelector,
+} from './selectors';
 import styles from './styles.css';
 
 /*
 Redux
 ------------------------------------------------------------
 */
+function mapStateToProps (state) {
+  return {
+    // send contact us message
+    editingContactUsMessage: editingContactUsMessageSelector(state),
+  };
+}
+
 function mapDispatchToProps (dispatch) {
   return {
+    // app
     changeRoute: (url) => dispatch(push(url)),
+
+    // send contact us message
+    resetContactUsMessageForm: () => dispatch(resetForm('contactUs')),
+    setContactUsMessage: (message) => dispatch(setContactUsMessage(message)),
+    clearContactUsMessage: () => dispatch(clearContactUsMessage()),
+    submitContactUsForm: (values) => dispatch(submitContactUsForm(values)),
   };
 }
 
@@ -38,14 +64,61 @@ function mapDispatchToProps (dispatch) {
 Learn More
 ================================================================================
 */
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 export default class LearnMorePage extends React.Component {
+
+  static propTypes = {
+    // app - dispatch
+    changeRoute: React.PropTypes.func.isRequired,
+
+    // send contact us message - state
+    editingContactUsMessage: React.PropTypes.object,
+
+    // send contact us message - dispatch
+    resetContactUsMessageForm: React.PropTypes.func.isRequired,
+    setContactUsMessage: React.PropTypes.func.isRequired,
+    clearContactUsMessage: React.PropTypes.func.isRequired,
+    submitContactUsForm: React.PropTypes.func.isRequired,
+  };
+
+  /*
+  Actions
+  ------------------------------------------------------------
+  */
   goToDentistSignup = () => {
     this.props.changeRoute('/accounts/dentist-signup');
   }
 
+  // send contact us message
+  sendContactUsMessage = () => {
+    this.props.resetContactUsMessageForm();
+    this.props.setContactUsMessage({});
+  }
+
+  /*
+  Events
+  ------------------------------------------------------------
+  */
+  // send contact us message
+  handleContactUsFormSubmit = (values) => {
+    this.props.submitContactUsForm(values);
+  }
+
+  cancelContactUsFormAction = () => {
+    this.props.clearContactUsMessage();
+  }
+
+  /*
+  Render
+  ------------------------------------------------------------
+  */
   render() {
+    const {
+      // send contact us message
+      editingContactUsMessage,
+    } = this.props;
+
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Start Attracting New Patients Today!" />
@@ -66,8 +139,12 @@ export default class LearnMorePage extends React.Component {
               affordable monthly memberships.
             </p>
 
-            {/* TODO: dentist contact link */}
-            <input type="button" styleName="large-button__inverse" value="CONTACT US &gt;" />
+            <input
+              type="button"
+              styleName="large-button__inverse"
+              value="CONTACT US &gt;"
+              onClick={this.sendContactUsMessage}
+            />
           </div>
         </div>
 
@@ -110,6 +187,19 @@ export default class LearnMorePage extends React.Component {
           </div>
         </div>
 
+        /*
+        Modals
+        ------------------------------------------------------------
+        */
+        <ContactUsFormModal
+          show={editingContactUsMessage !== null}
+          onCancel={this.cancelContactUsFormAction}
+
+          initialValues={editingContactUsMessage}
+          onSubmit={this.handleContactUsFormSubmit}
+        />
+
+      {/* End Wrapper Div */}
       </div>
     );
   }
