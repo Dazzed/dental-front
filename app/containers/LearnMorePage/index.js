@@ -10,12 +10,9 @@ Imports
 */
 // libs
 import React from 'react';
+import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
-import FaAngleLeft from 'react-icons/lib/fa/angle-left';
-import FaAngleRight from 'react-icons/lib/fa/angle-right';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { push } from 'react-router-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
@@ -48,9 +45,6 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    // app
-    changeRoute: (url) => dispatch(push(url)),
-
     // send contact us message
     resetContactUsMessageForm: () => dispatch(resetForm('contactUs')),
     setContactUsMessage: (message) => dispatch(setContactUsMessage(message)),
@@ -69,9 +63,6 @@ Learn More
 export default class LearnMorePage extends React.Component {
 
   static propTypes = {
-    // app - dispatch
-    changeRoute: React.PropTypes.func.isRequired,
-
     // send contact us message - state
     editingContactUsMessage: React.PropTypes.object,
 
@@ -82,12 +73,23 @@ export default class LearnMorePage extends React.Component {
     submitContactUsForm: React.PropTypes.func.isRequired,
   };
 
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      showMarketingVideo: false,
+    };
+  }
+
   /*
   Actions
   ------------------------------------------------------------
   */
-  goToDentistSignup = () => {
-    this.props.changeRoute('/accounts/dentist-signup');
+  toggleMarketingVideo = () => {
+    this.setState({
+      ...this.state,
+      showMarketingVideo: !this.state.showMarketingVideo,
+    });
   }
 
   // send contact us message
@@ -130,20 +132,23 @@ export default class LearnMorePage extends React.Component {
         <div styleName="first-block">
           <div styleName="first-block__content">
             <p styleName="large-text">
-              DentalHQ.com was founded by a dentist to
+              DentalHQ.com was founded by Dentists to
               <br />
               connect the over 100 million Americans without
               <br />
               dental insurance to practices offering
               <br />
-              affordable monthly memberships.
+              affordable monthly memberships. Click the
+              <br />
+              link below to learn more about us:
             </p>
 
+            {/* TODO: https://trello.com/c/f033SU5f/124-marketing-add-marketing-videos */}
             <input
               type="button"
               styleName="large-button__inverse"
-              value="CONTACT US &gt;"
-              onClick={this.sendContactUsMessage}
+              value="WATCH VIDEO &gt;"
+              onClick={this.toggleMarketingVideo}
             />
           </div>
         </div>
@@ -171,26 +176,52 @@ export default class LearnMorePage extends React.Component {
         <div styleName="third-block">
           <div styleName="third-block__content">
             <p styleName="large-text">
-              We've made signing up your practice
+              With no signup fees or contracts
               <br />
-              and getting started easy.  Just give us a call
+              we've made enrolling your practice easy.
               <br />
-              and we'll walk you through the process!
+              Questions? Just give us a call and we'll
+              <br />
+              walk you through the process!
             </p>
 
             <input
               type="button"
               styleName="large-button__inverse"
-              value="GET STARTED &gt;"
-              onClick={this.goToDentistSignup}
+              value="CONTACT US &gt;"
+              onClick={this.sendContactUsMessage}
             />
           </div>
         </div>
 
-        /*
+        {/*
         Modals
         ------------------------------------------------------------
-        */
+        */}
+        <Modal
+          backdrop={true}
+          dialogClassName={styles['marketing-video-modal']}
+          onHide={this.toggleMarketingVideo}
+          show={this.state.showMarketingVideo}
+        >
+          <Modal.Header closeButton />
+          <Modal.Body>
+            {/* TODO: show video */}
+            {/* https://trello.com/c/f033SU5f/124-marketing-add-marketing-videos */}
+            Video Goes Here
+            {/*
+              <video
+                autoPlay
+                controls
+                poster={marketingVideoPoster}
+                ref="video"
+              >
+                <source src={marketingVideo} type="video/mp4" />
+              </video>
+            */}
+          </Modal.Body>
+        </Modal>
+
         <ContactUsFormModal
           show={editingContactUsMessage !== null}
           onCancel={this.cancelContactUsFormAction}
