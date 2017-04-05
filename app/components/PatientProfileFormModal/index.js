@@ -50,7 +50,7 @@ export default class PatientProfileFormModal extends React.Component {
 
   static propTypes = {
     // event handlers - passed in
-    goToSecurityForm: React.PropTypes.func.isRequired,
+    goToSecurityForm: React.PropTypes.func,
 
     // form related - passed in
     initialValues: React.PropTypes.object,
@@ -78,6 +78,9 @@ export default class PatientProfileFormModal extends React.Component {
   */
   render () {
     const {
+      // event handlers
+      goToSecurityForm,
+
       // form related
       initialValues,
       handleSubmit,
@@ -191,13 +194,15 @@ export default class PatientProfileFormModal extends React.Component {
               </Field>
             </Row>
 
-            <p styleName="field-instructions">
-              You can update your account email and password in the
-              {' '}
-              <a href="#" onClick={this.securityFormLinkClick}>Login and Security Settings</a>
-              {' '}
-              form.
-            </p>
+            {goToSecurityForm && (
+              <p styleName="field-instructions">
+                You can update your account email and password in the
+                {' '}
+                <a href="#" onClick={this.securityFormLinkClick}>Login and Security Settings</a>
+                {' '}
+                form.
+              </p>
+            )}
 
           </form>
         </Modal.Body>

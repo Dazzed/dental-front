@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
+import FaPencil from 'react-icons/lib/fa/pencil';
 
 // app
 import {
@@ -44,6 +45,7 @@ class PatientsList extends React.Component {
     onAddMember: React.PropTypes.func.isRequired,
     onToggleCancelationFee: React.PropTypes.func,
     onToggleReEnrollmentFee: React.PropTypes.func,
+    onUpdatePatientProfile: React.PropTypes.func,
 
     onReEnrollMember: React.PropTypes.func.isRequired,
     onRemoveMember: React.PropTypes.func.isRequired,
@@ -63,7 +65,7 @@ class PatientsList extends React.Component {
   State Actions
   ------------------------------------------------------------
   */
-  toggleMemberDetails = (memberId) => () => {
+  toggleMemberDetails = (memberId) => {
     let showMemberDetails = {
       ...this.state.showMemberDetails,
     };
@@ -92,6 +94,10 @@ class PatientsList extends React.Component {
 
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient);
+  }
+
+  onUpdateClick = (patient) => {
+    this.props.onUpdatePatientProfile(patient);
   }
 
   /*
@@ -222,14 +228,21 @@ class PatientsList extends React.Component {
 
                 <div styleName="divided-row">
                   <div className="row">
-                    <div className="col-sm-3">
+                    <div className="col-sm-9">
                       <span styleName="member-overview__info">{phone}</span>
-                    </div>
-                    <div className="col-sm-6">
                       <a href={`mailto:${email}`} styleName="member-overview__email">{email}</a>
+                      <span
+                        styleName="member-overview__edit-contact"
+                        onClick={this.onUpdateClick.bind(this, patient)}
+                      >
+                        <FaPencil />
+                      </span>
                     </div>
                     <div className="col-sm-3 text-right">
-                      <span styleName="member-overview__details-toggle" onClick={this.toggleMemberDetails(id)}>
+                      <span
+                        styleName="member-overview__details-toggle"
+                        onClick={this.toggleMemberDetails.bind(this, id)}
+                      >
                         Member Details
                         {' '}
                         {this.state.showMemberDetails[id]

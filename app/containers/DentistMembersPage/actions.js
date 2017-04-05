@@ -9,25 +9,36 @@ Imports
 */
 // local
 import {
+  // fetch dentist
   FETCH_DENTIST_INFO_REQUEST,
   FETCH_DENTIST_INFO_SUCCESS,
   FETCH_DENTIST_INFO_ERROR,
 
+  // fetch patients
   FETCH_PATIENTS_REQUEST,
   FETCH_PATIENTS_SUCCESS,
   FETCH_PATIENTS_ERROR,
 
+  // search / sort patients
   SEARCH_MEMBERS,
   SORT_MEMBERS,
 
+  // add / edit member
   SET_EDITING_MEMBER,
   CLEAR_EDITING_MEMBER,
   SUBMIT_MEMBER_FORM,
   ADD_MEMBER_SUCCESS,
   EDIT_MEMBER_SUCCESS,
 
+  // remove member
   REMOVE_MEMBER_REQUEST,
   REMOVE_MEMBER_SUCCESS,
+
+  // edit patient profile
+  SET_EDITING_PATIENT_PROFILE,
+  CLEAR_EDITING_PATIENT_PROFILE,
+  SUBMIT_PATIENT_PROFILE_FORM,
+  EDIT_PATIENT_PROFILE_SUCCESS,
 } from './constants';
 
 /*
@@ -156,4 +167,35 @@ export function setRemovedMember (patient, memberId) {
     patient,
     memberId,
   }
+}
+
+/*
+Edit Patient Profile
+------------------------------------------------------------
+*/
+export function setEditingPatientProfile (patient) {
+  return {
+    type: SET_EDITING_PATIENT_PROFILE,
+    patient,
+  };
+}
+
+export function clearEditingPatientProfile () {
+  return {
+    type: CLEAR_EDITING_PATIENT_PROFILE,
+  };
+}
+
+export function submitPatientProfileForm (payload) {
+  return {
+    type: SUBMIT_PATIENT_PROFILE_FORM,
+    payload,
+  };
+}
+
+export function setEditedPatientProfile (payload) {
+  return {
+    type: EDIT_PATIENT_PROFILE_SUCCESS,
+    payload,
+  };
 }

@@ -23,6 +23,7 @@ import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientsList from 'components/PatientsList';
+import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -41,6 +42,11 @@ import {
 
   // remove member
   setRemovingMember,
+
+  // edit patient profile
+  setEditingPatientProfile,
+  clearEditingPatientProfile,
+  submitPatientProfileForm,
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
@@ -51,9 +57,10 @@ import {
   selectMemberSearchTerm,
 
   // add / edit member
-  selectEditingActive,
   selectEditingMember,
-  selectEditingPatient,
+
+  // edit patient profile
+  selectEditingPatientProfile,
 } from 'containers/DentistMembersPage/selectors';
 
 import {
@@ -80,9 +87,10 @@ function mapStateToProps (state) {
     currentSearchTerm: selectMemberSearchTerm(state),
 
     // add / edit member
-    editingActive: selectEditingActive(state),
     editingMember: selectEditingMember(state),
-    editingPatient: selectEditingPatient(state),
+
+    // edit patient profile
+    editingPatientProfile: selectEditingPatientProfile(state),
   };
 }
 
@@ -99,13 +107,19 @@ function mapDispatchToProps (dispatch) {
     searchMembers: (name) => dispatch(searchMembers(name)),
 
     // add / edit member
-    resetForm: () => dispatch(resetForm('familyMember')),
+    resetMemberForm: () => dispatch(resetForm('familyMember')),
     setEditingMember: (patient, member) => dispatch(setEditingMember(patient, member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
     setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
+
+    // edit patient profile
+    resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
+    setEditingPatientProfile: (patient) => dispatch(setEditingPatientProfile(patient)),
+    clearEditingPatientProfile: () => dispatch(clearEditingPatientProfile()),
+    submitPatientProfileForm: (values) => dispatch(submitPatientProfileForm(values)),
   };
 }
 
@@ -142,18 +156,25 @@ class DentistNewReviewsPage extends React.Component {
     searchMembers: React.PropTypes.func.isRequired,
 
     // add / edit member - state
-    editingActive: React.PropTypes.bool.isRequired,
     editingMember: React.PropTypes.object,
-    editingPatient: React.PropTypes.object,
 
     // add / edit member - dispatch
-    resetForm: React.PropTypes.func.isRequired,
+    resetMemberForm: React.PropTypes.func.isRequired,
     setEditingMember: React.PropTypes.func.isRequired,
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
 
     // remove member - dispatch
     setRemovingMember: React.PropTypes.func.isRequired,
+
+    // edit patient profile - state
+    editingPatientProfile: React.PropTypes.object,
+
+    // edit patient profile - dispatch
+    resetPatientProfileForm: React.PropTypes.func.isRequired,
+    setEditingPatientProfile: React.PropTypes.func.isRequired,
+    clearEditingPatientProfile: React.PropTypes.func.isRequired,
+    submitPatientProfileForm: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -170,7 +191,7 @@ class DentistNewReviewsPage extends React.Component {
   ------------------------------------------------------------
   */
   addMember = (patient) => {
-    this.props.resetForm();
+    this.props.resetMemberForm();
     this.props.setEditingMember(patient, null);
   }
 
@@ -199,8 +220,13 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   updateMember = (patient, member) => {
-    this.props.resetForm();
+    this.props.resetMemberForm();
     this.props.setEditingMember(patient, member);
+  }
+
+  updatePatientProfile = (patient) => {
+    this.props.resetPatientProfileForm();
+    this.props.setEditingPatientProfile(patient);
   }
 
   /*
@@ -212,8 +238,16 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   handleMemberFormSubmit = (values) => {
-    this.props.submitMemberForm(this.props.editingPatient, values);
+    this.props.submitMemberForm(this.props.editingMember.patient, values);
   }
+
+  cancelPatientProfileFormAction = () => {
+    this.props.clearEditingPatientProfile();
+  }
+
+  handlePatientProfileFormSubmit = (values) => {
+    this.props.submitPatientProfileForm(values, values.id);
+  };
 
   /*
   UI Functions
@@ -254,8 +288,10 @@ class DentistNewReviewsPage extends React.Component {
       currentSearchTerm,
 
       // add / edit member
-      editingActive,
       editingMember,
+
+      // edit patient profile
+      editingPatientProfile,
     } = this.props;
 
     /*
@@ -367,15 +403,24 @@ class DentistNewReviewsPage extends React.Component {
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
             onUpdateMember={this.updateMember}
+            onUpdatePatientProfile={this.updatePatientProfile}
           />
         </div>
 
         <MemberFormModal
-          show={editingActive}
+          show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
-          initialValues={editingMember}
+          initialValues={editingMember !== null ? editingMember.member : null}
           onSubmit={this.handleMemberFormSubmit}
+        />
+
+        <PatientProfileFormModal
+          show={editingPatientProfile !== null}
+          onCancel={this.cancelPatientProfileFormAction}
+
+          initialValues={editingPatientProfile}
+          onSubmit={this.handlePatientProfileFormSubmit}
         />
       </div>
     );

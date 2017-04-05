@@ -46,7 +46,7 @@ export default class AccountSecurityFormModal extends React.Component {
 
   static propTypes = {
     // event handlers - passed in
-    goToProfileForm: React.PropTypes.func.isRequired,
+    goToProfileForm: React.PropTypes.func,
 
     // form related - passed in
     initialValues: React.PropTypes.object,
@@ -74,6 +74,9 @@ export default class AccountSecurityFormModal extends React.Component {
   */
   render () {
     const {
+      // event handlers
+      goToProfileForm,
+
       // form related
       initialValues,
       handleSubmit,
@@ -97,7 +100,7 @@ export default class AccountSecurityFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Header closeButton>
-          <Modal.Title>Edit Profile</Modal.Title>
+          <Modal.Title>Edit Login &amp; Security Settings</Modal.Title>
         </Modal.Header>
 
         {/*
@@ -170,13 +173,15 @@ export default class AccountSecurityFormModal extends React.Component {
               For security, you must enter your current password to change your account's email and password.  You may leave both "New Password" fields blank if you only wish to change your email, or leave both email fields blank if you only wish to change your password.
             </p>
 
-            <p styleName="field-instructions">
-              You can update your account address, phone number, and preferred contact method in the
-              {' '}
-              <a href="#" onClick={this.profileFormLinkClick}>Login and Security Settings</a>
-              {' '}
-              form.
-            </p>
+            {goToProfileForm && (
+              <p styleName="field-instructions">
+                You can update your account address, phone number, and preferred contact method in the
+                {' '}
+                <a href="#" onClick={this.profileFormLinkClick}>Login and Security Settings</a>
+                {' '}
+                form.
+              </p>
+            )}
 
           </form>
         </Modal.Body>

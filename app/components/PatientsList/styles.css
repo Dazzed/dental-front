@@ -137,7 +137,15 @@ Member Overview
 }
 
 .member-overview__email {
+  margin-left: 1rem;
+
   font-weight: bold;
+}
+
+.member-overview__edit-contact {
+  margin-left: 1rem;
+
+  cursor: pointer;
 }
 
 .member-overview__details-toggle {

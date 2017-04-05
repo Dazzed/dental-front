@@ -119,24 +119,30 @@ const selectDataLoaded = createSelector(
 );
 
 /*
-Add / Edit Member
+Add / Edit
 ------------------------------------------------------------
 */
-const selectEditingActive = createSelector(
-  domainSelector,
-  substate => substate.editingActive,
-);
-
 const selectEditingMember = createSelector(
   domainSelector,
-  subtate => subtate.editingMember,
+  (substate) => {
+    if (substate.editingActive === 'member') {
+      return substate.editing;
+    }
+
+    return null;
+  }
 );
 
-const selectEditingPatient = createSelector(
+const selectEditingPatientProfile = createSelector(
   domainSelector,
-  substate => substate.editingPatient,
-);
+  (substate) => {
+    if (substate.editingActive === 'patientProfile') {
+      return substate.editing;
+    }
 
+    return null;
+  }
+);
  
 /*
 Export
@@ -155,8 +161,7 @@ export {
   selectProcessedPatients,
   selectDataLoaded,
 
-  // add / edit member
-  selectEditingActive,
+  // add / edit
   selectEditingMember,
-  selectEditingPatient,
+  selectEditingPatientProfile,
 };

@@ -28,6 +28,11 @@ import {
 
   // remove member
   REMOVE_MEMBER_SUCCESS,
+
+  // edit patient profile
+  SET_EDITING_PATIENT_PROFILE,
+  CLEAR_EDITING_PATIENT_PROFILE,
+  EDIT_PATIENT_PROFILE_SUCCESS,
 } from './constants';
 
 /*
@@ -45,8 +50,7 @@ const initialState = {
 
   // add / edit member
   editingActive: false,
-  editingMember: null,
-  editingPatient: null,
+  editing: null,
 };
 
 
@@ -99,17 +103,18 @@ function dentistMembersPageReducer (state = initialState, action) {
     case SET_EDITING_MEMBER:
       return {
         ...state,
-        editingActive: true,
-        editingMember: action.member,
-        editingPatient: action.patient,
+        editingActive: 'member',
+        editing: {
+          member: action.member,
+          patient: action.patient,
+        },
       };
 
     case CLEAR_EDITING_MEMBER:
       return {
         ...state,
         editingActive: false,
-        editingMember: null,
-        editingPatient: null,
+        editing: null,
       };
 
     case ADD_MEMBER_SUCCESS:
@@ -132,8 +137,7 @@ function dentistMembersPageReducer (state = initialState, action) {
           ...state.patients.slice(patientIdx + 1),
         ],
         editingActive: false,
-        editingMember: null,
-        editingPatient: null,
+        editing: null,
       };
 
     case EDIT_MEMBER_SUCCESS:
@@ -158,8 +162,7 @@ function dentistMembersPageReducer (state = initialState, action) {
           ...state.patients.slice(patientIdx + 1),
         ],
         editingActive: false,
-        editingMember: null,
-        editingPatient: null,
+        editing: null,
       };
 
     /*
@@ -187,7 +190,38 @@ function dentistMembersPageReducer (state = initialState, action) {
           ...state.patients.slice(patientIdx + 1),
         ],
       };
-     
+
+    /*
+    Edit Patient Profile
+    ------------------------------------------------------------
+    */
+    case SET_EDITING_PATIENT_PROFILE:
+      return {
+        ...state,
+        editingActive: 'patientProfile',
+        editing: action.patient,
+      };
+
+    case CLEAR_EDITING_PATIENT_PROFILE:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    case EDIT_PATIENT_PROFILE_SUCCESS:
+      patientIdx = findIndex(state.patients, { id: action.payload.id });
+
+      return {
+        ...state,
+        patients: [
+          ...state.patients.slice(0, patientIdx),
+          action.payload,
+          ...state.patients.slice(patientIdx + 1),
+        ],
+        editingActive: false,
+        editing: null,
+      };
 
     /*
     Default Reducer

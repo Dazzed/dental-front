@@ -29,12 +29,15 @@ import {
   setAddedMember,
   setEditedMember,
   setRemovedMember,
+
+  setEditedPatientProfile,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
   FETCH_PATIENTS_REQUEST,
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
+  SUBMIT_PATIENT_PROFILE_FORM,
 } from './constants';
 
 
@@ -52,12 +55,14 @@ function* main () {
   const watcherB = yield fork(patientsFetcher);
   const watcherC = yield fork(submitMemberFormWatcher);
   const watcherD = yield fork(removeMemberWatcher);
+  const watcherE = yield fork(submitPatientProfileFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
   yield cancel(watcherD);
+  yield cancel(watcherE);
 }
 
 /*
@@ -176,6 +181,50 @@ function* removeMemberWatcher () {
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+/*
+Edit Patient Profile
+------------------------------------------------------------
+*/
+function* submitPatientProfileFormWatcher() {
+  while (true) {
+    const { payload } = yield take(SUBMIT_PATIENT_PROFILE_FORM);
+
+    const allowedFields = pick(
+      payload,
+      'address',
+      'city',
+      'state',
+      'zipCode',
+      'phone',
+      'contactMethod',
+    );
+
+    try {
+      // TODO: Need backend API endpoint setup.
+      // https://trello.com/c/SdL5DChA/104-dentist-update-patient-s-primary-contact-info
+      /*
+      const requestURL = `TODO`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(allowedFields),
+      };
+
+      const response = yield call(request, requestURL, params);
+      */
+      const message = `The patient's profile has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setUserData(payload));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('patientProfile', errors));
     }
   }
 }
