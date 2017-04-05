@@ -310,7 +310,7 @@ function* submitEditReviewForm (payload, dentistId) {
     const message = `Your review has been updated.`;
     yield put(toastrActions.success('', message));
 
-    yield put(setEditedReivew(response.data, dentistId));
+    yield put(setEditedReview(payload, dentistId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);

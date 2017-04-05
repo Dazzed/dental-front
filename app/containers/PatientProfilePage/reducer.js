@@ -238,7 +238,7 @@ function patientProfilePageReducer (state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_REVIEW_SUCCESS:
-      reviewIdx = findIndex(state.dentist.dentistReviews, { id: action.payload.id });
+      reviewIdx = findIndex(state.dentist.dentistReviews, { id: action.reviewId });
 
       return {
         ...state,
