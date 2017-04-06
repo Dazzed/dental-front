@@ -282,7 +282,7 @@ class DentistSignupForm extends React.Component {
         <FormSection name="user">
           <FormGroup>
             <div className="col-sm-12">
-              <ControlLabel>Your Name:</ControlLabel>
+              <ControlLabel>Contact Name:</ControlLabel>
             </div>
 
             <Field
@@ -317,25 +317,10 @@ class DentistSignupForm extends React.Component {
               mask="(999) 999-9999"
               maskChar=" "
               component={LabeledInput}
-              label="Office Phone Number"
+              label="Contact Phone Number"
               placeholder=""
               className="col-sm-6"
             />
-
-            <Field
-              name="specialtyId"
-              type="select"
-              label="Specialty"
-              component={LabeledInput}
-              className="col-sm-6"
-            >
-              <option value="">Select a Specialty</option>
-              {dentistSpecialties.map((specialty, index) => (
-                <option value={specialty.id} key={index}>
-                  {specialty.name}
-                </option>
-              ))}
-            </Field>
           </Row>
 
           <Row>
@@ -343,7 +328,7 @@ class DentistSignupForm extends React.Component {
               name="email"
               type="text"
               component={LabeledInput}
-              label="Email Address"
+              label="Contact &amp; Login Email Address"
               placeholder=""
               className="col-sm-6"
             />
@@ -401,13 +386,19 @@ class DentistSignupForm extends React.Component {
             />
 
             <Field
-              name="url"
-              type="text"
+              name="specialtyId"
+              type="select"
+              label="Specialty"
               component={LabeledInput}
-              label="Website URL"
-              placeholder="https://mydentistrysite.com"
               className="col-sm-6"
-            />
+            >
+              <option value="">Select a Specialty</option>
+              {dentistSpecialties.map((specialty, index) => (
+                <option value={specialty.id} key={index}>
+                  {specialty.name}
+                </option>
+              ))}
+            </Field>
           </Row>
 
           <Row>
@@ -434,10 +425,21 @@ class DentistSignupForm extends React.Component {
 
           <Row>
             <Field
+              name="url"
+              type="text"
+              component={LabeledInput}
+              label="Website URL"
+              placeholder="https://mydentistrysite.com"
+              className="col-sm-6"
+            />
+          </Row>
+
+          <Row>
+            <Field
               name="message"
               type="textarea"
               component={LabeledInput}
-              label="Office Profile Message"
+              label="Profile Message"
               placeholder=""
               className="col-sm-12"
               rows={5}

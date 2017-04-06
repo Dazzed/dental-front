@@ -35,10 +35,10 @@ const schema = {
       message: '^Please enter a 10-digit US phone number.'
     }
   },
-  "user.specialtyId": { presence: { message: '^Please select a Specialty' } },
 
   "user.email": { presence: true, email: true },
   "user.confirmEmail": { presence: true, email: true, equality: 'user.email' },
+
   "user.password": {
     presence: true,
     format: {
@@ -53,10 +53,8 @@ const schema = {
   ------------------------------------------------------------
   */
   "officeInfo.officeName": { presence: true },
-  "officeInfo.url": {
-    presence: { message: '^Website URL can\'t be blank' },
-    url: { message: '^Please enter the full URL, including the "http://". For example: "https://mydentistrysite.com".' },
-  },
+  "officeInfo.specialtyId": { presence: { message: '^Please select a Specialty' } },
+
   "officeInfo.email": { presence: true, email: true },
   "officeInfo.phone": {
     presence: true,
@@ -65,6 +63,12 @@ const schema = {
       message: '^Please enter a 10-digit US phone number.'
     }
   },
+
+  "officeInfo.url": {
+    presence: { message: '^Website URL can\'t be blank' },
+    url: { message: '^Please enter the full URL, including the "http://". For example: "https://mydentistrysite.com".' },
+  },
+
   "officeInfo.message": { presence: true },
 
   "officeInfo.address": { presence: true },

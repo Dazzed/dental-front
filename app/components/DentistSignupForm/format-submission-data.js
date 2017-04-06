@@ -9,6 +9,10 @@ const formatDentistSignupFormSubmissionData = (data) => {
   // The User needs a zipCode.
   data.user.zipCode = data.officeInfo.zipCode;
 
+  // Move the specialtyId field from officeInfo to user.
+  data.user.specialtyId = data.officeInfo.specialtyId;
+  delete data.officeInfo.specialtyId;
+
   // Move the fields about children from services to officeInfo.
   data.officeInfo.acceptsChildren = data.services.acceptsChildren;
   delete data.services.acceptsChildren;
