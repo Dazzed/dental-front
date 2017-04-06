@@ -97,7 +97,8 @@ function* signupWatcher () {
 
     if (isSuccess) {
       yield put(signupSuccess({
-        fullName: `${payload.firstName} ${payload.lastName}`
+        fullName: `${payload.user.firstName} ${payload.user.lastName}`,
+        loginEmail: payload.user.email,
       }));
     }
   }

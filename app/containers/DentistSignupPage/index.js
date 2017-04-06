@@ -8,7 +8,6 @@ Imports
 ------------------------------------------------------------
 */
 // libs
-import omit from 'lodash/omit';
 import React, { Component } from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
@@ -20,7 +19,6 @@ import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
 // app
-import logo from 'assets/images/wells-family-dentistry-logo.png';
 import DentistSignupForm from 'components/DentistSignupForm';
 import formatDentistSignupFormSubmissionData from 'components/DentistSignupForm/format-submission-data';
 import PageHeader from 'components/PageHeader';
@@ -40,7 +38,7 @@ import {
 } from './actions';
 import {
   dentistSpecialtiesSelector,
-  fullNameSelector,
+  accountInfoSelector,
   isSignedUpSelector,
   pricingCodesSelector,
 } from './selectors';
@@ -58,7 +56,7 @@ function mapStateToProps (state) {
     services: selectServices(state),
 
     // signup
-    fullName: fullNameSelector(state),
+    accountInfo: accountInfoSelector(state),
     isSignedUp: isSignedUpSelector(state),
   };
 }
@@ -73,7 +71,7 @@ function mapDispatchToProps (dispatch) {
     // signup
     changeRoute: (url) => dispatch(push(url)),
     clearSignupStatus: () => dispatch(clearSignupStatus()),
-    makeSignupRequest: (data) => dispatch(signupRequest(omit(data, 'unknown'))),
+    makeSignupRequest: (values) => dispatch(signupRequest(values)),
   };
 }
 
@@ -109,8 +107,11 @@ export default class SignupPage extends Component {
     getServices: React.PropTypes.func.isRequired,
 
     // signup - state
-    fullName: React.PropTypes.string,
-    isSignedUp: React.PropTypes.bool,
+    accountInfo: React.PropTypes.shape({
+      fullName: React.PropTypes.string.isRequired,
+      loginEmail: React.PropTypes.string.isRequired,
+    }).isRequired,
+    isSignedUp: React.PropTypes.bool.isRequired,
 
     // signup - dispatch
     changeRoute: React.PropTypes.func.isRequired,
@@ -159,7 +160,7 @@ export default class SignupPage extends Component {
       services,
 
       // signup
-      fullName,
+      accountInfo,
       isSignedUp,
     } = this.props;
 
@@ -246,39 +247,48 @@ export default class SignupPage extends Component {
           </div>
         </div>
 
-        <Modal show={isSignedUp} onHide={this.goToHomePage}>
-          <Modal.Body styleName="modal-background">
-            <div className="row" styleName="row">
-              <div className="col-md-5 text-center">
-                <Image
-                  src={logo}
-                  style={{ width: 200 }}
-                />
-              </div>
-              <div className="col-md-7" styleName="main-content">
-                <h2>Hi, { fullName }</h2>
+        <Modal
+          backdrop={'static'}
+          bsSize={'lg'}
+          onHide={this.goToHomePage}
+          show={isSignedUp}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Welcome to DentalHQ!</Modal.Title>
+          </Modal.Header>
 
-                <p>Welcome to My Dental Marketplace!</p>
+          <Modal.Body>
+            <div styleName="letter">
+              <p styleName="letter__to">
+                Hi {accountInfo.fullName},
+              </p>
 
-                <p>
-                  Your all-star dental office is now registered in
-                  My Dental Marketplace portal!
-                </p>
+              <p>
+                Your all-star dental office is now registered with DentalHQ! You should receive a confirmation email with an activation link shortly. Please check your Contact &amp; Login email address (<a href="mailto:{accountInfo.loginEmail}" target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
+              </p>
+
+              <p>
+                Once your account is activated, you will be able to access your dashboard and get started on your journey towards connecting with more potential dental patients!
+              </p>
+
+              <p styleName="letter__from">
+                Cheers,
                 <br />
-                <p>
-                  Get started on your journey towards connecting
-                  with more potential dental patients!
-                </p>
-                <br />
-                <button
-                  className="btn-green btn-round btn-outline"
-                  onClick={this.goToLoginPage}
-                >
-                  Get Started
-                </button>
-              </div>
+                The DentalHQ Team
+              </p>
             </div>
           </Modal.Body>
+
+          <Modal.Footer>
+            <div className="modal-controls">
+              <input
+                type="button"
+                className="modal-control"
+                onClick={this.goToLoginPage}
+                value="Login Page >"
+              />
+            </div>
+          </Modal.Footer>
         </Modal>
 
       </div>

@@ -15,7 +15,7 @@ import {
 
   // signup
   DENTIST_SIGNUP_SUCCESS,
-  DENTIST_CLEAR_SIGNUP_STATUS,
+  CLEAR_DENTIST_SIGNUP_STATUS,
 } from './constants';
 
 
@@ -35,7 +35,10 @@ const initialState = {
 
   // signup
   dentistCreated: false,
-  fullName: '',
+  accountInfo: {
+    fullName: '',
+    loginEmail: '',
+  },
 };
 
 
@@ -87,14 +90,17 @@ export default function reducer (state = initialState, action) {
       return {
         ...state,
         dentistCreated: true,
-        fullName: action.payload.fullName,
+        accountInfo: action.payload.accountInfo,
       };
 
-    case DENTIST_CLEAR_SIGNUP_STATUS:
+    case CLEAR_DENTIST_SIGNUP_STATUS:
       return {
         ...state,
         dentistCreated: false,
-        fullName: '',
+        accountInfo: {
+          fullName: '',
+          accountInfo: '',
+        },
       };
 
     /*

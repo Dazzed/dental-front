@@ -26,6 +26,10 @@ Page-Wide
   text-transform: capitalize;
 }
 
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
 
 /*
 Signup Form
@@ -46,18 +50,12 @@ Signup Form
 Signup Success Modal
 ================================================================================
 */
-.modal-background {
-  background-color: #00C0EF;
-  padding: 0;
+.letter {}
 
-  .row {
-    display: flex;
-    align-items: center;
-  }
+.letter__to {
+  margin-bottom: 1.5rem;
+}
 
-  .main-content {
-    background-color: #0D7F9A;
-    padding: 35px 20px;
-    color: #FFF;
-  }
+.letter__from {
+  margin-top: 1.5rem;
 }

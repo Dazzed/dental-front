@@ -21,7 +21,7 @@ export const PRICING_CODES_ERROR   = 'DentistSignupPage/PRICING_CODES_ERROR';
 Signup Constants
 ------------------------------------------------------------
 */
-export const DENTIST_SIGNUP_REQUEST      = 'DentistSignupPage/SIGNUP_REQUEST';
-export const DENTIST_SIGNUP_SUCCESS      = 'DentistSignupPage/SIGNUP_SUCCESS';
-export const DENTIST_SIGNUP_ERROR        = 'DentistSignupPage/SIGNUP_ERROR';
-export const DENTIST_CLEAR_SIGNUP_STATUS = 'DentistSignupPage/CLEAR_SIGNUP_STATUS';
+export const DENTIST_SIGNUP_REQUEST      = 'DentistSignupPage/DENTIST_SIGNUP_REQUEST';
+export const DENTIST_SIGNUP_SUCCESS      = 'DentistSignupPage/DENTIST_SIGNUP_SUCCESS';
+export const DENTIST_SIGNUP_ERROR        = 'DentistSignupPage/DENTIST_SIGNUP_ERROR';
+export const CLEAR_DENTIST_SIGNUP_STATUS = 'DentistSignupPage/CLEAR_DENTIST_SIGNUP_STATUS';

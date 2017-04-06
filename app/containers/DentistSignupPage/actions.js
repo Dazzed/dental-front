@@ -22,7 +22,7 @@ import {
   DENTIST_SIGNUP_REQUEST,
   DENTIST_SIGNUP_SUCCESS,
   DENTIST_SIGNUP_ERROR,
-  DENTIST_CLEAR_SIGNUP_STATUS,
+  CLEAR_DENTIST_SIGNUP_STATUS,
 } from './constants';
 
 
@@ -100,6 +100,6 @@ export function signupError (payload) {
 
 export function clearSignupStatus () {
   return {
-    type: CLEAR_SIGNUP_STATUS,
+    type: CLEAR_DENTIST_SIGNUP_STATUS,
   };
 }

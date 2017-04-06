@@ -30,9 +30,9 @@ const pricingCodesSelector = createSelector(
 Signup Selectors
 ------------------------------------------------------------
 */
-const fullNameSelector = createSelector(
+const accountInfoSelector = createSelector(
   domainSelector,
-  (substate) => substate.fullName,
+  (substate) => substate.accountInfo,
 );
 
 const isSignedUpSelector = createSelector(
@@ -52,6 +52,6 @@ export {
   pricingCodesSelector,
 
   // signup
-  fullNameSelector,
+  accountInfoSelector,
   isSignedUpSelector,
 };
