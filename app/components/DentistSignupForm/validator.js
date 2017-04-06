@@ -100,14 +100,14 @@ const schema = {
   "pricing.adultMonthlyFee": {
     presence: true,
     numericality: {
-      greaterThanOrEqualTo: 0,
+      greaterThanOrEqualTo: 19.99,
       strict: true,
     },
   },
   "pricing.childMonthlyFee": {
     presence: true,
     numericality: {
-      greaterThanOrEqualTo: 0,
+      greaterThanOrEqualTo: 14.99,
       strict: true,
     },
   },

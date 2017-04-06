@@ -83,12 +83,12 @@ const mapStateToProps = (state) => {
 
       recommendedFees: {
         monthly: {
-          adult: "",
-          child: "",
+          adult: null,
+          child: null,
         },
         yearly: {
-          adult: "",
-          child: "",
+          adult: null,
+          child: null,
         },
       },
 
@@ -105,9 +105,16 @@ const mapStateToProps = (state) => {
     };
   }
 
-  const baseRecommendedFee = {
-    adult: null,
-    child: null,
+  const recommendedFees = {
+    monthly: {
+      adult: null,
+      child: null,
+    },
+
+    yearly: {
+      adult: null,
+      child: null,
+    },
   };
 
   if (pricing.codes) {
@@ -121,40 +128,37 @@ const mapStateToProps = (state) => {
     const D1120 = parseFloat(pricing.codes.D1120);
     const D1206 = parseFloat(pricing.codes.D1206);
 
-    if ( isNaN(D0120) === false
-      && isNaN(D0140) === false
-      && isNaN(D0220) === false
-      && isNaN(D0274) === false
-      && isNaN(D0330) === false
-      && isNaN(D1110) === false
+    if ( isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
+      && isNaN(D0274) === false && isNaN(D0330) === false && isNaN(D1110) === false
     ) {
-      baseRecommendedFee.adult = (
-          (D0120 * 2)
-        + D0140
-        + D0220
-        + D0274
-        + (D0330 * 0.3)
-        + (D1110 * 2)
-      );
+      const adultBaseFee = (D0120 * 2) + D0140 + D0220 + D0274 + (D0330 * 0.3) + (D1110 * 2);
+
+      recommendedFees.monthly.adult = adultBaseFee * 0.75 / 12;
+      recommendedFees.yearly.adult = adultBaseFee * 0.7;
+
+      if (recommendedFees.monthly.adult < 19.99) {
+        recommendedFees.monthly.adult = 19.99;
+      }
+
+      recommendedFees.monthly.adult = recommendedFees.monthly.adult.toFixed(2);
+      recommendedFees.yearly.adult = recommendedFees.yearly.adult.toFixed(2);
     }
 
-    if ( isNaN(D0120) === false
-      && isNaN(D0140) === false
-      && isNaN(D0220) === false
-      && isNaN(D0272) === false
-      && isNaN(D0330) === false
-      && isNaN(D1120) === false
+    if ( isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
+      && isNaN(D0272) === false && isNaN(D0330) === false && isNaN(D1120) === false
       && isNaN(D1206) === false
     ) {
-      baseRecommendedFee.child = (
-          (D0120 * 2)
-        + D0140
-        + D0220
-        + D0272
-        + (D0330 * 0.3)
-        + (D1120 * 2)
-        + D1206
-      );
+      const childBaseFee = (D0120 * 2) + D0140 + D0220 + D0272 + (D0330 * 0.3) + (D1120 * 2) + D1206;
+
+      recommendedFees.monthly.child = childBaseFee * 0.7 / 12;
+      recommendedFees.yearly.child = childBaseFee * 0.65;
+
+      if (recommendedFees.monthly.child < 14.99) {
+        recommendedFees.monthly.child = 14.99;
+      }
+
+      recommendedFees.monthly.child = recommendedFees.monthly.child.toFixed(2);
+      recommendedFees.yearly.child = recommendedFees.yearly.child.toFixed(2);
     }
   }
 
@@ -168,24 +172,7 @@ const mapStateToProps = (state) => {
       child: pricing.childYearlyFeeActivated === true,
     },
 
-    recommendedFees: {
-      monthly: {
-        adult: baseRecommendedFee.adult !== null
-                 ? (baseRecommendedFee.adult * 0.75 / 12).toFixed(2)
-                 : null,
-        child: baseRecommendedFee.child !== null
-                 ? (baseRecommendedFee.child * 0.7 / 12).toFixed(2)
-                 : null,
-      },
-      yearly: {
-        adult: baseRecommendedFee.adult !== null
-                 ? (baseRecommendedFee.adult * 0.7).toFixed(2)
-                 : null,
-        child: baseRecommendedFee.child !== null
-                 ? (baseRecommendedFee.child * 0.65).toFixed(2)
-                 : null,
-      },
-    },
+    recommendedFees,
 
     // working hours
     officeClosed: {
@@ -592,10 +579,10 @@ class DentistSignupForm extends React.Component {
               <div className="col-sm-offset-2 col-sm-8">
 
                 <div className="row" styleName="pricing-codes__titles">
-                  <div className="col-sm-6">
+                  <div className="col-sm-4">
                     Pricing Codes
                   </div>
-                  <div className="col-sm-6">
+                  <div className="col-sm-8">
                     Price
                   </div>
                 </div>
@@ -605,12 +592,12 @@ class DentistSignupForm extends React.Component {
 
                   return (
                     <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
-                      <div className="col-sm-6">
+                      <div className="col-sm-4">
                         <div styleName="pricing-codes__entry__code">
                           {pricingCodeName}
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      <div className="col-sm-8">
                         <Row>
                           <Field
                             name={pricingCodeName}
@@ -653,7 +640,7 @@ class DentistSignupForm extends React.Component {
                   type="number"
                   component={InputGroup}
                   leftAddon="$"
-                  width={6}
+                  width={8}
                 />
               </Row>
             </div>
@@ -671,6 +658,10 @@ class DentistSignupForm extends React.Component {
             </div>
           </FormGroup>
 
+          <p styleName="field-instructions">
+            *The miminum price for an adult monthly membership is $19.99.
+          </p>
+
           <FormGroup>
             <div className="col-sm-8">
               <ControlLabel>Recommended Child Monthly Membership Fee:</ControlLabel>
@@ -680,7 +671,7 @@ class DentistSignupForm extends React.Component {
                   type="number"
                   component={InputGroup}
                   leftAddon="$"
-                  width={6}
+                  width={8}
                 />
               </Row>
             </div>
@@ -698,6 +689,10 @@ class DentistSignupForm extends React.Component {
             </div>
           </FormGroup>
 
+          <p styleName="field-instructions">
+            *The miminum price for an child monthly membership is $14.99.
+          </p>
+
           <FormGroup>
             <div className="col-sm-8">
               <ControlLabel>Recommended Adult Annual Membership Fee:</ControlLabel>
@@ -707,7 +702,7 @@ class DentistSignupForm extends React.Component {
                   type="number"
                   component={InputGroup}
                   leftAddon="$"
-                  width={6}
+                  width={8}
                   disabled={!yearlyFeeActivated.adult}
                 />
               </Row>
@@ -744,7 +739,7 @@ class DentistSignupForm extends React.Component {
                   type="number"
                   component={InputGroup}
                   leftAddon="$"
-                  width={6}
+                  width={8}
                   disabled={!yearlyFeeActivated.child}
                 />
               </Row>
@@ -781,7 +776,7 @@ class DentistSignupForm extends React.Component {
                   type="number"
                   component={InputGroup}
                   leftAddon="%"
-                  width={6}
+                  width={8}
                 />
               </Row>
             </div>
