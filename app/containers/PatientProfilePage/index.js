@@ -451,12 +451,11 @@ class PatientProfilePage extends React.Component {
 
               <div className="col-sm-3">
                 <div className="text-right">
-                  <a href="mailto:dentist.dentistInfo.email" target="_blank">
+                  <a href={`mailto:${dentist.dentistInfo.email}`} target="_blank">
                     <input
                       type="button"
                       styleName="button--full-width"
                       value="MESSAGE DENTIST"
-                      onClick={this.addMember}
                     />
                   </a>
                   <input
