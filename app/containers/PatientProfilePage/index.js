@@ -272,6 +272,11 @@ class PatientProfilePage extends React.Component {
 
   // profile
   handleProfileFormSubmit = (values) => {
+    // Update the actual phone # / address objects, instead of just the
+    // shortcut property derived from them.
+    values.addresses[0].value = values.address;
+    values.phoneNumbers[0].number = values.phone;
+
     this.props.submitProfileForm(values, this.props.user.id);
   }
 
