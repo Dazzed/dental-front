@@ -130,7 +130,6 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
-      onEnter: redirectToDashboard,
       path: '/accounts/signup/my-dentist/:dentistId',
       name: 'signupPatientOffsitePage',
       getComponent (nextState, cb) {

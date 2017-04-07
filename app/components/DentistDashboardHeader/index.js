@@ -105,6 +105,7 @@ class DentistDashboardHeader extends React.Component {
     const {
       avatar,
       firstName,
+      id,
       lastName,
 //      metrics, // TODO: backend needs to provide this
 //      priceScore, // TODO: backend needs to provide this
@@ -195,19 +196,29 @@ class DentistDashboardHeader extends React.Component {
           <div className="col-sm-3">
             <ul styleName="quick-links">
               <li>
-                <Link styleName="quick-links__link" to="/dentist/edit-office">Edit Office Info</Link>
+                <Link styleName="quick-links__link" to="/dentist/edit-office">
+                  Edit Office Info
+                </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/add-member">Add New Member</Link>
+                <Link styleName="quick-links__link" to={`/accounts/signup/my-dentist/${id}`}>
+                  Add New Member
+                </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/custom-membership">Custom Membership</Link>
+                <Link styleName="quick-links__link" to="/dentist/custom-membership">
+                  Custom Membership
+                </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/reports">Reports</Link>
+                <Link styleName="quick-links__link" to="/dentist/reports">
+                  Reports
+                </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/marketing">Marketing Materials</Link>
+                <Link styleName="quick-links__link" to="/dentist/marketing">
+                  Marketing Materials
+                </Link>
               </li>
             </ul>
           </div>
