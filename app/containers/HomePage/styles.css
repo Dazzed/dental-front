@@ -104,24 +104,6 @@ pages.
   }
 }
 
-/*
-Modal
-------------------------------------------------------------
-*/
-:global(.modal-header) {
-  /* NOTE: Has no content, just used to include the modal's .close button. */
-  padding: 0 19px;
-}
-
-:global(.modal-header .close) {
-  z-index: 5;
-}
-
-:global(.modal-body) {
-  padding: 19px;
-  z-index: 0;
-}
-
 
 /*
 Floating Menu
@@ -189,6 +171,20 @@ Marketing Video / Modal
 */
 .marketing-video-modal {
   width: 1000px;
+
+  :global(.modal-header) {
+    /* NOTE: Has no content, just used to include the modal's .close button. */
+    padding: 0 19px;
+  }
+
+  :global(.modal-header .close) {
+    z-index: 5;
+  }
+
+  :global(.modal-body) {
+    padding: 19px;
+    z-index: 0;
+  }
 }
 
 

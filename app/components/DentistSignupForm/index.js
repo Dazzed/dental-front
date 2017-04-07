@@ -805,7 +805,7 @@ class DentistSignupForm extends React.Component {
                 name="optIn"
                 component={Checkbox}
               >
-                Yes, please include my office on the Dental HQ Marketplace listing.
+                Yes, please include my office on the DentalHQ Marketplace listing.
               </Field>
             </div>
           </FormGroup>

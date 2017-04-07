@@ -15,6 +15,8 @@ Schema
 ------------------------------------------------------------
 */
 const schema = {
+  name: { presence: true },
+
   email: { presence: true, email: true },
 
   message: { presence: true },

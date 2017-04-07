@@ -82,6 +82,7 @@ export default class ReviewFormModal extends React.Component {
   render () {
     const {
       // form related
+      initialValues,
       handleSubmit,
       submit,
       submitting,
@@ -93,6 +94,13 @@ export default class ReviewFormModal extends React.Component {
       show,
       onCancel,
     } = this.props;
+
+    let title = "Edit Your Review";
+    let saveText = "Save Changes";
+    if (initialValues === null || initialValues.id === undefined) {
+      title = "Review Your Dentist";
+      saveText = "Add Review";
+    }
 
     return (
       <Modal
@@ -106,7 +114,7 @@ export default class ReviewFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Header closeButton>
-          <Modal.Title>Review Your Dentist</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
 
         {/*
@@ -164,7 +172,7 @@ export default class ReviewFormModal extends React.Component {
               className="modal-control"
               disabled={submitting}
               onClick={submit}
-              value="Submit"
+              value={saveText}
             />
           </div>
         </Modal.Footer>

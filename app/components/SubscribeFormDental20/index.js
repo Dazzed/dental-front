@@ -19,7 +19,7 @@ export default class SubscribeFormDental20 extends React.Component {
     return (
       <div>
         <StripeCheckout
-          name="My Dental Market Place"
+          name="DentalHQ"
           description="Find an All-star Dentist!"
           image="https://www.vidhub.co/assets/logos/vidhub-icon-2e5c629f64ced5598a56387d4e3d0c7c.png" // eslint-disable-line
           ComponentClass="div"

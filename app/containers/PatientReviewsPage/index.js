@@ -302,7 +302,7 @@ class PatientReviewsPage extends React.Component {
                 type="button"
                 styleName="button"
                 value="WRITE A REVIEW"
-                onClick={this.writeReview}
+                onClick={this.addReview}
               />
             </p>
           </div>
@@ -349,7 +349,7 @@ class PatientReviewsPage extends React.Component {
               type="button"
               styleName="button"
               value="WRITE A NEW REVIEW"
-              onClick={this.writeReview}
+              onClick={this.addReview}
             />
           </div>
         </div>

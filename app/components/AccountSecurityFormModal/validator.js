@@ -38,4 +38,21 @@ const schema = {
   }
 };
 
-export default validatorFactory(schema);
+const fieldValidators = validatorFactory(schema);
+
+const formValidator = (values) => {
+  let errors = fieldValidators(values);
+
+  if ( values.newEmail === undefined
+    && values.confirmNewEmail === undefined
+    && values.newPassword === undefined
+    && values.confirmNewPassword === undefined
+  ) {
+    errors.newEmail = 'You must update your email, password, or both.';
+    errors.newPassword = 'You must update your email, password, or both.';
+  }
+
+  return errors;
+};
+
+export default formValidator;

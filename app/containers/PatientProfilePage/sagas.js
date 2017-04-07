@@ -13,7 +13,7 @@ import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { stopSubmit } from 'redux-form';
+import { change, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
@@ -41,12 +41,18 @@ import {
   // remove member
   setRemovedMember,
 
+  // edit profile
+  clearEditingProfile,
+
   // add / edit review
   setAddedReview,
   setEditedReview,
 
   // remove review
   setRemovedReview,
+
+  // edit security
+  clearEditingSecurity,
 } from './actions';
 import {
   // fetch
@@ -238,7 +244,7 @@ function* submitProfileFormWatcher () {
     );
 
     try {
-      const requestURL = `/api/v1/users/${userId}`;
+      const requestURL = `/api/v1/users/${userId}/patients/${userId}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
@@ -248,7 +254,8 @@ function* submitProfileFormWatcher () {
       const message = `Your profile has been updated.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setUserData(response.data));
+      yield put(setUserData(payload));
+      yield put(clearEditingProfile());
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
@@ -357,33 +364,33 @@ function* submitAccountSecurityFormWatcher () {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_SECURITY_FORM);
 
-    const allowedFields = pick(
-      payload,
-      'newEmail',
-      'confirmNewEmail',
-      'newPassword',
-      'confirmNewPassword',
-      'oldPassword',
-    );
-
     try {
       const requestURL = `/api/v1/users/${userId}`;
       const params = {
         method: 'PUT',
-        body: JSON.stringify(allowedFields),
+        body: JSON.stringify(payload),
       };
 
       const response = yield call(request, requestURL, params);
       const message = `Your account security information has been updated.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setUserData(response.data));
+      yield put(setUserData(payload));
+      yield put(clearEditingSecurity());
 
     } catch (err) {
-      const errors = mapValues(err.errors, (value) => value.msg);
+      if (get(err, 'meta.code') === 403) {
+        const message = "Your 'Current Password' was incorrect.  Please re-enter it and submit the form again.";
+        yield put(toastrActions.error('', message));
+      }
+      else {
+        yield put(toastrActions.error('', "Please fix errors on the form and re-enter your 'Current Password'."));
+      }
 
-      yield put(toastrActions.error('', 'Please fix errors on the form!'));
-      yield put(stopSubmit('patientProfile', errors));
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(stopSubmit('accountSecurity', errors));
+
+      yield put(change('accountSecurity', 'oldPassword', null));
     }
   }
 }

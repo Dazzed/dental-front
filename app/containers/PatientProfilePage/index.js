@@ -272,6 +272,11 @@ class PatientProfilePage extends React.Component {
 
   // profile
   handleProfileFormSubmit = (values) => {
+    // Update the actual phone # / address objects, instead of just the
+    // shortcut property derived from them.
+    values.addresses[0].value = values.address;
+    values.phoneNumbers[0].number = values.phone;
+
     this.props.submitProfileForm(values, this.props.user.id);
   }
 
@@ -446,12 +451,11 @@ class PatientProfilePage extends React.Component {
 
               <div className="col-sm-3">
                 <div className="text-right">
-                  <a href="mailto:dentist.dentistInfo.email" target="_blank">
+                  <a href={`mailto:${dentist.dentistInfo.email}`} target="_blank">
                     <input
                       type="button"
                       styleName="button--full-width"
                       value="MESSAGE DENTIST"
-                      onClick={this.addMember}
                     />
                   </a>
                   <input

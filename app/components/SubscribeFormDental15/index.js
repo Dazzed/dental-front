@@ -21,7 +21,7 @@ export default class SubscribeFormDental15 extends React.Component {
     return (
       <div>
         <StripeCheckout
-          name="My Dental Market Place"
+          name="DentalHQ"
           description="Find an All-star Dentist!"
           image={img}
           ComponentClass="div"

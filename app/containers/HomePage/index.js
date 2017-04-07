@@ -114,7 +114,7 @@ export default class HomePage extends React.Component {
         <div styleName="first-block">
           <header>
             <h1>
-              <img src={logo} alt="Dental HQ" />
+              <img src={logo} alt="DentalHQ Logo" />
             </h1>
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
