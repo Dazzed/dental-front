@@ -56,7 +56,7 @@ class SubscribePage extends React.Component {
         <div className="container" >
           <StripeCheckout
             stripeKey="pk_test_71G4lapBvaU5MFU7Xq79iHRP"
-            name="My dental marketplace"
+            name="DentalHQ"
             description="Subscription"
             ComponentClass="div"
             panelLabel="Process Payment"

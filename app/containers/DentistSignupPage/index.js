@@ -230,7 +230,7 @@ export default class SignupPage extends Component {
 
               <div styleName="signup-form-wrapper">
                 <h2 styleName="large-title">
-                  Join My Dental Marketplace!
+                  Join DentalHQ!
                 </h2>
 
                 <DentistSignupForm
