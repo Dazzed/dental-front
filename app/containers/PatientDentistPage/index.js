@@ -210,12 +210,12 @@ class PatientDentistPage extends React.Component {
             */}
             <div className="col-md-9" styleName="profile-content-wrapper">
               <div styleName="profile-content__avatar">
-                <Avatar url={dentist.avatar} size={"9rem"} />
+                <Avatar url={dentist.dentistInfo.logo} size={"9rem"} />
               </div>
 
               <div styleName="profile-content__name-and-rating">
                 <h2 styleName="large-title--short">
-                  {dentist.firstName} {dentist.lastName}
+                  {dentist.dentistInfo.officeName}
                 </h2>
 
                 <ReviewScore score={dentist.rating} />
