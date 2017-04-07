@@ -102,6 +102,15 @@ export default class ContactUsFormModal extends React.Component {
           >
             <div className="row">
               <Field
+                name="name"
+                type="text"
+                component={LabeledInput}
+                label="Name"
+                placeholder=""
+                className="col-md-6"
+              />
+
+              <Field
                 name="email"
                 type="text"
                 component={LabeledInput}

@@ -16,6 +16,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
+import request from 'utils/request';
 
 // local
 import {
@@ -55,9 +56,11 @@ function* submitContactUsMessageFormWatcher () {
     const { payload, } = yield take(SUBMIT_CONTACT_US_MESSAGE_FORM);
 
     try {
-      // TODO: api endpoint needs to work without being logged in
-      // https://trello.com/c/ospvfDLV/125-marketing-create-the-contact-us-form-on-the-dentist-learn-more-page
-      const requestURL = `/api/v1/TODO`;
+      // NOTE: The contact_support API Endpoint requires a `dentistId` path
+      // parameter, but the person submitting the contact form doesn't have to
+      // be a DentalHQ user.  So just fake the `dentistId` in the path.
+      const fakeDentistId = -1;
+      const requestURL = `/api/v1/dentists/${fakeDentistId}/contact_support`;
 
       const params = {
         method: 'POST',
