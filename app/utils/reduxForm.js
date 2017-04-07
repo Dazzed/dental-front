@@ -105,8 +105,6 @@ export function validatorFactory (schema) {
     /* eslint-disable no-return-assign */
     forEach(errors, (item, key) => errors[key] = item[0]);
     /* eslint-enable no-return-assign */
-    // In case of no errors, we need to return empty object at least,
-    // Otherwise, redux-form complains
 
     // Handle redux-forms that use <FormSection> to create nested forms.
     forEach(errors, (msg, key) => {
@@ -131,6 +129,8 @@ export function validatorFactory (schema) {
       }
     });
 
+    // In case of no errors, we need to return empty object at least,
+    // Otherwise, redux-form complains
     return errors || {};
   };
 }

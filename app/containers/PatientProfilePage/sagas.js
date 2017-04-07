@@ -13,7 +13,7 @@ import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { stopSubmit } from 'redux-form';
+import { change, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
@@ -364,20 +364,11 @@ function* submitAccountSecurityFormWatcher () {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_SECURITY_FORM);
 
-    const allowedFields = pick(
-      payload,
-      'newEmail',
-      'confirmNewEmail',
-      'newPassword',
-      'confirmNewPassword',
-      'oldPassword',
-    );
-
     try {
       const requestURL = `/api/v1/users/${userId}`;
       const params = {
         method: 'PUT',
-        body: JSON.stringify(allowedFields),
+        body: JSON.stringify(payload),
       };
 
       const response = yield call(request, requestURL, params);
@@ -388,10 +379,18 @@ function* submitAccountSecurityFormWatcher () {
       yield put(clearEditingSecurity());
 
     } catch (err) {
-      const errors = mapValues(err.errors, (value) => value.msg);
+      if (get(err, 'meta.code') === 403) {
+        const message = "Your 'Current Password' was incorrect.  Please re-enter it and submit the form again.";
+        yield put(toastrActions.error('', message));
+      }
+      else {
+        yield put(toastrActions.error('', "Please fix errors on the form and re-enter your 'Current Password'."));
+      }
 
-      yield put(toastrActions.error('', 'Please fix errors on the form!'));
-      yield put(stopSubmit('patientProfile', errors));
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(stopSubmit('accountSecurity', errors));
+
+      yield put(change('accountSecurity', 'oldPassword', null));
     }
   }
 }
