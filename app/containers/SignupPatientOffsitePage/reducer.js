@@ -25,6 +25,9 @@ import {
   DENTIST_SUCCESS,
   DENTIST_ERROR,
 
+  // update user
+  SUBMIT_USER_FORM,
+
   // add / edit member
   SET_EDITING_MEMBER,
   CLEAR_EDITING_MEMBER,
@@ -48,9 +51,13 @@ Initial State
 ------------------------------------------------------------
 */
 const initialState = {
+  cardDetails: null,
   dentist: false,
   dentistError: null,
   members: [],
+  user: {
+    id: uniqueId(),
+  },
 
   editingActive: false,
   editing: null,
@@ -89,6 +96,51 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         ...state,
         dentistError: action.error,
       };
+
+    /*
+    Update User
+    ------------------------------------------------------------
+    */
+    case SUBMIT_USER_FORM:
+      memberIdx = findIndex(state.members, { id: action.user.id });
+
+      // user form is completed successfully for the first time,
+      // add user to the members list
+      if (memberIdx === -1 && action.user.userIsMember === true) {
+        members = [
+          ...state.members,
+          action.user,
+        ];
+      }
+
+      // user form is changed
+      else if (memberIdx !== -1 && action.user.userIsMember === true) {
+        members = [
+          ...state.members.slice(0, memberIdx),
+          action.user,
+          ...state.members.slice(memberIdx + 1),
+        ];
+      }
+
+      // user removed themselves as a member
+      else if (memberIdx !== -1 && action.user.userIsMember === false) {
+        members = [
+          ...state.members.slice(0, memberIdx),
+          ...state.members.slice(memberIdx + 1),
+        ];
+      }
+
+      // the user isn't a member & doesn't want to be one
+      else {
+        members = state.members;
+      }
+
+      return {
+        ...state,
+        members,
+        user: action.user,
+      };
+     
 
     /*
     Add / Edit Member
@@ -132,7 +184,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
 
       return {
         ...state,
-        members: members,
+        members,
         editingActive: false,
         editing: null,
       };

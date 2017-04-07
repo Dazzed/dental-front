@@ -36,6 +36,9 @@ import {
   // fetch dentist
   fetchDentist,
 
+  // update user
+  submitUserForm,
+
   // add / edit member
   setEditingMember,
   clearEditingMember,
@@ -106,6 +109,9 @@ function mapDispatchToProps (dispatch) {
     // fetch dentist
     fetchDentist: (dentistId) => dispatch(fetchDentist(dentistId)),
 
+    // update user
+    submitUserForm: (values) => dispatch(submitUserForm(values)),
+
     // add / edit member
     resetMemberForm: () => dispatch(resetForm('familyMember')),
     setEditingMember: (member) => dispatch(setEditingMember(member)),
@@ -154,6 +160,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     // fetch dentist - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
+
+    // update user - dispatch
+    submitUserForm: React.PropTypes.func.isRequired,
 
     // fetch members - state
     members: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
@@ -235,10 +244,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
   ------------------------------------------------------------
   */
   // user
-  handleSignupPatientFormSubmit = (values) => {
-    console.log("YEEEESS");
-    console.log(values);
-    // TODO: actions n shit
+  handleUserFormSubmit = (values) => {
+    this.props.submitUserForm(values);
   }
 
   // members
@@ -389,7 +396,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   autosubmit={true}
                   offices={dentist.offices}
 
-                  onSubmit={this.handleSignupPatientFormSubmit}
+                  onSubmit={this.handleUserFormSubmit}
                 />
               </div>
 

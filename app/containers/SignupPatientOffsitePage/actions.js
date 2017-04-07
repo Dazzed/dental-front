@@ -22,6 +22,9 @@ import {
   DENTIST_SUCCESS,
   DENTIST_ERROR,
 
+  // update user
+  SUBMIT_USER_FORM,
+
   // add / edit member
   SET_EDITING_MEMBER,
   CLEAR_EDITING_MEMBER,
@@ -66,6 +69,18 @@ export function setDentistError (error) {
     error,
   };
 }
+
+/*
+Update User
+------------------------------------------------------------
+*/
+export function submitUserForm (user) {
+  return {
+    type: SUBMIT_USER_FORM,
+    user,
+  };
+}
+
 
 /*
 Add / Edit Member

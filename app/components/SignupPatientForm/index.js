@@ -18,8 +18,8 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import {
   Field,
+  getFormValues,
   reduxForm,
-  submit as submitForm,
 } from 'redux-form';
 
 // app
@@ -35,7 +35,7 @@ import SegmentedDatePicker from 'components/SegmentedDatePicker';
 
 // local
 import styles from './styles.css';
-import signupFormValidator from './validator';
+import SignupFormValidator from './validator';
 
 /*
 Redux
@@ -43,13 +43,7 @@ Redux
 */
 function mapStateToProps (state) {
   return {
-    formValues: get(state.form, 'signupPatient.values', {}),
-  };
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    submitSignupPatientForm: () => dispatch(submitForm('signupPatient')),
+    formValues: getFormValues('signupPatient')(state),
   };
 }
 
@@ -58,10 +52,10 @@ function mapDispatchToProps (dispatch) {
 Signup Form
 ================================================================================
 */
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, null)
 @reduxForm({
   form: 'signupPatient',
-  validate: signupFormValidator,
+  validate: SignupFormValidator,
 })
 @CSSModules(styles)
 class SignupForm extends React.Component {
@@ -72,14 +66,12 @@ class SignupForm extends React.Component {
     offices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     // state
-    formValues: React.PropTypes.object.isRequired,
-
-    // dispatch
-    submitSignupPatientForm: React.PropTypes.func.isRequired,
+    formValues: React.PropTypes.object,
 
     // redux form
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
+    onSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
   };
 
@@ -97,32 +89,71 @@ class SignupForm extends React.Component {
     }
   }
 
-  // NOTE: Auto-submit credit goes to some help from the internet.
-  //       https://github.com/erikras/redux-form/issues/537
+  /*
+  Auto Submit
+  ------------------------------------------------------------
+  Form auto-submit functionality inspired by comments on this github issue:
+  https://github.com/erikras/redux-form/issues/537
+
+  When a field is changed, redux-form will change it's formValue in one
+  prop-update cycle and then change the valid prop in a second prop-update cycle
+  (if needed).  This leads to two cases where the form is valid and can be
+  submitted:
+
+    1. The latest change fixes the last error in the form.  The formValue will
+       be changed, and then valid prop will be set to `true` in a second.  This
+       can be detected by comparing the old valid prop (`false`) to the new one
+       (`true`).  The old / new formValue will be the same since it was already
+       updated in the last prop-update cycle.
+
+       ```
+       formIsValid = this.props.valid === false
+                  && nextProps.valid ==== true;
+       ```
+
+    2. The latest change alters a formValue in an already valid form. This can
+       be detected by comparing the old formValues object to the new formValues,
+       and discovering that they are different (thus a field has changed).
+       Unfortunately the valid prop isn't updated until the next prop-update
+       cycle, so it cannot be used to verify that the changed formValue is valid
+       (and thus the whole form remains valid).  Thus it is necessary to
+       validate the formValues as well.
+
+       ```
+       // remember: this.props.valid === nextProps.valid
+
+       formIsValid = this.props.valid === true
+                  && this.props.formValues !== nextProps.formValues
+                  && Object.keys(
+                       SignupFormValidator(nextProps.formValues)
+                     ).length === 0;
+       ```
+
+  The code can be simplified by realizing that Case 1 is included in Case 2 the
+  initial valid prop check is left out.  The previous prop-update cycle of
+  Case 1 will be caught by the modified Case 2 detector, since it's in that
+  cycle where the formValues change. It's a bit less efficient, since it
+  validates the form every time there is a change, but in practice this doesn't
+  seem to have a noticeable effect.  In all likelihood, redux-form is also
+  validating the form on every change, which makes this a linear-time slowdown.
+  */
   componentWillReceiveProps (nextProps) {
     const {
       // passed in
       autosubmit,
-
-      // dispatch
-      submitSignupPatientForm,
+      onSubmit,
     } = this.props;
 
-    console.log("autosubmit: " + autosubmit)
-    console.log("dirty: " + nextProps.dirty);
-    console.log("valid: " + nextProps.valid);
-    console.log("not equal values: " + (nextProps.formValues !== this.props.formValues));
-    console.log(nextProps.formValues);
-    console.log(this.props.formValues);
-    console.log("");
-
-    if ( autosubmit === true                            // autosubmit turned on
-      && nextProps.dirty === true                       // the form has data
-      && nextProps.valid === true                       // the form is valid
-      && nextProps.formValues !== this.props.formValues // a change occurred
+    if ( autosubmit === true                            // autosubmit is requested
+      && nextProps.dirty === true                       // the form has been touched
+      && this.props.formValues !== nextProps.formValues // a change was made
+      && Object.keys(                                   // the form is valid (including the change)
+           SignupFormValidator(nextProps.formValues)
+         ).length === 0
     ) {
-      submitSignupPatientForm();
+      onSubmit(nextProps.formValues);
     }
+
   }
 
   /*

@@ -10,6 +10,9 @@ export const DENTIST_REQUEST = 'app/SignupPatientOffsitePage/DENTIST_REQUEST';
 export const DENTIST_SUCCESS = 'app/SignupPatientOffsitePage/DENTIST_SUCCESS';
 export const DENTIST_ERROR   = 'app/SignupPatientOffsitePage/DENTIST_ERROR';
 
+// update user
+export const SUBMIT_USER_FORM = 'app/SignupPatientOffsitePage/SUBMIT_USER_FORM';
+
 // add / edit member
 export const SET_EDITING_MEMBER   = 'app/SignupPatientOffsitePage/SET_EDITING_MEMBER';
 export const CLEAR_EDITING_MEMBER = 'app/SignupPatientOffsitePage/CLEAR_EDITING_MEMBER';
