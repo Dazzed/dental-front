@@ -300,7 +300,7 @@ class PatientProfilePage extends React.Component {
 
   // secruity
   handleSecurityFormSubmit = (values) => {
-    this.props.submitSecurityForm(values, this.props.user.id);
+    this.props.submitSecurityForm(values, this.props.user);
   }
 
   cancelSecurityFormAction = () => {

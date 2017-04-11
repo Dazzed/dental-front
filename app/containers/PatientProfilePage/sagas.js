@@ -362,10 +362,10 @@ Edit Security
 */
 function* submitAccountSecurityFormWatcher () {
   while (true) {
-    const { payload, userId } = yield take(SUBMIT_SECURITY_FORM);
+    const { payload, user } = yield take(SUBMIT_SECURITY_FORM);
 
     try {
-      const requestURL = `/api/v1/users/${userId}`;
+      const requestURL = `/api/v1/users/me/change-auth`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),
@@ -375,11 +375,18 @@ function* submitAccountSecurityFormWatcher () {
       const message = `Your account security information has been updated.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setUserData(payload));
+      let updatedUser = {
+        ...user,
+      };
+      if (payload.newEmail) {
+        updatedUser.email = payload.newEmail;
+      }
+      yield put(setUserData(updatedUser));
+
       yield put(clearEditingSecurity());
 
     } catch (err) {
-      if (get(err, 'meta.code') === 403) {
+      if (get(err, 'meta.code') === 401) {
         const message = "Your 'Current Password' was incorrect.  Please re-enter it and submit the form again.";
         yield put(toastrActions.error('', message));
       }

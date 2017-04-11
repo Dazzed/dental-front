@@ -266,11 +266,11 @@ export function clearEditingSecurity () {
   };
 }
 
-export function submitSecurityForm (payload, userId) {
+export function submitSecurityForm (payload, user) {
   return {
     type: SUBMIT_SECURITY_FORM,
     payload,
-    userId,
+    user,
   };
 }
 
