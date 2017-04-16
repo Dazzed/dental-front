@@ -25,7 +25,12 @@ export const EDIT_MEMBER_SUCCESS  = 'app/DentistMembersPage/EDIT_MEMBER_SUCCESS'
 export const REMOVE_MEMBER_REQUEST = 'app/DentistMembersPage/REMOVE_MEMBER_REQUEST';
 export const REMOVE_MEMBER_SUCCESS = 'app/DentistMembersPage/REMOVE_MEMBER_SUCCESS';
 
-export const SET_EDITING_PATIENT_PROFILE   = 'app/PatientProfilePage/SET_EDITING_PATIENT_PROFILE';
-export const CLEAR_EDITING_PATIENT_PROFILE = 'app/PatientProfilePage/CLEAR_EDITING_PATIENT_PROFILE';
-export const SUBMIT_PATIENT_PROFILE_FORM   = 'app/PatientProfilePage/SUBMIT_PATIENT_PROFILE_FORM';
-export const EDIT_PATIENT_PROFILE_SUCCESS  = 'app/PatientProfilePage/EDIT_PATIENT_PROFILE_SUCCESS';
+export const SET_EDITING_PATIENT_PROFILE   = 'app/DentistMembersPage/SET_EDITING_PATIENT_PROFILE';
+export const CLEAR_EDITING_PATIENT_PROFILE = 'app/DentistMembersPage/CLEAR_EDITING_PATIENT_PROFILE';
+export const SUBMIT_PATIENT_PROFILE_FORM   = 'app/DentistMembersPage/SUBMIT_PATIENT_PROFILE_FORM';
+export const EDIT_PATIENT_PROFILE_SUCCESS  = 'app/DentistMembersPage/EDIT_PATIENT_PROFILE_SUCCESS';
+
+export const SET_EDITING_PATIENT_PAYMENT   = 'app/DentistMembersPage/SET_EDITING_PATIENT_PAYMENT';
+export const CLEAR_EDITING_PATIENT_PAYMENT = 'app/DentistMembersPage/CLEAR_EDITING_PATIENT_PAYMENT';
+export const SUBMIT_PATIENT_PAYMENT_FORM   = 'app/DentistMembersPage/SUBMIT_PATIENT_PAYMENT_FORM';
+// don't store payment info locally

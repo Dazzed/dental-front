@@ -45,6 +45,7 @@ class PatientsList extends React.Component {
     onAddMember: React.PropTypes.func.isRequired,
     onToggleCancelationFee: React.PropTypes.func,
     onToggleReEnrollmentFee: React.PropTypes.func,
+    onUpdatePatientPayment: React.PropTypes.func,
     onUpdatePatientProfile: React.PropTypes.func,
 
     onReEnrollMember: React.PropTypes.func.isRequired,
@@ -96,7 +97,11 @@ class PatientsList extends React.Component {
     this.props.onToggleReEnrollmentFee(patient);
   }
 
-  onUpdateClick = (patient) => {
+  onUpdatePaymentClick = (patient) => {
+    this.props.onUpdatePatientPayment(patient);
+  }
+
+  onUpdateProfileClick = (patient) => {
     this.props.onUpdatePatientProfile(patient);
   }
 
@@ -233,7 +238,7 @@ class PatientsList extends React.Component {
                       <a href={`mailto:${email}`} styleName="member-overview__email">{email}</a>
                       <span
                         styleName="member-overview__edit-contact"
-                        onClick={this.onUpdateClick.bind(this, patient)}
+                        onClick={this.onUpdateProfileClick.bind(this, patient)}
                       >
                         <FaPencil />
                       </span>
@@ -313,11 +318,21 @@ class PatientsList extends React.Component {
                         <p>
                           <input
                             type="button"
-                            styleName="button--wide"
+                            styleName="button--full-width"
                             value="ADD MEMBER"
                             onClick={this.onAddClick.bind(this, patient)}
                           />
                         </p>
+                        {this.props.onUpdatePatientProfile && (
+                          <p>
+                            <input
+                              type="button"
+                              styleName="button--full-width"
+                              value="EDIT PAYMENT INFO"
+                              onClick={this.onUpdatePaymentClick.bind(this, patient)}
+                            />
+                          </p>
+                        )}
                         {this.props.onToggleCancelationFee && (
                           <p>
                             <label>

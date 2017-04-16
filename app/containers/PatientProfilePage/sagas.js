@@ -416,13 +416,29 @@ function* submitPaymentFormWatcher () {
   while (true) {
     const { payload, userId, } = yield take(SUBMIT_PAYMENT_FORM);
 
+    const allowedFields = {
+      card: pick(
+        payload,
+        'fullName',
+        'number',
+        'expiry',
+        'cvc',
+        'zip',
+        'periodontalDiseaseWaiver',
+        'cancellationFeeWaiver',
+        'reEnrollmentFeeWaiver',
+        'termsAndConditions',
+      ),
+    };
+    allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
+
     try {
       // TODO
       // https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
       const requestURL = `TODO`;
       const params = {
         method: 'PUT',
-        body: JSON.strigify(payload),
+        body: JSON.stringify(allowedFields),
       };
 
       const response = yield call(request, requestURL, params);

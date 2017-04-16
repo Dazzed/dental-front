@@ -40,3 +40,8 @@ Page Wide
       text-decoration: none;
     }
   }
+
+.spacer {
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}

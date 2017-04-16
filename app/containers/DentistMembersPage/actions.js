@@ -39,6 +39,11 @@ import {
   CLEAR_EDITING_PATIENT_PROFILE,
   SUBMIT_PATIENT_PROFILE_FORM,
   EDIT_PATIENT_PROFILE_SUCCESS,
+
+    // edit patient payment info
+  SET_EDITING_PATIENT_PAYMENT,
+  CLEAR_EDITING_PATIENT_PAYMENT,
+  SUBMIT_PATIENT_PAYMENT_FORM,
 } from './constants';
 
 /*
@@ -199,3 +204,29 @@ export function setEditedPatientProfile (payload) {
     payload,
   };
 }
+
+/* Edit Payment Info
+ * ------------------------------------------------------ */
+export function setEditingPatientPayment (patient, paymentInfo) {
+  return {
+    type: SET_EDITING_PATIENT_PAYMENT,
+    patient,
+    paymentInfo,
+  };
+}
+
+export function clearEditingPatientPayment () {
+  return {
+    type: CLEAR_EDITING_PATIENT_PAYMENT,
+  };
+}
+
+export function submitPatientPaymentForm (patient, payload) {
+  return {
+    type: SUBMIT_PATIENT_PAYMENT_FORM,
+    patient,
+    payload,
+  };
+}
+
+// don't store payment info locally

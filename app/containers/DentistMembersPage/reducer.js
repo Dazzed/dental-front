@@ -33,6 +33,10 @@ import {
   SET_EDITING_PATIENT_PROFILE,
   CLEAR_EDITING_PATIENT_PROFILE,
   EDIT_PATIENT_PROFILE_SUCCESS,
+
+  // edit patient payment info
+  SET_EDITING_PATIENT_PAYMENT,
+  CLEAR_EDITING_PATIENT_PAYMENT,
 } from './constants';
 
 /*
@@ -222,6 +226,27 @@ function dentistMembersPageReducer (state = initialState, action) {
         editingActive: false,
         editing: null,
       };
+
+    /* Edit Patient Payment Info
+     * ------------------------------------------------------ */
+    case SET_EDITING_PATIENT_PAYMENT:
+      return {
+        ...state,
+        editingActive: 'patientPayment',
+        editing: {
+          patient: action.patient,
+          paymentInfo: action.paymentInfo,
+        },
+      };
+
+    case CLEAR_EDITING_PATIENT_PAYMENT:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    // don't store payment info after the form is submitted
 
     /*
     Default Reducer

@@ -54,7 +54,7 @@ import {
   // edit payment info
   SET_EDITING_PAYMENT,
   CLEAR_EDITING_PAYMENT,
-  SUBMIT_EDITING_PAYMENT,
+  SUBMIT_PAYMENT_FORM,
 } from './constants';
 
 /*

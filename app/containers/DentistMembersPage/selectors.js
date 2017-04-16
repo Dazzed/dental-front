@@ -143,6 +143,17 @@ const selectEditingPatientProfile = createSelector(
     return null;
   }
 );
+
+const selectEditingPatientPayment = createSelector(
+  domainSelector,
+  (substate) => {
+    if (substate.editingActive === 'patientPayment') {
+      return substate.editing;
+    }
+
+    return null;
+  }
+);
  
 /*
 Export
@@ -164,4 +175,5 @@ export {
   // add / edit
   selectEditingMember,
   selectEditingPatientProfile,
+  selectEditingPatientPayment,
 };

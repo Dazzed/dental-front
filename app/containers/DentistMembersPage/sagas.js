@@ -10,9 +10,10 @@ Imports
 // libs
 import get from 'lodash/get';
 import mapValues from 'lodash/mapValues';
+import pick from 'lodash/pick';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { stopSubmit } from 'redux-form';
+import { change, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
@@ -31,6 +32,8 @@ import {
   setRemovedMember,
 
   setEditedPatientProfile,
+
+  clearEditingPatientPayment,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
@@ -38,6 +41,7 @@ import {
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
   SUBMIT_PATIENT_PROFILE_FORM,
+  SUBMIT_PATIENT_PAYMENT_FORM,
 } from './constants';
 
 
@@ -56,6 +60,7 @@ function* main () {
   const watcherC = yield fork(submitMemberFormWatcher);
   const watcherD = yield fork(removeMemberWatcher);
   const watcherE = yield fork(submitPatientProfileFormWatcher);
+  const watcherF = yield fork(submitPatientPaymentFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -63,6 +68,7 @@ function* main () {
   yield cancel(watcherC);
   yield cancel(watcherD);
   yield cancel(watcherE);
+  yield cancel(watcherF);
 }
 
 /*
@@ -225,6 +231,50 @@ function* submitPatientProfileFormWatcher() {
 
       yield put(toastrActions.error('', 'Please fix errors on the form!'));
       yield put(stopSubmit('patientProfile', errors));
+    }
+  }
+}
+
+/* Edit Patient Payment Info
+ * ------------------------------------------------------ */
+function* submitPatientPaymentFormWatcher () {
+  while (true) {
+    const { patient, payload, } = yield take(SUBMIT_PATIENT_PAYMENT_FORM);
+
+    const allowedFields = {
+      card: pick(
+        payload,
+        'fullName',
+        'number',
+        'expiry',
+        'cvc',
+        'zip',
+        'periodontalDiseaseWaiver',
+        'cancellationFeeWaiver',
+        'reEnrollmentFeeWaiver',
+        'termsAndConditions',
+      ),
+    };
+    allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
+
+    try {
+      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/update-card`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(allowedFields),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `The patient's payment information has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(clearEditingPatientPayment());
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(stopSubmit('checkout', errors));
+
+      yield put(change('checkout', 'cardCode', null));
     }
   }
 }

@@ -19,9 +19,8 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
 // app
-import { // TODO: use these instead of freeform input, but also use some for years?
-  MONTHS,
-  MONTH_NUMBERS,
+import {
+  US_STATES,
 } from 'common/constants';
 import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
@@ -108,61 +107,99 @@ export default class CheckoutFormModal extends React.Component {
           >
             <Row>
               <Field
-                name="cardNumber"
+                name="number"
                 type="text"
                 component={LabeledInput}
                 label="Card Number"
                 placeholder=""
-                className="col-sm-6"
+                className="col-sm-8"
               />
 
+              <Field
+                name="cvc"
+                type="text"
+                component={LabeledInput}
+                label="CVV2"
+                placeholder=""
+                className="col-sm-4"
+              />
+            </Row>
+
+            <Row>
               <Field
                 name="fullName"
                 type="text"
                 component={LabeledInput}
                 label="Name On Card"
                 placeholder=""
-                className="col-sm-6"
+                className="col-sm-8"
+              />
+
+              <Field
+                name="expiry"
+                type="text"
+                mask="99/99"
+                maskChar=" "
+                component={LabeledInput}
+                label="Expiration Month / Year"
+                placeholder="MM/YY"
+                className="col-sm-4"
+              />
+            </Row>
+
+            <hr styleName="spacer" />
+
+            <Row>
+              <Field
+                name="address"
+                type="text"
+                component={LabeledInput}
+                label="Billing Address"
+                placeholder=""
+                className="col-sm-12"
               />
             </Row>
 
             <Row>
               <Field
-                name="month"
+                name="city"
                 type="text"
                 component={LabeledInput}
-                label="Expiration Month"
-                placeholder="06"
-                className="col-sm-3"
-              />
-
-              <Field
-                name="year"
-                type="text"
-                component={LabeledInput}
-                label="Expiration Year"
-                placeholder="20"
-                className="col-sm-3"
-              />
-
-              <Field
-                name="cardCode"
-                type="text"
-                component={LabeledInput}
-                label="CVV2"
+                label="City"
                 placeholder=""
-                className="col-sm-3"
+                className="col-sm-4"
               />
+
+              <Field
+                name="state"
+                type="select"
+                component={LabeledInput}
+                label="State"
+                className="col-sm-4"
+              >
+                <option value="">Select state</option>
+                {US_STATES &&
+                  Object.keys(US_STATES).map(key => (
+                    <option value={key} key={key}>
+                      {US_STATES[key]}
+                    </option>
+                  ))
+                }
+              </Field>
 
               <Field
                 name="zip"
                 type="text"
+                mask="99999"
+                maskChar=" "
                 component={LabeledInput}
-                label="Card Zip Code"
+                label="Zip Code"
                 placeholder=""
-                className="col-sm-3"
+                className="col-sm-4"
               />
             </Row>
+
+            <hr styleName="spacer" />
 
             <FormGroup>
               <div className="col-sm-12">

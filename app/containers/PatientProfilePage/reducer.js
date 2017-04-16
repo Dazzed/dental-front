@@ -293,6 +293,8 @@ function patientProfilePageReducer (state = initialState, action) {
         editing: null,
       };
 
+    // don't store payment info after the form is submitted
+
     /*
     Default
     ------------------------------------------------------------
