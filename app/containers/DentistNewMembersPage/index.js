@@ -18,9 +18,10 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
-import LoadingSpinner from 'components/LoadingSpinner';
+import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
+import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientsList from 'components/PatientsList';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
@@ -47,6 +48,11 @@ import {
   setEditingPatientProfile,
   clearEditingPatientProfile,
   submitPatientProfileForm,
+
+  // edit patient payment info
+  setEditingPatientPayment,
+  clearEditingPatientPayment,
+  submitPatientPaymentForm,
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
@@ -62,6 +68,9 @@ import {
 
   // edit patient profile
   selectEditingPatientProfile,
+
+  // edit patient payment info
+  selectEditingPatientPayment,
 } from 'containers/DentistMembersPage/selectors';
 
 // local
@@ -94,6 +103,9 @@ function mapStateToProps (state) {
 
     // edit patient profile
     editingPatientProfile: selectEditingPatientProfile(state),
+
+    // edit patient payment info
+    editingPatientPayment: selectEditingPatientPayment(state),
   };
 }
 
@@ -124,6 +136,12 @@ function mapDispatchToProps (dispatch) {
     setEditingPatientProfile: (patient) => dispatch(setEditingPatientProfile(patient)),
     clearEditingPatientProfile: () => dispatch(clearEditingPatientProfile()),
     submitPatientProfileForm: (values) => dispatch(submitPatientProfileForm(values)),
+
+    // edit patient payment info
+    resetPatientPaymentForm: () => dispatch(resetForm('checkout')),
+    setEditingPatientPayment: (patient, paymentInfo) => dispatch(setEditingPatientPayment(patient, paymentInfo)),
+    clearEditingPatientPayment: () => dispatch(clearEditingPatientPayment()),
+    submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
   };
 }
 
@@ -181,6 +199,15 @@ class DentistNewMembersPage extends React.Component {
     setEditingPatientProfile: React.PropTypes.func.isRequired,
     clearEditingPatientProfile: React.PropTypes.func.isRequired,
     submitPatientProfileForm: React.PropTypes.func.isRequired,
+
+    // edit patient payment info - state
+    editingPatientPayment: React.PropTypes.object,
+
+    // edit patient payment - dispatch
+    resetPatientPaymentForm: React.PropTypes.func.isRequired,
+    setEditingPatientPayment: React.PropTypes.func.isRequired,
+    clearEditingPatientPayment: React.PropTypes.func.isRequired,
+    submitPatientPaymentForm: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -235,10 +262,17 @@ class DentistNewMembersPage extends React.Component {
     this.props.setEditingPatientProfile(patient);
   }
 
+  // payments
+  updatePatientPaymentInfo = (patient) => {
+    this.props.resetPatientPaymentForm();
+    this.props.setEditingPatientPayment(patient, {});
+  }
+
   /*
   Events
   ------------------------------------------------------------
   */
+  // member
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
   }
@@ -247,6 +281,7 @@ class DentistNewMembersPage extends React.Component {
     this.props.submitMemberForm(this.props.editingMember.patient, values);
   }
 
+  // profile
   cancelPatientProfileFormAction = () => {
     this.props.clearEditingPatientProfile();
   }
@@ -255,6 +290,16 @@ class DentistNewMembersPage extends React.Component {
     this.props.submitPatientProfileForm(values, values.id);
   };
 
+  // payment
+  handlePatientPaymentFormSubmit = (values) => {
+    this.props.submitPatientPaymentForm(this.props.editingPatientPayment.patient, values);
+  }
+
+  cancelPatientPaymentFormAction = () => {
+    this.props.clearEditingPatientPayment();
+  }
+
+  // sort
   onSortSelect = (evt) => {
     this.props.sortMembers(evt.target.value);
   }
@@ -281,6 +326,9 @@ class DentistNewMembersPage extends React.Component {
 
       // edit patient profile
       editingPatientProfile,
+
+      // edit patient payment info
+      editingPatientPayment,
     } = this.props;
 
     /*
@@ -381,8 +429,17 @@ class DentistNewMembersPage extends React.Component {
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
             onUpdateMember={this.updateMember}
             onUpdatePatientProfile={this.updatePatientProfile}
+            onUpdatePatientPayment={this.updatePatientPaymentInfo}
           />
         </div>
+
+        <CheckoutFormModal
+          show={editingPatientPayment !== null}
+          onCancel={this.cancelPatientPaymentFormAction}
+
+          initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
+          onSubmit={this.handlePatientPaymentFormSubmit}
+        />
 
         <MemberFormModal
           show={editingMember !== null}
