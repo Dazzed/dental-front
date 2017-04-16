@@ -121,6 +121,17 @@ const editingSecuritySelector = createSelector(
   }
 );
 
+const editingPaymentSelector = createSelector(
+  domainSelector,
+  (substate) => {
+    if (substate.editingActive === 'payment') {
+      return substate.editing;
+    }
+
+    return null;
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -140,4 +151,5 @@ export {
   editingProfileSelector,
   editingReviewSelector,
   editingSecuritySelector,
+  editingPaymentSelector,
 };

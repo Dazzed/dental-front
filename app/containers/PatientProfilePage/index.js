@@ -20,8 +20,9 @@ import { reset as resetForm } from 'redux-form';
 // app
 import AccountSecurityFormModal from 'components/AccountSecurityFormModal';
 import Avatar from 'components/Avatar';
-import LoadingSpinner from 'components/LoadingSpinner';
+import CheckoutFormModal from 'components/CheckoutFormModal';
 import FamilyMembersList from 'components/FamilyMembersList';
+import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
@@ -55,6 +56,11 @@ import {
   setEditingSecurity,
   clearEditingSecurity,
   submitSecurityForm,
+
+  // edit payment info
+  setEditingPayment,
+  clearEditingPayment,
+  submitPaymentForm,
 } from './actions';
 import {
   // fetch
@@ -72,6 +78,9 @@ import {
 
   // edit security
   editingSecuritySelector,
+
+  // edit payment info
+  editingPaymentSelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -97,6 +106,9 @@ function mapStateToProps (state) {
 
     // edit security
     editingSecurity: editingSecuritySelector(state),
+
+    // edit payment info
+    editingPayment: editingPaymentSelector(state),
   };
 }
 
@@ -129,9 +141,15 @@ function mapDispatchToProps (dispatch) {
 
     // edit security
     resetSecurityForm: () => dispatch(resetForm('accountSecurity')),
-    setEditingSecurity: (user) => dispatch(setEditingSecurity(user)),
+    setEditingSecurity: (securityInfo) => dispatch(setEditingSecurity(securityInfo)),
     clearEditingSecurity: () => dispatch(clearEditingSecurity()),
-    submitSecurityForm: (values, userId) => dispatch(submitSecurityForm(values, userId)),
+    submitSecurityForm: (values, user) => dispatch(submitSecurityForm(values, user)),
+
+    // edit payment info
+    resetPaymentForm: () => dispatch(resetForm('checkout')),
+    setEditingPayment: (paymentInfo) => dispatch(setEditingPayment(paymentInfo)),
+    clearEditingPayment: () => dispatch(clearEditingPayment()),
+    submitPaymentForm: (values, userId) => dispatch(submitPaymentForm(values, userId)),
   };
 }
 
@@ -197,6 +215,15 @@ class PatientProfilePage extends React.Component {
     setEditingSecurity: React.PropTypes.func.isRequired,
     clearEditingSecurity: React.PropTypes.func.isRequired,
     submitSecurityForm: React.PropTypes.func.isRequired,
+
+    // edit payment info - state
+    editingPayment: React.PropTypes.object,
+
+    // edit payment - dispatch
+    resetPaymentForm: React.PropTypes.func.isRequired,
+    setEditingPayment: React.PropTypes.func.isRequired,
+    clearEditingPayment: React.PropTypes.func.isRequired,
+    submitPaymentForm: React.PropTypes.func.isRequired,
   }
 
   componentDidMount () {
@@ -232,11 +259,6 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember(member);
   }
 
-  // payments
-  updatePaymentMethod = () => {
-    alert('TODO: update payment method');
-  }
-
   // profile
   updateProfile = () => {
     this.props.resetProfileForm();
@@ -251,10 +273,14 @@ class PatientProfilePage extends React.Component {
 
   // security
   updateSecuritySettings = () => {
-    const user = this.props.user;
-
     this.props.resetSecurityForm();
-    this.props.setEditingSecurity();
+    this.props.setEditingSecurity({});
+  }
+
+  // payments
+  updatePaymentInfo = () => {
+    this.props.resetPaymentForm();
+    this.props.setEditingPayment({});
   }
 
   /*
@@ -312,6 +338,15 @@ class PatientProfilePage extends React.Component {
     this.updateSecuritySettings();
   }
 
+  // payment
+  handlePaymentFormSubmit = (values) => {
+    this.props.submitPaymentForm(values, this.props.user.id);
+  }
+
+  cancelPaymentFormAction = () => {
+    this.props.clearEditingPayment();
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -328,6 +363,7 @@ class PatientProfilePage extends React.Component {
       editingProfile,
       editingReview,
       editingSecurity,
+      editingPayment,
     } = this.props;
 
     /*
@@ -547,7 +583,7 @@ class PatientProfilePage extends React.Component {
                 <p>
                   <span styleName="text--label">Payment Info:</span>
 
-                  <span styleName="personal-info__change-link" onClick={this.updatePaymentMethod}>
+                  <span styleName="personal-info__change-link" onClick={this.updatePaymentInfo}>
                     Update Payment Method
                   </span>
                 </p>
@@ -585,6 +621,14 @@ class PatientProfilePage extends React.Component {
 
           initialValues={editingSecurity}
           onSubmit={this.handleSecurityFormSubmit}
+        />
+
+        <CheckoutFormModal
+          show={editingPayment !== null}
+          onCancel={this.cancelPaymentFormAction}
+
+          initialValues={editingPayment}
+          onSubmit={this.handlePaymentFormSubmit}
         />
 
         <MemberFormModal

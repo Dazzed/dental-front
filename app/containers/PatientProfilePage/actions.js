@@ -50,6 +50,11 @@ import {
   SET_EDITING_SECURITY,
   CLEAR_EDITING_SECURITY,
   SUBMIT_SECURITY_FORM,
+
+  // edit payment info
+  SET_EDITING_PAYMENT,
+  CLEAR_EDITING_PAYMENT,
+  SUBMIT_EDITING_PAYMENT,
 } from './constants';
 
 /*
@@ -253,10 +258,10 @@ export function setRemovedReview (reviewId, dentistId) {
 Edit Security
 ------------------------------------------------------------
 */
-export function setEditingSecurity (user) {
+export function setEditingSecurity (securityInfo) {
   return {
     type: SET_EDITING_SECURITY,
-    user,
+    securityInfo,
   };
 }
 
@@ -275,3 +280,28 @@ export function submitSecurityForm (payload, user) {
 }
 
 // update user data at App level, see setUserData in `/app/containers/App/actions.js`
+
+/* Edit Payment Info
+ * ------------------------------------------------------ */
+export function setEditingPayment (paymentInfo) {
+  return {
+    type: SET_EDITING_PAYMENT,
+    paymentInfo,
+  };
+}
+
+export function clearEditingPayment () {
+  return {
+    type: CLEAR_EDITING_PAYMENT,
+  };
+}
+
+export function submitPaymentForm (payload, userId) {
+  return {
+    type: SUBMIT_PAYMENT_FORM,
+    payload,
+    userId,
+  };
+}
+
+// don't store payment info locally

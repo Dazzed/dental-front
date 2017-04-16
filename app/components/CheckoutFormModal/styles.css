@@ -25,3 +25,18 @@ Page Wide
 
   font-weight: 300;
 }
+
+  .personal-info__change-link {
+    display: block;
+    margin-top: 0.5rem;
+
+    color: $color-primary-transparent;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-primary-highlight;
+      text-decoration: none;
+    }
+  }

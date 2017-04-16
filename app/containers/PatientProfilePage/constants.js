@@ -48,3 +48,9 @@ export const SET_EDITING_SECURITY   = 'app/PatientProfilePage/SET_EDITING_SECURI
 export const CLEAR_EDITING_SECURITY = 'app/PatientProfilePage/CLEAR_EDITING_SECURITY';
 export const SUBMIT_SECURITY_FORM   = 'app/PatientProfilePage/SUBMIT_SECURITY_FORM';
 // update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`
+
+// edit payment info
+export const SET_EDITING_PAYMENT   = 'app/PatientProfilePage/SET_EDITING_PAYMENT';
+export const CLEAR_EDITING_PAYMENT = 'app/PatientProfilePage/CLEAR_EDITING_PAYMENT';
+export const SUBMIT_PAYMENT_FORM   = 'app/PatientProfilePage/SUBMIT_PAYMENT_FORM';
+// don't store payment info locally

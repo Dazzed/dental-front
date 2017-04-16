@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
 // app
-import {
+import { // TODO: use these instead of freeform input, but also use some for years?
   MONTHS,
   MONTH_NUMBERS,
 } from 'common/constants';
@@ -106,10 +106,113 @@ export default class CheckoutFormModal extends React.Component {
             onSubmit={handleSubmit}
             className="form-horizontal"
           >
+            <Row>
+              <Field
+                name="cardNumber"
+                type="text"
+                component={LabeledInput}
+                label="Card Number"
+                placeholder=""
+                className="col-sm-6"
+              />
 
-            <h3>Enter Payment Information:</h3>
+              <Field
+                name="fullName"
+                type="text"
+                component={LabeledInput}
+                label="Name On Card"
+                placeholder=""
+                className="col-sm-6"
+              />
+            </Row>
 
-            TODO: form content
+            <Row>
+              <Field
+                name="month"
+                type="text"
+                component={LabeledInput}
+                label="Expiration Month"
+                placeholder="06"
+                className="col-sm-3"
+              />
+
+              <Field
+                name="year"
+                type="text"
+                component={LabeledInput}
+                label="Expiration Year"
+                placeholder="20"
+                className="col-sm-3"
+              />
+
+              <Field
+                name="cardCode"
+                type="text"
+                component={LabeledInput}
+                label="CVV2"
+                placeholder=""
+                className="col-sm-3"
+              />
+
+              <Field
+                name="zip"
+                type="text"
+                component={LabeledInput}
+                label="Card Zip Code"
+                placeholder=""
+                className="col-sm-3"
+              />
+            </Row>
+
+            <FormGroup>
+              <div className="col-sm-12">
+                <Field
+                  name="periodontalDiseaseWaiver"
+                  component={Checkbox}
+                >
+                  I understand that if
+                  {' '}
+                  <strong>Periodontal Disease</strong>
+                  {' '}
+                  {/*
+                    TODO: Add in the (?) after "Periodontal Disease" w/ a link to somewhere...
+                          https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+                  */}
+                  {/*
+                  <a href="" target="_blank">(?)</a>
+                  {' '}
+                  */}
+                  is present additional treatment may be necessary prior to my cleaning.
+                </Field>
+              </div>
+
+              <div className="col-sm-12">
+                <Field
+                  name="cancellationFeeWaiver"
+                  component={Checkbox}
+                >
+                  I understand that if I cancel my recurring monthly membership in less that 3 payments that a $20 cancellation fee will be charged.
+                </Field>
+              </div>
+
+              <div className="col-sm-12">
+                <Field
+                  name="reEnrollmentFeeWaiver"
+                  component={Checkbox}
+                >
+                  I understand that if I cancel my recurring monthly membership, a re-enrollment fee will be charged if I choose to re-enter the membership.
+                </Field>
+              </div>
+
+              <div className="col-sm-12">
+                <Field
+                  name="termsAndConditions"
+                  component={Checkbox}
+                >
+                  I agree with the <a href="/terms" target="_blank">Terms and Conditions</a>.
+                </Field>
+              </div>
+            </FormGroup>
 
           </form>
         </Modal.Body>

@@ -43,6 +43,10 @@ import {
   // edit security
   SET_EDITING_SECURITY,
   CLEAR_EDITING_SECURITY,
+
+  // edit payment info
+  SET_EDITING_PAYMENT,
+  CLEAR_EDITING_PAYMENT,
 } from './constants';
 
 /*
@@ -261,7 +265,7 @@ function patientProfilePageReducer (state = initialState, action) {
       return {
         ...state,
         editingActive: 'security',
-        editing: action.user,
+        editing: action.securityInfo,
       };
 
     case CLEAR_EDITING_SECURITY:
@@ -272,6 +276,22 @@ function patientProfilePageReducer (state = initialState, action) {
       };
 
     // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
+
+    /* Edit Payment Info
+     * ------------------------------------------------------ */
+    case SET_EDITING_PAYMENT:
+      return {
+        ...state,
+        editingActive: 'payment',
+        editing: action.paymentInfo,
+      };
+
+    case CLEAR_EDITING_PAYMENT:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
 
     /*
     Default

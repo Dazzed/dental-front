@@ -53,6 +53,9 @@ import {
 
   // edit security
   clearEditingSecurity,
+
+  // edit payment info
+  clearEditingPayment,
 } from './actions';
 import {
   // fetch
@@ -72,6 +75,9 @@ import {
 
   // edit security
   SUBMIT_SECURITY_FORM,
+
+  // edit payment info
+  SUBMIT_PAYMENT_FORM,
 } from './constants';
 
 
@@ -94,6 +100,7 @@ function* main () {
   const watcherF = yield fork(submitReviewFormWatcher);
   const watcherG = yield fork(removeReviewWatcher);
   const watcherH = yield fork(submitAccountSecurityFormWatcher);
+  const watcherI = yield fork(submitPaymentFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -104,6 +111,7 @@ function* main () {
   yield cancel(watcherF);
   yield cancel(watcherG);
   yield cancel(watcherH);
+  yield cancel(watcherI);
 }
 
 /*
@@ -398,6 +406,36 @@ function* submitAccountSecurityFormWatcher () {
       yield put(stopSubmit('accountSecurity', errors));
 
       yield put(change('accountSecurity', 'oldPassword', null));
+    }
+  }
+}
+
+/* Edit Payment Info
+ * ------------------------------------------------------ */
+function* submitPaymentFormWatcher () {
+  while (true) {
+    const { payload, userId, } = yield take(SUBMIT_PAYMENT_FORM);
+
+    try {
+      // TODO
+      // https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+      const requestURL = `TODO`;
+      const params = {
+        method: 'PUT',
+        body: JSON.strigify(payload),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `Your account payment information has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(clearEditingPayment());
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(stopSubmit('checkout', errors));
+
+      yield put(change('checkout', 'cardCode', null));
     }
   }
 }
