@@ -28,6 +28,11 @@ export const Currencies = {
 Member Info
 ------------------------------------------------------------
 */
+export const MEMBER_ORIGINS = {
+  external: 'External',
+  internal: 'Internal',
+};
+
 export const MEMBER_RELATIONSHIP_TYPES = {
   partner: 'Spouse',
   son: 'Son',

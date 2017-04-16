@@ -18,6 +18,7 @@ import FaPencil from 'react-icons/lib/fa/pencil';
 
 // app
 import {
+  MEMBER_ORIGINS,
   PREFERRED_CONTACT_METHODS,
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
@@ -134,10 +135,13 @@ class PatientsList extends React.Component {
         id,
         lastName,
         members,
+        origin,
         phone,
         subscription,
         type,
       } = patient;
+
+      const memberOrigin = MEMBER_ORIGINS[origin];
 
       let statusStyle = "status";
       switch(subscription.status) {
@@ -191,7 +195,7 @@ class PatientsList extends React.Component {
             <div className="col-sm-2">
               <div styleName="member-avatar">
                 <Avatar url={avatar} size={'100%'} />
-                <p styleName="member-category">External</p> {/* TODO: external vs. internal??? */}
+                <p styleName="member-category">{memberOrigin}</p>
               </div>
             </div>
 
