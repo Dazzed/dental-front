@@ -1,0 +1,27 @@
+/*
+Checkout Form Modal Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+
+  font-weight: 300;
+}

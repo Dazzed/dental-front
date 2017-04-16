@@ -135,6 +135,7 @@ export default class SignupPage extends Component {
   }
 
   goToLoginPage = () => {
+    this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
   }
 

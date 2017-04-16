@@ -130,6 +130,22 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/accounts/signup/my-dentist/:dentistId',
+      name: 'signupPatientOffsitePage',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/SignupPatientOffsitePage/reducer'),
+          System.import('containers/SignupPatientOffsitePage/sagas'),
+          System.import('containers/SignupPatientOffsitePage')
+        ])
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('signupPatientOffsitePage', reducer.default);
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
       path: '/charge15',
       name: 'chargePage15',
       getComponent (nextState, cb) {

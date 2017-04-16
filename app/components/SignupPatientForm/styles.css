@@ -1,0 +1,44 @@
+/*
+Patient Signup Form Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Signup Form
+================================================================================
+*/
+.spacer {
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+
+  font-weight: 300;
+}
+
+.hidden-field {
+  display: none;
+}
+
+.align-with-input {
+  padding-top: 48px; /* =   label height        [41px]
+                          + (   input height    [40px]
+                              - checkbox height [26px]
+                            ) / 2
+                     */
+}
+
+.hidden-field + .align-with-input {
+  padding-top: 0;
+}

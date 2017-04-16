@@ -1,0 +1,72 @@
+/*
+Patient Offsite Signup Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page-Wide
+================================================================================
+*/
+.container-wrapper {
+  min-height: $body-height;
+}
+
+.large-title {
+  margin-bottom: 2.5rem;
+
+  font-size: 3rem;
+  text-transform: capitalize;
+}
+
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
+
+/*
+Patient Offsite Signup
+================================================================================
+*/
+.signup-form-wrapper {
+  margin: 2.5rem 0 5rem 0;
+
+  .large-title {
+    color: $color-primary-highlight;
+
+    text-align: center;
+  }
+
+  .instructions {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+
+    font-weight: 300;
+  }
+}
+
+.error-message {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+/*
+Signup Success Modal Content
+------------------------------------------------------------
+*/
+.letter {}
+
+.letter__to {
+  margin-bottom: 1.5rem;
+}
+
+.letter__from {
+  margin-top: 1.5rem;
+}
