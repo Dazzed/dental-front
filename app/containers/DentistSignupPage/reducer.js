@@ -90,7 +90,7 @@ export default function reducer (state = initialState, action) {
       return {
         ...state,
         dentistCreated: true,
-        accountInfo: action.payload.accountInfo,
+        accountInfo: action.payload,
       };
 
     case CLEAR_DENTIST_SIGNUP_STATUS:
