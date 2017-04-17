@@ -143,11 +143,8 @@ export default class MembersList extends React.Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {subscription
-              ? `\$${subscription.monthly}`
-              : "$XYZ"
-            }
-            {/* TODO */}
+            {/* TODO: support for annual memberships */}
+            ${subscription.monthly}
           </div>
         </div>
         <div className="col-sm-3">
@@ -192,7 +189,7 @@ export default class MembersList extends React.Component {
 
               {    this.props.onRemoveMember
                 && ( !subscription
-                  || ( subscription.status === "active" && subscription.type === "monthly")
+                  || ( subscription.status === "active" && subscription.monthly)
                 )
                 && (
                   <input
@@ -206,7 +203,7 @@ export default class MembersList extends React.Component {
 
               {    this.props.onRenewMember
                 && ( !subscription
-                  || (subscription.status === "active" && subscription.type === "yearly")
+                  || (subscription.status === "active" && !subscription.monthly)
                 && (
                   <input
                     type="button"
@@ -251,15 +248,10 @@ export default class MembersList extends React.Component {
       (organizedMembers, member) => {
         // TODO: members don't have their own subscription info...
         //       using patient subscription info as a workaround for now...
-        let statusKey = "signup";
-        let timePeriodKey = "monthly";
-
-        if (patient.subscription) {
-          patient.subscription.status;
-          timePeriodKey = patient.subscription.monthly
+        const statusKey = patient.subscription.status;
+        const timePeriodKey = patient.subscription.monthly
                             ? "monthly"
                             : "yearly";
-        }
 
         organizedMembers[statusKey][timePeriodKey].push(member);
         return organizedMembers;

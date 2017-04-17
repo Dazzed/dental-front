@@ -63,7 +63,7 @@ const initialState = {
   // signup process
   stages: {
     one: true,
-    two: true,
+    two: false,
     three: false,
   },
 
@@ -83,7 +83,6 @@ Reducer
 function patientOffsiteSignupPageReducer (state = initialState, action) {
   let memberIdx;
   let members;
-  let stages;
 
   switch (action.type) {
 
@@ -112,25 +111,16 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     */
     case SUBMIT_USER_FORM:
       memberIdx = findIndex(state.user.members, { id: action.user.id });
-      stages = state.stages;
 
-      // user form is completed successfully for the first time,
-      // add user to the members list and turn on stage two so they can
-      // add / edit members
+      // user added themselves as a member
       if (memberIdx === -1 && action.user.userIsMember === true) {
         members = [
           ...state.user.members,
           action.user,
         ];
-
-        stages = {
-          one: true,
-          two: true,
-          three: false,
-        };
       }
 
-      // user form is changed
+      // user is already a member (and still wants to be one)
       else if (memberIdx !== -1 && action.user.userIsMember === true) {
         members = [
           ...state.user.members.slice(0, memberIdx),
@@ -154,10 +144,16 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
 
       return {
         ...state,
-        stages,
         user: {
           ...action.user,
           members,
+        },
+
+        // This case is only called after all of the user data is entered
+        // correctly, so turn on Stage 2 and let the user proceed.
+        stages: {
+          ...state.stages,
+          two: true,
         },
       };
      

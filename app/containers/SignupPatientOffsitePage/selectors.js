@@ -8,6 +8,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import { createSelector } from 'reselect';
 
 
@@ -37,7 +38,32 @@ Fetch Members
 */
 const membersSelector = createSelector(
   domainSelector,
-  (substate) => { return substate.user.members; }
+  dentistSelector,
+  (substate, dentist) => {
+    // precondition: the dentist hasn't been fetched yet
+    if (dentist === false) {
+      return [];
+    }
+
+    // fake a subscription so we can calculate the cost of the membership and
+    // other subscription-like info
+    const members = substate.user.members.map((member) => {
+      const age = moment().diff(moment(member.birthDate), 'years');
+      const membership = age <= 13
+                       ? dentist.dentistInfo.childMembership
+                       : dentist.dentistInfo.membership;
+
+      return {
+        ...member,
+        subscription: {
+          ...membership,
+          status: "signup",
+        }
+      };
+    });
+
+    return members;
+  }
 );
 
 const sortedMembersSelector = createSelector(
@@ -77,11 +103,31 @@ Fetch User
 */
 const userSelector = createSelector(
   domainSelector,
+  dentistSelector,
   sortedMembersSelector,
-  (substate, sortedMembers) => {
+  (substate, dentist, sortedMembers) => {
+    // precondition: the dentist hasn't been fetched yet
+    if (dentist === false) {
+      return {
+        ...substate.user,
+        members: sortedMembers,
+      };
+    }
+
+    // fake a subscription so we can calculate the cost of the membership and
+    // other subscription-like info
+    const age = moment().diff(moment(substate.user.birthDate), 'years');
+    const membership = age <= 13
+                     ? dentist.dentistInfo.childMembership
+                     : dentist.dentistInfo.membership;
+
     return {
       ...substate.user,
       members: sortedMembers,
+      subscription: {
+        ...membership,
+        status: "signup",
+      }
     };
   }
 );

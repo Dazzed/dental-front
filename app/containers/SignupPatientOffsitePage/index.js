@@ -318,12 +318,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
       </span>
     );
 
-    console.log(stages);
-    console.log(dentist);
-    console.log(user);
-    console.log(user.members);
-    console.log("=====================");
-
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -440,7 +434,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     </h2>
 
                     <p styleName="instructions">
-                      Here's where you add family members to your plan.  If you also want to be covered under the plan, please check "I Will Also Be A Member" in Step 1.
+                      Add your family members to your plan here.  If you also want to be covered under the plan, please check "I Will Also Be A Member" in Step 1.
                     </p>
 
                     <MembersList
@@ -449,6 +443,15 @@ export default class PatientOffsiteSignupPage extends React.Component {
                       onRemoveMember={this.removeMember}
                       onUpdateMember={this.updateMember}
                     />
+
+                    <div className="text-right">
+                      <input
+                        type="button"
+                        styleName="large-button--secondary"
+                        value="ADD MEMBER"
+                        onClick={this.addMember}
+                      />
+                    </div>
                   </div>
                 )}
 
