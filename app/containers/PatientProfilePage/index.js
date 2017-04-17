@@ -638,7 +638,7 @@ class PatientProfilePage extends React.Component {
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember}
-          onSubmit={this.handleMemberFormSubmit}
+          onFormSubmit={this.handleMemberFormSubmit}
         />
 
         <PatientProfileFormModal

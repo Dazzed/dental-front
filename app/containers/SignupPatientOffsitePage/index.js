@@ -423,7 +423,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
           onCancel={this.cancelCheckoutFormAction}
 
           initialValues={editingCheckout}
-          onSubmit={this.handleCheckoutFormSubmit}
+          onFormSubmit={this.handleCheckoutFormSubmit}
         />
 
         <Modal

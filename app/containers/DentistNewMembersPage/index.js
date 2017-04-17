@@ -455,7 +455,7 @@ class DentistNewMembersPage extends React.Component {
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember !== null ? editingMember.member : null}
-          onSubmit={this.handleMemberFormSubmit}
+          onFormSubmit={this.handleMemberFormSubmit}
         />
 
         <PatientProfileFormModal
