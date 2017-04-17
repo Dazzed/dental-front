@@ -279,6 +279,8 @@ class DentistMembersPage extends React.Component {
   }
 
   handleMemberFormSubmit = (values) => {
+    console.log("Page.handleMemberFormSubmit");
+
     this.props.submitMemberForm(this.props.editingMember.patient, values);
   }
 
@@ -420,11 +422,13 @@ class DentistMembersPage extends React.Component {
         />
 
         <MemberFormModal
+          dentistInfo={dentistInfo}
+
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember !== null ? editingMember.member : null}
-          onSubmit={this.handleMemberFormSubmit}
+          onFormSubmit={this.handleMemberFormSubmit}
         />
 
         <PatientProfileFormModal

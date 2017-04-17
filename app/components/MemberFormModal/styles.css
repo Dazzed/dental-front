@@ -18,3 +18,25 @@ Page Wide
 :global(.modal-body) {
   padding-bottom: 1.5rem;
 }
+
+.button--short--lowlight {
+  border: 1px solid $color-primary-lowlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-lowlight;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-lowlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

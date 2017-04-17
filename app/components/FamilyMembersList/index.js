@@ -11,8 +11,6 @@ Imports
 import moment from 'moment';
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Popover from 'react-bootstrap/lib/Popover';
 import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 
