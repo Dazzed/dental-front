@@ -409,6 +409,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
         ------------------------------------------------------------
         */}
         <MemberFormModal
+          dentistInfo={dentist.dentistInfo}
+
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

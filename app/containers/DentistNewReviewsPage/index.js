@@ -471,6 +471,8 @@ class DentistNewReviewsPage extends React.Component {
         />
 
         <MemberFormModal
+          dentistInfo={dentistInfo}
+
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
