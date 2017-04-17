@@ -91,11 +91,17 @@ class PatientsList extends React.Component {
   }
 
   onCancelationFeeClick = (patient) => {
-    this.props.onToggleCancelationFee(patient);
+    this.props.onToggleCancelationFee(patient, {
+      cancellationFee: !patient.cancellationFee,
+      reEnrollmentFee: patient.reEnrollmentFee,
+    });
   }
 
   onReEnrollmentFeeClick = (patient) => {
-    this.props.onToggleReEnrollmentFee(patient);
+    this.props.onToggleReEnrollmentFee(patient, {
+      cancellationFee: patient.cancellationFee,
+      reEnrollmentFee: !patient.reEnrollmentFee,
+    });
   }
 
   onUpdatePaymentClick = (patient) => {
@@ -178,6 +184,9 @@ class PatientsList extends React.Component {
       const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
 
       const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
+
+      const waiveCancellationFee = !patient.cancellationFee;
+      const waiveReEnrollmentFee = !patient.reEnrollmentFee;
 
       let additionalMembershipContent = null;
       if (getAdditionalMembershipContent) {
@@ -343,6 +352,7 @@ class PatientsList extends React.Component {
                               <input
                                 type="checkbox"
                                 onChange={this.onCancelationFeeClick.bind(this, patient)}
+                                checked={waiveCancellationFee}
                               />
                               Waive Cancellation Fee
                             </label>
@@ -354,6 +364,7 @@ class PatientsList extends React.Component {
                               <input
                                 type="checkbox"
                                 onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
+                                checked={waiveReEnrollmentFee}
                               />
                               Waive Re-enrollment Fee
                             </label>

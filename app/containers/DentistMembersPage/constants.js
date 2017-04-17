@@ -14,7 +14,7 @@ export const FETCH_PATIENTS_SUCCESS = 'app/DentistMembersPage/FETCH_PATIENTS_SUC
 export const FETCH_PATIENTS_ERROR   = 'app/DentistMembersPage/FETCH_PATIENTS_ERROR';
 
 export const SEARCH_MEMBERS   = 'app/DentistMembersPage/SEARCH_MEMBERS';
-export const SORT_MEMBERS   = 'app/DentistMembersPage/SORT_MEMBERS';
+export const SORT_MEMBERS     = 'app/DentistMembersPage/SORT_MEMBERS';
 
 export const SET_EDITING_MEMBER   = 'app/DentistMembersPage/SET_EDITING_MEMBER';
 export const CLEAR_EDITING_MEMBER = 'app/DentistMembersPage/CLEAR_EDITING_MEMBER';
@@ -34,3 +34,6 @@ export const SET_EDITING_PATIENT_PAYMENT   = 'app/DentistMembersPage/SET_EDITING
 export const CLEAR_EDITING_PATIENT_PAYMENT = 'app/DentistMembersPage/CLEAR_EDITING_PATIENT_PAYMENT';
 export const SUBMIT_PATIENT_PAYMENT_FORM   = 'app/DentistMembersPage/SUBMIT_PATIENT_PAYMENT_FORM';
 // don't store payment info locally
+
+export const TOGGLE_WAIVE_PATIENT_FEES_REQUEST = 'app/DentistMembersPage/TOGGLE_WAIVE_PATIENT_FEES_REQUEST';
+export const TOGGLE_WAIVE_PATIENT_FEES_SUCCESS = 'app/DentistMembersPage/TOGGLE_WAIVE_PATIENT_FEES_SUCCESS';

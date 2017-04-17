@@ -40,10 +40,14 @@ import {
   SUBMIT_PATIENT_PROFILE_FORM,
   EDIT_PATIENT_PROFILE_SUCCESS,
 
-    // edit patient payment info
+  // edit patient payment info
   SET_EDITING_PATIENT_PAYMENT,
   CLEAR_EDITING_PATIENT_PAYMENT,
   SUBMIT_PATIENT_PAYMENT_FORM,
+
+  // toggle waive patient fees
+  TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
+  TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
 } from './constants';
 
 /*
@@ -230,3 +234,23 @@ export function submitPatientPaymentForm (patient, payload) {
 }
 
 // don't store payment info locally
+
+/*
+Toggle Waive Patient Fees
+------------------------------------------------------------
+*/
+ export function setTogglingWaivePatientFees (patient, payload) {
+  return {
+    type: TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
+    patient,
+    payload,
+  };
+}
+
+export function setToggledWaivePatientFees (patient, payload) {
+  return {
+    type: TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
+    patient,
+    payload,
+  }
+}

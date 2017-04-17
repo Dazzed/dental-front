@@ -37,6 +37,9 @@ import {
   // edit patient payment info
   SET_EDITING_PATIENT_PAYMENT,
   CLEAR_EDITING_PATIENT_PAYMENT,
+
+  // waive patient fees
+  TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
 } from './constants';
 
 /*
@@ -247,6 +250,27 @@ function dentistMembersPageReducer (state = initialState, action) {
       };
 
     // don't store payment info after the form is submitted
+
+    /*
+    Toggle Waive Patient Fees
+    ------------------------------------------------------------
+    */
+    case TOGGLE_WAIVE_PATIENT_FEES_SUCCESS:
+      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      prevStatePatient = state.patients[patientIdx];
+
+      return {
+        ...state,
+        patients: [
+          ...state.patients.slice(0, patientIdx),
+          {
+            ...prevStatePatient,
+            cancellationFee: action.payload.cancellationFee,
+            reEnrollmentFee: action.payload.reEnrollmentFee,
+          },
+          ...state.patients.slice(patientIdx + 1),
+        ],
+      };
 
     /*
     Default Reducer

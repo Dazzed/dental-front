@@ -53,6 +53,9 @@ import {
   setEditingPatientPayment,
   clearEditingPatientPayment,
   submitPatientPaymentForm,
+
+  // toggle waive patient fees
+  setTogglingWaivePatientFees,
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
@@ -138,6 +141,9 @@ function mapDispatchToProps (dispatch) {
     setEditingPatientPayment: (patient, paymentInfo) => dispatch(setEditingPatientPayment(patient, paymentInfo)),
     clearEditingPatientPayment: () => dispatch(clearEditingPatientPayment()),
     submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
+
+    // toggle waive patient fees
+    setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
   };
 }
 
@@ -202,6 +208,9 @@ class DentistNewReviewsPage extends React.Component {
     setEditingPatientPayment: React.PropTypes.func.isRequired,
     clearEditingPatientPayment: React.PropTypes.func.isRequired,
     submitPatientPaymentForm: React.PropTypes.func.isRequired,
+
+    // toggle waive patient fees - dispatch
+    setTogglingWaivePatientFees: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -236,14 +245,12 @@ class DentistNewReviewsPage extends React.Component {
     alert('TODO: renewMember');
   }
 
-  toggleCancelationFee = (patient) => {
-    /* TODO, verified it's called */
-    alert('TODO: toggle cancelation fee');
+  toggleCancelationFee = (patient, updatedFees) => {
+    this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
-  toggleReEnrollmentFee = (patient) => {
-    /* TODO, verified it's called */
-    alert('TODO: toggle re-enrollment fee');
+  toggleReEnrollmentFee = (patient, updatedFees) => {
+    this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
   updateMember = (patient, member) => {

@@ -34,6 +34,8 @@ import {
   setEditedPatientProfile,
 
   clearEditingPatientPayment,
+
+  setToggledWaivePatientFees,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
@@ -42,6 +44,7 @@ import {
   REMOVE_MEMBER_REQUEST,
   SUBMIT_PATIENT_PROFILE_FORM,
   SUBMIT_PATIENT_PAYMENT_FORM,
+  TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
 } from './constants';
 
 
@@ -61,6 +64,7 @@ function* main () {
   const watcherD = yield fork(removeMemberWatcher);
   const watcherE = yield fork(submitPatientProfileFormWatcher);
   const watcherF = yield fork(submitPatientPaymentFormWatcher);
+  const watcherG = yield fork(toggleWaivePatientFeesWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -69,6 +73,7 @@ function* main () {
   yield cancel(watcherD);
   yield cancel(watcherE);
   yield cancel(watcherF);
+  yield cancel(watcherG);
 }
 
 /*
@@ -275,6 +280,35 @@ function* submitPatientPaymentFormWatcher () {
       yield put(stopSubmit('checkout', errors));
 
       yield put(change('checkout', 'cardCode', null));
+    }
+  }
+}
+
+/*
+Toggle Waive Patient Fees
+------------------------------------------------------------
+*/
+function* toggleWaivePatientFeesWatcher () {
+  while (true) {
+    const { patient, payload } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/waive-fees`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `The patient's fee settings have been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setToggledWaivePatientFees(patient, payload));
+
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
     }
   }
 }
