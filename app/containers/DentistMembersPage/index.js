@@ -279,8 +279,6 @@ class DentistMembersPage extends React.Component {
   }
 
   handleMemberFormSubmit = (values) => {
-    console.log("Page.handleMemberFormSubmit");
-
     this.props.submitMemberForm(this.props.editingMember.patient, values);
   }
 

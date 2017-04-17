@@ -7,8 +7,19 @@
   color: $link-color;
 }
 
+:global(.popover--large) {
+  max-width: 360px;
+  width: 360px;
+}
+
 :global(.popover-title) {
+  font-weight: 600;
+  font-size: 20px;
   text-align: center;
+}
+
+:global(.popover-content) {
+  text-align: justify;
 }
 
 :global(.navbar-default) {
@@ -358,6 +369,7 @@ Modal
   ------------------------------------------------------------
   */
   .modal-controls {
+    position: relative;
     float: right;
   }
 
@@ -380,6 +392,16 @@ Modal
 
     &:focus {
       outline: none;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    /* negate the hover effects when the button is disabled */
+    &[disabled]:hover {
+      color: $color-white;
+      background-color: $color-primary-highlight;
     }
   }
 

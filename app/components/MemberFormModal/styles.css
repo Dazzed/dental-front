@@ -19,24 +19,48 @@ Page Wide
   padding-bottom: 1.5rem;
 }
 
-.button--short--lowlight {
-  border: 1px solid $color-primary-lowlight;
+.button--short {
+  border: 1px solid $color-primary-highlight;
   border-radius: 0.25rem;
   padding: 0.25rem 1.5rem;
 
   color: $color-white;
-  background-color: $color-primary-lowlight;
+  background-color: $color-primary-highlight;
 
   font-size: 0.875rem;
   font-weight: 600;
   line-height: normal;
 
   &:hover {
-    color: $color-primary-lowlight;
+    color: $color-primary-highlight;
     background-color: $color-white;
   }
 
   &:focus {
     outline: none;
+  }
+}
+
+/*
+Family Member Form Modal
+================================================================================
+*/
+.popover__controls {
+  text-align: center;
+}
+
+.popover__control {
+  margin: 0 1.5rem;
+}
+
+.popover__control--close {
+  color: $color-primary-lowlight;
+
+  cursor: pointer;
+  font-size: 27px; /* Same as the .button--short's height + padding + outline. */
+  line-height: 1;
+
+  &:hover {
+    color: $color-secondary-lowlight;
   }
 }

@@ -9,6 +9,7 @@ Import
 ------------------------------------------------------------
 */
 // libs
+import moment from 'moment';
 import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Modal from 'react-bootstrap/lib/Modal';
@@ -16,6 +17,7 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
+import FaClose from 'react-icons/lib/fa/close';
 import { Field, reduxForm, } from 'redux-form';
 
 // app
@@ -41,7 +43,7 @@ Member Form Modal
   enableReinitialize: true,
   validate: MemberValidator,
 })
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 export default class MemberFormModal extends React.Component {
 
   static propTypes = {
@@ -68,22 +70,6 @@ export default class MemberFormModal extends React.Component {
   }
 
   handleFormSubmit = (values) => {
-    console.log("MemberFormModal.handleFormSubmit");
-    console.log("-----");
-    console.log(this.props.dentistInfo);
-    console.log(this.props.dentistInfo.acceptsChildren);
-    console.log(this.props.dentistInfo.childStartingAge);
-    console.log("-----");
-    console.log(this.state);
-    console.log(this.state.childWarning);
-    console.log("-----");
-    console.log(values);
-    console.log(values.birthDate);
-    console.log(values.firstName);
-    console.log(values.lastName);
-    console.log("-----");
-
-    // TODO: also call this after the submit confirm button is pressed
     const {
       acceptsChildren,
       childStartingAge,
@@ -101,14 +87,9 @@ export default class MemberFormModal extends React.Component {
 
     const age = moment().diff(moment(birthDate, "MM/DD/YYYY"), 'years');
 
-    console.log(age);
-
-    /*
     if ( acceptsChildren === false
       && childWarning === false
     ) {
-      console.log("  - Option 1: Doesn't accept children.");
-
       this.setChildWarning(`Your dentist does not usually accept children as patients.  Would you still like to add ${firstName} ${lastName} (age ${age}) as a member of your plan?`);
     }
 
@@ -116,28 +97,19 @@ export default class MemberFormModal extends React.Component {
          age < childStartingAge
       && childWarning === false
     ) {
-      console.log("  - Option 2: Child member too young.");
-
       this.setChildWarning(`${firstName} ${lastName} is age ${age}, but your dentist usually only accepts children that are age ${childStartingAge} or older.  Would you still like to add them as a member of your plan?`);
     }
 
     else {
-      console.log("  - Option 3: Submit!");
-
       this.props.onFormSubmit(values);
 
       if (childWarning !== false) {
         this.clearChildWarning();
       }
     }
-    */
-
-    console.log("========================================");
   }
 
   setChildWarning = (msg) => {
-    console.log("  - set child warning");
-
     this.setState({
       ...this.state,
       childWarning: msg,
@@ -145,8 +117,6 @@ export default class MemberFormModal extends React.Component {
   }
 
   clearChildWarning = () => {
-    console.log("  - clear child warning");
-
     this.setState({
       ...this.state,
       childWarning: false,
@@ -176,48 +146,36 @@ export default class MemberFormModal extends React.Component {
       saveText = "Save and Checkout";
     }
 
-    let childWarningPopover = null;
-    let submitButton = (
-      <input
-        type="button"
-        className="modal-control"
-        disabled={submitting}
-        onClick={handleSubmit(this.handleFormSubmit)}
-        value={saveText}
-      />
-    );
-    if (childWarning !== false) {
-      childWarningPopover = (
-        <Popover id="child-warning-popover" title="Are you sure?">
-          <p>{childWarning}</p>
+    const childWarningPopover = childWarning === false
+      ? null
+      : ( <Popover
+            className="popover--large"
+            id="child-warning-popover"
+            placement="bottom"
+            positionLeft={-84}
+            positionTop={40}
+            title="Are you sure?"
+          >
+            <p>{childWarning}</p>
 
-          <div className="text-center">
-            <span
-              onClick={this.clearChildWarning}
-            >X</span>
+            <div styleName="popover__controls">
+              <span 
+                styleName="popover__control popover__control--close"
+                onClick={this.clearChildWarning}
+              >
+                <FaClose />
+              </span>
 
-            <input
-              type="button"
-              className={styles["button--short--lowlight"]}
-              disabled={submitting}
-              onClick={handleSubmit(this.handleFormSubmit)}
-              value="Yes"
-            />
-          </div>
-        </Popover>
-      );
-
-      submitButton = (
-        <OverlayTrigger trigger="click" placement="bottom" overlay={childWarningPopover}>
-          <input
-            type="button"
-            className="modal-control"
-            disabled={true}
-            value={saveText}
-          />
-        </OverlayTrigger>
-      );
-    }
+              <input
+                type="button"
+                styleName="popover__control button--short"
+                disabled={submitting}
+                onClick={handleSubmit(this.handleFormSubmit)}
+                value="Yes"
+              />
+            </div>
+          </Popover>
+        );
 
     return (
       <Modal
@@ -234,7 +192,14 @@ export default class MemberFormModal extends React.Component {
           <Modal.Title>{title}</Modal.Title>
 
           <div className="modal-controls">
-            {submitButton}
+            <input
+              type="button"
+              className="modal-control"
+              disabled={submitting || childWarning !== false}
+              onClick={handleSubmit(this.handleFormSubmit)}
+              value={saveText}
+            />
+            {childWarningPopover}
           </div>
         </Modal.Header>
 
