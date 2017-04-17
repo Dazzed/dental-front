@@ -150,10 +150,13 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         },
 
         // This case is only called after all of the user data is entered
-        // correctly, so turn on Stage 2 and let the user proceed.
+        // correctly, so the user is now ready to go to Step 2 (add members).
+        // The user may also proceed to checkout as long as they have at least
+        // one member on their plan (including themselves).
         stages: {
           ...state.stages,
           two: true,
+          three: members.length > 0,
         },
       };
      
@@ -206,6 +209,13 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         },
         editingActive: false,
         editing: null,
+
+        // The user may proceed to checkout as long as they have at least one
+        // member on their plan (including themselves).
+        stages: {
+          ...state.stages,
+          three: members.length > 0,
+        },
       };
 
     /*
@@ -214,15 +224,23 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     */
     case REMOVE_MEMBER_REQUEST:
       memberIdx = findIndex(state.user.members, { id: action.memberId });
+      members = [
+        ...state.user.members.slice(0, memberIdx),
+        ...state.user.members.slice(memberIdx + 1),
+      ];
 
       return {
         ...state,
         user: {
           ...state.user,
-          members: [
-            ...state.user.members.slice(0, memberIdx),
-            ...state.user.members.slice(memberIdx + 1),
-          ],
+          members,
+        },
+
+        // The user may proceed to checkout as long as they have at least one
+        // member on their plan (including themselves).
+        stages: {
+          ...state.stages,
+          three: members.length > 0,
         },
       };
 

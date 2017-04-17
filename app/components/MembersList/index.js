@@ -60,8 +60,8 @@ export default class MembersList extends React.Component {
     // passed in - event handlers
     onReEnrollMember: React.PropTypes.func,
     onRenewMember: React.PropTypes.func,
-    onUpdateMember: React.PropTypes.func.isRequired,
-    onRemoveMember: React.PropTypes.func.isRequired,
+    onUpdateMember: React.PropTypes.func,
+    onRemoveMember: React.PropTypes.func,
   };
 
   /*
@@ -95,7 +95,7 @@ export default class MembersList extends React.Component {
           - `status`
           - `monthly` or `yearly`
   */
-  renderMember (patient, member) {
+  renderMember (patient, member, showControlCol) {
     const {
       avatar,
       birthDate,
@@ -151,32 +151,16 @@ export default class MembersList extends React.Component {
           {/* TODO: Enable actions for the patient / patient-user so they can
               be treated like any other member?
           */}
-          {id !== patient.id && (
+          {id !== patient.id && showControlCol && (
             <div styleName="member__detail">
-              <input
-                type="button"
-                styleName="button--small"
-                value="UPDATE"
-                onClick={this.onUpdateClick.bind(this, patient, member)}
-              />
-              <input
-                type="button"
-                styleName="button--small"
-                value="X"
-                onClick={this.onRemoveClick.bind(this, patient, member)}
-              />
-
               {/* The actions for a member depend on their subscription status
                   and type:
                     - active monthly => Update & Remove
                     - active yearly => Update & Renew
                     - inactive => Re-Enroll
-
-                  TODO / EX: example code for each action
               */}
-              {/*
               {    this.props.onUpdateMember
-                && (!subscription || subscription.status === "active")
+                && (subscription.status === "active" || subscription.status === "signup")
                 && (
                   <input
                     type="button"
@@ -188,9 +172,8 @@ export default class MembersList extends React.Component {
               }
 
               {    this.props.onRemoveMember
-                && ( !subscription
-                  || ( subscription.status === "active" && subscription.monthly)
-                )
+                && subscription.monthly
+                && (subscription.status === "active" || subscription.status === "signup")
                 && (
                   <input
                     type="button"
@@ -202,8 +185,8 @@ export default class MembersList extends React.Component {
               }
 
               {    this.props.onRenewMember
-                && ( !subscription
-                  || (subscription.status === "active" && !subscription.monthly)
+                && !subscription.monthly
+                && subscription.status === "active"
                 && (
                   <input
                     type="button"
@@ -215,7 +198,7 @@ export default class MembersList extends React.Component {
               }
 
               {    this.props.onReEnrollMember
-                && (!subscription || subscription.status === "inactive")
+                && subscription.status === "inactive"
                 && (
                   <input
                     type="button"
@@ -225,7 +208,6 @@ export default class MembersList extends React.Component {
                   />
                 )
               }
-              */}
             </div>
           )}
         </div>
@@ -240,7 +222,17 @@ export default class MembersList extends React.Component {
   render () {
     const {
       patient,
+
+      onReEnrollMember,
+      onRenewMember,
+      onUpdateMember,
+      onRemoveMember,
     } = this.props;
+
+    const showControlCol = onReEnrollMember 
+                        || onRenewMember
+                        || onUpdateMember
+                        || onRemoveMember;
 
     // TODO: test with yearly members
     // TODO: test with all status's
@@ -306,7 +298,7 @@ export default class MembersList extends React.Component {
             membersContent[statusKey][timePeriodKey] = membersSubset
               .sort(sortMembersByName)
               .map((member) => {
-                return this.renderMember(patient, member);
+                return this.renderMember(patient, member, showControlCol);
               });
           }
         }
@@ -350,11 +342,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Remove
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Remove
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.signup.monthly}
@@ -394,11 +388,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Remove
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Remove
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.signup.annual}
@@ -438,11 +434,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Cancel
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Cancel
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.active.monthly}
@@ -482,11 +480,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Cancel
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Remove
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.active.annual}
@@ -528,11 +528,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Cancel
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Remove
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.inactive.monthly}
@@ -575,11 +577,13 @@ export default class MembersList extends React.Component {
                   Fee
                 </div>
               </div>
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit / Cancel
+              {showControlCol && (
+                <div className="col-sm-3">
+                  <div styleName="members__title--first-only">
+                    Edit / Remove
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {membersContent.late.monthly}

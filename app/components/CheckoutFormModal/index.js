@@ -12,6 +12,7 @@ Import
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import MembersList from 'components/MembersList';
 import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
@@ -53,6 +54,10 @@ Checkout Form Modal
 export default class CheckoutFormModal extends React.Component {
 
   static propTypes = {
+    // settings - passed in
+    listMembers: React.PropTypes.bool,
+    user: React.PropTypes.object,
+
     // form related - passed in
     initialValues: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
@@ -70,6 +75,10 @@ export default class CheckoutFormModal extends React.Component {
   */
   render () {
     const {
+      // settings
+      listMembers,
+      user,
+
       // form related
       initialValues,
       handleSubmit,
@@ -101,10 +110,26 @@ export default class CheckoutFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Body>
+          {listMembers && user && (
+            <div>
+              <h5 styleName="modal-section-title">Members:</h5>
+
+              <MembersList
+                patient={user}
+              />
+
+              <hr styleName="spacer--members-list" />
+            </div>
+          )}
+
           <form
             onSubmit={handleSubmit}
             className="form-horizontal"
           >
+            {listMembers && user && (
+              <h5 styleName="modal-section-title">Enter Payment Information:</h5>
+            )}
+
             <Row>
               <Field
                 name="number"

@@ -248,7 +248,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
   }
 
   // checkout
-  showCheckoutStep = () => {
+  checkout = () => {
     this.props.resetCheckoutForm();
     this.props.setEditingCheckout({});
   }
@@ -444,12 +444,33 @@ export default class PatientOffsiteSignupPage extends React.Component {
                       onUpdateMember={this.updateMember}
                     />
 
-                    <div className="text-right">
+                    <div className="text-center">
                       <input
                         type="button"
                         styleName="large-button--secondary"
                         value="ADD MEMBER"
                         onClick={this.addMember}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {stages.three && (
+                  <div styleName="stage">
+                    <h2 styleName="large-title">
+                      Step 3 &gt; Checkout
+                    </h2>
+
+                    <p styleName="instructions">
+                      After you have added all of the members you wish to include in your plan, you should procede to checkout.
+                    </p>
+
+                    <div className="text-center">
+                      <input
+                        type="button"
+                        styleName="large-button--secondary"
+                        value="CHECKOUT"
+                        onClick={this.checkout}
                       />
                     </div>
                   </div>
@@ -474,6 +495,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
         />
 
         <CheckoutFormModal
+          listMembers={true}
+          user={user}
+
           show={editingCheckout !== null}
           onCancel={this.cancelCheckoutFormAction}
 
