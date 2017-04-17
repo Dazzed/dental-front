@@ -7,8 +7,6 @@ signup request.  That means that Actions normally handled by the page's Sagas,
 such as SUBMIT_MEMBER_FORM, are instead handled by the reducer.  These Actions
 will also not have a follow up Action, such as ADD_MEMBER_SUCCESS and
 EDIT_MEMBER_SUCCESS.
-
-TODO: Edit User?
 */
 
 /*
@@ -57,17 +55,25 @@ const initialState = {
   members: [],
   user: {
     id: uniqueId(),
+    members: [],
   },
 
   editingActive: false,
   editing: null,
 
-  // signup
-  patientCreated: false,
+  // signup process
+  stages: {
+    one: true,
+    two: true,
+    three: false,
+  },
+
+  // post signup
   accountInfo: {
     fullName: '',
     loginEmail: '',
   },
+  patientCreated: false,
 };
 
 
@@ -78,6 +84,7 @@ Reducer
 function patientOffsiteSignupPageReducer (state = initialState, action) {
   let memberIdx;
   let members;
+  let stages;
 
   switch (action.type) {
 
@@ -88,7 +95,10 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     case DENTIST_SUCCESS:
       return {
         ...state,
-        dentist: action.dentist,
+        dentist: {
+          ...action.dentist,
+          offices: [action.dentist.dentistInfo],
+        },
       };
 
     case DENTIST_ERROR:
@@ -103,14 +113,22 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     */
     case SUBMIT_USER_FORM:
       memberIdx = findIndex(state.members, { id: action.user.id });
+      stages = state.stages;
 
       // user form is completed successfully for the first time,
-      // add user to the members list
+      // add user to the members list and turn on stage two so they can
+      // add / edit members
       if (memberIdx === -1 && action.user.userIsMember === true) {
         members = [
           ...state.members,
           action.user,
         ];
+
+        stages = {
+          one: true,
+          two: true,
+          three: false,
+        };
       }
 
       // user form is changed
@@ -138,7 +156,11 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       return {
         ...state,
         members,
-        user: action.user,
+        stages,
+        user: {
+          ...action.user,
+          members: members,
+        },
       };
      
 

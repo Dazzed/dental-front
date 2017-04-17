@@ -50,6 +50,7 @@ Colors
 $color-white: #FFF;
 $color-red: #C4185D;
 $color-black: #000;
+$color-default: #444;
 
 $color-primary-highlight: #00A1DF;   /* rgb(  0, 161, 263) */
 $color-secondary-highlight: #73C8AF; /* rgb(115, 200, 175) */

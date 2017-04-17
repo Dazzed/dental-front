@@ -48,8 +48,16 @@ Members List
 Status
 ------------------------------------------------------------
 */
+.status--signup {
+  color: $color-default;
+
+  text-align: center;
+}
+
 .status--active {
   color: $color-secondary-highlight;
+
+  text-align: center;
 }
 
 .status--past-due {
@@ -57,18 +65,21 @@ Status
   color: yellow;
 
   font-style: italic;
+  text-align: center;
 }
 
 .status--canceled {
   color: $color-red;
 
   font-style: italic;
+  text-align: center;
 }
 
 .status--inactive {
   color: $color-red;
 
   font-style: italic;
+  text-align: center;
 }
 
 /*

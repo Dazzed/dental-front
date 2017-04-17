@@ -28,6 +28,7 @@ import {
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
+import MembersList from 'components/MembersList';
 import PageHeader from 'components/PageHeader';
 import SignupPatientForm from 'components/SignupPatientForm';
 
@@ -64,6 +65,12 @@ import {
   // fetch members
   sortedMembersSelector,
 
+  // fetch stages
+  stagesSelector,
+
+  // fetch user
+  userSelector,
+
   // add / edit member
   editingMemberSelector,
 
@@ -88,6 +95,12 @@ function mapStateToProps (state) {
 
     // fetch members
     members: sortedMembersSelector(state),
+
+    // fetch stages
+    stages: stagesSelector(state),
+
+    // fetch user
+    user: userSelector(state),
 
     // add / edit member
     editingMember: editingMemberSelector(state),
@@ -161,6 +174,16 @@ export default class PatientOffsiteSignupPage extends React.Component {
     // fetch dentist - dispatch
     fetchDentist: React.PropTypes.func.isRequired,
 
+    // fetch stages - state
+    stages: React.PropTypes.shape({
+      one: React.PropTypes.bool,
+      two: React.PropTypes.bool,
+      three: React.PropTypes.bool,
+    }),
+
+    // fetch user - state
+    user: React.PropTypes.object.isRequired,
+
     // update user - dispatch
     submitUserForm: React.PropTypes.func.isRequired,
 
@@ -224,11 +247,11 @@ export default class PatientOffsiteSignupPage extends React.Component {
     this.props.setEditingMember({});
   }
 
-  removeMember = (member) => {
+  removeMember = (user, member) => {
     this.props.setRemovingMember(member.id);
   }
 
-  updateMember = (member) => {
+  updateMember = (user, member) => {
     this.props.resetMemberForm();
     this.props.setEditingMember(member);
   }
@@ -285,6 +308,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
       dentist,
       dentistError,
       members,
+      stages,
+      user,
 
       // add / edit
       editingMember,
@@ -303,6 +328,12 @@ export default class PatientOffsiteSignupPage extends React.Component {
       </span>
     );
 
+    console.log(stages);
+    console.log(dentist);
+    console.log(user);
+    console.log(members);
+    console.log("=====================");
+
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -318,7 +349,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             <div className="row">
               <div className="col-md-offset-2 col-md-8 col-sm-12">
 
-                <div styleName="signup-form-wrapper">
+                <div styleName="stage">
                   <h2 styleName="large-title">
                     Dentit Not Found
                   </h2>
@@ -354,7 +385,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             <div className="row">
               <div className="col-md-offset-2 col-md-8 col-sm-12">
 
-                <div styleName="signup-form-wrapper">
+                <div styleName="stage">
                   <LoadingSpinner showOnlyIcon={false} />
                 </div>
 
@@ -375,30 +406,57 @@ export default class PatientOffsiteSignupPage extends React.Component {
       <div styleName="container-wrapper">
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} />
 
-        {/*
-        Content
-        ------------------------------------------------------------
-        */}
-        <div className="container">
-          <div className="row">
-            <div className="col-md-offset-2 col-md-8 col-sm-12">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-offset-2 col-md-8 col-sm-12">
 
-              <div styleName="signup-form-wrapper">
-                <h2 styleName="large-title">
-                  Step 1 &gt; Tell Us About Yourself
-                </h2>
+                {/*
+                Stage 1: Signup Patient Form
+                ------------------------------------------------------------
+                NOTE: `stages.one` should always be true.  The code is written as such
+                to keep it consistent with the other stages.
 
-                <p styleName="instructions">
-                  <strong>Parents:</strong> this part is for you, so be sure to enter <strong>your</strong> name and contact information.  You will be able to add your children as members of your plan in Step 2.
-                </p>
+                NOTE: The initialValues presented by `user` are just it's preset
+                uniqueID.
+                */}
+                {stages.one && (
+                  <div styleName="stage">
+                    <h2 styleName="large-title">
+                      Step 1 &gt; Tell Us About Yourself
+                    </h2>
 
-                <SignupPatientForm
-                  autosubmit={true}
-                  offices={dentist.offices}
+                    <p styleName="instructions">
+                      <strong>Parents:</strong> this part is for you, so be sure to enter <strong>your</strong> name and contact information.  You will be able to add your children as members of your plan in Step 2.
+                    </p>
 
-                  onSubmit={this.handleUserFormSubmit}
-                />
-              </div>
+                    <SignupPatientForm
+                      autosubmit={true}
+                      offices={dentist.offices}
+
+                      initialValues={user}
+                      onSubmit={this.handleUserFormSubmit}
+                    />
+                  </div>
+                )}
+
+                {/*
+                Stage 2: Add / Edit Members
+                ------------------------------------------------------------
+                */}
+                {stages.two && (
+                  <div styleName="stage">
+                    <h2 styleName="large-title">
+                      Step 2 &gt; Add a Member
+                    </h2>
+
+                    <MembersList
+                      patient={user}
+
+                      onRemoveMember={this.removeMember}
+                      onUpdateMember={this.updateMember}
+                    />
+                  </div>
+                )}
 
             </div>
           </div>
@@ -415,7 +473,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
           onCancel={this.cancelMemberFormAction}
 
           initialValues={editingMember}
-          onSubmit={this.handleMemberFormSubmit}
+          onFormSubmit={this.handleMemberFormSubmit}
         />
 
         <CheckoutFormModal

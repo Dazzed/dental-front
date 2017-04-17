@@ -58,8 +58,8 @@ export default class MembersList extends React.Component {
     patient: React.PropTypes.object.isRequired,
 
     // passed in - event handlers
-    onReEnrollMember: React.PropTypes.func.isRequired,
-    onRenewMember: React.PropTypes.func.isRequired,
+    onReEnrollMember: React.PropTypes.func,
+    onRenewMember: React.PropTypes.func,
     onUpdateMember: React.PropTypes.func.isRequired,
     onRemoveMember: React.PropTypes.func.isRequired,
   };
@@ -106,7 +106,7 @@ export default class MembersList extends React.Component {
       subscription,
     } = member;
 
-    const relationship = familyRelationship !== null
+    const relationship = familyRelationship
                        ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
                        : "Self";
 
@@ -143,19 +143,19 @@ export default class MembersList extends React.Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            ${subscription.monthly}
+            {subscription
+              ? `\$${subscription.monthly}`
+              : "$XYZ"
+            }
+            {/* TODO */}
           </div>
         </div>
         <div className="col-sm-3">
+          {/* TODO: Enable actions for the patient / patient-user so they can
+              be treated like any other member?
+          */}
           {id !== patient.id && (
             <div styleName="member__detail">
-              {/*
-                TODO: choose button types based on membership info's `status`:
-                  - active monthly => Update & X
-                  - active yearly => Update & Renew
-                  - inactive => Re-Enroll
-                  - late => ???
-              */}
               <input
                 type="button"
                 styleName="button--small"
@@ -168,6 +168,67 @@ export default class MembersList extends React.Component {
                 value="X"
                 onClick={this.onRemoveClick.bind(this, patient, member)}
               />
+
+              {/* The actions for a member depend on their subscription status
+                  and type:
+                    - active monthly => Update & Remove
+                    - active yearly => Update & Renew
+                    - inactive => Re-Enroll
+
+                  TODO / EX: example code for each action
+              */}
+              {/*
+              {    this.props.onUpdateMember
+                && (!subscription || subscription.status === "active")
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="UPDATE"
+                    onClick={this.onUpdateClick.bind(this, patient, member)}
+                  />
+                )
+              }
+
+              {    this.props.onRemoveMember
+                && ( !subscription
+                  || ( subscription.status === "active" && subscription.type === "monthly")
+                )
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="X"
+                    onClick={this.onRemoveClick.bind(this, patient, member)}
+                  />
+                )
+              }
+
+              {    this.props.onRenewMember
+                && ( !subscription
+                  || (subscription.status === "active" && subscription.type === "yearly")
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="RENEW"
+                    onCLick={this.onRenewClick.bind(this, patient, member)}
+                  />
+                )
+              }
+
+              {    this.props.onReEnrollMember
+                && (!subscription || subscription.status === "inactive")
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="RE-ENROLL"
+                    onClick={this.onReEnrollClick.bind(this, patient, member)}
+                  />
+                )
+              }
+              */}
             </div>
           )}
         </div>
@@ -193,14 +254,24 @@ export default class MembersList extends React.Component {
       (organizedMembers, member) => {
         // TODO: members don't have their own subscription info...
         //       using patient subscription info as a workaround for now...
-        const statusKey = patient.subscription.status;
-        const timePeriodKey = patient.subscription.monthly
-                                ? "monthly"
-                                : "yearly";
+        let statusKey = "signup";
+        let timePeriodKey = "monthly";
+
+        if (patient.subscription) {
+          patient.subscription.status;
+          timePeriodKey = patient.subscription.monthly
+                            ? "monthly"
+                            : "yearly";
+        }
+
         organizedMembers[statusKey][timePeriodKey].push(member);
         return organizedMembers;
       },
       {
+        signup: {
+          monthly: [],
+          annual: [],
+        },
         active: {
           monthly: [],
           annual: [],
@@ -217,6 +288,10 @@ export default class MembersList extends React.Component {
     );
 
     const membersContent = {
+      signup: {
+        monthly: [],
+        annual: [],
+      },
       active: {
         monthly: [],
         annual: [],
@@ -253,43 +328,131 @@ export default class MembersList extends React.Component {
     return (
       <div styleName="members">
 
+        {membersContent.signup.monthly.length > 0 && (
+          <div>
+            <div className="row" styleName="members__title-row">
+              <div className="col-sm-2">
+                <div styleName="status--signup">
+                  Monthly
+                </div>
+              </div>
+              <div className="col-sm-2">
+                <div styleName="members__title--first-only">
+                  Name
+                </div>
+              </div>
+              <div className="col-sm-2">
+                <div styleName="members__title--first-only">
+                  Relationship
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Age
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Type
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Fee
+                </div>
+              </div>
+              <div className="col-sm-3">
+                <div styleName="members__title--first-only">
+                  Edit / Remove
+                </div>
+              </div>
+            </div>
+
+            {membersContent.signup.monthly}
+          </div>
+        )}
+
+        {membersContent.signup.annual.length > 0 && (
+          <div>
+            <div className="row" styleName="members__title-row">
+              <div className="col-sm-2">
+                <div styleName="status--signup">
+                  Annual
+                </div>
+              </div>
+              <div className="col-sm-2">
+                <div styleName="members__title--first-only">
+                  Name
+                </div>
+              </div>
+              <div className="col-sm-2">
+                <div styleName="members__title--first-only">
+                  Relationship
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Age
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Type
+                </div>
+              </div>
+              <div className="col-sm-1">
+                <div styleName="members__title--first-only">
+                  Fee
+                </div>
+              </div>
+              <div className="col-sm-3">
+                <div styleName="members__title--first-only">
+                  Edit / Remove
+                </div>
+              </div>
+            </div>
+
+            {membersContent.signup.annual}
+          </div>
+        )}
+
         {membersContent.active.monthly.length > 0 && (
           <div>
             <div className="row" styleName="members__title-row">
               <div className="col-sm-2">
-                <span styleName="status--active">
+                <div styleName="status--active">
                   Monthly
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Name
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Relationship
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Age
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Type
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Fee
-                </span>
+                </div>
               </div>
               <div className="col-sm-3">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Edit / Cancel
-                </span>
+                </div>
               </div>
             </div>
 
@@ -301,39 +464,39 @@ export default class MembersList extends React.Component {
           <div>
             <div className="row" styleName="members__title-row">
               <div className="col-sm-2">
-                <span styleName="status--active">
+                <div styleName="status--active">
                   Annual
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Name
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Relationship
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Age
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Type
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Fee
-                </span>
+                </div>
               </div>
               <div className="col-sm-3">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Edit / Cancel
-                </span>
+                </div>
               </div>
             </div>
 
@@ -347,39 +510,39 @@ export default class MembersList extends React.Component {
           <div>
             <div className="row" styleName="members__title-row">
               <div className="col-sm-2">
-                <span styleName="status--inactive">
+                <div styleName="status--inactive">
                   Inactive
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Name
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Relationship
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Age
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Type
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Fee
-                </span>
+                </div>
               </div>
               <div className="col-sm-3">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Edit / Cancel
-                </span>
+                </div>
               </div>
             </div>
 
@@ -394,39 +557,39 @@ export default class MembersList extends React.Component {
           <div>
             <div className="row" styleName="members__title-row">
               <div className="col-sm-2">
-                <span styleName="status--past-due">
+                <div styleName="status--past-due">
                   Late
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Name
-                </span>
+                </div>
               </div>
               <div className="col-sm-2">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Relationship
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Age
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Type
-                </span>
+                </div>
               </div>
               <div className="col-sm-1">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Fee
-                </span>
+                </div>
               </div>
               <div className="col-sm-3">
-                <span styleName="members__title--first-only">
+                <div styleName="members__title--first-only">
                   Edit / Cancel
-                </span>
+                </div>
               </div>
             </div>
 

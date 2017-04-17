@@ -40,7 +40,6 @@ const membersSelector = createSelector(
   (substate) => { return substate.members; }
 );
 
-// TODO: include user in this list?  See `/app/containers/PatientProfilePage/selectors.js`.
 const sortedMembersSelector = createSelector(
   membersSelector,
 
@@ -61,6 +60,24 @@ const sortedMembersSelector = createSelector(
 
     return members;
   }
+);
+
+/*
+Fetch Stages
+------------------------------------------------------------
+*/
+const stagesSelector = createSelector(
+  domainSelector,
+  (substate) => { return substate.stages; }
+);
+
+/*
+Fetch User
+------------------------------------------------------------
+*/
+const userSelector = createSelector(
+  domainSelector,
+  (substate) => { return substate.user; }
 );
 
 /*
@@ -117,6 +134,12 @@ export {
   // fetch members
   membersSelector,
   sortedMembersSelector,
+
+  // fetch stages
+  stagesSelector,
+
+  // fetch user
+  userSelector,
 
   // add / edit
   editingMemberSelector,

@@ -17,6 +17,9 @@ import { stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
+// app
+import request from 'utils/request';
+
 // local
 import {
   // fetch dentist
@@ -57,36 +60,18 @@ function* main () {
 /*
 Fetch Dentist
 ------------------------------------------------------------
-TODO: get unauthed dentist API endpoint
-        - dentist theming
-        - membership plans
-        - offices array
-      https://trello.com/c/jVMGmXBz/84-patient-create-offsite-patient-signup-page
 */
 function* dentistFetcher () {
   yield* takeLatest(DENTIST_REQUEST, function* handler (action) {
-    const { dentistId, } = action;
+    const {
+      dentistId,
+    } = action;
 
     try {
-      /*
-      const response = yield call(request, `/api/v1/TODO/${dentistId}`);
+      const response = yield call(request, `/api/v1/dentists/${dentistId}/no-auth`);
       yield put(setDentist(response.data));
-      */
-
-      // TODO: tmp
-      yield put(setDentist({
-        logo: "https://www.brushandfloss.com/wp-content/uploads/sites/65/2016/04/Riccobene_Family_Dentistry_Rev-e1461600000454.png",
-        offices: [
-          {
-            id: "18",
-            officeName: "Johnny's Dentistry",
-          },
-        ],
-      }));
 
     } catch(err) {
-      // TODO: specific error for an invalid ID (i.e. 404 Not Found)
-      //       vs. other errors (i.e. 500 Internal Server Error)
       yield put(setDentistError(err));
     }
   });

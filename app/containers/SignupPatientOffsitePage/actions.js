@@ -7,8 +7,6 @@ signup request.  That means that Actions normally handled by the page's Sagas,
 such as SUBMIT_MEMBER_FORM, are instead handled by the reducer.  These Actions
 will also not have a follow up Action, such as ADD_MEMBER_SUCCESS and
 EDIT_MEMBER_SUCCESS.
-
-TODO: Edit User?
 */
 
 /*
