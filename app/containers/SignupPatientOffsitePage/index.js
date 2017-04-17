@@ -62,9 +62,6 @@ import {
   dentistSelector,
   dentistErrorSelector,
 
-  // fetch members
-  sortedMembersSelector,
-
   // fetch stages
   stagesSelector,
 
@@ -92,9 +89,6 @@ function mapStateToProps (state) {
     // fetch dentist
     dentist: dentistSelector(state),
     dentistError: dentistErrorSelector(state),
-
-    // fetch members
-    members: sortedMembersSelector(state),
 
     // fetch stages
     stages: stagesSelector(state),
@@ -186,9 +180,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     // update user - dispatch
     submitUserForm: React.PropTypes.func.isRequired,
-
-    // fetch members - state
-    members: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     // add / edit member - state
     editingMember: React.PropTypes.object,
@@ -307,7 +298,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
       // fetch
       dentist,
       dentistError,
-      members,
       stages,
       user,
 
@@ -331,7 +321,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     console.log(stages);
     console.log(dentist);
     console.log(user);
-    console.log(members);
+    console.log(user.members);
     console.log("=====================");
 
     /*
@@ -448,6 +438,10 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     <h2 styleName="large-title">
                       Step 2 &gt; Add a Member
                     </h2>
+
+                    <p styleName="instructions">
+                      Here's where you add family members to your plan.  If you also want to be covered under the plan, please check "I Will Also Be A Member" in Step 1.
+                    </p>
 
                     <MembersList
                       patient={user}

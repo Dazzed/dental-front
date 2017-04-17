@@ -229,7 +229,7 @@ function* submitPatientProfileFormWatcher() {
       const message = `The patient's profile has been updated.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setUserData(payload));
+      yield put(setEditedPatientProfile(payload));
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);

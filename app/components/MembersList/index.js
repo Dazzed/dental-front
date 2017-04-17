@@ -245,12 +245,9 @@ export default class MembersList extends React.Component {
       patient,
     } = this.props;
 
-    let members = [...patient.members];
-    members.push(patient);
-
     // TODO: test with yearly members
     // TODO: test with all status's
-    members = members.reduce(
+    const members = patient.members.reduce(
       (organizedMembers, member) => {
         // TODO: members don't have their own subscription info...
         //       using patient subscription info as a workaround for now...

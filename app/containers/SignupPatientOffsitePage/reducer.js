@@ -52,7 +52,6 @@ const initialState = {
   cardDetails: null,
   dentist: false,
   dentistError: null,
-  members: [],
   user: {
     id: uniqueId(),
     members: [],
@@ -112,7 +111,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     ------------------------------------------------------------
     */
     case SUBMIT_USER_FORM:
-      memberIdx = findIndex(state.members, { id: action.user.id });
+      memberIdx = findIndex(state.user.members, { id: action.user.id });
       stages = state.stages;
 
       // user form is completed successfully for the first time,
@@ -120,7 +119,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       // add / edit members
       if (memberIdx === -1 && action.user.userIsMember === true) {
         members = [
-          ...state.members,
+          ...state.user.members,
           action.user,
         ];
 
@@ -134,32 +133,31 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       // user form is changed
       else if (memberIdx !== -1 && action.user.userIsMember === true) {
         members = [
-          ...state.members.slice(0, memberIdx),
+          ...state.user.members.slice(0, memberIdx),
           action.user,
-          ...state.members.slice(memberIdx + 1),
+          ...state.user.members.slice(memberIdx + 1),
         ];
       }
 
       // user removed themselves as a member
       else if (memberIdx !== -1 && action.user.userIsMember === false) {
         members = [
-          ...state.members.slice(0, memberIdx),
-          ...state.members.slice(memberIdx + 1),
+          ...state.user.members.slice(0, memberIdx),
+          ...state.user.members.slice(memberIdx + 1),
         ];
       }
 
       // the user isn't a member & doesn't want to be one
       else {
-        members = state.members;
+        members = state.user.members;
       }
 
       return {
         ...state,
-        members,
         stages,
         user: {
           ...action.user,
-          members: members,
+          members,
         },
       };
      
@@ -188,25 +186,28 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         action.member.id = uniqueId();
 
         members = [
-          ...state.members,
+          ...state.user.members,
           action.member,
         ];
       }
 
       // edit member
       else {
-        memberIdx = findIndex(state.members, { id: action.member.id });
+        memberIdx = findIndex(state.user.members, { id: action.member.id });
 
         members = [
-          ...state.members.slice(0, memberIdx),
+          ...state.user.members.slice(0, memberIdx),
           action.member,
-          ...state.members.slice(memberIdx + 1),
+          ...state.user.members.slice(memberIdx + 1),
         ];
       }
 
       return {
         ...state,
-        members,
+        user: {
+          ...state.user,
+          members,
+        },
         editingActive: false,
         editing: null,
       };
@@ -216,14 +217,17 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_MEMBER_REQUEST:
-      memberIdx = findIndex(state.members, { id: action.memberId });
+      memberIdx = findIndex(state.user.members, { id: action.memberId });
 
       return {
         ...state,
-        members: [
-          ...state.members.slice(0, memberIdx),
-          ...state.members.slice(memberIdx + 1),
-        ],
+        user: {
+          ...state.user,
+          members: [
+            ...state.user.members.slice(0, memberIdx),
+            ...state.user.members.slice(memberIdx + 1),
+          ],
+        },
       };
 
     /*

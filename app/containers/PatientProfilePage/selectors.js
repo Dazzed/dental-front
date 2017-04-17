@@ -52,9 +52,11 @@ const membersSelector = createSelector(
       return false;
     }
 
-    let members = [];
-    members = members.concat(familyMembers);
-    members.push(currentUser);
+    const members = [
+      ...familyMembers,
+      currentUser,
+    ];
+
     members.sort((a, b) => {
       const aName = a.firstName + a.lastName;
       const bName = b.firstName + b.lastName;

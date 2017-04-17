@@ -66,7 +66,7 @@ Reducers
 ================================================================================
 */
 function dentistMembersPageReducer (state = initialState, action) {
-  let memberIdx, patientIdx, prevStatePatient, newStatePatient;
+  let memberIdx, patients, patientIdx, prevStatePatient, newStatePatient;
 
   switch (action.type) {    
     /*
@@ -80,9 +80,19 @@ function dentistMembersPageReducer (state = initialState, action) {
       };
 
     case FETCH_PATIENTS_SUCCESS:
+      patients = action.payload.map((patient) => {
+        return {
+          ...patient,
+          members: [
+            ...patient.members,
+            patient,
+          ],
+        };
+      });
+
       return {
         ...state,
-        patients: action.payload,
+        patients,
       };
 
     /*
@@ -219,11 +229,20 @@ function dentistMembersPageReducer (state = initialState, action) {
     case EDIT_PATIENT_PROFILE_SUCCESS:
       patientIdx = findIndex(state.patients, { id: action.payload.id });
 
+      // rebuild the updated patient's members list (and add them to the list)
+      newStatePatient = {
+        ...action.payload,
+        members: [
+          ...action.payload.members,
+          action.payload,
+        ],
+      };
+
       return {
         ...state,
         patients: [
           ...state.patients.slice(0, patientIdx),
-          action.payload,
+          newStatePatient,
           ...state.patients.slice(patientIdx + 1),
         ],
         editingActive: false,

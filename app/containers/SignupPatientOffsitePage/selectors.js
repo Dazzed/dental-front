@@ -37,7 +37,7 @@ Fetch Members
 */
 const membersSelector = createSelector(
   domainSelector,
-  (substate) => { return substate.members; }
+  (substate) => { return substate.user.members; }
 );
 
 const sortedMembersSelector = createSelector(
@@ -77,7 +77,13 @@ Fetch User
 */
 const userSelector = createSelector(
   domainSelector,
-  (substate) => { return substate.user; }
+  sortedMembersSelector,
+  (substate, sortedMembers) => {
+    return {
+      ...substate.user,
+      members: sortedMembers,
+    };
+  }
 );
 
 /*
