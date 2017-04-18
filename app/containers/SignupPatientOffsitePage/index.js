@@ -223,11 +223,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
   Actions
   ------------------------------------------------------------
   */
-  goToHomePage = () => {
-    this.props.clearSignupStatus();
-    this.props.changeRoute('/');
-  }
-
   goToLoginPage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
@@ -618,11 +613,11 @@ export default class PatientOffsiteSignupPage extends React.Component {
         <Modal
           backdrop={'static'}
           bsSize={'lg'}
-          onHide={this.goToHomePage}
+          onHide={this.goToLoginPage}
           show={isSignedUp}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Welcome to DentalHQ!</Modal.Title>
+            <Modal.Title>Welcome to {dentist.dentistInfo.officeName}!</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
@@ -632,7 +627,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
               </p>
 
               <p>
-                You are now registered with DentalHQ! You should receive a confirmation email with an activation link shortly. Please check your email address (<a href="mailto:{accountInfo.loginEmail}" target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
+                You are now registered for our dental membership plan! You should receive a confirmation email with an activation link shortly. Please check your email address (<a href="mailto:{accountInfo.loginEmail}" target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
               </p>
 
               <p>
@@ -642,7 +637,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
               <p styleName="letter__from">
                 Cheers,
                 <br />
-                The DentalHQ Team
+                {dentist.dentistInfo.officeName}
               </p>
             </div>
           </Modal.Body>

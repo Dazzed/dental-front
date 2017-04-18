@@ -129,11 +129,6 @@ export default class SignupPage extends Component {
   Actions
   ------------------------------------------------------------
   */
-  goToHomePage = () => {
-    this.props.clearSignupStatus();
-    this.props.changeRoute('/');
-  }
-
   goToLoginPage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
@@ -251,7 +246,7 @@ export default class SignupPage extends Component {
         <Modal
           backdrop={'static'}
           bsSize={'lg'}
-          onHide={this.goToHomePage}
+          onHide={this.goToLoginPage}
           show={isSignedUp}
         >
           <Modal.Header closeButton>
