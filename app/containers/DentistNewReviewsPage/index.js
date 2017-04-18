@@ -445,6 +445,14 @@ class DentistNewReviewsPage extends React.Component {
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
+          {/* TODO: onUpdateMember was removed so that the `update` action would
+              be hidden until the extra fields can be removed, and there are
+              multiple membership types for a dentist to choose from.
+
+              onUpdateMember={this.updateMember}
+
+              https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
+          */}
           <PatientsList
             patients={recentReviewerPatients}
 
@@ -456,7 +464,6 @@ class DentistNewReviewsPage extends React.Component {
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-            onUpdateMember={this.updateMember}
             onUpdatePatientProfile={this.updatePatientProfile}
             onUpdatePatientPayment={this.updatePatientPaymentInfo}
           />

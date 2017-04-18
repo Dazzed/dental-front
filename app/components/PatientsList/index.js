@@ -49,10 +49,10 @@ class PatientsList extends React.Component {
     onUpdatePatientPayment: React.PropTypes.func,
     onUpdatePatientProfile: React.PropTypes.func,
 
-    onReEnrollMember: React.PropTypes.func.isRequired,
-    onRemoveMember: React.PropTypes.func.isRequired,
-    onRenewMember: React.PropTypes.func.isRequired,
-    onUpdateMember: React.PropTypes.func.isRequired,
+    onReEnrollMember: React.PropTypes.func,
+    onRemoveMember: React.PropTypes.func,
+    onRenewMember: React.PropTypes.func,
+    onUpdateMember: React.PropTypes.func,
   }
 
   constructor (props) {
