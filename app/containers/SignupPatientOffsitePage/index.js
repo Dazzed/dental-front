@@ -11,6 +11,7 @@ Imports
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
+import FaCheck from 'react-icons/lib/fa/check';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
@@ -310,6 +311,27 @@ export default class PatientOffsiteSignupPage extends React.Component {
       isSignedUp,
     } = this.props;
 
+    // TODO: replace the mockup data with real data once it's available
+    // https://trello.com/c/ousHhN50/129-patient-dentist-membership-information-content
+    /*
+    const adultMembership = {
+      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
+      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
+    };
+    const childMembership = {
+      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
+      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
+    };
+    */
+    const adultMembership = {
+      monthly: "25.00".replace(".00", ""),
+      savings: "240.00".replace(".00", ""),
+    };
+    const childMembership = {
+      monthly: "20.00".replace(".00", ""),
+      savings: "360.00".replace(".00", ""),
+    };
+
     const borderContent = (
       <span>
         Already A Member?
@@ -388,7 +410,95 @@ export default class PatientOffsiteSignupPage extends React.Component {
     */
     return (
       <div styleName="container-wrapper">
-        <PageHeader title="Signup for a Patient Account" borderContent={borderContent} />
+        <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
+          <div className="row">
+
+            {/*
+            Adult Membership
+            ------------------------------------------------------------
+            TODO: Pull this & the Child Membership out into their own component?
+                  It's also on the Patient Membership Info Page.
+            */}
+            <div className="col-md-offset-1 col-md-4">
+              <div styleName="membership">
+                <h3 styleName="membership__title">Adult Membership</h3>
+
+                <p styleName="membership__includes-list__label">
+                  Includes:
+                </p>
+
+                <ul styleName="membership__includes-list">
+                  <li><FaCheck /> 2 cleanings/year*</li>
+                  <li><FaCheck /> 1-2 exams/year</li>
+                  <li><FaCheck /> Xrays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with xray/year</li>
+                  <li><FaCheck /> 10% off any needed treatment</li>
+                </ul>
+
+                <p styleName="membership__cost">
+                  ${adultMembership.monthly} A Month
+                </p>
+
+                <p styleName="membership__savings">
+                  Total Annual Savings: ${adultMembership.savings}**
+                </p>
+
+                <p styleName="membership__disclaimer">
+                  *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
+                </p>
+
+                <p styleName="membership__disclaimer">
+                  **Total annual savings if ALL services used.
+                </p>
+              </div>
+            </div>
+
+            {/*
+            Child Membership
+            ------------------------------------------------------------
+            */}
+            <div className="col-md-offset-1 col-md-5">
+              <div styleName="membership">
+                <h3 styleName="membership__title">
+                  Child Membership
+                  {' '}
+                  <small>(13 and under)</small>
+                </h3>
+
+                <p styleName="membership__includes-list__label">
+                  Includes:
+                </p>
+
+                <ul styleName="membership__includes-list">
+                  <li><FaCheck /> 2 cleanings/year*</li>
+                  <li><FaCheck /> 1-2 exams/year</li>
+                  <li><FaCheck /> Xrays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with xray/year</li>
+                  <li><FaCheck /> 1 Fluoride treatment/year</li>
+                  <li><FaCheck /> 10% off any needed treatment</li>
+                </ul>
+
+                <p styleName="membership__cost">
+                  ${childMembership.monthly} A Month
+                </p>
+
+                <p styleName="membership__savings">
+                  Total Annual Savings: ${childMembership.savings}**
+                </p>
+
+                <p styleName="membership__disclaimer">
+                  *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
+                </p>
+
+                <p styleName="membership__disclaimer">
+                  **Total annual savings if ALL services used.
+                </p>
+              </div>
+            </div>
+
+          {/* End Membership Info */}
+          </div>
+        </PageHeader>
 
           <div className="container">
             <div className="row">

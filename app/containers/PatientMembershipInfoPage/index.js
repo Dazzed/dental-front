@@ -220,6 +220,8 @@ class PatientMembershipInfoPage extends React.Component {
             {/*
             Adult Membership
             ------------------------------------------------------------
+            TODO: Pull this & the Child Membership out into their own component?
+                  It's also on the Offsite Patient Signup Form.
             */}
             <div className="col-md-6">
               <div styleName="membership">

@@ -32,11 +32,19 @@ const dashboardPages = [
 Page Header
 ================================================================================
 */
-function PageHeader ({ borderContent, children, pathname, title, user }) {
-  let content = children;
+function PageHeader ({ borderContent, children, pathname, title, user, imgX, imgY }) {
   if (title) {
-    content = (<h1 styleName="large-title">{title}</h1>);
+    title = (<h1 styleName="large-title">{title}</h1>);
   }
+
+  const pageHeaderImagePosition = {
+    backgroundPositionX: imgX !== undefined
+      ? imgX
+      : "center",
+    backgroundPositionY: imgY !== undefined
+      ? imgY
+      : "-235px",
+  };
 
   if (user && user.type) {
     if (user.type === "dentist") {
@@ -102,11 +110,12 @@ function PageHeader ({ borderContent, children, pathname, title, user }) {
 
   return (
     <div>
-      <div styleName="page-header">
+      <div styleName="page-header" style={pageHeaderImagePosition}>
         {(!user || !user.type) && (
           <div styleName="page-header__overlay">
             <div className="container">
-              {content}
+              {title}
+              {children}
             </div>
           </div>
         )}
