@@ -312,6 +312,14 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/faq',
+      name: 'faq',
+      getComponent (nextState, cb) {
+        System.import('containers/FaqPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '/learn-more',
       name: 'learnMore',
       getComponent (nextState, cb) {
@@ -330,14 +338,6 @@ export default function createRoutes (store) {
         });
 
         importModules.catch(errorLoading);
-      },
-    }, {
-      path: '/faq',
-      name: 'faq',
-      getComponent (nextState, cb) {
-        System.import('containers/FaqPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
       },
     }, {
       onEnter: redirectToLogin,

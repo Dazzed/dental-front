@@ -27,10 +27,12 @@ import styles from './styles.css';
 
 const staticPages = [
   '/',
+  '/accounts/signup/my-dentist/', // dentistId added in the render function
   '/error/404-not-found',
   '/faq',
-  '/legal',
+  '/learn-more',
   '/privacy',
+  '/search',
   '/terms',
 ];
 
@@ -85,6 +87,10 @@ export default class App extends Component {
     const title = pageTitle
                 ? <PageHeader pathname={pathname} title={pageTitle} user={user} />
                 : null;
+
+    if (user && user.id && user.type && user.type === "dentist") {
+      staticPages[1] = `/accounts/signup/my-dentist/${user.id}`;
+    }
 
     // the visitor is a logged in user AND is not on a static page
     const onUserPage = user && user.type && staticPages.indexOf(pathname) < 0;
