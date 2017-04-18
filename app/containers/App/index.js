@@ -36,6 +36,15 @@ const staticPages = [
   '/terms',
 ];
 
+const unThemedPages = [
+  '/accounts/login',
+  // '/accounts/signup/my-dentist/:dentistId' is accounted for directly in the if statement (below)
+  '/error/404-not-found',
+  '/faq',
+  '/privacy',
+  '/terms',
+];
+
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
 };
@@ -112,9 +121,18 @@ export default class App extends Component {
       content = childComponents;
     }
 
+    let wrapperStyle = "wrapper--no-navbar";
+    let navbar = null;
+    if ( unThemedPages.indexOf(pathname) < 0
+      && pathname.indexOf('/accounts/signup/my-dentist/') !== 0 // special case since it has a url param
+    ) {
+      wrapperStyle = "wrapper";
+      navbar = (<NavBar pathname={pathname} />);
+    }
+
     return (
-      <div styleName="wrapper">
-        <NavBar pathname={pathname} />
+      <div styleName={wrapperStyle}>
+        {navbar}
         {content}
         <Footer />
       </div>
