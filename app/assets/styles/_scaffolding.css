@@ -6,7 +6,6 @@
     margin: 0;
     padding: 0;
     width: 100%;
-    height: calc(100% - 53px);
     color: #444 !important;
 
     #app,
@@ -25,5 +24,13 @@
     #app > div {
         height: 100%;
     }
+  }
+
+  html {
+    height: calc(100% - 116px); /* the footer's height */
+  }
+
+  body {
+    height: 100%;
   }
 }

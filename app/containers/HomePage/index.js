@@ -9,6 +9,11 @@ NOTE: while this component should technically be a stateless functional
 component (SFC), hot reloading does not currently support SFCs. If hot
 reloading is not a neccessity for you then you can refactor it and remove
 the linting exception.
+
+TODO: To re-convert the home page back from a splash page, delete all the
+uncommented html (except for the wrapper div).  Then uncomment the html in each
+section.  Don't forget to convert the styles, too.
+  - https://trello.com/c/pLNEtxw5/111-core-setup-staging-and-production-environments
 */
 
 /*
@@ -315,12 +320,10 @@ export default class HomePage extends React.Component {
         Footer
         ------------------------------------------------------------
         */}
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+        {/*
+        <Footer />
+        */}
+
         <Footer />
 
       </div>

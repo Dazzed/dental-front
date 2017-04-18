@@ -1,6 +1,10 @@
 /*
 Home Page Styles
 ================================================================================
+TODO: To re-convert the home page back from a splash page, just delete the
+splash page styles section at the end of this file.  Don't forget to also
+convert the home page's html.
+  - https://trello.com/c/pLNEtxw5/111-core-setup-staging-and-production-environments
 */
 
 /*
@@ -325,5 +329,27 @@ Fourth Block
 
   .large-button {
     color: $color-white;
+  }
+}
+
+
+/*
+Splash Page Styles
+================================================================================
+*/
+.wrapper {
+  height: 100%;
+}
+
+.first-block {
+  height: 100%;
+  background: url(assets/images/brushing-teeth.jpg) top center no-repeat;
+
+  header {
+    padding-bottom: 3rem;
+  }
+
+  .next-section-cover {
+    margin-top: 0;
   }
 }
