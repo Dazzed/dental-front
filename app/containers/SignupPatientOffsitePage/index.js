@@ -10,8 +10,10 @@ Imports
 // libs
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
+import Popover from 'react-bootstrap/lib/Popover';
 import CSSModules from 'react-css-modules';
 import FaCheck from 'react-icons/lib/fa/check';
+import FaClose from 'react-icons/lib/fa/close';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
@@ -147,7 +149,7 @@ Patient Offsite Signup
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 export default class PatientOffsiteSignupPage extends React.Component {
 
   static propTypes = {
@@ -215,6 +217,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
     makeSignupRequest: React.PropTypes.func,
   };
 
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      soloAccountMemberConfirmation: false,
+    };
+  }
+
   componentWillMount () {
     this.props.fetchDentist(this.props.routeParams.dentistId);
   }
@@ -245,8 +255,39 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   checkout = () => {
-    this.props.resetCheckoutForm();
-    this.props.setEditingCheckout({});
+    const {
+      user
+    } = this.props;
+
+    const {
+      soloAccountMemberConfirmation,
+    } = this.state;
+
+    if ( user.members.length === 1
+      && user.userIsMember === true
+      && soloAccountMemberConfirmation === false
+    ) {
+      this.setState({
+        ...this.state,
+        soloAccountMemberConfirmation: true,
+      });
+    }
+
+    else {
+      this.props.resetCheckoutForm();
+      this.props.setEditingCheckout({});
+
+      if (soloAccountMemberConfirmation !== false) {
+        this.clearSoloAccountMemberConfirmation();
+      }
+    }
+  }
+
+  clearSoloAccountMemberConfirmation = () => {
+    this.setState({
+      ...this.state,
+      soloAccountMemberConfirmation: false,
+    });
   }
 
   /*
@@ -306,26 +347,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
       isSignedUp,
     } = this.props;
 
-    // TODO: replace the mockup data with real data once it's available
-    // https://trello.com/c/ousHhN50/129-patient-dentist-membership-information-content
-    /*
-    const adultMembership = {
-      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
-      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
-    };
-    const childMembership = {
-      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
-      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
-    };
-    */
-    const adultMembership = {
-      monthly: "25.00".replace(".00", ""),
-      savings: "240.00".replace(".00", ""),
-    };
-    const childMembership = {
-      monthly: "20.00".replace(".00", ""),
-      savings: "360.00".replace(".00", ""),
-    };
+    const {
+      soloAccountMemberConfirmation,
+    } = this.state;
 
     const borderContent = (
       <span>
@@ -403,6 +427,59 @@ export default class PatientOffsiteSignupPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
+    // TODO: replace the mockup data with real data once it's available
+    // https://trello.com/c/ousHhN50/129-patient-dentist-membership-information-content
+    /*
+    const adultMembership = {
+      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
+      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
+    };
+    const childMembership = {
+      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
+      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
+    };
+    */
+    const adultMembership = {
+      monthly: "25.00".replace(".00", ""),
+      savings: "240.00".replace(".00", ""),
+    };
+    const childMembership = {
+      monthly: "20.00".replace(".00", ""),
+      savings: "360.00".replace(".00", ""),
+    };
+
+    const soloAccountMemberConfirmationPopover = soloAccountMemberConfirmation === false
+      ? null
+      : ( <Popover
+            className="popover--large"
+            id="solo-account-member-confirmation-popover"
+            placement="right"
+            positionLeft={68}
+            positionTop={-44}
+            title="No additional members?"
+          >
+            <p>
+              Please confirm that you are the only member you are adding at this time.
+            </p>
+
+            <div styleName="popover__controls">
+              <span
+                styleName="popover__control popover__control--close"
+                onClick={this.clearSoloAccountMemberConfirmation}
+              >
+                <FaClose />
+              </span>
+
+              <input
+                type="button"
+                styleName="popover__control button--short"
+                onClick={this.checkout}
+                value="Yes"
+              />
+            </div>
+          </Popover>
+      );
+
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
@@ -571,11 +648,16 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     </p>
 
                     <div className="text-center">
+                      <div styleName="popover__container">
+                        {soloAccountMemberConfirmationPopover}
+                      </div>
+
                       <input
                         type="button"
                         styleName="large-button--secondary"
-                        value="CHECKOUT"
+                        disabled={soloAccountMemberConfirmation === true}
                         onClick={this.checkout}
+                        value="CHECKOUT"
                       />
                     </div>
                   </div>
