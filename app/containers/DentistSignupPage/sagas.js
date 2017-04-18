@@ -11,16 +11,20 @@ Imports
 import mapValues from 'lodash/mapValues';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
-import { stopSubmit } from 'redux-form';
+import { change, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, call, put, fork, cancel } from 'redux-saga/effects';
 import request from 'utils/request';
+import 'whatwg-fetch';
 
 // local
 import {
   // fetch
   DENTIST_SPECIALTIES_REQUEST,
   PRICING_CODES_REQUEST,
+
+  // upload image
+  UPLOAD_IMAGE_REQUEST,
 
   // signup
   DENTIST_SIGNUP_REQUEST,
@@ -29,6 +33,9 @@ import {
   // fetch
   dentistSpecialtiesSuccess,
   pricingCodesSuccess,
+
+  // upload image
+  uploadImageSuccess,
 
   // signup
   signupSuccess,
@@ -47,12 +54,14 @@ export default [
 function* main () {
   const watcherA = yield fork(fetchDentistSpecialties);
   const watcherB = yield fork(fetchPricingCodes);
-  const watcherC = yield fork(signupWatcher);
+  const watcherC = yield fork(uploadImageWatcher);
+  const watcherD = yield fork(signupWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
+  yield cancel(watcherD);
 }
 
 
@@ -80,6 +89,45 @@ function* fetchPricingCodes () {
       console.log(e);
     }
   });
+}
+
+
+/*
+Upload Image Sagas
+================================================================================
+*/
+function* uploadImageWatcher () {
+  while (true) {
+    const { field, file, } = yield take(UPLOAD_IMAGE_REQUEST);
+
+    const requestURL = `/api/v1/users/upload-photos`;
+    const body = new FormData();
+    body.append("photos", file);
+
+    const params = {
+      method: 'POST',
+      body,
+    };
+
+    // NOTE: Normally we call the `request` util, but that overrides the
+    // Content-Type header and we need to keep it as FormData, so we're
+    // calling Fetch directly here.
+    const rawResponse = yield call(fetch, requestURL, params);
+
+    // 200 range response
+    if (rawResponse.ok) {
+      const response = rawResponse.json();
+      const location = response.data[0].location;
+
+      yield put(uploadImageSuccess(location));
+      yield put(change('dentist-signup', field, location));
+    }
+
+    else {
+      console.log(rawResponse);
+    }
+
+  }
 }
 
 

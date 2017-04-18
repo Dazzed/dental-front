@@ -18,6 +18,10 @@ import {
   PRICING_CODES_SUCCESS,
   PRICING_CODES_ERROR,
 
+  // image upload
+  UPLOAD_IMAGE_REQUEST,
+  UPLOAD_IMAGE_SUCCESS,
+
   // signup
   DENTIST_SIGNUP_REQUEST,
   DENTIST_SIGNUP_SUCCESS,
@@ -69,6 +73,26 @@ export function pricingCodesError (payload) {
   return {
     type: PRICING_CODES_ERROR,
     payload
+  };
+}
+
+
+/*
+Image Upload Actions
+================================================================================
+*/
+export function uploadImageRequest (field, file) {
+  return {
+    type: UPLOAD_IMAGE_REQUEST,
+    field,
+    file,
+  };
+}
+
+export function uploadImageSuccess (url) {
+  return {
+    type: UPLOAD_IMAGE_SUCCESS,
+    url,
   };
 }
 

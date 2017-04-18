@@ -15,6 +15,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
+import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import {
   Field,
@@ -59,19 +60,28 @@ const valueSelector = formValueSelector('dentist-signup');
 
 const mapStateToProps = (state) => {
   const {
+    images,
     marketplace,
     pricing,
     workingHours,
-  } = valueSelector(state, 'marketplace', 'pricing', 'workingHours');
+  } = valueSelector(state, 'images', 'marketplace', 'pricing', 'workingHours');
 
   // precondition: Redux-form hasn't initialized yet.  Note that the
   // `intitialValues` prop is also unavailable, so just provide a sane guess
   // while the page loads.
-  if ( marketplace === undefined
+  if ( images === undefined
+    && marketplace === undefined
     && pricing === undefined
     && workingHours === undefined
   ) {
     return {
+      // images
+      images: {
+        logo: null,
+        avatar: null,
+        office: [],
+      },
+
       // marketplace
       optedIntoMarketplace: true,
 
@@ -162,7 +172,30 @@ const mapStateToProps = (state) => {
     }
   }
 
+  const imageLocations = {
+    logo: null,
+    avatar: null,
+    office: [],
+  };
+
+  if (images) {
+    imageLocations.logo = images.logo || null;
+    imageLocations.avatar = images.avatar || null;
+
+    if (images.office) {
+      imageLocations.office = [
+        images.office.idx0,
+        images.office.idx1,
+        images.office.idx2,
+      ];
+    }
+  }
+
+
   return {
+    // images
+    images: imageLocations,
+
     // marketplace
     optedIntoMarketplace: marketplace.optIn === true,
 
@@ -219,9 +252,14 @@ class DentistSignupForm extends React.Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
+    // passed in - events
+    onImageUpload: React.PropTypes.func.isRequired,
+
     // mapped - state
+    images: React.PropTypes.object.isRequired,
     officeClosed: React.PropTypes.object.isRequired,
     optedIntoMarketplace: React.PropTypes.bool.isRequired,
+    recommendedFees: React.PropTypes.object.isRequired,
     yearlyFeeActivated: React.PropTypes.object.isRequired,
 
     // redux form
@@ -234,19 +272,16 @@ class DentistSignupForm extends React.Component {
   Actions
   ------------------------------------------------------------
   */
-  onUploadOfficeLogoClick = () => {
-    // TODO
-    alert("TODO: Upload Office Logo");
+  onUploadOfficeLogo = (files) => {
+    this.props.onImageUpload('image.logo', files[0]);
   }
 
-  onUploadProfilePhotoClick = () => {
-    // TODO
-    alert("TODO: Upload Profile Photo");
+  onUploadProfilePhoto = (files) => {
+    this.props.onImageUpload('image.avatar', files[0]);
   }
 
-  onUploadOfficeImageClick = (index) => {
-    // TODO
-    alert("TODO: Upload Office Image #" + index);
+  onUploadOfficeImage = (index, files) => {
+    this.props.onImageUpload(`image.office.idx${index}`, files[0]);
   }
 
   /*
@@ -261,9 +296,10 @@ class DentistSignupForm extends React.Component {
       services,
 
       // mapped - state
-      recommendedFees,
+      images,
       officeClosed,
       optedIntoMarketplace,
+      recommendedFees,
       yearlyFeeActivated,
 
       // redux form
@@ -509,11 +545,18 @@ class DentistSignupForm extends React.Component {
               <FormGroup>
                 <div className="col-sm-12">
                   <ControlLabel>Upload Office Logo:</ControlLabel>
-                  <div styleName="image-uploader" onClick={this.onUploadOfficeLogoClick}>
-                    <span styleName="image-uploader__plus-icon">
-                      <FaPlus size={48} />
-                    </span>
-                  </div>
+
+                  <Dropzone
+                    onDrop={this.onUploadOfficeLogo}
+                    multiple={false}
+                  >
+                    <div styleName="image-uploader">
+                      <span styleName="image-uploader__plus-icon">
+                        <FaPlus size={48} />
+                      </span>
+                    </div>
+                  </Dropzone>
+
                 </div>
               </FormGroup>
             </div>
@@ -522,11 +565,18 @@ class DentistSignupForm extends React.Component {
               <FormGroup>
                 <div className="col-sm-12">
                   <ControlLabel>Upload Profile Picture:</ControlLabel>
-                  <div styleName="image-uploader" onClick={this.onUploadProfilePhotoClick}>
-                    <span styleName="image-uploader__plus-icon">
-                      <FaPlus size={48} />
-                    </span>
-                  </div>
+
+                  <Dropzone
+                    onDrop={this.onUploadProfilePhoto}
+                    multiple={false}
+                  >
+                    <div styleName="image-uploader">
+                      <span styleName="image-uploader__plus-icon">
+                        <FaPlus size={48} />
+                      </span>
+                    </div>
+                  </Dropzone>
+
                 </div>
               </FormGroup>
             </div>
@@ -538,27 +588,42 @@ class DentistSignupForm extends React.Component {
 
               <Row>
                 <div className="col-sm-4">
-                  <div styleName="image-uploader" onClick={this.onUploadOfficeImageClick.bind(this, 0)}>
-                    <span styleName="image-uploader__plus-icon">
-                      <FaPlus size={48} />
-                    </span>
-                  </div>
+                  <Dropzone
+                    onDrop={this.onUploadOfficeImage.bind(this, 0)}
+                    multiple={false}
+                  >
+                    <div styleName="image-uploader">
+                      <span styleName="image-uploader__plus-icon">
+                        <FaPlus size={48} />
+                      </span>
+                    </div>
+                  </Dropzone>
                 </div>
 
                 <div className="col-sm-4">
-                  <div styleName="image-uploader" onClick={this.onUploadOfficeImageClick.bind(this, 1)}>
-                    <span styleName="image-uploader__plus-icon">
-                      <FaPlus size={48} />
-                    </span>
-                  </div>
+                  <Dropzone
+                    onDrop={this.onUploadOfficeImage.bind(this, 1)}
+                    multiple={false}
+                  >
+                    <div styleName="image-uploader">
+                      <span styleName="image-uploader__plus-icon">
+                        <FaPlus size={48} />
+                      </span>
+                    </div>
+                  </Dropzone>
                 </div>
 
                 <div className="col-sm-4">
-                  <div styleName="image-uploader" onClick={this.onUploadOfficeImageClick.bind(this, 2)}>
-                    <span styleName="image-uploader__plus-icon">
-                      <FaPlus size={48} />
-                    </span>
-                  </div>
+                  <Dropzone
+                    onDrop={this.onUploadOfficeImage.bind(this, 2)}
+                    multiple={false}
+                  >
+                    <div styleName="image-uploader">
+                      <span styleName="image-uploader__plus-icon">
+                        <FaPlus size={48} />
+                      </span>
+                    </div>
+                  </Dropzone>
                 </div>
               </Row>
 

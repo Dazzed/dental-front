@@ -18,6 +18,13 @@ export const PRICING_CODES_SUCCESS = 'DentistSignupPage/PRICING_CODES_SUCCESS';
 export const PRICING_CODES_ERROR   = 'DentistSignupPage/PRICING_CODES_ERROR';
 
 /*
+Image Upload Constants
+------------------------------------------------------------
+*/
+export const UPLOAD_IMAGE_REQUEST = 'DentistSignupPage/UPLOAD_IMAGE_REQUEST';
+export const UPLOAD_IMAGE_SUCCESS   = 'DentistSignupPage/UPLOAD_IMAGE_SUCCESS';
+
+/*
 Signup Constants
 ------------------------------------------------------------
 */

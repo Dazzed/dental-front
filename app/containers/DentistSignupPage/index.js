@@ -34,6 +34,7 @@ import {
   clearSignupStatus,
   dentistSpecialtiesRequest,
   pricingCodesRequest,
+  uploadImageRequest,
   signupRequest,
 } from './actions';
 import {
@@ -67,6 +68,9 @@ function mapDispatchToProps (dispatch) {
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
     getPricingCodes: () => dispatch(pricingCodesRequest()),
     getServices: () => dispatch(requestServices()),
+
+    // image upload
+    uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
 
     // signup
     changeRoute: (url) => dispatch(push(url)),
@@ -106,6 +110,9 @@ export default class SignupPage extends Component {
     getDentistSpecialties: React.PropTypes.func.isRequired,
     getServices: React.PropTypes.func.isRequired,
 
+    // image upload - dispatch
+    uploadImage: React.PropTypes.func.isRequired,
+
     // signup - state
     accountInfo: React.PropTypes.shape({
       fullName: React.PropTypes.string.isRequired,
@@ -138,6 +145,10 @@ export default class SignupPage extends Component {
   Events
   ------------------------------------------------------------
   */
+  onImageUpload = (field, file) => {
+    this.props.uploadImage(field, file);
+  }
+
   onSignupRequest = (data) => {
     const formattedData = formatDentistSignupFormSubmissionData(data);
 
@@ -236,6 +247,8 @@ export default class SignupPage extends Component {
 
                   initialValues={initialDentistSignupFormValues}
                   onSubmit={this.onSignupRequest}
+
+                  onImageUpload={this.onImageUpload}
                 />
               </div>
 
