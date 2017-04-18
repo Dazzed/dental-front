@@ -94,6 +94,7 @@ export default class HomePage extends React.Component {
         RHS Floating Menu
         ------------------------------------------------------------
         */}
+        {/*
         <div styleName="floating-menu">
           <ul styleName="login-links">
             <li styleName="login-links__link--secondary">
@@ -105,12 +106,14 @@ export default class HomePage extends React.Component {
             </li>
           </ul>
         </div>
+        */}
 
 
         {/*
         First Block
         ------------------------------------------------------------
         */}
+        {/*
         <div styleName="first-block">
           <header>
             <h1>
@@ -132,12 +135,33 @@ export default class HomePage extends React.Component {
             </p>
           </div>
         </div>
+        */}
+
+        <div styleName="first-block">
+          <header>
+            <h1>
+              <img src={logo} alt="DentalHQ Logo" />
+            </h1>
+          </header>
+
+          <div styleName="next-section-cover">
+            <h3>
+              Coming Soon!
+            </h3>
+            <p>
+              We just have to finish building it first. ;)
+              <br />
+              <br />
+            </p>
+          </div>
+        </div>
 
         {/*
         Second Block
         ------------------------------------------------------------
         -->
         */}
+        {/*
         <div styleName="second-block">
           <div className="container">
 
@@ -231,11 +255,14 @@ export default class HomePage extends React.Component {
             </div>
           </div>
         </div>
+        */}
+
 
         {/*
         Third Block
         ------------------------------------------------------------
         */}
+        {/*
         <div styleName="third-block">
           <div styleName="third-block__overlay">
             <div className="container">
@@ -247,11 +274,13 @@ export default class HomePage extends React.Component {
             </div>
           </div>
         </div>
+        */}
 
         {/*
         Fourth Block
         ------------------------------------------------------------
         */}
+        {/*
         <div styleName="fourth-block">
           <div styleName="fourth-block__overlay">
             <div className="container">
@@ -280,11 +309,18 @@ export default class HomePage extends React.Component {
             </div>
           </div>
         </div>
+        */}
 
         {/*
         Footer
         ------------------------------------------------------------
         */}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <Footer />
 
       </div>
