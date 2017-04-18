@@ -278,8 +278,8 @@ function* submitPatientPaymentFormWatcher () {
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
       yield put(stopSubmit('checkout', errors));
-
       yield put(change('checkout', 'cardCode', null));
     }
   }

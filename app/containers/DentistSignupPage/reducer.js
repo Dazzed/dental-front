@@ -99,7 +99,7 @@ export default function reducer (state = initialState, action) {
         dentistCreated: false,
         accountInfo: {
           fullName: '',
-          accountInfo: '',
+          loginEmail: '',
         },
       };
 

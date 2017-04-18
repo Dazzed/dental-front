@@ -49,12 +49,12 @@ Initial State
 ------------------------------------------------------------
 */
 const initialState = {
-  cardDetails: null,
   dentist: false,
   dentistError: null,
   user: {
     id: uniqueId(),
     members: [],
+    origin: "internal",
   },
 
   editingActive: false,
@@ -265,7 +265,6 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     case SUBMIT_CHECKOUT_FORM:
       return {
         ...state,
-        cardDetails: action.cardDetails,
         editingActive: false,
         editing: null,
       };
@@ -287,7 +286,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         patientCreated: false,
         accountInfo: {
           fullName: '',
-          accountInfo: '',
+          loginEmail: '',
         },
       };
 

@@ -54,7 +54,6 @@ import {
   // checkout
   setEditingCheckout,
   clearEditingCheckout,
-  submitCheckoutForm,
 
   // signup
   signupRequest,
@@ -135,11 +134,10 @@ function mapDispatchToProps (dispatch) {
     resetCheckoutForm: () => dispatch(resetForm('checkout')),
     setEditingCheckout: (cardDetails) => dispatch(setEditingCheckout(cardDetails)),
     clearEditingCheckout: () => dispatch(clearEditingCheckout()),
-    submitCheckoutForm: (values) => dispatch(submitCheckoutForm(values)),
 
     // signup
     clearSignupStatus: () => dispatch(clearSignupStatus()),
-    makeSignupRequest: (data) => dispatch(signupRequest(data)),
+    makeSignupRequest: (user, paymentInfo) => dispatch(signupRequest(user, paymentInfo)),
   };
 }
 
@@ -203,7 +201,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
     resetCheckoutForm: React.PropTypes.func.isRequired,
     setEditingCheckout: React.PropTypes.func.isRequired,
     clearEditingCheckout: React.PropTypes.func.isRequired,
-    submitCheckoutForm: React.PropTypes.func.isRequired,
 
     // signup - state
     accountInfo: React.PropTypes.shape({
@@ -309,22 +306,13 @@ export default class PatientOffsiteSignupPage extends React.Component {
   }
 
   // checkout
-  handleCheckoutFormSubmit = (values) => {
-    this.props.submitCheckoutForm(values);
-    // TODO: complete signup - but here or as part of the submit checkout form action?
-    //                       - checkout form action will likely need saga,
-    //                         so have the saga call the complete signup action
-    //                         on success
+  handleCheckoutFormSubmit = (paymentInfo) => {
+    this.props.makeSignupRequest(this.props.user, paymentInfo);
   }
 
   cancelCheckoutFormAction = () => {
     this.props.clearEditingCheckout();
   }
-
-  // signup
-  onSignupRequest = (data) => {
-    this.props.makeSignupRequest(data);
-  }   
 
   /*
   Render
@@ -689,7 +677,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
           onCancel={this.cancelCheckoutFormAction}
 
           initialValues={editingCheckout}
-          onFormSubmit={this.handleCheckoutFormSubmit}
+          onSubmit={this.handleCheckoutFormSubmit}
         />
 
         <Modal

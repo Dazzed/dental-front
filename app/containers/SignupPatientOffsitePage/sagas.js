@@ -13,7 +13,7 @@ import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { stopSubmit } from 'redux-form';
+import { change, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
@@ -87,23 +87,29 @@ TODO: omit the `id` property on each member
 */
 function* signupWatcher () {
   while (true) {
-    const { payload, } = yield take(SIGNUP_REQUEST);
+    const { user, paymentInfo, } = yield take(SIGNUP_REQUEST);
 
     try {
       const requestURL = '/api/v1/accounts/signup';
       const params = {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(user),
       };
 
       const response = yield call(request, requestURL, params);
-      yield put(signupSuccess(`${payload.firstName} ${payload.lastName}`));
+
+      // TODO: send the payment info after the user account has been created
+
+      yield put(signupSuccess({
+        fullName: `${payload.user.firstName} ${payload.user.lastName}`,
+        loginEmail: payload.user.email,
+      }));
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
-
       yield put(toastrActions.error('', 'Please fix the errors on the form!'));
-      yield put(stopSubmit('patientOffsiteSignup', errors));
+      yield put(stopSubmit('checkout', errors));
+      yield put(change('checkout', 'cardCode', null));
     }
   }
 }

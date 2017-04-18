@@ -132,28 +132,24 @@ export function clearEditingCheckout () {
   };
 }
 
-export function submitCheckoutForm (cardDetails) {
-  return {
-    type: SUBMIT_CHECKOUT_FORM,
-    cardDetails,
-  };
-}
+// submitting the checkout form triggers the Signup process.
 
 /*
 Signup
 ------------------------------------------------------------
 */
-export function signupRequest (payload) {
+export function signupRequest (user, paymentInfo) {
   return {
     type: SIGNUP_REQUEST,
-    payload,
+    user,
+    paymentInfo
   };
 }
 
-export function signupSuccess (fullName) {
+export function signupSuccess (payload) {
   return {
     type: SIGNUP_SUCCESS,
-    fullName,
+    payload,
   };
 }
 
