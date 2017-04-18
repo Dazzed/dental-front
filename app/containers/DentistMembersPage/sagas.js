@@ -254,11 +254,12 @@ function* submitPatientPaymentFormWatcher () {
         'expiry',
         'cvc',
         'zip',
-        'periodontalDiseaseWaiver',
-        'cancellationFeeWaiver',
-        'reEnrollmentFeeWaiver',
-        'termsAndConditions',
       ),
+
+      cancellationFeeWaiver: payload.cancellationFeeWaiver,
+      periodontalDiseaseWaiver: payload.periodontalDiseaseWaiver,
+      reEnrollmentFeeWaiver: payload.reEnrollmentFeeWaiver,
+      termsAndConditions: payload.termsAndConditions,
     };
     allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
 
