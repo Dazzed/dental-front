@@ -22,9 +22,6 @@ import {
   DAYS, MONTHS, YEARS
 } from 'common/constants';
 
-// local
-import './styles.css';
-
 
 /*
 Segmented Date Picker
@@ -75,8 +72,14 @@ class SegmentedDatePicker extends React.Component {
       const dateString = dateComponents.month
                        + "/" + dateComponents.day
                        + "/" + dateComponents.year;
-      const date = moment(dateString, "M/D/YYYY");
-      this.props.input.onChange(date.toISOString());
+      const date = moment(dateString, "M/D/YYYY").toISOString();
+      this.props.input.onChange(date);
+
+      // Make sure to blur the Field once after all the components are set,
+      // so that the meta.touched property will be set to true.
+      if (this.props.meta.touched === false) {
+        this.props.input.onBlur(date);
+      }
     }
   }
 

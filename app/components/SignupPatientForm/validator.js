@@ -30,7 +30,8 @@ const schema = {
   birthDate: {
     presence: true,
     datetime: {
-      latest: moment().toISOString(),
+      latest: moment().subtract(18, 'years').toISOString(),
+      message: '^You need to be atleast 18 years old to create an account.',
     },
   },
   sex: {
