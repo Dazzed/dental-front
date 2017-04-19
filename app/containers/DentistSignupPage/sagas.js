@@ -107,6 +107,9 @@ function* uploadImageWatcher () {
 
       const params = {
         method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
         body,
       };
 
@@ -115,8 +118,7 @@ function* uploadImageWatcher () {
       // calling Fetch directly here.
       const rawResponse = yield call(fetch, requestURL, params);
 
-      // 200 range response
-      if (rawResponse.ok) {
+      if (rawResponse.ok) { // response.status >= 200 && response.status < 300
         const response = yield call(rawResponse.json.bind(rawResponse));
         const location = response.data[0].location;
 
