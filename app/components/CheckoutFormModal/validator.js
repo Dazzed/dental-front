@@ -43,7 +43,7 @@ const schema = {
   expiry: {
     presence: true,
     format: {
-      pattern: /^(0[1-9]|1[1-2])\/(17|18|19|[2-9][0-9])$/,
+      pattern: /^(0[1-9]|1[0-2])\/(17|18|19|[2-9][0-9])$/,
       message: '^Please enter a 2 digit month number followed by a 2 digit year number: MM/YY.',
     }
   },
