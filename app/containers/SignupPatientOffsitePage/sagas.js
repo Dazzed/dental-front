@@ -107,7 +107,9 @@ function* signupWatcher () {
     const signupResponse = yield call(makeSignupRequest, user);
 
     if (signupResponse) {
-      const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, signupResponse.user.id);
+      // TODO: sending the checkout info is disabled until the endpoint is working
+      const checkoutResponse = true;
+      // const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, signupResponse.user.id);
 
       if (checkoutResponse) {
         yield put(signupSuccess({
