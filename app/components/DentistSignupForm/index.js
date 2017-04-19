@@ -539,6 +539,8 @@ class DentistSignupForm extends React.Component {
         Image Uploaders
         ------------------------------------------------------------
         */}
+        {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+        {/*
         <FormSection name="images">
           <Row>
             <div className="col-sm-4">
@@ -632,6 +634,7 @@ class DentistSignupForm extends React.Component {
 
           <hr styleName="spacer" />
         </FormSection>
+        */}
 
         {/*
         Pricing

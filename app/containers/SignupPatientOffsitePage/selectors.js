@@ -71,8 +71,8 @@ const sortedMembersSelector = createSelector(
 
   (members) => {
     members.sort((a, b) => {
-      const aName = a.firstName + a.lastName;
-      const bName = b.firstName + b.lastName;
+      const aName = (a.firstName + a.lastName).toLowerCase();
+      const bName = (b.firstName + b.lastName).toLowerCase();
 
       if (aName < bName) {
         return -1;

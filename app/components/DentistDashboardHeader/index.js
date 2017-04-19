@@ -114,16 +114,18 @@ class DentistDashboardHeader extends React.Component {
 
     const activeMemberCount = patients.reduce(
       (activeMemberCounter, patient) => {
-        if (patient.subscription.status === "active") {
-          // TODO: Members don't have their individual subscription info /
-          //       membership fields, so they can't be investigated as active or
-          //       not on an individual basis.  Once this is available, only
-          //       add family members to the count if they are individually
-          //       active.
-          activeMemberCounter += 1 + patient.members.length; // patient + family members
-        }
 
-        return activeMemberCounter;
+        const patientActiveMemberCount = patient.members.reduce(
+          (patientActiveMemberCounter, member) => {
+            if (member.subscription.status === "active") {
+              patientActiveMemberCounter += 1;
+            }
+            return patientActiveMemberCounter;
+          },
+          0
+        );
+
+        return activeMemberCounter + patientActiveMemberCount;
       },
       0
     );
@@ -168,7 +170,10 @@ class DentistDashboardHeader extends React.Component {
                 
                 <div styleName="dentist__scores">
                   <ReviewScore score={user.rating} />
+                  {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+                  {/*
                   <PriceScore score={priceScore} />
+                  */}
                 </div>
 
                 <p styleName="dentist__address">
@@ -196,7 +201,7 @@ class DentistDashboardHeader extends React.Component {
           <div className="col-sm-3">
             <ul styleName="quick-links">
               <li>
-                <Link styleName="quick-links__link" to="/dentist/edit-office">
+                <Link styleName="quick-links__link" to="#">
                   Edit Office Info
                 </Link>
               </li>
@@ -206,17 +211,17 @@ class DentistDashboardHeader extends React.Component {
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/custom-membership">
+                <Link styleName="quick-links__link" to="#">
                   Custom Membership
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/reports">
+                <Link styleName="quick-links__link" to="#">
                   Reports
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="/dentist/marketing">
+                <Link styleName="quick-links__link" to="#">
                   Marketing Materials
                 </Link>
               </li>
@@ -234,13 +239,15 @@ class DentistDashboardHeader extends React.Component {
           <div className="col-sm-9">
             <div styleName="metrics">
               <h2 styleName="metrics__title">
-                Current Membership Fees and Activation Fees
+                Current Membership Fees
               </h2>
               <p styleName="metrics__entry">
                 Total Active Members:
                 {' '}
                 <strong styleName="metrics__value">{activeMemberCount}</strong>
               </p>
+              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+              {/*
               <p styleName="metrics__entry">
                 Total Prior Month Revenue:
                 {' '}
@@ -251,6 +258,7 @@ class DentistDashboardHeader extends React.Component {
                 {' '}
                 <strong styleName="metrics__value">${lifetimeRevenue}</strong>
               </p>
+              */}
             </div>
           </div>
 

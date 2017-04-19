@@ -77,23 +77,40 @@ const selectProcessedPatients = createSelector(
     }
 
     // sort
-    // TODO: Once individual member subscription status' are available, the
-    //       sort should take those into account.
     processedPatients = processedPatients.sort((patientA, patientB) => {
-      // one matches, the other doesn't
-      const matchA = patientA.subscription.status === sortStatus;
-      const matchB = patientB.subscription.status === sortStatus;
+      // one matches w/ some members, the other doesn't
+      const matchA = patientA.members.some((member) => {
+        return member.subscription.status === sortStatus;
+      });
+      const matchB = patientB.members.some((member) => {
+        return member.subscription.status === sortStatus;
+      });
 
-      if (matchA === false && matchB === true) {
+      if (matchA === true && matchB === false) {
         return -1;
       }
-      else if (matchA === true && matchB === false) {
+      else if (matchA === false && matchB === true) {
+        return 1;
+      }
+
+      // one matches w/ every member, the other doesn't
+      const matchAllA = patientA.members.every((member) => {
+        return member.subscription.status === sortStatus;
+      });
+      const matchAllB = patientB.members.every((member) => {
+        return member.subscription.status === sortStatus;
+      });
+
+      if (matchAllA === true && matchAllB === false) {
+        return -1;
+      }
+      else if (matchAllA === false && matchAllB === true) {
         return 1;
       }
 
       // both match or both don't match
-      const nameA = patientA.firstName + ' ' + patientA.lastName;
-      const nameB = patientB.firstName + ' ' + patientB.lastName;
+      const nameA = (patientA.firstName + ' ' + patientA.lastName).toLowerCase();
+      const nameB = (patientB.firstName + ' ' + patientB.lastName).toLowerCase();
 
       if (nameA < nameB) {
         return -1

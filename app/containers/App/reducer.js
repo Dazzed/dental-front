@@ -60,13 +60,16 @@ export default function appReducer (state = initialState, action) {
       return {
         ...state,
         services: payload.data.sort((serviceA, serviceB) => {
-          if (serviceA.name < serviceB.name) {
+          const serviceAName = serviceA.name.toLowerCase();
+          const serviceBName = serviceB.name.toLowerCase();
+
+          if (serviceAName < serviceBName) {
             return -1;
           }
-          else if (serviceA.name > serviceB.name) {
+          else if (serviceAName > serviceBName) {
             return 1;
           }
-          return 0; // serviceA === serviceB
+          return 0; // serviceAName === serviceBName
         }),
       };
 

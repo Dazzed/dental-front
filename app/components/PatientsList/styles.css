@@ -84,9 +84,6 @@ Status
   /* TODO: choose a better yellow, see MembersList css */
   color: yellow;
 }
-.status--canceled {
-  color: $color-red;
-}
 .status--inactive {
   color: $color-red;
 }

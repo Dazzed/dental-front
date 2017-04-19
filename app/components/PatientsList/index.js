@@ -149,21 +149,37 @@ class PatientsList extends React.Component {
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
+      const summaryStatus = patient.members.reduce(
+          (summaryStatus, member) => {
+            if (summaryStatus === 'active' || member.subscription.status === 'active') {
+              return 'Active';
+            }
+
+            if (summaryStatus === 'past_due' || member.subscription.status === 'past_due') {
+              return 'Late';
+            }
+
+            if (summaryStatus === 'canceled' || member.subscription.status === 'canceled') {
+              return 'Inactive';
+            }
+
+            // defaults to inactive
+            return 'Inactive';
+          },
+          'Inactive'
+        );
+
       let statusStyle = "status";
-      switch(subscription.status) {
-        case "active":
+      switch(summaryStatus) {
+        case "Active":
           statusStyle += " status--active";
           break;
 
-        case "past_due":
+        case "Late":
           statusStyle += " status--past-due";
           break;
 
-        case "canceled":
-          statusStyle += " status--canceled";
-          break;
-
-        case "inactive":
+        case "Inactive":
           statusStyle += " status--inactive";
           break;
 
@@ -176,14 +192,11 @@ class PatientsList extends React.Component {
                                  ? PREFERRED_CONTACT_METHODS[contactMethod]
                                  : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
 
-      // TODO: test the size of members when the patient is also active on the plan
-      const familySize = members.length + 1; // include the user (patient)
-
       const memberSince = moment(createdAt).format("MMMM D, YYYY");
 
-      const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
-
       const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
+
+      const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
 
       const waiveCancellationFee = !patient.cancellationFee;
       const waiveReEnrollmentFee = !patient.reEnrollmentFee;
@@ -221,7 +234,7 @@ class PatientsList extends React.Component {
                     <h3 styleName="member-overview__name">{firstName} {lastName}</h3>
                     {' '}
                     <span styleName={"member-overview__status " + statusStyle}>
-                      ({subscription.status})
+                      ({summaryStatus})
                     </span>
                   </div>
                   <div className="col-sm-5 text-right">
@@ -240,7 +253,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Family Member Joined:
                     {' '}
-                    <span styleName="member-overview__info">{familySize}</span>
+                    <span styleName="member-overview__info">{members.length}</span>
                   </div>
                 </div>
 
@@ -302,14 +315,12 @@ class PatientsList extends React.Component {
                       {/*
                       Subscription Overview
                       ------------------------------------------------------------
-                      TODO: Clarify what values to show for each member status, and
-                            how to calculate them.
                       */}
                       <div styleName="subscription-overview">
                         <p>
                           Membership:
                           <br />
-                          <span styleName={statusStyle}>{subscription.status}</span>
+                          <span styleName={statusStyle}>{summaryStatus}</span>
                         </p>
                         <p>
                           Recurring Payment Date:

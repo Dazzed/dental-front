@@ -53,13 +53,16 @@ export default function reducer (state = initialState, action) {
       return {
         ...state,
         dentistSpecialties: action.payload.sort((specialtyA, specialtyB) => {
-          if (specialtyA.name < specialtyB.name) {
+          const specialtyAName = specialtyA.name.toLowerCase();
+          const specialtyBName = specialtyB.name.toLowerCase();
+ 
+          if (specialtyAName < specialtyBName) {
             return -1;
           }
-          else if (specialtyA.name > specialtyB.name) {
+          else if (specialtyAName > specialtyBName) {
             return 1;
           }
-          return 0; // specialtyA === specialtyB
+          return 0; // specialtyAName === specialtyBName
         }),
       };
 
