@@ -100,33 +100,39 @@ function* uploadImageWatcher () {
   while (true) {
     const { field, file, } = yield take(UPLOAD_IMAGE_REQUEST);
 
-    const requestURL = `/api/v1/users/upload-photos`;
-    const body = new FormData();
-    body.append("photos", file);
+    try {
+      const requestURL = `/api/v1/users/upload-photos`;
+      const body = new FormData();
+      body.append("photos", file);
 
-    const params = {
-      method: 'POST',
-      body,
-    };
+      const params = {
+        method: 'POST',
+        body,
+      };
 
-    // NOTE: Normally we call the `request` util, but that overrides the
-    // Content-Type header and we need to keep it as FormData, so we're
-    // calling Fetch directly here.
-    const rawResponse = yield call(fetch, requestURL, params);
+      // NOTE: Normally we call the `request` util, but that overrides the
+      // Content-Type header and we need to keep it as FormData, so we're
+      // calling Fetch directly here.
+      const rawResponse = yield call(fetch, requestURL, params);
 
-    // 200 range response
-    if (rawResponse.ok) {
-      const response = rawResponse.json();
-      const location = response.data[0].location;
+      // 200 range response
+      if (rawResponse.ok) {
+        const response = yield call(rawResponse.json.bind(rawResponse));
+        const location = response.data[0].location;
 
-      yield put(uploadImageSuccess(location));
-      yield put(change('dentist-signup', field, location));
+        yield put(uploadImageSuccess(location));
+        yield put(change('dentist-signup', field, location));
+      }
+
+      else {
+        const error = new Error('Request endpoint Error');
+        error.res = response;
+        throw error;
+      }
+
+    } catch (err) {
+      yield put(toastrActions.error('', 'This image could not be uploaded.'));
     }
-
-    else {
-      console.log(rawResponse);
-    }
-
   }
 }
 
