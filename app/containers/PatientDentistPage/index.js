@@ -249,7 +249,7 @@ class PatientDentistPage extends React.Component {
             */}
             <div className="col-md-6">
               <div styleName="detail">
-                <p styleName="detail__content">
+                <p styleName="detail__content" className="text-justify">
                   {dentist.dentistInfo.message}
                 </p>
               </div>
@@ -325,19 +325,23 @@ class PatientDentistPage extends React.Component {
               Dentist Office Photos
               ------------------------------------------------------------
               */}
+              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+              {/*
               <div styleName="photos">
-                {/* TODO */}
                 TODO: Photos goes here...
-              </div>               
+              </div>
+              */}
 
               {/*
               Dentist Map
               ------------------------------------------------------------
               */}
+              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+              {/*
               <div styleName="map">
-                {/* TODO */}
                 TODO: Map goes here...
               </div>
+              */}
 
             </div>
           </div>
@@ -348,6 +352,8 @@ class PatientDentistPage extends React.Component {
             Dentist Services
             ------------------------------------------------------------
             */}
+            {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+            {/*
             <div className="col-md-12">
               <div styleName="detail">
                 <h3 styleName="detail__title">
@@ -355,8 +361,6 @@ class PatientDentistPage extends React.Component {
                 </h3>
 
                 <div className="row" styleName="detail__content">
-                  {/* TODO */}
-
                   <div className="col-md-3">
                     Cleanings &amp; Prevention
                     <br />
@@ -410,6 +414,7 @@ class PatientDentistPage extends React.Component {
                 </div>
               </div>
             </div>
+            */}
 
           {/* End Last Row */}
           </div>

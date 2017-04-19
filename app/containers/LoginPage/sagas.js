@@ -73,8 +73,8 @@ function* loginWatcher () {
       yield put(setAuthState(false));
       yield put(setUserData(false));
 
-      // redirect to home page
-      yield put(push('/'));
+      // redirect to login page
+      yield put(push('/accounts/login'));
     }
 
     // remove auth token from localstorage

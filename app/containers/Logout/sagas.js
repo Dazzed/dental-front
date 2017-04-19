@@ -29,7 +29,7 @@ function* logoutWatcher () {
       yield put(setAuthState(false));
       yield put(setUserData(false));
 
-      yield put(push('/'));
+      yield put(push('/accounts/login'));
     } catch (e) {
       console.log(e);
     }

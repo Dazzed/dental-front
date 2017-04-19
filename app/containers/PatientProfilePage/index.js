@@ -588,23 +588,26 @@ class PatientProfilePage extends React.Component {
                   </span>
                 </p>
 
+                {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+                {/*
                 <p>
                   <span styleName="text--bold">Card Number</span>
                   <br />
-                  Visa ending in 1731 {/* TODO */}
+                  Visa ending in 1731
                 </p>
 
                 <p>
                   <span styleName="text--bold">Name</span>
                   <br />
-                  Bob Sample {/* TODO */}
+                  Bob Sample
                 </p>
 
                 <p>
                   <span styleName="text--bold">Exp. Date</span>
                   <br />
-                  02/2019 {/* TODO */}
+                  02/2019
                 </p>
+                */}
               </div>
 
             </div>
