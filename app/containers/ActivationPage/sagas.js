@@ -28,7 +28,7 @@ function* activateUser (action) {
     // Don't allow logged-in users to activate again.
     const authToken = getItem('auth_token');
     if (authToken) {
-      yield put(push('/'));
+      yield put(push('/accounts/login'));
       return;
     }
 
