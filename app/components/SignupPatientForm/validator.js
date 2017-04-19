@@ -91,7 +91,7 @@ const schema = {
   },
   // TODO: membership type, depends on custom memberships
   // https://trello.com/c/4ncylJjw/86-core-add-support-for-custom-memberships
-  // userIsMember is optional
+  // payingMember is optional
 };
 
 export default validatorFactory(schema);

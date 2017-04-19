@@ -395,7 +395,7 @@ class SignupForm extends React.Component {
 
           <div className="col-sm-4" styleName="align-with-input">
             <Field
-              name="userIsMember"
+              name="payingMember"
               component={Checkbox}
             >
               <strong>I Will Also Be A Member</strong>

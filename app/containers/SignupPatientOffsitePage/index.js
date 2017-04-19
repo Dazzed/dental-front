@@ -261,7 +261,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     } = this.state;
 
     if ( user.members.length === 1
-      && user.userIsMember === true
+      && user.payingMember === true
       && soloAccountMemberConfirmation === false
     ) {
       this.setState({

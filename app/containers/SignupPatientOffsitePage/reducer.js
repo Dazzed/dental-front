@@ -113,7 +113,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       memberIdx = findIndex(state.user.members, { id: action.user.id });
 
       // user added themselves as a member
-      if (memberIdx === -1 && action.user.userIsMember === true) {
+      if (memberIdx === -1 && action.user.payingMember === true) {
         members = [
           ...state.user.members,
           action.user,
@@ -121,7 +121,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       }
 
       // user is already a member (and still wants to be one)
-      else if (memberIdx !== -1 && action.user.userIsMember === true) {
+      else if (memberIdx !== -1 && action.user.payingMember === true) {
         members = [
           ...state.user.members.slice(0, memberIdx),
           action.user,
@@ -130,7 +130,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
       }
 
       // user removed themselves as a member
-      else if (memberIdx !== -1 && action.user.userIsMember === false) {
+      else if (memberIdx !== -1 && action.user.payingMember === false) {
         members = [
           ...state.user.members.slice(0, memberIdx),
           ...state.user.members.slice(memberIdx + 1),
