@@ -471,6 +471,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
+          {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
+          {/*
           <div className="row">
 
             {/*
@@ -478,7 +480,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             ------------------------------------------------------------
             TODO: Pull this & the Child Membership out into their own component?
                   It's also on the Patient Membership Info Page.
-            */}
+            * /}
             <div className="col-md-offset-1 col-md-4">
               <div styleName="membership">
                 <h3 styleName="membership__title">Adult Membership</h3>
@@ -516,7 +518,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             {/*
             Child Membership
             ------------------------------------------------------------
-            */}
+            * /}
             <div className="col-md-offset-1 col-md-5">
               <div styleName="membership">
                 <h3 styleName="membership__title">
@@ -556,8 +558,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
               </div>
             </div>
 
-          {/* End Membership Info */}
+          {/* End Membership Info * /}
           </div>
+          */}
         </PageHeader>
 
           <div className="container">
