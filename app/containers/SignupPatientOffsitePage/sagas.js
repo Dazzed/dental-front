@@ -9,6 +9,7 @@ Imports
 */
 // libs
 import get from 'lodash/get';
+import findIndex from 'lodash/findIndex';
 import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
@@ -83,15 +84,10 @@ function* dentistFetcher () {
 /*
 Signup
 ------------------------------------------------------------
-TODO: omit the `id` property on each member???
-        - but don't delete it from the member object stored in the state in case the
-          signup fails and we still need it (to identify members if there are
-          further change).
-
 TODO: remove the user from the `user.members` array (if they opted in to the membership)?
         - again, don't update the redux state w/ this change
 
-For both, see:
+See:
 
   - https://trello.com/c/jVMGmXBz/84-patient-create-offsite-patient-signup-page
   - https://gigster.slack.com/archives/G3PCN7J69/p1492596171530996?thread_ts=1492589510.012543&cid=G3PCN7J69
@@ -106,12 +102,11 @@ function* signupWatcher () {
     //       created temporary id only used / understood by the frontend.
     const signupResponse = yield call(makeSignupRequest, user);
 
-    if (signupResponse) {
-      // TODO: sending the checkout info is disabled until the endpoint is working
-      const checkoutResponse = true;
-      // const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, signupResponse.user.id);
+    if (signupResponse !== false) {
+      const realUserId = signupResponse.data[0].id;
+      const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, realUserId);
 
-      if (checkoutResponse) {
+      if (checkoutResponse !== false) {
         yield put(signupSuccess({
           fullName: `${user.firstName} ${user.lastName}`,
           loginEmail: user.email,
@@ -122,11 +117,38 @@ function* signupWatcher () {
 }
 
 function* makeSignupRequest (user) {
+  // NOTE: The user and each member have fake `id` fields to keep track of them
+  //       while the user is filling out the form.  These need to be removed,
+  //       but without messing up the existing objects in case they are still
+  //       needed (i.e. a signup error occurs and the user must change some
+  //       information before submitting again).
+  //
+  // NOTE: The user is also included in the members array if they have opted
+  //       into the membership.  They need to be removed, but again without
+  //       messing up the existing objects in case they are still needed.
+  const cleanedMembers = user.members
+    .filter((member) => {
+      return member.id !== user.id;
+    })
+    .map((member) => {
+      return {
+        ...member,
+        id: undefined,
+      };
+    });
+
+  const cleanedUser = {
+    ...user,
+    id: undefined,
+
+    members: cleanedMembers,
+  };
+
   try {
     const requestURL = '/api/v1/accounts/signup';
     const params = {
       method: 'POST',
-      body: JSON.stringify(user),
+      body: JSON.stringify(cleanedUser),
     };
 
     const response = yield call(request, requestURL, params);
@@ -137,14 +159,14 @@ function* makeSignupRequest (user) {
     yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
     yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
-    return;
+    return false;
   }
 }
 
 function* makeCheckoutRequest (paymentInfo, userId) {
   const allowedFields = {
     card: pick(
-      payload,
+      paymentInfo,
       'fullName',
       'number',
       'expiry',
@@ -152,12 +174,12 @@ function* makeCheckoutRequest (paymentInfo, userId) {
       'zip',
     ),
 
-    cancellationFeeWaiver: payload.cancellationFeeWaiver,
-    periodontalDiseaseWaiver: payload.periodontalDiseaseWaiver,
-    reEnrollmentFeeWaiver: payload.reEnrollmentFeeWaiver,
-    termsAndConditions: payload.termsAndConditions,
+    cancellationFeeWaiver: paymentInfo.cancellationFeeWaiver,
+    periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
+    reEnrollmentFeeWaiver: paymentInfo.reEnrollmentFeeWaiver,
+    termsAndConditions: paymentInfo.termsAndConditions,
   };
-  allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
+  allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
 
   try {
     const requestURL = `/api/v1/users/${userId}/payments`;
@@ -167,15 +189,15 @@ function* makeCheckoutRequest (paymentInfo, userId) {
     };
 
     const response = yield call(request, requestURL, params);
-    yield put(clearEditingCheckout);
+    yield put(clearEditingCheckout());
 
     return response;
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-    yield put(toastrActions.error('', 'Please fix the errors regarding your payment information in Step 3!'));
+    yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
     yield put(stopSubmit('checkout', errors));
     yield put(change('checkout', 'cardCode', null));
-    return;
+    return false;
   }
 }
