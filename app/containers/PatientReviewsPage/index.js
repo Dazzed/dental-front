@@ -17,6 +17,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
+import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import PatientsList from 'components/PatientsList';
@@ -117,6 +118,9 @@ Patient Reviews
 class PatientReviewsPage extends React.Component {
 
   static propTypes = {
+    // react
+    location: React.PropTypes.object.isRequired,
+
     // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
 
@@ -237,6 +241,10 @@ class PatientReviewsPage extends React.Component {
   */
   getReviews = () => {
     const {
+      // react
+      location,
+
+      // fetch
       dentist,
       user,
     } = this.props;
@@ -280,6 +288,7 @@ class PatientReviewsPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
+          <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="reviews" />
 
           <div styleName="content content--filler">
@@ -293,6 +302,7 @@ class PatientReviewsPage extends React.Component {
     if (dentist.dentistReviews.length === 0) {
       return (
         <div>
+          <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
           <PatientDashboardHeader user={user} />
           <PatientDashboardTabs active="reviews" />
 
@@ -328,6 +338,7 @@ class PatientReviewsPage extends React.Component {
 
     return (
       <div>
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
         <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="reviews" />
 

@@ -38,7 +38,6 @@ const staticPages = [
 
 const unThemedPages = [
   '/accounts/login',
-  // '/accounts/signup/my-dentist/:dentistId' is accounted for directly in the if statement (below)
   '/error/404-not-found',
   '/faq',
   '/privacy',
@@ -123,11 +122,17 @@ export default class App extends Component {
 
     let wrapperStyle = "wrapper--no-navbar";
     let navbar = null;
-    if ( unThemedPages.indexOf(pathname) < 0
-      && pathname.indexOf('/accounts/signup/my-dentist/') !== 0 // special case since it has a url param
-    ) {
+    if (unThemedPages.indexOf(pathname) < 0) {
       wrapperStyle = "wrapper";
       navbar = (<NavBar pathname={pathname} />);
+    }
+
+    // TODO: HACK - should handle this more gracefully...
+    if ( user.type === "client"
+      || pathname.indexOf('/accounts/signup/my-dentist/') !== 0 // special case since it has a url param
+    ) {
+      wrapperStyle = "wrapper";
+      navbar = null;
     }
 
     return (

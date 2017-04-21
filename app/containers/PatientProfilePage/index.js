@@ -24,6 +24,7 @@ import CheckoutFormModal from 'components/CheckoutFormModal';
 import FamilyMembersList from 'components/FamilyMembersList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
+import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
@@ -163,6 +164,9 @@ Profile
 class PatientProfilePage extends React.Component {
 
   static propTypes = {
+    // react
+    location: React.PropTypes.object.isRequired,
+
     // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
 
@@ -353,6 +357,9 @@ class PatientProfilePage extends React.Component {
   */
   render () {
     const {
+      // react
+      location,
+
       // fetch
       dentist,
       members,
@@ -374,6 +381,7 @@ class PatientProfilePage extends React.Component {
     if (user === false || members === false || dentist === false) {
       return (
         <div>
+          <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="profile" />
 
           <div styleName="content">
@@ -450,6 +458,7 @@ class PatientProfilePage extends React.Component {
 
     return (
       <div>
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
         <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="profile" />
 

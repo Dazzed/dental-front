@@ -50,6 +50,8 @@ NavBar
   .navbar__brand {
     display: block;
     height: 100%;
+
+    text-align: center;
   }
 
   .navbar__brand__link {

@@ -18,6 +18,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
+import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import { changePageTitle } from 'containers/App/actions';
@@ -92,6 +93,9 @@ Patient Membership Info
 class PatientMembershipInfoPage extends React.Component {
 
   static propTypes = {
+    // react
+    location: React.PropTypes.object.isRequired,
+
     // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
 
@@ -157,6 +161,9 @@ class PatientMembershipInfoPage extends React.Component {
   */
   render () {
     const {
+      // react
+      location,
+
       // fetch
       dataLoaded,
       dentist,
@@ -196,6 +203,7 @@ class PatientMembershipInfoPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
+          <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="memberships" />
 
           <div styleName="content content--filler">
@@ -211,6 +219,7 @@ class PatientMembershipInfoPage extends React.Component {
     */
     return (
       <div>
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
         <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="memberships" />
 

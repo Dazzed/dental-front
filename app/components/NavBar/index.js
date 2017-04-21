@@ -19,8 +19,7 @@ import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
 // app
-import logo from 'assets/images/logo.png';
-// import logo from 'assets/images/wells-family-dentistry-logo.png';
+import dentalhqLogo from 'assets/images/logo.png';
 import { selectCurrentUser } from 'containers/App/selectors';
 
 // local
@@ -52,6 +51,10 @@ export default class NavBar extends React.Component {
       React.PropTypes.bool
     ]),
     pathname: React.PropTypes.string,
+    logo: React.PropTypes.oneOfType([
+      React.PropTypes.string, // show custom logo
+      React.PropTypes.bool,   // show no logo (i.e. custom logo url is loading)
+    ]),                       // null => show dentalHQ logo
   };
 
   returnLinks = {
@@ -68,11 +71,16 @@ export default class NavBar extends React.Component {
   }
 
   render () {
-    const { firstName, lastName, avatar } = this.props.loggedInUser;
+    const { firstName, lastName, avatar, } = this.props.loggedInUser;
     const fullName = `${firstName} ${lastName}`;
     const returnLink = this.returnLinks.hasOwnProperty(this.props.pathname)
                      ? this.returnLinks[this.props.pathname]
                      : null;
+
+    let logoUrl = this.props.logo;
+    if (logoUrl === null || logoUrl === undefined) {
+      logoUrl = dentalhqLogo;
+    }
 
     return (
       <Navbar fixedTop styleName="navbar">
@@ -84,7 +92,9 @@ export default class NavBar extends React.Component {
           <div className="col-md-4" styleName="navbar__col">
             <div styleName="navbar__brand">
               <Link to="/" styleName="navbar__brand__link">
-                <img src={logo} alt="DentalHQ Logo" styleName="navbar__brand__img" />
+                {logoUrl && (
+                  <img src={logoUrl} alt="DentalHQ Logo" styleName="navbar__brand__img" />
+                )}
               </Link>
             </div>
           </div>

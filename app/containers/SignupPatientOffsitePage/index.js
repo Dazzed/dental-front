@@ -27,6 +27,7 @@ import CheckoutFormModal from 'components/CheckoutFormModal';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
 import MembersList from 'components/MembersList';
+import NavBar from 'components/NavBar';
 import PageHeader from 'components/PageHeader';
 import SignupPatientForm from 'components/SignupPatientForm';
 
@@ -146,6 +147,9 @@ Patient Offsite Signup
 export default class PatientOffsiteSignupPage extends React.Component {
 
   static propTypes = {
+    // react
+    location: React.PropTypes.object.isRequired,
+
     // app - dispatch
     changeRoute: React.PropTypes.func.isRequired,
 
@@ -315,6 +319,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
   */
   render () {
     const {
+      // react
+      location,
+
       // fetch
       dentist,
       dentistError,
@@ -351,6 +358,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     if (dentistError !== null) {
       return (
         <div styleName="container-wrapper">
+          <NavBar pathname={location.pathname} logo={false} />
           <PageHeader title="Signup for a Patient Account" borderContent={borderContent} />
 
           <div className="container">
@@ -387,6 +395,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     if (dentist === false) {
       return (
         <div styleName="container-wrapper">
+          <NavBar pathname={location.pathname} logo={false} />
           <PageHeader title="Signup for a Patient Account" borderContent={borderContent} />
 
           <div className="container">
@@ -465,6 +474,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     return (
       <div styleName="container-wrapper">
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
           {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
           {/*

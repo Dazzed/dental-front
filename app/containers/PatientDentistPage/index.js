@@ -20,6 +20,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import Avatar from 'components/Avatar';
 import LoadingSpinner from 'components/LoadingSpinner';
+import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import ReviewFormModal from 'components/ReviewFormModal';
@@ -87,6 +88,9 @@ Dentist
 class PatientDentistPage extends React.Component {
 
   static propTypes = {
+    // react
+    location: React.PropTypes.object.isRequired,
+
     // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
 
@@ -145,6 +149,9 @@ class PatientDentistPage extends React.Component {
   */
   render () {
     const {
+      // react
+      location,
+
       // fetch
       dentist,
       user,
@@ -157,6 +164,7 @@ class PatientDentistPage extends React.Component {
     if (dentist === false) {
       return (
         <div>
+          <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="dentist" />
 
           <div styleName="content">
