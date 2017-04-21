@@ -8,7 +8,6 @@ Imports
 ------------------------------------------------------------
 */
 // libs
-import FaPlus from 'react-icons/lib/fa/plus';
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -27,6 +26,7 @@ import {
 // app
 import { US_STATES } from 'common/constants';
 import Checkbox from 'components/Checkbox';
+import DropzoneDisplay from 'components/DropzoneDisplay';
 import Input from 'components/Input';
 import InputGroup from 'components/InputGroup';
 import InputTime from 'components/InputTime';
@@ -272,19 +272,16 @@ class DentistSignupForm extends React.Component {
   Actions
   ------------------------------------------------------------
   */
-  setOfficeLogo = (info) => {
-    console.log(info);
-    alert('office logo uploaded successfully');
+  setOfficeLogo = (url) => {
+    change("user.logo", url);
   }
 
-  setProfilePicture = (info) => {
-    console.log(info);
-    alert('profile picture uploaded successfully');
+  setProfilePicture = (url) => {
+    change("user.avatar", url);
   }
 
-  setOfficeImage = (index, info) => {
-    console.log(info);
-    alert('office image #' + (index + 1) + ' has been uploaded successfully');
+  setOfficeImage = (index, url) => {
+    change(`data.officeInfo.officeImages${index}`, url);
   }
 
   /*
@@ -553,8 +550,7 @@ class DentistSignupForm extends React.Component {
                     onFinish={this.setOfficeLogo}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
-                      server: "dentalhq-dev-server.herokuapp.com",
-                      signingUrl: "/api/v1/s3/sign",
+                      signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
                       accept: "image/*",
 
@@ -563,13 +559,15 @@ class DentistSignupForm extends React.Component {
                         'x-amz-acl': 'public-read'
                       },
                     }}
-                  />
+                  >
+                    <DropzoneDisplay />
+                  </DropzoneS3Uploader>
 
                 </div>
               </FormGroup>
             </div>
 
-            <div className="col-sm-4">
+            <div className="col-sm-6">
               <FormGroup>
                 <div className="col-sm-12">
                   <ControlLabel>Upload Profile Picture:</ControlLabel>
@@ -578,8 +576,7 @@ class DentistSignupForm extends React.Component {
                     onFinish={this.setProfilePicture}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
-                      server: "dentalhq-dev-server.herokuapp.com",
-                      signingUrl: "/api/v1/s3/sign",
+                      signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
                       accept: "image/*",
 
@@ -588,7 +585,9 @@ class DentistSignupForm extends React.Component {
                         'x-amz-acl': 'public-read'
                       },
                     }}
-                  />
+                  >
+                    <DropzoneDisplay />
+                  </DropzoneS3Uploader>
 
                 </div>
               </FormGroup>
@@ -605,8 +604,7 @@ class DentistSignupForm extends React.Component {
                     onFinish={this.setOfficeImage.bind(this, 0)}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
-                      server: "dentalhq-dev-server.herokuapp.com",
-                      signingUrl: "/api/v1/s3/sign",
+                      signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
                       accept: "image/*",
 
@@ -615,7 +613,9 @@ class DentistSignupForm extends React.Component {
                         'x-amz-acl': 'public-read'
                       },
                     }}
-                  />
+                  >
+                    <DropzoneDisplay />
+                  </DropzoneS3Uploader>
                 </div>
 
                 <div className="col-sm-4">
@@ -623,8 +623,7 @@ class DentistSignupForm extends React.Component {
                     onFinish={this.setOfficeImage.bind(this, 1)}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
-                      server: "dentalhq-dev-server.herokuapp.com",
-                      signingUrl: "/api/v1/s3/sign",
+                      signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
                       accept: "image/*",
 
@@ -633,7 +632,9 @@ class DentistSignupForm extends React.Component {
                         'x-amz-acl': 'public-read'
                       },
                     }}
-                  />
+                  >
+                    <DropzoneDisplay />
+                  </DropzoneS3Uploader>
                 </div>
 
                 <div className="col-sm-4">
@@ -641,8 +642,7 @@ class DentistSignupForm extends React.Component {
                     onFinish={this.setOfficeImage.bind(this, 2)}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
-                      server: "dentalhq-dev-server.herokuapp.com",
-                      signingUrl: "/api/v1/s3/sign",
+                      signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
                       accept: "image/*",
 
@@ -651,14 +651,16 @@ class DentistSignupForm extends React.Component {
                         'x-amz-acl': 'public-read'
                       },
                     }}
-                  />
+                  >
+                    <DropzoneDisplay />
+                  </DropzoneS3Uploader>
                 </div>
               </Row>
 
             </div>
           </FormGroup>
 
-          <hr styleName="spacer" />
+          <hr styleName="spacer--after-form-group" />
         </FormSection>
 
         {/*

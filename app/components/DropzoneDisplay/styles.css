@@ -1,0 +1,129 @@
+/*
+Dropzone Display Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Dropzone Display
+================================================================================
+*/
+.dropzone-display {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1.5rem;
+  border: 3px dashed $color-secondary-transparent;
+  border-radius: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.dropzone-display__icon {
+  position: absolute;
+  left: calc(50% - 24px);
+  top: calc(50% - 24px);
+
+  color: $color-secondary-transparent;
+}
+
+.dropzone-display__img {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+Prompt
+------------------------------------------------------------
+*/
+.dropzone-display--prompt {
+  border-color: $color-secondary-transparent;
+
+  cursor: pointer;
+
+  .dropzone-display__icon {
+    color: $color-secondary-transparent;
+  }
+
+  &:hover {
+    border-color: $color-secondary-highlight;
+
+    .dropzone-display__icon {
+      color: $color-secondary-highlight;
+    }
+  }
+}
+
+/*
+Progress
+------------------------------------------------------------
+*/
+.dropzone-display--progress {
+  border-color: $color-secondary-highlight;
+
+  .dropzone-display__icon {
+    color: $color-secondary-highlight;
+  }
+
+  &:hover {
+    border-color: $color-secondary-highlight;
+
+    .dropzone-display__icon {
+      color: $color-secondary-highlight;
+    }
+  }
+}
+
+/*
+Success
+------------------------------------------------------------
+*/
+.dropzone-display--success {
+  border: none;
+  padding: 0;
+
+  cursor: pointer;
+
+  .dropzone-display__icon {
+    display: none;
+  }
+
+  &:hover {
+    border-color: $color-secondary-highlight;
+
+    .dropzone-display__icon {
+      display: inline-block;
+
+      color: $color-secondary-highlight;
+    }
+  }
+}
+
+/*
+Error
+------------------------------------------------------------
+*/
+.dropzone-display--error {
+  border-color: $color-red;
+
+  cursor: pointer;
+
+  .dropzone-display__icon {
+    color: $color-red;
+  }
+
+  &:hover {
+    border-color: $color-secondary-highlight;
+
+    .dropzone-display__icon {
+      color: $color-secondary-highlight;
+    }
+  }
+}

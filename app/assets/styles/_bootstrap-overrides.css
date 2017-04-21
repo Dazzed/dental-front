@@ -406,3 +406,16 @@ Modal
   }
 
 } /* End Modal Styles */
+
+
+/*
+React Dropzone S3 Uploader Overrides
+------------------------------------------------------------
+NOTE: It applies styles on the element directly, thus the use of `!important`.
+*/
+:global {
+  .react-dropzone-s3-uploader {
+    border: none !important;
+    border-radius: 0 !important;
+  }
+}

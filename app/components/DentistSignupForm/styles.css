@@ -64,32 +64,6 @@ Signup Form
 }
 
 /*
-Image Uploader
-------------------------------------------------------------
-*/
-.image-uploader {
-  width: 200px;
-  height: 200px;
-  margin-bottom: 1.5rem;
-  border-radius: 0.25rem;
-
-  color: $color-white;
-  background-color: rgba(189, 187, 187, 0.3); /* $color-secondary-lowlight in rgba form */
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(189, 187, 187, 0.5); /* $color-secondary-lowlight in rgba form */
-  }
-}
-
-.image-uploader__plus-icon {
-  position: relative;
-  left: calc(50% - 24px);
-  top: calc(50% - 24px);
-}
-
-/*
 Pricing Codes
 ------------------------------------------------------------
 */

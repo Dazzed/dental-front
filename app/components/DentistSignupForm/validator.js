@@ -92,8 +92,7 @@ const schema = {
   Images
   ------------------------------------------------------------
   */
-  // TODO: require images?
-  // TODO: need to actually upload them first...
+  // TODO: optional?
 
   /*
   Pricing

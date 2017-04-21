@@ -66,7 +66,6 @@ const addProdMiddlewares = (app, options) => {
 const addProxyMiddleware = (app) => {
   const pxhost = process.env.PROXY_HOST || '127.0.0.1';
   const pxport = process.env.PROXY_PORT || '3090';
-  const prefix = '/api';
   const pxURL = process.env.NODE_ENV === 'production' ?
     `${pxhost}/` : `${pxhost}:${pxport}/`;
 
@@ -78,6 +77,17 @@ const addProxyMiddleware = (app) => {
   // Proxy requests
   app.use('/api', proxy(pxURL, {
     forwardPath: (req) => {
+      const prefix = '/api';
+      const reqPath = require('url').parse(req.url).path;
+
+      return `${prefix}${reqPath}`;
+    },
+    reqBodyEncoding: null,
+  }));
+
+  app.use('/s3', proxy(pxURL, {
+    forwardPath: (req) => {
+      const prefix = '/s3';
       const reqPath = require('url').parse(req.url).path;
 
       return `${prefix}${reqPath}`;
