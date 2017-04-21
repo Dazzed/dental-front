@@ -21,6 +21,7 @@ import { push } from 'react-router-redux';
 // app
 import DentistSignupForm from 'components/DentistSignupForm';
 import formatDentistSignupFormSubmissionData from 'components/DentistSignupForm/format-submission-data';
+import LoadingSpinner from 'components/LoadingSpinner';
 import PageHeader from 'components/PageHeader';
 import {
   requestServices,
@@ -78,6 +79,60 @@ function mapDispatchToProps (dispatch) {
     makeSignupRequest: (values) => dispatch(signupRequest(values)),
   };
 }
+
+
+/*
+Redux Form
+------------------------------------------------------------
+*/
+const initialDentistSignupFormValues = {
+  marketplace: {
+    optIn: true,
+  },
+
+  pricing: {
+    adultYearlyFeeActivated: false,
+    childYearlyFeeActivated: false,
+  },
+
+  workingHours: {
+    monday: {
+      isOpen: true,
+      startAt: "09:00:00",
+      endAt:   "17:00:00",
+    },
+    tuesday: {
+      isOpen: true,
+      startAt: "09:00:00",
+      endAt:   "17:00:00",
+    },
+    wednesday: {
+      isOpen: true,
+      startAt: "09:00:00",
+      endAt:   "17:00:00",
+    },
+    thursday: {
+      isOpen: true,
+      startAt: "09:00:00",
+      endAt:   "17:00:00",
+    },
+    friday: {
+      isOpen: true,
+      startAt: "09:00:00",
+      endAt:   "17:00:00",
+    },
+    saturday: {
+      isOpen: false,
+      startAt: "10:00:00",
+      endAt:   "14:00:00",
+    },
+    sunday: {
+      isOpen: false,
+      startAt: "10:00:00",
+      endAt:   "14:00:00",
+    },
+  }
+};
 
 
 /*
@@ -171,55 +226,6 @@ export default class SignupPage extends Component {
       isSignedUp,
     } = this.props;
 
-    const initialDentistSignupFormValues = {
-      marketplace: {
-        optIn: true,
-      },
-
-      pricing: {
-        adultYearlyFeeActivated: false,
-        childYearlyFeeActivated: false,
-      },
-
-      workingHours: {
-        monday: {
-          isOpen: true,
-          startAt: "09:00:00",
-          endAt:   "17:00:00",
-        },
-        tuesday: {
-          isOpen: true,
-          startAt: "09:00:00",
-          endAt:   "17:00:00",
-        },
-        wednesday: {
-          isOpen: true,
-          startAt: "09:00:00",
-          endAt:   "17:00:00",
-        },
-        thursday: {
-          isOpen: true,
-          startAt: "09:00:00",
-          endAt:   "17:00:00",
-        },
-        friday: {
-          isOpen: true,
-          startAt: "09:00:00",
-          endAt:   "17:00:00",
-        },
-        saturday: {
-          isOpen: false,
-          startAt: "10:00:00",
-          endAt:   "14:00:00",
-        },
-        sunday: {
-          isOpen: false,
-          startAt: "10:00:00",
-          endAt:   "14:00:00",
-        },
-      }
-    };
-
     const borderContent = (
       <span className="text-uppercase">
         Please enter your office details here.  Questions?{' '}
@@ -227,6 +233,40 @@ export default class SignupPage extends Component {
       </span>
     );
 
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
+    // precondition: the data must be loaded, otherwise wait for it
+    if (dentistSpecialties.length === 0 || pricingCodes.length === 0 || services.length === 0) {
+      return (
+        <div styleName="container-wrapper">
+          <PageHeader title="Signup for a Dentist Account" borderContent={borderContent} />
+
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 col-md-offset-2">
+
+                <div styleName="signup-form-wrapper">
+                  <h2 styleName="large-title">
+                    Join DentalHQ!
+                  </h2>
+
+                  <LoadingSpinner showOnlyIcon={false} />
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      );
+    }
+
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Signup for a Dentist Account" borderContent={borderContent} />

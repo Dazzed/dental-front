@@ -60,28 +60,19 @@ const valueSelector = formValueSelector('dentist-signup');
 
 const mapStateToProps = (state) => {
   const {
-    images,
     marketplace,
     pricing,
     workingHours,
-  } = valueSelector(state, 'images', 'marketplace', 'pricing', 'workingHours');
+  } = valueSelector(state, 'marketplace', 'pricing', 'workingHours');
 
   // precondition: Redux-form hasn't initialized yet.  Note that the
   // `intitialValues` prop is also unavailable, so just provide a sane guess
   // while the page loads.
-  if ( images === undefined
-    && marketplace === undefined
+  if ( marketplace === undefined
     && pricing === undefined
     && workingHours === undefined
   ) {
     return {
-      // images
-      images: {
-        logo: null,
-        avatar: null,
-        office: [],
-      },
-
       // marketplace
       optedIntoMarketplace: true,
 
@@ -178,24 +169,7 @@ const mapStateToProps = (state) => {
     office: [],
   };
 
-  if (images) {
-    imageLocations.logo = images.logo || null;
-    imageLocations.avatar = images.avatar || null;
-
-    if (images.office) {
-      imageLocations.office = [
-        images.office.idx0,
-        images.office.idx1,
-        images.office.idx2,
-      ];
-    }
-  }
-
-
   return {
-    // images
-    images: imageLocations,
-
     // marketplace
     optedIntoMarketplace: marketplace.optIn === true,
 
@@ -256,7 +230,6 @@ class DentistSignupForm extends React.Component {
     onImageUpload: React.PropTypes.func.isRequired,
 
     // mapped - state
-    images: React.PropTypes.object.isRequired,
     officeClosed: React.PropTypes.object.isRequired,
     optedIntoMarketplace: React.PropTypes.bool.isRequired,
     recommendedFees: React.PropTypes.object.isRequired,
@@ -296,7 +269,6 @@ class DentistSignupForm extends React.Component {
       services,
 
       // mapped - state
-      images,
       officeClosed,
       optedIntoMarketplace,
       recommendedFees,
