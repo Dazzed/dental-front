@@ -32,13 +32,13 @@ import './styles.css';
 Date Picker
 ================================================================================
 */
-export default class Checkbox extends React.Component {
+export default class renderDatePicker extends React.Component {
   static propTypes = {
     input: React.PropTypes.object.isRequired,
     meta: React.PropTypes.object.isRequired,
     label: React.PropTypes.string,
     className: React.PropTypes.string,
-  } = this.propTypes;
+  };
 
   render () {
     const {
