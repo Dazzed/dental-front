@@ -15,12 +15,25 @@ const formatDentistSignupFormSubmissionData = (data) => {
   delete data.officeInfo.specialtyId;
 
   // Put the office images in an array.
+  let officeImagesIdx = 0;
   data.officeInfo.officeImages = [];
-  data.officeInfo.officeImages[0] = data.officeInfo.officeImages0;
+
+  if (data.officeInfo.officeImages0) {
+    data.officeInfo.officeImages[officeImagesIdx] = data.officeInfo.officeImages0;
+    officeImagesIdx++;
+  }
   delete data.officeInfo.officeImages0;
-  data.officeInfo.officeImages[1] = data.officeInfo.officeImages1;
+
+  if (data.officeInfo.officeImages1) {
+    data.officeInfo.officeImages[officeImagesIdx] = data.officeInfo.officeImages1;
+    officeImagesIdx++;
+  }
   delete data.officeInfo.officeImages1;
-  data.officeInfo.officeImages[2] = data.officeInfo.officeImages2;
+
+  if (data.officeInfo.officeImages2) {
+    data.officeInfo.officeImages[officeImagesIdx] = data.officeInfo.officeImages2;
+    officeImagesIdx++;
+  }
   delete data.officeInfo.officeImages2;
 
   // Move the fields about children from services to officeInfo.
