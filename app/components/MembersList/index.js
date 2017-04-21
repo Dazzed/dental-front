@@ -133,12 +133,23 @@ export default class MembersList extends React.Component {
             {subscriptionType}
           </div>
         </div>
+
+
+        {/* TODO: The subscription const is turned off until the backend
+                  includes the proper data.
+
+                  https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+        */}
+        {/* TODO: support for annual memberships */}
+        {/*
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {/* TODO: support for annual memberships */}
             ${subscription.monthly}
           </div>
         </div>
+        */}
+
+
         <div className="col-sm-3">
           {/* TODO: Enable actions for the patient / patient-user so they can
               be treated like any other member?
@@ -330,11 +341,21 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">
@@ -376,11 +397,22 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">
@@ -422,11 +454,22 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">
@@ -468,11 +511,22 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">
@@ -516,11 +570,22 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">
@@ -565,11 +630,22 @@ export default class MembersList extends React.Component {
                   Type
                 </div>
               </div>
+
+
+              {/* TODO: The subscription const is turned off until the backend
+                        includes the proper data.
+
+                        https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
+              */}
+              {/*
               <div className="col-sm-1">
                 <div styleName="members__title--first-only">
                   Fee
                 </div>
               </div>
+              */}
+
+
               {showControlCol && (
                 <div className="col-sm-3">
                   <div styleName="members__title--first-only">

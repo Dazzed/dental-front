@@ -20,11 +20,6 @@ import { push } from 'react-router-redux';
 import {
   // form actions
   reset as resetForm,
-
-  // form selectors
-  getFormValues,
-  getFormNames,
-  isValid,
 } from 'redux-form';
 
 // app
