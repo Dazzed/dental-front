@@ -6,6 +6,7 @@ be called by the `onSubmit` function passed to the `<DentistSignupForm>`
 component.
 */
 const formatDentistSignupFormSubmissionData = (data) => {
+
   // The User needs a zipCode.
   data.user.zipCode = data.officeInfo.zipCode;
 

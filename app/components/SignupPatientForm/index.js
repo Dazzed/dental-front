@@ -69,6 +69,7 @@ class SignupForm extends React.Component {
     formValues: React.PropTypes.object,
 
     // redux form
+    change: React.PropTypes.func.isRequired,
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     onSubmit: React.PropTypes.func.isRequired,

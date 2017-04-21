@@ -18,7 +18,6 @@ import CSSModules from 'react-css-modules';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import { connect } from 'react-redux';
 import {
-  change,
   Field,
   FormSection,
   formValueSelector,
@@ -205,13 +204,13 @@ const mapStateToProps = (state) => {
 
     // working hours
     officeClosed: {
-      monday:    workingHours.monday.isOpen === false,
-      tuesday:   workingHours.tuesday.isOpen === false,
-      wednesday: workingHours.wednesday.isOpen === false,
-      thursday:  workingHours.thursday.isOpen === false,
-      friday:    workingHours.friday.isOpen === false,
-      saturday:  workingHours.saturday.isOpen === false,
-      sunday:    workingHours.sunday.isOpen === false,
+      monday:    workingHours.monday === undefined || workingHours.monday.isOpen === false,
+      tuesday:   workingHours.tuesday === undefined || workingHours.tuesday.isOpen === false,
+      wednesday: workingHours.wednesday === undefined || workingHours.wednesday.isOpen === false,
+      thursday:  workingHours.thursday === undefined || workingHours.thursday.isOpen === false,
+      friday:    workingHours.friday === undefined || workingHours.friday.isOpen === false,
+      saturday:  workingHours.saturday === undefined || workingHours.saturday.isOpen === false,
+      sunday:    workingHours.sunday === undefined || workingHours.sunday.isOpen === false,
     }
   };
 };
@@ -258,6 +257,7 @@ class DentistSignupForm extends React.Component {
     yearlyFeeActivated: React.PropTypes.object.isRequired,
 
     // redux form
+    change: React.PropTypes.func.isRequired,
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
@@ -282,12 +282,12 @@ class DentistSignupForm extends React.Component {
   Actions
   ------------------------------------------------------------
   */
-  setOfficeLogo = (url) => {
-    change("user.logo", url);
+  setOfficeLogo = (info) => {
+    this.props.change('user.logo', info.fileUrl);
   }
 
-  setProfilePicture = (url) => {
-    change("user.avatar", url);
+  setProfilePicture = (info) => {
+    this.props.change('user.avatar', info.fileUrl);
   }
 
   // NOTE: You can't bind functions in render in highly rendered components
@@ -295,16 +295,16 @@ class DentistSignupForm extends React.Component {
   //       function which is not equal to the old one, forcing a re-render.
   //
   //       See https://github.com/erikras/redux-form/issues/1609
-  setOfficeImage0 = (url) => {
-    change('data.officeInfo.officeImages0', url);
+  setOfficeImage0 = (info) => {
+    this.props.change('officeInfo.officeImages0', info.fileUrl);
   }
 
-  setOfficeImage1 = (url) => {
-    change('data.officeInfo.officeImages1', url);
+  setOfficeImage1 = (info) => {
+    this.props.change('officeInfo.officeImages1', info.fileUrl);
   }
 
-  setOfficeImage2 = (url) => {
-    change('data.officeInfo.officeImages2', url);
+  setOfficeImage2 = (info) => {
+    this.props.change('officeInfo.officeImages2', info.fileUrl);
   }
 
   /*
