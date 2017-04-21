@@ -3,8 +3,6 @@ Input Group Component
 ================================================================================
 NOTE: The form control must be an input type (text, password, etc).  Bootstrap
       doesn't support input groups for <select> and <textarea> elements.
-
-NOTE: For use with the `redux-forms` library.
 */
 
 /*
@@ -24,8 +22,33 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 Simple Input Group
 ================================================================================
 */
-const SimpleInputGroup =
-  ({ input, label, type, meta, width, disabled, defaultValue, leftAddon, rightAddon }) => {
+export default class SimpleInputGroup extends React.Component {
+
+  static propTypes = {
+    input: React.PropTypes.object.isRequired,
+    label: React.PropTypes.string,
+    type: React.PropTypes.string.isRequired,
+    meta: React.PropTypes.object.isRequired,
+    width: React.PropTypes.number,
+    disabled: React.PropTypes.bool,
+    defaultValue: React.PropTypes.any,
+    leftAddon: React.PropTypes.node,
+    rightAddon: React.PropTypes.node,
+  };
+
+  render () {
+    const {
+      input,
+      label,
+      type,
+      meta,
+      width,
+      disabled,
+      defaultValue,
+      leftAddon,
+      rightAddon
+    } = this.props;
+
     const rootClassName = classnames({
       'has-error': meta.touched && meta.error,
     });
@@ -51,20 +74,5 @@ const SimpleInputGroup =
         {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
       </Col>
     );
-  };
-
-
-SimpleInputGroup.propTypes = {
-  input: React.PropTypes.object.isRequired,
-  label: React.PropTypes.string,
-  type: React.PropTypes.string.isRequired,
-  meta: React.PropTypes.object.isRequired,
-  width: React.PropTypes.number,
-  disabled: React.PropTypes.bool,
-  defaultValue: React.PropTypes.any,
-  leftAddon: React.PropTypes.node,
-  rightAddon: React.PropTypes.node,
-};
-
-
-export default SimpleInputGroup;
+  }
+}

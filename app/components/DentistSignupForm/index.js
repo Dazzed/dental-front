@@ -183,13 +183,13 @@ const mapStateToProps = (state) => {
 
     // working hours
     officeClosed: {
-      monday:    workingHours.monday === undefined    || workingHours.monday.open === false,
-      tuesday:   workingHours.tuesday === undefined   || workingHours.tuesday.open === false,
-      wednesday: workingHours.wednesday === undefined || workingHours.wednesday.open === false,
-      thursday:  workingHours.thursday === undefined  || workingHours.thursday.open === false,
-      friday:    workingHours.friday === undefined    || workingHours.friday.open === false,
-      saturday:  workingHours.saturday === undefined  || workingHours.saturday.open === false,
-      sunday:    workingHours.sunday === undefined    || workingHours.sunday.open === false,
+      monday:    workingHours.monday.isOpen === false,
+      tuesday:   workingHours.tuesday.isOpen === false,
+      wednesday: workingHours.wednesday.isOpen === false,
+      thursday:  workingHours.thursday.isOpen === false,
+      friday:    workingHours.friday.isOpen === false,
+      saturday:  workingHours.saturday.isOpen === false,
+      sunday:    workingHours.sunday.isOpen === false,
     }
   };
 };

@@ -1,28 +1,57 @@
-import React from 'react';
-import classnames from 'classnames';
+/*
+Input Component
+================================================================================
+*/
 
+/*
+Imports
+------------------------------------------------------------
+*/
+// lib
+import classnames from 'classnames';
+import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
 
-function selectComponent (type) {
-  if (type === 'select' || type === 'textarea') {
-    return { componentClass: type };
+/*
+Input
+================================================================================
+*/
+export default class Input extends React.Component {
+
+  static propTypes = {
+    input: React.PropTypes.object.isRequired,
+    label: React.PropTypes.string,
+    type: React.PropTypes.string.isRequired,
+    meta: React.PropTypes.object.isRequired,
+    width: React.PropTypes.number,
+    disabled: React.PropTypes.bool,
+    children: React.PropTypes.array,
+    defaultValue: React.PropTypes.any,
+  };
+
+  selectComponent = (type) => {
+    if (type === 'select' || type === 'textarea') {
+      return { componentClass: type };
+    }
+
+    return { type };
   }
 
-  return { type };
-}
+  render() {
+    const {
+      input,
+      label,
+      type,
+      meta,
+      width,
+      disabled,
+      children,
+      defaultValue
+    } = this.props;
 
-
-/**
- * Input is a block of code that is used on forms.
- *
- * Should be used with redux-forms.
- *
- */
-const Input =
-  ({ input, label, type, meta, width, disabled, children, defaultValue }) => {
     const rootClassName = classnames({
       'has-error': meta.touched && meta.error,
     });
@@ -31,7 +60,7 @@ const Input =
       <Col sm={width || 12} className={rootClassName}>
         <FormControl
           {...input}
-          {...selectComponent(type)}
+          {...this.selectComponent(type)}
           placeholder={label}
           disabled={disabled}
           defaultValue={defaultValue}
@@ -41,19 +70,5 @@ const Input =
         {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
       </Col>
     );
-  };
-
-
-Input.propTypes = {
-  input: React.PropTypes.object.isRequired,
-  label: React.PropTypes.string,
-  type: React.PropTypes.string.isRequired,
-  meta: React.PropTypes.object.isRequired,
-  width: React.PropTypes.number,
-  disabled: React.PropTypes.bool,
-  children: React.PropTypes.array,
-  defaultValue: React.PropTypes.any,
-};
-
-
-export default Input;
+  }
+}

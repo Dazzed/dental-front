@@ -40,40 +40,48 @@ function selectComponent (type, mask, maskChar) {
 /*
 Inline Input
 ================================================================================
-InlineInput is a block of code that is most used on forms.
-
-It should be used with redux-forms.
 */
-const InlineInput = ({
-  input, label, type, meta, width, children, className, mask, maskChar,
-}) => {
-  const rootClassName = classnames({
-    'has-error': meta.touched && meta.error,
-  });
+export default class InlineInput extends React.Component {
 
-  return (
-    <span className={rootClassName}>
-      <FormControl
-        {...input}
-        {...selectComponent(type, mask, maskChar)}
-        placeholder={label}
-      >
-        {children}
-      </FormControl>
-    </span>
-  );
-};
+  static propTypes = {
+    input: React.PropTypes.object.isRequired,
+    label: React.PropTypes.string.isRequired,
+    type: React.PropTypes.string.isRequired,
+    meta: React.PropTypes.object.isRequired,
+    width: React.PropTypes.number,
+    children: React.PropTypes.array,
+    className: React.PropTypes.string,
+    mask: React.PropTypes.string,
+    maskChar: React.PropTypes.string,
+  };
 
-InlineInput.propTypes = {
-  input: React.PropTypes.object.isRequired,
-  label: React.PropTypes.string.isRequired,
-  type: React.PropTypes.string.isRequired,
-  meta: React.PropTypes.object.isRequired,
-  width: React.PropTypes.number,
-  children: React.PropTypes.array,
-  className: React.PropTypes.string,
-  mask: React.PropTypes.string,
-  maskChar: React.PropTypes.string,
-};
+  render () {
+    const {
+      input,
+      label,
+      type,
+      meta,
+      width,
+      children,
+      className,
+      mask,
+      maskChar,
+    } = this.props;
 
-export default InlineInput;
+    const rootClassName = classnames({
+      'has-error': meta.touched && meta.error,
+    });
+
+    return (
+      <span className={rootClassName}>
+        <FormControl
+          {...input}
+          {...this.selectComponent(type, mask, maskChar)}
+          placeholder={label}
+        >
+          {children}
+        </FormControl>
+      </span>
+    );
+  }
+}
