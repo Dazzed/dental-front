@@ -22,6 +22,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 // local
 import './styles.css';
 
+// NOTE: This component does not use CSS-Modules- it is just importing the
+//       styles that it needs.  Read the CSS-Modules / Redux-Form-Comopnent
+//       warning in /app/assets/styles/_bootstrap-overrides.css to find out
+//       more.
+
 
 /*
 Date Picker

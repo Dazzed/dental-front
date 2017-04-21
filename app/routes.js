@@ -81,15 +81,11 @@ export default function createRoutes (store) {
       name: 'dentistSignupPage',
       getComponent (nextState, cb) {
         Promise.all([
-          System.import('containers/App/sagas'),
-
           System.import('containers/DentistSignupPage/reducer'),
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([ appSagas, reducer, sagas, component ]) => {
-            injectSagas(appSagas.default);
-
+          .then(([ reducer, sagas, component ]) => {
             injectReducer('dentistSignupPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);

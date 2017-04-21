@@ -8,6 +8,7 @@ Imports
 ------------------------------------------------------------
 */
 // libs
+import isEqualWith from 'lodash/isEqualWith';
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -17,6 +18,7 @@ import CSSModules from 'react-css-modules';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import { connect } from 'react-redux';
 import {
+  change,
   Field,
   FormSection,
   formValueSelector,
@@ -36,20 +38,38 @@ import LabeledInput from 'components/LabeledInput';
 import styles from './styles.css';
 import dentistSignupFormValidator from './validator';
 
+
+/*
+TODO: DEBUGGING HELPERS
+------------------------------------------------------------
+*/
+const customizer = (obj, other) => {
+  if (obj === other) return true
+  if ((obj == null || obj === '' || obj === false) &&
+    (other == null || other === '' || other === false)) return true
+
+  if (obj && other && obj._error !== other._error) return false
+  if (obj && other && obj._warning !== other._warning) return false
+}
+
+const deepEqual = (a, b) => isEqualWith(a, b, customizer);
+
+
 /*
 Field Validators
 ------------------------------------------------------------
 */
-const requiredValidator = (name) => (value) => {
+const priceCodeRequiredValidator = (value) => {
   return value !== undefined
     ? undefined // all good
-    : `Please enter a(n) ${name}.`;
+    : 'Please enter a Price Code Amount.';
 }
 
-const minValidator = (min) => (value) => {
-  return isFinite(value) === true && value >= min
+const priceCodeMinValidator = (value) => {
+  value = parseFloat(value);
+  return isFinite(value) === true && value > 0
     ? undefined // all good
-    : `Please enter an amount above ${min}.`;
+    : 'Please enter an amount above $0.00.';
 }
 
 /*
@@ -59,6 +79,8 @@ Redux
 const valueSelector = formValueSelector('dentist-signup');
 
 const mapStateToProps = (state) => {
+  console.log("----- map state -----");
+
   const {
     marketplace,
     pricing,
@@ -95,16 +117,16 @@ const mapStateToProps = (state) => {
 
       // working hours
       officeClosed: {
-        monday: true,
-        tuesday: true,
-        wednesday: true,
-        thursday: true,
-        friday: true,
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
         saturday: true,
         sunday: true,
       }
     };
-  }
+}
 
   const recommendedFees = {
     monthly: {
@@ -241,6 +263,21 @@ class DentistSignupForm extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
   };
 
+  componentWillReceiveProps (nextProps) {
+    console.log("----- diff nextProps -----");
+
+    Object.keys(nextProps).forEach(prop => {
+      // useful to debug rerenders
+      if (!deepEqual(this.props[ prop ], nextProps[ prop ])) {
+        console.info(prop, 'changed', this.props[ prop ], '==>', nextProps[ prop ])
+      }
+
+      // return !~propsToNotUpdateFor.indexOf(prop) && !deepEqual(this.props[prop], nextProps[prop])
+    });
+
+    console.log("--------------------\n");
+  }
+
   /*
   Actions
   ------------------------------------------------------------
@@ -253,8 +290,21 @@ class DentistSignupForm extends React.Component {
     change("user.avatar", url);
   }
 
-  setOfficeImage = (index, url) => {
-    change(`data.officeInfo.officeImages${index}`, url);
+  // NOTE: You can't bind functions in render in highly rendered components
+  //       (like redux-forms).  For every normal render, it creates a new
+  //       function which is not equal to the old one, forcing a re-render.
+  //
+  //       See https://github.com/erikras/redux-form/issues/1609
+  setOfficeImage0 = (url) => {
+    change('data.officeInfo.officeImages0', url);
+  }
+
+  setOfficeImage1 = (url) => {
+    change('data.officeInfo.officeImages1', url);
+  }
+
+  setOfficeImage2 = (url) => {
+    change('data.officeInfo.officeImages2', url);
   }
 
   /*
@@ -279,6 +329,8 @@ class DentistSignupForm extends React.Component {
       handleSubmit,
       submitting
     } = this.props;
+
+    console.log("========== RENDER FORM ==========");
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -573,7 +625,7 @@ class DentistSignupForm extends React.Component {
               <Row>
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
-                    onFinish={this.setOfficeImage.bind(this, 0)}
+                    onFinish={this.setOfficeImage0}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -592,7 +644,7 @@ class DentistSignupForm extends React.Component {
 
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
-                    onFinish={this.setOfficeImage.bind(this, 1)}
+                    onFinish={this.setOfficeImage1}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -611,7 +663,7 @@ class DentistSignupForm extends React.Component {
 
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
-                    onFinish={this.setOfficeImage.bind(this, 2)}
+                    onFinish={this.setOfficeImage2}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -674,8 +726,8 @@ class DentistSignupForm extends React.Component {
                             component={InputGroup}
                             leftAddon="$"
                             validate={[
-                              requiredValidator('Price Code Amount'),
-                              minValidator(0)
+                              priceCodeRequiredValidator,
+                              priceCodeMinValidator,
                             ]}
                           />
                         </Row>

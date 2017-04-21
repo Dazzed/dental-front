@@ -226,6 +226,74 @@
   margin-bottom: 0;
 }
 
+/*
+Custom Redux-Form Components
+------------------------------------------------------------
+NOTE: Don't use CSS-Modules to wrap any custom redux-form components (passed
+      to a redux-form field).  There are issues with redux-form interacting
+      poorly with other high-level-components, including cases where React
+      will interpret the wrapped component as a new component when the render
+      method is called for an unrelated part of the page.  This will cause a lot
+      of extra rendering to happen, and the user's current field element will
+      be de-selected if it is the wrapped component.
+
+      See https://github.com/erikras/redux-form/issues/1094
+*/
+:global {
+  .input-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.375rem;
+    width: 1.375rem;
+    height: 1.375rem;
+    cursor: pointer;
+  }
+
+  .input-checkbox-label {
+    margin-bottom: 0;
+
+    font-weight: 300;
+
+    span {
+      vertical-align: middle;
+      margin-left: 0.25rem;
+    }
+
+    a {
+      color: $color-primary-transparent;
+
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-primary-highlight;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .input-time {
+    .input-time__time {
+      display: inline-block;
+      width: calc(100% - 62px);
+
+      vertical-align: top;
+    }
+
+    .input-time__am-pm {
+      display: inline-block;
+      padding-left: 1rem;
+
+      .checkbox {
+        height: 22px;
+        min-height: 22px;
+        padding-top: 0px;
+      }
+    }
+  }
+}
+ 
+
 /** REACT-AUTOSUGGEST **/
 :global(.react-autosuggest__container) {
   position: relative;

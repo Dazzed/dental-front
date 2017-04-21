@@ -13,17 +13,12 @@ import Col from 'react-bootstrap/lib/Col';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import CSSModules from 'react-css-modules';
-
-// local
-import styles from './index.css';
 
 
 /*
 Checkbox
 ================================================================================
 */
-@CSSModules(styles)
 export default class Checkbox extends React.Component {
   
   static propTypes = {
@@ -42,12 +37,12 @@ export default class Checkbox extends React.Component {
     return (
       <FormGroup className={touched && error ? 'has-error' : ''}>
         <Col sm={12}>
-          <label styleName="checkbox-label" htmlFor={input.name}>
+          <label className="input-checkbox-label" htmlFor={input.name}>
             <FormControl
               {...input}
               checked={input.value}
               type="checkbox"
-              styleName="checkbox"
+              className="input-checkbox"
             />
             <span>
               {children}

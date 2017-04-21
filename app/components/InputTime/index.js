@@ -23,17 +23,12 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import CSSModules from 'react-css-modules';
-
-// local
-import styles from './styles.css';
 
 
 /*
 Input Time
 ================================================================================
 */
-@CSSModules(styles)
 class InputTime extends React.Component {
 
   static propTypes = {
@@ -149,12 +144,12 @@ class InputTime extends React.Component {
     }
 
     return (
-      <div className={className || 'col-sm-12'} styleName="input-time">
+      <div className={(className || 'col-sm-12') + ' input-time'}>
         <FormGroup className={rootClassName}>
           {labelContent}
 
           <Col sm={12}>
-            <div styleName="input-time__time">
+            <div className="input-time__time">
               <FormControl
                 onChange={this.onTimeChange}
                 type="text"
@@ -164,7 +159,7 @@ class InputTime extends React.Component {
               />
             </div>
 
-            <div styleName="input-time__am-pm">
+            <div className="input-time__am-pm">
               <Checkbox
                 onClick={this.onAMClick}
                 checked={!disabled && timeComponents.am}
