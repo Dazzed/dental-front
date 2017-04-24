@@ -705,7 +705,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
               </p>
 
               <p>
-                You are now registered for our dental membership plan! You should receive a confirmation email with an activation link shortly. Please check your email address (<a href="mailto:{accountInfo.loginEmail}" target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
+                You are now registered for our dental membership plan! You should receive a confirmation email with an activation link shortly. Please check your email address (<a href={`mailto:${accountInfo.loginEmail}`} target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
               </p>
 
               <p>

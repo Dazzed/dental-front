@@ -313,7 +313,7 @@ export default class SignupPage extends Component {
               </p>
 
               <p>
-                Your all-star dental office is now registered with DentalHQ! You should receive a confirmation email with an activation link shortly. Please check your Contact &amp; Login email address (<a href="mailto:{accountInfo.loginEmail}" target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
+                Your all-star dental office is now registered with DentalHQ! You should receive a confirmation email with an activation link shortly. Please check your Contact &amp; Login email address (<a href={`mailto:${accountInfo.loginEmail}`} target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
               </p>
 
               <p>
