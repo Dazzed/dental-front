@@ -56,7 +56,7 @@ class LoginForm extends React.Component {
             type="text"
             component={LabeledInput}
             label="Email"
-            placeholder="Password"
+            placeholder="Email"
           />
 
           <Field

@@ -458,7 +458,7 @@ class PatientProfilePage extends React.Component {
 
     return (
       <div>
-        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo || false} />
         <PatientDashboardHeader user={user} />
         <PatientDashboardTabs active="profile" />
 

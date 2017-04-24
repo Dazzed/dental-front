@@ -474,7 +474,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     return (
       <div styleName="container-wrapper">
-        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
+        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo || false} />
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
           {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
           {/*

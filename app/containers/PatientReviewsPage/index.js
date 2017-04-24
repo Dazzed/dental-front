@@ -302,7 +302,7 @@ class PatientReviewsPage extends React.Component {
     if (dentist.dentistReviews.length === 0) {
       return (
         <div>
-          <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo} />
+          <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo || false} />
           <PatientDashboardHeader user={user} />
           <PatientDashboardTabs active="reviews" />
 

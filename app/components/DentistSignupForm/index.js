@@ -283,7 +283,7 @@ class DentistSignupForm extends React.Component {
   ------------------------------------------------------------
   */
   setOfficeLogo = (info) => {
-    this.props.change('user.logo', info.fileUrl);
+    this.props.change('officeInfo.logo', info.fileUrl);
   }
 
   setProfilePicture = (info) => {
