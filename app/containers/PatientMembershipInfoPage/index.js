@@ -176,22 +176,14 @@ class PatientMembershipInfoPage extends React.Component {
 
     // TODO: replace the mockup data with real data once it's available
     // https://trello.com/c/ousHhN50/129-patient-dentist-membership-information-content
-    /*
     const adultMembership = {
       monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
-      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
-    };
-    const childMembership = {
-      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
-      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
-    };
-    */
-    const adultMembership = {
-      monthly: "25.00".replace(".00", ""),
+//      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
       savings: "240.00".replace(".00", ""),
     };
     const childMembership = {
-      monthly: "20.00".replace(".00", ""),
+      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
+//      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
       savings: "360.00".replace(".00", ""),
     };
 

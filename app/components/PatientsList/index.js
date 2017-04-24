@@ -322,14 +322,6 @@ class PatientsList extends React.Component {
                           <br />
                           <span styleName={statusStyle}>{summaryStatus}</span>
                         </p>
-
-
-                        {/* TODO: The subscription const is turned off until the backend
-                                  includes the proper data.
-
-                                  https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
-                        */}
-                        {/*
                         <p>
                           Recurring Payment Date:
                           <br />
@@ -340,9 +332,6 @@ class PatientsList extends React.Component {
                           <br />
                           <span styleName="subscription-overview__info">${paymentDueAmount}</span>
                         </p>
-                        */}
-
-
                       </div>
 
                       {/*

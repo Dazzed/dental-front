@@ -476,19 +476,10 @@ class PatientProfilePage extends React.Component {
                     <span styleName="text--inline-label">Primary Account Hoder:</span>
                     <span styleName="text--primary--bold">{user.firstName} {user.lastName}</span>
                   </p>
-
                   <p>
                     <span styleName="text--inline-label">Account Status:</span>
                     <span styleName="text--primary--bold">{aggregateSubscription.status}</span>
                   </p>
-
-
-                  {/* TODO: The subscription const is turned off until the backend
-                            includes the proper data.
-
-                            https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
-                  */}
-                  {/*
                   <p>
                     <span styleName="text--inline-label">Current Balance:</span>
                     <span styleName="text--bold">${aggregateSubscription.total}</span>
@@ -498,9 +489,6 @@ class PatientProfilePage extends React.Component {
                     <span styleName="text--inline-label">Payment Due Date:</span>
                     <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
                   </p>
-                  */}
-
-
                 </div>
               </div>
 
