@@ -174,9 +174,9 @@ function* makeCheckoutRequest (paymentInfo, userId) {
       'zip',
     ),
 
-    cancellationFeeWaiver: paymentInfo.cancellationFeeWaiver,
+    cancellationFeeWaiver: paymentInfo.feeWaiver,
     periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
-    reEnrollmentFeeWaiver: paymentInfo.reEnrollmentFeeWaiver,
+    reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
     termsAndConditions: paymentInfo.termsAndConditions,
   };
   allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;

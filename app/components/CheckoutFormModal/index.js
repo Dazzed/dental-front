@@ -12,8 +12,9 @@ Import
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import MembersList from 'components/MembersList';
 import Modal from 'react-bootstrap/lib/Modal';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
@@ -26,6 +27,7 @@ import {
 import Checkbox from 'components/Checkbox';
 import Input from 'components/Input';
 import LabeledInput from 'components/LabeledInput';
+import MembersList from 'components/MembersList';
 
 // local
 import styles from './styles.css';
@@ -89,6 +91,17 @@ export default class CheckoutFormModal extends React.Component {
       show,
       onCancel,
     } = this.props;
+
+    const infoPopover = (
+      <Popover
+        className="popover--large"
+        id="periodontal-disease-info-popover"
+        placement="bottom"
+        title="What is Periodontal Disease?"
+      >
+        Periodontal Disease is the inflammation and/or infection of the tissues around your teeth. Roughly 5-10% of the population requires additional treatment for this prior to their basic cleaning included with your membership.
+      </Popover>
+    );
 
     return (
       <Modal
@@ -236,33 +249,25 @@ export default class CheckoutFormModal extends React.Component {
                   {' '}
                   <strong>Periodontal Disease</strong>
                   {' '}
-                  {/*
-                    TODO: Add in the (?) after "Periodontal Disease" w/ a link to somewhere...
-                          https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
-                  */}
-                  {/*
-                  <a href="" target="_blank">(?)</a>
+                  <OverlayTrigger
+                    overlay={infoPopover}
+                    placement="bottom"
+                    rootClose
+                    trigger={['click', 'focus', 'hover']}
+                  >
+                    <span styleName="info-trigger">(?)</span>
+                  </OverlayTrigger>
                   {' '}
-                  */}
                   is present additional treatment may be necessary prior to my cleaning.
                 </Field>
               </div>
 
               <div className="col-sm-12">
                 <Field
-                  name="cancellationFeeWaiver"
+                  name="feeWaiver"
                   component={Checkbox}
                 >
-                  I understand that if I cancel my recurring monthly membership in less that 3 payments that a $20 cancellation fee will be charged.
-                </Field>
-              </div>
-
-              <div className="col-sm-12">
-                <Field
-                  name="reEnrollmentFeeWaiver"
-                  component={Checkbox}
-                >
-                  I understand that if I cancel my recurring monthly membership, a re-enrollment fee will be charged if I choose to re-enter the membership.
+                  I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
                 </Field>
               </div>
 

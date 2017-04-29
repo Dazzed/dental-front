@@ -68,10 +68,7 @@ const schema = {
   periodontalDiseaseWaiver: {
     presence: { message: '^You must agree to all waivers in order to create an account.' },
   },
-  cancellationFeeWaiver: {
-    presence: { message: '^You must agree to all waivers in order to create an account.' },
-  },
-  reEnrollmentFeeWaiver: {
+  feeWaiver: {
     presence: { message: '^You must agree to all waivers in order to create an account.' },
   },
   termsAndConditions: {

@@ -58,3 +58,21 @@ Page Wide
 
   font-size: 1.5rem;
 }
+
+
+/*
+Checkout Form Modal
+================================================================================
+*/
+.info-trigger {
+  color: $color-primary-transparent;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $color-primary-highlight;
+    text-decoration: none;
+  }
+}

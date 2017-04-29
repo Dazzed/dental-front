@@ -344,7 +344,7 @@ class PatientProfilePage extends React.Component {
 
   // payment
   handlePaymentFormSubmit = (values) => {
-    this.props.submitPaymentForm(values, this.props.user.id);
+    this.props.submitPaymentForm(values, this.props.dentist.id, this.props.user.id);
   }
 
   cancelPaymentFormAction = () => {
