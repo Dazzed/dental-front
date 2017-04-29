@@ -296,10 +296,11 @@ export function clearEditingPayment () {
   };
 }
 
-export function submitPaymentForm (payload, userId) {
+export function submitPaymentForm (payload, dentistId, userId) {
   return {
     type: SUBMIT_PAYMENT_FORM,
     payload,
+    dentistId,
     userId,
   };
 }

@@ -414,7 +414,7 @@ function* submitAccountSecurityFormWatcher () {
  * ------------------------------------------------------ */
 function* submitPaymentFormWatcher () {
   while (true) {
-    const { payload, userId, } = yield take(SUBMIT_PAYMENT_FORM);
+    const { payload, dentistId, userId, } = yield take(SUBMIT_PAYMENT_FORM);
 
     const allowedFields = {
       card: pick(
@@ -424,18 +424,17 @@ function* submitPaymentFormWatcher () {
         'expiry',
         'cvc',
         'zip',
-        'periodontalDiseaseWaiver',
-        'cancellationFeeWaiver',
-        'reEnrollmentFeeWaiver',
-        'termsAndConditions',
       ),
+
+      cancellationFeeWaiver: payload.feeWaiver,
+      periodontalDiseaseWaiver: payload.periodontalDiseaseWaiver,
+      reEnrollmentFeeWaiver: payload.feeWaiver,
+      termsAndConditions: payload.termsAndConditions,
     };
     allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
 
     try {
-      // TODO
-      // https://trello.com/c/OCFprpSC/132-patient-edit-payment-info
-      const requestURL = `TODO`;
+      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/update-card`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
@@ -449,8 +448,8 @@ function* submitPaymentFormWatcher () {
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
       yield put(stopSubmit('checkout', errors));
-
       yield put(change('checkout', 'cardCode', null));
     }
   }
