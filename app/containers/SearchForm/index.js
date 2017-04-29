@@ -61,7 +61,7 @@ export default class SearchForm extends Component {
         <input
           type="text"
           styleName="search"
-          placeholder="Enter your location, zip code, dentist name, etc."
+          placeholder="Enter your address, zip code, etc."
           value={this.state.query}
           onChange={this.handleSearchInputChange}
           required

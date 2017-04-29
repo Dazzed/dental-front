@@ -9,11 +9,6 @@ NOTE: while this component should technically be a stateless functional
 component (SFC), hot reloading does not currently support SFCs. If hot
 reloading is not a neccessity for you then you can refactor it and remove
 the linting exception.
-
-TODO: To re-convert the home page back from a splash page, delete all the
-uncommented html (except for the wrapper div).  Then uncomment the html in each
-section.  Don't forget to convert the styles, too.
-  - https://trello.com/c/pLNEtxw5/111-core-setup-staging-and-production-environments
 */
 
 /*
@@ -24,6 +19,8 @@ Imports
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
+import FaCheck from 'react-icons/lib/fa/check';
+import FaChevronDown from 'react-icons/lib/fa/chevron-down';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
@@ -99,7 +96,6 @@ export default class HomePage extends React.Component {
         RHS Floating Menu
         ------------------------------------------------------------
         */}
-        {/*
         <div styleName="floating-menu">
           <ul styleName="login-links">
             <li styleName="login-links__link--secondary">
@@ -111,14 +107,11 @@ export default class HomePage extends React.Component {
             </li>
           </ul>
         </div>
-        */}
-
 
         {/*
         First Block
         ------------------------------------------------------------
         */}
-        {/*
         <div styleName="first-block">
           <header>
             <h1>
@@ -127,36 +120,19 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
+          {/* TODO: turn back on */}
+          {/*
           <SearchForm />
+          */}
 
           <div styleName="next-section-cover">
             <h3>
-              Find affordable monthly service plans for the best dentists in your area!
+              Find affordable monthly service plans from the best dentists in your area!
             </h3>
             <p>
               How DentalHQ Works
               <br />
-              \/
-            </p>
-          </div>
-        </div>
-        */}
-
-        <div styleName="first-block">
-          <header>
-            <h1>
-              <img src={logo} alt="DentalHQ Logo" />
-            </h1>
-          </header>
-
-          <div styleName="next-section-cover">
-            <h3>
-              Coming Soon!
-            </h3>
-            <p>
-              We just have to finish building it first. ;)
-              <br />
-              <br />
+              <FaChevronDown size={32} />
             </p>
           </div>
         </div>
@@ -164,14 +140,15 @@ export default class HomePage extends React.Component {
         {/*
         Second Block
         ------------------------------------------------------------
-        -->
         */}
-        {/*
         <div styleName="second-block">
           <div className="container">
 
             <div className="row">
               <div className="col-md-10 col-md-offset-1">
+
+                {/* TODO: turn back on */}
+                {/*
                 <input
                   type="button"
                   styleName="large-button"
@@ -197,6 +174,7 @@ export default class HomePage extends React.Component {
                     </video>
                   </Modal.Body>
                 </Modal>
+                */}
 
                 <h2 styleName="large-title">
                   No insurance? No problem.
@@ -260,40 +238,92 @@ export default class HomePage extends React.Component {
             </div>
           </div>
         </div>
-        */}
-
 
         {/*
         Third Block
         ------------------------------------------------------------
         */}
-        {/*
         <div styleName="third-block">
           <div styleName="third-block__overlay">
             <div className="container">
 
               <h2 styleName="large-title">
-                Membership plans starting as low as $20 a month!
+                Membership Package Includes
               </h2>
+
+              <div styleName="features">
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Basic Dental cleaning every 6 months
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Exams and Xrays as needed with cleanings
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Fluoride treatment for kids once per year
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    1 emergency exam and Xrays per year
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Discount on any needed treatment
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Affordable membership plans starting as low as $20/month
+                  </div>
+                </div>
+
+              </div>
 
             </div>
           </div>
         </div>
-        */}
 
         {/*
         Fourth Block
         ------------------------------------------------------------
         */}
-        {/*
         <div styleName="fourth-block">
           <div styleName="fourth-block__overlay">
             <div className="container">
 
               <div className="row">
-                <div className="col-md-8 col-md-offset-2">
+                <div className="col-md-offset-1 col-md-10">
                   <h2 styleName="large-title">
-                    Add Your Dental Practice
+                    Interested in Partnering with DentalHQ?
                   </h2>
 
                   <p styleName="large-text">
@@ -302,28 +332,26 @@ export default class HomePage extends React.Component {
                     potential.
                   </p>
 
+                  {/* TODO: turn back on */}
+                  {/*
                   <input
                     type="button"
                     styleName="large-button__hollow"
                     onClick={this.goToLearnMore}
                     value="LEARN MORE &gt;"
                   />
+                  */}
                 </div>
               </div>
 
             </div>
           </div>
         </div>
-        */}
 
         {/*
         Footer
         ------------------------------------------------------------
         */}
-        {/*
-        <Footer />
-        */}
-
         <Footer />
 
       </div>

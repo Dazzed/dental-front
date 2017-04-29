@@ -1,10 +1,6 @@
 /*
 Home Page Styles
 ================================================================================
-TODO: To re-convert the home page back from a splash page, just delete the
-splash page styles section at the end of this file.  Don't forget to also
-convert the home page's html.
-  - https://trello.com/c/pLNEtxw5/111-core-setup-staging-and-production-environments
 */
 
 /*
@@ -222,6 +218,8 @@ First Block
     color: $color-white;
     background-color: $color-primary-transparent;
 
+    text-transform: capitalize;
+
     h3 {
       font-size: 1.75rem;
       font-weight: 600;
@@ -264,9 +262,11 @@ Second Block
       margin-bottom: 0;
     }
   }
+}
 
-  .col-md-4:first-child .process {
-    background-color: $color-primary-transparent;
+:global(.col-md-4:first-child) {
+  .process {
+    background-color: $color-primary-background;
   }
 }
 
@@ -278,9 +278,7 @@ Third Block
 .third-block {
   margin-bottom: 1rem;
 
-  background: url(assets/images/brushing-teeth.jpg) center -350px / cover no-repeat;
-
-  text-align: center;
+  background: url(assets/images/brushing-teeth.jpg) center / cover no-repeat;
 
   .third-block__overlay {
     display: block;
@@ -291,7 +289,27 @@ Third Block
   }
 
   .large-title {
+    margin: 0 0 2rem 0;
+
     color: $color-white;
+  }
+
+  .features {
+    color: $color-white;
+
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+
+  .feature {
+    margin-top: 10px;
+
+    text-align: left;
+  }
+
+  .feature__check {
+    font-size: 2rem;
+    text-align: right;
   }
 }
 
@@ -329,27 +347,5 @@ Fourth Block
 
   .large-button {
     color: $color-white;
-  }
-}
-
-
-/*
-Splash Page Styles
-================================================================================
-*/
-.wrapper {
-  height: 100%;
-}
-
-.first-block {
-  height: 100%;
-  background: url(assets/images/brushing-teeth.jpg) top center no-repeat;
-
-  header {
-    padding-bottom: 3rem;
-  }
-
-  .next-section-cover {
-    margin-top: 0;
   }
 }
