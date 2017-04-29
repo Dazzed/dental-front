@@ -100,7 +100,7 @@ function* signupWatcher () {
     //       `userId` that was created on the server and included in the
     //       `signupResponse`.  Do not use `user.id`, since it is a locally
     //       created temporary id only used / understood by the frontend.
-    const signupResponse = yield call(makeSignupRequest, user);
+    const signupResponse = yield call(makeSignupRequest, user, paymentInfo);
 
     if (signupResponse !== false) {
       const realUserId = signupResponse.data[0].id;
@@ -116,7 +116,7 @@ function* signupWatcher () {
   }
 }
 
-function* makeSignupRequest (user) {
+function* makeSignupRequest (user, paymentInfo) {
   // NOTE: The user and each member have fake `id` fields to keep track of them
   //       while the user is filling out the form.  These need to be removed,
   //       but without messing up the existing objects in case they are still
@@ -140,6 +140,10 @@ function* makeSignupRequest (user) {
   const cleanedUser = {
     ...user,
     id: undefined,
+    address: paymentInfo.address,
+    city: paymentInfo.city,
+    state: paymentInfo.state,
+    zipCode: paymentInfo.zip,
 
     members: cleanedMembers,
   };

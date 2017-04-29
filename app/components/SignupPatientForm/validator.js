@@ -42,23 +42,6 @@ const schema = {
     },
   },
 
-  address: { presence: true },
-  city: { presence: true },
-  state: {
-    presence: true,
-    inclusion: {
-      within: Object.keys(US_STATES),
-      message: '^State can\'t be blank',
-    }
-  },
-  zipCode: {
-    presence: true,
-    format: {
-      pattern: /\d{5}?/,
-      message: '^Please enter a 5-digit US zip code.',
-    }
-  },
-
   email: { presence: true, email: true },
   confirmEmail: { presence: true, email: true, equality: 'email' },
 

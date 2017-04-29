@@ -234,55 +234,6 @@ class SignupForm extends React.Component {
 
         <Row>
           <Field
-            name="address"
-            type="text"
-            component={LabeledInput}
-            label="Address"
-            placeholder=""
-            className="col-sm-12"
-          />
-
-          <Field
-            name="city"
-            type="text"
-            component={LabeledInput}
-            label="City"
-            placeholder=""
-            className="col-sm-4"
-          />
-
-          <Field
-            name="state"
-            type="select"
-            component={LabeledInput}
-            label="State"
-            placeholder=""
-            className="col-sm-4"
-          >
-            <option value=""></option>
-            {Object.keys(US_STATES).map(key =>
-              <option value={key} key={key}>
-                {US_STATES[key]}
-              </option>
-            )}
-          </Field>
-
-          <Field
-            name="zipCode"
-            type="text"
-            mask="99999"
-            maskChar=" "
-            component={LabeledInput}
-            label="Zip Code"
-            placeholder=""
-            className="col-sm-4"
-          />
-        </Row>
-
-        <hr styleName="spacer" />
-
-        <Row>
-          <Field
             name="phone"
             type="text"
             mask="(999) 999-9999"
