@@ -618,6 +618,10 @@ class DentistSignupForm extends React.Component {
             </div>
           </Row>
 
+          <p styleName="field-instructions">
+            *Horizontal logos look better than tall logos.
+          </p>
+
           <FormGroup>
             <div className="col-sm-12">
               <ControlLabel>Upload Office Images:</ControlLabel>
