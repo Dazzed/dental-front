@@ -8,7 +8,6 @@ Imports
 ------------------------------------------------------------
 */
 // libs
-import isEqualWith from 'lodash/isEqualWith';
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -37,23 +36,6 @@ import LabeledInput from 'components/LabeledInput';
 import styles from './styles.css';
 import dentistSignupFormValidator from './validator';
 
-
-/*
-TODO: DEBUGGING HELPERS
-------------------------------------------------------------
-*/
-const customizer = (obj, other) => {
-  if (obj === other) return true
-  if ((obj == null || obj === '' || obj === false) &&
-    (other == null || other === '' || other === false)) return true
-
-  if (obj && other && obj._error !== other._error) return false
-  if (obj && other && obj._warning !== other._warning) return false
-}
-
-const deepEqual = (a, b) => isEqualWith(a, b, customizer);
-
-
 /*
 Field Validators
 ------------------------------------------------------------
@@ -78,8 +60,6 @@ Redux
 const valueSelector = formValueSelector('dentist-signup');
 
 const mapStateToProps = (state) => {
-  console.log("----- map state -----");
-
   const {
     marketplace,
     pricing,
@@ -263,21 +243,6 @@ class DentistSignupForm extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
   };
 
-  componentWillReceiveProps (nextProps) {
-    console.log("----- diff nextProps -----");
-
-    Object.keys(nextProps).forEach(prop => {
-      // useful to debug rerenders
-      if (!deepEqual(this.props[ prop ], nextProps[ prop ])) {
-        console.info(prop, 'changed', this.props[ prop ], '==>', nextProps[ prop ])
-      }
-
-      // return !~propsToNotUpdateFor.indexOf(prop) && !deepEqual(this.props[prop], nextProps[prop])
-    });
-
-    console.log("--------------------\n");
-  }
-
   /*
   Actions
   ------------------------------------------------------------
@@ -329,8 +294,6 @@ class DentistSignupForm extends React.Component {
       handleSubmit,
       submitting
     } = this.props;
-
-    console.log("========== RENDER FORM ==========");
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
