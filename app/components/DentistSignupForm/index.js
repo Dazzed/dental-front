@@ -562,8 +562,11 @@ class DentistSignupForm extends React.Component {
         {/*
         Image Uploaders
         ------------------------------------------------------------
+        NOTE: The image uploaders don't need their own `images` <FormSection>,
+              because their `onFinish` handlers manually set fields in other
+              sections to the S3 url.
         */}
-        <FormSection name="images">
+        <div>
           <Row>
             <div className="col-sm-4">
               <FormGroup>
@@ -689,7 +692,7 @@ class DentistSignupForm extends React.Component {
           </FormGroup>
 
           <hr styleName="spacer--after-form-group" />
-        </FormSection>
+        </div>
 
         {/*
         Pricing

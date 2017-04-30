@@ -92,13 +92,16 @@ const schema = {
   Images
   ------------------------------------------------------------
   */
-  // TODO: optional?
+  // NOTE: There is no explicit "images" form section.  See the
+  //       `Image Uploaders` portion of DentistSignupForm/index.js for the
+  //       details.
 
   /*
   Pricing
   ------------------------------------------------------------
   */
-  // Each priceCode's price is validated at the field level.
+  // Each priceCode uses field level validation.  See the `Field Validators`
+  // section of DentistSignupForm/index.js for that validation.
 
   "pricing.adultMonthlyFee": {
     presence: true,
