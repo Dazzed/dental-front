@@ -162,14 +162,14 @@ class InputTime extends React.Component {
             <div className="input-time__am-pm">
               <Checkbox
                 onClick={this.onAMClick}
-                checked={!disabled && timeComponents.am}
+                checked={timeComponents.am}
                 disabled={disabled}
               >
                 AM
               </Checkbox>
               <Checkbox
                 onClick={this.onPMClick}
-                checked={!disabled && timeComponents.pm}
+                checked={timeComponents.pm}
                 disabled={disabled}
               >
                 PM

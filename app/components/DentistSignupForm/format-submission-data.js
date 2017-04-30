@@ -92,8 +92,6 @@ const formatDentistSignupFormSubmissionData = (data) => {
       optIn: data.marketplace.optIn === true,
     },
 
-    // CONDITIONAL
-    //
     // ALTER the services from an object with serviceKey => bool entries
     // to an array of serviceIds.  Note that redux-form will only include
     // checked Services, so no filtering is necessary.
@@ -103,10 +101,6 @@ const formatDentistSignupFormSubmissionData = (data) => {
       return serviceId.substr(8); // "service-51" => "51"
     }),
 
-    // CONDITIONAL
-    //   - TODO: Need working hours no matter what b/c they are shown in the
-    //           patient dashboard's "Your Dentist" page...
-    //
     // ALTER the workingHours from an object with dayName => dayWorkingHours
     // to an array of dayWorkingHours objects that include the dayName as the
     // `day` field.  Also ensure that `isOpen` is a boolean, and conditionally
@@ -170,10 +164,6 @@ const formatDentistSignupFormSubmissionData = (data) => {
   }
   if (processedData.pricing.childYearlyFeeActivated === false) {
     delete processedData.pricing.childYearlyFee;
-  }
-
-  if (processedData.marketplace.optIn === false) {
-    processedData.services = []; // contains no serviceIds
   }
 
   return processedData;
