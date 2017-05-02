@@ -59,6 +59,10 @@ export default class AccountSecurityFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   /*
   Event Handlers
   ------------------------------------------------------------
@@ -116,7 +120,7 @@ export default class AccountSecurityFormModal extends React.Component {
               <Field
                 name="newEmail"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="New Email Address"
                 placeholder=""
                 className="col-sm-6"
@@ -125,7 +129,7 @@ export default class AccountSecurityFormModal extends React.Component {
               <Field
                 name="confirmNewEmail"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Confirm New Email Address"
                 placeholder=""
                 className="col-sm-6"
@@ -136,7 +140,7 @@ export default class AccountSecurityFormModal extends React.Component {
               <Field
                 name="newPassword"
                 type="password"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="New Password"
                 placeholder=""
                 className="col-sm-6"
@@ -145,7 +149,7 @@ export default class AccountSecurityFormModal extends React.Component {
               <Field
                 name="confirmNewPassword"
                 type="password"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Confirm New Password"
                 placeholder=""
                 className="col-sm-6"
@@ -162,7 +166,7 @@ export default class AccountSecurityFormModal extends React.Component {
               <Field
                 name="oldPassword"
                 type="password"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Current Password"
                 placeholder=""
                 className="col-sm-6"

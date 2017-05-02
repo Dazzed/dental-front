@@ -60,6 +60,10 @@ export default class ContactUsFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -104,7 +108,7 @@ export default class ContactUsFormModal extends React.Component {
               <Field
                 name="name"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Name"
                 placeholder=""
                 className="col-md-6"
@@ -113,7 +117,7 @@ export default class ContactUsFormModal extends React.Component {
               <Field
                 name="email"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Email"
                 placeholder=""
                 className="col-sm-6"
@@ -124,7 +128,7 @@ export default class ContactUsFormModal extends React.Component {
               <Field
                 name="message"
                 type="textarea"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Write Your Message"
                 placeholder=""
                 className="col-sm-12"

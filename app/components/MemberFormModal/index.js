@@ -109,6 +109,14 @@ export default class MemberFormModal extends React.Component {
     }
   }
 
+  getDatePicker(props) {
+    return new renderDatePicker(props);
+  }
+
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   setChildWarning = (msg) => {
     this.setState({
       ...this.state,
@@ -213,7 +221,7 @@ export default class MemberFormModal extends React.Component {
               <Field
                 name="firstName"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="First Name"
                 className="col-md-6"
               />
@@ -221,7 +229,7 @@ export default class MemberFormModal extends React.Component {
               <Field
                 name="lastName"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Last Name"
                 className="col-md-6"
               />
@@ -232,7 +240,7 @@ export default class MemberFormModal extends React.Component {
                 name="sex"
                 type="select"
                 label="Sex"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 className="col-md-6"
               >
                 <option value="">Select sex</option>
@@ -246,7 +254,7 @@ export default class MemberFormModal extends React.Component {
               <Field
                 name="birthDate"
                 type="date"
-                component={renderDatePicker}
+                component={this.getDatePicker}
                 label="Birthdate"
                 className="col-md-6"
               />
@@ -256,7 +264,7 @@ export default class MemberFormModal extends React.Component {
               <Field
                 name="familyRelationship"
                 type="select"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Family Relationship"
                 className="col-md-6"
               >

@@ -307,6 +307,26 @@ class DentistSignupForm extends React.Component {
     this.props.change('officeInfo.officeImages2', info.fileUrl);
   }
 
+  getInput(props) {
+    return new Input(props);
+  }
+
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
+  getInputGroup(props) {
+    return new InputGroup(props);
+  }
+
+  getCheckbox(props) {
+    return new Checkbox(props);
+  }
+
+  getInputTime(props) {
+    return new InputTime(props);
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -348,7 +368,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="firstName"
               type="text"
-              component={Input}
+              component={this.getInput}
               label="First Name"
               width={4}
             />
@@ -356,7 +376,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="middleName"
               type="text"
-              component={Input}
+              component={this.getInput}
               label="Middle Name (optional)"
               width={4}
             />
@@ -364,7 +384,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="lastName"
               type="text"
-              component={Input}
+              component={this.getInput}
               label="Last Name"
               width={4}
             />
@@ -376,7 +396,7 @@ class DentistSignupForm extends React.Component {
               type="text"
               mask="(999) 999-9999"
               maskChar=" "
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Contact Phone Number"
               placeholder=""
               className="col-sm-6"
@@ -387,7 +407,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="email"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Contact &amp; Login Email Address"
               placeholder=""
               className="col-sm-6"
@@ -396,7 +416,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="confirmEmail"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Confirm Email Address"
               placeholder=""
               className="col-sm-6"
@@ -407,7 +427,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="password"
               type="password"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Create Password"
               placeholder=""
               className="col-sm-6"
@@ -416,7 +436,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="confirmPassword"
               type="password"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Re-enter Password"
               placeholder=""
               className="col-sm-6"
@@ -439,7 +459,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="officeName"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Office Name"
               placeholder=""
               className="col-sm-6"
@@ -449,7 +469,7 @@ class DentistSignupForm extends React.Component {
               name="specialtyId"
               type="select"
               label="Specialty"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               className="col-sm-6"
             >
               <option value="">Select a Specialty</option>
@@ -465,7 +485,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="email"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Office Email Address"
               placeholder=""
               className="col-sm-6"
@@ -476,7 +496,7 @@ class DentistSignupForm extends React.Component {
               type="text"
               mask="(999) 999-9999"
               maskChar=" "
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Office Phone Number"
               placeholder=""
               className="col-sm-6"
@@ -487,7 +507,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="url"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Website URL"
               placeholder="https://mydentistrysite.com"
               className="col-sm-6"
@@ -498,7 +518,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="message"
               type="textarea"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Profile Message"
               placeholder=""
               className="col-sm-12"
@@ -510,7 +530,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="address"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Address"
               placeholder=""
               className="col-sm-12"
@@ -521,7 +541,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="city"
               type="text"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="City"
               placeholder=""
               className="col-sm-4"
@@ -530,7 +550,7 @@ class DentistSignupForm extends React.Component {
             <Field
               name="state"
               type="select"
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="State"
               className="col-sm-4"
             >
@@ -549,7 +569,7 @@ class DentistSignupForm extends React.Component {
               type="text"
               mask="99999"
               maskChar=" "
-              component={LabeledInput}
+              component={this.getLabeledInput}
               label="Zip Code"
               placeholder=""
               className="col-sm-4"
@@ -727,7 +747,7 @@ class DentistSignupForm extends React.Component {
                           <Field
                             name={pricingCodeName}
                             type="number"
-                            component={InputGroup}
+                            component={this.getInputGroup}
                             leftAddon="$"
                             validate={[
                               priceCodeRequiredValidator,
@@ -763,7 +783,7 @@ class DentistSignupForm extends React.Component {
                 <Field
                   name="adultMonthlyFee"
                   type="number"
-                  component={InputGroup}
+                  component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
                 />
@@ -794,7 +814,7 @@ class DentistSignupForm extends React.Component {
                 <Field
                   name="childMonthlyFee"
                   type="number"
-                  component={InputGroup}
+                  component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
                 />
@@ -825,7 +845,7 @@ class DentistSignupForm extends React.Component {
                 <Field
                   name="adultYearlyFee"
                   type="number"
-                  component={InputGroup}
+                  component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
                   disabled={!yearlyFeeActivated.adult}
@@ -847,7 +867,7 @@ class DentistSignupForm extends React.Component {
               <div styleName="fees__activation-checkbox">
                 <Field
                   name="adultYearlyFeeActivated"
-                  component={Checkbox}
+                  component={this.getCheckbox}
                 >
                   Activate this offer.
                 </Field>
@@ -862,7 +882,7 @@ class DentistSignupForm extends React.Component {
                 <Field
                   name="childYearlyFee"
                   type="number"
-                  component={InputGroup}
+                  component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
                   disabled={!yearlyFeeActivated.child}
@@ -884,7 +904,7 @@ class DentistSignupForm extends React.Component {
               <div styleName="fees__activation-checkbox">
                 <Field
                   name="childYearlyFeeActivated"
-                  component={Checkbox}
+                  component={this.getCheckbox}
                 >
                   Activate this offer.
                 </Field>
@@ -899,7 +919,7 @@ class DentistSignupForm extends React.Component {
                 <Field
                   name="treatmentDiscount"
                   type="number"
-                  component={InputGroup}
+                  component={this.getInputGroup}
                   leftAddon="%"
                   width={8}
                 />
@@ -926,7 +946,7 @@ class DentistSignupForm extends React.Component {
               </ControlLabel>
               <Field
                 name="optIn"
-                component={Checkbox}
+                component={this.getCheckbox}
               >
                 Yes, please include my office on the DentalHQ Marketplace listing.
               </Field>
@@ -956,7 +976,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4" key={serviceKey}>
                     <Field
                       name={serviceKey}
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>{service.name}</span>
                     </Field>
@@ -976,7 +996,7 @@ class DentistSignupForm extends React.Component {
                 <div className="col-sm-4">
                   <Field
                     name="acceptsChildren"
-                    component={Checkbox}
+                    component={this.getCheckbox}
                   >
                     Accepts Children
                   </Field>
@@ -986,7 +1006,7 @@ class DentistSignupForm extends React.Component {
                     <Field
                       name="childStartingAge"
                       type="number"
-                      component={Input}
+                      component={this.getInput}
                       label="Starting Age"
                       width={12}
                     />
@@ -1028,7 +1048,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Monday</span>
                     </Field>
@@ -1036,7 +1056,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.monday}
@@ -1044,7 +1064,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.monday}
@@ -1057,7 +1077,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Tuesday</span>
                     </Field>
@@ -1065,7 +1085,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.tuesday}
@@ -1073,7 +1093,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.tuesday}
@@ -1086,7 +1106,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Wednesday</span>
                     </Field>
@@ -1094,7 +1114,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.wednesday}
@@ -1102,7 +1122,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.wednesday}
@@ -1115,7 +1135,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Thursday</span>
                     </Field>
@@ -1123,7 +1143,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.thursday}
@@ -1131,7 +1151,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.thursday}
@@ -1144,7 +1164,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Friday</span>
                     </Field>
@@ -1152,7 +1172,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.friday}
@@ -1160,7 +1180,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.friday}
@@ -1173,7 +1193,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Saturday</span>
                     </Field>
@@ -1181,7 +1201,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.saturday}
@@ -1189,7 +1209,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.saturday}
@@ -1202,7 +1222,7 @@ class DentistSignupForm extends React.Component {
                   <div className="col-sm-4">
                     <Field
                       name="isOpen"
-                      component={Checkbox}
+                      component={this.getCheckbox}
                     >
                       <span>Sunday</span>
                     </Field>
@@ -1210,7 +1230,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="startAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToAM={true}
                     disabled={officeClosed.sunday}
@@ -1218,7 +1238,7 @@ class DentistSignupForm extends React.Component {
 
                   <Field
                     name="endAt"
-                    component={InputTime}
+                    component={this.getInputTime}
                     className="col-sm-4"
                     defaultToPM={true}
                     disabled={officeClosed.sunday}

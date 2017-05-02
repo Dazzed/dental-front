@@ -157,6 +157,22 @@ class SignupForm extends React.Component {
 
   }
 
+  getInput(props) {
+    return new Input(props);
+  }
+
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
+  getCheckbox(props) {
+    return new Checkbox(props);
+  }
+
+  getSegmentedDatePicker(props) {
+    return new SegmentedDatePicker(props)
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -183,7 +199,7 @@ class SignupForm extends React.Component {
           <Field
             name="firstName"
             type="text"
-            component={Input}
+            component={this.getInput}
             label="First Name"
             width={4}
           />
@@ -191,7 +207,7 @@ class SignupForm extends React.Component {
           <Field
             name="middleName"
             type="text"
-            component={Input}
+            component={this.getInput}
             label="Middle Name (optional)"
             width={4}
           />
@@ -199,7 +215,7 @@ class SignupForm extends React.Component {
           <Field
             name="lastName"
             type="text"
-            component={Input}
+            component={this.getInput}
             label="Last Name"
             width={4}
           />
@@ -209,7 +225,7 @@ class SignupForm extends React.Component {
           <Field
             name="birthDate"
             type="date"
-            component={SegmentedDatePicker}
+            component={this.getSegmentedDatePicker}
             label="Date of Birth"
             className="col-sm-6"
           />
@@ -218,7 +234,7 @@ class SignupForm extends React.Component {
             name="sex"
             type="select"
             label="Sex"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             className="col-sm-offset-2 col-sm-4"
           >
             <option value=""></option>
@@ -238,7 +254,7 @@ class SignupForm extends React.Component {
             type="text"
             mask="(999) 999-9999"
             maskChar=" "
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Phone"
             placeholder=""
             className="col-sm-6"
@@ -248,7 +264,7 @@ class SignupForm extends React.Component {
             name="contactMethod"
             type="select"
             label="Preferred Contact Method"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             className="col-sm-6"
           >
             <option value=""></option>
@@ -267,7 +283,7 @@ class SignupForm extends React.Component {
           <Field
             name="email"
             type="text"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Email Address"
             placeholder=""
             className="col-sm-6"
@@ -276,7 +292,7 @@ class SignupForm extends React.Component {
           <Field
             name="confirmEmail"
             type="text"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Confirm Email Address"
             placeholder=""
             className="col-sm-6"
@@ -287,7 +303,7 @@ class SignupForm extends React.Component {
           <Field
             name="password"
             type="password"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Password"
             placeholder=""
             className="col-sm-6"
@@ -296,7 +312,7 @@ class SignupForm extends React.Component {
           <Field
             name="confirmPassword"
             type="password"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Confirm Password"
             placeholder=""
             className="col-sm-6"
@@ -320,7 +336,7 @@ class SignupForm extends React.Component {
                   name="officeId"
                   type="select"
                   label="Dental Office"
-                  component={LabeledInput}
+                  component={this.getLabeledInput}
                   className="col-sm-4"
                 >
                   <option value="">Select dental office</option>
@@ -337,7 +353,7 @@ class SignupForm extends React.Component {
                   <Field
                     name="officeId"
                     type="hidden"
-                    component={Input}
+                    component={this.getInput}
                   />
                 </div>
               )
@@ -348,7 +364,7 @@ class SignupForm extends React.Component {
           <div className="col-sm-4" styleName="align-with-input">
             <Field
               name="payingMember"
-              component={Checkbox}
+              component={this.getCheckbox}
             >
               <strong>I Will Also Be A Member</strong>
             </Field>
