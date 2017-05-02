@@ -79,6 +79,14 @@ export default class ReviewFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
+  getInput(props) {
+    return new Input(props);
+  }
+
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   render () {
     const {
       // form related
@@ -136,7 +144,7 @@ export default class ReviewFormModal extends React.Component {
                   <Field
                     name="rating"
                     type="number"
-                    component={Input}
+                    component={this.getInput}
                     label="0 to 10"
                   />
                 </div>
@@ -151,7 +159,7 @@ export default class ReviewFormModal extends React.Component {
               <Field
                 name="message"
                 type="textarea"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Write Your Review"
                 placeholder=""
                 className="col-sm-12"
