@@ -586,7 +586,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     </h2>
 
                     <p styleName="instructions">
-                      <strong>Parents:</strong> this part is for you, so be sure to enter <strong>your</strong> name and contact information.  You will be able to add your children as members of your plan in Step 2.
+                      Grown Ups, this part is for you, so be sure to enter your name and contact information. You will be able to add yourself and your family as members of your plan in Step 2
                     </p>
 
                     <SignupPatientForm

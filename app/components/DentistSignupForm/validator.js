@@ -43,7 +43,7 @@ const schema = {
     presence: true,
     format: {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\$\/\*!]{8,}$/,
-      message: `^Password must be at least 8 characters and include one (1) special character and one (1) capital letter.`,
+      message: `^Password must be at least 8 characters and include one (1) capital letter, one (1) number, and one (1) special character.`,
     }
   },
   "user.confirmPassword": { presence: true, equality: 'user.password' },
