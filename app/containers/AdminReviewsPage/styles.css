@@ -1,0 +1,30 @@
+/*
+Admin Dentists Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  padding: 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.content--filler {
+  min-height: 500px;
+}
+
+.match-form-group-offset {
+  padding-top: 0.75rem;
+}

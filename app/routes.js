@@ -146,6 +146,83 @@ export default function createRoutes (store) {
           .catch(errorLoading);
       },
     }, {
+      onEnter: redirectToLogin,
+      path: '/admin/dentists',
+      name: 'adminDentistsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminDentistsPage/reducer'),
+          System.import('containers/AdminDentistsPage/sagas'),
+          System.import('containers/AdminDentistsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('adminDentistsPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/admin/members',
+      name: 'adminMembersPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminDentistsPage/reducer'),
+          System.import('containers/AdminDentistsPage/sagas'),
+
+          System.import('containers/AdminMembersPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          adminDentistsReducer,
+          adminDentistsSagas,
+
+          component
+        ]) => {
+          injectReducer('adminDentistsPage', adminDentistsReducer.default);
+          injectSagas(adminDentistsSagas.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
+      path: '/admin/reviews',
+      name: 'adminReviewsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminDentistsPage/reducer'),
+          System.import('containers/AdminDentistsPage/sagas'),
+
+          System.import('containers/AdminReviewsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          adminDentistsReducer,
+          adminDentistsSagas,
+
+          component
+        ]) => {
+          injectReducer('adminDentistsPage', adminDentistsReducer.default);
+          injectSagas(adminDentistsSagas.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '/charge15',
       name: 'chargePage15',
       getComponent (nextState, cb) {

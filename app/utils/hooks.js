@@ -51,6 +51,9 @@ function redirectToDashboard (store) {
     else if (isLoggedIn && userType === USER_TYPES.DENTIST) {
       replace('/dentist/new-members');
     }
+    else if (isLoggedIn && userType === USER_TYPES.ADMIN) {
+      replace('/admin/dentists');
+    }
   };
 }
 
