@@ -28,3 +28,45 @@ Page Wide
 .match-form-group-offset {
   padding-top: 0.75rem;
 }
+
+.button--short {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/* Admin Dentists
+ * ========================================================================== */
+
+/* Dentist List Entry
+ * ------------------------------------------------------ */
+.dentist-details {
+  color: $color-primary-lowlight;
+}
+
+.dentist-details__section-title {
+  color: $color-primary-highlight;
+
+  font-size: 1.5rem;
+}
+
+.dentist-details__value {
+  color: $color-primary-highlight;
+}

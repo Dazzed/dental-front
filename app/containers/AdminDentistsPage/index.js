@@ -9,6 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -21,10 +22,11 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
-import Avatar from 'components/Avatar';
-import CheckoutFormModal from 'components/CheckoutFormModal';
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
 import AdminDashboardTabs from 'components/AdminDashboardTabs';
+import Avatar from 'components/Avatar';
+import CheckoutFormModal from 'components/CheckoutFormModal';
+import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -36,6 +38,9 @@ import {
   fetchDentistDetails,
   fetchStats,
 
+  // setters
+  setSelectedDentist,
+
   // search / sort dentists
   search,
   sort,
@@ -45,6 +50,9 @@ import {
   selectDentists,
   selectDentistDetails,
   selectStats,
+
+  // getters
+  selectSelectedDentist,
 
   // search / sort patients
   selectSearch,
@@ -64,6 +72,9 @@ function mapStateToProps (state) {
     stats: selectStats(state),
     user: selectCurrentUser(state),
 
+    // getters
+    selectedDentist: selectSelectedDentist(state),
+
     // search / sort patients
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
@@ -79,6 +90,9 @@ function mapDispatchToProps (dispatch) {
     fetchDentists: () => dispatch(fetchDentists()),
     fetchDentistDetails: (dentistId) => dispatch(fetchDentistDetails(dentistId)),
     fetchStats: () => dispatch(fetchStats()),
+
+    // setters
+    setSelectedDentist: (dentist) => dispatch(setSelectedDentist(dentist)),
 
     // search / sort
     searchDentists: (name) => dispatch(search(name)),
@@ -113,6 +127,12 @@ export default class AdminDentistsPage extends React.Component {
     fetchDentistDetails: React.PropTypes.func.isRequired,
     fetchStats: React.PropTypes.func.isRequired,
 
+    // getters - state
+    selectedDentist: React.PropTypes.object,
+
+    // setters - dispatch
+    setSelectedDentist: React.PropTypes.func.isRequired,
+
     // search / sort - state
     currentSearchTerm: React.PropTypes.string,
     currentSortTerm: React.PropTypes.string,
@@ -135,8 +155,6 @@ export default class AdminDentistsPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentists();
     this.props.fetchStats();
-
-    this.props.fetchDentistDetails(1);
   }
 
   componentDidMount() {
@@ -144,16 +162,22 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   /*
-  Page Actions
-  ------------------------------------------------------------
-  */
-  // TODO
-
-  /*
   Events
   ------------------------------------------------------------
   */
-  // TODO
+  // edit dentist
+  onEdit = () => {
+    alert('todo: edit');
+  }
+
+  // select dentist
+  onSelectDentist = (dentist) => {
+    if (dentist !== null) {
+      this.props.fetchDentistDetails(dentist.id);
+    }
+
+    this.props.setSelectedDentist(dentist);
+  }
 
   // search & sort
   onSearchEntered = (evt) => {
@@ -171,6 +195,148 @@ export default class AdminDentistsPage extends React.Component {
     });
   }
 
+  /* Render Dentist Details
+   * ------------------------------------------------------ */
+  renderDentistDetails = (dentist) => {
+    const {
+      dentistDetails
+    } = this.props;
+
+    // precondition render: the data must be loaded, otherwise wait for it
+    if (dentistDetails === null) {
+      return (
+        <div className="text-center">
+          <LoadingSpinner showOnlyIcon={true} />
+        </div>
+      );
+    }
+
+    const {
+      createdAt,
+    } = dentist;
+
+    const {
+      address,
+      city,
+      state,
+      zipCode,
+
+      email,
+      phone,
+
+      marketplaceOptIn,
+
+      membership: { discount }
+    } = dentist.dentistInfo;
+
+    const activeSince = moment(createdAt).format("MMMM Do, YYYY");
+
+    return (
+      <div className={'row ' + styles['dentist-details']}>
+        <div className="col-md-6">
+          <p>
+            <span className={styles['dentist-details__value']}>
+              {address}
+              <br />
+              {city}, {state} {zipCode}
+            </span>
+          </p>
+
+          <p>
+            Contact:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              {email}
+              <br />
+              {phone}
+            </span>
+          </p>
+
+          <p>
+            Total Active Members:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              TODO
+            </span>
+          </p>
+
+          <p>
+            Active Since:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              {activeSince}
+            </span>
+          </p>
+
+          <p>
+            Account Manager:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              TODO
+            </span>
+          </p>
+
+          <p>
+            Office Link:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              TODO
+            </span>
+          </p>
+
+          <p>
+            Marketplace:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              {marketplaceOptIn ? 'Active' : 'Inactive'}
+            </span>
+          </p>
+
+          <p>
+            Affordability Index:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              TODO
+            </span>
+          </p>
+        </div>
+
+        <div className="col-md-6">
+          <p className={styles['dentist-details__section-title']}>
+            Dental Code Fees:
+          </p>
+
+          <div className="row">
+            <div className="col-md-3">
+              Code Fee
+            </div>
+
+            <div className="col-md-3">
+              TODO
+            </div>
+          </div>
+
+          <p>
+            Discount:
+            {' '}
+            <span className={styles['dentist-details__value']}>
+              {discount}%
+            </span>
+          </p>
+
+          <p>
+            <input
+              type="button"
+              className={styles['button--short']}
+              value="EDIT"
+              onClick={this.onEdit}
+            />
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -183,6 +349,10 @@ export default class AdminDentistsPage extends React.Component {
       stats,
       user,
 
+      // getters & setters
+      selectedDentist,
+      setSelectedDentist,
+
       // search / sort dentists
       currentSortTerm,
     } = this.props;
@@ -192,7 +362,7 @@ export default class AdminDentistsPage extends React.Component {
       searchTerm,
     } = this.state;
 
-    console.log(stats);
+    console.log(JSON.stringify(dentistDetails));
 
     /*
     Precondition Renders
@@ -270,7 +440,13 @@ export default class AdminDentistsPage extends React.Component {
 
           </div>
 
-          DENTIST LIST GOES HERE
+          <DentistList
+            dentists={dentists}
+            selectedDentist={selectedDentist}
+
+            selectDentist={this.onSelectDentist}
+            renderListEntryBody={this.renderDentistDetails}
+          />
         </div>
 
         {/* Modals

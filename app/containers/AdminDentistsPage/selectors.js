@@ -48,6 +48,13 @@ const selectStats = createSelector(
   (substate) => substate.stats
 );
 
+/* Getters
+ * ------------------------------------------------------ */
+const selectSelectedDentist = createSelector(
+  domainSelector,
+  (substate) => substate.selectedDentist
+);
+
 /*
 Search / Sort
 ------------------------------------------------------------
@@ -69,14 +76,17 @@ Export
  export default domainSelector;
 
 export {
-  // search / sort patients
-  selectSearch,
-  selectSort,
-
   // fetch
   selectDentists,
   selectDentistDetails,
   selectDentistMembers,
   selectDentistReviews,
   selectStats,
+
+  // getters
+  selectSelectedDentist,
+
+  // search / sort patients
+  selectSearch,
+  selectSort,
 };

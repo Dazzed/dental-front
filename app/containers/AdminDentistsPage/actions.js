@@ -2,7 +2,7 @@
  * ========================================================================== */
 // local
 import {
-  // fetch dentist
+  // fetch dentists
   FETCH_DENTISTS_REQUEST,
   FETCH_DENTISTS_SUCCESS,
   FETCH_DENTISTS_ERROR,
@@ -26,6 +26,9 @@ import {
   FETCH_STATS_REQUEST,
   FETCH_STATS_SUCCESS,
   FETCH_STATS_ERROR,
+
+  // set selected dentist
+  SET_SELECTED_DENTIST,
 
   // search / sort patients
   SEARCH,
@@ -147,6 +150,16 @@ export function fetchStatsError (payload) {
   return {
     type: FETCH_STATS_ERROR,
     payload,
+  };
+}
+
+
+/* Setters
+ * ========================================================================== */
+export function setSelectedDentist (dentist) {
+  return {
+    type: SET_SELECTED_DENTIST,
+    dentist,
   };
 }
 

@@ -83,6 +83,13 @@ function* dentistsFetcher () {
   yield* takeLatest(FETCH_DENTISTS_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/dentists');
+
+      // TODO: TESTING HACK
+      response.data.push({ ...response.data[0] });
+      response.data[2].id = "10";
+      response.data.push({ ...response.data[0] });
+      response.data[3].id = "11";
+
       yield put(fetchDentistsSuccess(response.data));
     }
     catch (error) {

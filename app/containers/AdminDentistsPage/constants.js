@@ -25,5 +25,7 @@ export const FETCH_STATS_REQUEST = 'app/AdminDentistsPage/FETCH_STATS_REQUEST';
 export const FETCH_STATS_SUCCESS = 'app/AdminDentistsPage/FETCH_STATS_SUCCESS';
 export const FETCH_STATS_ERROR   = 'app/AdminDentistsPage/FETCH_STATS_ERROR';
 
+export const SET_SELECTED_DENTIST = 'app/AdminDentistsPage/SET_SELECTED_DENTIST';
+
 export const SEARCH   = 'app/AdminDentistsPage/SEARCH';
 export const SORT     = 'app/AdminDentistsPage/SORT';

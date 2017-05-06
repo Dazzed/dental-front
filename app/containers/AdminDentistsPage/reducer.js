@@ -14,10 +14,16 @@ import findIndex from 'lodash/findIndex';
 import {
   // fetch
   FETCH_DENTISTS_SUCCESS,
+  FETCH_DENTIST_DETAILS_REQUEST,
   FETCH_DENTIST_DETAILS_SUCCESS,
+  FETCH_DENTIST_MEMBERS_REQUEST,
   FETCH_DENTIST_MEMBERS_SUCCESS,
+  FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_DENTIST_REVIEWS_SUCCESS,
   FETCH_STATS_SUCCESS,
+
+  // setters
+  SET_SELECTED_DENTIST,
 
   // search / sort
   SEARCH,
@@ -35,6 +41,9 @@ const initialState = {
   dentistMembers: null,
   dentistReviews: null,
   stats: null,
+
+  // setters
+  selectedDentist: null,
 
   // search / sort patients
   searchName: null,
@@ -60,16 +69,34 @@ export default function adminPageReducer (state = initialState, action) {
         dentists: action.payload,
       };
 
+    case FETCH_DENTIST_DETAILS_REQUEST:
+      return {
+        ...state,
+        dentistDetails: null
+      };
+
     case FETCH_DENTIST_DETAILS_SUCCESS:
       return {
         ...state,
         dentistDetails: action.payload,
       };
 
+    case FETCH_DENTIST_MEMBERS_REQUEST:
+      return {
+        ...state,
+        dentistMembers: null,
+      };
+
     case FETCH_DENTIST_MEMBERS_SUCCESS:
       return {
         ...state,
         dentistMembers: action.payload,
+      };
+
+    case FETCH_DENTIST_REVIEWS_REQUEST:
+      return {
+        ...state,
+        dentistReviews: null,
       };
 
     case FETCH_DENTIST_REVIEWS_SUCCESS:
@@ -82,6 +109,14 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         stats: action.payload,
+      };
+
+    /* Setters
+     * ------------------------------------------------------ */
+    case SET_SELECTED_DENTIST:
+      return {
+        ...state,
+        selectedDentist: action.dentist,
       };
 
     /*

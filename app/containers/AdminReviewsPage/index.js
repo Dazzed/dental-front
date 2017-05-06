@@ -135,8 +135,6 @@ export default class AdminDentistsPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentists();
     this.props.fetchStats();
-
-    this.props.fetchDentistReviews(1);
   }
 
   componentDidMount() {
