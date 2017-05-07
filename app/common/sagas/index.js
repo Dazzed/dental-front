@@ -58,6 +58,9 @@ function* loadUserFromToken () {
         else if (userType === USER_TYPES.DENTIST) {
           yield put (replace('/dentist/new-members'));
         }
+        else if (userType === USER_TYPES.ADMIN) {
+          yield put (replace('/admin/dentists'));
+        }
       }
     }
   } catch (e) {

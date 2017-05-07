@@ -25,6 +25,10 @@ const dashboardPages = [
   '/patient/profile',
   '/patient/your-dentist',
   '/patient/your-reviews',
+
+  '/admin/dentists',
+  '/admin/members',
+  '/admin/reviews',
 ];
 
 
@@ -79,7 +83,7 @@ function PageHeader ({ borderContent, children, pathname, title, user, imgX, img
       );
     }
 
-    else {
+    else if (user.type === "client") {
       borderContent = (
         <div styleName="border-content--user">
           <div className="pull-left">
@@ -92,7 +96,7 @@ function PageHeader ({ borderContent, children, pathname, title, user, imgX, img
 
           <div className="pull-right">
             <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
-              <Link to="/dentist/new-members">Dashboard</Link>
+              <Link to="/patient/profile">Dashboard</Link>
             </span>
             |
             <span styleName="header-link">
@@ -106,6 +110,28 @@ function PageHeader ({ borderContent, children, pathname, title, user, imgX, img
         </div>
       );
     }
+
+    else if (user.type === "admin") {
+      borderContent = (
+        <div styleName="border-content--user">
+          <div className="pull-left">
+            ADMIN DASHBOARD
+          </div>
+
+          <div className="pull-right">
+            <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
+              <Link to="/admin/dentists">Dashboard</Link>
+            </span>
+            |
+            <span styleName="header-link">
+              <Link to="/accounts/logout">Logout</Link>
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // else unknown user type, leave the borderContent prop as is
   }
 
   return (

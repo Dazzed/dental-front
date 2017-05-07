@@ -1,0 +1,70 @@
+/*
+Admin Reviews Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  padding: 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.content--filler {
+  min-height: 500px;
+}
+
+.match-form-group-offset {
+  padding-top: 0.75rem;
+}
+
+.button--short {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/* Admin Reviews
+ * ========================================================================== */
+
+/* Dentist List Entry
+ * ------------------------------------------------------ */
+.dentist-reviews {
+  color: $color-primary-lowlight;
+}
+
+.dentist-review {
+  margin-bottom: 2.25rem;
+}
+
+.dentist-review__score {
+  color: $color-primary-highlight;
+}

@@ -62,6 +62,7 @@ User Types
 ------------------------------------------------------------
 */
 export const USER_TYPES = {
+  ADMIN: 'admin',
   CLIENT: 'client',
   DENTIST: 'dentist',
 };
