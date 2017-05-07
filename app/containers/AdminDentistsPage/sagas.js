@@ -37,6 +37,9 @@ import {
 
   fetchStatsSuccess,
   fetchStatsError,
+
+  deleteDentistReviewSuccess,
+  deleteDentistReviewError,
 } from './actions';
 import {
   FETCH_DENTISTS_REQUEST,
@@ -44,6 +47,8 @@ import {
   FETCH_DENTIST_MEMBERS_REQUEST,
   FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_STATS_REQUEST,
+
+  DELETE_DENTIST_REVIEW_REQUEST,
 } from './constants';
 
 
@@ -62,6 +67,7 @@ function* main () {
   const watcherC = yield fork(dentistMembersFetcher);
   const watcherD = yield fork(dentistReviewsFetcher);
   const watcherE = yield fork(statsFetcher);
+  const watcherF = yield fork(deleteDentistReview);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -69,6 +75,7 @@ function* main () {
   yield cancel(watcherC);
   yield cancel(watcherD);
   yield cancel(watcherE);
+  yield cancel(watcherF);
 }
 
 
@@ -153,4 +160,33 @@ function* statsFetcher () {
       yield put(fetchDentistsError(error));
     }
   });
+}
+
+
+/* Actions
+ * ========================================================================== */
+
+/* Delete Dentist Review
+ * ------------------------------------------------------ */
+function* deleteDentistReview () {
+  while (true) {
+    const { dentistId, reviewId } = yield take(DELETE_DENTIST_REVIEW_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/dentists/${dentistId}/reviews/${reviewId}`;
+      const params = {
+        method: 'DELETE',
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `Review has been deleted.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(deleteDentistReviewSuccess(dentistId, reviewId));
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+    }
+  }
 }

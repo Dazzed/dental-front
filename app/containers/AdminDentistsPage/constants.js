@@ -29,3 +29,7 @@ export const SET_SELECTED_DENTIST = 'app/AdminDentistsPage/SET_SELECTED_DENTIST'
 
 export const SEARCH   = 'app/AdminDentistsPage/SEARCH';
 export const SORT     = 'app/AdminDentistsPage/SORT';
+
+export const DELETE_DENTIST_REVIEW_REQUEST = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_REQUEST';
+export const DELETE_DENTIST_REVIEW_SUCCESS = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_SUCCESS';
+export const DELETE_DENTIST_REVIEW_ERROR =   'app/AdminDentistPage/DELETE_DENTIST_REVIEW_ERROR';
