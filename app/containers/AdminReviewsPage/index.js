@@ -40,6 +40,9 @@ import {
   // search / sort dentists
   search,
   sort,
+
+  // actions
+  deleteDentistReview,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -97,6 +100,9 @@ function mapDispatchToProps (dispatch) {
     // search / sort patients
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
+
+    // actions
+    deleteDentistReview: (dentistId, reviewId) => dispatch(deleteDentistReview(dentistId, reviewId)),
   };
 }
 
@@ -141,6 +147,9 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
+
+    // actions - dispatch
+    deleteDentistReview: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -192,8 +201,8 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   // remove review
-  onRemoveReview = (review) => {
-    alert('remove review');
+  onRemoveReview = (dentist, review) => {
+    this.props.deleteDentistReview(dentist.id, review.id);
   }
 
   /* Render Dentist Reviews
@@ -223,20 +232,25 @@ export default class AdminDentistsPage extends React.Component {
 
     return (
       <div className={styles['dentist-reviews']}>
-        {dentistReviews.map(this.renderDentistReview)}
+        {dentistReviews.map((review) => {
+          return this.renderDentistReview(dentist, review);
+        })}
       </div>
     );
   }
 
   /* Render Dentist Review
    * ------------------------------------------------------ */
-  renderDentistReview = (review) => {
+  renderDentistReview = (dentist, review) => {
     const {
       createdAt,
       message,
-      client: { firstName, lastName },
+//      client: { firstName, lastName },
       rating,
     } = review;
+
+    const firstName = "TODO:";
+    const lastName = "show client name";
 
     return (
       <div className={"row " + styles['dentist-review']} key={review.id}>
@@ -264,7 +278,7 @@ export default class AdminDentistsPage extends React.Component {
               type="button"
               className={styles['button--short']}
               value="REMOVE"
-              onClick={this.onRemoveReview.bind(this, review)}
+              onClick={this.onRemoveReview.bind(this, dentist, review)}
             />
           </div>
         </div>

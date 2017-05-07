@@ -28,6 +28,9 @@ import {
   // search / sort
   SEARCH,
   SORT,
+
+  // actions
+  DELETE_DENTIST_REVIEW_SUCCESS,
 } from './constants';
 
 /*
@@ -136,6 +139,16 @@ export default function adminPageReducer (state = initialState, action) {
         ...state,
         sortStatus: action.status,
       };
+
+    /* Actions
+     * ------------------------------------------------------ */
+    case DELETE_DENTIST_REVIEW_SUCCESS:
+      return {
+        ...state,
+        dentistReviews: state.dentistReviews.filter((review) => {
+          return review.id !== action.reviewId;
+        }),
+      }
 
     /*
     Default Reducer

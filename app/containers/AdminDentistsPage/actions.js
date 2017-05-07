@@ -33,6 +33,11 @@ import {
   // search / sort patients
   SEARCH,
   SORT,
+
+  // delete review
+  DELETE_DENTIST_REVIEW_REQUEST,
+  DELETE_DENTIST_REVIEW_SUCCESS,
+  DELETE_DENTIST_REVIEW_ERROR,
 } from './constants';
 
 
@@ -177,5 +182,34 @@ export function sort (status) {
   return {
     type: SORT,
     status,
+  };
+}
+
+
+/* Actions
+ * ========================================================================== */
+
+/* Delete Dentist Review
+ * ------------------------------------------------------ */
+export function deleteDentistReview (dentistId, reviewId) {
+  return {
+    type: DELETE_DENTIST_REVIEW_REQUEST,
+    dentistId,
+    reviewId,
+  };
+}
+
+export function deleteDentistReviewSuccess (dentistId, reviewId) {
+  return {
+    type: DELETE_DENTIST_REVIEW_SUCCESS,
+    dentistId,
+    reviewId,
+  };
+}
+
+export function deleteDentistReviewError (payload) {
+  return {
+    type: DELETE_DENTIST_REVIEW_ERROR,
+    payload,
   };
 }
