@@ -55,6 +55,7 @@ import {
   // search / sort patients
   selectSearch,
   selectSort,
+  selectProcessedDentists,
 } from './selectors';
 import styles from './styles.css';
 
@@ -76,6 +77,7 @@ function mapStateToProps (state) {
     // search / sort patients
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
+    processedDentists: selectProcessedDentists(state),
   };
 }
 
@@ -134,6 +136,7 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - state
     currentSearchTerm: React.PropTypes.string,
     currentSortTerm: React.PropTypes.string,
+    processedDentists: React.PropTypes.arrayOf(React.PropTypes.object),
 
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
@@ -173,12 +176,12 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   // search & sort
-  onSearchEntered = (evt) => {
-    this.props.searchDentists(evt.target.value);
+  onSearchEntered = () => {
+    this.props.searchDentists(this.state.searchTerm);
   }
 
   onSortSelect = (evt) => {
-    this.props.sortMembers(evt.target.value);
+    this.props.sortDentists(evt.target.value);
   }
 
   updateSearchTerm = (evt) => {
@@ -352,6 +355,7 @@ export default class AdminDentistsPage extends React.Component {
 
       // search / sort dentists
       currentSortTerm,
+      processedDentists,
     } = this.props;
 
     const {
@@ -436,7 +440,7 @@ export default class AdminDentistsPage extends React.Component {
           </div>
 
           <DentistList
-            dentists={dentists}
+            dentists={processedDentists}
             selectedDentist={selectedDentist}
 
             selectDentist={this.onSelectDentist}
