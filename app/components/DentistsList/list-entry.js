@@ -82,7 +82,11 @@ export default class DentistsListEntry extends React.Component {
 
             {selected && (
               <div styleName="list-entry__body">
-                {renderListEntryBody(dentist)}
+                <div className="row">
+                  <div className="col-sm-offset-1 col-sm-10">
+                    {renderListEntryBody(dentist)}
+                  </div>
+                </div>
               </div>
             )}
 

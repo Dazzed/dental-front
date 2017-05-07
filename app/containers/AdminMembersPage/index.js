@@ -21,10 +21,9 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
-import Avatar from 'components/Avatar';
-import CheckoutFormModal from 'components/CheckoutFormModal';
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
 import AdminDashboardTabs from 'components/AdminDashboardTabs';
+import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -33,6 +32,9 @@ import {
   fetchDentists,
   fetchDentistMembers,
   fetchStats,
+
+  // setters
+  setSelectedDentist,
 
   // search / sort dentists
   search,
@@ -43,6 +45,9 @@ import {
   selectDentists,
   selectDentistMembers,
   selectStats,
+
+  // getters
+  selectSelectedDentist,
 
   // search / sort patients
   selectSearch,
@@ -60,9 +65,12 @@ function mapStateToProps (state) {
   return {
     // fetch
     dentists: selectDentists(state),
-    members: selectDentistMembers(state),
+    dentistMembers: selectDentistMembers(state),
     stats: selectStats(state),
     user: selectCurrentUser(state),
+
+    // getters
+    selectedDentist: selectSelectedDentist(state),
 
     // search / sort patients
     currentSearchTerm: selectSearch(state),
@@ -79,6 +87,9 @@ function mapDispatchToProps (dispatch) {
     fetchDentists: () => dispatch(fetchDentists()),
     fetchDentistMembers: (dentistId) => dispatch(fetchDentistMembers(dentistId)),
     fetchStats: () => dispatch(fetchStats()),
+
+    // setters
+    setSelectedDentist: (dentist) => dispatch(setSelectedDentist(dentist)),
 
     // search / sort patients
     searchDentists: (name) => dispatch(searchDentists(name)),
@@ -101,7 +112,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // fetch - state
     dentists: React.PropTypes.arrayOf(React.PropTypes.object),
-    members: React.PropTypes.arrayOf(React.PropTypes.object),
+    dentistMembers: React.PropTypes.arrayOf(React.PropTypes.object),
     stats: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
@@ -113,11 +124,17 @@ export default class AdminDentistsPage extends React.Component {
     fetchDentistMembers: React.PropTypes.func.isRequired,
     fetchStats: React.PropTypes.func.isRequired,
 
-    // search / sort patients - state
+    // getters - state
+    selectedDentist: React.PropTypes.object,
+
+    // setters - dispatch
+    setSelectedDentist: React.PropTypes.func.isRequired,
+
+    // search / sort - state
     currentSearchTerm: React.PropTypes.string,
     currentSortTerm: React.PropTypes.string,
 
-    // search / sort patients - dispatch
+    // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
   }
@@ -142,16 +159,17 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   /*
-  Page Actions
-  ------------------------------------------------------------
-  */
-  // TODO
-
-  /*
   Events
   ------------------------------------------------------------
   */
-  // TODO
+  // select dentist
+  onSelectDentist = (dentist) => {
+    if (dentist !== null) {
+      this.props.fetchDentistMembers(dentist.id);
+    }
+
+    this.props.setSelectedDentist(dentist);
+  }
 
   // search & sort
   onSearchEntered = (evt) => {
@@ -169,6 +187,178 @@ export default class AdminDentistsPage extends React.Component {
     });
   }
 
+  // on refund / transfer
+  onRefund = (dentist, patient) => {
+    alert('refund "' + patient.firstName + ' ' + patient.lastName + '"');
+  }
+
+  onTransfer = (dentist, patient) => {
+    alert('transfer "' + patient.firstName + ' ' + patient.lastName + '"');
+  }
+
+  /* Render Dentist Members
+   * ------------------------------------------------------ */
+  renderDentistMembers = (dentist) => {
+    const {
+      dentistMembers
+    } = this.props;
+
+    // precondition render: the data must be loaded, otherwise wait for it
+    if (dentistMembers === null) {
+      return (
+        <div className="text-center">
+          <LoadingSpinner showOnlyIcon={true} />
+        </div>
+      );
+    }
+
+    // precondition render: there are no members to display
+    if (dentistMembers.length === 0) {
+      return (
+        <div className={styles['dentist-members']}>
+          The dentist does not have any members yet.
+        </div>
+      );
+    }
+
+    const memberCount = dentistMembers.reduce(
+      (memberCounter, patient) => {
+        return memberCounter += patient.members.length;
+      },
+      0
+    );
+
+    return (
+      <div className={styles['dentist-members']}>
+        <p className="text-center">
+          Patient Accounts ({dentistMembers.length})
+          {' '}
+          ~ Total Members ({memberCount})
+        </p>
+
+        {dentistMembers.map((patient, index) => {
+          return this.renderPatient(dentist, patient, index + 1);
+        })}
+      </div>
+    );
+  }
+
+  /* Render Dentist Member
+   * ------------------------------------------------------ */
+  renderPatient = (dentist, patient, position) => {
+    const {
+      firstName,
+      lastName,
+
+      members,
+      subscription: { status },
+    } = patient;
+
+    let statusStyle = "";
+    switch(status) {
+      case "active":
+        statusStyle += "status--active";
+        break;
+
+      case "past_due":
+        statusStyle += "status--past-due";
+        break;
+
+      case "canceled":
+        statusStyle += "status--canceled";
+        break;
+
+      case "inactive":
+        statusStyle += "status--inactive";
+        break;
+
+      default:
+        // Status is unknown, so don't add anything;
+        break;
+    }
+
+    const listNum = ("00" + position.toString()).substr(-3, 3); // guarantee a length 3 listNum
+
+    return (
+      <div className={"row " + styles['patient']} key={patient.id}>
+        <div className="col-sm-6">
+          <p>
+            <strong>{listNum}) {firstName} {lastName}</strong>
+            {' '}
+            - <span className={"status " + styles[statusStyle]}>{status}</span>
+          </p>
+
+          <p>
+            Family Members:
+          </p>
+
+          <ul>
+            {members.map((member) => {
+              const {
+                firstName,
+                lastName,
+
+                subscription: { status },
+              } = member;
+
+              const isAccountOwner = patient.id === member.id;
+
+              let statusStyle = "";
+              switch(status) {
+                case "active":
+                  statusStyle += "status--active";
+                  break;
+
+                case "past_due":
+                  statusStyle += "status--past-due";
+                  break;
+
+                case "canceled":
+                  statusStyle += "status--canceled";
+                  break;
+
+                case "inactive":
+                  statusStyle += "status--inactive";
+                  break;
+
+                default:
+                  // Status is unknown, so don't add anything;
+                  break;
+              }
+
+              return (
+                <li key={member.id}>
+                  {firstName} {lastName}
+                  {' '}
+                  - <span className={"status " + styles[statusStyle]}>{status}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className="col-sm-6">
+          <p>
+            <input
+              type="button"
+              className={styles['button--short']}
+              value="REFUNDS"
+              onClick={this.onRefund.bind(this, dentist, patient)}
+            />
+          </p>
+          <p>
+            <input
+              type="button"
+              className={styles['button--short']}
+              value="TRANSFER"
+              onClick={this.onTransfer.bind(this, dentist, patient)}
+            />
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -180,6 +370,9 @@ export default class AdminDentistsPage extends React.Component {
       members,
       stats,
       user,
+
+      // getters & setters
+      selectedDentist,
 
       // search / sort dentists
       currentSortTerm,
@@ -258,7 +451,7 @@ export default class AdminDentistsPage extends React.Component {
             <div className="col-sm-3" styleName="match-form-group-offset">
               <span>Sort By: </span>
               <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date</option>
+                <option value="date">Date Joined</option>
                 <option value="email">Email</option>
                 <option value="name">Name</option>
               </select>
@@ -266,7 +459,13 @@ export default class AdminDentistsPage extends React.Component {
 
           </div>
 
-          DENTIST LIST GOES HERE
+          <DentistList
+            dentists={dentists}
+            selectedDentist={selectedDentist}
+
+            selectDentist={this.onSelectDentist}
+            renderListEntryBody={this.renderDentistMembers}
+          />
         </div>
 
         {/* Modals

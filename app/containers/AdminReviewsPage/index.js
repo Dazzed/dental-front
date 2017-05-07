@@ -9,6 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -21,10 +22,9 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
-import Avatar from 'components/Avatar';
-import CheckoutFormModal from 'components/CheckoutFormModal';
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
 import AdminDashboardTabs from 'components/AdminDashboardTabs';
+import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -33,6 +33,9 @@ import {
   fetchDentists,
   fetchDentistReviews,
   fetchStats,
+
+  // setters
+  setSelectedDentist,
 
   // search / sort dentists
   search,
@@ -43,6 +46,9 @@ import {
   selectDentists,
   selectDentistReviews,
   selectStats,
+
+  // getters
+  selectSelectedDentist,
 
   // search / sort patients
   selectSearch,
@@ -64,6 +70,9 @@ function mapStateToProps (state) {
     stats: selectStats(state),
     user: selectCurrentUser(state),
 
+    // getters
+    selectedDentist: selectSelectedDentist(state),
+
     // search / sort patients
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
@@ -79,6 +88,9 @@ function mapDispatchToProps (dispatch) {
     fetchDentists: () => dispatch(fetchDentists()),
     fetchDentistReviews: (dentistId) => dispatch(fetchDentistReviews(dentistId)),
     fetchStats: () => dispatch(fetchStats()),
+
+    // setters
+    setSelectedDentist: (dentist) => dispatch(setSelectedDentist(dentist)),
 
     // search / sort patients
     searchDentists: (name) => dispatch(searchDentists(name)),
@@ -101,7 +113,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // fetch - state
     dentists: React.PropTypes.arrayOf(React.PropTypes.object),
-    dentistReviews: React.PropTypes.object,
+    dentistReviews: React.PropTypes.arrayOf(React.PropTypes.object),
     stats: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
@@ -113,11 +125,17 @@ export default class AdminDentistsPage extends React.Component {
     fetchDentistReviews: React.PropTypes.func.isRequired,
     fetchStats: React.PropTypes.func.isRequired,
 
-    // search / sort patients - state
+    // getters - state
+    selectedDentist: React.PropTypes.object,
+
+    // setters - dispatch
+    setSelectedDentist: React.PropTypes.func.isRequired,
+
+    // search / sort - state
     currentSearchTerm: React.PropTypes.string,
     currentSortTerm: React.PropTypes.string,
 
-    // search / sort patients - dispatch
+    // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
   }
@@ -142,16 +160,17 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   /*
-  Page Actions
-  ------------------------------------------------------------
-  */
-  // TODO
-
-  /*
   Events
   ------------------------------------------------------------
   */
-  // TODO
+  // select dentist
+  onSelectDentist = (dentist) => {
+    if (dentist !== null) {
+      this.props.fetchDentistReviews(dentist.id);
+    }
+
+    this.props.setSelectedDentist(dentist);
+  }
 
   // search & sort
   onSearchEntered = (evt) => {
@@ -169,6 +188,90 @@ export default class AdminDentistsPage extends React.Component {
     });
   }
 
+  // remove review
+  onRemoveReview = (review) => {
+    alert('remove review');
+  }
+
+  /* Render Dentist Reviews
+   * ------------------------------------------------------ */
+  renderDentistReviews = (dentist) => {
+    const {
+      dentistReviews
+    } = this.props;
+
+    // precondition render: the data must be loaded, otherwise wait for it
+    if (dentistReviews === null) {
+      return (
+        <div className="text-center">
+          <LoadingSpinner showOnlyIcon={true} />
+        </div>
+      );
+    }
+
+    // precondition render: there are no reviews to display
+    if (dentistReviews.length === 0) {
+      return (
+        <div className={styles['dentist-reviews']}>
+          The dentist does not have any reviews yet.
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles['dentist-reviews']}>
+        {dentistReviews.map(this.renderDentistReview)}
+      </div>
+    );
+  }
+
+  /* Render Dentist Review
+   * ------------------------------------------------------ */
+  renderDentistReview = (review) => {
+    const {
+      createdAt,
+      message,
+//      reviewer: { name },
+      rating,
+    } = review;
+
+    // TODO: remove
+    const name = "TODO: REVIEWER NAME";
+
+    return (
+      <div className={"row " + styles['dentist-review']} key={review.id}>
+        <div className="col-sm-3">
+          <p>
+            {moment(createdAt).format("M/D/YY")}
+          </p>
+
+          <p className={styles['dentist-review__score']}>
+            {rating / 2} / 5
+          </p>
+        </div>
+
+        <div className="col-sm-9">
+          <p>
+            {name}
+          </p>
+
+          <p>
+            {message}
+          </p>
+
+          <div>
+            <input
+              type="button"
+              className={styles['button--short']}
+              value="REMOVE"
+              onClick={this.onRemoveReview.bind(this, review)}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -180,6 +283,9 @@ export default class AdminDentistsPage extends React.Component {
       dentistReviews,
       stats,
       user,
+
+      // getters & setters
+      selectedDentist,
 
       // search / sort dentists
       currentSortTerm,
@@ -258,7 +364,7 @@ export default class AdminDentistsPage extends React.Component {
             <div className="col-sm-3" styleName="match-form-group-offset">
               <span>Sort By: </span>
               <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date</option>
+                <option value="date">Date Joined</option>
                 <option value="email">Email</option>
                 <option value="name">Name</option>
               </select>
@@ -266,7 +372,13 @@ export default class AdminDentistsPage extends React.Component {
 
           </div>
 
-          DENTIST LIST GOES HERE
+          <DentistList
+            dentists={dentists}
+            selectedDentist={selectedDentist}
+
+            selectDentist={this.onSelectDentist}
+            renderListEntryBody={this.renderDentistReviews}
+          />
         </div>
 
         {/* Modals

@@ -24,8 +24,6 @@ import { reset as resetForm } from 'redux-form';
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
 import AdminDashboardTabs from 'components/AdminDashboardTabs';
-import Avatar from 'components/Avatar';
-import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
@@ -137,7 +135,7 @@ export default class AdminDentistsPage extends React.Component {
     currentSearchTerm: React.PropTypes.string,
     currentSortTerm: React.PropTypes.string,
 
-    // search / sort patients - dispatch
+    // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
   }
@@ -165,11 +163,6 @@ export default class AdminDentistsPage extends React.Component {
   Events
   ------------------------------------------------------------
   */
-  // edit dentist
-  onEdit = () => {
-    alert('todo: edit');
-  }
-
   // select dentist
   onSelectDentist = (dentist) => {
     if (dentist !== null) {
@@ -195,6 +188,11 @@ export default class AdminDentistsPage extends React.Component {
     });
   }
 
+  // edit dentist
+  onEditDentist = () => {
+    alert('todo: edit');
+  }
+
   /* Render Dentist Details
    * ------------------------------------------------------ */
   renderDentistDetails = (dentist) => {
@@ -213,7 +211,7 @@ export default class AdminDentistsPage extends React.Component {
 
     const {
       createdAt,
-    } = dentist;
+    } = dentistDetails;
 
     const {
       address,
@@ -227,7 +225,7 @@ export default class AdminDentistsPage extends React.Component {
       marketplaceOptIn,
 
       membership: { discount }
-    } = dentist.dentistInfo;
+    } = dentistDetails.dentistInfo;
 
     const activeSince = moment(createdAt).format("MMMM Do, YYYY");
 
@@ -329,7 +327,7 @@ export default class AdminDentistsPage extends React.Component {
               type="button"
               className={styles['button--short']}
               value="EDIT"
-              onClick={this.onEdit}
+              onClick={this.onEditDentist.bind(this, dentist)}
             />
           </p>
         </div>
@@ -351,7 +349,6 @@ export default class AdminDentistsPage extends React.Component {
 
       // getters & setters
       selectedDentist,
-      setSelectedDentist,
 
       // search / sort dentists
       currentSortTerm,
@@ -361,8 +358,6 @@ export default class AdminDentistsPage extends React.Component {
       // search / sort dentists
       searchTerm,
     } = this.state;
-
-    console.log(JSON.stringify(dentistDetails));
 
     /*
     Precondition Renders
@@ -432,7 +427,7 @@ export default class AdminDentistsPage extends React.Component {
             <div className="col-sm-3" styleName="match-form-group-offset">
               <span>Sort By: </span>
               <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date</option>
+                <option value="date">Date Joined</option>
                 <option value="email">Email</option>
                 <option value="name">Name</option>
               </select>
