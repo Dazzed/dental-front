@@ -151,15 +151,15 @@ class PatientsList extends React.Component {
 
       const summaryStatus = patient.members.reduce(
           (summaryStatus, member) => {
-            if (summaryStatus === 'active' || member.subscription.status === 'active') {
+            if (summaryStatus === 'Active' || member.subscription.status === 'active') {
               return 'Active';
             }
 
-            if (summaryStatus === 'past_due' || member.subscription.status === 'past_due') {
+            if (summaryStatus === 'Late' || member.subscription.status === 'past_due') {
               return 'Late';
             }
 
-            if (summaryStatus === 'canceled' || member.subscription.status === 'canceled') {
+            if (summaryStatus === 'Inactive' || member.subscription.status === 'canceled') {
               return 'Inactive';
             }
 
