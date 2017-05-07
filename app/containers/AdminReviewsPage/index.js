@@ -245,12 +245,9 @@ export default class AdminDentistsPage extends React.Component {
     const {
       createdAt,
       message,
-//      client: { firstName, lastName },
+      client: { firstName, lastName },
       rating,
     } = review;
-
-    const firstName = "TODO:";
-    const lastName = "show client name";
 
     return (
       <div className={"row " + styles['dentist-review']} key={review.id}>
