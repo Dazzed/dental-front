@@ -40,6 +40,10 @@ class LoginForm extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
   };
 
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   render () {
     const { error, handleSubmit, submitting } = this.props;
 
@@ -54,7 +58,7 @@ class LoginForm extends React.Component {
           <Field
             name="email"
             type="text"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Email"
             placeholder="Email"
           />
@@ -62,7 +66,7 @@ class LoginForm extends React.Component {
           <Field
             name="password"
             type="password"
-            component={LabeledInput}
+            component={this.getLabeledInput}
             label="Password"
             placeholder="Password"
           />

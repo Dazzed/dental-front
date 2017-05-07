@@ -63,6 +63,10 @@ export default class PatientProfileFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
+
   /*
   Event Handlers
   ------------------------------------------------------------
@@ -120,7 +124,7 @@ export default class PatientProfileFormModal extends React.Component {
               <Field
                 name="address"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Address"
                 placeholder=""
                 className="col-sm-12"
@@ -129,7 +133,7 @@ export default class PatientProfileFormModal extends React.Component {
               <Field
                 name="city"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="City"
                 placeholder=""
                 className="col-sm-4"
@@ -138,7 +142,7 @@ export default class PatientProfileFormModal extends React.Component {
               <Field
                 name="state"
                 type="select"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="State"
                 placeholder=""
                 className="col-sm-4"
@@ -156,7 +160,7 @@ export default class PatientProfileFormModal extends React.Component {
                 type="text"
                 mask="99999"
                 maskChar=" "
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Zip Code"
                 placeholder=""
                 className="col-sm-4"
@@ -169,7 +173,7 @@ export default class PatientProfileFormModal extends React.Component {
                 type="text"
                 mask="(999) 999-9999"
                 maskChar=" "
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Phone"
                 placeholder=""
                 className="col-sm-4"
@@ -179,7 +183,7 @@ export default class PatientProfileFormModal extends React.Component {
                 name="contactMethod"
                 type="select"
                 label="Preferred Contact Method"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 className="col-md-6 col-sm-8"
               >
                 <option value=""></option>

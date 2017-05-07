@@ -25,7 +25,6 @@ import {
   US_STATES,
 } from 'common/constants';
 import Checkbox from 'components/Checkbox';
-import Input from 'components/Input';
 import LabeledInput from 'components/LabeledInput';
 import MembersList from 'components/MembersList';
 
@@ -70,6 +69,18 @@ export default class CheckoutFormModal extends React.Component {
     show: React.PropTypes.bool.isRequired,
     onCancel: React.PropTypes.func.isRequired,
   };
+
+  getCheckbox(props) {
+    return new Checkbox(props);
+  }
+
+  getInput(props) {
+    return new Input(props);
+  }
+
+  getLabeledInput(props) {
+    return new LabeledInput(props);
+  }
 
   /*
   Render
@@ -147,7 +158,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="number"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Card Number"
                 placeholder=""
                 className="col-sm-8"
@@ -156,7 +167,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="cvc"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="CVV2"
                 placeholder=""
                 className="col-sm-4"
@@ -167,7 +178,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="fullName"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Name On Card"
                 placeholder=""
                 className="col-sm-8"
@@ -178,7 +189,7 @@ export default class CheckoutFormModal extends React.Component {
                 type="text"
                 mask="99/99"
                 maskChar=" "
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Expiration Month / Year"
                 placeholder="MM/YY"
                 className="col-sm-4"
@@ -191,7 +202,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="address"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Billing Address"
                 placeholder=""
                 className="col-sm-12"
@@ -202,7 +213,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="city"
                 type="text"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="City"
                 placeholder=""
                 className="col-sm-4"
@@ -211,7 +222,7 @@ export default class CheckoutFormModal extends React.Component {
               <Field
                 name="state"
                 type="select"
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="State"
                 className="col-sm-4"
               >
@@ -230,7 +241,7 @@ export default class CheckoutFormModal extends React.Component {
                 type="text"
                 mask="99999"
                 maskChar=" "
-                component={LabeledInput}
+                component={this.getLabeledInput}
                 label="Zip Code"
                 placeholder=""
                 className="col-sm-4"
@@ -243,7 +254,7 @@ export default class CheckoutFormModal extends React.Component {
               <div className="col-sm-12">
                 <Field
                   name="periodontalDiseaseWaiver"
-                  component={Checkbox}
+                  component={this.getCheckbox}
                 >
                   I understand that if
                   {' '}
@@ -265,7 +276,7 @@ export default class CheckoutFormModal extends React.Component {
               <div className="col-sm-12">
                 <Field
                   name="feeWaiver"
-                  component={Checkbox}
+                  component={this.getCheckbox}
                 >
                   I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
                 </Field>
@@ -274,7 +285,7 @@ export default class CheckoutFormModal extends React.Component {
               <div className="col-sm-12">
                 <Field
                   name="termsAndConditions"
-                  component={Checkbox}
+                  component={this.getCheckbox}
                 >
                   I agree with the <a href="/terms" target="_blank">Terms and Conditions</a>.
                 </Field>
