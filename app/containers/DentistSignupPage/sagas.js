@@ -171,8 +171,31 @@ function* signup (data) {
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-    yield put(toastrActions.error('', 'Please fix errors on the form!'));
-    yield put(stopSubmit('dentist-signup', errors));
+
+    // Map from known response errors to their form field identifiers.
+    // Currently, only server-side-only validation is included most of the
+    // validation is identical on the client and the server.  Thus a
+    // non-malicious user will have already checked the other possible error
+    // responses.
+    const formErrors = {};
+
+    if (errors.email) {
+      formErrors.user = {};
+      formErrors.user.email = errors.email;
+      delete errors.email;
+    }
+
+    if (Object.keys(formErrors).length === 0) {
+      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    }
+    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
+      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please use another.'));
+    }
+    else {
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    }
+
+    yield put(stopSubmit('dentist-signup', formErrors));
     return false;
   }
 }

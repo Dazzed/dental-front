@@ -14,7 +14,7 @@ import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { change, stopSubmit } from 'redux-form';
+import { change, reset, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
@@ -107,6 +107,11 @@ function* signupWatcher () {
       const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, realUserId);
 
       if (checkoutResponse !== false) {
+        // ensure form values are erased
+        reset('signupPatient');
+        reset('familyMember');
+        reset('checkout');
+
         yield put(signupSuccess({
           fullName: `${user.firstName} ${user.lastName}`,
           loginEmail: user.email,
@@ -160,9 +165,31 @@ function* makeSignupRequest (user, paymentInfo) {
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-    yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
+
+    // Map from known response errors to their form field identifiers.
+    // Currently, only server-side-only validation is included most of the
+    // validation is identical on the client and the server.  Thus a
+    // non-malicious user will have already checked the other possible error
+    // responses.
+    const formErrors = {};
+
+    if (errors.email) {
+      formErrors.email = errors.email;
+    }
+
+    if (Object.keys(formErrors).length === 0) {
+      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    }
+    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
+      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please enter another email in Step 1.'));
+    }
+    else {
+      yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
+    }
+
     yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
+    yield put(stopSubmit('signupPatient', formErrors));
     return false;
   }
 }
@@ -198,9 +225,14 @@ function* makeCheckoutRequest (paymentInfo, userId) {
     return response;
 
   } catch (err) {
-    const errors = mapValues(err.errors, (value) => value.msg);
+    // Map from known response errors to their form field identifiers.
+    // In this case, Authorize.NET is the validator.
+    const formErrors = {
+      number: err.errors && err.errors.errorMessage
+    }
+
     yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
-    yield put(stopSubmit('checkout', errors));
+    yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;
   }

@@ -110,3 +110,14 @@ Pricing Codes
                           - recommended fees height & padding         [32px]
                      */
 }
+
+/*
+Services
+------------------------------------------------------------
+*/
+.services__accepts-children {
+  padding-top: 7px; /* = (   annual membership fee input height    [40px]
+                           - activation checkbox form group height [26px]
+                         ) / 2
+                    */
+}
