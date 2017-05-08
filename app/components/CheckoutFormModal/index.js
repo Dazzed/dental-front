@@ -306,7 +306,7 @@ export default class CheckoutFormModal extends React.Component {
               className="modal-control"
               disabled={submitting}
               onClick={submit}
-              value="CHECKOUT"
+              value="SUBMIT"
             />
           </div>
         </Modal.Footer>
