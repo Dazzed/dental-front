@@ -277,10 +277,16 @@ function* submitPatientPaymentFormWatcher () {
       yield put(clearEditingPatientPayment());
 
     } catch (err) {
-      const errors = mapValues(err.errors, (value) => value.msg);
-      yield put(toastrActions.error('', 'Please fix errors on the form!'));
-      yield put(stopSubmit('checkout', errors));
+      // Map from known response errors to their form field identifiers.
+      // In this case, Authorize.NET is the validator.
+      const formErrors = {
+        number: err.errors && err.errors.errorMessage
+      }
+
+      yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
+      yield put(stopSubmit('checkout', formErrors));
       yield put(change('checkout', 'cardCode', null));
+      return false;
     }
   }
 }

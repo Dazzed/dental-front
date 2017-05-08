@@ -86,10 +86,6 @@ Redux Form
 ------------------------------------------------------------
 */
 const initialDentistSignupFormValues = {
-  marketplace: {
-    optIn: true,
-  },
-
   pricing: {
     adultYearlyFeeActivated: false,
     childYearlyFeeActivated: false,
@@ -131,7 +127,11 @@ const initialDentistSignupFormValues = {
       startAt: "10:00:00",
       endAt:   "14:00:00",
     },
-  }
+  },
+
+  marketplace: {
+    optIn: true,
+  },
 };
 
 

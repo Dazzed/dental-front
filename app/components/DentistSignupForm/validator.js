@@ -92,13 +92,24 @@ const schema = {
   Images
   ------------------------------------------------------------
   */
-  // TODO: optional?
+  // NOTE: There is no explicit "images" form section.  See the
+  //       `Image Uploaders` portion of DentistSignupForm/index.js for the
+  //       details.
+  //
+  // Image fields are:
+  //
+  //   - `user.avatar`
+  //   - `officeInfo.logo`
+  //   - `officeInfo.officeImages0`
+  //   - `officeInfo.officeImages1`
+  //   - `officeInfo.officeImages2`
 
   /*
   Pricing
   ------------------------------------------------------------
   */
-  // Each priceCode's price is validated at the field level.
+  // Each priceCode uses field level validation.  See the `Field Validators`
+  // section of DentistSignupForm/index.js for that validation.
 
   "pricing.adultMonthlyFee": {
     presence: true,
@@ -141,12 +152,6 @@ const schema = {
   },
 
   /*
-  Marketplace Opt In
-  ------------------------------------------------------------
-  */
-  // "marketplace.optIn" is optional
-
-  /*
   Services
   ------------------------------------------------------------
   */
@@ -168,6 +173,12 @@ const schema = {
   // "workingHours.[dayName].open" are all optional
   // "workingHours.[dayName].start" depends on if it's open or not
   // "workingHours.[dayName].end" depends on if it's open or not
+
+  /*
+  Marketplace Opt In
+  ------------------------------------------------------------
+  */
+  // "marketplace.optIn" is optional
 };
 
 export default validatorFactory(schema);
