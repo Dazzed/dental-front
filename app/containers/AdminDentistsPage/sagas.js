@@ -32,19 +32,20 @@ import {
   fetchDentistMembersSuccess,
   fetchDentistMembersError,
 
+  fetchDentistReportsSuccess,
+  fetchDentistReportsError,
+
   fetchDentistReviewsSuccess,
   fetchDentistReviewsError,
 
   fetchStatsSuccess,
   fetchStatsError,
-
-  deleteDentistReviewSuccess,
-  deleteDentistReviewError,
 } from './actions';
 import {
   FETCH_DENTISTS_REQUEST,
   FETCH_DENTIST_DETAILS_REQUEST,
   FETCH_DENTIST_MEMBERS_REQUEST,
+  FETCH_DENTIST_REPORTS_REQUEST,
   FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_STATS_REQUEST,
 
@@ -65,9 +66,10 @@ function* main () {
   const watcherA = yield fork(dentistsFetcher);
   const watcherB = yield fork(dentistDetailsFetcher);
   const watcherC = yield fork(dentistMembersFetcher);
-  const watcherD = yield fork(dentistReviewsFetcher);
-  const watcherE = yield fork(statsFetcher);
-  const watcherF = yield fork(deleteDentistReview);
+  const watcherD = yield fork(dentistReportsFetcher);
+  const watcherE = yield fork(dentistReviewsFetcher);
+  const watcherF = yield fork(statsFetcher);
+  const watcherG = yield fork(deleteDentistReview);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -76,6 +78,7 @@ function* main () {
   yield cancel(watcherD);
   yield cancel(watcherE);
   yield cancel(watcherF);
+  yield cancel(watcherG);
 }
 
 
@@ -126,6 +129,25 @@ function* dentistMembersFetcher (action) {
       yield put(fetchDentistMembersSuccess(response.data));
     } catch (error) {
       yield put(fetchDentistMembersError(error));
+    }
+  });
+}
+
+/*
+Fetch Dentist Reports
+------------------------------------------------------------
+*/
+function* dentistReportsFetcher () {
+  yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
+    try {
+      const { dentistId } = action;
+      console.log(action);
+      const response = yield call(request, `/api/v1/dentist/${dentistId}/list`);
+      yield put(fetchDentistReportsSuccess(response.data));
+    }
+    catch (error) {
+      console.log(error);
+      yield put(fetchDentistReportsError(error));
     }
   });
 }
