@@ -174,14 +174,16 @@ class PatientMembershipInfoPage extends React.Component {
       editingMember,
     } = this.props;
 
-    // TODO: show savings
+    const adultSavings = dentist.dentistInfo.membership.savings;
     const adultMembership = {
       monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
-//      savings: dentist.dentistInfo.membership.savings.replace(".00", ""),
+      savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
     };
+
+    const childSavings = dentist.dentistInfo.childMembership.savings;
     const childMembership = {
       monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
-//      savings: dentist.dentistInfo.childMembership.savings.replace(".00", ""),
+      savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
     };
 
     /*
@@ -241,23 +243,17 @@ class PatientMembershipInfoPage extends React.Component {
                   ${adultMembership.monthly} A Month
                 </p>
 
-                {/* TODO: show savings */}
-                {/*
                 <p styleName="membership__savings">
                   Total Annual Savings: ${adultMembership.savings}**
                 </p>
-                */}
 
                 <p styleName="membership__disclaimer">
                   *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
                 </p>
 
-                {/* TODO: show savings */}
-                {/*
                 <p styleName="membership__disclaimer">
                   **Total annual savings if ALL services used.
                 </p>
-                */}
               </div>
             </div>
 
@@ -290,23 +286,17 @@ class PatientMembershipInfoPage extends React.Component {
                   ${childMembership.monthly} A Month
                 </p>
 
-                {/* TODO: show savings */}
-                {/*
                 <p styleName="membership__savings">
                   Total Annual Savings: ${childMembership.savings}**
                 </p>
-                */}
 
                 <p styleName="membership__disclaimer">
                   *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
                 </p>
 
-                {/* TODO: show savings */}
-                {/*
                 <p styleName="membership__disclaimer">
                   **Total annual savings if ALL services used.
                 </p>
-                */}
               </div>
             </div>
 
