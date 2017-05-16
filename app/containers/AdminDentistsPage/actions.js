@@ -17,12 +17,17 @@ import {
   FETCH_DENTIST_MEMBERS_SUCCESS,
   FETCH_DENTIST_MEMBERS_ERROR,
 
+  // fetch dentist reports
+  FETCH_DENTIST_REPORTS_REQUEST,
+  FETCH_DENTIST_REPORTS_SUCCESS,
+  FETCH_DENTIST_REPORTS_ERROR,
+
   // fetch dentist reviews
   FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_DENTIST_REVIEWS_SUCCESS,
   FETCH_DENTIST_REVIEWS_ERROR,
 
-  // fetch dentist
+  // fetch dentist stats
   FETCH_STATS_REQUEST,
   FETCH_STATS_SUCCESS,
   FETCH_STATS_ERROR,
@@ -112,6 +117,29 @@ export function fetchDentistMembersError (payload) {
   };
 }
 
+/* Fetch Dentist Reports
+ * ------------------------------------------------------ */
+export function fetchDentistReports (dentistId) {
+  console.log(dentistId);
+  return {
+    type: FETCH_DENTIST_REPORTS_REQUEST,
+    dentistId,
+  };
+}
+
+export function fetchDentistReportsSuccess (payload) {
+  return {
+    type: FETCH_DENTIST_REPORTS_SUCCESS,
+    payload,
+  };
+}
+
+export function fetchDentistReportsError (payload) {
+  return {
+    type: FETCH_DENTIST_REPORTS_ERROR,
+    payload,
+  };
+}
 
 /* Fetch Dentist Reviews
  * ------------------------------------------------------ */

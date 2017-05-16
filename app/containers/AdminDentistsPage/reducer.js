@@ -18,6 +18,8 @@ import {
   FETCH_DENTIST_DETAILS_SUCCESS,
   FETCH_DENTIST_MEMBERS_REQUEST,
   FETCH_DENTIST_MEMBERS_SUCCESS,
+  FETCH_DENTIST_REPORTS_REQUEST,
+  FETCH_DENTIST_REPORTS_SUCCESS,
   FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_DENTIST_REVIEWS_SUCCESS,
   FETCH_STATS_SUCCESS,
@@ -44,6 +46,7 @@ const initialState = {
   dentistMembers: null,
   dentistReviews: null,
   stats: null,
+  dentistReports: null,
 
   // setters
   selectedDentist: null,
@@ -94,6 +97,18 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         dentistMembers: action.payload,
+      };
+
+    case FETCH_DENTIST_REPORTS_REQUEST:
+      return {
+        ...state,
+        dentistReports: null,
+      };
+
+    case FETCH_DENTIST_REPORTS_SUCCESS:
+      return {
+        ...state,
+        dentistReports: action.payload,
       };
 
     case FETCH_DENTIST_REVIEWS_REQUEST:
