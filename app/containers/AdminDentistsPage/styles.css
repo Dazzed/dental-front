@@ -67,6 +67,10 @@ Page Wide
   font-size: 1.5rem;
 }
 
+.dentist-details__price-code {
+  margin-bottom: 0.5rem;
+}
+
 .dentist-details__value {
   color: $color-primary-highlight;
 }

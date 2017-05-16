@@ -225,8 +225,10 @@ export default class AdminDentistsPage extends React.Component {
       email,
       phone,
 
+      activeMemberCount,
       marketplaceOptIn,
 
+      priceCodes,
       membership: { discount }
     } = dentistDetails.dentistInfo;
 
@@ -257,7 +259,7 @@ export default class AdminDentistsPage extends React.Component {
             Total Active Members:
             {' '}
             <span className={styles['dentist-details__value']}>
-              TODO
+              {activeMemberCount}
             </span>
           </p>
 
@@ -269,6 +271,8 @@ export default class AdminDentistsPage extends React.Component {
             </span>
           </p>
 
+          {/* TODO: enable */}
+          {/*
           <p>
             Account Manager:
             {' '}
@@ -276,7 +280,10 @@ export default class AdminDentistsPage extends React.Component {
               TODO
             </span>
           </p>
+          */}
 
+          {/* TODO: enable */}
+          {/*
           <p>
             Office Link:
             {' '}
@@ -284,6 +291,7 @@ export default class AdminDentistsPage extends React.Component {
               TODO
             </span>
           </p>
+          */}
 
           <p>
             Marketplace:
@@ -293,6 +301,8 @@ export default class AdminDentistsPage extends React.Component {
             </span>
           </p>
 
+          {/* TODO: enable */}
+          {/*
           <p>
             Affordability Index:
             {' '}
@@ -300,6 +310,7 @@ export default class AdminDentistsPage extends React.Component {
               TODO
             </span>
           </p>
+          */}
         </div>
 
         <div className="col-md-6">
@@ -307,15 +318,19 @@ export default class AdminDentistsPage extends React.Component {
             Dental Code Fees:
           </p>
 
-          <div className="row">
-            <div className="col-md-3">
-              Code Fee
-            </div>
+          {priceCodes.map(({ code, price }) => {
+            return (
+              <div key={code} className={'row ' + styles['dentist-details__price-code']}>
+                <div className="col-md-3 text-right">
+                  {code}:
+                </div>
 
-            <div className="col-md-3">
-              TODO
-            </div>
-          </div>
+                <div className="col-md-3" className={styles['dentist-details__value']}>
+                  ${parseFloat(price).toFixed(2)}
+                </div>
+              </div>
+            );
+          })}
 
           <p>
             Discount:
@@ -325,7 +340,7 @@ export default class AdminDentistsPage extends React.Component {
             </span>
           </p>
 
-          <p>
+          <p className="text-right">
             <input
               type="button"
               className={styles['button--short']}

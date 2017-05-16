@@ -98,7 +98,9 @@ const formatDentistSignupFormSubmissionData = (data) => {
     //
     // { "service-51": true, ... } => [ 51, ... ]
     services: Object.keys(data.services).map((serviceId) => {
-      return serviceId.substr(8); // "service-51" => "51"
+      if (serviceId !== "acceptsChildren" && serviceId !== "childStartingAge") {
+        return serviceId.substr(8); // "service-51" => "51"
+      }
     }),
 
     // ALTER the workingHours from an object with dayName => dayWorkingHours
