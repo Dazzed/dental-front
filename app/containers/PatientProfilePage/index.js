@@ -425,7 +425,10 @@ class PatientProfilePage extends React.Component {
 
       total: members.reduce(
         function(aggregateTotal, member) {
-          return aggregateTotal + parseFloat(member.subscription.total);
+          if (member.subscription.status === 'active' && member.subscription.monthly) {
+            aggregateTotal += parseFloat(member.subscription.monthly);
+          }
+          return aggregateTotal;
         },
         0
       ),
@@ -482,7 +485,7 @@ class PatientProfilePage extends React.Component {
                   </p>
                   <p>
                     <span styleName="text--inline-label">Current Balance:</span>
-                    <span styleName="text--bold">${aggregateSubscription.total}</span>
+                    <span styleName="text--bold">${user.subscription.balance || 0}</span>
                   </p>
 
                   <p>

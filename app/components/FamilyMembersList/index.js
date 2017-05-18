@@ -73,32 +73,71 @@ class FamilyMembersList extends React.Component {
       subscription,
     } = patient;
 
-    let statusStyle = "status";
-    switch(subscription.status) {
-      case "active":
-        statusStyle += " status--active";
-        break;
+    const aggregateSubscription = {
+      status: patient.members.reduce(
+        function(aggregateStatus, member) {
+          if ( member.subscription.status === 'past_due'
+            || aggregateStatus === 'past_due'
+          ) {
+            aggregateStatus = 'past_due';
+          }
 
-      case "past_due":
-        statusStyle += " status--past-due";
-        break;
+          else if (
+               member.subscription.status === 'active'
+            || aggregateStatus === 'active'
+          ) {
+            aggregateStatus = 'active';
+          }
 
-      case "canceled":
-        statusStyle += " status--canceled";
-        break;
+          // else
+          // member status is 'inactive' or 'canceled'
+          // aggregate status is 'inactive'
+          // leave it as is
 
-      case "inactive":
-        statusStyle += " status--inactive";
-        break;
+          return aggregateStatus;
+        },
+        'inactive'
+      ),
 
-      default:
-        // Status is unknown, so don't add anything;
-        break;
+      total: patient.members.reduce(
+        function(aggregateTotal, member) {
+          if (member.subscription.status === 'active' && member.subscription.monthly) {
+            aggregateTotal += parseFloat(member.subscription.monthly);
+          }
+          return aggregateTotal;
+        },
+        0
+      ),
+
+      dueDate: patient.members.reduce(
+        function(nearestPaymentDueDate, member) {
+          const memberDueDate = moment(member.subscription.endAt);
+          
+          if (memberDueDate.isBefore(nearestPaymentDueDate)) {
+            nearestPaymentDueDate = memberDueDate;
+          }
+
+          return nearestPaymentDueDate;
+        },
+        moment().add(100, 'years'), // obviously larger than any paid subscription period
+      ),
+    };
+
+    let statusStyle;
+    if (aggregateSubscription.status === 'active') {
+      aggregateSubscription.status = 'Active';
+      statusStyle = 'status status--active';
     }
-
-    const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
-
-    const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
+    else if (aggregateSubscription.status === 'past_due') {
+      aggregateSubscription.status = 'Late';
+      statusStyle = 'status status--past-due';
+    }
+    else {
+      aggregateSubscription.status = 'Inactive';
+      statusStyle = 'status status--inactive';
+    }
+    aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
+    aggregateSubscription.dueDate = aggregateSubscription.dueDate.format("MMMM D, YYYY");
 
     return (
       <div className="row">
@@ -129,17 +168,17 @@ class FamilyMembersList extends React.Component {
             <p>
               Membership:
               <br />
-              <span styleName={statusStyle}>{subscription.status}</span>
+              <span styleName={statusStyle}>{aggregateSubscription.status}</span>
             </p>
             <p>
               Recurring Payment Date:
               <br />
-              <span styleName="subscription-overview__info">{paymentDueDate}</span>
+              <span styleName="subscription-overview__info">{aggregateSubscription.dueDate}</span>
             </p>
             <p>
               Total Monthly Payment:
               <br />
-              <span styleName="subscription-overview__info">${paymentDueAmount}</span>
+              <span styleName="subscription-overview__info">${aggregateSubscription.total}</span>
             </p>
           </div>
 
