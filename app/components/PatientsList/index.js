@@ -206,6 +206,10 @@ class PatientsList extends React.Component {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
+      const activeMembers = members.filter((member) => {
+        return member.subscription.status === 'active' && member.subscription.monthly;
+      });
+
       return (
         <div key={id} styleName="patient-list__entry">
           <div className="row">
@@ -251,9 +255,9 @@ class PatientsList extends React.Component {
                     <span styleName="member-overview__info">{contactMethodMessage}</span>
                   </div>
                   <div className="col-sm-5 text-right">
-                    Family Member Joined:
+                    Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{members.length}</span>
+                    <span styleName="member-overview__info">{activeMembers.length}</span>
                   </div>
                 </div>
 

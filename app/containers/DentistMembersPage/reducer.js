@@ -83,7 +83,7 @@ function dentistMembersPageReducer (state = initialState, action) {
       patients = action.payload.map((patient) => {
         return {
           ...patient,
-          members: [
+          members: [ // TODO: remove main account holder insert from members?
             ...patient.members,
             patient,
           ],
@@ -233,7 +233,7 @@ function dentistMembersPageReducer (state = initialState, action) {
       newStatePatient = {
         ...action.payload,
         members: [
-          ...action.payload.members,
+          ...action.payload.members, // TODO: remove main account holder insert from members?
           action.payload,
         ],
       };
