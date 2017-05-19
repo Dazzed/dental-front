@@ -417,6 +417,19 @@ export default function createRoutes (store) {
         importModules.catch(errorLoading);
       },
     }, {
+      onEnter: redirectToDashboard,
+      path: '/marketplace/profile/:dentistId',
+      name: 'marketplaceProfile',
+      getComponent (nextState, cb) {
+        Promise.all([
+          System.import('containers/MarketplaceProfilePage')
+        ])
+          .then(([ component ]) => {
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
       onEnter: redirectToLogin,
       path: '/patient/profile',
       name: 'patientProfilePage',

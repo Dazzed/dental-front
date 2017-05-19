@@ -11,7 +11,7 @@ export default [
     "planStartingCost": 18,
     "affordability": 5,
     "dentistInfo": {
-      "officeName": "Johnny's Dentistry",
+      "officeName": "Johnnys Dentistry",
       "url": "https://example.com",
       "email": "johnnys_dentistry@example.com",
       "phone": "(123) 456-7891",

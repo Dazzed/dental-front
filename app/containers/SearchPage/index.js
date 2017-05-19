@@ -51,6 +51,9 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
+    // app
+    changeRoute: (url) => dispatch(push(url)),
+
     // search
     getSearch: (query) => dispatch(searchRequest(query)),
   };
@@ -112,6 +115,10 @@ export default class SearchPage extends Component {
     });
   }
 
+  handleClick = (id) => {
+    this.props.changeRoute(`/marketplace/profile/${id}`);
+  }
+
   renderResults() {
     const { searchResults } = this.props;
 
@@ -126,6 +133,7 @@ export default class SearchPage extends Component {
                   key={dentist.id}
                   active={dentist.id === this.state.activeResultId}
                   updateActiveId={this.updateActiveResultId}
+                  handleClick={this.handleClick}
                 />
               )
             })

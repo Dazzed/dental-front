@@ -1,0 +1,69 @@
+/*
+Dentist Dashboard Tabs Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Dentist Dashboard Tabs
+================================================================================
+*/
+.tabs {
+  :global .nav-tabs {
+    border: none;
+
+    text-align: center;
+  }
+
+  :global .nav-tabs > li {
+    float: none;
+    display: inline-block;
+    margin-bottom: 0;
+
+    & > a {
+      margin: 0 2rem 0.5rem 0;
+      border: none;
+      border-radius: 1rem 1rem 0 0;
+      padding: 1rem 3rem;
+
+      color: $color-primary-highlight;
+      background-color: $color-primary-background;
+
+      font-size: 1.25rem;
+
+      &:hover {
+        background-color: $color-primary-background-hover;
+      }
+
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:last-child > a {
+      margin-right: 0;
+    }
+
+    &.active > a {
+      margin-bottom: 0;
+      padding-bottom: 1.5rem;
+
+      background-color: $color-secondary-background;
+
+      &:focus,
+      &:hover {
+        border: 0;
+
+        color: $color-primary-highlight;
+      }
+    }
+  }
+}

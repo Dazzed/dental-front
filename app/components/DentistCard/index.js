@@ -20,12 +20,14 @@ function DentistCard(props) {
     avatar,
     active,
     updateActiveId,
+    handleClick,
   } = props;
 
   return (
     <li
       styleName={`dentist-list-item ${active ? 'active' : ''}`}
       onMouseEnter={() => updateActiveId(id)}
+      onClick={() => handleClick(id)}
     >
       <div styleName="left">
         <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
@@ -57,6 +59,7 @@ DentistCard.propTypes = {
   affordability: PropTypes.number.isRequired,
   planStartingCost: PropTypes.number.isRequired,
   updateActiveId: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
   dentistInfo: PropTypes.shape({
     city: PropTypes.string,
     state: PropTypes.string,
