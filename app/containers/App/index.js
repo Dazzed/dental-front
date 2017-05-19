@@ -129,7 +129,7 @@ export default class App extends Component {
 
     // TODO: HACK - should handle this more gracefully...
     if ( user.type === "client"
-      || pathname.indexOf('/accounts/signup/my-dentist/') !== 0 // special case since it has a url param
+      || pathname.indexOf('/accounts/signup/my-dentist/') === 0 // special case since it has a url param
     ) {
       wrapperStyle = "wrapper";
       navbar = null;

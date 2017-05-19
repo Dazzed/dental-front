@@ -29,9 +29,9 @@ import { push } from 'react-router-redux';
 import logo from 'assets/images/logo.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
-import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
+// import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
 import toothIcon from 'assets/images/tooth-icon.png';
-import marketingVideo from 'assets/videos/marketing-video.mp4';
+// import marketingVideo from 'assets/videos/marketing-video.mp4';
 import Footer from 'components/Footer';
 import SearchForm from 'containers/SearchForm';
 
@@ -120,10 +120,7 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          {/* TODO: turn back on */}
-          {/*
           <SearchForm />
-          */}
 
           <div styleName="next-section-cover">
             <h3>
