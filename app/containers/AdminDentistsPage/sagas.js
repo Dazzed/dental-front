@@ -40,8 +40,16 @@ import {
 
   fetchStatsSuccess,
   fetchStatsError,
+
+  // actions
+  editDentistSuccess,
+  editDentistError,
+
+  deleteDentistReviewSuccess,
+  deleteDentistReviewError,
 } from './actions';
 import {
+  // fetch
   FETCH_DENTISTS_REQUEST,
   FETCH_DENTIST_DETAILS_REQUEST,
   FETCH_DENTIST_MEMBERS_REQUEST,
@@ -49,6 +57,8 @@ import {
   FETCH_DENTIST_REVIEWS_REQUEST,
   FETCH_STATS_REQUEST,
 
+  // actions
+  EDIT_DENTIST_REQUEST,
   DELETE_DENTIST_REVIEW_REQUEST,
 } from './constants';
 
@@ -188,6 +198,34 @@ function* statsFetcher () {
 /* Actions
  * ========================================================================== */
 
+/* Edit Dentist
+ * ------------------------------------------------------ */
+function* editDentist () {
+  while (true) {
+    const { dentist } = yield take(EDIT_DENTIST_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/waive-fees`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      };
+
+      yield call(request, requestURL, params);
+
+      const message = `The patient's fee settings have been updated.`;
+      yield put(toastrActions.success('', message));
+
+      yield put(setToggledWaivePatientFees(patient, payload));
+
+    } catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+      yield put(editDentistError(error));
+    }
+  }
+}
+
 /* Delete Dentist Review
  * ------------------------------------------------------ */
 function* deleteDentistReview () {
@@ -209,6 +247,7 @@ function* deleteDentistReview () {
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
+      yield put(deleteDentistReviewError(error));
     }
   }
 }

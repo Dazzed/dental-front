@@ -217,6 +217,29 @@ export function sort (status) {
 /* Actions
  * ========================================================================== */
 
+/* Edit Dentist
+ * ------------------------------------------------------ */
+export function editDentistDentist (dentist) {
+  return {
+    type: EDIT_DENTIST_REQUEST,
+    dentist,
+  };
+}
+
+export function editDentistDentistSuccess (dentist) {
+  return {
+    type: EDIT_DENTIST_SUCCESS,
+    dentist,
+  };
+}
+
+export function editDentistDentistError (payload) {
+  return {
+    type: EDIT_DENTIST_ERROR,
+    payload,
+  };
+}
+
 /* Delete Dentist Review
  * ------------------------------------------------------ */
 export function deleteDentistReview (dentistId, reviewId) {
