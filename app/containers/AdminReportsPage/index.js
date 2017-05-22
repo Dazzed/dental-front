@@ -100,7 +100,7 @@ function mapDispatchToProps (dispatch) {
     sortDentists: (status) => dispatch(sort(status)),
 
     // download report
-    downloadReport: (reportName, reportUrl) => downloadReport(reportName, reportUrl),
+    downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
   };
 }
 
@@ -204,7 +204,7 @@ export default class AdminDentistsPage extends React.Component {
       selectedDentist: { firstName, lastName },
     } = this.props;
 
-    const reportName = `dentist_${lastName}_${firstName}_{year}_{month}.pdf`;
+    const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
     this.props.downloadReport(reportName, url);
   }
 
@@ -234,7 +234,29 @@ export default class AdminDentistsPage extends React.Component {
     }
 
     return (
-      <div>TODO</div>
+      <div>
+        {dentistReports.map((report) => {
+          return this.renderDentistReport(report);
+        })}
+      </div>
+    );
+  }
+
+  renderDentistReport = (report) => {
+    return (
+      <div className="row" key={report.year + " - " + report.month}>
+        <div className="col-sm-1">
+          {report.year}
+        </div>
+        <div className="col-sm-1">
+          {report.month}
+        </div>
+        <div className="col-sm-10">
+          <span className={styles['report-link']} onClick={this.onDentistReportLinkClick.bind(this, report)}>
+            Download Report
+          </span>
+        </div>
+      </div>
     );
   }
 

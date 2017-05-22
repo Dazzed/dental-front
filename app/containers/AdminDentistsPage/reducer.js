@@ -108,7 +108,7 @@ export default function adminPageReducer (state = initialState, action) {
     case FETCH_DENTIST_REPORTS_SUCCESS:
       return {
         ...state,
-        dentistReports: action.payload,
+        dentistReports: action.payload.reverse(),
       };
 
     case FETCH_DENTIST_REVIEWS_REQUEST:

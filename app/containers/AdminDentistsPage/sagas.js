@@ -83,8 +83,8 @@ function* main () {
   const watcherD = yield fork(dentistReportsFetcher);
   const watcherE = yield fork(dentistReviewsFetcher);
   const watcherF = yield fork(statsFetcher);
-  const watcherG = yield fork(downloadReport);
-  const watcherH = yield fork(deleteDentistReview);
+  const watcherG = yield fork(deleteDentistReview);
+  const watcherH = yield fork(downloadReport);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -157,12 +157,10 @@ function* dentistReportsFetcher () {
   yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
     try {
       const { dentistId } = action;
-      console.log(action);
       const response = yield call(request, `/api/v1/reports/dentist/${dentistId}/list`);
       yield put(fetchDentistReportsSuccess(response.data));
     }
     catch (error) {
-      console.log(error);
       yield put(fetchDentistReportsError(error));
     }
   });
@@ -268,16 +266,28 @@ function* downloadReport () {
       const params = {
         method: "GET",
       };
-      const pdfBlob = yield call(request, reportUrl, params);
+      const pdfBlob = yield call(request, '/api/v1' + reportUrl, params);
 
       var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
+
+      // TODO: Server is giving a 403 error in the body instead of giving the
+      //       pdf blob.
+      console.log("CREATING THE LINK");
+      console.log(pdfBlob);
+      link.href = window.URL.createObjectURL(pdfBlob);
       link.download = `reportName`;
       link.click();
+
+      console.log("download report success");
+      console.log(link);
+
       downloadReportSuccess();
     }
 
     catch (err) {
+      console.log("download report error");
+      console.log(err);
+
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
       downloadReportFailure(err);

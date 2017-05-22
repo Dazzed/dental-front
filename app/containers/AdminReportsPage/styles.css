@@ -69,3 +69,14 @@ Page Wide
 
 /* Dentist List Entry
  * ------------------------------------------------------ */
+.report-link {
+  color: $color-primary-transparent;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary-highlight;
+    text-decoration: none;
+  }
+}

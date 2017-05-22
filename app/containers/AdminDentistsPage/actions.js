@@ -42,7 +42,7 @@ import {
   // download report
   DOWNLOAD_REPORT_REQUEST,
   DOWNLOAD_REPORT_SUCCESS,
-  DOWNLOAD_REPORT_FAILURE,
+  DOWNLOAD_REPORT_ERROR,
 
   // delete review
   DELETE_DENTIST_REVIEW_REQUEST,
@@ -262,7 +262,7 @@ export function downloadReportSuccess () {
 
 export function downloadReportFailure (payload) {
   return {
-    type: DOWNLOAD_REPORT_FAILURE,
+    type: DOWNLOAD_REPORT_ERROR,
     payload,
   };
 }
