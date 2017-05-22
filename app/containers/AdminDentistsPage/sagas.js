@@ -126,7 +126,7 @@ function* dentistDetailsFetcher (action) {
     try {
       const { dentistId } = action;
       const response = yield call(request, `/api/v1/dentists/${dentistId}`);
-      yield put(fetchDentistDetailsSuccess(response.data));
+      yield put(fetchDentistDetailsSuccess(response.data[0]));
     } catch (error) {
       yield put(fetchDentistDetailsError(error));
     }
