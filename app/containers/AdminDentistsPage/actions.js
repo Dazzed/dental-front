@@ -233,7 +233,7 @@ export function editDentistDentistSuccess (dentist) {
   };
 }
 
-export function editDentistDentistError (payload) {
+export function editDentistError (payload) {
   return {
     type: EDIT_DENTIST_ERROR,
     payload,

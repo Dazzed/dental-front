@@ -19,7 +19,7 @@ export const FETCH_DENTIST_MEMBERS_ERROR   = 'app/AdminDentistsPage/FETCH_DENTIS
 
 export const FETCH_DENTIST_REPORTS_REQUEST = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_REQUEST';
 export const FETCH_DENTIST_REPORTS_SUCCESS = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_REQUEST';
-export const FETCH_DENTIST_REPORTS_ERROR = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_REQUEST';
+export const FETCH_DENTIST_REPORTS_ERROR   = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_REQUEST';
 
 export const FETCH_DENTIST_REVIEWS_REQUEST = 'app/AdminDentistsPage/FETCH_DENTIST_REVIEWS_REQUEST';
 export const FETCH_DENTIST_REVIEWS_SUCCESS = 'app/AdminDentistsPage/FETCH_DENTIST_REVIEWS_SUCCESS';
@@ -34,10 +34,10 @@ export const SET_SELECTED_DENTIST = 'app/AdminDentistsPage/SET_SELECTED_DENTIST'
 export const SEARCH   = 'app/AdminDentistsPage/SEARCH';
 export const SORT     = 'app/AdminDentistsPage/SORT';
 
-export const EDIT_DENTIST__REQUEST = 'app/AdminDentistPage/EDIT_DENTIST_REQUEST';
-export const EDIT_DENTIST__SUCCESS = 'app/AdminDentistPage/EDIT_DENTIST_SUCCESS';
-export const EDIT_DENTIST__ERROR =   'app/AdminDentistPage/EDIT_DENTIST_ERROR';
+export const EDIT_DENTIST_REQUEST = 'app/AdminDentistPage/EDIT_DENTIST_REQUEST';
+export const EDIT_DENTIST_SUCCESS = 'app/AdminDentistPage/EDIT_DENTIST_SUCCESS';
+export const EDIT_DENTIST_ERROR   =  'app/AdminDentistPage/EDIT_DENTIST_ERROR';
 
 export const DELETE_DENTIST_REVIEW_REQUEST = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_REQUEST';
 export const DELETE_DENTIST_REVIEW_SUCCESS = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_SUCCESS';
-export const DELETE_DENTIST_REVIEW_ERROR =   'app/AdminDentistPage/DELETE_DENTIST_REVIEW_ERROR';
+export const DELETE_DENTIST_REVIEW_ERROR   = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_ERROR';
