@@ -47,6 +47,9 @@ import {
 
   deleteDentistReviewSuccess,
   deleteDentistReviewError,
+
+  downloadReportSuccess,
+  downloadReportFailure,
 } from './actions';
 import {
   // fetch
@@ -60,6 +63,7 @@ import {
   // actions
   EDIT_DENTIST_REQUEST,
   DELETE_DENTIST_REVIEW_REQUEST,
+  DOWNLOAD_REPORT_REQUEST,
 } from './constants';
 
 
@@ -79,7 +83,8 @@ function* main () {
   const watcherD = yield fork(dentistReportsFetcher);
   const watcherE = yield fork(dentistReviewsFetcher);
   const watcherF = yield fork(statsFetcher);
-  const watcherG = yield fork(deleteDentistReview);
+  const watcherG = yield fork(downloadReport);
+  const watcherH = yield fork(deleteDentistReview);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -89,6 +94,7 @@ function* main () {
   yield cancel(watcherE);
   yield cancel(watcherF);
   yield cancel(watcherG);
+  yield cancel(watcherH);
 }
 
 
@@ -152,7 +158,7 @@ function* dentistReportsFetcher () {
     try {
       const { dentistId } = action;
       console.log(action);
-      const response = yield call(request, `/api/v1/dentist/${dentistId}/list`);
+      const response = yield call(request, `/api/v1/reports/dentist/${dentistId}/list`);
       yield put(fetchDentistReportsSuccess(response.data));
     }
     catch (error) {
@@ -248,6 +254,33 @@ function* deleteDentistReview () {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
       yield put(deleteDentistReviewError(error));
+    }
+  }
+}
+
+/* Download Report
+ * ------------------------------------------------------ */
+function* downloadReport () {
+  while (true) {
+    const { reportName, reportUrl } = yield take(DOWNLOAD_REPORT_REQUEST);
+
+    try {
+      const params = {
+        method: "GET",
+      };
+      const pdfBlob = yield call(request, reportUrl, params);
+
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `reportName`;
+      link.click();
+      downloadReportSuccess();
+    }
+
+    catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+      downloadReportFailure(err);
     }
   }
 }

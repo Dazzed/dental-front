@@ -39,6 +39,11 @@ import {
   SEARCH,
   SORT,
 
+  // download report
+  DOWNLOAD_REPORT_REQUEST,
+  DOWNLOAD_REPORT_SUCCESS,
+  DOWNLOAD_REPORT_FAILURE,
+
   // delete review
   DELETE_DENTIST_REVIEW_REQUEST,
   DELETE_DENTIST_REVIEW_SUCCESS,
@@ -120,7 +125,6 @@ export function fetchDentistMembersError (payload) {
 /* Fetch Dentist Reports
  * ------------------------------------------------------ */
 export function fetchDentistReports (dentistId) {
-  console.log(dentistId);
   return {
     type: FETCH_DENTIST_REPORTS_REQUEST,
     dentistId,
@@ -236,6 +240,29 @@ export function editDentistDentistSuccess (dentist) {
 export function editDentistError (payload) {
   return {
     type: EDIT_DENTIST_ERROR,
+    payload
+  };
+}
+
+/* Download Report
+ * ------------------------------------------------------ */
+export function downloadReport (reportName, reportUrl) {
+  return {
+    type: DOWNLOAD_REPORT_REQUEST,
+    reportName,
+    reportUrl,
+  };
+}
+
+export function downloadReportSuccess () {
+  return {
+    type: DOWNLOAD_REPORT_SUCCESS,
+  };
+}
+
+export function downloadReportFailure (payload) {
+  return {
+    type: DOWNLOAD_REPORT_FAILURE,
     payload,
   };
 }

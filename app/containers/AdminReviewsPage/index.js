@@ -358,7 +358,7 @@ export default class AdminDentistsPage extends React.Component {
                 <InputGroup>
                   <FormControl
                     type="text"
-                    placeholder="SEARCH FOR MEMBER"
+                    placeholder="SEARCH FOR DENTIST"
                     className="form-control--large"
                     value={searchTerm}
                     onChange={this.updateSearchTerm}

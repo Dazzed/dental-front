@@ -41,3 +41,7 @@ export const EDIT_DENTIST_ERROR   =  'app/AdminDentistPage/EDIT_DENTIST_ERROR';
 export const DELETE_DENTIST_REVIEW_REQUEST = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_REQUEST';
 export const DELETE_DENTIST_REVIEW_SUCCESS = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_SUCCESS';
 export const DELETE_DENTIST_REVIEW_ERROR   = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_ERROR';
+
+export const DOWNLOAD_REPORT_REQUEST = 'app/AdminDentistPage/DOWNLOAD_REPORT';
+export const DOWNLOAD_REPORT_SUCCESS = 'app/AdminDentistPage/DOWNLOAD_REPORT';
+export const DOWNLOAD_REPORT_FAILURE = 'app/AdminDentistPage/DOWNLOAD_REPORT';

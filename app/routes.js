@@ -196,6 +196,34 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
+      path: '/admin/reports',
+      name: 'adminReportsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminDentistsPage/reducer'),
+          System.import('containers/AdminDentistsPage/sagas'),
+
+          System.import('containers/AdminReportsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          adminDentistsReducer,
+          adminDentistsSagas,
+
+          component
+        ]) => {
+          injectReducer('adminDentistsPage', adminDentistsReducer.default);
+          injectSagas(adminDentistsSagas.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/admin/reviews',
       name: 'adminReviewsPage',
       getComponent (nextState, cb) {

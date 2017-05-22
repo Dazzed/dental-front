@@ -1,7 +1,7 @@
 /*
-Admin Dentists Page
+Admin Reports Page
 ================================================================================
-Route: `/admin/dentists`
+Route: `/admin/reports`
 */
 
 /*
@@ -22,7 +22,6 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
-import AdminDashboardTabs from 'components/AdminDashboardTabs';
 import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
@@ -30,7 +29,7 @@ import { selectCurrentUser } from 'containers/App/selectors';
 import {
   // fetch
   fetchDentists,
-  fetchDentistMembers,
+  fetchDentistReports,
   fetchStats,
 
   // setters
@@ -39,11 +38,14 @@ import {
   // search / sort dentists
   search,
   sort,
+
+  // download report
+  downloadReport,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
   selectDentists,
-  selectDentistMembers,
+  selectDentistReports,
   selectStats,
 
   // getters
@@ -66,7 +68,7 @@ function mapStateToProps (state) {
   return {
     // fetch
     dentists: selectDentists(state),
-    dentistMembers: selectDentistMembers(state),
+    dentistReports: selectDentistReports(state),
     stats: selectStats(state),
     user: selectCurrentUser(state),
 
@@ -87,7 +89,7 @@ function mapDispatchToProps (dispatch) {
     
     // fetch
     fetchDentists: () => dispatch(fetchDentists()),
-    fetchDentistMembers: (dentistId) => dispatch(fetchDentistMembers(dentistId)),
+    fetchDentistReports: (dentistId) => dispatch(fetchDentistReports(dentistId)),
     fetchStats: () => dispatch(fetchStats()),
 
     // setters
@@ -96,6 +98,9 @@ function mapDispatchToProps (dispatch) {
     // search / sort patients
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
+
+    // download report
+    downloadReport: (reportName, reportUrl) => downloadReport(reportName, reportUrl),
   };
 }
 
@@ -114,7 +119,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // fetch - state
     dentists: React.PropTypes.arrayOf(React.PropTypes.object),
-    dentistMembers: React.PropTypes.arrayOf(React.PropTypes.object),
+    dentistReports: React.PropTypes.arrayOf(React.PropTypes.object),
     stats: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
@@ -123,7 +128,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // fetch - dispatch
     fetchDentists: React.PropTypes.func.isRequired,
-    fetchDentistMembers: React.PropTypes.func.isRequired,
+    fetchDentistReports: React.PropTypes.func.isRequired,
     fetchStats: React.PropTypes.func.isRequired,
 
     // getters - state
@@ -140,6 +145,9 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
+
+    // download report - dispatch
+    downloadReport: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -168,7 +176,7 @@ export default class AdminDentistsPage extends React.Component {
   // select dentist
   onSelectDentist = (dentist) => {
     if (dentist !== null) {
-      this.props.fetchDentistMembers(dentist.id);
+      this.props.fetchDentistReports(dentist.id);
     }
 
     this.props.setSelectedDentist(dentist);
@@ -190,24 +198,25 @@ export default class AdminDentistsPage extends React.Component {
     });
   }
 
-  // on refund / transfer
-  onRefund = (dentist, patient) => {
-    alert('refund "' + patient.firstName + ' ' + patient.lastName + '"');
-  }
-
-  onTransfer = (dentist, patient) => {
-    alert('transfer "' + patient.firstName + ' ' + patient.lastName + '"');
-  }
-
-  /* Render Dentist Members
-   * ------------------------------------------------------ */
-  renderDentistMembers = (dentist) => {
+  // download report
+  onDentistReportLinkClick = ({month, year, url}) => {
     const {
-      dentistMembers
+      selectedDentist: { firstName, lastName },
+    } = this.props;
+
+    const reportName = `dentist_${lastName}_${firstName}_{year}_{month}.pdf`;
+    this.props.downloadReport(reportName, url);
+  }
+
+  /* Render Dentist Reports
+   * ------------------------------------------------------ */
+  renderDentistReports = () => {
+    const {
+      dentistReports
     } = this.props;
 
     // precondition render: the data must be loaded, otherwise wait for it
-    if (dentistMembers === null) {
+    if (dentistReports === null) {
       return (
         <div className="text-center">
           <LoadingSpinner showOnlyIcon={true} />
@@ -215,150 +224,17 @@ export default class AdminDentistsPage extends React.Component {
       );
     }
 
-    // precondition render: there are no members to display
-    if (dentistMembers.length === 0) {
+    // precondition render: there are no reports to display
+    if (dentistReports.length === 0) {
       return (
-        <div className={styles['dentist-members']}>
-          The dentist does not have any members yet.
+        <div className={styles['dentist-reports']}>
+          The dentist does not have any reports yet.
         </div>
       );
     }
 
-    const memberCount = dentistMembers.reduce(
-      (memberCounter, patient) => {
-        return memberCounter += patient.members.length;
-      },
-      0
-    );
-
     return (
-      <div className={styles['dentist-members']}>
-        <p className="text-center">
-          Patient Accounts ({dentistMembers.length})
-          {' '}
-          ~ Total Members ({memberCount})
-        </p>
-
-        {dentistMembers.map((patient, index) => {
-          return this.renderPatient(dentist, patient, index + 1);
-        })}
-      </div>
-    );
-  }
-
-  /* Render Dentist Member
-   * ------------------------------------------------------ */
-  renderPatient = (dentist, patient, position) => {
-    const {
-      firstName,
-      lastName,
-
-      members,
-      subscription: { status },
-    } = patient;
-
-    let statusStyle = "";
-    switch(status) {
-      case "active":
-        statusStyle += "status--active";
-        break;
-
-      case "past_due":
-        statusStyle += "status--past-due";
-        break;
-
-      case "canceled":
-        statusStyle += "status--canceled";
-        break;
-
-      case "inactive":
-        statusStyle += "status--inactive";
-        break;
-
-      default:
-        // Status is unknown, so don't add anything;
-        break;
-    }
-
-    const listNum = ("00" + position.toString()).substr(-3, 3); // guarantee a length 3 listNum
-
-    return (
-      <div className={"row " + styles['patient']} key={patient.id}>
-        <div className="col-sm-6">
-          <p>
-            <strong>{listNum}) {firstName} {lastName}</strong>
-            {' '}
-            - <span className={"status " + styles[statusStyle]}>{status}</span>
-          </p>
-
-          <p>
-            Family Members:
-          </p>
-
-          <ul>
-            {members.map((member) => {
-              const {
-                firstName,
-                lastName,
-
-                subscription: { status },
-              } = member;
-
-              const isAccountOwner = patient.id === member.id;
-
-              let statusStyle = "";
-              switch(status) {
-                case "active":
-                  statusStyle += "status--active";
-                  break;
-
-                case "past_due":
-                  statusStyle += "status--past-due";
-                  break;
-
-                case "canceled":
-                  statusStyle += "status--canceled";
-                  break;
-
-                case "inactive":
-                  statusStyle += "status--inactive";
-                  break;
-
-                default:
-                  // Status is unknown, so don't add anything;
-                  break;
-              }
-
-              return (
-                <li key={member.id}>
-                  {firstName} {lastName}
-                  {' '}
-                  - <span className={"status " + styles[statusStyle]}>{status}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="col-sm-6">
-          <p>
-            <input
-              type="button"
-              className={styles['button--short']}
-              value="REFUNDS"
-              onClick={this.onRefund.bind(this, dentist, patient)}
-            />
-          </p>
-          <p>
-            <input
-              type="button"
-              className={styles['button--short']}
-              value="TRANSFER"
-              onClick={this.onTransfer.bind(this, dentist, patient)}
-            />
-          </p>
-        </div>
-      </div>
+      <div>TODO</div>
     );
   }
 
@@ -370,7 +246,7 @@ export default class AdminDentistsPage extends React.Component {
     const {
       // fetch
       dentists,
-      members,
+      reports,
       stats,
       user,
 
@@ -395,7 +271,7 @@ export default class AdminDentistsPage extends React.Component {
     if (dentists === null) {
       return (
         <div>
-          <AdminDashboardTabs active="members" />
+          <h1 styleName="large-title">Reports</h1>
 
           <div styleName="content content--filler">
             <LoadingSpinner showOnlyIcon={false} />
@@ -409,7 +285,7 @@ export default class AdminDentistsPage extends React.Component {
       return (
         <div>
           <AdminDashboardHeader stats={stats} />
-          <AdminDashboardTabs active="members" />
+          <h1 styleName="large-title">Reports</h1>
 
           <div styleName="content content--filler">
             <p>
@@ -427,7 +303,7 @@ export default class AdminDentistsPage extends React.Component {
     return (
       <div>
         <AdminDashboardHeader stats={stats} />
-        <AdminDashboardTabs active="members" />
+        <h1 styleName="large-title">Reports</h1>
 
         <div styleName="content">
           <div className="row">
@@ -468,7 +344,7 @@ export default class AdminDentistsPage extends React.Component {
             selectedDentist={selectedDentist}
 
             selectDentist={this.onSelectDentist}
-            renderListEntryBody={this.renderDentistMembers}
+            renderListEntryBody={this.renderDentistReports}
           />
         </div>
 

@@ -49,7 +49,7 @@ const selectStats = createSelector(
   (substate) => substate.stats
 );
 
-const seletDentistReports = createSelector(
+const selectDentistReports = createSelector(
   domainSelector,
   (substate) => substate.dentistReports
 );
@@ -144,7 +144,7 @@ export {
   selectDentistMembers,
   selectDentistReviews,
   selectStats,
-  seletDentistReports,
+  selectDentistReports,
 
   // getters
   selectSelectedDentist,
