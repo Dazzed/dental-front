@@ -13,6 +13,10 @@ export const FETCH_PATIENTS_REQUEST = 'app/DentistMembersPage/FETCH_PATIENTS_REQ
 export const FETCH_PATIENTS_SUCCESS = 'app/DentistMembersPage/FETCH_PATIENTS_SUCCESS';
 export const FETCH_PATIENTS_ERROR   = 'app/DentistMembersPage/FETCH_PATIENTS_ERROR';
 
+export const FETCH_DENTIST_REPORTS_REQUEST = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_REQUEST';
+export const FETCH_DENTIST_REPORTS_SUCCESS = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_SUCCESS';
+export const FETCH_DENTIST_REPORTS_ERROR   = 'app/AdminDentistPage/FETCH_DENTIST_REPORTS_ERROR';
+
 export const SEARCH_MEMBERS   = 'app/DentistMembersPage/SEARCH_MEMBERS';
 export const SORT_MEMBERS     = 'app/DentistMembersPage/SORT_MEMBERS';
 
@@ -37,3 +41,7 @@ export const SUBMIT_PATIENT_PAYMENT_FORM   = 'app/DentistMembersPage/SUBMIT_PATI
 
 export const TOGGLE_WAIVE_PATIENT_FEES_REQUEST = 'app/DentistMembersPage/TOGGLE_WAIVE_PATIENT_FEES_REQUEST';
 export const TOGGLE_WAIVE_PATIENT_FEES_SUCCESS = 'app/DentistMembersPage/TOGGLE_WAIVE_PATIENT_FEES_SUCCESS';
+
+export const DOWNLOAD_REPORT_REQUEST = 'app/AdminDentistPage/DOWNLOAD_REPORT_REQUEST';
+export const DOWNLOAD_REPORT_SUCCESS = 'app/AdminDentistPage/DOWNLOAD_REPORT_SUCCESS';
+export const DOWNLOAD_REPORT_ERROR   = 'app/AdminDentistPage/DOWNLOAD_REPORT_ERROR';

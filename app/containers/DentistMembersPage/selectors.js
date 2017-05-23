@@ -33,6 +33,11 @@ const selectMemberSortTerm = createSelector(
   (substate) => substate.sortStatus
 );
 
+const selectDentistReports = createSelector(
+  domainSelector,
+  (substate) => substate.dentistReports
+);
+
 /*
 Fetch
 ------------------------------------------------------------
@@ -182,6 +187,7 @@ export {
   // search / sort patients
   selectMemberSearchTerm,
   selectMemberSortTerm,
+  selectDentistReports,
 
   // fetch
   selectDentistInfo,

@@ -96,10 +96,12 @@ Quick Links
 
   color: $color-primary-lowlight;
 
+  cursor: pointer;
   font-weight: bold;
 
   &:hover {
     color: $color-primary-lowlight;
+    text-decoration: underline;
   }
 }
 

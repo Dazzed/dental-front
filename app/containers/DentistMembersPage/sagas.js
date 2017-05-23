@@ -24,27 +24,37 @@ import request from 'utils/request';
 import {
   fetchDentistInfoSuccess,
   fetchDentistInfoError,
+
   fetchPatientsSuccess,
   fetchPatientsError,
+
+  fetchDentistReportsSuccess,
+  fetchDentistReportsError,
 
   setAddedMember,
   setEditedMember,
   setRemovedMember,
 
   setEditedPatientProfile,
-
   clearEditingPatientPayment,
-
   setToggledWaivePatientFees,
+
+  downloadReportSuccess,
+  downloadReportFailure,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
   FETCH_PATIENTS_REQUEST,
+  FETCH_DENTIST_REPORTS_REQUEST,
+
   SUBMIT_MEMBER_FORM,
   REMOVE_MEMBER_REQUEST,
+
   SUBMIT_PATIENT_PROFILE_FORM,
   SUBMIT_PATIENT_PAYMENT_FORM,
   TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
+
+  DOWNLOAD_REPORT_REQUEST,
 } from './constants';
 
 
@@ -60,11 +70,13 @@ export default [
 function* main () {
   const watcherA = yield fork(dentistInfoFetcher);
   const watcherB = yield fork(patientsFetcher);
-  const watcherC = yield fork(submitMemberFormWatcher);
-  const watcherD = yield fork(removeMemberWatcher);
-  const watcherE = yield fork(submitPatientProfileFormWatcher);
-  const watcherF = yield fork(submitPatientPaymentFormWatcher);
-  const watcherG = yield fork(toggleWaivePatientFeesWatcher);
+  const watcherC = yield fork(dentistReportsFetcher);
+  const watcherD = yield fork(submitMemberFormWatcher);
+  const watcherE = yield fork(removeMemberWatcher);
+  const watcherF = yield fork(submitPatientProfileFormWatcher);
+  const watcherG = yield fork(submitPatientPaymentFormWatcher);
+  const watcherH = yield fork(toggleWaivePatientFeesWatcher);
+  const watcherI = yield fork(downloadReport);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -74,6 +86,8 @@ function* main () {
   yield cancel(watcherE);
   yield cancel(watcherF);
   yield cancel(watcherG);
+  yield cancel(watcherH);
+  yield cancel(watcherI);
 }
 
 /*
@@ -103,6 +117,22 @@ function* patientsFetcher () {
       yield put(fetchPatientsSuccess(response.data));
     } catch (error) {
       yield put(fetchPatientsError(error));
+    }
+  });
+}
+
+/*
+Fetch Dentist Reports
+------------------------------------------------------------
+*/
+function* dentistReportsFetcher () {
+  yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
+    try {
+      const response = yield call(request, `/api/v1/reports/dentist/me/list`);
+      yield put(fetchDentistReportsSuccess(response.data));
+    }
+    catch (error) {
+      yield put(fetchDentistReportsError(error));
     }
   });
 }
@@ -316,6 +346,35 @@ function* toggleWaivePatientFeesWatcher () {
     } catch (err) {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
+    }
+  }
+}
+
+/* Download Report
+ * ------------------------------------------------------ */
+// Based on: https://stackoverflow.com/questions/1999607/download-and-open-pdf-file-using-ajax
+function* downloadReport () {
+  while (true) {
+    const { reportName, reportUrl } = yield take(DOWNLOAD_REPORT_REQUEST);
+
+    try {
+      const params = {
+        method: "GET",
+      };
+      const pdfBlob = yield call(request, '/api/v1' + reportUrl, params);
+
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(pdfBlob);
+      link.download = reportName;
+      link.click();
+
+      downloadReportSuccess();
+    }
+
+    catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+      downloadReportFailure(err);
     }
   }
 }

@@ -23,6 +23,7 @@ import { Link } from 'react-router';
 
 // app
 import Avatar from 'components/Avatar';
+import DentistReportsModal from 'components/DentistReportsModal';
 import PriceScore from 'components/PriceScore';
 import ReviewScore from 'components/ReviewScore';
 
@@ -42,6 +43,7 @@ class DentistDashboardHeader extends React.Component {
     currentSearchTerm: React.PropTypes.string,
     dentistInfo: React.PropTypes.object,
     patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    reports: React.PropTypes.arrayOf(React.PropTypes.object),
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -49,6 +51,7 @@ class DentistDashboardHeader extends React.Component {
 
     // passed in - actions
     onMemberSearch: React.PropTypes.func.isRequired,
+    onReportSelected: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -58,6 +61,7 @@ class DentistDashboardHeader extends React.Component {
       memberSearchTerm: this.props.currentSearchTerm !== null
                           ? this.props.currentSearchTerm
                           : '',
+      showReportsModal: false,
     };
   }
 
@@ -76,6 +80,13 @@ class DentistDashboardHeader extends React.Component {
     })
   }
 
+  toggleReportsModal = () => {
+    this.setState({
+      ...this.state,
+      showReportsModal: !this.state.showReportsModal,
+    });
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -84,11 +95,15 @@ class DentistDashboardHeader extends React.Component {
     const {
       dentistInfo,
       patients,
+      reports,
       user,
+
+      onReportSelected,
     } = this.props;
 
     const {
       memberSearchTerm,
+      showReportsModal,
     } = this.state;
 
     const {
@@ -216,9 +231,9 @@ class DentistDashboardHeader extends React.Component {
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="#">
+                <span styleName="quick-links__link" onClick={this.toggleReportsModal}>
                   Reports
-                </Link>
+                </span>
               </li>
               <li>
                 <Link styleName="quick-links__link" to="#">
@@ -287,6 +302,18 @@ class DentistDashboardHeader extends React.Component {
 
         {/* End Row / Header Section */}
         </div>
+
+        {/*
+        Modals
+        ------------------------------------------------------
+        */}
+        <DentistReportsModal
+          show={showReportsModal}
+          onHide={this.toggleReportsModal}
+
+          reports={reports}
+          onReportSelected={onReportSelected}
+        />
 
       {/* End Wrapper Div */}
       </div>

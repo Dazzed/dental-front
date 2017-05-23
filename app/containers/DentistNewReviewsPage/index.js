@@ -32,6 +32,7 @@ import {
   // fetch
   fetchDentistInfo,
   fetchPatients,
+  fetchDentistReports,
 
   // search / sort patients
   searchMembers,
@@ -56,11 +57,15 @@ import {
 
   // toggle waive patient fees
   setTogglingWaivePatientFees,
+
+  // download report
+  downloadReport,
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
   selectDentistInfo,
   selectProcessedPatients,
+  selectDentistReports,
 
   // search / sort patients
   selectMemberSearchTerm,
@@ -93,6 +98,7 @@ function mapStateToProps (state) {
     dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
     recentReviewers: selectRecentReviewers(state),
+    reports: selectDentistReports(state),
     user: selectCurrentUser(state),
 
     // search / sort patients
@@ -117,6 +123,7 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
+    fetchDentistReports: () => dispatch(fetchDentistReports()),
 
     // search / sort patients
     searchMembers: (name) => dispatch(searchMembers(name)),
@@ -144,6 +151,9 @@ function mapDispatchToProps (dispatch) {
 
     // toggle waive patient fees
     setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
+
+    // download report
+    downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
   };
 }
 
@@ -164,6 +174,7 @@ class DentistNewReviewsPage extends React.Component {
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
     recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
+    reports: React.PropTypes.arrayOf(React.PropTypes.object),
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -172,6 +183,7 @@ class DentistNewReviewsPage extends React.Component {
     // fetch - dispatch
     fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
+    fetchDentistReports: React.PropTypes.func.isRequired,
 
     // search / sort patients - state
     currentSearchTerm: React.PropTypes.string,
@@ -211,11 +223,15 @@ class DentistNewReviewsPage extends React.Component {
 
     // toggle waive patient fees - dispatch
     setTogglingWaivePatientFees: React.PropTypes.func.isRequired,
+
+    // download report - dispatch
+    downloadReport: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
+    this.props.fetchDentistReports();
   }
 
   componentDidMount() {
@@ -300,6 +316,16 @@ class DentistNewReviewsPage extends React.Component {
     this.props.clearEditingPatientPayment();
   }
 
+  // reports
+  onReportSelected = ({month, year, url}) => {
+    const {
+      user: { firstName, lastName },
+    } = this.props;
+
+    const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
+    this.props.downloadReport(reportName, url);
+  }
+
   /*
   UI Functions
   ------------------------------------------------------------
@@ -333,6 +359,7 @@ class DentistNewReviewsPage extends React.Component {
       dentistInfo,
       patients,
       recentReviewers,
+      reports,
       user,
 
       // search / sort patients
@@ -373,8 +400,10 @@ class DentistNewReviewsPage extends React.Component {
             currentSearchTerm={currentSearchTerm}
             dentistInfo={dentistInfo}
             patients={patients}
+            reports={reports}
             user={user}
             onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
           />
           <DentistDashboardTabs active="new-reviews" />
 
@@ -395,8 +424,10 @@ class DentistNewReviewsPage extends React.Component {
             currentSearchTerm={currentSearchTerm}
             dentistInfo={dentistInfo}
             patients={patients}
+            reports={reports}
             user={user}
             onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
           />
           <DentistDashboardTabs active="new-reviews" />
 
@@ -439,8 +470,10 @@ class DentistNewReviewsPage extends React.Component {
             currentSearchTerm={currentSearchTerm}
             dentistInfo={dentistInfo}
             patients={patients}
+            reports={reports}
             user={user}
             onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
           />
         <DentistDashboardTabs active="new-reviews" />
 

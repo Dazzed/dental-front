@@ -15,6 +15,7 @@ import {
   // fetch
   FETCH_DENTIST_INFO_SUCCESS,
   FETCH_PATIENTS_SUCCESS,
+  FETCH_DENTIST_REPORTS_SUCCESS,
 
   // search / sort patients
   SEARCH_MEMBERS,
@@ -50,6 +51,7 @@ const initialState = {
   // fetch
   dentistInfo: null,
   patients: null,
+  dentistReports: null,
 
   // search / sort patients
   searchName: null,
@@ -93,6 +95,12 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         patients,
+      };
+
+    case FETCH_DENTIST_REPORTS_SUCCESS:
+      return {
+        ...state,
+        dentistReports: action.payload.reverse(),
       };
 
     /*

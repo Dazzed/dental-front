@@ -19,6 +19,11 @@ import {
   FETCH_PATIENTS_SUCCESS,
   FETCH_PATIENTS_ERROR,
 
+  // fetch reports
+  FETCH_DENTIST_REPORTS_REQUEST,
+  FETCH_DENTIST_REPORTS_SUCCESS,
+  FETCH_DENTIST_REPORTS_ERROR,
+
   // search / sort patients
   SEARCH_MEMBERS,
   SORT_MEMBERS,
@@ -48,6 +53,11 @@ import {
   // toggle waive patient fees
   TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
   TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
+
+  // download report
+  DOWNLOAD_MASTER_REPORT_REQUEST,
+  DOWNLOAD_MASTER_REPORT_SUCCESS,
+  DOWNLOAD_MASTER_REPORT_ERROR,
 } from './constants';
 
 /*
@@ -94,6 +104,28 @@ export function fetchPatientsSuccess (payload) {
 export function fetchPatientsError (payload) {
   return {
     type: FETCH_PATIENTS_ERROR,
+    payload,
+  };
+}
+
+/* Fetch Dentist Reports
+ * ------------------------------------------------------ */
+export function fetchDentistReports () {
+  return {
+    type: FETCH_DENTIST_REPORTS_REQUEST,
+  };
+}
+
+export function fetchDentistReportsSuccess (payload) {
+  return {
+    type: FETCH_DENTIST_REPORTS_SUCCESS,
+    payload,
+  };
+}
+
+export function fetchDentistReportsError (payload) {
+  return {
+    type: FETCH_DENTIST_REPORTS_ERROR,
     payload,
   };
 }
@@ -253,4 +285,27 @@ export function setToggledWaivePatientFees (patient, payload) {
     patient,
     payload,
   }
+}
+
+/* Download Report
+ * ------------------------------------------------------ */
+export function downloadReport (reportName, reportUrl) {
+  return {
+    type: DOWNLOAD_REPORT_REQUEST,
+    reportName,
+    reportUrl,
+  };
+}
+
+export function downloadReportSuccess () {
+  return {
+    type: DOWNLOAD_REPORT_SUCCESS,
+  };
+}
+
+export function downloadReportFailure (payload) {
+  return {
+    type: DOWNLOAD_REPORT_ERROR,
+    payload,
+  };
 }

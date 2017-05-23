@@ -167,6 +167,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // download report - dispatch
     downloadReport: React.PropTypes.func.isRequired,
+    downloadMasterReport: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -251,7 +252,7 @@ export default class AdminDentistsPage extends React.Component {
     // precondition render: there are no reports to display
     if (dentistReports.length === 0) {
       return (
-        <div className={styles['dentist-reports']}>
+        <div>
           The dentist does not have any reports yet.
         </div>
       );

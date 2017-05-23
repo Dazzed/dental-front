@@ -1,0 +1,37 @@
+/*
+Dentist Reports Modal Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
+
+/*
+Dentist Reports Modal
+================================================================================
+*/
+.report-link {
+  color: $color-primary-transparent;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-primary-highlight;
+    text-decoration: none;
+  }
+}

@@ -33,6 +33,7 @@ import {
   // fetch
   fetchDentistInfo,
   fetchPatients,
+  fetchDentistReports,
 
   // search / sort patients
   searchMembers,
@@ -58,12 +59,16 @@ import {
 
   // toggle waive patient fees
   setTogglingWaivePatientFees,
+
+  // download report
+  downloadReport,
 } from './actions';
 import {
   // fetch
   selectDataLoaded,
   selectDentistInfo,
   selectProcessedPatients,
+  selectDentistReports,
 
   // search / sort patients
   selectMemberSearchTerm,
@@ -90,6 +95,7 @@ function mapStateToProps (state) {
     dataLoaded: selectDataLoaded(state),
     dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
+    reports: selectDentistReports(state),
     user: selectCurrentUser(state),
 
     // search / sort patients
@@ -115,6 +121,7 @@ function mapDispatchToProps (dispatch) {
     // fetch
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
+    fetchDentistReports: () => dispatch(fetchDentistReports()),
 
     // search / sort patients
     searchMembers: (name) => dispatch(searchMembers(name)),
@@ -143,6 +150,9 @@ function mapDispatchToProps (dispatch) {
 
     // toggle waive patient fees
     setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
+
+    // download report
+    downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
   };
 }
 
@@ -162,6 +172,7 @@ class DentistMembersPage extends React.Component {
     // fetch - state
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
+    reports: React.PropTypes.arrayOf(React.PropTypes.object),
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool, // will be `false` until loaded
       React.PropTypes.object,
@@ -170,6 +181,7 @@ class DentistMembersPage extends React.Component {
     // fetch - dispatch
     fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
+    fetchDentistReports: React.PropTypes.func.isRequired,
 
     // search / sort patients - state
     currentSearchTerm: React.PropTypes.string,
@@ -211,11 +223,15 @@ class DentistMembersPage extends React.Component {
 
     // toggle waive patient fees - dispatch
     setTogglingWaivePatientFees: React.PropTypes.func.isRequired,
+
+    // download report - dispatch
+    downloadReport: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
+    this.props.fetchDentistReports();
   }
 
   componentDidMount() {
@@ -305,6 +321,16 @@ class DentistMembersPage extends React.Component {
     this.props.sortMembers(evt.target.value);
   }
 
+  // reports
+  onReportSelected = ({month, year, url}) => {
+    const {
+      user: { firstName, lastName },
+    } = this.props;
+
+    const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
+    this.props.downloadReport(reportName, url);
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -315,6 +341,7 @@ class DentistMembersPage extends React.Component {
       dataLoaded,
       dentistInfo,
       patients,
+      reports,
       user,
 
       // search / sort patients
@@ -356,8 +383,10 @@ class DentistMembersPage extends React.Component {
             currentSearchTerm={currentSearchTerm}
             dentistInfo={dentistInfo}
             patients={patients}
+            reports={reports}
             user={user}
             onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
           />
           <DentistDashboardTabs active="members" />
 
@@ -380,8 +409,10 @@ class DentistMembersPage extends React.Component {
             currentSearchTerm={currentSearchTerm}
             dentistInfo={dentistInfo}
             patients={patients}
+            reports={reports}
             user={user}
             onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
           />
         <DentistDashboardTabs active="members" />
 
