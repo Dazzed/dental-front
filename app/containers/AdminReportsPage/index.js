@@ -9,6 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -41,6 +42,7 @@ import {
 
   // download report
   downloadReport,
+  downloadMasterReport,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -101,7 +103,24 @@ function mapDispatchToProps (dispatch) {
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
+    downloadMasterReport: (year, month) => dispatch(downloadMasterReport(year, month)),
   };
+}
+
+/* Master Report Date Info
+ * ------------------------------------------------------ */
+const masterReports = [];
+
+let reportDate = moment();
+let firstReport = moment("2017-01-01");
+while (firstReport.isBefore(reportDate)) {
+  masterReports.push({
+    year: reportDate.format("YYYY"),
+    month: reportDate.format("M"),
+    text: reportDate.format("YYYY - MMMM"),
+  });
+
+  reportDate.subtract(1, 'month');
 }
 
 
@@ -206,6 +225,11 @@ export default class AdminDentistsPage extends React.Component {
 
     const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
     this.props.downloadReport(reportName, url);
+  }
+
+  onMasterReportSelected = (evt) => {
+    const report = masterReports[evt.target.value];
+    this.props.downloadMasterReport(report.year, report.month);
   }
 
   /* Render Dentist Reports
@@ -328,9 +352,9 @@ export default class AdminDentistsPage extends React.Component {
         <h1 styleName="large-title">Reports</h1>
 
         <div styleName="content">
-          <div className="row">
-            <div className="col-sm-offset-3 col-sm-3">
 
+          <div className="row">
+            <div className="col-sm-offset-1 col-sm-3">
               <FormGroup>
                 <InputGroup>
                   <FormControl
@@ -347,7 +371,6 @@ export default class AdminDentistsPage extends React.Component {
                   </InputGroup.Button>
                 </InputGroup>
               </FormGroup>
-
             </div>
 
             <div className="col-sm-3" styleName="match-form-group-offset">
@@ -359,6 +382,16 @@ export default class AdminDentistsPage extends React.Component {
               </select>
             </div>
 
+            <div className="col-sm-5" styleName="match-form-group-offset">
+              <select value="-1" onChange={this.onMasterReportSelected}>
+                <option value="-1">Download Master Report</option>
+                {masterReports.map((dateInfo, i) => {
+                  return (
+                    <option value={i} key={dateInfo.year + "-" + dateInfo.month}>{dateInfo.text}</option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
 
           <DentistList

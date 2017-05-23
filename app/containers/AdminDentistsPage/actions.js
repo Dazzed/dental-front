@@ -44,6 +44,11 @@ import {
   DOWNLOAD_REPORT_SUCCESS,
   DOWNLOAD_REPORT_ERROR,
 
+  // download master report
+  DOWNLOAD_MASTER_REPORT_REQUEST,
+  DOWNLOAD_MASTER_REPORT_SUCCESS,
+  DOWNLOAD_MASTER_REPORT_ERROR,
+
   // delete review
   DELETE_DENTIST_REVIEW_REQUEST,
   DELETE_DENTIST_REVIEW_SUCCESS,
@@ -263,6 +268,29 @@ export function downloadReportSuccess () {
 export function downloadReportFailure (payload) {
   return {
     type: DOWNLOAD_REPORT_ERROR,
+    payload,
+  };
+}
+
+/* Download Master Report
+ * ------------------------------------------------------ */
+export function downloadMasterReport (year, month) {
+  return {
+    type: DOWNLOAD_MASTER_REPORT_REQUEST,
+    year,
+    month,
+  };
+}
+
+export function downloadMasterReportSuccess () {
+  return {
+    type: DOWNLOAD_MASTER_REPORT_SUCCESS,
+  };
+}
+
+export function downloadMasterReportFailure (payload) {
+  return {
+    type: DOWNLOAD_MASTER_REPORT_ERROR,
     payload,
   };
 }

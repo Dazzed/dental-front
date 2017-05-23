@@ -50,6 +50,9 @@ import {
 
   downloadReportSuccess,
   downloadReportFailure,
+
+  downloadMasterReportSuccess,
+  downloadMasterReportFailure,
 } from './actions';
 import {
   // fetch
@@ -64,6 +67,7 @@ import {
   EDIT_DENTIST_REQUEST,
   DELETE_DENTIST_REVIEW_REQUEST,
   DOWNLOAD_REPORT_REQUEST,
+  DOWNLOAD_MASTER_REPORT_REQUEST,
 } from './constants';
 
 
@@ -85,6 +89,7 @@ function* main () {
   const watcherF = yield fork(statsFetcher);
   const watcherG = yield fork(deleteDentistReview);
   const watcherH = yield fork(downloadReport);
+  const watcherI = yield fork(downloadMasterReport);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -95,6 +100,7 @@ function* main () {
   yield cancel(watcherF);
   yield cancel(watcherG);
   yield cancel(watcherH);
+  yield cancel(watcherI);
 }
 
 
@@ -258,6 +264,7 @@ function* deleteDentistReview () {
 
 /* Download Report
  * ------------------------------------------------------ */
+// Based on: https://stackoverflow.com/questions/1999607/download-and-open-pdf-file-using-ajax
 function* downloadReport () {
   while (true) {
     const { reportName, reportUrl } = yield take(DOWNLOAD_REPORT_REQUEST);
@@ -275,7 +282,7 @@ function* downloadReport () {
       console.log("CREATING THE LINK");
       console.log(pdfBlob);
       link.href = window.URL.createObjectURL(pdfBlob);
-      link.download = `reportName`;
+      link.download = reportName;
       link.click();
 
       console.log("download report success");
@@ -291,6 +298,36 @@ function* downloadReport () {
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
       downloadReportFailure(err);
+    }
+  }
+}
+
+/* Download Master Report
+ * ------------------------------------------------------ */
+// Based on: https://stackoverflow.com/questions/1999607/download-and-open-pdf-file-using-ajax
+function* downloadMasterReport () {
+  while (true) {
+    const { year, month } = yield take(DOWNLOAD_MASTER_REPORT_REQUEST);
+
+    try {
+      const params = {
+        method: "GET",
+      };
+      const requestUrl = `/api/v1/reports/dentists/${year}/${month}`;
+      const pdfBlob = yield call(request, requestUrl, params);
+
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(pdfBlob);
+      link.download = `dentalhq_master_report_${year}_${month}.pdf`;
+      link.click();
+
+      downloadMasterReportSuccess();
+    }
+
+    catch (err) {
+      const errorMessage = get(err, 'message', 'Something went wrong!');
+      yield put(toastrActions.error('', errorMessage));
+      downloadMasterReportFailure(err);
     }
   }
 }
