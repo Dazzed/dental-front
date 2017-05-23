@@ -276,25 +276,14 @@ function* downloadReport () {
       const pdfBlob = yield call(request, '/api/v1' + reportUrl, params);
 
       var link = document.createElement('a');
-
-      // TODO: Server is giving a 403 error in the body instead of giving the
-      //       pdf blob.
-      console.log("CREATING THE LINK");
-      console.log(pdfBlob);
       link.href = window.URL.createObjectURL(pdfBlob);
       link.download = reportName;
       link.click();
-
-      console.log("download report success");
-      console.log(link);
 
       downloadReportSuccess();
     }
 
     catch (err) {
-      console.log("download report error");
-      console.log(err);
-
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
       downloadReportFailure(err);
