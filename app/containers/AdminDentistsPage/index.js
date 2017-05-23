@@ -24,6 +24,7 @@ import { reset as resetForm } from 'redux-form';
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
 import AdminDashboardTabs from 'components/AdminDashboardTabs';
+import AdminEditDentistFormModal from 'components/AdminEditDentistFormModal';
 import DentistList from 'components/DentistsList';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { changePageTitle } from 'containers/App/actions';
@@ -42,6 +43,9 @@ import {
   // search / sort dentists
   search,
   sort,
+
+  // actions
+  editDentist,
 } from './actions';
 import {
   // fetch
@@ -97,6 +101,10 @@ function mapDispatchToProps (dispatch) {
     // search / sort
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
+
+    // actions
+    editDentist: (values, id) => dispatch(editDentist(values, id)),
+    resetEditDentistForm: () => dispatch(resetForm('adminEditDentist')),
   };
 }
 
@@ -141,6 +149,9 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
+
+    // actions - dispatch
+    editDentist: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -150,6 +161,7 @@ export default class AdminDentistsPage extends React.Component {
       searchTerm: this.props.currentSearchTerm !== null
                   ? this.props.currentSearchTerm
                   : '',
+      showEditDentistModal: false,
     };
   }
 
@@ -193,7 +205,22 @@ export default class AdminDentistsPage extends React.Component {
 
   // edit dentist
   onEditDentist = () => {
-    alert('todo: edit');
+    this.props.resetEditDentistForm();
+    this.setState({
+      ...this.state,
+      showEditDentistModal: true,
+    });
+  }
+
+  onEditDentistCancel = () => {
+    this.setState({
+      ...this.state,
+      showEditDentistModal: false,
+    });
+  }
+
+  onEditDentistSubmit = (values) => {
+    this.props.editDentist(values, this.props.selectedDentist.id);
   }
 
   /* Render Dentist Details
@@ -214,6 +241,8 @@ export default class AdminDentistsPage extends React.Component {
 
     const {
       createdAt,
+      email,
+      phone,
     } = dentistDetails;
 
     const {
@@ -221,9 +250,6 @@ export default class AdminDentistsPage extends React.Component {
       city,
       state,
       zipCode,
-
-      email,
-      phone,
 
       activeMemberCount,
       marketplaceOptIn,
@@ -247,7 +273,7 @@ export default class AdminDentistsPage extends React.Component {
 
           <p>
             Contact:
-            {' '}
+            <br />
             <span className={styles['dentist-details__value']}>
               {email}
               <br />
@@ -465,7 +491,13 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        {/* TODO */}
+        <AdminEditDentistFormModal
+          show={this.state.showEditDentistModal}
+          onCancel={this.onEditDentistCancel}
+
+          initialValues={selectedDentist}
+          onSubmit={this.onEditDentistSubmit}
+        />
 
       </div>
     );

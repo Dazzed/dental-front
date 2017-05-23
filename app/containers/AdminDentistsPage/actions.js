@@ -39,6 +39,11 @@ import {
   SEARCH,
   SORT,
 
+  // edit dentist
+  EDIT_DENTIST_REQUEST,
+  EDIT_DENTIST_SUCCESS,
+  EDIT_DENTIST_ERROR,
+
   // download report
   DOWNLOAD_REPORT_REQUEST,
   DOWNLOAD_REPORT_SUCCESS,
@@ -228,17 +233,18 @@ export function sort (status) {
 
 /* Edit Dentist
  * ------------------------------------------------------ */
-export function editDentistDentist (dentist) {
+export function editDentist (dentist, id) {
   return {
     type: EDIT_DENTIST_REQUEST,
     dentist,
+    id,
   };
 }
 
-export function editDentistDentistSuccess (dentist) {
+export function editDentistSuccess (payload) {
   return {
     type: EDIT_DENTIST_SUCCESS,
-    dentist,
+    payload,
   };
 }
 

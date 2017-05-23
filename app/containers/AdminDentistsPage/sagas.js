@@ -26,6 +26,7 @@ import {
   fetchDentistsSuccess,
   fetchDentistsError,
 
+  fetchDentistDetails,
   fetchDentistDetailsSuccess,
   fetchDentistDetailsError,
 
@@ -87,9 +88,10 @@ function* main () {
   const watcherD = yield fork(dentistReportsFetcher);
   const watcherE = yield fork(dentistReviewsFetcher);
   const watcherF = yield fork(statsFetcher);
-  const watcherG = yield fork(deleteDentistReview);
-  const watcherH = yield fork(downloadReport);
-  const watcherI = yield fork(downloadMasterReport);
+  const watcherG = yield fork(editDentist);
+  const watcherH = yield fork(deleteDentistReview);
+  const watcherI = yield fork(downloadReport);
+  const watcherJ = yield fork(downloadMasterReport);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -101,6 +103,7 @@ function* main () {
   yield cancel(watcherG);
   yield cancel(watcherH);
   yield cancel(watcherI);
+  yield cancel(watcherJ);
 }
 
 
@@ -212,26 +215,28 @@ function* statsFetcher () {
  * ------------------------------------------------------ */
 function* editDentist () {
   while (true) {
-    const { dentist } = yield take(EDIT_DENTIST_REQUEST);
+    const { dentist, id } = yield take(EDIT_DENTIST_REQUEST);
 
     try {
-      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/waive-fees`;
+      const requestURL = `/api/v1/dentists/${id}`;
       const params = {
         method: 'PUT',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(dentist),
       };
 
-      yield call(request, requestURL, params);
+      const response = yield call(request, requestURL, params);
 
-      const message = `The patient's fee settings have been updated.`;
+      const message = `The dentist has been updated.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setToggledWaivePatientFees(patient, payload));
+      yield put(editDentistSuccess(dentist));
+      yield put(fetchDentistDetails(id));
 
     } catch (err) {
-      const errorMessage = get(err, 'message', 'Something went wrong!');
-      yield put(toastrActions.error('', errorMessage));
-      yield put(editDentistError(error));
+      const errors = mapValues(err.errors, (value) => value.msg);
+
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+      yield put(stopSubmit('adminEditDentist', errors));
     }
   }
 }

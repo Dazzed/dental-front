@@ -32,6 +32,7 @@ import {
   SORT,
 
   // actions
+  EDIT_DENTIST_SUCCESS,
   DELETE_DENTIST_REVIEW_SUCCESS,
 } from './constants';
 
@@ -62,7 +63,7 @@ Reducers
 ================================================================================
 */
 export default function adminPageReducer (state = initialState, action) {
-  let memberIdx, patients, patientIdx, prevStatePatient, newStatePatient;
+  let dentistIdx;
 
   switch (action.type) {    
     /*
@@ -134,6 +135,7 @@ export default function adminPageReducer (state = initialState, action) {
     case SET_SELECTED_DENTIST:
       return {
         ...state,
+
         selectedDentist: action.dentist,
       };
 
@@ -157,13 +159,26 @@ export default function adminPageReducer (state = initialState, action) {
 
     /* Actions
      * ------------------------------------------------------ */
+    case EDIT_DENTIST_SUCCESS:
+      dentistIdx = findIndex(state.dentists, { id: action.payload.id });
+
+      return {
+        ...state,
+        dentists: [
+          ...state.dentists.slice(0, dentistIdx),
+          action.payload,
+          ...state.dentists.slice(dentistIdx + 1),
+        ],
+        selectedDentist: action.dentist,
+      };
+
     case DELETE_DENTIST_REVIEW_SUCCESS:
       return {
         ...state,
         dentistReviews: state.dentistReviews.filter((review) => {
           return review.id !== action.reviewId;
         }),
-      }
+      };
 
     /*
     Default Reducer
