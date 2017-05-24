@@ -1,0 +1,40 @@
+/*
+Dentist Edit Profile Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  padding: 2rem;
+
+  background-color: $color-white;
+}
+
+.content--filler {
+  min-height: 500px;
+}
+
+.large-title {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+
+  color: $color-primary-highlight;
+
+  font-size: 3rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+/* Dentist Edit Profile
+ * ========================================================================== */

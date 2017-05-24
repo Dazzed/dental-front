@@ -50,7 +50,7 @@ class DentistDashboardHeader extends React.Component {
     ]),
 
     // passed in - actions
-    onMemberSearch: React.PropTypes.func.isRequired,
+    onMemberSearch: React.PropTypes.func,
     onReportSelected: React.PropTypes.func.isRequired,
   }
 
@@ -216,7 +216,7 @@ class DentistDashboardHeader extends React.Component {
           <div className="col-sm-3">
             <ul styleName="quick-links">
               <li>
-                <Link styleName="quick-links__link" to="#">
+                <Link styleName="quick-links__link" to="/dentist/edit-profile">
                   Edit Office Info
                 </Link>
               </li>
@@ -281,24 +281,26 @@ class DentistDashboardHeader extends React.Component {
           Member Search
           ------------------------------------------------------------
           */}
-          <div className="col-sm-3" styleName="search-col">
-            <FormGroup>
-              <InputGroup>
-                <FormControl
-                  type="text"
-                  placeholder="SEARCH FOR MEMBER"
-                  className="form-control--large"
-                  value={memberSearchTerm}
-                  onChange={this.updateMemberSearchTerm}
-                />
-                <InputGroup.Button onClick={this.onMemberSearch}>
-                  <span className="btn btn-default">
-                    <FaSearch />
-                  </span>
-                </InputGroup.Button>
-              </InputGroup>
-            </FormGroup>
-          </div>
+          {this.props.onMemberSearch && (
+            <div className="col-sm-3" styleName="search-col">
+              <FormGroup>
+                <InputGroup>
+                  <FormControl
+                    type="text"
+                    placeholder="SEARCH FOR MEMBER"
+                    className="form-control--large"
+                    value={memberSearchTerm}
+                    onChange={this.updateMemberSearchTerm}
+                  />
+                  <InputGroup.Button onClick={this.onMemberSearch}>
+                    <span className="btn btn-default">
+                      <FaSearch />
+                    </span>
+                  </InputGroup.Button>
+                </InputGroup>
+              </FormGroup>
+            </div>
+          )}
 
         {/* End Row / Header Section */}
         </div>

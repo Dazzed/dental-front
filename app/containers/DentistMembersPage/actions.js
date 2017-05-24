@@ -14,6 +14,11 @@ import {
   FETCH_DENTIST_INFO_SUCCESS,
   FETCH_DENTIST_INFO_ERROR,
 
+  // fetch dentist specialties
+  DENTIST_SPECIALTIES_REQUEST,
+  DENTIST_SPECIALTIES_SUCCESS,
+  DENTIST_SPECIALTIES_ERROR,
+
   // fetch patients
   FETCH_PATIENTS_REQUEST,
   FETCH_PATIENTS_SUCCESS,
@@ -58,6 +63,15 @@ import {
   DOWNLOAD_MASTER_REPORT_REQUEST,
   DOWNLOAD_MASTER_REPORT_SUCCESS,
   DOWNLOAD_MASTER_REPORT_ERROR,
+
+  // image upload
+  UPLOAD_IMAGE_REQUEST,
+  UPLOAD_IMAGE_SUCCESS,
+
+  // signup
+  DENTIST_SIGNUP_REQUEST,
+  DENTIST_SIGNUP_SUCCESS,
+  DENTIST_SIGNUP_ERROR,
 } from './constants';
 
 /*
@@ -81,6 +95,29 @@ export function fetchDentistInfoError (payload) {
   return {
     type: FETCH_DENTIST_INFO_ERROR,
     payload,
+  };
+}
+
+/* Fetch Dentist Specialties
+ * ------------------------------------------------------ */
+export function dentistSpecialtiesRequest (payload) {
+  return {
+    type: DENTIST_SPECIALTIES_REQUEST,
+    payload
+  };
+}
+
+export function dentistSpecialtiesSuccess (payload) {
+  return {
+    type: DENTIST_SPECIALTIES_SUCCESS,
+    payload
+  };
+}
+
+export function dentistSpecialtiesError (payload) {
+  return {
+    type: DENTIST_SPECIALTIES_ERROR,
+    payload
   };
 }
 
@@ -307,5 +344,49 @@ export function downloadReportFailure (payload) {
   return {
     type: DOWNLOAD_REPORT_ERROR,
     payload,
+  };
+}
+
+/*
+Image Upload Actions
+------------------------------------------------------
+*/
+export function uploadImageRequest (field, file) {
+  return {
+    type: UPLOAD_IMAGE_REQUEST,
+    field,
+    file,
+  };
+}
+
+export function uploadImageSuccess (url) {
+  return {
+    type: UPLOAD_IMAGE_SUCCESS,
+    url,
+  };
+}
+
+/*
+Signup Actions
+------------------------------------------------------
+*/
+export function signupRequest (payload) {
+  return {
+    type: DENTIST_SIGNUP_REQUEST,
+    payload
+  };
+}
+
+export function signupSuccess (payload) {
+  return {
+    type: DENTIST_SIGNUP_SUCCESS,
+    payload
+  };
+}
+
+export function signupError (payload) {
+  return {
+    type: DENTIST_SIGNUP_ERROR,
+    payload
   };
 }

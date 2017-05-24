@@ -163,6 +163,7 @@ export default class SignupPage extends Component {
 
     // fetch - dispatch
     getDentistSpecialties: React.PropTypes.func.isRequired,
+    getPricingCodes: React.PropTypes.func.isRequired,
     getServices: React.PropTypes.func.isRequired,
 
     // image upload - dispatch

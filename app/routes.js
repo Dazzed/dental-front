@@ -312,6 +312,27 @@ export default function createRoutes (store) {
       },
     }, {
       onEnter: redirectToLogin,
+      path: '/dentist/edit-profile',
+      name: 'dentistEditProfilePage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/DentistMembersPage/reducer'),
+          System.import('containers/DentistMembersPage/sagas'),
+          System.import('containers/DentistEditProfilePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('dentistMembersPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/dentist/members',
       name: 'dentistMembersPage',
       getComponent (nextState, cb) {

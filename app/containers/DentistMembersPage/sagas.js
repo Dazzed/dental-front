@@ -25,6 +25,8 @@ import {
   fetchDentistInfoSuccess,
   fetchDentistInfoError,
 
+  dentistSpecialtiesSuccess,
+
   fetchPatientsSuccess,
   fetchPatientsError,
 
@@ -41,9 +43,16 @@ import {
 
   downloadReportSuccess,
   downloadReportFailure,
+
+  // upload image
+  uploadImageSuccess,
+
+  // signup
+  signupSuccess,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
+  DENTIST_SPECIALTIES_REQUEST,
   FETCH_PATIENTS_REQUEST,
   FETCH_DENTIST_REPORTS_REQUEST,
 
@@ -55,6 +64,12 @@ import {
   TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
 
   DOWNLOAD_REPORT_REQUEST,
+
+  // upload image
+  UPLOAD_IMAGE_REQUEST,
+
+  // signup
+  DENTIST_SIGNUP_REQUEST,
 } from './constants';
 
 
@@ -69,14 +84,17 @@ export default [
 
 function* main () {
   const watcherA = yield fork(dentistInfoFetcher);
-  const watcherB = yield fork(patientsFetcher);
-  const watcherC = yield fork(dentistReportsFetcher);
-  const watcherD = yield fork(submitMemberFormWatcher);
-  const watcherE = yield fork(removeMemberWatcher);
-  const watcherF = yield fork(submitPatientProfileFormWatcher);
-  const watcherG = yield fork(submitPatientPaymentFormWatcher);
-  const watcherH = yield fork(toggleWaivePatientFeesWatcher);
-  const watcherI = yield fork(downloadReport);
+  const watcherB = yield fork(fetchDentistSpecialties);
+  const watcherC = yield fork(patientsFetcher);
+  const watcherD = yield fork(dentistReportsFetcher);
+  const watcherE = yield fork(submitMemberFormWatcher);
+  const watcherF = yield fork(removeMemberWatcher);
+  const watcherG = yield fork(submitPatientProfileFormWatcher);
+  const watcherH = yield fork(submitPatientPaymentFormWatcher);
+  const watcherI = yield fork(toggleWaivePatientFeesWatcher);
+  const watcherJ = yield fork(downloadReport);
+  const watcherK = yield fork(uploadImageWatcher);
+  const watcherL = yield fork(signupWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -88,6 +106,9 @@ function* main () {
   yield cancel(watcherG);
   yield cancel(watcherH);
   yield cancel(watcherI);
+  yield cancel(watcherJ);
+  yield cancel(watcherK);
+  yield cancel(watcherL);
 }
 
 /*
@@ -102,6 +123,19 @@ function* dentistInfoFetcher () {
     }
     catch (error) {
       yield put(fetchDentistInfoError(error));
+    }
+  });
+}
+
+/* Fetch Dentist Specialties
+ * ------------------------------------------------------ */
+function* fetchDentistSpecialties () {
+  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* handler () {
+    try {
+      const response = yield call(request, '/api/v1/dentist-specialties');
+      yield put(dentistSpecialtiesSuccess(response.data));
+    } catch (e) {
+      console.log(e);
     }
   });
 }
@@ -378,3 +412,105 @@ function* downloadReport () {
     }
   }
 }
+
+/*
+Upload Image Sagas
+------------------------------------------------------
+*/
+function* uploadImageWatcher () {
+  while (true) {
+    const { field, file, } = yield take(UPLOAD_IMAGE_REQUEST);
+
+    try {
+      const requestURL = `/api/v1/users/upload-photos`;
+      const body = new FormData();
+      body.append("photos", file);
+
+      const params = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+        },
+        body,
+      };
+
+      // NOTE: Normally we call the `request` util, but that overrides the
+      // Content-Type header and we need to keep it as FormData, so we're
+      // calling Fetch directly here.
+      const rawResponse = yield call(fetch, requestURL, params);
+
+      if (rawResponse.ok) { // response.status >= 200 && response.status < 300
+        const response = yield call(rawResponse.json.bind(rawResponse));
+        const location = response.data[0].location;
+
+        yield put(uploadImageSuccess(location));
+        yield put(change('dentist-edit-profile', field, location));
+      }
+
+      else {
+        const error = new Error('Request endpoint Error');
+        error.res = response;
+        throw error;
+      }
+
+    } catch (err) {
+      yield put(toastrActions.error('', 'This image could not be uploaded.'));
+    }
+  }
+}
+
+/*
+Signup Sagas
+------------------------------------------------------
+*/
+function* signupWatcher () {
+  while (true) {
+    // listen for the DENTIST_SIGNUP_REQUEST action dispatched on form submit
+    const { payload } = yield take(DENTIST_SIGNUP_REQUEST);
+
+    // execute the signup task
+    const isSuccess = yield call(signup, payload);
+
+    if (isSuccess) {
+      yield put(toastrActions.success('', "Your profile was updated successfully!"));
+    }
+  }
+}
+
+function* signup (data) {
+  try {
+    // send a post request with the desired user details
+    yield call(request, '/api/v1/dentists/' + data.user.id, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+    return true;
+
+  } catch (err) {
+    const errors = mapValues(err.errors, (value) => value.msg);
+
+    // Map from known response errors to their form field identifiers.
+    // Currently, only server-side-only validation is included most of the
+    // validation is identical on the client and the server.  Thus a
+    // non-malicious user will have already checked the other possible error
+    // responses.
+    const formErrors = {};
+
+    if (errors.email) {
+      formErrors.user = {};
+      formErrors.user.email = errors.email;
+      delete errors.email;
+    }
+
+    if (Object.keys(formErrors).length === 0) {
+      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    }
+    else {
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    }
+
+    yield put(stopSubmit('dentist-edit-profile', formErrors));
+    return false;
+  }
+}
+

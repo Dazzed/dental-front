@@ -1,0 +1,123 @@
+/*
+Dentist Edit Profile Form Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page-Wide
+================================================================================
+*/
+.large-button--secondary {
+  border: 1px solid $color-secondary-highlight;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-secondary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-secondary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+
+/*
+Edit Profile Form
+================================================================================
+*/
+.spacer {
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+/* needed since FormGroup is not in a Row, so the margins overlap instead of stacking */
+.spacer--after-form-group {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+
+  font-weight: 300;
+  text-align: justify;
+
+  &:last-child {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/*
+Pricing Codes
+------------------------------------------------------------
+*/
+.pricing-codes {}
+
+.pricing-codes__titles {
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dotted $color-secondary-lowlight;
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry {
+  margin-bottom: 1rem;
+}
+
+.pricing-codes__entry__code {
+  padding-top: 9px; /*  = (   pricing code amount input height [40px]
+                            - pricing code name line height    [22px]
+                          ) / 2
+                    */
+}
+
+.fees__recommended {
+  font-weight: 300;
+}
+
+.fees__recommended__amount {
+  font-weight: normal;
+}
+
+.fees__activation-checkbox {
+  padding-top: 48px; /* =   annual membership fee label height        [41px]
+                          + (   annual membership fee input height    [40px]
+                              - activation checkbox form group height [26px]
+                            ) / 2
+                     */
+}
+
+.fees__recommended + .fees__activation-checkbox {
+  padding-top: 16px; /* =   annual membership fee label height        [41px]
+                          + (   annual membership fee input height    [40px]
+                              - activation checkbox form group height [26px]
+                            ) / 2
+                          - recommended fees height & padding         [32px]
+                     */
+}
+
+/*
+Services
+------------------------------------------------------------
+*/
+.services__accepts-children {
+  padding-top: 7px; /* = (   annual membership fee input height    [40px]
+                           - activation checkbox form group height [26px]
+                         ) / 2
+                    */
+}

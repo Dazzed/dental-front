@@ -8,6 +8,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import get from 'lodash/get';
 import { createSelector } from 'reselect';
 
 // app
@@ -45,6 +46,11 @@ Fetch
 const selectDentistInfo = createSelector(
   domainSelector,
   (substate) => substate.dentistInfo
+);
+
+const dentistSpecialtiesSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'dentistSpecialties')
 );
 
 const selectPatients = createSelector(
@@ -191,6 +197,7 @@ export {
 
   // fetch
   selectDentistInfo,
+  dentistSpecialtiesSelector,
   selectPatients,
   selectProcessedPatients,
   selectDataLoaded,

@@ -14,6 +14,7 @@ import findIndex from 'lodash/findIndex';
 import {
   // fetch
   FETCH_DENTIST_INFO_SUCCESS,
+  DENTIST_SPECIALTIES_SUCCESS,
   FETCH_PATIENTS_SUCCESS,
   FETCH_DENTIST_REPORTS_SUCCESS,
 
@@ -52,6 +53,7 @@ const initialState = {
   dentistInfo: null,
   patients: null,
   dentistReports: null,
+  dentistSpecialties: [],
 
   // search / sort patients
   searchName: null,
@@ -79,6 +81,23 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         dentistInfo: action.payload,
+      };
+
+    case DENTIST_SPECIALTIES_SUCCESS:
+      return {
+        ...state,
+        dentistSpecialties: action.payload.sort((specialtyA, specialtyB) => {
+          const specialtyAName = specialtyA.name.toLowerCase();
+          const specialtyBName = specialtyB.name.toLowerCase();
+ 
+          if (specialtyAName < specialtyBName) {
+            return -1;
+          }
+          else if (specialtyAName > specialtyBName) {
+            return 1;
+          }
+          return 0; // specialtyAName === specialtyBName
+        }),
       };
 
     case FETCH_PATIENTS_SUCCESS:
