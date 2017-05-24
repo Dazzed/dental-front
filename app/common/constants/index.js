@@ -36,8 +36,7 @@ export const MEMBER_ORIGINS = {
 export const MEMBER_RELATIONSHIP_TYPES = {
   partner: 'Spouse',
   son: 'Son',
-  daughter: 'Daughter',
-  friend: 'Friend',
+  daughter: 'Daughter'
 };
 
 export const PREFERRED_CONTACT_METHODS = {
