@@ -2,8 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-bootstrap/lib/Modal';
 
-import InvitePatientForm from './InvitePatientForm';
-
 @connect(null, mapDispatchToProps)
 class ConfirmModal extends Component {
   static propTypes = {
