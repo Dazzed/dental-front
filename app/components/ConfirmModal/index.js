@@ -51,12 +51,13 @@ class ConfirmModal extends Component {
           <p className="text-muted text-center p-a-4">
             {message || 'Are you sure?'}
           </p>
+        </Modal.Body>
+        <Modal.Footer>
           <div className="text-center">
             <input className="btn btn-primary" type="button" onClick={onConfirm} value="Confirm" />{' '}
             <input className="btn btn-danger" type="button" onClick={onClose} value="Cancel" />
           </div>
-        </Modal.Body>
-
+        </Modal.Footer>
       </Modal>
     );
   }
