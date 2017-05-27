@@ -28,6 +28,7 @@ import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
+import ConfirmModal from 'components/ConfirmModal';
 import ReviewFormModal from 'components/ReviewFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -230,6 +231,10 @@ class PatientProfilePage extends React.Component {
     submitPaymentForm: React.PropTypes.func.isRequired,
   }
 
+  componentWillMount = () => {
+    this.state = { dialog: {} };
+  };
+
   componentDidMount() {
     this.props.changePageTitle('Your Profile');
     this.props.fetchDentist();
@@ -275,9 +280,27 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingReview({});
   }
 
-  cancelMembership = () => {
-
+  cancelMembershipAction = () => {
+    console.log('cancelled membership');
+    this.handleCloseDialog();
   };
+
+  cancelMembership = () => {
+    const dialog = {
+      message: 'Are you sure you want to cancel your membership',
+      showDialog: true,
+      title: 'Cancel Membership',
+      confirm: this.cancelMembershipAction
+    };
+
+    this.setState({ dialog });
+  };
+
+  handleCloseDialog = () => {
+    let dialog = this.state.dialog;
+    dialog.showDialog = false;
+    this.setState({ dialog });
+  }
 
   // security
   updateSecuritySettings = () => {
@@ -303,6 +326,7 @@ class PatientProfilePage extends React.Component {
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
   }
+
 
   // profile
   handleProfileFormSubmit = (values) => {
@@ -355,6 +379,7 @@ class PatientProfilePage extends React.Component {
     this.props.clearEditingPayment();
   }
 
+
   /*
   Render
   ------------------------------------------------------------
@@ -377,6 +402,9 @@ class PatientProfilePage extends React.Component {
       editingPayment,
     } = this.props;
 
+    const {
+      dialog
+    } = this.state;
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -673,6 +701,14 @@ class PatientProfilePage extends React.Component {
 
           initialValues={editingProfile}
           onSubmit={this.handleProfileFormSubmit}
+        />
+
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
         />
 
         <ReviewFormModal
