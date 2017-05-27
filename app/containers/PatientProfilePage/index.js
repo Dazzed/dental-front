@@ -89,7 +89,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dentist: dentistSelector(state),
@@ -113,7 +113,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -230,7 +230,7 @@ class PatientProfilePage extends React.Component {
     submitPaymentForm: React.PropTypes.func.isRequired,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.changePageTitle('Your Profile');
     this.props.fetchDentist();
     this.props.fetchFamilyMembers();
@@ -274,6 +274,10 @@ class PatientProfilePage extends React.Component {
     this.props.resetReviewForm();
     this.props.setEditingReview({});
   }
+
+  cancelMembership = () => {
+
+  };
 
   // security
   updateSecuritySettings = () => {
@@ -355,7 +359,7 @@ class PatientProfilePage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // react
       location,
@@ -379,6 +383,7 @@ class PatientProfilePage extends React.Component {
     */
     // precondition: the data must be loaded, otherwise wait for it
     if (user === false || members === false || dentist === false) {
+      console.log(user, '-user-', members, '-members-', dentist, '-dentist-');
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
@@ -399,15 +404,15 @@ class PatientProfilePage extends React.Component {
 
     const aggregateSubscription = {
       status: members.reduce(
-        function(aggregateStatus, member) {
-          if ( member.subscription.status === 'past_due'
+        function (aggregateStatus, member) {
+          if (member.subscription.status === 'past_due'
             || aggregateStatus === 'past_due'
           ) {
             aggregateStatus = 'past_due';
           }
 
           else if (
-               member.subscription.status === 'active'
+            member.subscription.status === 'active'
             || aggregateStatus === 'active'
           ) {
             aggregateStatus = 'active';
@@ -424,7 +429,7 @@ class PatientProfilePage extends React.Component {
       ),
 
       total: members.reduce(
-        function(aggregateTotal, member) {
+        function (aggregateTotal, member) {
           if (member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
           }
@@ -434,9 +439,9 @@ class PatientProfilePage extends React.Component {
       ),
 
       dueDate: members.reduce(
-        function(nearestPaymentDueDate, member) {
+        function (nearestPaymentDueDate, member) {
           const memberDueDate = moment(member.subscription.endAt);
-          
+
           if (memberDueDate.isBefore(nearestPaymentDueDate)) {
             nearestPaymentDueDate = memberDueDate;
           }
@@ -509,6 +514,12 @@ class PatientProfilePage extends React.Component {
                     styleName="button--full-width"
                     value="REVIEW DENTIST"
                     onClick={this.addReview}
+                  />
+                  <input
+                    type="button"
+                    styleName="button--full-width"
+                    value="CANCEL MEMBERSHIP"
+                    onClick={this.cancelMembership}
                   />
                 </div>
               </div>
@@ -623,7 +634,7 @@ class PatientProfilePage extends React.Component {
             </div>
           </div>
 
-        {/* End Content */}
+          {/* End Content */}
         </div>
 
         <AccountSecurityFormModal
@@ -672,7 +683,7 @@ class PatientProfilePage extends React.Component {
           onSubmit={this.handleReviewFormSubmit}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }
