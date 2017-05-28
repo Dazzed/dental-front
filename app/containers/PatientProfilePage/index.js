@@ -63,6 +63,8 @@ import {
   setEditingPayment,
   clearEditingPayment,
   submitPaymentForm,
+  // cancel membership,
+  cancelMembership
 } from './actions';
 import {
   // fetch
@@ -152,6 +154,9 @@ function mapDispatchToProps(dispatch) {
     setEditingPayment: (paymentInfo) => dispatch(setEditingPayment(paymentInfo)),
     clearEditingPayment: () => dispatch(clearEditingPayment()),
     submitPaymentForm: (values, userId) => dispatch(submitPaymentForm(values, userId)),
+
+    // cancel membership
+    cancelMembership: () => dispatch(cancelMembership()),
   };
 }
 
@@ -281,6 +286,7 @@ class PatientProfilePage extends React.Component {
   }
 
   cancelMembershipAction = () => {
+    this.props.cancelMembership();
     console.log('cancelled membership');
     this.handleCloseDialog();
   };
@@ -545,7 +551,7 @@ class PatientProfilePage extends React.Component {
                   />
                   <input
                     type="button"
-                    disabled={aggregateSubscription.status !== 'active'}
+                    disabled={aggregateSubscription.status !== 'active' && false /*for debuggong*/}
                     styleName="button--full-width"
                     value="CANCEL MEMBERSHIP"
                     onClick={this.cancelMembership}
