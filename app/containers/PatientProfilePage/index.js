@@ -257,7 +257,14 @@ class PatientProfilePage extends React.Component {
   }
 
   reEnrollMember = (user, member) => {
-    alert('TODO: re-enroll member');
+    const dialog = {
+      message: 'A re-enrollment fee will be charged in addition to the prorated membership fee.',
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => { window.alert('unenrolled'); this.handleCloseDialog(); }
+    };
+
+    this.setState({ dialog });
   }
 
   removeMember = (user, member) => {
@@ -444,14 +451,14 @@ class PatientProfilePage extends React.Component {
     const aggregateSubscription = {
       status: members.reduce(
         function (aggregateStatus, member) {
-          if (member.subscription.status === 'past_due'
+          if ((member.subscription && member.subscription.status === 'past_due')
             || aggregateStatus === 'past_due'
           ) {
             aggregateStatus = 'past_due';
           }
 
           else if (
-            member.subscription.status === 'active'
+            (member.subscription && member.subscription.status === 'active')
             || aggregateStatus === 'active'
           ) {
             aggregateStatus = 'active';
@@ -469,7 +476,7 @@ class PatientProfilePage extends React.Component {
 
       total: members.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription.status === 'active' && member.subscription.monthly) {
+          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
           }
           return aggregateTotal;
@@ -479,7 +486,7 @@ class PatientProfilePage extends React.Component {
 
       dueDate: members.reduce(
         function (nearestPaymentDueDate, member) {
-          const memberDueDate = moment(member.subscription.endAt);
+          const memberDueDate = moment(member.subscription ? member.subscription.endAt : null);
 
           if (memberDueDate.isBefore(nearestPaymentDueDate)) {
             nearestPaymentDueDate = memberDueDate;
