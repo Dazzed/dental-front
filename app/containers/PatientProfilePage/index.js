@@ -556,7 +556,6 @@ class PatientProfilePage extends React.Component {
                   />
                   <input
                     type="button"
-                    disabled={aggregateSubscription.status !== 'active' && false /*for debuggong*/}
                     styleName="button--full-width"
                     value="CANCEL MEMBERSHIP"
                     onClick={this.cancelMembership}
