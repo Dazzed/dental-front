@@ -251,7 +251,7 @@ class PatientMembershipInfoPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${adultMembership.savings}**
+                  Total Annual Savings: ${adultMembership.savings || 0}**
                 </p>
 
                 <p styleName="membership__disclaimer">
@@ -294,7 +294,7 @@ class PatientMembershipInfoPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${childMembership.savings}**
+                  Total Annual Savings: ${childMembership.savings || 0}**
                 </p>
 
                 <p styleName="membership__disclaimer">
