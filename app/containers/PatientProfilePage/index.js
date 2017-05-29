@@ -256,12 +256,32 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember({});
   }
 
-  reEnrollMember = (user, member) => {
+  reEnrollMember = (user, member, type) => {
+    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
+    const cost = { monthly, yearly, discount };
+    // switch (type) {
+    //   case 'adult':
+    //     cost.yearly = dentistInfo.adultMembership.yearly;
+    //     cost.monthly = dentistInfo.adultMembership.monthly;
+    //     cost.discount = dentistInfo.adultMembership.discount;
+    //     break;
+    //   case 'child':
+    //     cost.yearly = dentistInfo.childMembership.yearly;
+    //     cost.monthly = dentistInfo.childMembership.monthly;
+    //     cost.discount = dentistInfo.childMembership.discount;
+    //     break;
+    // }
+    const enrollmentDiv = user.reEnrollmentFee && <div>
+      <h3>{cost.discount}% Discount</h3>
+      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    </div>;
+
     const dialog = {
-      message: 'A re-enrollment fee will be charged in addition to the prorated membership fee.',
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
       showDialog: true,
       title: 'Re-enroll Member',
-      confirm: () => { window.alert('unenrolled'); this.handleCloseDialog(); }
+      confirm: () => { this.updateMember(user, member); this.handleCloseDialog(); }
     };
 
     this.setState({ dialog });
@@ -281,9 +301,9 @@ class PatientProfilePage extends React.Component {
   }
 
   // profile
-  updateProfile = () => {
+  updateProfile = (user = null) => {
     this.props.resetProfileForm();
-    this.props.setEditingProfile(this.props.user);
+    this.props.setEditingProfile(user || this.props.user);
   }
 
   // reviews
