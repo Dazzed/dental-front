@@ -67,8 +67,8 @@ export default class MembersList extends React.Component {
   */
   // NOTE: The following functions must be bound to the patient and member in
   //       the member specific event attributes.
-  onReEnrollClick = (patient, member) => {
-    this.props.onReEnrollMember(patient, member);
+  onReEnrollClick = (patient, member, type) => {
+    this.props.onReEnrollMember(patient, member, type);
   }
 
   onRemoveClick = (patient, member) => {
@@ -97,7 +97,6 @@ export default class MembersList extends React.Component {
       lastName,
     } = member;
 
-    console.log(member, id);
     const subscription = member.subscription || {};
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
@@ -190,7 +189,7 @@ export default class MembersList extends React.Component {
                     type="button"
                     styleName="button--small"
                     value="RE-ENROLL"
-                    onClick={this.onReEnrollClick.bind(this, patient, member)}
+                    onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )
               }
