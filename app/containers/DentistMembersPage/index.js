@@ -27,6 +27,7 @@ import PatientsList from 'components/PatientsList';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
+import ConfirmModal from 'components/ConfirmModal';
 
 // local
 import {
@@ -89,7 +90,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -113,11 +114,11 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app 
     changePageTitle: (title) => dispatch(changePageTitle(title)),
-    
+
     // fetch
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
@@ -232,6 +233,7 @@ class DentistMembersPage extends React.Component {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
     this.props.fetchDentistReports();
+    this.state = { dialog: {} };
   }
 
   componentDidMount() {
@@ -322,7 +324,7 @@ class DentistMembersPage extends React.Component {
   }
 
   // reports
-  onReportSelected = ({month, year, url}) => {
+  onReportSelected = ({ month, year, url }) => {
     const {
       user: { firstName, lastName },
     } = this.props;
@@ -335,7 +337,7 @@ class DentistMembersPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // fetch
       dataLoaded,
@@ -358,6 +360,9 @@ class DentistMembersPage extends React.Component {
       editingPatientPayment,
     } = this.props;
 
+    const {
+      dialog
+    } = this.state;
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -406,14 +411,14 @@ class DentistMembersPage extends React.Component {
     return (
       <div>
         <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-          />
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+        />
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">
@@ -465,6 +470,14 @@ class DentistMembersPage extends React.Component {
 
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
+        />
+
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
         />
 
         <PatientProfileFormModal
