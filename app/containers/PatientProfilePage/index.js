@@ -28,6 +28,7 @@ import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
+import ConfirmModal from 'components/ConfirmModal';
 import ReviewFormModal from 'components/ReviewFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -62,6 +63,8 @@ import {
   setEditingPayment,
   clearEditingPayment,
   submitPaymentForm,
+  // cancel membership,
+  cancelMembership
 } from './actions';
 import {
   // fetch
@@ -89,7 +92,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dentist: dentistSelector(state),
@@ -113,7 +116,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -151,6 +154,9 @@ function mapDispatchToProps (dispatch) {
     setEditingPayment: (paymentInfo) => dispatch(setEditingPayment(paymentInfo)),
     clearEditingPayment: () => dispatch(clearEditingPayment()),
     submitPaymentForm: (values, userId) => dispatch(submitPaymentForm(values, userId)),
+
+    // cancel membership
+    cancelMembership: () => dispatch(cancelMembership()),
   };
 }
 
@@ -230,7 +236,11 @@ class PatientProfilePage extends React.Component {
     submitPaymentForm: React.PropTypes.func.isRequired,
   }
 
-  componentDidMount () {
+  componentWillMount = () => {
+    this.state = { dialog: {} };
+  };
+
+  componentDidMount() {
     this.props.changePageTitle('Your Profile');
     this.props.fetchDentist();
     this.props.fetchFamilyMembers();
@@ -275,6 +285,29 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingReview({});
   }
 
+  cancelMembershipAction = () => {
+    this.props.cancelMembership();
+    console.log('cancelled membership');
+    this.handleCloseDialog();
+  };
+
+  cancelMembership = () => {
+    const dialog = {
+      message: 'Are you sure you want to cancel your membership',
+      showDialog: true,
+      title: 'Cancel Membership',
+      confirm: this.cancelMembershipAction
+    };
+
+    this.setState({ dialog });
+  };
+
+  handleCloseDialog = () => {
+    let dialog = this.state.dialog;
+    dialog.showDialog = false;
+    this.setState({ dialog });
+  }
+
   // security
   updateSecuritySettings = () => {
     this.props.resetSecurityForm();
@@ -299,6 +332,7 @@ class PatientProfilePage extends React.Component {
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
   }
+
 
   // profile
   handleProfileFormSubmit = (values) => {
@@ -351,11 +385,12 @@ class PatientProfilePage extends React.Component {
     this.props.clearEditingPayment();
   }
 
+
   /*
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // react
       location,
@@ -373,20 +408,28 @@ class PatientProfilePage extends React.Component {
       editingPayment,
     } = this.props;
 
+    const {
+      dialog
+    } = this.state;
     /*
     Precondition Renders
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (user === false || members === false || dentist === false) {
+    if (user === false || members === false || dentist === false || !dentist.dentistInfo) {
+      console.log(user, '-user-', members, '-members-', dentist, '-dentist-');
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="profile" />
-
           <div styleName="content">
-            <LoadingSpinner showOnlyIcon={false} />
+            {
+              user && members && dentist && !dentist.dentistInfo ?
+                <h3 className="text-muted block text-center">You Have No Membership</h3> :
+                <LoadingSpinner showOnlyIcon={false} />
+            }
           </div>
+
         </div>
       );
     }
@@ -397,17 +440,18 @@ class PatientProfilePage extends React.Component {
     */
     user.members = members;
 
+
     const aggregateSubscription = {
       status: members.reduce(
-        function(aggregateStatus, member) {
-          if ( member.subscription.status === 'past_due'
+        function (aggregateStatus, member) {
+          if (member.subscription.status === 'past_due'
             || aggregateStatus === 'past_due'
           ) {
             aggregateStatus = 'past_due';
           }
 
           else if (
-               member.subscription.status === 'active'
+            member.subscription.status === 'active'
             || aggregateStatus === 'active'
           ) {
             aggregateStatus = 'active';
@@ -424,7 +468,7 @@ class PatientProfilePage extends React.Component {
       ),
 
       total: members.reduce(
-        function(aggregateTotal, member) {
+        function (aggregateTotal, member) {
           if (member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
           }
@@ -434,9 +478,9 @@ class PatientProfilePage extends React.Component {
       ),
 
       dueDate: members.reduce(
-        function(nearestPaymentDueDate, member) {
+        function (nearestPaymentDueDate, member) {
           const memberDueDate = moment(member.subscription.endAt);
-          
+
           if (memberDueDate.isBefore(nearestPaymentDueDate)) {
             nearestPaymentDueDate = memberDueDate;
           }
@@ -509,6 +553,12 @@ class PatientProfilePage extends React.Component {
                     styleName="button--full-width"
                     value="REVIEW DENTIST"
                     onClick={this.addReview}
+                  />
+                  <input
+                    type="button"
+                    styleName="button--full-width"
+                    value="CANCEL MEMBERSHIP"
+                    onClick={this.cancelMembership}
                   />
                 </div>
               </div>
@@ -623,7 +673,7 @@ class PatientProfilePage extends React.Component {
             </div>
           </div>
 
-        {/* End Content */}
+          {/* End Content */}
         </div>
 
         <AccountSecurityFormModal
@@ -664,6 +714,14 @@ class PatientProfilePage extends React.Component {
           onSubmit={this.handleProfileFormSubmit}
         />
 
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
+        />
+
         <ReviewFormModal
           show={editingReview !== null}
           onCancel={this.cancelReviewFormAction}
@@ -672,7 +730,7 @@ class PatientProfilePage extends React.Component {
           onSubmit={this.handleReviewFormSubmit}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }

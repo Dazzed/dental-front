@@ -9,6 +9,7 @@ Imports
 */
 /* app */
 @import '../../assets/styles/variables';
+@import '../../assets/styles/custom';
 
 
 /*
@@ -19,29 +20,6 @@ Page Wide
   padding: 2rem;
 
   background-color: $color-secondary-background;
-}
-
-.button--full-width {
-  width: 100%;
-  margin-bottom: 0.5rem;
-  border: 1px solid $color-primary-highlight;
-  border-radius: 0.25rem;
-  padding: 1rem 3rem;
-
-  color: $color-white;
-  background-color: $color-primary-highlight;
-
-  font-weight: 600;
-  line-height: normal;
-
-  &:hover {
-    color: $color-primary-highlight;
-    background-color: $color-white;
-  }
-
-  &:focus {
-    outline: none;
-  }
 }
 
 /*
