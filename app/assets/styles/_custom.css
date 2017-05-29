@@ -4,3 +4,31 @@ input.button--full-width[disabled],
     background-color: #999;
     color: #fff;
 }
+
+.button--full-width, .btn {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 1rem 2rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  &.danger {
+      background-color: #d43f3a;
+  }
+}
+
+
