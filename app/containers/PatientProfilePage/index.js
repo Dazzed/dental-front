@@ -416,16 +416,20 @@ class PatientProfilePage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (user === false || members === false || dentist === false) {
+    if (user === false || members === false || dentist === false || !dentist.dentistInfo) {
       console.log(user, '-user-', members, '-members-', dentist, '-dentist-');
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="profile" />
-
           <div styleName="content">
-            <LoadingSpinner showOnlyIcon={false} />
+            {
+              user && members && dentist && !dentist.dentistInfo ?
+                <h3 className="text-muted block text-center">You Have No Membership</h3> :
+                <LoadingSpinner showOnlyIcon={false} />
+            }
           </div>
+
         </div>
       );
     }
@@ -435,6 +439,7 @@ class PatientProfilePage extends React.Component {
     ------------------------------------------------------------
     */
     user.members = members;
+
 
     const aggregateSubscription = {
       status: members.reduce(

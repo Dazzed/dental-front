@@ -66,7 +66,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -82,7 +82,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -165,7 +165,7 @@ class PatientReviewsPage extends React.Component {
     setRemovingReview: React.PropTypes.func.isRequired,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.changePageTitle('Your Reviews');
     this.props.fetchDentist();
     this.props.fetchFamilyMembers();
@@ -265,7 +265,7 @@ class PatientReviewsPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // fetch
       dataLoaded,
@@ -285,14 +285,17 @@ class PatientReviewsPage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (dataLoaded === false) {
+    if (dataLoaded === false || !dentist || !dentist.dentistInfo) {
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="reviews" />
-
-          <div styleName="content content--filler">
-            <LoadingSpinner showOnlyIcon={false} />
+          <div styleName="content">
+            {
+              dentist && !dentist.dentistInfo ?
+                <h3 className="text-muted block text-center">You Have No Membership</h3> :
+                <LoadingSpinner showOnlyIcon={false} />
+            }
           </div>
         </div>
       );
@@ -325,7 +328,7 @@ class PatientReviewsPage extends React.Component {
             onSubmit={this.handleReviewFormSubmit}
           />
 
-        {/* End Wrapper Div */}
+          {/* End Wrapper Div */}
         </div>
       );
     }
@@ -383,7 +386,7 @@ class PatientReviewsPage extends React.Component {
           onSubmit={this.handleReviewFormSubmit}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }

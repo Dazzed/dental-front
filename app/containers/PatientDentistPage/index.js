@@ -51,7 +51,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dentist: dentistSelector(state),
@@ -62,7 +62,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -117,7 +117,7 @@ class PatientDentistPage extends React.Component {
     submitReviewForm: React.PropTypes.func.isRequired,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.changePageTitle('Your Dentist');
     this.props.fetchDentist();
   }
@@ -147,7 +147,7 @@ class PatientDentistPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // react
       location,
@@ -161,14 +161,19 @@ class PatientDentistPage extends React.Component {
     } = this.props;
 
     // precondition: the data must be loaded, otherwise wait for it
-    if (dentist === false) {
+    if (dentist === false || !dentist.dentistInfo) {
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="dentist" />
 
           <div styleName="content">
-            <LoadingSpinner showOnlyIcon={false} />
+            {
+              dentist && !dentist.dentistInfo ?
+                <h3 className="text-muted block text-center">You Have No Membership</h3> :
+                <LoadingSpinner showOnlyIcon={false} />
+            }
+            
           </div>
         </div>
       );
@@ -425,10 +430,10 @@ class PatientDentistPage extends React.Component {
             </div>
             */}
 
-          {/* End Last Row */}
+            {/* End Last Row */}
           </div>
 
-        {/* End Content */}
+          {/* End Content */}
         </div>
 
         <ReviewFormModal
@@ -439,7 +444,7 @@ class PatientDentistPage extends React.Component {
           onSubmit={this.handleReviewFormSubmit}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }
