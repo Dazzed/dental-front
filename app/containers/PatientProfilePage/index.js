@@ -294,7 +294,6 @@ class PatientProfilePage extends React.Component {
 
   cancelMembershipAction = () => {
     this.props.cancelMembership();
-    console.log('cancelled membership');
     this.handleCloseDialog();
   };
 
