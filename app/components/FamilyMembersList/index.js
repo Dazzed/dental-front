@@ -75,15 +75,15 @@ class FamilyMembersList extends React.Component {
 
     const aggregateSubscription = {
       status: patient.members.reduce(
-        function(aggregateStatus, member) {
-          if ( member.subscription.status === 'past_due'
+        function (aggregateStatus, member) {
+          if ((member.subscription && member.subscription.status === 'past_due')
             || aggregateStatus === 'past_due'
           ) {
             aggregateStatus = 'past_due';
           }
 
           else if (
-               member.subscription.status === 'active'
+            (member.subscription && member.subscription.status === 'active')
             || aggregateStatus === 'active'
           ) {
             aggregateStatus = 'active';
@@ -100,8 +100,8 @@ class FamilyMembersList extends React.Component {
       ),
 
       total: patient.members.reduce(
-        function(aggregateTotal, member) {
-          if (member.subscription.status === 'active' && member.subscription.monthly) {
+        function (aggregateTotal, member) {
+          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
           }
           return aggregateTotal;
@@ -110,9 +110,9 @@ class FamilyMembersList extends React.Component {
       ),
 
       dueDate: patient.members.reduce(
-        function(nearestPaymentDueDate, member) {
-          const memberDueDate = moment(member.subscription.endAt);
-          
+        function (nearestPaymentDueDate, member) {
+          const memberDueDate = moment(member.subscription ? member.subscription.endAt : null);
+
           if (memberDueDate.isBefore(nearestPaymentDueDate)) {
             nearestPaymentDueDate = memberDueDate;
           }
@@ -141,7 +141,7 @@ class FamilyMembersList extends React.Component {
 
     return (
       <div className="row">
-        
+
         {/*
         Family Members List
         ------------------------------------------------------------
@@ -156,7 +156,7 @@ class FamilyMembersList extends React.Component {
             onUpdateMember={onUpdateMember}
           />
         </div>
-                         
+
         <div className="col-sm-3">
           {/*
           Subscription Overview
@@ -199,10 +199,10 @@ class FamilyMembersList extends React.Component {
             </div>
           )}
 
-        {/* End Right Col */}
+          {/* End Right Col */}
         </div>
 
-      {/* End Member Details Row */}
+        {/* End Member Details Row */}
       </div>
     );
   }
