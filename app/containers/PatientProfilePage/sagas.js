@@ -352,11 +352,11 @@ function* cancelMembership() {
       const response = yield call(request, requestURL, params);
       const message = `Your membership has been cancelled.`;
       yield put(toastrActions.success('', message));
+      yield put(setDentist({}));
 
     } catch (err) {
       const errors = mapValues(err.errors, (value) => value.msg);
       yield put(toastrActions.error('', 'Error cancelling your membership, please try again'));
-      console.log(errors);
     }
   });
 }
