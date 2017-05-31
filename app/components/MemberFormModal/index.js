@@ -61,7 +61,7 @@ export default class MemberFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -87,14 +87,14 @@ export default class MemberFormModal extends React.Component {
 
     const age = moment().diff(moment(birthDate, "MM/DD/YYYY"), 'years');
 
-    if ( acceptsChildren === false
+    if (acceptsChildren === false
       && childWarning === false
     ) {
       this.setChildWarning(`Your dentist does not usually accept children as patients.  Would you still like to add ${firstName} ${lastName} (age ${age}) as a member of your plan?`);
     }
 
     else if (
-         age < childStartingAge
+      age < childStartingAge
       && childWarning === false
     ) {
       this.setChildWarning(`${firstName} ${lastName} is age ${age}, but your dentist usually only accepts children that are age ${childStartingAge} or older.  Would you still like to add them as a member of your plan?`);
@@ -131,7 +131,52 @@ export default class MemberFormModal extends React.Component {
     });
   }
 
-  render () {
+  renderMembershipType = () => {
+    const { dentistInfo: { childMembership, membership, acceptsChildren } } = this.props;
+    let membershipTypes = [];
+    if (acceptsChildren) {
+      membershipTypes.push({
+        key: 'child_monthly',
+        value: childMembership.monthly,
+        label: `Child Monthly — $${childMembership.monthly}`
+      });
+
+      membershipTypes.push({
+        key: 'child_yearly',
+        value: childMembership.yearly,
+        label: `Child Yearly — $${childMembership.yearly}`
+      });
+    }
+
+    membershipTypes.push({
+      key: 'adult_monthly',
+      value: membership.monthly,
+      label: `Adult Monthly — $${membership.monthly}`
+    });
+
+    membershipTypes.push({
+      key: 'adult_yearly',
+      value: membership.yearly,
+      label: `Adult Yearly — $${membership.yearly}`
+    });
+
+    return (<Field
+      name="membershipType"
+      type="select"
+      component={this.getLabeledInput}
+      label="Membership Type"
+      className="col-md-6"
+    >
+      <option value="">Membership Type</option>
+      {membershipTypes.map((value, index) =>
+        <option value={value.key} key={index}>
+          {value.label}
+        </option>
+      )}
+    </Field>);
+  };
+
+  render() {
     const {
       // form related
       initialValues,
@@ -152,38 +197,41 @@ export default class MemberFormModal extends React.Component {
     if (initialValues === null || initialValues.id === undefined) {
       title = "Add Member";
       saveText = "Save and Checkout";
+    } else if (initialValues.isEnrolling) {
+      title = 'Update Membership'
+      saveText = 'Save and Checkout';
     }
 
     const childWarningPopover = childWarning === false
       ? null
-      : ( <Popover
-            className="popover--large"
-            id="child-warning-popover"
-            placement="bottom"
-            positionLeft={-84}
-            positionTop={40}
-            title="Are you sure?"
+      : (<Popover
+        className="popover--large"
+        id="child-warning-popover"
+        placement="bottom"
+        positionLeft={-84}
+        positionTop={40}
+        title="Are you sure?"
+      >
+        <p>{childWarning}</p>
+
+        <div styleName="popover__controls">
+          <span
+            styleName="popover__control popover__control--close"
+            onClick={this.clearChildWarning}
           >
-            <p>{childWarning}</p>
+            <FaClose />
+          </span>
 
-            <div styleName="popover__controls">
-              <span 
-                styleName="popover__control popover__control--close"
-                onClick={this.clearChildWarning}
-              >
-                <FaClose />
-              </span>
-
-              <input
-                type="button"
-                styleName="popover__control button--short"
-                disabled={submitting}
-                onClick={handleSubmit(this.handleFormSubmit)}
-                value="Yes"
-              />
-            </div>
-          </Popover>
-        );
+          <input
+            type="button"
+            styleName="popover__control button--short"
+            disabled={submitting}
+            onClick={handleSubmit(this.handleFormSubmit)}
+            value="Yes"
+          />
+        </div>
+      </Popover>
+      );
 
     return (
       <Modal
@@ -217,67 +265,73 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Body>
           <form className="form-horizontal">
-            <Row>
-              <Field
-                name="firstName"
-                type="text"
-                component={this.getLabeledInput}
-                label="First Name"
-                className="col-md-6"
-              />
+            {initialValues && initialValues.isEnrolling ?
+              (<Row>
+                {this.renderMembershipType()}
+              </Row>) :
+              (<div>
+                <Row>
+                  <Field
+                    name="firstName"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="First Name"
+                    className="col-md-6"
+                  />
 
-              <Field
-                name="lastName"
-                type="text"
-                component={this.getLabeledInput}
-                label="Last Name"
-                className="col-md-6"
-              />
-            </Row>
+                  <Field
+                    name="lastName"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="Last Name"
+                    className="col-md-6"
+                  />
+                </Row>
 
-            <Row>
-              <Field
-                name="sex"
-                type="select"
-                label="Sex"
-                component={this.getLabeledInput}
-                className="col-md-6"
-              >
-                <option value="">Select sex</option>
-                {Object.keys(SEX_TYPES).map(key =>
-                  <option value={key} key={key}>
-                    {SEX_TYPES[key]}
-                  </option>
-                )}
-              </Field>
+                <Row>
+                  <Field
+                    name="sex"
+                    type="select"
+                    label="Sex"
+                    component={this.getLabeledInput}
+                    className="col-md-6"
+                  >
+                    <option value="">Select sex</option>
+                    {Object.keys(SEX_TYPES).map(key =>
+                      <option value={key} key={key}>
+                        {SEX_TYPES[key]}
+                      </option>
+                    )}
+                  </Field>
 
-              <Field
-                name="birthDate"
-                type="date"
-                component={this.getDatePicker}
-                label="Birthdate"
-                className="col-md-6"
-              />
-            </Row>
+                  <Field
+                    name="birthDate"
+                    type="date"
+                    component={this.getDatePicker}
+                    label="Birthdate"
+                    className="col-md-6"
+                  />
+                </Row>
 
-            <Row>
-              <Field
-                name="familyRelationship"
-                type="select"
-                component={this.getLabeledInput}
-                label="Family Relationship"
-                className="col-md-6"
-              >
-                <option value="">Select a relationship type</option>
-                {Object.keys(MEMBER_RELATIONSHIP_TYPES).map((key, index) =>
-                  <option value={key} key={index}>
-                    {MEMBER_RELATIONSHIP_TYPES[key]}
-                  </option>
-                )}
-              </Field>
+                <Row>
+                  <Field
+                    name="familyRelationship"
+                    type="select"
+                    component={this.getLabeledInput}
+                    label="Family Relationship"
+                    className="col-md-6"
+                  >
+                    <option value="">Select a relationship type</option>
+                    {Object.keys(MEMBER_RELATIONSHIP_TYPES).map((key, index) =>
+                      <option value={key} key={index}>
+                        {MEMBER_RELATIONSHIP_TYPES[key]}
+                      </option>
+                    )}
+                  </Field>
 
-              {/* TODO: add membership type */}
-            </Row>
+                  {this.renderMembershipType()}
+                </Row>
+              </div>)}
           </form>
         </Modal.Body>
 
