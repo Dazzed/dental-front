@@ -138,12 +138,10 @@ export default class MemberFormModal extends React.Component {
   renderMembershipType = () => {
     const { dentistInfo: { childMembership, membership, acceptsChildren } } = this.props;
     let membershipTypes = [];
-    console.log(childMembership, membership);
     let price = 0;
     if (acceptsChildren) {
       price = this.processPrice(childMembership.monthly, childMembership.discount);
       membershipTypes.push({
-        key: 'child_monthly',
         price,
         name: `Child Monthly — $${price}`
       });
@@ -158,7 +156,7 @@ export default class MemberFormModal extends React.Component {
     price = this.processPrice(membership.monthly, membership.discount);
     membershipTypes.push({
       price,
-      name: `Adult Monthly — $${membership.monthly}`
+      name: `Adult Monthly — $${price}`
     });
 
     price = this.processPrice(membership.yearly, membership.discount);
