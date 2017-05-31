@@ -281,7 +281,11 @@ class PatientProfilePage extends React.Component {
         {enrollmentDiv}</div>,
       showDialog: true,
       title: 'Re-enroll Member',
-      confirm: () => { this.updateMember(user, member); this.handleCloseDialog(); }
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(user, member);
+        this.handleCloseDialog();
+      }
     };
 
     this.setState({ dialog });
