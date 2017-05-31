@@ -131,33 +131,40 @@ export default class MemberFormModal extends React.Component {
     });
   }
 
+  processPrice(price, discount) {
+    return discount ? (Number(price) * (1 - (Number(discount) / 100))).toFixed(2) : price;
+  }
+
   renderMembershipType = () => {
     const { dentistInfo: { childMembership, membership, acceptsChildren } } = this.props;
     let membershipTypes = [];
+    console.log(childMembership, membership);
+    let price = 0;
     if (acceptsChildren) {
+      price = this.processPrice(childMembership.monthly, childMembership.discount);
       membershipTypes.push({
         key: 'child_monthly',
-        value: childMembership.monthly,
-        label: `Child Monthly — $${childMembership.monthly}`
+        price,
+        name: `Child Monthly — $${price}`
       });
 
+      price = this.processPrice(childMembership.yearly, childMembership.discount);
       membershipTypes.push({
-        key: 'child_yearly',
-        value: childMembership.yearly,
-        label: `Child Yearly — $${childMembership.yearly}`
+        price,
+        name: `Child Yearly — $${price}`
       });
     }
 
+    price = this.processPrice(membership.monthly, membership.discount);
     membershipTypes.push({
-      key: 'adult_monthly',
-      value: membership.monthly,
-      label: `Adult Monthly — $${membership.monthly}`
+      price,
+      name: `Adult Monthly — $${membership.monthly}`
     });
 
+    price = this.processPrice(membership.yearly, membership.discount);
     membershipTypes.push({
-      key: 'adult_yearly',
-      value: membership.yearly,
-      label: `Adult Yearly — $${membership.yearly}`
+      price,
+      name: `Adult Yearly — $${price}`
     });
 
     return (<Field
@@ -167,10 +174,10 @@ export default class MemberFormModal extends React.Component {
       label="Membership Type"
       className="col-md-6"
     >
-      <option value="">Membership Type</option>
+      <option>Membership Type</option>
       {membershipTypes.map((value, index) =>
-        <option value={value.key} key={index}>
-          {value.label}
+        <option value={JSON.stringify(value)} key={index} label={value.name}>
+          {value.name}
         </option>
       )}
     </Field>);
@@ -213,7 +220,6 @@ export default class MemberFormModal extends React.Component {
         title="Are you sure?"
       >
         <p>{childWarning}</p>
-
         <div styleName="popover__controls">
           <span
             styleName="popover__control popover__control--close"
