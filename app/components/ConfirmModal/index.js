@@ -7,7 +7,7 @@ class ConfirmModal extends Component {
   static propTypes = {
     showModal: PropTypes.bool,
     title: PropTypes.string,
-    message: PropTypes.oneOf([PropTypes.string, PropTypes.node]),
+    message: PropTypes.any,
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,
   };
@@ -46,9 +46,9 @@ class ConfirmModal extends Component {
         </Modal.Header>
 
         <Modal.Body>
-          <p className="text-muted text-center p-a-4">
+          <div className="text-muted text-center p-a-4">
             {message || 'Are you sure?'}
-          </p>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <div className="text-center">
