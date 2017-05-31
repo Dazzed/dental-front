@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
-
+import { removeDuplicates } from 'common/utils';
 // app
 import {
   MEMBER_RELATIONSHIP_TYPES,
@@ -249,7 +249,7 @@ export default class MembersList extends React.Component {
 
     // TODO: test with yearly members
     // TODO: test with all status's
-    const members = patient.members.reduce(
+    const members = removeDuplicates(patient.members, 'id').reduce(
       (organizedMembers, member) => {
         const statusKey = member.subscription ? member.subscription.status : 'inactive';
         const timePeriodKey = member.subscription && member.subscription.monthly
