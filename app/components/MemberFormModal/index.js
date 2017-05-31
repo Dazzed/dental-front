@@ -203,8 +203,8 @@ export default class MemberFormModal extends React.Component {
       title = "Add Member";
       saveText = "Save and Checkout";
     } else if (initialValues.isEnrolling) {
-      title = 'Update Membership'
-      saveText = 'Save and Checkout';
+      title = 'Edit Membership'
+      saveText = 'Update';
     }
 
     const childWarningPopover = childWarning === false
