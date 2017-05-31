@@ -191,6 +191,10 @@ function* submitAddMemberForm(payload, userId) {
 function* submitEditMemberForm(payload, userId) {
   try {
     const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    if (/^{.*.}$/.test(payload.membershipType)) {
+      payload.membershipType = JSON.parse(payload.membershipType);
+    }
+
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
