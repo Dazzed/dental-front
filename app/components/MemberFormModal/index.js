@@ -143,26 +143,26 @@ export default class MemberFormModal extends React.Component {
       price = this.processPrice(childMembership.monthly, childMembership.discount);
       membershipTypes.push({
         price,
-        name: `Child Monthly — $${price}`
+        name: `Child Monthly Recurring — $${price}`
       });
 
       price = this.processPrice(childMembership.yearly, childMembership.discount);
       membershipTypes.push({
         price,
-        name: `Child Yearly — $${price}`
+        name: `Child Yearly Nonrecurring — $${price}`
       });
     }
 
     price = this.processPrice(membership.monthly, membership.discount);
     membershipTypes.push({
       price,
-      name: `Adult Monthly — $${price}`
+      name: `Adult Monthly Recurring — $${price}`
     });
 
     price = this.processPrice(membership.yearly, membership.discount);
     membershipTypes.push({
       price,
-      name: `Adult Yearly — $${price}`
+      name: `Adult Yearly Nonrecurring — $${price}`
     });
 
     return (<Field
