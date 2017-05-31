@@ -190,9 +190,13 @@ function* submitAddMemberForm(payload, userId) {
 
 function* submitEditMemberForm(payload, userId) {
   try {
-    const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    let requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
     if (/^{.*.}$/.test(payload.membershipType)) {
       payload.membershipType = JSON.parse(payload.membershipType);
+    }
+
+    if (payload.subscription && payload.subscription.status === 'inactive') {
+      requestURL = `/api/v1/users/${userId}/members/${payload.id}/enroll`;
     }
 
     const params = {
