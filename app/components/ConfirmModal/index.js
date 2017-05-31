@@ -7,7 +7,7 @@ class ConfirmModal extends Component {
   static propTypes = {
     showModal: PropTypes.bool,
     title: PropTypes.string,
-    message: PropTypes.string,
+    message: PropTypes.oneOf([PropTypes.string, PropTypes.node]),
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,
   };
