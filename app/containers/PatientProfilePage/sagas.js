@@ -191,11 +191,12 @@ function* submitAddMemberForm(payload, userId) {
 function* submitEditMemberForm(payload, userId) {
   try {
     let requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    const isEnrollment = payload.subscription && payload.subscription.status === 'inactive'
     if (/^{.*.}$/.test(payload.membershipType)) {
       payload.membershipType = JSON.parse(payload.membershipType);
     }
 
-    if (payload.subscription && payload.subscription.status === 'inactive') {
+    if (isEnrollment) {
       requestURL = `/api/v1/users/${userId}/members/${payload.id}/enroll`;
     }
 
@@ -207,6 +208,10 @@ function* submitEditMemberForm(payload, userId) {
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
     yield put(toastrActions.success('', message));
+    if (isEnrollment) {
+      yield (familyMembersFetcher());
+      yield (dentistFetcher());
+    }
 
     yield put(setEditedMember(response.data, userId));
 
