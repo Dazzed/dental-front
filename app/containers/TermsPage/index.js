@@ -128,7 +128,7 @@ class TermsPage extends React.Component {
             <p className="term__description">Enrollment and membership in the Dental Membership Plan is for your own personal benefit and may not be assigned or delegated by you to any other person. Your violation of this provision may, in the discretion of DentalHQ, result in immediate termination of your Dental Membership Plan membership for cause.</p>
           </div>
           <div styleName="term">
-            <p className="term__description">Should you have any questions regarding your enrollment in, or use of the Dental Membership Plan, please call us at  (919) 825-1239 between the hours of 10:00 AM and 5:00 PM (eastern) Monday through Friday. Any written notices or inquiries should be addressed to DentalHQ as follows:</p>
+            <p className="term__description">Should you have any questions regarding your enrollment in, or use of the Dental Membership Plan, please call us at  <a href="tel:(919)825-1239">(919) 825-1239</a> between the hours of 10:00 AM and 5:00 PM (eastern) Monday through Friday. Any written notices or inquiries should be addressed to DentalHQ as follows:</p>
             <p className="term__description">DentalHQ<br />
               310 S. Harrington St<br />
               Raleigh, NC 27609<br />
