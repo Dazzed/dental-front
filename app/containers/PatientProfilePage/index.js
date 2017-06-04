@@ -256,8 +256,39 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember({});
   }
 
-  reEnrollMember = (user, member) => {
-    alert('TODO: re-enroll member');
+  reEnrollMember = (user, member, type) => {
+    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
+    const cost = { monthly, yearly, discount };
+    // switch (type) {
+    //   case 'adult':
+    //     cost.yearly = dentistInfo.adultMembership.yearly;
+    //     cost.monthly = dentistInfo.adultMembership.monthly;
+    //     cost.discount = dentistInfo.adultMembership.discount;
+    //     break;
+    //   case 'child':
+    //     cost.yearly = dentistInfo.childMembership.yearly;
+    //     cost.monthly = dentistInfo.childMembership.monthly;
+    //     cost.discount = dentistInfo.childMembership.discount;
+    //     break;
+    // }
+    const enrollmentDiv = user.reEnrollmentFee && <div>
+      <h3>{cost.discount}% Discount</h3>
+      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(user, member);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   removeMember = (user, member) => {
@@ -274,9 +305,9 @@ class PatientProfilePage extends React.Component {
   }
 
   // profile
-  updateProfile = () => {
+  updateProfile = (user = null) => {
     this.props.resetProfileForm();
-    this.props.setEditingProfile(this.props.user);
+    this.props.setEditingProfile(user || this.props.user);
   }
 
   // reviews
@@ -287,7 +318,6 @@ class PatientProfilePage extends React.Component {
 
   cancelMembershipAction = () => {
     this.props.cancelMembership();
-    console.log('cancelled membership');
     this.handleCloseDialog();
   };
 
@@ -444,14 +474,14 @@ class PatientProfilePage extends React.Component {
     const aggregateSubscription = {
       status: members.reduce(
         function (aggregateStatus, member) {
-          if (member.subscription.status === 'past_due'
+          if ((member.subscription && member.subscription.status === 'past_due')
             || aggregateStatus === 'past_due'
           ) {
             aggregateStatus = 'past_due';
           }
 
           else if (
-            member.subscription.status === 'active'
+            (member.subscription && member.subscription.status === 'active')
             || aggregateStatus === 'active'
           ) {
             aggregateStatus = 'active';
@@ -469,7 +499,7 @@ class PatientProfilePage extends React.Component {
 
       total: members.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription.status === 'active' && member.subscription.monthly) {
+          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
           }
           return aggregateTotal;
@@ -479,7 +509,7 @@ class PatientProfilePage extends React.Component {
 
       dueDate: members.reduce(
         function (nearestPaymentDueDate, member) {
-          const memberDueDate = moment(member.subscription.endAt);
+          const memberDueDate = moment(member.subscription ? member.subscription.endAt : null);
 
           if (memberDueDate.isBefore(nearestPaymentDueDate)) {
             nearestPaymentDueDate = memberDueDate;

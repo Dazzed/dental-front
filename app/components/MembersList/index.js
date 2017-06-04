@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
-
+import { removeDuplicates } from 'common/utils';
 // app
 import {
   MEMBER_RELATIONSHIP_TYPES,
@@ -67,8 +67,8 @@ export default class MembersList extends React.Component {
   */
   // NOTE: The following functions must be bound to the patient and member in
   //       the member specific event attributes.
-  onReEnrollClick = (patient, member) => {
-    this.props.onReEnrollMember(patient, member);
+  onReEnrollClick = (patient, member, type) => {
+    this.props.onReEnrollMember(patient, member, type);
   }
 
   onRemoveClick = (patient, member) => {
@@ -87,7 +87,7 @@ export default class MembersList extends React.Component {
   Member Render
   ------------------------------------------------------------
   */
-  renderMember (patient, member, showControlCol) {
+  renderMember(patient, member, showControlCol) {
     const {
       avatar,
       birthDate,
@@ -95,26 +95,25 @@ export default class MembersList extends React.Component {
       firstName,
       id,
       lastName,
-      subscription,
     } = member;
 
+    const subscription = member.subscription || {};
     const relationship = familyRelationship
-                       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
-                       : "ACCOUNT OWNER";
+      ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
+      : 'ACCOUNT OWNER';
 
     const age = moment().diff(moment(birthDate), 'years');
 
     const subscriptionType = age <= 13
-                           ? "Child"
-                           : "Adult";
+      ? 'Child'
+      : 'Adult';
 
     const amount = (
-         subscription.status === "active"
-      || subscription.status === "past_due"
+      subscription.status === 'active'
+      || subscription.status === 'past_due'
     )
-      ? "$" + subscription.monthly
-      : "-----";
-
+      ? '$' + subscription.monthly
+      : '-----';
 
     return (
       <div key={id} className="row" styleName="member">
@@ -158,7 +157,7 @@ export default class MembersList extends React.Component {
                     - active yearly => Update & Renew
                     - inactive => Re-Enroll
               */}
-              {    this.props.onUpdateMember
+              {this.props.onUpdateMember
                 && (subscription.status === "active" || subscription.status === "signup")
                 && (
                   <input
@@ -170,7 +169,7 @@ export default class MembersList extends React.Component {
                 )
               }
 
-              {    this.props.onRemoveMember
+              {this.props.onRemoveMember
                 && subscription.monthly
                 && (subscription.status === "active" || subscription.status === "signup")
                 && (
@@ -179,6 +178,18 @@ export default class MembersList extends React.Component {
                     styleName="button--small"
                     value="X"
                     onClick={this.onRemoveClick.bind(this, patient, member)}
+                  />
+                )
+              }
+
+              {this.props.onReEnrollMember
+                && subscription.status === "inactive"
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="RE-ENROLL"
+                    onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )
               }
@@ -221,7 +232,7 @@ export default class MembersList extends React.Component {
   Main Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       patient,
 
@@ -231,20 +242,21 @@ export default class MembersList extends React.Component {
       onRemoveMember,
     } = this.props;
 
-    const showControlCol = onReEnrollMember 
-                        || onRenewMember
-                        || onUpdateMember
-                        || onRemoveMember;
+    const showControlCol = onReEnrollMember
+      || onRenewMember
+      || onUpdateMember
+      || onRemoveMember;
 
     // TODO: test with yearly members
     // TODO: test with all status's
-    const members = patient.members.reduce(
+    const members = removeDuplicates(patient.members, 'id').reduce(
       (organizedMembers, member) => {
-        const statusKey = member.subscription.status;
-        const timePeriodKey = member.subscription.monthly
-                            ? "monthly"
-                            : "yearly";
+        const statusKey = member.subscription ? member.subscription.status : 'inactive';
+        const timePeriodKey = member.subscription && member.subscription.monthly
+          ? 'monthly'
+          : 'yearly';
 
+        organizedMembers[statusKey][timePeriodKey] = organizedMembers[statusKey][timePeriodKey] || [];
         organizedMembers[statusKey][timePeriodKey].push(member);
         return organizedMembers;
       },
@@ -308,7 +320,6 @@ export default class MembersList extends React.Component {
 
     return (
       <div styleName="members">
-
         {membersContent.signup.monthly.length > 0 && (
           <div styleName="members__segment">
             <div className="row" styleName="members__title-row">
@@ -493,103 +504,103 @@ export default class MembersList extends React.Component {
           </div>
         )}
 
-        {(   membersContent.late.monthly.length > 0 
+        {(membersContent.late.monthly.length > 0
           || membersContent.late.annual.length > 0
-         ) && (
-          <div styleName="members__segment">
-            <div className="row" styleName="members__title-row">
-              <div className="col-sm-2">
-                <div styleName="status--past-due">
-                  Late
+        ) && (
+            <div styleName="members__segment">
+              <div className="row" styleName="members__title-row">
+                <div className="col-sm-2">
+                  <div styleName="status--past-due">
+                    Late
                 </div>
-              </div>
-              <div className="col-sm-2">
-                <div styleName="members__title--first-only">
-                  Name
                 </div>
-              </div>
-              <div className="col-sm-2">
-                <div styleName="members__title--first-only">
-                  Relationship
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Age
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Type
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Fee
-                </div>
-              </div>
-              {showControlCol && (
-                <div className="col-sm-3">
+                <div className="col-sm-2">
                   <div styleName="members__title--first-only">
-                    Edit / Cancel
-                  </div>
+                    Name
                 </div>
-              )}
+                </div>
+                <div className="col-sm-2">
+                  <div styleName="members__title--first-only">
+                    Relationship
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Age
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Type
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Fee
+                </div>
+                </div>
+                {showControlCol && (
+                  <div className="col-sm-3">
+                    <div styleName="members__title--first-only">
+                      Edit / Cancel
+                  </div>
+                  </div>
+                )}
+              </div>
+
+              {membersContent.late.monthly}
+              {membersContent.late.annual}
             </div>
+          )}
 
-            {membersContent.late.monthly}
-            {membersContent.late.annual}
-          </div>
-        )}
-
-        {(   membersContent.inactive.monthly.length > 0
+        {(membersContent.inactive.monthly.length > 0
           || membersContent.inactive.annual.length > 0
-         ) && (
-          <div styleName="members__segment">
-            <div className="row" styleName="members__title-row">
-              <div className="col-sm-2">
-                <div styleName="status--inactive">
-                  Inactive
+        ) && (
+            <div styleName="members__segment">
+              <div className="row" styleName="members__title-row">
+                <div className="col-sm-2">
+                  <div styleName="status--inactive">
+                    Inactive
                 </div>
-              </div>
-              <div className="col-sm-2">
-                <div styleName="members__title--first-only">
-                  Name
                 </div>
-              </div>
-              <div className="col-sm-2">
-                <div styleName="members__title--first-only">
-                  Relationship
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Age
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Type
-                </div>
-              </div>
-              <div className="col-sm-1">
-                <div styleName="members__title--first-only">
-                  Fee
-                </div>
-              </div>
-              {showControlCol && (
-                <div className="col-sm-3">
+                <div className="col-sm-2">
                   <div styleName="members__title--first-only">
-                    Re-Enroll
-                  </div>
+                    Name
                 </div>
-              )}
-            </div>
+                </div>
+                <div className="col-sm-2">
+                  <div styleName="members__title--first-only">
+                    Relationship
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Age
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Type
+                </div>
+                </div>
+                <div className="col-sm-1">
+                  <div styleName="members__title--first-only">
+                    Fee
+                </div>
+                </div>
+                {showControlCol && (
+                  <div className="col-sm-3">
+                    <div styleName="members__title--first-only">
+                      Re-Enroll
+                  </div>
+                  </div>
+                )}
+              </div>
 
-            {membersContent.inactive.monthly}
-            {membersContent.inactive.annual}
-          </div>
-        )}
+              {membersContent.inactive.monthly}
+              {membersContent.inactive.annual}
+            </div>
+          )}
 
       </div>
     );

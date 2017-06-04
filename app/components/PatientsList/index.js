@@ -55,7 +55,7 @@ class PatientsList extends React.Component {
     onUpdateMember: React.PropTypes.func,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -116,7 +116,7 @@ class PatientsList extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // passed in - data
       patients,
@@ -150,27 +150,27 @@ class PatientsList extends React.Component {
       const memberOrigin = MEMBER_ORIGINS[origin];
 
       const summaryStatus = patient.members.reduce(
-          (summaryStatus, member) => {
-            if (summaryStatus === 'Active' || member.subscription.status === 'active') {
-              return 'Active';
-            }
+        (summaryStatus, member) => {
+          if (summaryStatus === 'Active' || (member.subscription && member.subscription.status === 'active')) {
+            return 'Active';
+          }
 
-            if (summaryStatus === 'Late' || member.subscription.status === 'past_due') {
-              return 'Late';
-            }
+          if (summaryStatus === 'Late' || (member.subscription && member.subscription.status === 'past_due')) {
+            return 'Late';
+          }
 
-            if (summaryStatus === 'Inactive' || member.subscription.status === 'canceled') {
-              return 'Inactive';
-            }
-
-            // defaults to inactive
+          if (summaryStatus === 'Inactive' || (member.subscription && member.subscription.status === 'canceled')) {
             return 'Inactive';
-          },
-          'Inactive'
-        );
+          }
+
+          // defaults to inactive
+          return 'Inactive';
+        },
+        'Inactive'
+      );
 
       let statusStyle = "status";
-      switch(summaryStatus) {
+      switch (summaryStatus) {
         case "Active":
           statusStyle += " status--active";
           break;
@@ -189,8 +189,8 @@ class PatientsList extends React.Component {
       }
 
       const contactMethodMessage = type === "client"
-                                 ? PREFERRED_CONTACT_METHODS[contactMethod]
-                                 : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
+        ? PREFERRED_CONTACT_METHODS[contactMethod]
+        : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
 
       const memberSince = moment(createdAt).format("MMMM D, YYYY");
 
@@ -207,7 +207,8 @@ class PatientsList extends React.Component {
       }
 
       const activeMembers = members.filter((member) => {
-        return member.subscription.status === 'active' && member.subscription.monthly;
+
+        return member.subscription && member.subscription.status === 'active' && member.subscription.monthly;
       });
 
       return (
@@ -281,15 +282,15 @@ class PatientsList extends React.Component {
                         Member Details
                         {' '}
                         {this.state.showMemberDetails[id]
-                           ? <FaCaretDown />
-                           : <FaCaretRight />
+                          ? <FaCaretDown />
+                          : <FaCaretRight />
                         }
                       </span>
                     </div>
                   </div>
                 </div>
 
-              {/* End Member Overview */}
+                {/* End Member Overview */}
               </div>
 
               {/*
@@ -299,7 +300,7 @@ class PatientsList extends React.Component {
               {this.state.showMemberDetails[id] && (
                 <div styleName="divided-row">
                   <div className="row">
-                    
+
                     {/*
                     Family Members List
                     ------------------------------------------------------------
@@ -314,7 +315,7 @@ class PatientsList extends React.Component {
                         onUpdateMember={onUpdateMember}
                       />
                     </div>
-                                     
+
                     <div className="col-sm-3">
                       {/*
                       Subscription Overview
@@ -387,23 +388,23 @@ class PatientsList extends React.Component {
                         )}
                       </div>
 
-                    {/* End Right Col */}
+                      {/* End Right Col */}
                     </div>
 
-                  {/* End Member Details Row */}
+                    {/* End Member Details Row */}
                   </div>
-                {/* End Divided Row */}
+                  {/* End Divided Row */}
                 </div>
               )}
-               
-            {/* End Patient Col */}
+
+              {/* End Patient Col */}
             </div>
-          {/* End Patient Row */}
+            {/* End Patient Row */}
           </div>
 
           {additionalMembershipContent}
 
-        {/* End Wrapper Div */}
+          {/* End Wrapper Div */}
         </div>
       );
     });
