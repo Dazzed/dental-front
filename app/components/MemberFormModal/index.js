@@ -202,7 +202,7 @@ export default class MemberFormModal extends React.Component {
     if (initialValues === null || initialValues.id === undefined) {
       title = "Add Member";
       saveText = "Save and Checkout";
-    } else if (initialValues.isEnrolling) {
+    } else if (initialValues.isEnrolling || initialValues.fromDentist) {
       title = 'Edit Membership'
       saveText = 'Update';
     }
@@ -269,7 +269,7 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Body>
           <form className="form-horizontal">
-            {initialValues && initialValues.isEnrolling ?
+            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist) ?
               (<Row>
                 {this.renderMembershipType()}
               </Row>) :
