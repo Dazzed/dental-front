@@ -77,6 +77,7 @@ export default class MemberFormModal extends React.Component {
 
     const {
       childWarning,
+      callback
     } = this.state;
 
     const {
@@ -101,7 +102,11 @@ export default class MemberFormModal extends React.Component {
     }
 
     else {
-      this.props.onFormSubmit(values);
+      if (callback) {
+        callback(() => this.props.onFormSubmit(values));
+      } else {
+        this.props.onFormSubmit(values);
+      }
 
       if (childWarning !== false) {
         this.clearChildWarning();
