@@ -291,146 +291,123 @@ class DentistMembersPage extends React.Component {
       }
     };
 
-    updateMember = (patient, member) => {
-      this.props.resetMemberForm();
-      member.fromDentist = true;
-      this.props.setEditingMember(patient, member, (submit) => {
-        this.updateMemberConfirm(patient, member, submit);
-      });
-    }
+    this.setState({ dialog });
+  };
 
-    updatePatientProfile = (patient) => {
-      this.props.resetPatientProfileForm();
-      this.props.setEditingPatientProfile(patient);
-    }
+  updateMember = (patient, member) => {
+    this.props.resetMemberForm();
+    member.fromDentist = true;
+    this.props.setEditingMember(patient, member, (submit) => {
+      this.updateMemberConfirm(patient, member, submit);
+    });
+  }
 
-    // payments
-    updatePatientPaymentInfo = (patient) => {
-      this.props.resetPatientPaymentForm();
-      this.props.setEditingPatientPayment(patient, {});
-    }
+  updatePatientProfile = (patient) => {
+    this.props.resetPatientProfileForm();
+    this.props.setEditingPatientProfile(patient);
+  }
 
-    /*
-    Events
-    ------------------------------------------------------------
-    */
-    // member
-    cancelMemberFormAction = () => {
-      this.props.clearEditingMember();
-    }
+  // payments
+  updatePatientPaymentInfo = (patient) => {
+    this.props.resetPatientPaymentForm();
+    this.props.setEditingPatientPayment(patient, {});
+  }
 
-    handleMemberFormSubmit = (values) => {
-      this.props.submitMemberForm(this.props.editingMember.patient, values);
-    }
+  /*
+  Events
+  ------------------------------------------------------------
+  */
+  // member
+  cancelMemberFormAction = () => {
+    this.props.clearEditingMember();
+  }
 
-    // profile
-    cancelPatientProfileFormAction = () => {
-      this.props.clearEditingPatientProfile();
-    }
+  handleMemberFormSubmit = (values) => {
+    this.props.submitMemberForm(this.props.editingMember.patient, values);
+  }
 
-    handlePatientProfileFormSubmit = (values) => {
-      this.props.submitPatientProfileForm(values, values.id);
-    };
+  // profile
+  cancelPatientProfileFormAction = () => {
+    this.props.clearEditingPatientProfile();
+  }
 
-    // payment
-    handlePatientPaymentFormSubmit = (values) => {
-      this.props.submitPatientPaymentForm(this.props.editingPatientPayment.patient, values);
-    }
+  handlePatientProfileFormSubmit = (values) => {
+    this.props.submitPatientProfileForm(values, values.id);
+  };
 
-    cancelPatientPaymentFormAction = () => {
-      this.props.clearEditingPatientPayment();
-    }
+  // payment
+  handlePatientPaymentFormSubmit = (values) => {
+    this.props.submitPatientPaymentForm(this.props.editingPatientPayment.patient, values);
+  }
 
-    // sort
-    onSortSelect = (evt) => {
-      this.props.sortMembers(evt.target.value);
-    }
+  cancelPatientPaymentFormAction = () => {
+    this.props.clearEditingPatientPayment();
+  }
 
-    // reports
-    onReportSelected = ({ month, year, url }) => {
-      const {
+  // sort
+  onSortSelect = (evt) => {
+    this.props.sortMembers(evt.target.value);
+  }
+
+  // reports
+  onReportSelected = ({ month, year, url }) => {
+    const {
       user: { firstName, lastName },
     } = this.props;
 
-      const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
-      this.props.downloadReport(reportName, url);
-    }
+    const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
+    this.props.downloadReport(reportName, url);
+  }
 
-    /*
-    Render
-    ------------------------------------------------------------
-    */
-    render() {
-      const {
-        // fetch
-        dataLoaded,
-        dentistInfo,
-        patients,
-        reports,
-        user,
+  /*
+  Render
+  ------------------------------------------------------------
+  */
+  render() {
+    const {
+      // fetch
+      dataLoaded,
+      dentistInfo,
+      patients,
+      reports,
+      user,
 
-        // search / sort patients
-        currentSearchTerm,
-        currentSortTerm,
+      // search / sort patients
+      currentSearchTerm,
+      currentSortTerm,
 
-        // add / edit member
-        editingMember,
+      // add / edit member
+      editingMember,
 
-        // edit patient profile
-        editingPatientProfile,
+      // edit patient profile
+      editingPatientProfile,
 
-        // edit patient payment info
-        editingPatientPayment,
+      // edit patient payment info
+      editingPatientPayment,
     } = this.props;
 
-      const {
+    const {
       dialog
     } = this.state;
-      /*
-      Precondition Renders
-      ------------------------------------------------------------
-      */
-      // precondition: the data must be loaded, otherwise wait for it
-      if (dataLoaded === false) {
-        return (
-          <div>
-            <DentistDashboardTabs active="members" />
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
+    // precondition: the data must be loaded, otherwise wait for it
+    if (dataLoaded === false) {
+      return (
+        <div>
+          <DentistDashboardTabs active="members" />
 
-            <div styleName="content content--filler">
-              <LoadingSpinner showOnlyIcon={false} />
-            </div>
+          <div styleName="content content--filler">
+            <LoadingSpinner showOnlyIcon={false} />
           </div>
-        );
-      }
+        </div>
+      );
+    }
 
-      // precondition: there are no patients to list
-      if (patients.length === 0) {
-        return (
-          <div>
-            <DentistDashboardHeader
-              currentSearchTerm={currentSearchTerm}
-              dentistInfo={dentistInfo}
-              patients={patients}
-              reports={reports}
-              user={user}
-              onMemberSearch={this.props.searchMembers}
-              onReportSelected={this.onReportSelected}
-            />
-            <DentistDashboardTabs active="members" />
-
-            <div styleName="content content--filler">
-              <p>
-                It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before you can see them here in your dashboard.
-            </p>
-            </div>
-          </div>
-        );
-      }
-
-      /*
-      Main Render
-      ------------------------------------------------------------
-      */
+    // precondition: there are no patients to list
+    if (patients.length === 0) {
       return (
         <div>
           <DentistDashboardHeader
@@ -444,18 +421,44 @@ class DentistMembersPage extends React.Component {
           />
           <DentistDashboardTabs active="members" />
 
-          <div styleName="content">
-            <div styleName="patient-sort">
-              <span>Sort By: </span>
+          <div styleName="content content--filler">
+            <p>
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before you can see them here in your dashboard.
+            </p>
+          </div>
+        </div>
+      );
+    }
 
-              <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="late">Late</option>
-              </select>
-            </div>
+    /*
+    Main Render
+    ------------------------------------------------------------
+    */
+    return (
+      <div>
+        <DentistDashboardHeader
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+        />
+        <DentistDashboardTabs active="members" />
 
-            {/* TODO: onUpdateMember was removed so that the `update` action would
+        <div styleName="content">
+          <div styleName="patient-sort">
+            <span>Sort By: </span>
+
+            <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="late">Late</option>
+            </select>
+          </div>
+
+          {/* TODO: onUpdateMember was removed so that the `update` action would
               be hidden until the extra fields can be removed, and there are
               multiple membership types for a dentist to choose from.
 
@@ -463,56 +466,56 @@ class DentistMembersPage extends React.Component {
 
               https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
           */}
-            <PatientsList
-              patients={patients}
+          <PatientsList
+            patients={patients}
 
-              onAddMember={this.addMember}
-              onReEnrollMember={this.reEnrollMember}
-              onRemoveMember={this.removeMember}
-              onRenewMember={this.renewMember}
-              onToggleCancelationFee={this.toggleCancelationFee}
-              onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-              onUpdatePatientProfile={this.updatePatientProfile}
-              onUpdatePatientPayment={this.updatePatientPaymentInfo}
-            />
-          </div>
-
-          <CheckoutFormModal
-            show={editingPatientPayment !== null}
-            onCancel={this.cancelPatientPaymentFormAction}
-
-            initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
-            onSubmit={this.handlePatientPaymentFormSubmit}
-          />
-
-          <MemberFormModal
-            dentistInfo={dentistInfo}
-
-            show={editingMember !== null}
-            onCancel={this.cancelMemberFormAction}
-
-            initialValues={editingMember !== null ? editingMember.member : null}
-            onFormSubmit={this.handleMemberFormSubmit}
-          />
-
-          <ConfirmModal
-            showModal={dialog.showDialog}
-            message={dialog.message}
-            onCancel={this.handleCloseDialog}
-            onConfirm={dialog.confirm}
-            title={dialog.title}
-          />
-
-          <PatientProfileFormModal
-            show={editingPatientProfile !== null}
-            onCancel={this.cancelPatientProfileFormAction}
-
-            initialValues={editingPatientProfile}
-            onSubmit={this.handlePatientProfileFormSubmit}
+            onAddMember={this.addMember}
+            onReEnrollMember={this.reEnrollMember}
+            onRemoveMember={this.removeMember}
+            onRenewMember={this.renewMember}
+            onToggleCancelationFee={this.toggleCancelationFee}
+            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
+            onUpdatePatientProfile={this.updatePatientProfile}
+            onUpdatePatientPayment={this.updatePatientPaymentInfo}
           />
         </div>
-      );
-    }
-  }
 
-  export default DentistMembersPage;
+        <CheckoutFormModal
+          show={editingPatientPayment !== null}
+          onCancel={this.cancelPatientPaymentFormAction}
+
+          initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
+          onSubmit={this.handlePatientPaymentFormSubmit}
+        />
+
+        <MemberFormModal
+          dentistInfo={dentistInfo}
+
+          show={editingMember !== null}
+          onCancel={this.cancelMemberFormAction}
+
+          initialValues={editingMember !== null ? editingMember.member : null}
+          onFormSubmit={this.handleMemberFormSubmit}
+        />
+
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
+        />
+
+        <PatientProfileFormModal
+          show={editingPatientProfile !== null}
+          onCancel={this.cancelPatientProfileFormAction}
+
+          initialValues={editingPatientProfile}
+          onSubmit={this.handlePatientProfileFormSubmit}
+        />
+      </div>
+    );
+  }
+}
+
+export default DentistMembersPage;
