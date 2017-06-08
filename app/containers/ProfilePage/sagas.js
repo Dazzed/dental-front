@@ -37,7 +37,7 @@ function* main () {
 function* profileDataFetcher () {
   yield* takeLatest(FETCH_PROFILE_DATA, function* handler () {
     try {
-      const response = yield call(request, '/api/v1/users/me');
+      const response = yield call(request, '/api/v1/users/me/account');
       yield put(setUserData(response.data));
 
       // Force initialization form
@@ -54,7 +54,7 @@ function* submitFormWatcher () {
     const { payload } = yield take(SUBMIT_PROFILE_FORM);
 
     try {
-      const requestURL = '/api/v1/users/me';
+      const requestURL = '/api/v1/users/me/account';
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),
