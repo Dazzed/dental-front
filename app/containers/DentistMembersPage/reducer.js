@@ -148,9 +148,10 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         editingActive: 'member',
+        onSubmitCb: action.callback,
         editing: {
           member: action.member,
-          patient: action.patient,
+          patient: action.patient
         },
       };
 

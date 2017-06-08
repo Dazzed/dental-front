@@ -189,11 +189,12 @@ export function sortMembers (status) {
 Add / Edit Member
 ------------------------------------------------------------
 */
-export function setEditingMember (patient, member) {
+export function setEditingMember (patient, member, callback) {
   return {
     type: SET_EDITING_MEMBER,
     patient,
     member,
+    callback
   };
 }
 
