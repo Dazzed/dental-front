@@ -29,7 +29,7 @@ import { push } from 'react-router-redux';
 import logo from 'assets/images/logo.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
-// import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
+import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
 import toothIcon from 'assets/images/tooth-icon.png';
 // import marketingVideo from 'assets/videos/marketing-video.mp4';
 import Footer from 'components/Footer';
@@ -42,7 +42,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     changeRoute: (url) => dispatch(push(url)),
   };
@@ -61,7 +61,7 @@ export default class HomePage extends React.Component {
     changeRoute: React.PropTypes.func,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -88,7 +88,7 @@ export default class HomePage extends React.Component {
     });
   }
 
-  render () {
+  render() {
     return (
       <div styleName="wrapper">
 
@@ -145,7 +145,7 @@ export default class HomePage extends React.Component {
               <div className="col-md-10 col-md-offset-1">
 
                 {/* TODO: turn back on */}
-                {/*
+
                 <input
                   type="button"
                   styleName="large-button"
@@ -167,11 +167,11 @@ export default class HomePage extends React.Component {
                       poster={marketingVideoPoster}
                       ref="video"
                     >
-                      <source src={marketingVideo} type="video/mp4" />
+                      {/*<source src={marketingVideo} type="video/mp4" />*/}
                     </video>
                   </Modal.Body>
                 </Modal>
-                */}
+
 
                 <h2 styleName="large-title">
                   No insurance? No problem.
@@ -330,14 +330,14 @@ export default class HomePage extends React.Component {
                   </p>
 
                   {/* TODO: turn back on */}
-                  {/*
+
                   <input
                     type="button"
                     styleName="large-button__hollow"
                     onClick={this.goToLearnMore}
                     value="LEARN MORE &gt;"
                   />
-                  */}
+
                 </div>
               </div>
 
