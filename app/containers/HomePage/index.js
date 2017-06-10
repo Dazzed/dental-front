@@ -102,9 +102,9 @@ export default class HomePage extends React.Component {
               <Link to="/accounts/login">Login</Link>
             </li>
 
-            <li styleName="login-links__link--primary">
+            {/*<li styleName="login-links__link--primary">
               <Link to="/accounts/login">Dentist Portal</Link>
-            </li>
+            </li>*/}
           </ul>
         </div>
 
