@@ -18,6 +18,7 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
+
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
@@ -258,7 +259,7 @@ class DentistMembersPage extends React.Component {
     this.props.setRemovingMember(patient, member);
   }
 
-  renewMember = (patient, member) => {
+  updateMemberConfirm = (patient, member, submit) => {
     /* TODO, UNVERIFIED */
     alert('TODO: renewMember');
   }
@@ -271,9 +272,34 @@ class DentistMembersPage extends React.Component {
     this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
+  confirmUpdateMember = (user, member, submit) => {
+    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
+    const cost = { monthly, yearly, discount };
+    const enrollmentDiv = user.reEnrollmentFee && <div>
+      <h3>{cost.discount}% Discount</h3>
+      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Confirm Member Update',
+      confirm: () => {
+        submit();
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
+  };
+
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(patient, member);
+    member.fromDentist = true;
+    this.props.setEditingMember(patient, member, (submit) => {
+      this.updateMemberConfirm(patient, member, submit);
+    });
   }
 
   updatePatientProfile = (patient) => {

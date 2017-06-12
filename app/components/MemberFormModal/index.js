@@ -77,6 +77,7 @@ export default class MemberFormModal extends React.Component {
 
     const {
       childWarning,
+      callback
     } = this.state;
 
     const {
@@ -101,7 +102,11 @@ export default class MemberFormModal extends React.Component {
     }
 
     else {
-      this.props.onFormSubmit(values);
+      if (callback) {
+        callback(() => this.props.onFormSubmit(values));
+      } else {
+        this.props.onFormSubmit(values);
+      }
 
       if (childWarning !== false) {
         this.clearChildWarning();
@@ -202,7 +207,7 @@ export default class MemberFormModal extends React.Component {
     if (initialValues === null || initialValues.id === undefined) {
       title = "Add Member";
       saveText = "Save and Checkout";
-    } else if (initialValues.isEnrolling) {
+    } else if (initialValues.isEnrolling || initialValues.fromDentist) {
       title = 'Edit Membership'
       saveText = 'Update';
     }
@@ -269,7 +274,7 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Body>
           <form className="form-horizontal">
-            {initialValues && initialValues.isEnrolling ?
+            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist) ?
               (<Row>
                 {this.renderMembershipType()}
               </Row>) :

@@ -1,3 +1,12 @@
 # robotstxt.org
 
 User-agent: *
+Disallow: /accounts/
+Disallow: /admin/
+Disallow: /charge15
+Disallow: /charge20
+Disallow: /dashboard
+Disallow: /dentist/
+Disallow: /patient/
+Disallow: /subscribe
+

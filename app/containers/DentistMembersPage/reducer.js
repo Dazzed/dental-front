@@ -69,15 +69,15 @@ const initialState = {
 Reducers
 ================================================================================
 */
-function dentistMembersPageReducer (state = initialState, action) {
+function dentistMembersPageReducer(state = initialState, action) {
   let memberIdx, patients, patientIdx, prevStatePatient, newStatePatient;
 
-  switch (action.type) {    
+  switch (action.type) {
     /*
     Fetch
     ------------------------------------------------------------
     */
-    case FETCH_DENTIST_INFO_SUCCESS:      
+    case FETCH_DENTIST_INFO_SUCCESS:
       return {
         ...state,
         dentistInfo: action.payload,
@@ -89,7 +89,7 @@ function dentistMembersPageReducer (state = initialState, action) {
         dentistSpecialties: action.payload.sort((specialtyA, specialtyB) => {
           const specialtyAName = specialtyA.name.toLowerCase();
           const specialtyBName = specialtyB.name.toLowerCase();
- 
+
           if (specialtyAName < specialtyBName) {
             return -1;
           }
@@ -101,7 +101,8 @@ function dentistMembersPageReducer (state = initialState, action) {
       };
 
     case FETCH_PATIENTS_SUCCESS:
-      patients = action.payload.map((patient) => {
+      const { payload = [] } = action;
+      patients = payload.map((patient) => {
         return {
           ...patient,
           members: [ // TODO: remove main account holder insert from members?
@@ -130,8 +131,8 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         searchName: action.name !== ""
-                      ? action.name
-                      : null,
+          ? action.name
+          : null,
       };
 
     case SORT_MEMBERS:
@@ -148,9 +149,10 @@ function dentistMembersPageReducer (state = initialState, action) {
       return {
         ...state,
         editingActive: 'member',
+        onSubmitCb: action.callback,
         editing: {
           member: action.member,
-          patient: action.patient,
+          patient: action.patient
         },
       };
 
