@@ -331,12 +331,12 @@ export default class SignupPage extends Component {
 
           <Modal.Footer>
             <div className="modal-controls">
-              <input
+              {/*<input
                 type="button"
                 className="modal-control"
                 onClick={this.goToLoginPage}
                 value="Login Page >"
-              />
+              />*/}
             </div>
           </Modal.Footer>
         </Modal>
