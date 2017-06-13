@@ -36,14 +36,14 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // send contact us message
     editingContactUsMessage: editingContactUsMessageSelector(state),
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // send contact us message
     resetContactUsMessageForm: () => dispatch(resetForm('contactUs')),
@@ -73,7 +73,7 @@ export default class LearnMorePage extends React.Component {
     submitContactUsForm: React.PropTypes.func.isRequired,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -206,19 +206,14 @@ export default class LearnMorePage extends React.Component {
         >
           <Modal.Header closeButton />
           <Modal.Body>
-            {/* TODO: show video */}
-            {/* https://trello.com/c/f033SU5f/124-marketing-add-marketing-videos */}
-            Video Goes Here
-            {/*
-              <video
-                autoPlay
-                controls
-                poster={marketingVideoPoster}
-                ref="video"
-              >
-                <source src={marketingVideo} type="video/mp4" />
-              </video>
-            */}
+            <video
+              autoPlay
+              controls
+              poster="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video-poster.png"
+              ref="video"
+            >
+              <source src="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video.mp4" type="video/mp4" />
+            </video>
           </Modal.Body>
         </Modal>
 
@@ -230,7 +225,7 @@ export default class LearnMorePage extends React.Component {
           onSubmit={this.handleContactUsFormSubmit}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }
