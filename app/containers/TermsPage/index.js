@@ -14,6 +14,9 @@ class TermsPage extends React.Component {
         <PageHeader title="Terms and Conditions" />
         <div className="container" style={{ wordSpacing: '0.125em', letterSpacing: '0.05em' }}>
           <div styleName="term">
+            <p className="term__description">EFFECTIVE DATE: DECEMBER 19, 2016</p>
+          </div>
+          <div styleName="term">
             <p className="term__description">BY AGREEING TO THESE TERMS AND CONDITIONS, AND PAYING THE APPLICABLE ENROLLMENT FEE (“MEMBERSHIP FEE”), YOU ACKNOWLEDGE THAT YOU HAVE READ AND AGREED TO THE FOLLOWING TERMS AND CONDITIONS OF THE DENTALHQ, LLC (TOGETHER WITH ITS AFFILIATES, SUCCESSORS, AND ASSIGNS HEREINAFTER REFERRED TO AS “DENTALHQ”, “OUR”, “WE,” OR “US”) PREPAID DISCOUNT DENTAL SERVICES PLAN (THE “DENTAL MEMBERSHIP PLAN”). IMPORTANT ADDITIONAL INFORMATION REGARDING THE DENTAL MEMBERSHIP PLAN IS AVAILABLE ON THE SITE.</p>
             <p className="term__description">THESE TERMS AND CONDITIONS AND YOUR ENROLLMENT FORM CONSTITUTE A BINDING AGREEMENT BETWEEN YOU AND DENTALHQ (THE “AGREEMENT”). IF YOU DO NOT AGREE TO THESE TERMS AND CONDITIONS, DO NOT ENROLL IN THE DENTAL MEMBERSHIP PLAN. THESE TERMS AND CONDITIONS ALSO GOVERN YOUR USE THE WEBSITE DENTALHQ.COM (THE “SITE”).</p>
             <p className="term__description">WE RESERVE THE SOLE RIGHT AT ANY TIME TO MODIFY, DISCONTINUE, OR DELETE PORTIONS OF THESE TERMS AND CONDITIONS WITHOUT NOTICE. WE WILL POST CHANGES TO THESE TERMS AND CONDITIONS, IF ANY, TO THE SITE. IT IS YOUR RESPONSIBILITY TO CHECK THE SITE PERIODICALLY FOR CHANGES. YOUR CONTINUED USE OF THE SITE, THE SERVICES AND THE DENTAL MEMBERSHIP PLAN AFTER ANY CHANGES CONSTITUTES YOUR ACCEPTANCE OF THE REVISED TERMS AND CONDITIONS.</p>
@@ -21,16 +24,16 @@ class TermsPage extends React.Component {
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              1. ACCOUNT SIGN UP
+              1. ACCOUNT SIGN UP.
             </h4>
-            <p className="term__description">To enroll in the Dental Membership Plan, you must open up an account (the “Account”). You represent that all information you provide during the Account sign up process and at any time thereafter for you and all family members for which you establish an account (“Account Information”), will be true, accurate, complete, and current and that you will promptly update your Account Information as necessary such that it is, at all times, true, accurate, complete, and current. If your Account includes any information for other family members, you will ensure that their Account Information is accurate. We may use all Account Information, subject to compliance with the DentalHQ Privacy Policy. The Agreement incorporate the terms and conditions set forth in the DentalHQ Privacy Policy http://www.dentalhq.com/privacy , and by accessing the Site and or participating in the Dental Membership Plan, you are consenting to have your personal data and the personal data of your family members used by us as set forth in the DentalHQ Privacy Policy. You alone are responsible for maintaining the security of your Account Information and for the use of your Account</p>
+            <p className="term__description">To enroll in the Dental Membership Plan, you must open up an account (the “Account”). You represent that all information you provide during the Account sign up process and at any time thereafter for you and all family members for which you establish an account (“Account Information”), will be true, accurate, complete, and current and that you will promptly update your Account Information as necessary such that it is, at all times, true, accurate, complete, and current. If your Account includes any information for other family members, you will ensure that their Account Information is accurate. We may use all Account Information, subject to compliance with the DentalHQ Privacy Policy. The Agreement incorporate the terms and conditions set forth in the DentalHQ Privacy Policy http://www.dentalhq.com/privacy , and by accessing the Site and or participating in the Dental Membership Plan, you are consenting to have your personal data and the personal data of your family members used by us as set forth in the DentalHQ Privacy Policy. You alone are responsible for maintaining the security of your Account Information and for the use of your Account.</p>
             <p className="term__description">You may enroll minors in the Dental Membership Plan, provided that you are the legal parent or guardian for each individual. To enroll yourself or others for which you are the legal parent or guardian, you must be 18 years or older and must have an eligible payment method registered with DentalHQ. You can change the payment method on file at any time. You will receive an email confirmation when your method of payment is charged. Please contact us immediately if you do not recognize charges on your email confirmation.</p>
             <p className="term__description">Use of the Site requires compatible devices, Internet access, and certain software; and may be affected by the performance of these factors. You agree that meeting these requirements, which may change from time to time, is your responsibility. We do not represent or guarantee you can access the Site at all times.</p>
             <p className="term__description">The owner of the Account should not reveal the applicable Account information to anyone else, and is solely responsible for maintaining the confidentiality and security of the Account and for all activities that occur on or through the Account. In order to create a personal account, an individual must enter their name and email address and create a password. To access the Account, the email address and password will be required.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              2. ENROLLMENT AND FEES
+              2. ENROLLMENT AND FEES.
             </h4>
             <p className="term__description">You may enroll on a month to month basis, in which case your monthly Membership Fee will be due monthly in advance or you may enroll for a one (1)-year term in which case the annual Membership Fee will be paid in advance. For both the monthly memberships and the annual membership, we will bill your credit card accordingly.  For monthly memberships, the Dental Membership Plan will automatically renew your membership at the end of each month on a month to month basis, and your credit card will be automatically charged the monthly Membership Fee as described above, unless you cancel your enrollment in the Dental Membership Plan as provided below.</p>
             <p className="term__description">For annual memberships, you will receive an email from us not less than thirty (30) days prior to the end of the then-current annual period, which will provide instructions for you to renew your membership. Should you elect to renew your membership for the next annual period, your credit card will be charged the then-current annual Membership Fee.</p>
@@ -41,13 +44,13 @@ class TermsPage extends React.Component {
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              3. THE DENTAL MEMBERSHIP PLAN
+              3. THE DENTAL MEMBERSHIP PLAN.
             </h4>
             <p className="term__description">The Dental Membership Plan is a prepaid discount membership program for dental services which is being offered by DentalHQ. Certain dentists and dental practices have contracted with DentalHQ to be participating providers (“Dentists”) under the Dental Membership Plan and to provide certain specified dental services to you for no out of pocket fees (“Covered Services”). Additional services may be provided at discount rates pursuant the Dentist’s fee schedule (“Fee Schedule”). In most cases, the discounted fees are provided at predetermined rates and at a percentage off the Dentists’ current rates for such designated dental services. When selecting a Dentist under the Dental Membership Plan, you are required to confirm that such Dentist is a current Dentist under the Dental Membership Plan and that his or her Fee Schedule is up to date.</p>
             <p className="term__description">The Dental Membership Plan itself does not pay your Dentist for the services you receive, but instead processes payments for your Dental Membership Plan on behalf of your Dentist. The Dental Membership Plan is a loyalty program between you and your Dentist. By enrolling in the Dental Membership Plan and making your required payments under the plan, you become eligible to receive Covered Services from a Dentist. These Covered Services are described below. DentalHQ is not an insurance company, it is an intermediary company.</p>
             <p className="term__description"><b>Covered Services</b> include the following: </p>
-            <p className="term__description">For Adults: 1 basic cleaning every 6 months (D1110), 1-2 exams (D0120) with cleanings per year, x-rays (D0210, D0274, D0272, D0220, D0330) as determined necessary by your dentist, 1 emergency exam (D0140) per year.</p>
-            <p className="term__description">For Minors: 1 basic cleaning every 6 months (D1120), 1-2 exams (D0120) with cleanings per year, x-rays (D0210, D0274, D0272, D0220, D0330) as determined necessary by your dentist, 1 emergency exam (D0140) per year and 1 Fluoride treatment per year (D1208).</p>
+            <p className="term__description">For Adults: 1 basic cleaning every 6 months (D1110), 1-2 exams (D0120) with cleanings per year, x-rays (D0274, D0272, D0220, D0330) as determined necessary by your dentist, 1 emergency exam (D0140) per year.</p>
+            <p className="term__description">For Minors: 1 basic cleaning every 6 months (D1120), 1-2 exams (D0120) with cleanings per year, x-rays (D0274, D0272, D0220, D0330) as determined necessary by your dentist, 1 emergency exam (D0140) per year and 1 Fluoride treatment per year (D1208).</p>
             <p className="term__description">In addition, the following terms and conditions apply to the Dental Membership Plan between you and your Dentist:
 
               <ul>
@@ -63,13 +66,13 @@ class TermsPage extends React.Component {
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              4. LIMITATIONS
+              4. LIMITATIONS.
             </h4>
             <p className="term__description">Not all dental services are Covered Services under the Dental Membership Plan. Only those specifically listed as Covered Services are provided by Dentists at no additional charge to you.  DentalHQ reserves the right to change, modify or make substitutions in the Dentist List at any time, and from time to time, without notice. Such changes will be reflected on the Site from time to time. If you require any dental services that are not Covered Services, Dentists have agreed to charge you a discount to the current rates that they charge their other patients for providing such non-Covered Services. You must consult with the Dentist for his/her fee schedule for such non-Covered Services. DentalHQ will endeavor to keep the Dentist List up to date such that only participating active Dentists are listed on the Site. DentalHQ strongly recommends that you confirm that a Dentist is currently a Dentist before you receive any services from that Dentist. By enrolling in the Dental Membership Plan, You hereby give permission to DentalHQ and its affiliates to market and offer services to you that are unrelated to the Dental Membership Plan.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              5. CANCELLATION AND RE-ENROLLMENT
+              5. CANCELLATION AND RE-ENROLLMENT.
             </h4>
             <p className="term__description">You have the right to cancel your enrollment in the Dental Membership Plan at any time and for any reason; provided, however, that if your month to month enrollment is cancelled within ninety (90) days after your date of initial enrollment, you will be charged a $20.00 cancellation fee to cover the cost of processing your membership (the “Cancellation Fee”). Note that the Cancellation Fee may not apply in certain situations (See Section 6 REFUND POLICY below). You may cancel your enrollment by email using your personal dashboard or by certified mail, return receipt requested. Cancellations over the telephone cannot be accepted. Refunds will only be provided as set forth in Section 6 REFUND POLICY below.</p>
             <p className="term__description">DentalHQ reserves the right to terminate your enrollment in the Dental Membership Plan at any time for any reason, including for the non-payment of your Membership Fee. If DentalHQ terminates your enrollment for any reason, other than the non-payment of your Membership Fee, then DentalHQ will give you a pro-rated refund of your Membership Fee. For example, if DentalHQ terminates an annual enrollment for any reason, other than non-payment of the Membership Fee, at the end of six months during an annual period, the member is entitled to receive a refund of one half of the member’s pre-paid Membership Fee for that one (1)-year period.</p>
@@ -77,7 +80,7 @@ class TermsPage extends React.Component {
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              6. REFUND POLICY
+              6. REFUND POLICY.
             </h4>
             <p className="term__description">We do not provide refunds to any payments made for the Dental Membership Plan except for the following three situations:
               <ol type="A">
@@ -90,48 +93,47 @@ class TermsPage extends React.Component {
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              7. COMPLAINTS
+              7. COMPLAINTS.
             </h4>
             <p className="term__description">If you have any complaints about how DentalHQ is administering/operating the Dental Membership Plan, you can submit the complaint by email using the Site or by certified mail, return receipt requested. Complaints over the telephone cannot be accepted. DentalHQ will make every reasonable effort to respond to your complaint, either by email or regular mail, within fourteen (14) days after it is received. If your complaint is about the dental services provided by a Dentist, the fees you were charged, or any other dissatisfaction with a Dentist, all such complaints must be addressed directly with the Dentist.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              8. LIMITATION OF LIABILITY
+              8. LIMITATION OF LIABILITY.
             </h4>
             <p className="term__description">IN NO EVENT WILL WE BE LIABLE TO YOU OR ANY THIRD PERSON FOR ANY INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL OR PUNITIVE DAMAGES, INCLUDING DAMAGES FOR ANY LOST PROFITS ARISING FROM YOUR PARTICIPATION IN THE DENTAL MEMBERSHIP PLAN, EVEN IF WE ARE AWARE OR HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ANY WARRANTIES FOR SERVICES THAT YOU RECEIVE FROM A DENTIST. NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, OUR LIABILITY TO YOU FOR ANY CAUSE WHATSOEVER, AND REGARDLESS OF THE FORM OF THE ACTION, WILL AT ALL TIMES BE LIMITED TO THE LESSER OF: (A) THE MOST RECENT MEMBERSHIP FEE WE HAVE RECEIVED FROM YOU; AND (B) TEN DOLLARS ($10). CERTAIN STATE LAWS DO NOT ALLOW LIMITATIONS ON IMPLIED WARRANTIES OR THE EXCLUSION OR LIMITATION OF CERTAIN DAMAGES. IF THESE LAWS APPLY TO YOU, SOME OR ALL OF THE ABOVE DISCLAIMERS, EXCLUSIONS OR LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MAY HAVE ADDITIONAL RIGHTS.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              9. INDEMNITY
+              9. INDEMNITY.
             </h4>
             <p className="term__description">You agree to indemnify and hold us and our directors, officers, agents, contractors, affiliates, partners and employees, harmless from and against any loss, liability, claim, or demand, including reasonable attorneys’ fees, arising out of any claim, action, investigation or proceeding made or instituted by any third party due to or arising out of your participation in the Dental Membership Plan.</p>
             <p className="term__description">You hereby agree not to sue, assist in or be a voluntary party to assist in or be a voluntary party to, except as required by law, any action, suit, or proceeding against us for any claims, actions, suits, damages, liability, losses or expenses of whatever kind or however arising out your participation in the Dental Membership Plan.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              10. LINKS TO OTHER WEBSITES
+              10. LINKS TO OTHER WEBSITES.
             </h4>
             <p className="term__description">The Site may contain links to other web sites. We are not responsible for the content, accuracy or opinions expressed on such web sites, and such web sites are not investigated, monitored or checked for accuracy or completeness by us. Inclusion of any linked web site on or through the Site does not imply approval or endorsement of the linked web site by us. If you decide to leave the Site and access these third-party sites, you do so at your own risk.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              11. GOVERNING LAW; ARBITRATION
+              11. GOVERNING LAW; ARBITRATION.
             </h4>
             <p className="term__description">The Agreement shall be governed by and construed in accordance with the laws of the State of North Carolina, without reference to conflicts of laws provisions and, as to matters affecting copyrights, trademarks and patents, by U.S. federal law. Any dispute or claim arising out of, or in connection with, this Agreement shall be finally settled by binding arbitration in Raleigh, North Carolina, in accordance with N.C. Gen. Stat. § 1-569.1 et seq. (the “Uniform Arbitration Act”) and the then-current rules and procedures of the American Arbitration Association by one (1) arbitrator appointed by the American Arbitration Association. The arbitrator shall apply the law of the State of North Carolina, without reference to rules of conflict of law or statutory rules of arbitration, to the merits of any dispute or claim. Judgment on the award rendered by the arbitrator may be confirmed, reduced to judgment and entered in any court of competent jurisdiction. You agree that, any provision of applicable law notwithstanding, the arbitrator shall have the authority to award the prevailing party its costs and reasonable attorneys’ fees. In the event that the above arbitration provision is held invalid or unenforceable, then any dispute with respect to the Agreement shall be brought and heard either in the North Carolina state courts located in Raleigh, North Carolina, or the federal district court located in Raleigh, North Carolina. In such event, you consent to the in personam jurisdiction and venue of such courts. You agree that service of process upon you in any such action may be made if delivered in person, by courier service, by telefacsimile or by first class mail, and shall be deemed effectively given upon receipt.</p>
           </div>
           <div styleName="term">
             <h4 styleName="term__title">
-              12. MISCELLANEOUS
+              12. MISCELLANEOUS.
             </h4>
             <p className="term__description">The Agreement set forth the entire agreement between you and us pertaining to your participation in the Dental Membership Plan and your use of the Site. If any provision of this Agreement is held invalid or unenforceable, such provision shall be revised to the extent necessary to cure the invalidity or unenforceability, and the remainder of this Agreement shall continue in full force and effect. Our failure to exercise any right or provision of this Agreement shall not constitute a waiver of such right or provision. Nothing in these Agreement shall be deemed to confer any third-party rights or benefits. Our delay or failure to exercise any right or provision of these Agreement shall not constitute a waiver of such right or provision. These Agreement do not, and shall not be deemed to, constitute a partnership or joint venture between you and us, and neither you nor we has the authority to bind the other under any contract, agreement, or otherwise. We shall not be liable for any failure to perform any of our obligations under these Agreement if the performance is prevented, hindered or delayed due to any cause beyond the reasonable control of DentalHQ including, without limitation, unavailability of any communication system, breach or virus in the processes, sabotage, fire, flood, explosion, acts of nature, civil commotion, riots, insurrection, war, acts of government, etc.</p>
             <p className="term__description">Enrollment and membership in the Dental Membership Plan is for your own personal benefit and may not be assigned or delegated by you to any other person. Your violation of this provision may, in the discretion of DentalHQ, result in immediate termination of your Dental Membership Plan membership for cause.</p>
           </div>
           <div styleName="term">
-            <p className="term__description">Should you have any questions regarding your enrollment in, or use of the Dental Membership Plan, please call us at  <a href="tel:(919)825-1239">(919) 825-1239</a> between the hours of 10:00 AM and 5:00 PM (eastern) Monday through Friday. Any written notices or inquiries should be addressed to DentalHQ as follows:</p>
-            <p className="term__description">DentalHQ<br />
+            <p className="term__description">Should you have any questions regarding your enrollment in, or use of the Dental Membership Plan, please call us at  <a href="tel:(919)825-1239">(919) 825-1239</a> between the hours of 10:00 AM and 5:00 PM Monday through Friday. Any written notices or inquiries should be addressed to DentalHQ as follows:</p>
+            <p className="term__description">Attn: DentalHQ<br />
               310 S. Harrington St<br />
-              Raleigh, NC 27609<br />
-              Email: <a href="mailto:Info@dentalhq.com">Info@dentalhq.com</a><br />
+              Raleigh, NC 27609.<br />
             </p>
             <p className="term__description">Any notices that are given by DentalHQ to all members of the Dental Membership Plan may be given by posting on the Site. It is your responsibility to periodically check the Site for such notice.</p>
           </div>
