@@ -474,8 +474,8 @@ class DentistSignupForm extends React.Component {
               name="url"
               type="text"
               component={this.getLabeledInput}
-              label="Website URL"
-              placeholder="https://mydentistrysite.com"
+              label="Website URL (http://)"
+              placeholder="e.g mydentistrysite.com"
               className="col-sm-6"
             />
           </Row>
