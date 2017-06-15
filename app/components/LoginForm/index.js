@@ -10,6 +10,7 @@ Imports
 // libs
 import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
+import { Link } from 'react-router';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
@@ -44,7 +45,7 @@ class LoginForm extends React.Component {
     return new LabeledInput(props);
   }
 
-  render () {
+  render() {
     const { error, handleSubmit, submitting } = this.props;
 
     return (
@@ -71,13 +72,16 @@ class LoginForm extends React.Component {
             placeholder="Password"
           />
         </Row>
+        <div className="pull-right">
+          <Link to="/accounts/forgot-password">Forgot Password?</Link>
+        </div>
 
         <FormGroup className="has-error">
           <Col sm={12}>
             {error && <HelpBlock>{error}</HelpBlock>}
           </Col>
         </FormGroup>
-
+        <div className="clearfix"></div>
         <div className="text-center">
           <input type="submit" disabled={submitting} styleName="button" value="Log In &gt;" />
         </div>
