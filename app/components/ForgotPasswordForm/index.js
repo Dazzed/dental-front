@@ -10,6 +10,7 @@ Imports
 // libs
 import React from 'react';
 import Col from 'react-bootstrap/lib/Col';
+import { Link } from 'react-router';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
@@ -64,7 +65,9 @@ class ForgotPasswordForm extends React.Component {
           />
 
         </Row>
-
+        <div className="pull-right">
+          <Link to="/accounts/login">Back to Login Page</Link>
+        </div>
         <FormGroup className="has-error">
           <Col sm={12}>
             {error && <HelpBlock>{error}</HelpBlock>}
