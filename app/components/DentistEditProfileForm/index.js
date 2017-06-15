@@ -290,7 +290,6 @@ class DentistEditProfileForm extends React.Component {
 
   onUploadStart = (file, next) => {
     const { toastError } = this.props;
-    console.log(file.type);
     if (!/image\/png|image\/jpg|image\/jpeg|image\/gif/.test(file.type)) {
       toastError(`File format not supported ${file.type}.\nPlease upload JPEG, PNG or GIF images.`);
     } else {
