@@ -36,14 +36,13 @@ Login Form
 class PasswordResetForm extends React.Component {
   componentWillMount() {
     this.state = {
-      customError: ''
     };
   }
 
-  handleChange(e) {
+  handleChange = e => {
     const { name, value } = e.target || e.srcElement;
     this.setState({ [name]: value });
-  }
+  };
 
   static propTypes = {
     error: React.PropTypes.object,
@@ -56,9 +55,11 @@ class PasswordResetForm extends React.Component {
   }
 
   render() {
-    const { error = this.state.customError, handleSubmit, submitting, token } = this.props;
-    const { password, password_again } = this.state;
-    
+    const { newPassword, confirmNewPassword } = this.state;
+    const customError = newPassword !== confirmNewPassword ? 'Passwords do not match' : '';
+    const { error = customError, handleSubmit, submitting, token } = this.props;
+
+
     return (
       <form
         onSubmit={handleSubmit}
@@ -68,16 +69,18 @@ class PasswordResetForm extends React.Component {
 
         <Row>
           <Field
-            name="password"
+            name="newPassword"
             type="password"
+            onChange={this.handleChange}
             component={this.getLabeledInput}
             label="New Password"
             placeholder="Password"
           />
 
           <Field
-            name="password_again"
+            name="confirmNewPassword"
             type="password"
+            onChange={this.handleChange}
             component={this.getLabeledInput}
             label="New Password Again"
             placeholder="Password"
@@ -100,7 +103,7 @@ class PasswordResetForm extends React.Component {
         </FormGroup>
 
         <div className="text-center">
-          <input type="submit" disabled={submitting || password !== password_again || !pasword} styleName="button" value="Set New Password &gt;" />
+          <input type="submit" disabled={submitting || newPassword !== confirmNewPassword || !newPassword} styleName="button" value="Set New Password &gt;" />
         </div>
       </form>
     );

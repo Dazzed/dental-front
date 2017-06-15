@@ -35,6 +35,15 @@ Login Form Component
     background-color: $color-white;
   }
 
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: #ccc;
+    border-color: #ccc;
+    &:hover {
+      color: #fff;
+      background-color: #ddd;
+    }
+  }
   &:focus {
     outline: none;
   }
