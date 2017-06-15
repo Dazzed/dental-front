@@ -1,5 +1,5 @@
 /*
-Login Page
+Password Reset
 ================================================================================
 */
 
@@ -78,7 +78,7 @@ class PasswordResetPage extends Component {
         <div className="container">
           <div styleName="password-reset-wrapper">
             <div styleName="password-reset">
-              <PasswordResetForm onSubmit={this.onResetPassword} />
+              <PasswordResetForm token={this.props.location.query.token} onSubmit={this.onResetPassword} />
             </div>
           </div>
         </div>

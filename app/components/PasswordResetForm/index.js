@@ -34,6 +34,16 @@ Login Form
 })
 @CSSModules(styles)
 class PasswordResetForm extends React.Component {
+  componentWillMount() {
+    this.state = {
+      customError: ''
+    };
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target || e.srcElement;
+    this.setState({ [name]: value });
+  }
 
   static propTypes = {
     error: React.PropTypes.object,
@@ -46,8 +56,9 @@ class PasswordResetForm extends React.Component {
   }
 
   render() {
-    const { error, handleSubmit, submitting } = this.props;
-
+    const { error = this.state.customError, handleSubmit, submitting, token } = this.props;
+    const { password, password_again } = this.state;
+    
     return (
       <form
         onSubmit={handleSubmit}
@@ -72,6 +83,12 @@ class PasswordResetForm extends React.Component {
             placeholder="Password"
           />
 
+          <input
+            name="token"
+            type="hidden"
+            value={token}
+          />
+
         </Row>
         <div className="pull-right">
           <Link to="/accounts/login">Back to Login Page</Link>
@@ -83,7 +100,7 @@ class PasswordResetForm extends React.Component {
         </FormGroup>
 
         <div className="text-center">
-          <input type="submit" disabled={submitting} styleName="button" value="Set New Password &gt;" />
+          <input type="submit" disabled={submitting || password !== password_again || !pasword} styleName="button" value="Set New Password &gt;" />
         </div>
       </form>
     );
