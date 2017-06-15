@@ -16,6 +16,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
 import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
 import { connect } from 'react-redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 import {
   Field,
   FormSection,
@@ -58,7 +59,9 @@ Redux
 ------------------------------------------------------------
 */
 const valueSelector = formValueSelector('dentist-edit-profile');
-
+const mapDispatchToProps = (dispatch) => ({
+  toastError: (message) => dispatch(toastrActions.error(message)),
+});
 const mapStateToProps = (state) => {
   const {
     pricing,
@@ -68,7 +71,7 @@ const mapStateToProps = (state) => {
   // precondition: Redux-form hasn't initialized yet.  Note that the
   // `intitialValues` prop is also unavailable, so just provide a sane guess
   // while the page loads.
-  if ( pricing === undefined
+  if (pricing === undefined
     && workingHours === undefined
   ) {
     return {
@@ -100,7 +103,7 @@ const mapStateToProps = (state) => {
         sunday: true,
       }
     };
-}
+  }
 
   const recommendedFees = {
     monthly: {
@@ -125,7 +128,7 @@ const mapStateToProps = (state) => {
     const D1120 = parseFloat(pricing.codes.D1120);
     const D1206 = parseFloat(pricing.codes.D1206);
 
-    if ( isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
+    if (isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
       && isNaN(D0274) === false && isNaN(D0330) === false && isNaN(D1110) === false
     ) {
       const adultBaseFee = (D0120 * 2) + D0140 + D0220 + D0274 + (D0330 * 0.3) + (D1110 * 2);
@@ -141,7 +144,7 @@ const mapStateToProps = (state) => {
       recommendedFees.yearly.adult = recommendedFees.yearly.adult.toFixed(2);
     }
 
-    if ( isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
+    if (isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
       && isNaN(D0272) === false && isNaN(D0330) === false && isNaN(D1120) === false
       && isNaN(D1206) === false
     ) {
@@ -176,13 +179,13 @@ const mapStateToProps = (state) => {
 
     // working hours
     officeClosed: {
-      monday:    workingHours.monday === undefined || workingHours.monday.isOpen === false,
-      tuesday:   workingHours.tuesday === undefined || workingHours.tuesday.isOpen === false,
+      monday: workingHours.monday === undefined || workingHours.monday.isOpen === false,
+      tuesday: workingHours.tuesday === undefined || workingHours.tuesday.isOpen === false,
       wednesday: workingHours.wednesday === undefined || workingHours.wednesday.isOpen === false,
-      thursday:  workingHours.thursday === undefined || workingHours.thursday.isOpen === false,
-      friday:    workingHours.friday === undefined || workingHours.friday.isOpen === false,
-      saturday:  workingHours.saturday === undefined || workingHours.saturday.isOpen === false,
-      sunday:    workingHours.sunday === undefined || workingHours.sunday.isOpen === false,
+      thursday: workingHours.thursday === undefined || workingHours.thursday.isOpen === false,
+      friday: workingHours.friday === undefined || workingHours.friday.isOpen === false,
+      saturday: workingHours.saturday === undefined || workingHours.saturday.isOpen === false,
+      sunday: workingHours.sunday === undefined || workingHours.sunday.isOpen === false,
     }
   };
 };
@@ -192,14 +195,14 @@ const mapStateToProps = (state) => {
 Edit Profile Form
 ================================================================================
 */
-@connect(mapStateToProps, null)
+@connect(mapStateToProps, mapDispatchToProps)
 @reduxForm({
   form: 'dentist-edit-profile',
   validate: dentistEditProfileFormValidator,
 })
 @CSSModules(styles)
 class DentistEditProfileForm extends React.Component {
-
+  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
@@ -285,17 +288,27 @@ class DentistEditProfileForm extends React.Component {
     return new InputTime(props);
   }
 
+  onUploadStart = (file, next) => {
+    const { toastError } = this.props;
+    console.log(file.type);
+    if (!/image\/png|image\/jpg|image\/jpeg|image\/gif/.test(file.type)) {
+      toastError(`File format not supported ${file.type}.\nPlease upload JPEG, PNG or GIF images.`);
+    } else {
+      next(file);
+    }
+  };
+
   /*
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // passed in - state
       initialValues,
       dentistSpecialties,
-//      pricingCodes,
-//      services,
+      //      pricingCodes,
+      //      services,
 
 
       // mapped - state
@@ -512,8 +525,8 @@ class DentistEditProfileForm extends React.Component {
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
-                      accept: "image/*",
-
+                      accept: this.acceptedFormats,
+                      preprocess: this.onUploadStart,
                       contentDisposition: "auto",
                       uploadRequestHeaders: {
                         'x-amz-acl': 'public-read'
@@ -538,8 +551,8 @@ class DentistEditProfileForm extends React.Component {
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
-                      accept: "image/*",
-
+                      accept: this.acceptedFormats,
+                      preprocess: this.onUploadStart,
                       contentDisposition: "auto",
                       uploadRequestHeaders: {
                         'x-amz-acl': 'public-read'
@@ -557,6 +570,9 @@ class DentistEditProfileForm extends React.Component {
           <p styleName="field-instructions">
             *Horizontal logos look better than tall logos.
           </p>
+          <p styleName="field-instructions">
+            *Supported image formats are <em>JPEG</em>, <em>PNG</em> and <em>GIF</em>.
+          </p>
 
           <FormGroup>
             <div className="col-sm-12">
@@ -570,8 +586,8 @@ class DentistEditProfileForm extends React.Component {
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
-                      accept: "image/*",
-
+                      accept: this.acceptedFormats,
+                      preprocess: this.onUploadStart,
                       contentDisposition: "auto",
                       uploadRequestHeaders: {
                         'x-amz-acl': 'public-read'
@@ -589,8 +605,8 @@ class DentistEditProfileForm extends React.Component {
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
-                      accept: "image/*",
-
+                      accept: this.acceptedFormats,
+                      preprocess: this.onUploadStart,
                       contentDisposition: "auto",
                       uploadRequestHeaders: {
                         'x-amz-acl': 'public-read'
@@ -608,8 +624,8 @@ class DentistEditProfileForm extends React.Component {
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
-                      accept: "image/*",
-
+                      accept: this.acceptedFormats,
+                      preprocess: this.onUploadStart,
                       contentDisposition: "auto",
                       uploadRequestHeaders: {
                         'x-amz-acl': 'public-read'
@@ -674,9 +690,9 @@ class DentistEditProfileForm extends React.Component {
                   );
                 })}
 
-              {/* End Pricing Codes Wrapper Column*/}
+                {/* End Pricing Codes Wrapper Column*/}
               </div>
-            {/* End Pricing Codes Wrapper Row*/}
+              {/* End Pricing Codes Wrapper Row*/}
             </div>
           </FormSection>
 
