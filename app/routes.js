@@ -92,6 +92,21 @@ export default function createRoutes(store) {
       },
     }, {
       onEnter: redirectToDashboard,
+      path: '/accounts/reset-password',
+      name: 'passwordResetPage',
+      getComponent(nextState, cb) {
+        Promise.all([
+          System.import('containers/PasswordResetPage/sagas'),
+          System.import('containers/PasswordResetPage')
+        ])
+          .then(([sagas, component]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
       path: '/accounts/dentist-signup',
       name: 'dentistSignupPage',
       getComponent(nextState, cb) {

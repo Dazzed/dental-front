@@ -16,20 +16,20 @@ import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
-import { actions as toastrActions } from 'react-redux-toastr';
 import { setItem, removeItem } from 'utils/localStorage';
 import request from 'utils/request';
+import { actions as toastrActions } from 'react-redux-toastr';
 
 // app
 // import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 
 // local
 import {
-  FORGOT_PASSWORD_REQUEST,
-  FORGOT_PASSWORD_ERROR,
-  LOGOUT,
+  PASSWORD_RESET_REQUEST,
+  PASSWORD_RESET_AUTH,
+  PASSWORD_RESET_ERROR,
 } from './constants';
-import { forgotPasswordError } from './actions';
+import { passwordResetError } from './actions';
 
 
 /*
@@ -55,70 +55,36 @@ Login Sagas
 */
 function* forgotPaswordWatcher() {
   while (true) {
-    // listen for the FORGOT_PASSWORD_REQUEST action dispatched on form submit
-    const { payload: { data, resolve, reject } } = yield take(FORGOT_PASSWORD_REQUEST);
+    // listen for the PASSWORD_RESET_REQUEST action dispatched on form submit
+    const { payload: { data, resolve, reject } } = yield take(PASSWORD_RESET_REQUEST);
 
-    // execute the forgotPassword task asynchronously
-    const task = yield fork(forgotPassword, data, resolve, reject);
-
-    // listen for the LOGOUT or FORGOT_PASSWORD_ERROR action
-    const action = yield take([LOGOUT, FORGOT_PASSWORD_ERROR]);
-
-    if (action.type === LOGOUT) {
-      // since the forgotPassword task executed asynchronously,
-      // it is possible the LOGOUT action gets fired before
-      // the the forgotPassword task completes, so we call cancel on it
-      yield cancel(task);
-
-      // dispatch action to set user details to app.currentUser
-      yield put(setAuthState(false));
-      // yield put(setUserData(false));
-
-      // redirect to login page
-      yield put(push('/accounts/login'));
-    }
-
-    // remove auth token from localstorage
-    yield call(removeItem, 'message');
+    // execute the passwordReset task asynchronously
+    const task = yield fork(passwordReset, data, resolve, reject);
   }
 }
 
-function* forgotPassword(data, resolve, reject) {
+function* passwordReset(data, resolve, reject) {
   try {
     // send a post request with the login credentials
-    const response = yield call(request, '/api/v1/accounts/forgot-password', {
+    const response = yield call(request, '/api/v1/accounts/reset-password', {
       method: 'POST',
       body: JSON.stringify(data)
     });
 
-    // TODO: do i need this? I will navigate away anyways
-    // resolve(response);
-
-    // dispatch action to set user details to app.currentUser
-    // yield put(setAuthState(true));
-
-    // set auth token to localstorage
-    yield call(setItem, 'message', response.message);
-
-    // load details of authenticated user
-    // yield put(meFromToken());
-
-    // Post-processor is in common/sagas/index.js
     yield put(toastrActions.success(response.message ||
-      'A password reset request has been sent to your email address'));
+      'New Password has been set, proceed to login'));
 
-    // return the response from the generator task
+    yield put(push('/accounts/login'));
     return response;
   } catch (err) {
     // reject the onSubmit promise of redux-form
     if (reject) {
       reject(new SubmissionError({ _error: get(err, 'meta.message') }));
     }
-
-    yield put(toastrActions.error('Your password reset request could not be completed at this time'));
-
-    // dispatch FORGOT_PASSWORD_ERROR action
-    yield put(forgotPasswordError(err));
+    
+    yield put(toastrActions.error('Your password change request could not be completed at this time'));
+    // dispatch PASSWORD_RESET_ERROR action
+    yield put(passwordResetError(err));
   } finally {
     // because this generator task is asyc, it is possible to
     // send a logout action before the user gets logged in
@@ -128,6 +94,27 @@ function* forgotPassword(data, resolve, reject) {
     if (yield cancelled()) {
       // TODO: do i need something here?
       // ... put special cancellation handling code here
+    }
+  }
+}
+
+function* passwordResetAuth(data, resolve, reject) {
+  try {
+    // send a post request with the login credentials
+    const response = yield call(request, `/api/v1/accounts/reset-password?auth=${data.token}`, {
+      method: 'GET'
+    });
+
+    // yield call(setItem, 'message', response.message);
+    return response;
+  } catch (err) {
+    if (reject) {
+      reject(new SubmissionError({ _error: get(err, 'meta.message') }));
+    }
+    yield put(passwordResetError(err));
+  } finally {
+
+    if (yield cancelled()) {
     }
   }
 }
