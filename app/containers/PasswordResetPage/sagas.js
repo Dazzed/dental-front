@@ -18,6 +18,7 @@ import { takeLatest } from 'redux-saga';
 import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
 import { setItem, removeItem } from 'utils/localStorage';
 import request from 'utils/request';
+import { actions as toastrActions } from 'react-redux-toastr';
 
 // app
 // import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
@@ -69,13 +70,19 @@ function* passwordReset(data, resolve, reject) {
       method: 'POST',
       body: JSON.stringify(data)
     });
+
+    yield put(toastrActions.success(response.message ||
+      'New Password has been set, proceed to login'));
+
+    yield put(push('/accounts/login'));
     return response;
   } catch (err) {
     // reject the onSubmit promise of redux-form
     if (reject) {
       reject(new SubmissionError({ _error: get(err, 'meta.message') }));
     }
-
+    
+    yield put(toastrActions.error('Your password change request could not be completed at this time'));
     // dispatch PASSWORD_RESET_ERROR action
     yield put(passwordResetError(err));
   } finally {

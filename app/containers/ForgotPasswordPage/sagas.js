@@ -16,6 +16,7 @@ import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, call, put, cancel, cancelled, fork } from 'redux-saga/effects';
+import { actions as toastrActions } from 'react-redux-toastr';
 import { setItem, removeItem } from 'utils/localStorage';
 import request from 'utils/request';
 
@@ -103,6 +104,8 @@ function* forgotPassword(data, resolve, reject) {
     // yield put(meFromToken());
 
     // Post-processor is in common/sagas/index.js
+    yield put(toastrActions.success(response.message ||
+      'A password reset request has been sent to your email address'));
 
     // return the response from the generator task
     return response;
@@ -111,6 +114,8 @@ function* forgotPassword(data, resolve, reject) {
     if (reject) {
       reject(new SubmissionError({ _error: get(err, 'meta.message') }));
     }
+
+    yield put(toastrActions.error('Your password reset request could not be completed at this time'));
 
     // dispatch FORGOT_PASSWORD_ERROR action
     yield put(forgotPasswordError(err));
