@@ -57,16 +57,16 @@ function* forgotPaswordWatcher() {
     // listen for the FORGOT_PASSWORD_REQUEST action dispatched on form submit
     const { payload: { data, resolve, reject } } = yield take(FORGOT_PASSWORD_REQUEST);
 
-    // execute the authorize task asynchronously
-    const task = yield fork(authorize, data, resolve, reject);
+    // execute the forgotPassword task asynchronously
+    const task = yield fork(forgotPassword, data, resolve, reject);
 
     // listen for the LOGOUT or FORGOT_PASSWORD_ERROR action
     const action = yield take([LOGOUT, FORGOT_PASSWORD_ERROR]);
 
     if (action.type === LOGOUT) {
-      // since the authorize task executed asynchronously,
+      // since the forgotPassword task executed asynchronously,
       // it is possible the LOGOUT action gets fired before
-      // the the authorize task completes, so we call cancel on it
+      // the the forgotPassword task completes, so we call cancel on it
       yield cancel(task);
 
       // dispatch action to set user details to app.currentUser
@@ -82,10 +82,10 @@ function* forgotPaswordWatcher() {
   }
 }
 
-function* authorize(data, resolve, reject) {
+function* forgotPassword(data, resolve, reject) {
   try {
     // send a post request with the login credentials
-    const response = yield call(request, '/api/v1/accounts/login', {
+    const response = yield call(request, '/api/v1/accounts/forgot-password', {
       method: 'POST',
       body: JSON.stringify(data)
     });

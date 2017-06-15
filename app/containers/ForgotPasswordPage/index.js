@@ -63,7 +63,6 @@ class ForgotPasswordPage extends Component {
     return (
       <div styleName="container-wrapper">
         <PageHeader title="Recover Password" />
-
         <div className="container">
           <div styleName="forgot-password-wrapper">
             <div styleName="forgot-password">
@@ -71,7 +70,6 @@ class ForgotPasswordPage extends Component {
             </div>
           </div>
         </div>
-
       </div>
     );
   }
