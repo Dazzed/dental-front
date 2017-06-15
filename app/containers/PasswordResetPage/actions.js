@@ -12,8 +12,7 @@ import {
   PASSWORD_RESET_REQUEST,
   PASSWORD_RESET_AUTH_REQUEST,
   PASSWORD_RESET_SUCCESS,
-  PASSWORD_RESET_ERROR,
-  LOGOUT,
+  PASSWORD_RESET_ERROR
 } from './constants';
 
 
@@ -48,11 +47,5 @@ export function passwordResetError(payload) {
   return {
     type: PASSWORD_RESET_ERROR,
     payload,
-  };
-}
-
-export function logout() {
-  return {
-    type: LOGOUT,
   };
 }

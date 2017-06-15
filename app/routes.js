@@ -93,11 +93,11 @@ export default function createRoutes(store) {
     }, {
       onEnter: redirectToDashboard,
       path: '/accounts/reset-password',
-      name: 'resetPasswordPage',
+      name: 'passwordResetPage',
       getComponent(nextState, cb) {
         Promise.all([
-          System.import('containers/ResetPasswordPage/sagas'),
-          System.import('containers/ResetPasswordPage')
+          System.import('containers/PasswordResetPage/sagas'),
+          System.import('containers/PasswordResetPage')
         ])
           .then(([sagas, component]) => {
             injectSagas(sagas.default);

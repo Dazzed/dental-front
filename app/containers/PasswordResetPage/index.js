@@ -14,12 +14,12 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 
 // app
-// import PasswordResetForm from 'components/PasswordResetForm';
+import PasswordResetForm from 'components/PasswordResetForm';
 import PageHeader from 'components/PageHeader';
 
 // local
 import {
-  passwordReset,
+  passwordResetRequest,
   passwordResetAuth
 } from './actions';
 import styles from './styles.css';
@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
     onResetPassword: (data) => ( // handle async tasks with sagas
       new Promise((resolve, reject) => {
         dispatch(
-          passwordReset({
+          passwordResetRequest({
             data: omit(data, 'unknown'), resolve, reject
           })
         );
