@@ -421,13 +421,13 @@ export default class PatientOffsiteSignupPage extends React.Component {
     */
     const adultSavings = dentist.dentistInfo.membership.savings;
     const adultMembership = {
-      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
+      monthly: dentist.dentistInfo.membership.price.replace(".00", ""),
       savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
     };
 
     const childSavings = dentist.dentistInfo.childMembership.savings;
     const childMembership = {
-      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
+      monthly: dentist.dentistInfo.childMembership.price.replace(".00", ""),
       savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
     };
 

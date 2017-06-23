@@ -72,7 +72,7 @@ function* dentistFetcher () {
     } = action;
 
     try {
-      const response = yield call(request, `/api/v1/dentists/${dentistId}/no-auth`);
+      const response = yield call(request, `/api/v1/dentists/details/${dentistId}/no-auth`);
       yield put(setDentist(response.data));
 
     } catch(err) {
