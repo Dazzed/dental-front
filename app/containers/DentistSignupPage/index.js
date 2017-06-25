@@ -152,7 +152,7 @@ export default class SignupPage extends Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
-    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    pricingCodes: React.PropTypes.array.isRequired,
 
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -207,6 +207,18 @@ export default class SignupPage extends Component {
 
   onSignupRequest = (data) => {
     const formattedData = formatDentistSignupFormSubmissionData(data);
+
+    let idMapper = this.props.pricingCodes.reduce((acc,pricingCode) => {
+      return {...acc,[pricingCode.code]: pricingCode.id};
+    },{});
+
+    formattedData.pricing.codes = formattedData.pricing.codes.map(pricingCode => {
+      return {
+        amount: pricingCode.amount,
+        code: pricingCode.code,
+        id: idMapper[pricingCode.code]
+      }
+    });
 
     this.props.makeSignupRequest(formattedData);
   }
