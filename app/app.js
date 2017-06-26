@@ -10,6 +10,7 @@ import 'babel-polyfill';
 // Load the manifest.json file and the .htaccess file
 import '!file?name=[name].[ext]!./manifest.json';
 import 'file?name=[name].[ext]!./.htaccess';
+import 'file?name=[name].[ext]!./assets/robots.txt';
 import 'file?name=[name].[ext]!./assets/favicon.ico';
 /* eslint-enable import/no-unresolved */
 
