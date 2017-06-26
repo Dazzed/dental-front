@@ -141,6 +141,8 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
+    console.log(this.props)
+    console.log(this.props.dentistInfo)
     const { dentistInfo: { childMembership, membership, acceptsChildren } } = this.props;
     let membershipTypes = [];
     let price = 0;
