@@ -214,7 +214,7 @@ class DentistSignupForm extends React.Component {
     })).isRequired,
 
     initialValues: React.PropTypes.object.isRequired,
-    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    pricingCodes: React.PropTypes.array.isRequired,
 
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -705,7 +705,7 @@ class DentistSignupForm extends React.Component {
                 </div>
 
                 {pricingCodes.map((pricingCode) => {
-                  const pricingCodeName = "D" + pricingCode;
+                  const pricingCodeName = "D" + pricingCode.code;
 
                   return (
                     <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>

@@ -76,6 +76,8 @@ function* dentistFetcher () {
       yield put(setDentist(response.data));
 
     } catch(err) {
+      console.log("ERR");
+      console.log(err)
       yield put(setDentistError(err));
     }
   });
