@@ -23,7 +23,7 @@ const loadModule = (cb) => (componentModule) => {
 };
 
 
-export default function createRoutes (store) {
+export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const {
     injectReducer, injectSagas, redirectToDashboard, redirectToLogin, redirectTo404
@@ -34,11 +34,11 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/',
       name: 'home',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/HomePage'),
         ])
-          .then(([ component ]) => {
+          .then(([component]) => {
             loadModule(cb)(component);
           })
           .catch(errorLoading);
@@ -47,13 +47,13 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/accounts/activate/:activationKey',
       name: 'activationPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/ActivationPage/reducer'),
           System.import('containers/ActivationPage/sagas'),
           System.import('containers/ActivationPage')
         ])
-          .then(([ reducer, sagas, component ]) => {
+          .then(([reducer, sagas, component]) => {
             injectReducer('activationPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
@@ -64,12 +64,42 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/accounts/login',
       name: 'loginPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/LoginPage/sagas'),
           System.import('containers/LoginPage')
         ])
-          .then(([ sagas, component ]) => {
+          .then(([sagas, component]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/accounts/forgot-password',
+      name: 'forgotPasswordPage',
+      getComponent(nextState, cb) {
+        Promise.all([
+          System.import('containers/ForgotPasswordPage/sagas'),
+          System.import('containers/ForgotPasswordPage')
+        ])
+          .then(([sagas, component]) => {
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToDashboard,
+      path: '/accounts/reset-password',
+      name: 'passwordResetPage',
+      getComponent(nextState, cb) {
+        Promise.all([
+          System.import('containers/PasswordResetPage/sagas'),
+          System.import('containers/PasswordResetPage')
+        ])
+          .then(([sagas, component]) => {
             injectSagas(sagas.default);
             loadModule(cb)(component);
           })
@@ -79,7 +109,7 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/accounts/dentist-signup',
       name: 'dentistSignupPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/App/sagas'),
 
@@ -87,7 +117,7 @@ export default function createRoutes (store) {
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([ appSagas, reducer, sagas, component ]) => {
+          .then(([appSagas, reducer, sagas, component]) => {
             injectSagas(appSagas.default);
 
             injectReducer('dentistSignupPage', reducer.default);
@@ -99,7 +129,7 @@ export default function createRoutes (store) {
     }, {
       path: '/accounts/logout',
       name: 'logout',
-      getComponent (location, cb) {
+      getComponent(location, cb) {
         const importModules = Promise.all([
           System.import('containers/Logout/sagas'),
           System.import('containers/Logout'),
@@ -107,7 +137,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ sagas, component ]) => {
+        importModules.then(([sagas, component]) => {
           injectSagas(sagas.default);
           renderRoute(component);
         });
@@ -116,13 +146,13 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/accounts/signup',
       name: 'signupPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/SignupPage/reducer'),
           System.import('containers/SignupPage/sagas'),
           System.import('containers/SignupPage')
         ])
-          .then(([ reducer, sagas, component ]) => {
+          .then(([reducer, sagas, component]) => {
             injectReducer('signupPage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
@@ -132,13 +162,13 @@ export default function createRoutes (store) {
     }, {
       path: '/accounts/signup/my-dentist/:dentistId',
       name: 'signupPatientOffsitePage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/SignupPatientOffsitePage/reducer'),
           System.import('containers/SignupPatientOffsitePage/sagas'),
           System.import('containers/SignupPatientOffsitePage')
         ])
-          .then(([ reducer, sagas, component ]) => {
+          .then(([reducer, sagas, component]) => {
             injectReducer('signupPatientOffsitePage', reducer.default);
             injectSagas(sagas.default);
             loadModule(cb)(component);
@@ -149,7 +179,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/admin/dentists',
       name: 'adminDentistsPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/AdminDentistsPage/reducer'),
           System.import('containers/AdminDentistsPage/sagas'),
@@ -158,7 +188,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('adminDentistsPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -170,7 +200,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/admin/members',
       name: 'adminMembersPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/AdminDentistsPage/reducer'),
           System.import('containers/AdminDentistsPage/sagas'),
@@ -198,7 +228,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/admin/reports',
       name: 'adminReportsPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/AdminDentistsPage/reducer'),
           System.import('containers/AdminDentistsPage/sagas'),
@@ -226,7 +256,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/admin/reviews',
       name: 'adminReviewsPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/AdminDentistsPage/reducer'),
           System.import('containers/AdminDentistsPage/sagas'),
@@ -253,11 +283,11 @@ export default function createRoutes (store) {
     }, {
       path: '/charge15',
       name: 'chargePage15',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/ChargePage15'),
         ])
-          .then(([ component ]) => {
+          .then(([component]) => {
             loadModule(cb)(component);
           })
           .catch(errorLoading);
@@ -265,11 +295,11 @@ export default function createRoutes (store) {
     }, {
       path: '/charge20',
       name: 'chargePage20',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/ChargePage20'),
         ])
-          .then(([ component ]) => {
+          .then(([component]) => {
             loadModule(cb)(component);
           })
           .catch(errorLoading);
@@ -281,14 +311,14 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dashboard',
       name: 'dashboard',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/Dashboard'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ component ]) => {
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
@@ -297,14 +327,14 @@ export default function createRoutes (store) {
     }, {
       path: '/dentist/contact-admin',
       name: 'contactAdminPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/ContactAdminPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ component ]) => {
+        importModules.then(([component]) => {
           renderRoute(component);
         });
 
@@ -314,7 +344,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dentist/edit-profile',
       name: 'dentistEditProfilePage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
@@ -323,7 +353,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('dentistMembersPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -335,7 +365,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dentist/members',
       name: 'dentistMembersPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
@@ -344,7 +374,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('dentistMembersPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -356,7 +386,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dentist/new-members',
       name: 'dentistNewMembersPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
@@ -384,7 +414,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dentist/new-reviews',
       name: 'dentistNewReviewsPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/DentistMembersPage/reducer'),
           System.import('containers/DentistMembersPage/sagas'),
@@ -412,7 +442,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/dentist/office/edit',
       name: 'editOfficeInformation',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/EditOfficeInformation/reducer'),
           System.import('containers/EditOfficeInformation/sagas'),
@@ -421,7 +451,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('editOfficeInformation', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -432,7 +462,7 @@ export default function createRoutes (store) {
     }, {
       path: '/error/404-not-found',
       name: 'notFoundPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         System.import('containers/NotFoundPage')
           .then(loadModule(cb))
           .catch(errorLoading);
@@ -440,7 +470,7 @@ export default function createRoutes (store) {
     }, {
       path: '/faq',
       name: 'faq',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         System.import('containers/FaqPage')
           .then(loadModule(cb))
           .catch(errorLoading);
@@ -448,7 +478,7 @@ export default function createRoutes (store) {
     }, {
       path: '/learn-more',
       name: 'learnMore',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/LearnMorePage/reducer'),
           System.import('containers/LearnMorePage/sagas'),
@@ -457,7 +487,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component, ]) => {
+        importModules.then(([reducer, sagas, component,]) => {
           injectReducer('learnMorePage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -469,11 +499,11 @@ export default function createRoutes (store) {
       onEnter: redirectToDashboard,
       path: '/marketplace/profile/:dentistId',
       name: 'marketplaceProfile',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         Promise.all([
           System.import('containers/MarketplaceProfilePage')
         ])
-          .then(([ component ]) => {
+          .then(([component]) => {
             loadModule(cb)(component);
           })
           .catch(errorLoading);
@@ -482,7 +512,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/patient/profile',
       name: 'patientProfilePage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
@@ -507,7 +537,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/patient/membership-info',
       name: 'patientMembershipInfoPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
@@ -532,7 +562,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/patient/your-dentist',
       name: 'patientDentistPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
@@ -557,7 +587,7 @@ export default function createRoutes (store) {
       onEnter: redirectToLogin,
       path: '/patient/your-reviews',
       name: 'patientReviewsPage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/PatientProfilePage/reducer'),
           System.import('containers/PatientProfilePage/sagas'),
@@ -581,7 +611,7 @@ export default function createRoutes (store) {
     }, {
       path: '/privacy',
       name: 'privacy',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         System.import('containers/PrivacyPage')
           .then(loadModule(cb))
           .catch(errorLoading);
@@ -589,7 +619,7 @@ export default function createRoutes (store) {
     }, {
       path: '/search',
       name: 'search',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/SearchPage/reducer'),
           System.import('containers/SearchPage/sagas'),
@@ -598,7 +628,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('search', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -609,7 +639,7 @@ export default function createRoutes (store) {
     }, {
       path: '/subscribe',
       name: 'subscribePage',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/SubscribePage/reducer'),
           System.import('containers/SubscribePage/sagas'),
@@ -618,7 +648,7 @@ export default function createRoutes (store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([ reducer, sagas, component ]) => {
+        importModules.then(([reducer, sagas, component]) => {
           injectReducer('subscribe', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -629,7 +659,7 @@ export default function createRoutes (store) {
     }, {
       path: '/terms',
       name: 'terms',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         System.import('containers/TermsPage')
           .then(loadModule(cb))
           .catch(errorLoading);
@@ -638,7 +668,7 @@ export default function createRoutes (store) {
       onEnter: redirectTo404,
       path: '*',
       name: '404',
-      getComponent (nextState, cb) {
+      getComponent(nextState, cb) {
         System.import('containers/NotFoundPage')
           .then(loadModule(cb))
           .catch(errorLoading);

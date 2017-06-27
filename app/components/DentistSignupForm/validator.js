@@ -66,7 +66,10 @@ const schema = {
 
   "officeInfo.url": {
     presence: { message: '^Website URL can\'t be blank' },
-    url: { message: '^Please enter the full URL, including the "http://". For example: "https://mydentistrysite.com".' },
+    format: {
+      pattern: '.\.+.',
+      message: '^Please enter the URL. For example: "mydentistrysite.com".'
+    }
   },
 
   "officeInfo.message": { presence: true },

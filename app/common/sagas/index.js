@@ -17,7 +17,7 @@ import { setAuthState, setUserData } from 'containers/App/actions';
 
 import { ME_FROM_TOKEN } from 'containers/App/constants';
 
-function* refreshAuthFlow () {
+function* refreshAuthFlow() {
   while (true) {
     yield take(ME_FROM_TOKEN);
     yield call(loadUserFromToken);
@@ -25,11 +25,12 @@ function* refreshAuthFlow () {
 }
 
 
-function* loadUserFromToken () {
-  const requestURL = '/api/v1/users/me';
+function* loadUserFromToken() {
+  const requestURL = '/api/v1/users/me/account';
   const user = yield select(selectCurrentUser);
   const authToken = getItem('auth_token');
 
+  console.log(user, authToken, 'user, authtoken');
   if (user || !authToken) {
     return;
   }
@@ -56,10 +57,10 @@ function* loadUserFromToken () {
           yield put(replace('/patient/profile'));
         }
         else if (userType === USER_TYPES.DENTIST) {
-          yield put (replace('/dentist/new-members'));
+          yield put(replace('/dentist/new-members'));
         }
         else if (userType === USER_TYPES.ADMIN) {
-          yield put (replace('/admin/dentists'));
+          yield put(replace('/admin/dentists'));
         }
       }
     }

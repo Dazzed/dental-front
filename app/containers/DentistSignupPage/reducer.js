@@ -71,7 +71,10 @@ export default function reducer (state = initialState, action) {
         ...state,
         pricingCodes: action.payload
           .map((priceCode) => {
-            return priceCode.code;
+            return {
+              id: priceCode.id,
+              code: priceCode.code
+            };
           })
           .sort((priceCodeNameA, priceCodeNameB) => {
             if (priceCodeNameA < priceCodeNameB) {

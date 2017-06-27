@@ -53,7 +53,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -66,7 +66,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -128,7 +128,7 @@ class PatientMembershipInfoPage extends React.Component {
     submitMemberForm: React.PropTypes.func.isRequired,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.changePageTitle('Your Membership Information');
     this.props.fetchDentist();
     this.props.fetchFamilyMembers();
@@ -159,7 +159,7 @@ class PatientMembershipInfoPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // react
       location,
@@ -174,6 +174,31 @@ class PatientMembershipInfoPage extends React.Component {
       editingMember,
     } = this.props;
 
+
+
+    /*
+    Precondition Renders
+    ------------------------------------------------------------
+    */
+    // precondition: the data must be loaded, otherwise wait for it
+    if (dataLoaded === false || !dentist.dentistInfo) {
+      return (
+        <div>
+          <NavBar pathname={location.pathname} logo={false} />
+          <PatientDashboardTabs active="memberships" />
+
+          <div styleName="content content--filler">
+            {
+              dataLoaded && !dentist.dentistInfo ?
+                <h3 className="text-muted block text-center">You Have No Membership</h3> :
+                <LoadingSpinner showOnlyIcon={false} />
+            }
+
+          </div>
+        </div>
+      );
+    }
+
     const adultSavings = dentist.dentistInfo.membership.savings;
     const adultMembership = {
       monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
@@ -185,24 +210,6 @@ class PatientMembershipInfoPage extends React.Component {
       monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
       savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
     };
-
-    /*
-    Precondition Renders
-    ------------------------------------------------------------
-    */
-    // precondition: the data must be loaded, otherwise wait for it
-    if (dataLoaded === false) {
-      return (
-        <div>
-          <NavBar pathname={location.pathname} logo={false} />
-          <PatientDashboardTabs active="memberships" />
-
-          <div styleName="content content--filler">
-            <LoadingSpinner showOnlyIcon={false} />
-          </div>
-        </div>
-      );
-    }
 
     /*
     Main Render
@@ -244,7 +251,7 @@ class PatientMembershipInfoPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${adultMembership.savings}**
+                  Total Annual Savings: ${adultMembership.savings || 0}**
                 </p>
 
                 <p styleName="membership__disclaimer">
@@ -287,7 +294,7 @@ class PatientMembershipInfoPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${childMembership.savings}**
+                  Total Annual Savings: ${childMembership.savings || 0}**
                 </p>
 
                 <p styleName="membership__disclaimer">
@@ -300,7 +307,7 @@ class PatientMembershipInfoPage extends React.Component {
               </div>
             </div>
 
-          {/* End Membership Info */}
+            {/* End Membership Info */}
           </div>
 
           <div styleName="add-family-member-wrapper">
@@ -312,7 +319,7 @@ class PatientMembershipInfoPage extends React.Component {
             />
           </div>
 
-        {/* End Content */}
+          {/* End Content */}
         </div>
 
         <MemberFormModal
@@ -326,7 +333,7 @@ class PatientMembershipInfoPage extends React.Component {
         />
 
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }

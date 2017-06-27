@@ -419,17 +419,40 @@ export default class PatientOffsiteSignupPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
-    const adultSavings = dentist.dentistInfo.membership.savings;
-    const adultMembership = {
-      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
-      savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
-    };
+    // OLD CODE
+    // const adultSavings = dentist.dentistInfo.membership.savings;
+    // const adultMembership = {
+    //   monthly: dentist.dentistInfo.membership.price.replace(".00", ""),
+    //   savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
+    // };
 
-    const childSavings = dentist.dentistInfo.childMembership.savings;
-    const childMembership = {
-      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
-      savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
-    };
+    // const childSavings = dentist.dentistInfo.childMembership.savings;
+    // const childMembership = {
+    //   monthly: dentist.dentistInfo.childMembership.price.replace(".00", ""),
+    //   savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
+    // };
+
+    // NEW CODE
+    const { memberships } = dentist;
+
+    const adultMembership = (() => {
+      let adult = memberships.find(m => m.subscription_age_group === 'adult');
+      return {
+        monthly: adult.price.replace('.00', ''),
+        savings: adult.discount
+      };
+    })();
+
+    const childMembership = (() => {
+      let child = memberships.find(m => m.subscription_age_group === 'child');
+      return {
+        monthly: child.price.replace('.00', ''),
+        savings: child.discount
+      };
+    })();
+
+    dentist.dentistInfo.membership = adultMembership;
+    dentist.dentistInfo.childMembership = childMembership;
 
     const soloAccountMemberConfirmationPopover = soloAccountMemberConfirmation === false
       ? null

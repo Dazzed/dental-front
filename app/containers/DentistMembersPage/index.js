@@ -18,6 +18,7 @@ import { reset as resetForm } from 'redux-form';
 
 // app
 import Avatar from 'components/Avatar';
+
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
@@ -27,6 +28,7 @@ import PatientsList from 'components/PatientsList';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
+import ConfirmModal from 'components/ConfirmModal';
 
 // local
 import {
@@ -89,7 +91,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -113,11 +115,11 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app 
     changePageTitle: (title) => dispatch(changePageTitle(title)),
-    
+
     // fetch
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
@@ -232,6 +234,7 @@ class DentistMembersPage extends React.Component {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
     this.props.fetchDentistReports();
+    this.state = { dialog: {} };
   }
 
   componentDidMount() {
@@ -256,7 +259,7 @@ class DentistMembersPage extends React.Component {
     this.props.setRemovingMember(patient, member);
   }
 
-  renewMember = (patient, member) => {
+  updateMemberConfirm = (patient, member, submit) => {
     /* TODO, UNVERIFIED */
     alert('TODO: renewMember');
   }
@@ -269,9 +272,34 @@ class DentistMembersPage extends React.Component {
     this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
+  confirmUpdateMember = (user, member, submit) => {
+    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
+    const cost = { monthly, yearly, discount };
+    const enrollmentDiv = user.reEnrollmentFee && <div>
+      <h3>{cost.discount}% Discount</h3>
+      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Confirm Member Update',
+      confirm: () => {
+        submit();
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
+  };
+
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(patient, member);
+    member.fromDentist = true;
+    this.props.setEditingMember(patient, member, (submit) => {
+      this.updateMemberConfirm(patient, member, submit);
+    });
   }
 
   updatePatientProfile = (patient) => {
@@ -322,7 +350,7 @@ class DentistMembersPage extends React.Component {
   }
 
   // reports
-  onReportSelected = ({month, year, url}) => {
+  onReportSelected = ({ month, year, url }) => {
     const {
       user: { firstName, lastName },
     } = this.props;
@@ -335,7 +363,7 @@ class DentistMembersPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // fetch
       dataLoaded,
@@ -358,6 +386,9 @@ class DentistMembersPage extends React.Component {
       editingPatientPayment,
     } = this.props;
 
+    const {
+      dialog
+    } = this.state;
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -406,14 +437,14 @@ class DentistMembersPage extends React.Component {
     return (
       <div>
         <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-          />
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+        />
         <DentistDashboardTabs active="members" />
 
         <div styleName="content">
@@ -465,6 +496,14 @@ class DentistMembersPage extends React.Component {
 
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
+        />
+
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
         />
 
         <PatientProfileFormModal

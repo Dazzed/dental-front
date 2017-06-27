@@ -55,6 +55,9 @@ import {
   SET_EDITING_PAYMENT,
   CLEAR_EDITING_PAYMENT,
   SUBMIT_PAYMENT_FORM,
+
+  // cancel membership
+  MEMBERSHIP_CANCEL_REQUEST
 } from './constants';
 
 /*
@@ -67,14 +70,25 @@ export function fetchDentist() {
   };
 }
 
-export function setDentist (payload) {
+
+/*
+Cancel Membership
+------------------------------------------------------------
+*/
+export function cancelMembership() {
+  return {
+    type: MEMBERSHIP_CANCEL_REQUEST,
+  };
+}
+
+export function setDentist(payload) {
   return {
     type: DENTIST_SUCCESS,
     payload,
   };
 }
 
-export function setDentistErrors (payload) {
+export function setDentistErrors(payload) {
   return {
     type: DENTIST_ERROR,
     payload,
@@ -91,14 +105,14 @@ export function fetchFamilyMembers() {
   };
 }
 
-export function setFamilyMembers (payload) {
+export function setFamilyMembers(payload) {
   return {
     type: FAMILY_MEMBERS_SUCCESS,
     payload,
   };
 }
 
-export function setFamilyMembersErrors (payload) {
+export function setFamilyMembersErrors(payload) {
   return {
     type: FAMILY_MEMBERS_ERROR,
     payload,
@@ -109,20 +123,20 @@ export function setFamilyMembersErrors (payload) {
 Add / Edit Member
 ------------------------------------------------------------
 */
-export function setEditingMember (member) {
+export function setEditingMember(member) {
   return {
     type: SET_EDITING_MEMBER,
     member
   };
 }
 
-export function clearEditingMember () {
+export function clearEditingMember() {
   return {
     type: CLEAR_EDITING_MEMBER,
   };
 }
 
-export function submitMemberForm (payload, userId) {
+export function submitMemberForm(payload, userId) {
   return {
     type: SUBMIT_MEMBER_FORM,
     payload,
@@ -130,7 +144,7 @@ export function submitMemberForm (payload, userId) {
   };
 }
 
-export function setAddedMember (payload, userId) {
+export function setAddedMember(payload, userId) {
   return {
     type: ADD_MEMBER_SUCCESS,
     payload,
@@ -138,7 +152,7 @@ export function setAddedMember (payload, userId) {
   };
 }
 
-export function setEditedMember (payload, userId) {
+export function setEditedMember(payload, userId) {
   return {
     type: EDIT_MEMBER_SUCCESS,
     payload,
@@ -150,7 +164,7 @@ export function setEditedMember (payload, userId) {
 Remove Member 
 ------------------------------------------------------------
 */
-export function setRemovingMember (payload, userId) {
+export function setRemovingMember(payload, userId) {
   return {
     type: REMOVE_MEMBER_REQUEST,
     payload,
@@ -158,7 +172,7 @@ export function setRemovingMember (payload, userId) {
   };
 }
 
-export function setRemovedMember (memberId, userId) {
+export function setRemovedMember(memberId, userId) {
   return {
     type: REMOVE_MEMBER_SUCCESS,
     memberId,
@@ -170,20 +184,20 @@ export function setRemovedMember (memberId, userId) {
 Edit Profile
 ------------------------------------------------------------
 */
-export function setEditingProfile (user) {
+export function setEditingProfile(user) {
   return {
     type: SET_EDITING_PROFILE,
     user,
   };
 }
 
-export function clearEditingProfile () {
+export function clearEditingProfile() {
   return {
     type: CLEAR_EDITING_PROFILE,
   };
 }
 
-export function submitProfileForm (payload, userId) {
+export function submitProfileForm(payload, userId) {
   return {
     type: SUBMIT_PROFILE_FORM,
     payload,
@@ -197,20 +211,20 @@ export function submitProfileForm (payload, userId) {
 Add / Edit Review
 ------------------------------------------------------------
 */
-export function setEditingReview (review) {
+export function setEditingReview(review) {
   return {
     type: SET_EDITING_REVIEW,
     review,
   };
 }
 
-export function clearEditingReview (review) {
+export function clearEditingReview(review) {
   return {
     type: CLEAR_EDITING_REVIEW,
   };
 }
 
-export function submitReviewForm (payload, dentistId) {
+export function submitReviewForm(payload, dentistId) {
   return {
     type: SUBMIT_REVIEW_FORM,
     payload,
@@ -218,7 +232,7 @@ export function submitReviewForm (payload, dentistId) {
   };
 }
 
-export function setAddedReview (payload, dentistId) {
+export function setAddedReview(payload, dentistId) {
   return {
     type: ADD_REVIEW_SUCCESS,
     payload,
@@ -226,7 +240,7 @@ export function setAddedReview (payload, dentistId) {
   };
 }
 
-export function setEditedReview (payload, dentistId) {
+export function setEditedReview(payload, dentistId) {
   return {
     type: EDIT_REVIEW_SUCCESS,
     payload,
@@ -238,7 +252,7 @@ export function setEditedReview (payload, dentistId) {
 Remove Review
 ------------------------------------------------------------
 */
-export function setRemovingReview (payload, dentistId) {
+export function setRemovingReview(payload, dentistId) {
   return {
     type: REMOVE_REVIEW_REQUEST,
     payload,
@@ -246,7 +260,7 @@ export function setRemovingReview (payload, dentistId) {
   };
 }
 
-export function setRemovedReview (reviewId, dentistId) {
+export function setRemovedReview(reviewId, dentistId) {
   return {
     type: REMOVE_REVIEW_SUCCESS,
     reviewId,
@@ -258,20 +272,20 @@ export function setRemovedReview (reviewId, dentistId) {
 Edit Security
 ------------------------------------------------------------
 */
-export function setEditingSecurity (securityInfo) {
+export function setEditingSecurity(securityInfo) {
   return {
     type: SET_EDITING_SECURITY,
     securityInfo,
   };
 }
 
-export function clearEditingSecurity () {
+export function clearEditingSecurity() {
   return {
     type: CLEAR_EDITING_SECURITY,
   };
 }
 
-export function submitSecurityForm (payload, user) {
+export function submitSecurityForm(payload, user) {
   return {
     type: SUBMIT_SECURITY_FORM,
     payload,
@@ -283,20 +297,20 @@ export function submitSecurityForm (payload, user) {
 
 /* Edit Payment Info
  * ------------------------------------------------------ */
-export function setEditingPayment (paymentInfo) {
+export function setEditingPayment(paymentInfo) {
   return {
     type: SET_EDITING_PAYMENT,
     paymentInfo,
   };
 }
 
-export function clearEditingPayment () {
+export function clearEditingPayment() {
   return {
     type: CLEAR_EDITING_PAYMENT,
   };
 }
 
-export function submitPaymentForm (payload, dentistId, userId) {
+export function submitPaymentForm(payload, dentistId, userId) {
   return {
     type: SUBMIT_PAYMENT_FORM,
     payload,

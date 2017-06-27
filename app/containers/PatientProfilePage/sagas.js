@@ -78,6 +78,9 @@ import {
 
   // edit payment info
   SUBMIT_PAYMENT_FORM,
+
+  // cancel membership
+  MEMBERSHIP_CANCEL_REQUEST,
 } from './constants';
 
 
@@ -91,7 +94,7 @@ export default [
   main,
 ];
 
-function* main () {
+function* main() {
   const watcherA = yield fork(dentistFetcher);
   const watcherB = yield fork(familyMembersFetcher);
   const watcherC = yield fork(submitMemberFormWatcher);
@@ -101,6 +104,7 @@ function* main () {
   const watcherG = yield fork(removeReviewWatcher);
   const watcherH = yield fork(submitAccountSecurityFormWatcher);
   const watcherI = yield fork(submitPaymentFormWatcher);
+  const watcherJ = yield fork(cancelMembership);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -112,18 +116,19 @@ function* main () {
   yield cancel(watcherG);
   yield cancel(watcherH);
   yield cancel(watcherI);
+  yield cancel(watcherJ);
 }
 
 /*
 Fetch Dentist
 ------------------------------------------------------------
 */
-function* dentistFetcher () {
-  yield* takeLatest(DENTIST_REQUEST, function* handler () {
+function* dentistFetcher() {
+  yield* takeLatest(DENTIST_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/users/me/dentist');
       yield put(setDentist(response.data));
-    } catch(err) {
+    } catch (err) {
       yield put(setDentistErrors(err));
     }
   });
@@ -133,12 +138,12 @@ function* dentistFetcher () {
 Fetch Members
 ------------------------------------------------------------
 */
-function* familyMembersFetcher () {
-  yield* takeLatest(FAMILY_MEMBERS_REQUEST, function* handler () {
+function* familyMembersFetcher() {
+  yield* takeLatest(FAMILY_MEMBERS_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/users/me/members');
       yield put(setFamilyMembers(response.data));
-    } catch(err) {
+    } catch (err) {
       yield put(setFamilyMembersErrors(err));
     }
   });
@@ -148,7 +153,7 @@ function* familyMembersFetcher () {
 Add / Edit Member
 ------------------------------------------------------------
 */
-function* submitMemberFormWatcher () {
+function* submitMemberFormWatcher() {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
 
@@ -183,9 +188,18 @@ function* submitAddMemberForm(payload, userId) {
   }
 }
 
-function* submitEditMemberForm (payload, userId) {
+function* submitEditMemberForm(payload, userId) {
   try {
-    const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    let requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+    const isEnrollment = payload.subscription && payload.subscription.status === 'inactive'
+    if (/^{.*.}$/.test(payload.membershipType)) {
+      payload.membershipType = JSON.parse(payload.membershipType);
+    }
+
+    if (isEnrollment) {
+      requestURL = `/api/v1/users/${userId}/members/${payload.id}/enroll`;
+    }
+
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -194,6 +208,10 @@ function* submitEditMemberForm (payload, userId) {
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
     yield put(toastrActions.success('', message));
+    if (isEnrollment) {
+      yield (familyMembersFetcher());
+      yield (dentistFetcher());
+    }
 
     yield put(setEditedMember(response.data, userId));
 
@@ -209,7 +227,7 @@ function* submitEditMemberForm (payload, userId) {
 Remove Member
 ------------------------------------------------------------
 */
-function* removeMemberWatcher () {
+function* removeMemberWatcher() {
   while (true) {
     const { payload, userId } = yield take(REMOVE_MEMBER_REQUEST);
 
@@ -237,7 +255,7 @@ function* removeMemberWatcher () {
 Edit Profile
 ------------------------------------------------------------
 */
-function* submitProfileFormWatcher () {
+function* submitProfileFormWatcher() {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_PROFILE_FORM);
 
@@ -278,7 +296,7 @@ function* submitProfileFormWatcher () {
 Add / Edit Review
 ------------------------------------------------------------
 */
-function* submitReviewFormWatcher () {
+function* submitReviewFormWatcher() {
   while (true) {
     const { payload, dentistId } = yield take(SUBMIT_REVIEW_FORM);
 
@@ -313,7 +331,7 @@ function* submitAddReviewForm(payload, dentistId) {
   }
 }
 
-function* submitEditReviewForm (payload, dentistId) {
+function* submitEditReviewForm(payload, dentistId) {
   try {
     const requestURL = `/api/v1/dentists/${dentistId}/review/${payload.id}`;
     const params = {
@@ -335,12 +353,33 @@ function* submitEditReviewForm (payload, dentistId) {
   }
 }
 
+function* cancelMembership() {
+  yield* takeLatest(MEMBERSHIP_CANCEL_REQUEST, function* handler() {
+    try {
+      const requestURL = '/api/v1/memberships/cancel/me';
+      const params = {
+        method: 'DELETE',
+        body: {}
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `Your membership has been cancelled.`;
+      yield put(toastrActions.success('', message));
+      yield put(setDentist({}));
+
+    } catch (err) {
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(toastrActions.error('', 'Error cancelling your membership, please try again'));
+    }
+  });
+}
+
 
 /*
 Remove Review
 ------------------------------------------------------------
 */
-function* removeReviewWatcher () {
+function* removeReviewWatcher() {
   while (true) {
     const { payload, dentistId } = yield take(REMOVE_REVIEW_REQUEST);
 
@@ -368,7 +407,7 @@ function* removeReviewWatcher () {
 Edit Security
 ------------------------------------------------------------
 */
-function* submitAccountSecurityFormWatcher () {
+function* submitAccountSecurityFormWatcher() {
   while (true) {
     const { payload, user } = yield take(SUBMIT_SECURITY_FORM);
 
@@ -412,7 +451,7 @@ function* submitAccountSecurityFormWatcher () {
 
 /* Edit Payment Info
  * ------------------------------------------------------ */
-function* submitPaymentFormWatcher () {
+function* submitPaymentFormWatcher() {
   while (true) {
     const { payload, dentistId, userId, } = yield take(SUBMIT_PAYMENT_FORM);
 
