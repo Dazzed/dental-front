@@ -86,7 +86,7 @@ export default class CheckoutFormModal extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // settings
       listMembers,
@@ -160,6 +160,8 @@ export default class CheckoutFormModal extends React.Component {
                 type="text"
                 component={this.getLabeledInput}
                 label="Card Number"
+                mask="9999 9999 9999 9999"
+                maskChar=" "
                 placeholder=""
                 className="col-sm-8"
               />
