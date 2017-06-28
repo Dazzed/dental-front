@@ -95,7 +95,8 @@ function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
-    dentistInfo: selectDentistInfo(state),
+    dentist: selectDentist(state),
+    // dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
     reports: selectDentistReports(state),
     user: selectCurrentUser(state),
@@ -368,6 +369,7 @@ class DentistMembersPage extends React.Component {
       // fetch
       dataLoaded,
       dentistInfo,
+      dentist,
       patients,
       reports,
       user,
@@ -489,8 +491,7 @@ class DentistMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentistInfo={dentistInfo}
-
+          dentist={dentist}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

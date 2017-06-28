@@ -91,7 +91,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -115,7 +115,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -317,7 +317,7 @@ class DentistNewReviewsPage extends React.Component {
   }
 
   // reports
-  onReportSelected = ({month, year, url}) => {
+  onReportSelected = ({ month, year, url }) => {
     const {
       user: { firstName, lastName },
     } = this.props;
@@ -352,11 +352,12 @@ class DentistNewReviewsPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // fetch
       dataLoaded,
       dentistInfo,
+      dentist,
       patients,
       recentReviewers,
       reports,
@@ -439,7 +440,7 @@ class DentistNewReviewsPage extends React.Component {
         </div>
       );
     }
-    
+
     /*
     Main Render
     ------------------------------------------------------------
@@ -466,15 +467,15 @@ class DentistNewReviewsPage extends React.Component {
 
     return (
       <div>
-          <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-          />
+        <DentistDashboardHeader
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+        />
         <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
@@ -511,8 +512,7 @@ class DentistNewReviewsPage extends React.Component {
         />
 
         <MemberFormModal
-          dentistInfo={dentistInfo}
-
+          dentist={dentist}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

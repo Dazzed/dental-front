@@ -346,6 +346,7 @@ class DentistNewMembersPage extends React.Component {
       // fetch
       dataLoaded,
       dentistInfo,
+      dentist,
       patients,
       patientsWithNewMembers,
       reports,
@@ -489,8 +490,7 @@ class DentistNewMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentistInfo={dentistInfo}
-
+          dentist={dentist}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
