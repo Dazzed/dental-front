@@ -48,7 +48,8 @@ export default class MemberFormModal extends React.Component {
 
   static propTypes = {
     // passed in data
-    dentistInfo: React.PropTypes.object.isRequired,
+    // dentistInfo: React.PropTypes.object.isRequired,
+    dentist: React.PropTypes.object,
 
     // form related
     initialValues: React.PropTypes.object,
@@ -73,7 +74,7 @@ export default class MemberFormModal extends React.Component {
     const {
       acceptsChildren,
       childStartingAge,
-    } = this.props.dentistInfo;
+    } = this.props.dentist.dentistInfo;
 
     const {
       childWarning,
@@ -86,7 +87,7 @@ export default class MemberFormModal extends React.Component {
       lastName,
     } = values;
 
-    const age = moment().diff(moment(birthDate, "MM/DD/YYYY"), 'years');
+    const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
 
     if (acceptsChildren === false
       && childWarning === false
@@ -141,50 +142,52 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
-    console.log(this.props)
-    console.log(this.props.dentistInfo)
-    const { dentistInfo: { childMembership, membership, acceptsChildren } } = this.props;
-    let membershipTypes = [];
-    let price = 0;
-    if (acceptsChildren) {
-      price = this.processPrice(childMembership.monthly, childMembership.discount);
-      membershipTypes.push({
-        price,
-        name: `Child Monthly Recurring — $${price}`
-      });
+    // console.log(this.props);
+    console.log(this.props.dentist, 'dentist');
+    const { dentist: { memberships } } = this.props;
+    // let membershipTypes = [];
+    // let price = 0;
+    // if (acceptsChildren) {
+    //   price = this.processPrice(childMembership.monthly, childMembership.discount);
+    //   membershipTypes.push({
+    //     price,
+    //     name: `Child Monthly Recurring — $${price}`
+    //   });
 
-      price = this.processPrice(childMembership.yearly, childMembership.discount);
-      membershipTypes.push({
-        price,
-        name: `Child Yearly Nonrecurring — $${price}`
-      });
-    }
+    //   price = this.processPrice(childMembership.yearly, childMembership.discount);
+    //   membershipTypes.push({
+    //     price,
+    //     name: `Child Yearly Nonrecurring — $${price}`
+    //   });
+    // }
 
-    price = this.processPrice(membership.monthly, membership.discount);
-    membershipTypes.push({
-      price,
-      name: `Adult Monthly Recurring — $${price}`
-    });
+    // price = this.processPrice(membership.monthly, membership.discount);
+    // membershipTypes.push({
+    //   price,
+    //   name: `Adult Monthly Recurring — $${price}`
+    // });
 
-    price = this.processPrice(membership.yearly, membership.discount);
-    membershipTypes.push({
-      price,
-      name: `Adult Yearly Nonrecurring — $${price}`
-    });
+    // price = this.processPrice(membership.yearly, membership.discount);
+    // membershipTypes.push({
+    //   price,
+    //   name: `Adult Yearly Nonrecurring — $${price}`
+    // });
 
     return (<Field
-      name="membershipType"
+      name="membershipId"
       type="select"
       component={this.getLabeledInput}
       label="Membership Type"
       className="col-md-6"
     >
       <option>Membership Type</option>
-      {membershipTypes.map((value, index) =>
-        <option value={JSON.stringify(value)} key={index} label={value.name}>
-          {value.name}
-        </option>
-      )}
+      {
+        memberships
+          .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
+          .map(membership =>
+            <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
+          )
+      }
     </Field>);
   };
 
