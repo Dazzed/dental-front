@@ -45,14 +45,14 @@ const history = syncHistoryWithStore(browserHistory, store);
 // Set up the router, wrapping all Routes in the App component
 const rootRoute = {
   childRoutes: createRoutes(store),
-  getComponent (nextState, cb) {
+  getComponent(nextState, cb) {
     // We need to inject sagas after loaded.
     Promise.all([
       System.import('containers/App/sagas'),
       System.import('containers/Dashboard/sagas'),
       System.import('containers/Authorize.net/sagas'),
     ])
-      .then(([ sagas, dashboard, payment ]) => {
+      .then(([sagas, dashboard, payment]) => {
         cb(null, App);
         const { injectSagas } = getHooks(store);
         // Each of these sagas needs to be cancelled upon location change
@@ -78,6 +78,11 @@ const rootRoute = {
 //     return true;
 //   });
 // }
+
+// Extend String class add ucFirst method
+String.prototype.ucFirst = function () {
+  return this[0] ? `${this[0].toUpperCase()}${this.substr(1)}` : this;
+};
 
 render(
   <Provider store={store}>
