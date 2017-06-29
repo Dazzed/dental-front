@@ -41,7 +41,7 @@ import SignupFormValidator from './validator';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     formValues: getFormValues('signupPatient')(state),
   };
@@ -63,8 +63,8 @@ class SignupForm extends React.Component {
   static propTypes = {
     // passed in
     autosubmit: React.PropTypes.bool,
-    offices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-
+    // offices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    dentist: React.PropTypes.object.isRequired,
     // state
     formValues: React.PropTypes.object,
 
@@ -76,10 +76,12 @@ class SignupForm extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     const {
       // passed in
-      offices,
+      dentist: {
+        offices
+      },
 
       // redux form
       change,
@@ -138,19 +140,19 @@ class SignupForm extends React.Component {
   seem to have a noticeable effect.  In all likelihood, redux-form is also
   validating the form on every change, which makes this a linear-time slowdown.
   */
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const {
       // passed in
       autosubmit,
       onSubmit,
     } = this.props;
 
-    if ( autosubmit === true                            // autosubmit is requested
+    if (autosubmit === true                            // autosubmit is requested
       && nextProps.dirty === true                       // the form has been touched
       && this.props.formValues !== nextProps.formValues // a change was made
       && Object.keys(                                   // the form is valid (including the change)
-           SignupFormValidator(nextProps.formValues)
-         ).length === 0
+        SignupFormValidator(nextProps.formValues)
+      ).length === 0
     ) {
       onSubmit(nextProps.formValues);
     }
@@ -177,11 +179,14 @@ class SignupForm extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
-    // passed in
-      offices,
-
+      // passed in
+      dentist: {
+        offices,
+        memberships
+      },
+      formValues,
       // redux form
       error,
       handleSubmit,
@@ -332,31 +337,31 @@ class SignupForm extends React.Component {
               is no need to show the office selector.
           */}
           {offices.length > 1
-            ? ( <Field
-                  name="officeId"
-                  type="select"
-                  label="Dental Office"
-                  component={this.getLabeledInput}
-                  className="col-sm-4"
-                >
-                  <option value="">Select dental office</option>
-                  {offices.map((office) => {
-                    return (
-                      <option value={office.id} key={office.id}>
-                        {office.officeName}
-                      </option>
-                    );
-                  })}
-                </Field>
-              )
-            : ( <div styleName="hidden-field">
-                  <Field
-                    name="officeId"
-                    type="hidden"
-                    component={this.getInput}
-                  />
-                </div>
-              )
+            ? (<Field
+              name="officeId"
+              type="select"
+              label="Dental Office"
+              component={this.getLabeledInput}
+              className="col-sm-4"
+            >
+              <option value="">Select dental office</option>
+              {offices.map((office) => {
+                return (
+                  <option value={office.id} key={office.id}>
+                    {office.officeName}
+                  </option>
+                );
+              })}
+            </Field>
+            )
+            : (<div styleName="hidden-field">
+              <Field
+                name="officeId"
+                type="hidden"
+                component={this.getInput}
+              />
+            </div>
+            )
           }
 
           {/* TODO: select membership type here */}
@@ -368,6 +373,27 @@ class SignupForm extends React.Component {
             >
               <strong>I Will Also Be A Member</strong>
             </Field>
+          </div>
+          <div className="col">
+            {
+              formValues && formValues.payingMember ?
+                <Field
+                  name="membershipId"
+                  type="select"
+                  component={this.getLabeledInput}
+                  label="Membership Type"
+                  className="col-md-6"
+                >
+                  <option>Membership Type</option>
+                  {
+                    memberships
+                      .filter(({ subscription_age_group: age }) => age === 'adult')
+                      .map(membership =>
+                        <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
+                      )
+                  }
+                </Field> : null
+            }
           </div>
         </Row>
 
