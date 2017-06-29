@@ -97,9 +97,11 @@ export default class CheckoutFormModal extends React.Component {
       handleSubmit,
       submit,
       submitting,
+      dentist,
 
       // modal related
       show,
+      stripe,
       onCancel,
     } = this.props;
 
@@ -113,7 +115,7 @@ export default class CheckoutFormModal extends React.Component {
         Periodontal Disease is the inflammation and/or infection of the tissues around your teeth. Roughly 5-10% of the population requires additional treatment for this prior to their basic cleaning included with your membership.
       </Popover>
     );
-
+    
     return (
       <Modal
         backdrop={'static'}
@@ -139,6 +141,7 @@ export default class CheckoutFormModal extends React.Component {
               <h5 styleName="modal-section-title">Members:</h5>
 
               <MembersList
+                dentist={dentist}
                 patient={user}
               />
 
@@ -149,11 +152,13 @@ export default class CheckoutFormModal extends React.Component {
           <form
             onSubmit={handleSubmit}
             className="form-horizontal"
+            id="payment-form"
           >
             {listMembers && user && (
               <h5 styleName="modal-section-title">Enter Payment Information:</h5>
             )}
 
+            <div id="card-element"></div>
             <Row>
               <Field
                 name="number"
@@ -161,6 +166,7 @@ export default class CheckoutFormModal extends React.Component {
                 component={this.getLabeledInput}
                 label="Card Number"
                 mask="9999 9999 9999 9999"
+                id="card_number"
                 maskChar=" "
                 placeholder=""
                 className="col-sm-8"
