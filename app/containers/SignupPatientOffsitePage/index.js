@@ -50,7 +50,7 @@ import {
   // checkout
   setEditingCheckout,
   clearEditingCheckout,
-
+  createStripeToken,
   // signup
   signupRequest,
   clearSignupStatus,
@@ -130,6 +130,7 @@ function mapDispatchToProps(dispatch) {
     resetCheckoutForm: () => dispatch(resetForm('checkout')),
     setEditingCheckout: (cardDetails) => dispatch(setEditingCheckout(cardDetails)),
     clearEditingCheckout: () => dispatch(clearEditingCheckout()),
+    createStripeToken: (cardDetails,user, paymentInfo) => dispatch(createStripeToken(cardDetails,user, paymentInfo)),
 
     // signup
     clearSignupStatus: () => dispatch(clearSignupStatus()),
@@ -306,7 +307,12 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   handleCheckoutFormSubmit = (paymentInfo) => {
-    this.props.makeSignupRequest(this.props.user, paymentInfo);
+    this.props.createStripeToken({
+      number: paymentInfo.number,
+      cvc: paymentInfo.cvc,
+      expiry: paymentInfo.expiry
+    },this.props.user, paymentInfo);
+    // this.props.makeSignupRequest(this.props.user, paymentInfo);
   }
 
   cancelCheckoutFormAction = () => {

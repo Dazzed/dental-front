@@ -39,6 +39,9 @@ import {
 
   // signup
   SIGNUP_REQUEST,
+
+  //checkout
+  STRIPE_CREATE_TOKEN
 } from './constants';
 
 
@@ -52,7 +55,7 @@ export default [
   main
 ];
 
-function* main () {
+function* main() {
   const watcherA = yield fork(dentistFetcher);
   const watcherB = yield fork(signupWatcher);
 
@@ -65,8 +68,8 @@ function* main () {
 Fetch Dentist
 ------------------------------------------------------------
 */
-function* dentistFetcher () {
-  yield* takeLatest(DENTIST_REQUEST, function* handler (action) {
+function* dentistFetcher() {
+  yield* takeLatest(DENTIST_REQUEST, function* handler(action) {
     const {
       dentistId,
     } = action;
@@ -75,7 +78,7 @@ function* dentistFetcher () {
       const response = yield call(request, `/api/v1/dentists/details/${dentistId}/no-auth`);
       yield put(setDentist(response.data));
 
-    } catch(err) {
+    } catch (err) {
       console.log("ERR");
       console.log(err)
       yield put(setDentistError(err));
@@ -94,36 +97,78 @@ See:
   - https://trello.com/c/jVMGmXBz/84-patient-create-offsite-patient-signup-page
   - https://gigster.slack.com/archives/G3PCN7J69/p1492596171530996?thread_ts=1492589510.012543&cid=G3PCN7J69
 */
-function* signupWatcher () {
+function* signupWatcher() {
   while (true) {
-    const { user, paymentInfo, } = yield take(SIGNUP_REQUEST);
 
-    // NOTE: When making the subsequent checkout request, be sure to use the
-    //       `userId` that was created on the server and included in the
-    //       `signupResponse`.  Do not use `user.id`, since it is a locally
-    //       created temporary id only used / understood by the frontend.
-    const signupResponse = yield call(makeSignupRequest, user, paymentInfo);
+    const {cardDetails, user, paymentInfo} = yield take(STRIPE_CREATE_TOKEN);
+    // const { user, paymentInfo } = yield takeLatest(SIGNUP_REQUEST);
+    const stripeToken = yield call(makeStripeCreateTokenRequest, cardDetails);
 
-    if (signupResponse !== false) {
-      const realUserId = signupResponse.data[0].id;
-      const checkoutResponse = yield call(makeCheckoutRequest, paymentInfo, realUserId);
+    if (stripeToken !== false) {
 
-      if (checkoutResponse !== false) {
-        // ensure form values are erased
-        reset('signupPatient');
-        reset('familyMember');
-        reset('checkout');
+      // NOTE: When making the subsequent checkout request, be sure to use the
+      //       `userId` that was created on the server and included in the
+      //       `signupResponse`.  Do not use `user.id`, since it is a locally
+      //       created temporary id only used / understood by the frontend.
+      const signupResponse = yield call(makeSignupRequest, user, paymentInfo);
 
-        yield put(signupSuccess({
-          fullName: `${user.firstName} ${user.lastName}`,
-          loginEmail: user.email,
-        }));
+      if (signupResponse !== false) {
+        const realUserId = signupResponse.data[0].id;
+        const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId);
+
+        if (checkoutResponse !== false) {
+          // ensure form values are erased
+          reset('signupPatient');
+          reset('familyMember');
+          reset('checkout');
+
+          yield put(signupSuccess({
+            fullName: `${user.firstName} ${user.lastName}`,
+            loginEmail: user.email,
+          }));
+        }
       }
     }
   }
 }
 
-function* makeSignupRequest (user, paymentInfo) {
+function createStripeToken(cardDetails) {
+  let stripe_obj = {
+    number: cardDetails.number,
+    cvc: cardDetails.cvc,
+    exp_month: cardDetails.expiry.split("/")[0],
+    exp_year: cardDetails.expiry.split("/")[1]
+  };
+  return new Promise((resolve, reject) => {
+    Stripe.card.createToken({
+      ...stripe_obj
+    }, (status, response) => {
+      if (response.error) {
+        reject(response.error);
+      } else {
+        resolve(response.id);
+      }
+    })
+});
+}
+
+function* makeStripeCreateTokenRequest(cardDetails) {
+  try {
+    const token = yield call(createStripeToken, cardDetails);
+    return token;
+  } catch (err) {
+    console.log("Error in creating stripe token");
+    console.log(err);
+
+    yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    yield put(stopSubmit('checkout', null));
+    yield put(change('checkout', 'cardCode', null));
+    yield put(stopSubmit('signupPatient', formErrors));
+    return false;
+  }
+}
+
+function* makeSignupRequest(user, paymentInfo) {
   // NOTE: The user and each member have fake `id` fields to keep track of them
   //       while the user is filling out the form.  These need to be removed,
   //       but without messing up the existing objects in case they are still
@@ -140,73 +185,64 @@ function* makeSignupRequest (user, paymentInfo) {
     .map((member) => {
       return {
         ...member,
-        id: undefined,
+    id: undefined,
       };
     });
 
-  const cleanedUser = {
+const cleanedUser = {
     ...user,
-    id: undefined,
+  id: undefined,
     address: paymentInfo.address,
-    city: paymentInfo.city,
-    state: paymentInfo.state,
-    zipCode: paymentInfo.zip,
+      city: paymentInfo.city,
+        state: paymentInfo.state,
+          zipCode: paymentInfo.zip,
 
-    members: cleanedMembers,
+            members: cleanedMembers,
   };
 
-  try {
-    const requestURL = '/api/v1/accounts/signup';
-    const params = {
-      method: 'POST',
-      body: JSON.stringify(cleanedUser),
-    };
+try {
+  const requestURL = '/api/v1/accounts/signup';
+  const params = {
+    method: 'POST',
+    body: JSON.stringify(cleanedUser),
+  };
 
-    const response = yield call(request, requestURL, params);
-    return response;
+  const response = yield call(request, requestURL, params);
+  return response;
 
-  } catch (err) {
-    const errors = mapValues(err.errors, (value) => value.msg);
+} catch (err) {
+  const errors = mapValues(err.errors, (value) => value.msg);
 
-    // Map from known response errors to their form field identifiers.
-    // Currently, only server-side-only validation is included most of the
-    // validation is identical on the client and the server.  Thus a
-    // non-malicious user will have already checked the other possible error
-    // responses.
-    const formErrors = {};
+  // Map from known response errors to their form field identifiers.
+  // Currently, only server-side-only validation is included most of the
+  // validation is identical on the client and the server.  Thus a
+  // non-malicious user will have already checked the other possible error
+  // responses.
+  const formErrors = {};
 
-    if (errors.email) {
-      formErrors.email = errors.email;
-    }
-
-    if (Object.keys(formErrors).length === 0) {
-      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
-    }
-    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
-      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please enter another email in Step 1.'));
-    }
-    else {
-      yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
-    }
-
-    yield put(stopSubmit('checkout', null));
-    yield put(change('checkout', 'cardCode', null));
-    yield put(stopSubmit('signupPatient', formErrors));
-    return false;
+  if (errors.email) {
+    formErrors.email = errors.email;
   }
+
+  if (Object.keys(formErrors).length === 0) {
+    yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+  }
+  else if (Object.keys(formErrors).length === 1 && formErrors.email) {
+    yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please enter another email in Step 1.'));
+  }
+  else {
+    yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
+  }
+
+  yield put(stopSubmit('checkout', null));
+  yield put(change('checkout', 'cardCode', null));
+  yield put(stopSubmit('signupPatient', formErrors));
+  return false;
+}
 }
 
-function* makeCheckoutRequest (paymentInfo, userId) {
+function* makeCheckoutRequest(stripeToken, userId) {
   const allowedFields = {
-    card: pick(
-      paymentInfo,
-      'fullName',
-      'number',
-      'expiry',
-      'cvc',
-      'zip',
-    ),
-
     cancellationFeeWaiver: paymentInfo.feeWaiver,
     periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
     reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
@@ -215,7 +251,7 @@ function* makeCheckoutRequest (paymentInfo, userId) {
   allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
 
   try {
-    const requestURL = `/api/v1/users/${userId}/payments`;
+    const requestURL = `/api/v1/users/${userId}/account/payment/sources/${stripeToken}`;
     const params = {
       method: 'POST',
       body: JSON.stringify(allowedFields),
