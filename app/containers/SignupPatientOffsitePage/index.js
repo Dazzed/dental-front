@@ -17,6 +17,7 @@ import FaClose from 'react-icons/lib/fa/close';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 import {
   // form actions
   reset as resetForm,
@@ -110,6 +111,7 @@ function mapDispatchToProps(dispatch) {
   return {
     // app
     changeRoute: (url) => dispatch(push(url)),
+    toastError: (message) => dispatch(toastrActions.error(message)),
 
     // fetch dentist
     fetchDentist: (dentistId) => dispatch(fetchDentist(dentistId)),
@@ -223,6 +225,11 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   componentWillMount() {
     this.props.fetchDentist(this.props.routeParams.dentistId);
+    if (!window.Stripe) {
+      return toastError('There was an error embedding Stripe, please reload the page');
+    }
+
+    window.Stripe.setPublishableKey('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
   }
 
   /*
@@ -232,22 +239,22 @@ export default class PatientOffsiteSignupPage extends React.Component {
   goToLoginPage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
-  }
+  };
 
   // members
   addMember = () => {
     this.props.resetMemberForm();
     this.props.setEditingMember({});
-  }
+  };
 
   removeMember = (user, member) => {
     this.props.setRemovingMember(member.id);
-  }
+  };
 
   updateMember = (user, member) => {
     this.props.resetMemberForm();
     this.props.setEditingMember(member);
-  }
+  };
 
   // checkout
   checkout = () => {
@@ -277,14 +284,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
         this.clearSoloAccountMemberConfirmation();
       }
     }
-  }
+  };
 
   clearSoloAccountMemberConfirmation = () => {
     this.setState({
       ...this.state,
       soloAccountMemberConfirmation: false,
     });
-  }
+  };
 
   /*
   Events
@@ -293,25 +300,48 @@ export default class PatientOffsiteSignupPage extends React.Component {
   // user
   handleUserFormSubmit = (values) => {
     this.props.submitUserForm(values);
-  }
+  };
 
   // members
   handleMemberFormSubmit = (values) => {
     this.props.submitMemberForm(values);
-  }
+  };
 
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
-  }
+  };
 
   // checkout
   handleCheckoutFormSubmit = (paymentInfo) => {
-    this.props.makeSignupRequest(this.props.user, paymentInfo);
-  }
+    const { user, dentist, toastError } = this.props;
+    const { number, expiry, cvc, fullName, zip: address_zip } = paymentInfo;
+    console.log(paymentInfo, 'card element');
+    const expiry_ = expiry.split('/');
+    Stripe.createToken({
+      number,
+      name: fullName,
+      exp_month: expiry_[0],
+      exp_year: expiry_[1],
+      cvc,
+      address_zip
+    }, (status, response) => {
+      console.log(response);
+      if (!response.error) {
+        // delete paymentInfo.number;
+        // delete paymentInfo.cvc;
+        // delete paymentInfo.expiry;
+        paymentInfo.stripeToken = response.id;
+        console.log(paymentInfo);
+        this.props.makeSignupRequest(user, paymentInfo, dentist);
+      } else {
+        toastError(`Error generating card token, please double check your credit card data. Status — ${status}`);
+      }
+    })
+  };
 
   cancelCheckoutFormAction = () => {
     this.props.clearEditingCheckout();
-  }
+  };
 
   /*
   Render
@@ -337,7 +367,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
       isSignedUp,
     } = this.props;
 
-    console.log(dentist, 'dentist 1');
     const {
       soloAccountMemberConfirmation,
     } = this.state;
@@ -605,8 +634,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
                   <SignupPatientForm
                     autosubmit={true}
-                    offices={dentist.offices}
-
+                    dentist={dentist}
                     initialValues={user}
                     onSubmit={this.handleUserFormSubmit}
                   />
@@ -629,7 +657,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
                   <MembersList
                     patient={user}
-
+                    dentist={dentist}
                     onRemoveMember={this.removeMember}
                     onUpdateMember={this.updateMember}
                   />
@@ -690,8 +718,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
         <CheckoutFormModal
           listMembers={true}
           user={user}
-
           show={editingCheckout !== null}
+          dentist={dentist}
           onCancel={this.cancelCheckoutFormAction}
 
           initialValues={editingCheckout}
