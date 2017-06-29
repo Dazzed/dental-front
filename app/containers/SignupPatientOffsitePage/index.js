@@ -51,7 +51,7 @@ import {
   // checkout
   setEditingCheckout,
   clearEditingCheckout,
-
+  createStripeToken,
   // signup
   signupRequest,
   clearSignupStatus,
@@ -132,6 +132,7 @@ function mapDispatchToProps(dispatch) {
     resetCheckoutForm: () => dispatch(resetForm('checkout')),
     setEditingCheckout: (cardDetails) => dispatch(setEditingCheckout(cardDetails)),
     clearEditingCheckout: () => dispatch(clearEditingCheckout()),
+    createStripeToken: (cardDetails, user, paymentInfo) => dispatch(createStripeToken(cardDetails, user, paymentInfo)),
 
     // signup
     clearSignupStatus: () => dispatch(clearSignupStatus()),
@@ -313,30 +314,39 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   handleCheckoutFormSubmit = (paymentInfo) => {
-    const { user, dentist, toastError } = this.props;
-    const { number, expiry, cvc, fullName, zip: address_zip } = paymentInfo;
-    console.log(paymentInfo, 'card element');
-    const expiry_ = expiry.split('/');
-    Stripe.createToken({
-      number,
-      name: fullName,
-      exp_month: expiry_[0],
-      exp_year: expiry_[1],
-      cvc,
-      address_zip
-    }, (status, response) => {
-      console.log(response);
-      if (!response.error) {
-        // delete paymentInfo.number;
-        // delete paymentInfo.cvc;
-        // delete paymentInfo.expiry;
-        paymentInfo.stripeToken = response.id;
-        console.log(paymentInfo);
-        this.props.makeSignupRequest(user, paymentInfo, dentist);
-      } else {
-        toastError(`Error generating card token, please double check your credit card data. Status — ${status}`);
-      }
-    })
+    //     const { user, dentist, toastError } = this.props;
+    //     const { number, expiry, cvc, fullName, zip: address_zip } = paymentInfo;
+    //     console.log(paymentInfo, 'card element');
+    //     const expiry_ = expiry.split('/');
+    //     Stripe.createToken({
+    //       number,
+    //       name: fullName,
+    //       exp_month: expiry_[0],
+    //       exp_year: expiry_[1],
+    //       cvc,
+    //       address_zip
+    //     }, (status, response) => {
+    //       console.log(response);
+    //       if (!response.error) {
+    //         // delete paymentInfo.number;
+    //         // delete paymentInfo.cvc;
+    //         // delete paymentInfo.expiry;
+    //         paymentInfo.stripeToken = response.id;
+    //         console.log(paymentInfo);
+    //         this.props.makeSignupRequest(user, paymentInfo, dentist);
+    //       } else {
+    //         toastError(`Error generating card token, please double check your credit card data. Status — ${status}`);
+    //       }
+    //     })
+    //   };
+   
+    this.props.createStripeToken({
+      number: paymentInfo.number,
+      name: paymentInfo.fullName,
+      cvc: paymentInfo.cvc,
+      expiry: paymentInfo.expiry
+    }, this.props.user, paymentInfo);
+    // this.props.makeSignupRequest(this.props.user, paymentInfo);
   };
 
   cancelCheckoutFormAction = () => {

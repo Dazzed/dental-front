@@ -25,6 +25,7 @@ export const REMOVE_MEMBER_REQUEST = 'app/SignupPatientOffsitePage/REMOVE_MEMBER
 export const SET_EDITING_CHECKOUT   = 'app/SignupPatientOffsitePage/SET_EDITING_CHECKOUT';
 export const CLEAR_EDITING_CHECKOUT = 'app/SignupPatientOffsitePage/CLEAR_EDITING_CHECKOUT';
 export const SUBMIT_CHECKOUT_FORM   = 'app/SignupPatientOffsitePage/SUBMIT_CHECKOUT_FORM';
+export const STRIPE_CREATE_TOKEN = 'app/SignupPatientOffsitePage/STRIPE_CREATE_TOKEN';
 
 // signup
 export const SIGNUP_REQUEST      = 'app/SignupPatientOffsitePage/SIGNUP_REQUEST';

@@ -35,6 +35,7 @@ import {
   SET_EDITING_CHECKOUT,
   CLEAR_EDITING_CHECKOUT,
   SUBMIT_CHECKOUT_FORM,
+  STRIPE_CREATE_TOKEN,
 
   // signup
   SIGNUP_REQUEST,
@@ -55,6 +56,7 @@ export function fetchDentist(dentistId) {
 }
 
 export function setDentist (dentist) {
+  Stripe.setPublishableKey(dentist.stripe_public_key);
   return {
     type: DENTIST_SUCCESS,
     dentist,
@@ -119,6 +121,16 @@ export function setRemovingMember (memberId) {
 Checkout
 ------------------------------------------------------------
 */
+
+export function createStripeToken(cardDetails,user,paymentInfo) {
+  return {
+    type: STRIPE_CREATE_TOKEN,
+    cardDetails,
+    user,
+    paymentInfo
+  }
+}
+
 export function setEditingCheckout (cardDetails) {
   return {
     type: SET_EDITING_CHECKOUT,
