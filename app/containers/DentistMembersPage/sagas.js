@@ -147,7 +147,7 @@ Fetch Patients
 function* patientsFetcher () {
   yield* takeLatest(FETCH_PATIENTS_REQUEST, function* handler() {
     try {
-      const response = yield call(request, '/api/v1/users/me/members');
+      const response = yield call(request, '/api/v1/dentists/me/members');
       yield put(fetchPatientsSuccess(response.data));
     } catch (error) {
       yield put(fetchPatientsError(error));
@@ -162,7 +162,7 @@ Fetch Dentist Reports
 function* dentistReportsFetcher () {
   yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
     try {
-      const response = yield call(request, `/api/v1/reports/dentist/me/list`);
+      const response = yield call(request, `/api/v1/reports/dentists/me/list`);
       yield put(fetchDentistReportsSuccess(response.data));
     }
     catch (error) {

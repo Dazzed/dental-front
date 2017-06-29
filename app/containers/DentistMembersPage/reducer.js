@@ -16,6 +16,7 @@ import {
   FETCH_DENTIST_INFO_SUCCESS,
   DENTIST_SPECIALTIES_SUCCESS,
   FETCH_PATIENTS_SUCCESS,
+  FETCH_PATIENTS_REQUEST,
   FETCH_DENTIST_REPORTS_SUCCESS,
 
   // search / sort patients
@@ -101,22 +102,23 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case FETCH_PATIENTS_SUCCESS:
-      const { payload = [] } = action;
+      const payload = action.payload;
+      console.log('got reducer successs', payload);
       patients = payload.map((patient) => {
         return {
           ...patient,
-          members: [ // TODO: remove main account holder insert from members?
-            ...patient.members,
-            patient,
-          ],
+          // members: [ // TODO: remove main account holder insert from members?
+          //   ...patient.members,
+          //   patient,
+          // ],
         };
       });
 
+      console.log('got reducer patients', patients);
       return {
         ...state,
         patients,
       };
-
     case FETCH_DENTIST_REPORTS_SUCCESS:
       return {
         ...state,

@@ -95,8 +95,8 @@ function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
-    dentist: selectDentist(state),
-    // dentistInfo: selectDentistInfo(state),
+    // dentist: selectDentist(state),
+    dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
     reports: selectDentistReports(state),
     user: selectCurrentUser(state),
@@ -369,7 +369,6 @@ class DentistMembersPage extends React.Component {
       // fetch
       dataLoaded,
       dentistInfo,
-      dentist,
       patients,
       reports,
       user,
@@ -396,12 +395,14 @@ class DentistMembersPage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
+    console.log(dataLoaded, 'dataLoaded');
     if (dataLoaded === false) {
       return (
         <div>
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
+            Drosss
             <LoadingSpinner showOnlyIcon={false} />
           </div>
         </div>
@@ -491,7 +492,7 @@ class DentistMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentist={dentist}
+          dentist={dentistInfo}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

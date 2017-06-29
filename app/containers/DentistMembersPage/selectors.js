@@ -142,6 +142,7 @@ const selectDataLoaded = createSelector(
   selectDentistInfo,
   selectPatients,
   (user, dentistInfo, patients) => {
+    console.log('user', user, 'di', dentistInfo, 'patients', patients);
     return user !== false && dentistInfo !== null && patients !== null;
   }
 );
@@ -182,12 +183,12 @@ const selectEditingPatientPayment = createSelector(
     return null;
   }
 );
- 
+
 /*
 Export
 ------------------------------------------------------------
 */
- export default domainSelector;
+export default domainSelector;
 
 export {
   // search / sort patients
