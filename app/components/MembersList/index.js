@@ -29,8 +29,10 @@ Helpers
 ------------------------------------------------------------
 */
 const sortMembersByName = (memberA, memberB) => {
-  const nameA = (memberA.firstName + ' ' + memberA.lastName).toLowerCase();
-  const nameB = (memberB.firstName + ' ' + memberB.lastName).toLowerCase();
+  const a = memberA.client || memberA;
+  const b = memberB.client || memberB;
+  const nameA = (a.firstName + ' ' + a.lastName).toLowerCase();
+  const nameB = (b.firstName + ' ' + b.lastName).toLowerCase();
 
   if (nameA < nameB) {
     return -1;
@@ -97,7 +99,7 @@ export default class MembersList extends React.Component {
       lastName,
     } = member;
 
-    const subscription = member.subscription || {};
+    const subscription = member.subscription || { status: 'inactive' };
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -235,7 +237,7 @@ export default class MembersList extends React.Component {
   render() {
     const {
       patient,
-
+      dentist,
       onReEnrollMember,
       onRenewMember,
       onUpdateMember,
@@ -247,14 +249,21 @@ export default class MembersList extends React.Component {
       || onUpdateMember
       || onRemoveMember;
 
+
+    // console.log(dentist, 'dentists dentsists');
     // TODO: test with yearly members
     // TODO: test with all status's
+    // console.log('member', patient.members, 'patient dross member');
     const members = removeDuplicates(patient.members, 'id').reduce(
       (organizedMembers, member) => {
-        const statusKey = member.subscription ? member.subscription.status : 'inactive';
-        const timePeriodKey = member.subscription && member.subscription.monthly
-          ? 'monthly'
-          : 'yearly';
+        const statusKey = member.status || 'inactive';
+        // console.log('member', member, 'dross member');
+        member.membership = member.membership || {}
+        let timePeriodKey = member.membership.type;
+        if (!timePeriodKey && dentist && member.membershipId) {
+          const type = dentist.memberships.filter(i => +i.id === +member.membershipId)[0].type;
+          timePeriodKey = type === 'month' ? 'monthly' : 'annual';
+        }
 
         organizedMembers[statusKey][timePeriodKey] = organizedMembers[statusKey][timePeriodKey] || [];
         organizedMembers[statusKey][timePeriodKey].push(member);
@@ -305,7 +314,7 @@ export default class MembersList extends React.Component {
 
         for (let timePeriodKey in membersWithStatus) {
           if (membersWithStatus.hasOwnProperty(timePeriodKey)) {
-            const membersSubset = membersWithStatus[timePeriodKey];
+            const membersSubset = membersWithStatus[timePeriodKey] || [];
 
             membersContent[statusKey][timePeriodKey] = membersSubset
               .sort(sortMembersByName)
@@ -318,6 +327,7 @@ export default class MembersList extends React.Component {
       }
     }
 
+    // console.log(membersContent, 'membersContent membersContent membersContent');
     return (
       <div styleName="members">
         {membersContent.signup.monthly.length > 0 && (
