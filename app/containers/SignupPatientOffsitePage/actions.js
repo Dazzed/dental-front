@@ -35,6 +35,7 @@ import {
   SET_EDITING_CHECKOUT,
   CLEAR_EDITING_CHECKOUT,
   SUBMIT_CHECKOUT_FORM,
+  STRIPE_CREATE_TOKEN,
 
   // signup
   SIGNUP_REQUEST,
@@ -42,7 +43,7 @@ import {
   SIGNUP_ERROR,
   CLEAR_SIGNUP_STATUS,
 } from './constants';
- 
+
 /*
 Fetch Dentist
 ------------------------------------------------------------
@@ -54,14 +55,15 @@ export function fetchDentist(dentistId) {
   };
 }
 
-export function setDentist (dentist) {
+export function setDentist(dentist) {
+  Stripe.setPublishableKey(dentist.stripe_public_key || 'pk_test_6pRNASCoBOKtIshFeQd4XMUh');
   return {
     type: DENTIST_SUCCESS,
     dentist,
   };
 }
 
-export function setDentistError (error) {
+export function setDentistError(error) {
   return {
     type: DENTIST_ERROR,
     error,
@@ -72,7 +74,7 @@ export function setDentistError (error) {
 Update User
 ------------------------------------------------------------
 */
-export function submitUserForm (user) {
+export function submitUserForm(user) {
   return {
     type: SUBMIT_USER_FORM,
     user,
@@ -84,20 +86,20 @@ export function submitUserForm (user) {
 Add / Edit Member
 ------------------------------------------------------------
 */
-export function setEditingMember (member) {
+export function setEditingMember(member) {
   return {
     type: SET_EDITING_MEMBER,
     member
   };
 }
 
-export function clearEditingMember () {
+export function clearEditingMember() {
   return {
     type: CLEAR_EDITING_MEMBER,
   };
 }
 
-export function submitMemberForm (member) {
+export function submitMemberForm(member) {
   return {
     type: SUBMIT_MEMBER_FORM,
     member,
@@ -108,7 +110,7 @@ export function submitMemberForm (member) {
 Remove Member 
 ------------------------------------------------------------
 */
-export function setRemovingMember (memberId) {
+export function setRemovingMember(memberId) {
   return {
     type: REMOVE_MEMBER_REQUEST,
     memberId,
@@ -119,14 +121,24 @@ export function setRemovingMember (memberId) {
 Checkout
 ------------------------------------------------------------
 */
-export function setEditingCheckout (cardDetails) {
+
+export function createStripeToken(cardDetails, user, paymentInfo) {
+  return {
+    type: STRIPE_CREATE_TOKEN,
+    cardDetails,
+    user,
+    paymentInfo
+  }
+}
+
+export function setEditingCheckout(cardDetails) {
   return {
     type: SET_EDITING_CHECKOUT,
     cardDetails,
   };
 }
 
-export function clearEditingCheckout () {
+export function clearEditingCheckout() {
   return {
     type: CLEAR_EDITING_CHECKOUT,
   };
@@ -138,7 +150,7 @@ export function clearEditingCheckout () {
 Signup
 ------------------------------------------------------------
 */
-export function signupRequest (user, paymentInfo) {
+export function signupRequest(user, paymentInfo) {
   return {
     type: SIGNUP_REQUEST,
     user,
@@ -146,21 +158,21 @@ export function signupRequest (user, paymentInfo) {
   };
 }
 
-export function signupSuccess (payload) {
+export function signupSuccess(payload) {
   return {
     type: SIGNUP_SUCCESS,
     payload,
   };
 }
 
-export function signupError (errors) {
+export function signupError(errors) {
   return {
     type: SIGNUP_ERROR,
     errors
   };
 }
 
-export function clearSignupStatus () {
+export function clearSignupStatus() {
   return {
     type: CLEAR_SIGNUP_STATUS,
   };

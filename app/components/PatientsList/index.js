@@ -109,6 +109,7 @@ class PatientsList extends React.Component {
   }
 
   onUpdateProfileClick = (patient) => {
+    console.log(patient, 'patient-s');
     this.props.onUpdatePatientProfile(patient);
   }
 
@@ -131,9 +132,10 @@ class PatientsList extends React.Component {
       onUpdateMember,
     } = this.props;
 
+    console.log(patients, 'patients');
     const patientRows = patients.map((patient) => {
       const {
-        avatar,
+        client: { avatar,
         contactMethod,
         createdAt,
         email,
@@ -143,23 +145,27 @@ class PatientsList extends React.Component {
         members,
         origin,
         phone,
+        type },
         subscription,
-        type,
+        status,
+        endAt,
+        stripeSubscriptionId,
+        membership
       } = patient;
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
-      const summaryStatus = patient.members.reduce(
+      const summaryStatus = patient.client.members ? patient.client.members.reduce(
         (summaryStatus, member) => {
-          if (summaryStatus === 'Active' || (member.subscription && member.subscription.status === 'active')) {
+          if (summaryStatus === 'Active' || member.status === 'active') {
             return 'Active';
           }
 
-          if (summaryStatus === 'Late' || (member.subscription && member.subscription.status === 'past_due')) {
+          if (summaryStatus === 'Late' || member.status === 'past_due') {
             return 'Late';
           }
 
-          if (summaryStatus === 'Inactive' || (member.subscription && member.subscription.status === 'canceled')) {
+          if (summaryStatus === 'Inactive' || member.status === 'canceled') {
             return 'Inactive';
           }
 
@@ -167,20 +173,20 @@ class PatientsList extends React.Component {
           return 'Inactive';
         },
         'Inactive'
-      );
+      ) : patient.status;
 
       let statusStyle = "status";
       switch (summaryStatus) {
-        case "Active":
-          statusStyle += " status--active";
+        case 'Active':
+          statusStyle += ' status--active';
           break;
 
-        case "Late":
-          statusStyle += " status--past-due";
+        case 'Late':
+          statusStyle += ' status--past-due';
           break;
 
-        case "Inactive":
-          statusStyle += " status--inactive";
+        case 'Inactive':
+          statusStyle += ' status--inactive';
           break;
 
         default:
@@ -188,15 +194,15 @@ class PatientsList extends React.Component {
           break;
       }
 
-      const contactMethodMessage = type === "client"
+      const contactMethodMessage = type === 'client'
         ? PREFERRED_CONTACT_METHODS[contactMethod]
         : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
 
-      const memberSince = moment(createdAt).format("MMMM D, YYYY");
+      const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      const paymentDueDate = moment(subscription.endAt).format("MMMM D, YYYY");
+      const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
 
-      const paymentDueAmount = parseFloat(subscription.total).toFixed(2);
+      const paymentDueAmount = parseFloat(membership.total).toFixed(2);
 
       const waiveCancellationFee = !patient.cancellationFee;
       const waiveReEnrollmentFee = !patient.reEnrollmentFee;
@@ -208,7 +214,7 @@ class PatientsList extends React.Component {
 
       const activeMembers = members.filter((member) => {
 
-        return member.subscription && member.subscription.status === 'active' && member.subscription.monthly;
+        return member.membership && member.status === 'active' && member.membership.type === 'monthly';
       });
 
       return (

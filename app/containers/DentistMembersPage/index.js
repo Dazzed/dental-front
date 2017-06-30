@@ -95,6 +95,7 @@ function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
+    // dentist: selectDentist(state),
     dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
     reports: selectDentistReports(state),
@@ -297,6 +298,8 @@ class DentistMembersPage extends React.Component {
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
     member.fromDentist = true;
+
+    console.log('can upate member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -394,12 +397,14 @@ class DentistMembersPage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
+    console.log(dataLoaded, 'dataLoaded');
     if (dataLoaded === false) {
       return (
         <div>
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
+            Drosss
             <LoadingSpinner showOnlyIcon={false} />
           </div>
         </div>
@@ -489,8 +494,7 @@ class DentistMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentistInfo={dentistInfo}
-
+          dentist={dentistInfo}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

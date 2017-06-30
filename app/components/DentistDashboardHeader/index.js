@@ -54,13 +54,13 @@ class DentistDashboardHeader extends React.Component {
     onReportSelected: React.PropTypes.func.isRequired,
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
       memberSearchTerm: this.props.currentSearchTerm !== null
-                          ? this.props.currentSearchTerm
-                          : '',
+        ? this.props.currentSearchTerm
+        : '',
       showReportsModal: false,
     };
   }
@@ -122,23 +122,23 @@ class DentistDashboardHeader extends React.Component {
       firstName,
       id,
       lastName,
-//      metrics, // TODO: backend needs to provide this
-//      priceScore, // TODO: backend needs to provide this
+      //      metrics, // TODO: backend needs to provide this
+      //      priceScore, // TODO: backend needs to provide this
       rating,
     } = user;
 
     const activeMemberCount = patients.reduce(
       (activeMemberCounter, patient) => {
 
-        const patientActiveMemberCount = patient.members.reduce(
+        const patientActiveMemberCount = patient.client.members ? patient.client.members.reduce(
           (patientActiveMemberCounter, member) => {
-            if (member.subscription.status === "active") {
+            if (member.status === 'active') {
               patientActiveMemberCounter += 1;
             }
             return patientActiveMemberCounter;
           },
           0
-        );
+        ) : 0;
 
         return activeMemberCounter + patientActiveMemberCount;
       },
@@ -182,7 +182,7 @@ class DentistDashboardHeader extends React.Component {
 
               <div className="col-sm-9">
                 <h2 styleName="dentist__name">{firstName} {lastName}</h2>
-                
+
                 <div styleName="dentist__scores">
                   <ReviewScore score={user.rating} />
                   {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
@@ -243,7 +243,7 @@ class DentistDashboardHeader extends React.Component {
             </ul>
           </div>
 
-        {/* End Row / Header Section */}
+          {/* End Row / Header Section */}
         </div>
 
         <div className="row" styleName="dentist-dashboard-header__section">
@@ -302,7 +302,7 @@ class DentistDashboardHeader extends React.Component {
             </div>
           )}
 
-        {/* End Row / Header Section */}
+          {/* End Row / Header Section */}
         </div>
 
         {/*
@@ -317,7 +317,7 @@ class DentistDashboardHeader extends React.Component {
           onReportSelected={onReportSelected}
         />
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }

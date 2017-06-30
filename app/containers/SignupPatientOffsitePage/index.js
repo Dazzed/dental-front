@@ -17,6 +17,7 @@ import FaClose from 'react-icons/lib/fa/close';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 import {
   // form actions
   reset as resetForm,
@@ -50,7 +51,7 @@ import {
   // checkout
   setEditingCheckout,
   clearEditingCheckout,
-
+  createStripeToken,
   // signup
   signupRequest,
   clearSignupStatus,
@@ -82,7 +83,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch dentist
     dentist: dentistSelector(state),
@@ -106,10 +107,11 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changeRoute: (url) => dispatch(push(url)),
+    toastError: (message) => dispatch(toastrActions.error(message)),
 
     // fetch dentist
     fetchDentist: (dentistId) => dispatch(fetchDentist(dentistId)),
@@ -130,6 +132,7 @@ function mapDispatchToProps (dispatch) {
     resetCheckoutForm: () => dispatch(resetForm('checkout')),
     setEditingCheckout: (cardDetails) => dispatch(setEditingCheckout(cardDetails)),
     clearEditingCheckout: () => dispatch(clearEditingCheckout()),
+    createStripeToken: (cardDetails, user, paymentInfo) => dispatch(createStripeToken(cardDetails, user, paymentInfo)),
 
     // signup
     clearSignupStatus: () => dispatch(clearSignupStatus()),
@@ -213,7 +216,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     makeSignupRequest: React.PropTypes.func,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -221,8 +224,11 @@ export default class PatientOffsiteSignupPage extends React.Component {
     };
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.fetchDentist(this.props.routeParams.dentistId);
+    if (!window.Stripe) {
+      toastError('There was an error embedding Stripe, please reload the page');
+    }
   }
 
   /*
@@ -232,22 +238,22 @@ export default class PatientOffsiteSignupPage extends React.Component {
   goToLoginPage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
-  }
+  };
 
   // members
   addMember = () => {
     this.props.resetMemberForm();
     this.props.setEditingMember({});
-  }
+  };
 
   removeMember = (user, member) => {
     this.props.setRemovingMember(member.id);
-  }
+  };
 
   updateMember = (user, member) => {
     this.props.resetMemberForm();
     this.props.setEditingMember(member);
-  }
+  };
 
   // checkout
   checkout = () => {
@@ -259,7 +265,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
       soloAccountMemberConfirmation,
     } = this.state;
 
-    if ( user.members.length === 1
+    if (user.members.length === 1
       && user.payingMember === true
       && soloAccountMemberConfirmation === false
     ) {
@@ -277,14 +283,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
         this.clearSoloAccountMemberConfirmation();
       }
     }
-  }
+  };
 
   clearSoloAccountMemberConfirmation = () => {
     this.setState({
       ...this.state,
       soloAccountMemberConfirmation: false,
     });
-  }
+  };
 
   /*
   Events
@@ -293,31 +299,63 @@ export default class PatientOffsiteSignupPage extends React.Component {
   // user
   handleUserFormSubmit = (values) => {
     this.props.submitUserForm(values);
-  }
+  };
 
   // members
   handleMemberFormSubmit = (values) => {
     this.props.submitMemberForm(values);
-  }
+  };
 
   cancelMemberFormAction = () => {
     this.props.clearEditingMember();
-  }
+  };
 
   // checkout
   handleCheckoutFormSubmit = (paymentInfo) => {
-    this.props.makeSignupRequest(this.props.user, paymentInfo);
-  }
+    //     const { user, dentist, toastError } = this.props;
+    //     const { number, expiry, cvc, fullName, zip: address_zip } = paymentInfo;
+    //     console.log(paymentInfo, 'card element');
+    //     const expiry_ = expiry.split('/');
+    //     Stripe.createToken({
+    //       number,
+    //       name: fullName,
+    //       exp_month: expiry_[0],
+    //       exp_year: expiry_[1],
+    //       cvc,
+    //       address_zip
+    //     }, (status, response) => {
+    //       console.log(response);
+    //       if (!response.error) {
+    //         // delete paymentInfo.number;
+    //         // delete paymentInfo.cvc;
+    //         // delete paymentInfo.expiry;
+    //         paymentInfo.stripeToken = response.id;
+    //         console.log(paymentInfo);
+    //         this.props.makeSignupRequest(user, paymentInfo, dentist);
+    //       } else {
+    //         toastError(`Error generating card token, please double check your credit card data. Status — ${status}`);
+    //       }
+    //     })
+    //   };
+
+    this.props.createStripeToken({
+      number: paymentInfo.number,
+      name: paymentInfo.fullName,
+      cvc: paymentInfo.cvc,
+      expiry: paymentInfo.expiry
+    }, this.props.user, paymentInfo);
+    // this.props.makeSignupRequest(this.props.user, paymentInfo);
+  };
 
   cancelCheckoutFormAction = () => {
     this.props.clearEditingCheckout();
-  }
+  };
 
   /*
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // react
       location,
@@ -386,7 +424,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             </div>
           </div>
 
-        {/* End Wrapper Div */}
+          {/* End Wrapper Div */}
         </div>
       );
     }
@@ -410,7 +448,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             </div>
           </div>
 
-        {/* End Wrapper Div */}
+          {/* End Wrapper Div */}
         </div>
       );
     }
@@ -456,34 +494,34 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     const soloAccountMemberConfirmationPopover = soloAccountMemberConfirmation === false
       ? null
-      : ( <Popover
-            className="popover--large"
-            id="solo-account-member-confirmation-popover"
-            placement="right"
-            positionLeft={68}
-            positionTop={-44}
-            title="No additional members?"
-          >
-            <p>
-              Please confirm that you are the only member you are adding at this time.
+      : (<Popover
+        className="popover--large"
+        id="solo-account-member-confirmation-popover"
+        placement="right"
+        positionLeft={68}
+        positionTop={-44}
+        title="No additional members?"
+      >
+        <p>
+          Please confirm that you are the only member you are adding at this time.
             </p>
 
-            <div styleName="popover__controls">
-              <span
-                styleName="popover__control popover__control--close"
-                onClick={this.clearSoloAccountMemberConfirmation}
-              >
-                <FaClose />
-              </span>
+        <div styleName="popover__controls">
+          <span
+            styleName="popover__control popover__control--close"
+            onClick={this.clearSoloAccountMemberConfirmation}
+          >
+            <FaClose />
+          </span>
 
-              <input
-                type="button"
-                styleName="popover__control button--short"
-                onClick={this.checkout}
-                value="Yes"
-              />
-            </div>
-          </Popover>
+          <input
+            type="button"
+            styleName="popover__control button--short"
+            onClick={this.checkout}
+            value="Yes"
+          />
+        </div>
+      </Popover>
       );
 
     return (
@@ -575,15 +613,15 @@ export default class PatientOffsiteSignupPage extends React.Component {
               </div>
             </div>
 
-          {/* End Membership Info */}
+            {/* End Membership Info */}
           </div>
         </PageHeader>
 
-          <div className="container">
-            <div className="row">
-              <div className="col-md-offset-2 col-md-8 col-sm-12">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-offset-2 col-md-8 col-sm-12">
 
-                {/*
+              {/*
                 Stage 1: Signup Patient Form
                 ------------------------------------------------------------
                 NOTE: `stages.one` should always be true.  The code is written as such
@@ -592,83 +630,82 @@ export default class PatientOffsiteSignupPage extends React.Component {
                 NOTE: The initialValues presented by `user` are just it's preset
                 uniqueID.
                 */}
-                {stages.one && (
-                  <div styleName="stage">
-                    <h2 styleName="large-title">
-                      Step 1 &gt; Tell Us About Yourself
+              {stages.one && (
+                <div styleName="stage">
+                  <h2 styleName="large-title">
+                    Step 1 &gt; Tell Us About Yourself
                     </h2>
 
-                    <p styleName="instructions">
-                      Grown Ups, this part is for you, so be sure to enter your name and contact information. You will be able to add yourself and your family as members of your plan in Step 2
+                  <p styleName="instructions">
+                    Grown Ups, this part is for you, so be sure to enter your name and contact information. You will be able to add yourself and your family as members of your plan in Step 2
                     </p>
 
-                    <SignupPatientForm
-                      autosubmit={true}
-                      offices={dentist.offices}
+                  <SignupPatientForm
+                    autosubmit={true}
+                    dentist={dentist}
+                    initialValues={user}
+                    onSubmit={this.handleUserFormSubmit}
+                  />
+                </div>
+              )}
 
-                      initialValues={user}
-                      onSubmit={this.handleUserFormSubmit}
-                    />
-                  </div>
-                )}
-
-                {/*
+              {/*
                 Stage 2: Add / Edit Members
                 ------------------------------------------------------------
                 */}
-                {stages.two && (
-                  <div styleName="stage">
-                    <h2 styleName="large-title">
-                      Step 2 &gt; Add a Member
+              {stages.two && (
+                <div styleName="stage">
+                  <h2 styleName="large-title">
+                    Step 2 &gt; Add a Member
                     </h2>
 
-                    <p styleName="instructions">
-                      Add your family members to your plan here.  If you also want to be covered under the plan, please check "I Will Also Be A Member" in Step 1.
+                  <p styleName="instructions">
+                    Add your family members to your plan here.  If you also want to be covered under the plan, please check "I Will Also Be A Member" in Step 1.
                     </p>
 
-                    <MembersList
-                      patient={user}
+                  <MembersList
+                    patient={user}
+                    dentist={dentist}
+                    onRemoveMember={this.removeMember}
+                    onUpdateMember={this.updateMember}
+                  />
 
-                      onRemoveMember={this.removeMember}
-                      onUpdateMember={this.updateMember}
+                  <div className="text-center">
+                    <input
+                      type="button"
+                      styleName="large-button--secondary"
+                      value="ADD MEMBER"
+                      onClick={this.addMember}
                     />
-
-                    <div className="text-center">
-                      <input
-                        type="button"
-                        styleName="large-button--secondary"
-                        value="ADD MEMBER"
-                        onClick={this.addMember}
-                      />
-                    </div>
                   </div>
-                )}
+                </div>
+              )}
 
-                {stages.three && (
-                  <div styleName="stage">
-                    <h2 styleName="large-title">
-                      Step 3 &gt; Checkout
+              {stages.three && (
+                <div styleName="stage">
+                  <h2 styleName="large-title">
+                    Step 3 &gt; Checkout
                     </h2>
 
-                    <p styleName="instructions">
-                      After you have added all of the members you wish to include in your plan, you should procede to checkout.
+                  <p styleName="instructions">
+                    After you have added all of the members you wish to include in your plan, you should procede to checkout.
                     </p>
 
-                    <div className="text-center">
-                      <div styleName="popover__container">
-                        {soloAccountMemberConfirmationPopover}
-                      </div>
-
-                      <input
-                        type="button"
-                        styleName="large-button--secondary"
-                        disabled={soloAccountMemberConfirmation === true}
-                        onClick={this.checkout}
-                        value="CHECKOUT"
-                      />
+                  <div className="text-center">
+                    <div styleName="popover__container">
+                      {soloAccountMemberConfirmationPopover}
                     </div>
+
+                    <input
+                      type="button"
+                      styleName="large-button--secondary"
+                      disabled={soloAccountMemberConfirmation === true}
+                      onClick={this.checkout}
+                      value="CHECKOUT"
+                    />
                   </div>
-                )}
+                </div>
+              )}
 
             </div>
           </div>
@@ -679,11 +716,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
         ------------------------------------------------------------
         */}
         <MemberFormModal
-          dentistInfo={dentist.dentistInfo}
-
+          dentist={dentist}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
-
           initialValues={editingMember}
           onFormSubmit={this.handleMemberFormSubmit}
         />
@@ -691,8 +726,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
         <CheckoutFormModal
           listMembers={true}
           user={user}
-
           show={editingCheckout !== null}
+          dentist={dentist}
           onCancel={this.cancelCheckoutFormAction}
 
           initialValues={editingCheckout}
@@ -743,9 +778,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
           </Modal.Footer>
         </Modal>
 
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }
-   
+
 }

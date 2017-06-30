@@ -21,7 +21,7 @@ const schema = {
   number: {
     presence: true,
     format: {
-      pattern: /^\d{13,16}$/,
+      pattern: /^\d{4,4} \d{4,4} \d{4,4} \d{4,4}$/,
       message: '^Please enter a valid 13-16 digit credit card number.',
     },
   },

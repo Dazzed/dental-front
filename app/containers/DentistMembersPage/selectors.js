@@ -90,6 +90,8 @@ const selectProcessedPatients = createSelector(
     // sort
     processedPatients = processedPatients.sort((patientA, patientB) => {
       // one matches w/ some members, the other doesn't
+      patientA.members = patientA.members || [];
+      patientB.members = patientB.members || [];
       const matchA = patientA.members.some((member) => {
         return member.subscription.status === sortStatus;
       });
@@ -142,6 +144,7 @@ const selectDataLoaded = createSelector(
   selectDentistInfo,
   selectPatients,
   (user, dentistInfo, patients) => {
+    console.log('user', user, 'di', dentistInfo, 'patients', patients);
     return user !== false && dentistInfo !== null && patients !== null;
   }
 );
@@ -182,12 +185,12 @@ const selectEditingPatientPayment = createSelector(
     return null;
   }
 );
- 
+
 /*
 Export
 ------------------------------------------------------------
 */
- export default domainSelector;
+export default domainSelector;
 
 export {
   // search / sort patients
