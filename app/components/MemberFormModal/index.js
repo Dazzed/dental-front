@@ -207,6 +207,7 @@ export default class MemberFormModal extends React.Component {
       childWarning,
     } = this.state;
 
+    console.log(initialValues, show, 'initialValues, show');
     let title = "Edit Member";
     let saveText = "Save Member";
     if (initialValues === null || initialValues.id === undefined) {

@@ -227,10 +227,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
-      return toastError('There was an error embedding Stripe, please reload the page');
+      toastError('There was an error embedding Stripe, please reload the page');
     }
-
-    window.Stripe.setPublishableKey('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
   }
 
   /*
@@ -339,7 +337,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     //       }
     //     })
     //   };
-   
+
     this.props.createStripeToken({
       number: paymentInfo.number,
       name: paymentInfo.fullName,

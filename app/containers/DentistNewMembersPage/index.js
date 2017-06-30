@@ -93,7 +93,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // fetch
     dataLoaded: selectDataLoaded(state),
@@ -106,7 +106,7 @@ function mapStateToProps (state) {
     // search / sort patients
     currentSearchTerm: selectMemberSearchTerm(state),
     currentSortTerm: selectMemberSortTerm(state),
-    
+
     // add / edit member
     editingMember: selectEditingMember(state),
 
@@ -118,7 +118,7 @@ function mapStateToProps (state) {
   };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
@@ -282,7 +282,12 @@ class DentistNewMembersPage extends React.Component {
 
   updatePatientProfile = (patient) => {
     this.props.resetPatientProfileForm();
-    this.props.setEditingPatientProfile(patient);
+    console.log('client', patient.client);
+    this.props.setEditingPatientProfile({
+      ...patient.client,
+      membership: patient.membership,
+      fromDentist: true
+    });
   }
 
   // payments
@@ -328,7 +333,7 @@ class DentistNewMembersPage extends React.Component {
   }
 
   // reports
-  onReportSelected = ({month, year, url}) => {
+  onReportSelected = ({ month, year, url }) => {
     const {
       user: { firstName, lastName },
     } = this.props;
@@ -341,12 +346,11 @@ class DentistNewMembersPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // fetch
       dataLoaded,
       dentistInfo,
-      dentist,
       patients,
       patientsWithNewMembers,
       reports,
@@ -435,17 +439,19 @@ class DentistNewMembersPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
+
+    console.log(editingMember, 'editingMember');
     return (
       <div>
-          <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-          />
+        <DentistDashboardHeader
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+        />
         <DentistDashboardTabs active="new-members" />
 
         <div styleName="content">
@@ -490,7 +496,7 @@ class DentistNewMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentist={dentist}
+          dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 

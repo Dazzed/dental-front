@@ -298,6 +298,8 @@ class DentistMembersPage extends React.Component {
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
     member.fromDentist = true;
+
+    console.log('can upate member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });

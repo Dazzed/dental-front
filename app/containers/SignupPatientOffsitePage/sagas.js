@@ -114,7 +114,7 @@ function* signupWatcher() {
 
       if (signupResponse !== false) {
         const realUserId = signupResponse.data[0].id;
-        const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId);
+        const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId, paymentInfo);
 
         if (checkoutResponse !== false) {
           // ensure form values are erased
@@ -164,7 +164,7 @@ function* makeStripeCreateTokenRequest(cardDetails) {
     yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
-    yield put(stopSubmit('signupPatient', formErrors));
+    yield put(stopSubmit('signupPatient', {}));
     return false;
   }
 }
@@ -242,7 +242,7 @@ function* makeSignupRequest(user, paymentInfo) {
   }
 }
 
-function* makeCheckoutRequest(stripeToken, userId) {
+function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
   const allowedFields = {
     cancellationFeeWaiver: paymentInfo.feeWaiver,
     periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,

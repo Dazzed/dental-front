@@ -109,6 +109,7 @@ class PatientsList extends React.Component {
   }
 
   onUpdateProfileClick = (patient) => {
+    console.log(patient, 'patient-s');
     this.props.onUpdatePatientProfile(patient);
   }
 
@@ -131,6 +132,7 @@ class PatientsList extends React.Component {
       onUpdateMember,
     } = this.props;
 
+    console.log(patients, 'patients');
     const patientRows = patients.map((patient) => {
       const {
         client: { avatar,
