@@ -118,7 +118,7 @@ Fetch Dentist Info
 function* dentistInfoFetcher () {
   yield* takeLatest(FETCH_DENTIST_INFO_REQUEST, function* handler() {
     try {
-      const response = yield call(request, '/api/v1/users/me/my-dentist-info')
+      const response = yield call(request, '/api/v1/users/me/dentist-info')
       yield put(fetchDentistInfoSuccess(response.data));
     }
     catch (error) {
