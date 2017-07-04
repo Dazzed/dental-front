@@ -126,7 +126,7 @@ Fetch Dentist
 function* dentistFetcher() {
   yield* takeLatest(DENTIST_REQUEST, function* handler() {
     try {
-      const response = yield call(request, '/api/v1/users/me/dentist');
+      const response = yield call(request, '/api/v1/users/me/my-dentist');
       yield put(setDentist(response.data));
     } catch (err) {
       yield put(setDentistErrors(err));
