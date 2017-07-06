@@ -313,7 +313,7 @@ class PatientsList extends React.Component {
                     */}
                     <div className="col-sm-9">
                       <MembersList
-                        patient={patient}
+                        patient={patient.client}
 
                         onReEnrollMember={onReEnrollMember}
                         onRemoveMember={onRemoveMember}
