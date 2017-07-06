@@ -111,10 +111,9 @@ export default class MembersList extends React.Component {
       : 'Adult';
 
     let amount = '-----';
-    if (subscription.status === 'active' || subscription.status === 'past_due') {
-      amount = '$' + (subscription.costs.type === 'monthly' ?
-          subscription.costs.monthlyPrice : subscription.costs.annualPrice);
-    }
+    // if (subscription.status === 'active' || subscription.status === 'past_due') {
+      amount = '$' + subscription.monthly;
+    // }
 
     return (
       <div key={id} className="row" styleName="member">
@@ -259,7 +258,7 @@ export default class MembersList extends React.Component {
       const member = members[i];
       memberRows.push(this.renderMember(patient, member, showControlCol));
     }
-
+    const subTotal = members.reduce((acc, m) => acc += Number(m.subscription.monthly)  ,0);
     return (
       <div styleName="members">
         <div styleName="members__segment">
@@ -303,7 +302,9 @@ export default class MembersList extends React.Component {
             )}
           {memberRows}
           </div>
-
+          <div styleName="subtotal">
+            <strong>SubTotal: </strong>{subTotal}$
+          </div>
         </div>
       </div>
     );
