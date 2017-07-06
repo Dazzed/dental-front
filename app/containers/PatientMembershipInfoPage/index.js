@@ -199,16 +199,18 @@ class PatientMembershipInfoPage extends React.Component {
       );
     }
 
-    const adultSavings = dentist.dentistInfo.membership.savings;
+    const adultMembershipInfo =
+        dentist.memberships.find( (el) => el.subscription_age_group === 'adult');
     const adultMembership = {
-      monthly: dentist.dentistInfo.membership.monthly.replace(".00", ""),
-      savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
+      monthly: adultMembershipInfo.price.replace(".00", ""),
+      savings: String(adultMembershipInfo.discount).replace(".00", ""),
     };
 
-    const childSavings = dentist.dentistInfo.childMembership.savings;
+    const childMembershipInfo =
+        dentist.memberships.find( (el) => el.subscription_age_group === 'child');
     const childMembership = {
-      monthly: dentist.dentistInfo.childMembership.monthly.replace(".00", ""),
-      savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
+      monthly: childMembershipInfo.price.replace(".00", ""),
+      savings: String(childMembershipInfo.discount).replace(".00", ""),
     };
 
     /*
