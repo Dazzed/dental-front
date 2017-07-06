@@ -41,17 +41,20 @@ const selectPatientsWithNewMembers = createSelector(
     return patients.filter((patient) => {
       const patientCreatedAt = moment(patient.createdAt);
       let patientIsNew = patientCreatedAt.isSameOrAfter(oneMonthAgo, 'day');
+      if (!patient.members) {
+        return patientIsNew;
+      } else {
+        return patient.members.reduce((anyMemberIsNew, member) => {
+          // precondition: skip checking other members if one is already new,
+          // since all of a patient's members will be included in the results
+          if (anyMemberIsNew === true) {
+            return true;
+          }
 
-      return patient.members.reduce((anyMemberIsNew, member) => {
-        // precondition: skip checking other members if one is already new,
-        // since all of a patient's members will be included in the results
-        if (anyMemberIsNew === true) {
-          return true;
-        }            
-
-        const memberCreatedAt = moment(member.createdAt);
-        return memberCreatedAt.isSameOrAfter(oneMonthAgo, 'day');
-      }, patientIsNew);
+          const memberCreatedAt = moment(member.createdAt);
+          return memberCreatedAt.isSameOrAfter(oneMonthAgo, 'day');
+        }, patientIsNew);
+      }
     });
   }
 );
@@ -68,8 +71,8 @@ const selectDataLoaded = createSelector(
     return user !== false && dentistInfo !== null && patients !== null;
   }
 );
- 
- 
+
+
 /*
 Export
 ------------------------------------------------------------
