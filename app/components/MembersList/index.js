@@ -90,6 +90,7 @@ export default class MembersList extends React.Component {
   ------------------------------------------------------------
   */
   renderMember(patient, member, showControlCol) {
+    
     const {
       avatar,
       birthDate,
@@ -110,12 +111,7 @@ export default class MembersList extends React.Component {
       ? 'Child'
       : 'Adult';
 
-    const amount = (
-      subscription.status === 'active'
-      || subscription.status === 'past_due'
-    )
-      ? '$' + subscription.monthly
-      : '-----';
+    const amount = '$' + member.membership.price;
 
     return (
       <div key={id} className="row" styleName="member">
@@ -258,7 +254,17 @@ export default class MembersList extends React.Component {
       (organizedMembers, member) => {
         const statusKey = member.status || 'inactive';
         // console.log('member', member, 'dross member');
-        member.membership = member.membership || {}
+        if(member.membership) {
+          member.membership =  {
+            ...member.membership,
+            price: dentist.memberships.find(m => m.id === Number(member.membershipId)).price
+          };
+        } else {
+          member.membership =  {
+            price: dentist.memberships.find(m => m.id === Number(member.membershipId)).price
+          };
+        }
+        
         let timePeriodKey = member.membership.type;
         if (!timePeriodKey && dentist && member.membershipId) {
           const type = dentist.memberships.filter(i => +i.id === +member.membershipId)[0].type;
@@ -570,7 +576,7 @@ export default class MembersList extends React.Component {
               <div className="row" styleName="members__title-row">
                 <div className="col-sm-2">
                   <div styleName="status--inactive">
-                    Inactive
+                    
                 </div>
                 </div>
                 <div className="col-sm-2">
