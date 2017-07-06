@@ -474,18 +474,21 @@ export default class PatientOffsiteSignupPage extends React.Component {
     const { memberships } = dentist;
 
     const adultMembership = (() => {
-      let adult = memberships.find(m => m.subscription_age_group === 'adult');
+      let adultMonthly = memberships.find(m => m.name === 'default monthly membership');
+      // let adultAnnual = memberships.find(m => m.name === 'default annual membership');
+      let savings = Number(adultMonthly.price) * 4;
       return {
-        monthly: adult.price.replace('.00', ''),
-        savings: adult.discount
+        monthly: adultMonthly.price.replace('.00', ''),
+        savings: String(Math.floor(savings))
       };
     })();
 
     const childMembership = (() => {
-      let child = memberships.find(m => m.subscription_age_group === 'child');
+      let childMonthly = memberships.find(m => m.name === 'default monthly child membership');
+      let savings = Number(childMonthly.price) * (36/7);
       return {
-        monthly: child.price.replace('.00', ''),
-        savings: child.discount
+        monthly: childMonthly.price.replace('.00', ''),
+        savings: String(Math.floor(savings))
       };
     })();
 
