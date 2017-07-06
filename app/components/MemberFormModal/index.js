@@ -212,7 +212,7 @@ export default class MemberFormModal extends React.Component {
     let saveText = "Save Member";
     if (initialValues === null || initialValues.id === undefined) {
       title = "Add Member";
-      saveText = "Save and Checkout";
+      saveText = "Add";
     } else if (initialValues.isEnrolling || initialValues.fromDentist) {
       title = 'Edit Membership'
       saveText = 'Update';
