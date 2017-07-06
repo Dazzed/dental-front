@@ -127,23 +127,19 @@ class DentistDashboardHeader extends React.Component {
       rating,
     } = user;
 
-    const activeMemberCount = patients.reduce(
-      (activeMemberCounter, patient) => {
+    let activeMemberCount = 0;
+    for (let i = 0; i < patients.length; i++) {
+      const patient = patients[i];
+      if (patient.status === 'active') {
+        activeMemberCount++;
+      }
 
-        const patientActiveMemberCount = patient.client.members ? patient.client.members.reduce(
-          (patientActiveMemberCounter, member) => {
-            if (member.status === 'active') {
-              patientActiveMemberCounter += 1;
-            }
-            return patientActiveMemberCounter;
-          },
-          0
-        ) : 0;
-
-        return activeMemberCounter + patientActiveMemberCount;
-      },
-      0
-    );
+      for (let j = 0; j < patient.client.members.length; j++) {
+        if (patient.client.members[j].status === 'active') {
+          activeMemberCount++;
+        }
+      }
+    }
 
     // TODO
     const priceScore = 4.0;
