@@ -311,7 +311,7 @@ function* submitReviewFormWatcher() {
 
 function* submitAddReviewForm(payload, dentistId) {
   try {
-    const requestURL = `/api/v1/dentists/${dentistId}/review`;
+    const requestURL = `/api/v1/dentists/${dentistId}/reviews/review`;
     const params = {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -321,7 +321,7 @@ function* submitAddReviewForm(payload, dentistId) {
     const message = "Your review has been submitted.";
     yield put(toastrActions.success('', message));
 
-    yield put(setAddedReview(response.data, dentistId));
+    yield put(setAddedReview(response, dentistId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
@@ -333,7 +333,7 @@ function* submitAddReviewForm(payload, dentistId) {
 
 function* submitEditReviewForm(payload, dentistId) {
   try {
-    const requestURL = `/api/v1/dentists/${dentistId}/review/${payload.id}`;
+    const requestURL = `/api/v1/dentists/${dentistId}/reviews/review/${payload.id}`;
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -343,6 +343,9 @@ function* submitEditReviewForm(payload, dentistId) {
     const message = `Your review has been updated.`;
     yield put(toastrActions.success('', message));
 
+    if (payload.rating) {
+      payload.rating = Number.parseInt(payload.rating);
+    }
     yield put(setEditedReview(payload, dentistId));
 
   } catch (err) {
@@ -384,7 +387,7 @@ function* removeReviewWatcher() {
     const { payload, dentistId } = yield take(REMOVE_REVIEW_REQUEST);
 
     try {
-      const requestURL = `/api/v1/dentists/${dentistId}/review/${payload.id}`;
+      const requestURL = `/api/v1/dentists/${dentistId}/reviews/review/${payload.id}`;
       const params = {
         method: 'DELETE',
       };

@@ -346,26 +346,7 @@ class PatientReviewsPage extends React.Component {
         <PatientDashboardTabs active="reviews" />
 
         <div styleName="content">
-          <PatientsList
-            patients={[user]}
-
-            getAdditionalMembershipContent={this.getReviews}
-
-            onAddMember={this.addMember}
-            onReEnrollMember={this.reEnrollMember}
-            onRemoveMember={this.removeMember}
-            onRenewMember={this.renewMember}
-            onUpdateMember={this.updateMember}
-          />
-
-          <div styleName="add-review-wrapper">
-            <input
-              type="button"
-              styleName="button"
-              value="WRITE A NEW REVIEW"
-              onClick={this.addReview}
-            />
-          </div>
+          {this.getReviews()}
         </div>
 
         <MemberFormModal
