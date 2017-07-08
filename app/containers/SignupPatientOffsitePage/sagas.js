@@ -110,23 +110,27 @@ function* signupWatcher() {
       //       `userId` that was created on the server and included in the
       //       `signupResponse`.  Do not use `user.id`, since it is a locally
       //       created temporary id only used / understood by the frontend.
-      const signupResponse = yield call(makeSignupRequest, user, paymentInfo);
+      const signupResponse = yield call(makeSignupRequest, user, paymentInfo, stripeToken);
 
       if (signupResponse !== false) {
         const realUserId = signupResponse.data[0].id;
         const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId, paymentInfo);
 
         if (checkoutResponse !== false) {
-          // ensure form values are erased
-          reset('signupPatient');
-          reset('familyMember');
-          reset('checkout');
+          const paymentSourceAndSubscribeResponse = yield call(subscribe, stripeToken, realUserId);
 
-          yield put(signupSuccess({
-            fullName: `${user.firstName} ${user.lastName}`,
-            loginEmail: user.email,
-          }));
-        }
+          if (paymentSourceAndSubscribeResponse !== false) {
+            // ensure form values are erased
+            reset('signupPatient');
+            reset('familyMember');
+            reset('checkout');
+
+            yield put(signupSuccess({
+              fullName: `${user.firstName} ${user.lastName}`,
+              loginEmail: user.email,
+            }));
+          }
+        } 
       }
     }
   }
@@ -169,7 +173,7 @@ function* makeStripeCreateTokenRequest(cardDetails) {
   }
 }
 
-function* makeSignupRequest(user, paymentInfo) {
+function* makeSignupRequest(user, paymentInfo, stripeToken) {
   // NOTE: The user and each member have fake `id` fields to keep track of them
   //       while the user is filling out the form.  These need to be removed,
   //       but without messing up the existing objects in case they are still
@@ -199,6 +203,7 @@ function* makeSignupRequest(user, paymentInfo) {
     zipCode: paymentInfo.zip,
 
     members: cleanedMembers,
+    stripeToken
   };
 
   try {
@@ -243,24 +248,49 @@ function* makeSignupRequest(user, paymentInfo) {
 }
 
 function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
-  const allowedFields = {
-    cancellationFeeWaiver: paymentInfo.feeWaiver,
-    periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
-    reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
-    termsAndConditions: paymentInfo.termsAndConditions,
-  };
-  // allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
+  // const allowedFields = {
+  //   cancellationFeeWaiver: paymentInfo.feeWaiver,
+  //   periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
+  //   reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
+  //   termsAndConditions: paymentInfo.termsAndConditions,
+  // };
+  // // allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
 
+  // try {
+  //   const requestURL = `/api/v1/users/${userId}/account/payment/sources/${stripeToken}`;
+  //   const params = {
+  //     method: 'POST',
+  //     body: JSON.stringify(allowedFields),
+  //   };
+
+  //   const response = yield call(request, requestURL, params);
+  //   yield put(clearEditingCheckout());
+
+  //   return response;
+
+  // } catch (err) {
+  //   // Map from known response errors to their form field identifiers.
+  //   // In this case, Authorize.NET is the validator.
+  //   const formErrors = {
+  //     number: err.errors && err.errors.errorMessage
+  //   }
+
+  //   yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
+  //   yield put(stopSubmit('checkout', formErrors));
+  //   yield put(change('checkout', 'cardCode', null));
+  //   return false;
+  // }
+  return true;
+}
+
+function* subscribe(stripeToken, userId) {
   try {
-    const requestURL = `/api/v1/users/${userId}/account/payment/sources/${stripeToken}`;
+    const requestURL = `/api/v1/users/${userId}/account/payment/subscribe`;
     const params = {
       method: 'POST',
-      body: JSON.stringify(allowedFields),
     };
 
     const response = yield call(request, requestURL, params);
-    yield put(clearEditingCheckout());
-
     return response;
 
   } catch (err) {
