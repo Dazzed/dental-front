@@ -123,6 +123,7 @@ const userSelector = createSelector(
 
     return {
       ...substate.user,
+      dentistId: dentist.id,
       members: sortedMembers,
       subscription: {
         ...membership,
