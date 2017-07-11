@@ -489,7 +489,7 @@ class DentistNewReviewsPage extends React.Component {
           */}
           <PatientsList
             patients={recentReviewerPatients}
-
+            dentist={dentistInfo}
             getAdditionalMembershipContent={this.getRecentPatientReviews}
 
             onAddMember={this.addMember}
