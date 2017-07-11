@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
-import { removeDuplicates } from 'common/utils';
+import { removeDuplicates, pluckMembershipfee, calculateSubtotal } from 'common/utils';
 // app
 import {
   MEMBER_RELATIONSHIP_TYPES,
@@ -89,7 +89,7 @@ export default class MembersList extends React.Component {
   Member Render
   ------------------------------------------------------------
   */
-  renderMember(patient, member, showControlCol) {
+  renderMember(patient, member, showControlCol, membershipPlans) {
     const {
       avatar,
       birthDate,
@@ -112,8 +112,9 @@ export default class MembersList extends React.Component {
 
     let amount = '-----';
     // if (subscription.status === 'active' || subscription.status === 'past_due') {
-    amount = '$' + subscription.monthly;
+    // amount = '$' + subscription.monthly;
     // }
+    amount = pluckMembershipfee(member, membershipPlans);
 
     return (
       <div key={id} className="row" styleName="member">
@@ -256,9 +257,10 @@ export default class MembersList extends React.Component {
     const memberRows = [];
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      memberRows.push(this.renderMember(patient, member, showControlCol));
+      memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
     }
-    const subTotal = members.reduce((acc, m) => acc += Number(m.subscription.monthly), 0);
+
+    const subTotal = members.length ? calculateSubtotal(members, dentist.memberships) : null;
     return (
       <div styleName="members">
         <div styleName="members__segment">
@@ -302,9 +304,10 @@ export default class MembersList extends React.Component {
             )}
           </div>
           {memberRows}
+          {subTotal &&
           <div styleName="subtotal">
             <strong>SubTotal: </strong>{subTotal}$
-          </div>
+          </div> }
         </div>
       </div>
     );

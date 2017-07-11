@@ -475,7 +475,7 @@ class DentistNewMembersPage extends React.Component {
           */}
           <PatientsList
             patients={patientsWithNewMembers}
-
+            dentist={dentistInfo}
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
