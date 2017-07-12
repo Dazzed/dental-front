@@ -243,13 +243,15 @@ export default class MembersList extends React.Component {
       onRemoveMember,
     } = this.props;
 
+    if (!dentist) {
+      return null;
+    }
     const showControlCol = onReEnrollMember
       || onRenewMember
       || onUpdateMember
       || onRemoveMember;
 
-
-    // console.log(dentist, 'dentists dentsists');
+    
     // TODO: test with yearly members
     // TODO: test with all status's
     // console.log('member', patient.members, 'patient dross member');
@@ -259,6 +261,7 @@ export default class MembersList extends React.Component {
       const member = members[i];
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
     }
+
 
     const subTotal = members.length ? calculateSubtotal(members, dentist.memberships) : null;
     return (
@@ -305,9 +308,9 @@ export default class MembersList extends React.Component {
           </div>
           {memberRows}
           {subTotal &&
-          <div styleName="subtotal">
-            <strong>SubTotal: </strong>{subTotal}$
-          </div> }
+            <div styleName="subtotal">
+              <strong>SubTotal: </strong>{subTotal}$
+          </div>}
         </div>
       </div>
     );
