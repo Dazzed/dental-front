@@ -197,10 +197,7 @@ function* submitAddMemberForm(patient, payload) {
     });
     const params = {
       method: 'POST',
-      body: {
-        parentMember: JSON.stringify(patient),
-        member: JSON.stringify(payload)
-      },
+      body
     };
 
     const response = yield call(request, requestURL, params);
