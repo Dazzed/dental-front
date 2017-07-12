@@ -171,9 +171,6 @@ function* signup(data) {
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-    if (err.meta && err.meta.message) {
-      errors.email = errors.email || err.meta.message.email;
-    }
     // Map from known response errors to their form field identifiers.
     // Currently, only server-side-only validation is included most of the
     // validation is identical on the client and the server.  Thus a
@@ -182,15 +179,16 @@ function* signup(data) {
     const formErrors = {};
 
     if (errors.email) {
-      formErrors.email = errors.email;
-      delete errors.email;
+      formErrors.user = {
+        email: errors.email
+      };
     }
 
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
-    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
-      yield put(toastrActions.error('', 'The email address ' + formErrors.email.value + ' is already registered.  Please use another.'));
+    else if (Object.keys(formErrors).length === 1 && formErrors.user.email) {
+      yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please use another.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix errors on the form!'));

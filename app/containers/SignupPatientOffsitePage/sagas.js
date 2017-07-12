@@ -130,7 +130,7 @@ function* signupWatcher() {
               loginEmail: user.email,
             }));
           }
-        } 
+        }
       }
     }
   }
@@ -218,7 +218,6 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-
     // Map from known response errors to their form field identifiers.
     // Currently, only server-side-only validation is included most of the
     // validation is identical on the client and the server.  Thus a
@@ -227,14 +226,16 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     const formErrors = {};
 
     if (errors.email) {
-      formErrors.email = errors.email;
+      formErrors.user = {
+        email: errors.email
+      };
     }
 
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
-    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
-      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please enter another email in Step 1.'));
+    else if (Object.keys(formErrors).length === 1 && formErrors.user.email) {
+      yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
