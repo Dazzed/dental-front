@@ -51,7 +51,7 @@ export default [
   main,
 ];
 
-function* main () {
+function* main() {
   const watcherA = yield fork(fetchDentistSpecialties);
   const watcherB = yield fork(fetchPricingCodes);
   const watcherC = yield fork(uploadImageWatcher);
@@ -69,8 +69,8 @@ function* main () {
 Fetch Sagas
 ================================================================================
 */
-function* fetchDentistSpecialties () {
-  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* handler () {
+function* fetchDentistSpecialties() {
+  yield* takeLatest(DENTIST_SPECIALTIES_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/dentist-specialties');
       yield put(dentistSpecialtiesSuccess(response.data));
@@ -80,7 +80,7 @@ function* fetchDentistSpecialties () {
   });
 }
 
-function* fetchPricingCodes () {
+function* fetchPricingCodes() {
   yield* takeLatest(PRICING_CODES_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/pricing');
@@ -96,7 +96,7 @@ function* fetchPricingCodes () {
 Upload Image Sagas
 ================================================================================
 */
-function* uploadImageWatcher () {
+function* uploadImageWatcher() {
   while (true) {
     const { field, file, } = yield take(UPLOAD_IMAGE_REQUEST);
 
@@ -143,7 +143,7 @@ function* uploadImageWatcher () {
 Signup Sagas
 ================================================================================
 */
-function* signupWatcher () {
+function* signupWatcher() {
   while (true) {
     // listen for the DENTIST_SIGNUP_REQUEST action dispatched on form submit
     const { payload } = yield take(DENTIST_SIGNUP_REQUEST);
@@ -160,7 +160,7 @@ function* signupWatcher () {
   }
 }
 
-function* signup (data) {
+function* signup(data) {
   try {
     // send a post request with the desired user details
     yield call(request, '/api/v1/accounts/dentist-signup', {
@@ -171,7 +171,9 @@ function* signup (data) {
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
-
+    if (err.meta && err.meta.message) {
+      errors.email = errors.email || err.meta.message.email;
+    }
     // Map from known response errors to their form field identifiers.
     // Currently, only server-side-only validation is included most of the
     // validation is identical on the client and the server.  Thus a
@@ -180,8 +182,7 @@ function* signup (data) {
     const formErrors = {};
 
     if (errors.email) {
-      formErrors.user = {};
-      formErrors.user.email = errors.email;
+      formErrors.email = errors.email;
       delete errors.email;
     }
 
@@ -189,7 +190,7 @@ function* signup (data) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
     else if (Object.keys(formErrors).length === 1 && formErrors.email) {
-      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please use another.'));
+      yield put(toastrActions.error('', 'The email address ' + formErrors.email.value + ' is already registered.  Please use another.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix errors on the form!'));
