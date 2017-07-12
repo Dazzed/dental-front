@@ -513,7 +513,7 @@ class DentistMembersPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

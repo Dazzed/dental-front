@@ -277,6 +277,7 @@ class DentistNewMembersPage extends React.Component {
 
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
+    console.log('edit me', patient, member);
     this.props.setEditingMember(patient, member);
   }
 
@@ -507,7 +508,7 @@ class DentistNewMembersPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

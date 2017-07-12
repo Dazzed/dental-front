@@ -738,7 +738,7 @@ class PatientProfilePage extends React.Component {
 
           show={editingProfile !== null}
           onCancel={this.cancelProfileFormAction}
-
+          dentist={dentist}
           initialValues={editingProfile}
           onSubmit={this.handleProfileFormSubmit}
         />
