@@ -111,10 +111,17 @@ export default class MembersList extends React.Component {
       : 'Adult';
 
     let amount = '-----';
+
     // if (subscription.status === 'active' || subscription.status === 'past_due') {
     // amount = '$' + subscription.monthly;
     // }
     amount = pluckMembershipfee(member, membershipPlans);
+
+    // if (subscription.status === 'active' || subscription.status === 'past_due') {
+    //   amount = '$' + (subscription.costs.type === 'monthly' ?
+    //       subscription.costs.monthlyPrice : subscription.costs.annualPrice);
+    // }
+
 
     return (
       <div key={id} className="row" styleName="member">
@@ -251,7 +258,7 @@ export default class MembersList extends React.Component {
       || onUpdateMember
       || onRemoveMember;
 
-    
+
     // TODO: test with yearly members
     // TODO: test with all status's
     // console.log('member', patient.members, 'patient dross member');
@@ -305,7 +312,7 @@ export default class MembersList extends React.Component {
                 </div>
               </div>
             )}
-          {memberRows}
+            {memberRows}
           </div>
           {subTotal &&
             <div styleName="subtotal">
