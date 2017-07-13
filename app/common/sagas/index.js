@@ -29,8 +29,6 @@ function* loadUserFromToken() {
   const requestURL = '/api/v1/users/me/account';
   const user = yield select(selectCurrentUser);
   const authToken = getItem('auth_token');
-
-  console.log(user, authToken, 'user, authtoken');
   if (user || !authToken) {
     return;
   }
