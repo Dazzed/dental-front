@@ -76,11 +76,31 @@ export default class PatientProfileFormModal extends React.Component {
     this.props.goToSecurityForm();
   }
 
+
+  renderMembershipType = () => {
+    const { dentist: { memberships } } = this.props;
+    return (<Field
+      name="membershipId"
+      type="select"
+      component={this.getLabeledInput}
+      label="Membership Type"
+      className="col-md-6"
+    >
+      <option>Membership Type</option>
+      {
+        memberships
+          .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
+          .map(membership =>
+            <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
+          )
+      }
+    </Field>);
+  };
   /*
   Render
   ------------------------------------------------------------
   */
-  render () {
+  render() {
     const {
       // event handlers
       goToSecurityForm,
@@ -108,7 +128,7 @@ export default class PatientProfileFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Header closeButton>
-          <Modal.Title>Edit Profile</Modal.Title>
+          <Modal.Title>Edit Patient</Modal.Title>
         </Modal.Header>
 
         {/*
@@ -121,6 +141,9 @@ export default class PatientProfileFormModal extends React.Component {
             className="form-horizontal"
           >
             <Row>
+              {this.renderMembershipType()}
+            </Row>
+            {/* <Row>
               <Field
                 name="address"
                 type="text"
@@ -196,7 +219,7 @@ export default class PatientProfileFormModal extends React.Component {
                   </option>
                 )}
               </Field>
-            </Row>
+            </Row> */}
 
             {goToSecurityForm && (
               <p styleName="field-instructions">

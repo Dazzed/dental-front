@@ -126,7 +126,7 @@ function* markMsgReadWatcher () {
 
 function* fetchMyDentist () {
   try {
-    const requestURL = '/api/v1/users/me/dentist';
+    const requestURL = '/api/v1/users/me/my-dentist';
     const response = yield call(request, requestURL);
 
     yield put(fetchNewMsgCount({ senderId: response.data.id }));
