@@ -53,6 +53,7 @@ class PatientsList extends React.Component {
     onRemoveMember: React.PropTypes.func,
     onRenewMember: React.PropTypes.func,
     onUpdateMember: React.PropTypes.func,
+    dentist: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -130,6 +131,7 @@ class PatientsList extends React.Component {
       onRemoveMember,
       onRenewMember,
       onUpdateMember,
+      dentist,
     } = this.props;
 
     console.log(patients, 'patients');
@@ -201,8 +203,14 @@ class PatientsList extends React.Component {
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
       const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
-
-      const paymentDueAmount = parseFloat(membership.total).toFixed(2);
+      
+      let paymentDueAmount;
+      if (membership.type === 'monthly') {
+        paymentDueAmount = parseFloat(membership.monthlyPrice).toFixed(2);
+      } else {
+        paymentDueAmount = parseFloat(membership.annualPrice).toFixed(2);
+      }
+      
 
       const waiveCancellationFee = !patient.cancellationFee;
       const waiveReEnrollmentFee = !patient.reEnrollmentFee;
@@ -314,7 +322,7 @@ class PatientsList extends React.Component {
                     <div className="col-sm-9">
                       <MembersList
                         patient={patient.client}
-
+                        dentist={dentist}
                         onReEnrollMember={onReEnrollMember}
                         onRemoveMember={onRemoveMember}
                         onRenewMember={onRenewMember}

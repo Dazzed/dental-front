@@ -489,7 +489,7 @@ class DentistNewReviewsPage extends React.Component {
           */}
           <PatientsList
             patients={recentReviewerPatients}
-
+            dentist={dentistInfo}
             getAdditionalMembershipContent={this.getRecentPatientReviews}
 
             onAddMember={this.addMember}
@@ -512,10 +512,9 @@ class DentistNewReviewsPage extends React.Component {
         />
 
         <MemberFormModal
-          dentist={dentist}
+          dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
-
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
         />
@@ -523,7 +522,7 @@ class DentistNewReviewsPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

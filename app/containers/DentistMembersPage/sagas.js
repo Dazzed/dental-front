@@ -190,10 +190,14 @@ function* submitMemberFormWatcher () {
 
 function* submitAddMemberForm(patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${patient.id}/members`;
+    const requestURL = `/api/v1/users/${patient.client.id}/members`;
+    let body = JSON.stringify({
+      parentMember: patient,
+      member: payload
+    });
     const params = {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body
     };
 
     const response = yield call(request, requestURL, params);
@@ -201,7 +205,6 @@ function* submitAddMemberForm(patient, payload) {
     yield put(toastrActions.success('', message));
 
     yield put(setAddedMember(patient, response.data));
-
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
 

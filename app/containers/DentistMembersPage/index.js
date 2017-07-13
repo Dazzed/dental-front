@@ -473,7 +473,7 @@ class DentistMembersPage extends React.Component {
           */}
           <PatientsList
             patients={patients}
-
+            dentist={dentistInfo}
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
@@ -494,7 +494,7 @@ class DentistMembersPage extends React.Component {
         />
 
         <MemberFormModal
-          dentist={dentistInfo}
+          dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
@@ -513,7 +513,7 @@ class DentistMembersPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

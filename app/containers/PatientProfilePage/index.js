@@ -256,9 +256,8 @@ class PatientProfilePage extends React.Component {
     this.props.setEditingMember({});
   }
 
-  reEnrollMember = (user, member, type) => {
-    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
-    const cost = { monthly, yearly, discount };
+  reEnrollMember = (patient, member, type) => {
+    const { dentist: { memberships } } = this.props;
     // switch (type) {
     //   case 'adult':
     //     cost.yearly = dentistInfo.adultMembership.yearly;
@@ -271,9 +270,12 @@ class PatientProfilePage extends React.Component {
     //     cost.discount = dentistInfo.childMembership.discount;
     //     break;
     // }
-    const enrollmentDiv = user.reEnrollmentFee && <div>
-      <h3>{cost.discount}% Discount</h3>
-      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    const enrollmentDiv = patient.reEnrollmentFee && <div>
+      <h3>Membership Fees</h3>
+      {
+        memberships.map(({ name, price, discount }, idx) =>
+          <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)
+      }
     </div>;
 
     const dialog = {
@@ -283,7 +285,7 @@ class PatientProfilePage extends React.Component {
       title: 'Re-enroll Member',
       confirm: () => {
         member.isEnrolling = true;
-        this.updateMember(user, member);
+        this.updateMember(patient, member);
         this.handleCloseDialog();
       }
     };
@@ -738,7 +740,7 @@ class PatientProfilePage extends React.Component {
 
           show={editingProfile !== null}
           onCancel={this.cancelProfileFormAction}
-
+          dentist={dentist}
           initialValues={editingProfile}
           onSubmit={this.handleProfileFormSubmit}
         />
