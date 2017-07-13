@@ -31,18 +31,15 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
       }, {}),
       */
 
-      adultMonthlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'month' && sub.subscription_age_group === 'adult'),
-      childMonthlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'month' && sub.subscription_age_group === 'child'),
-      adultYearlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'year' && sub.subscription_age_group === 'adult'),
-      childYearlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'year' && sub.subscription_age_group === 'child'),
+      adultYearlyFeeActivated: dentistInfo.membership.adultYearlyFeeActivated,
+      childYearlyFeeActivated: dentistInfo.childMembership.childYearlyFeeActivated,
 
-      // TODO: Hardcoded to the first membership for now. Fix this field to
-      // distinguish between discounts.
-      treatmentDiscount: dentistInfo.memberships[0].discount,
+      adultMonthlyFee: dentistInfo.membership.monthly,
+      childMonthlyFee: dentistInfo.childMembership.monthly,
+      adultYearlyFee: dentistInfo.membership.yearly,
+      childYearlyFee: dentistInfo.childMembership.yearly,
+
+      treatmentDiscount: dentistInfo.membership.discount,
     },
 
     marketplace: {

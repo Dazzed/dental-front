@@ -663,18 +663,18 @@ class DentistEditProfileForm extends React.Component {
                   </div>
                 </div>
 
-                {initialValues.pricing.codes.map((item) => {
+                {initialValues.pricing.codes.map((pricingCode, priceCodeName) => {
                   return (
-                    <div className="row" styleName="pricing-codes__entry" key={item.code}>
+                    <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
                       <div className="col-sm-4">
                         <div styleName="pricing-codes__entry__code">
-                          {item.code}
+                          {pricingCodeName}
                         </div>
                       </div>
                       <div className="col-sm-8">
                         <Row>
                           <Field
-                            name={item.code}
+                            name={pricingCodeName}
                             type="number"
                             component={this.getInputGroup}
                             leftAddon="$"
