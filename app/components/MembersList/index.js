@@ -305,8 +305,8 @@ export default class MembersList extends React.Component {
                 </div>
               </div>
             )}
-          </div>
           {memberRows}
+          </div>
           {subTotal &&
             <div styleName="subtotal">
               <strong>SubTotal: </strong>{subTotal}$
