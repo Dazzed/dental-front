@@ -92,7 +92,7 @@ export default function createRoutes(store) {
       },
     }, {
       onEnter: redirectToDashboard,
-      path: '/accounts/reset-password',
+      path: '/accounts/reset-password/:token',
       name: 'passwordResetPage',
       getComponent(nextState, cb) {
         Promise.all([

@@ -45,7 +45,7 @@ function* main() {
   const watcherB = yield fork(forgotPaswordWatcher);
 
   yield take(LOCATION_CHANGE);
-  yield cancel(watcherB);
+  // yield cancel(watcherB);
 }
 
 
@@ -60,6 +60,9 @@ function* forgotPaswordWatcher() {
 
     // execute the passwordReset task asynchronously
     const task = yield fork(passwordReset, data, resolve, reject);
+    if (task) {
+      yield put(push('/accounts/login'));
+    }
   }
 }
 
@@ -74,14 +77,13 @@ function* passwordReset(data, resolve, reject) {
     yield put(toastrActions.success(response.message ||
       'New Password has been set, proceed to login'));
 
-    yield put(push('/accounts/login'));
     return response;
   } catch (err) {
     // reject the onSubmit promise of redux-form
     if (reject) {
       reject(new SubmissionError({ _error: get(err, 'meta.message') }));
     }
-    
+
     yield put(toastrActions.error('Your password change request could not be completed at this time'));
     // dispatch PASSWORD_RESET_ERROR action
     yield put(passwordResetError(err));

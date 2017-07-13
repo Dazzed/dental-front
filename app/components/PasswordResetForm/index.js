@@ -55,10 +55,9 @@ class PasswordResetForm extends React.Component {
   }
 
   render() {
-    const { newPassword, confirmNewPassword } = this.state;
-    const customError = newPassword !== confirmNewPassword ? 'Passwords do not match' : '';
-    const { error = customError, handleSubmit, submitting, token } = this.props;
-
+    const { password, confirmPassword } = this.state;
+    const customError = password !== confirmPassword ? 'Passwords do not match' : '';
+    const { error = customError, submitting, handleSubmit } = this.props;
 
     return (
       <form
@@ -69,7 +68,7 @@ class PasswordResetForm extends React.Component {
 
         <Row>
           <Field
-            name="newPassword"
+            name="password"
             type="password"
             onChange={this.handleChange}
             component={this.getLabeledInput}
@@ -78,18 +77,12 @@ class PasswordResetForm extends React.Component {
           />
 
           <Field
-            name="confirmNewPassword"
+            name="confirmPassword"
             type="password"
             onChange={this.handleChange}
             component={this.getLabeledInput}
             label="New Password Again"
             placeholder="Password"
-          />
-
-          <input
-            name="token"
-            type="hidden"
-            value={token}
           />
 
         </Row>
@@ -103,7 +96,7 @@ class PasswordResetForm extends React.Component {
         </FormGroup>
 
         <div className="text-center">
-          <input type="submit" disabled={submitting || newPassword !== confirmNewPassword || !newPassword} styleName="button" value="Set New Password &gt;" />
+          <input type="submit" disabled={submitting || password !== confirmPassword || !password} styleName="button" value="Set New Password &gt;" />
         </div>
       </form>
     );
