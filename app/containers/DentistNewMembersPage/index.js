@@ -24,6 +24,7 @@ import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientsList from 'components/PatientsList';
+import ConfirmModal from 'components/ConfirmModal';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
@@ -238,6 +239,7 @@ class DentistNewMembersPage extends React.Component {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
     this.props.fetchDentistReports();
+    this.state = { dialog: {} };
   }
 
   componentDidMount() {
@@ -253,10 +255,34 @@ class DentistNewMembersPage extends React.Component {
     this.props.setEditingMember(patient, null);
   }
 
-  reEnrollMember = (patient, member) => {
-    /* TODO, UNVERIFIED */
-    alert('TODO: re-enroll member');
-  }
+  reEnrollMember = (patient, member, type) => {
+    const { user: { memberships } } = this.props;
+    const enrollmentDiv = patient.reEnrollmentFee && <div>
+      <h3>Membership Fees</h3>
+      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(patient, member);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
+  };
+
+  handleCloseDialog = () => {
+    let dialog = this.state.dialog;
+    dialog.showDialog = false;
+    this.setState({ dialog });
+  };
+
 
   removeMember = (patient, member) => {
     this.props.setRemovingMember(patient, member);
@@ -277,13 +303,11 @@ class DentistNewMembersPage extends React.Component {
 
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    console.log('edit me', patient, member);
     this.props.setEditingMember(patient, member);
   }
 
   updatePatientProfile = (patient) => {
     this.props.resetPatientProfileForm();
-    console.log('client', patient.client);
     this.props.setEditingPatientProfile({
       ...patient.client,
       membership: patient.membership,
@@ -371,6 +395,9 @@ class DentistNewMembersPage extends React.Component {
       editingPatientPayment,
     } = this.props;
 
+    const {
+      dialog
+    } = this.state;
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -441,7 +468,6 @@ class DentistNewMembersPage extends React.Component {
     ------------------------------------------------------------
     */
 
-    console.log(editingMember, 'editingMember');
     return (
       <div>
         <DentistDashboardHeader
@@ -511,6 +537,14 @@ class DentistNewMembersPage extends React.Component {
           dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
+        />
+
+        <ConfirmModal
+          showModal={dialog.showDialog}
+          message={dialog.message}
+          onCancel={this.handleCloseDialog}
+          onConfirm={dialog.confirm}
+          title={dialog.title}
         />
       </div>
     );
