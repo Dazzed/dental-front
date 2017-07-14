@@ -15,15 +15,15 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
   let officeImagesIdx = 0;
   const processedOfficeImages = [];
   if (data.officeInfo.officeImages0) {
-    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages0;
+    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages0.url;
     officeImagesIdx++;
   }
   if (data.officeInfo.officeImages1) {
-    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages1;
+    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages1.url;
     officeImagesIdx++;
   }
   if (data.officeInfo.officeImages2) {
-    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages2;
+    processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages2.url;
     officeImagesIdx++;
   }
 
@@ -44,11 +44,13 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       zipCode: data.officeInfo.zipCode,
 
       // MOVE the specialtyId field from officeInfo to user.
-      specialtyId: data.officeInfo.specialtyId,      
+      specialtyId: data.officeInfo.specialtyId,
     },
 
     officeInfo: {
       ...data.officeInfo,
+
+      marketplaceOptIn: data.marketplace.optIn === true,
 
       // MOVE the office images into an array (part 2).
       officeImages: processedOfficeImages,
@@ -61,19 +63,6 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
     pricing: {
       ...data.pricing,
 
-      // ALTER the pricing codes from an object with code => amount entries
-      // to an array of objects, one per price code.  Also normalize the code
-      // names and the price values.
-      //
-      // { "D1234": 12.5, ... } => [{ code: "1234", price: "12.50" }, ...]
-      codes: Object.keys(data.pricing.codes).map((code) => {
-        const amount = data.pricing.codes[code];
-        return {
-          code: code.substr(1), // "D1234" => "1234"
-          amount: parseFloat(amount).toFixed(2),
-        };
-      }),
-
       // ALTER the activated indicators to ensure each value is a boolean.
       adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated === true,
       childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
@@ -83,13 +72,6 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       childMonthlyFee: parseFloat(data.pricing.childMonthlyFee).toFixed(2),
       adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2), // CONDITIONAL
       childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2), // CONDITIONAL
-    },
-
-    marketplace: {
-      ...data.marketplace,
-
-      // ALTER the marketplace optIn to ensure the value is a boolean.
-      optIn: data.marketplace.optIn === true,
     },
 
     // ALTER the services from an object with serviceKey => bool entries

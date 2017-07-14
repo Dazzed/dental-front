@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
 import {
   Field,
+  FieldArray,
   FormSection,
   formValueSelector,
   reduxForm
@@ -257,15 +258,15 @@ class DentistEditProfileForm extends React.Component {
   //
   //       See https://github.com/erikras/redux-form/issues/1609
   setOfficeImage0 = (info) => {
-    this.props.change('officeInfo.officeImages0', info.fileUrl);
+    this.props.change('officeInfo.officeImages0', { url: info.fileUrl });
   }
 
   setOfficeImage1 = (info) => {
-    this.props.change('officeInfo.officeImages1', info.fileUrl);
+    this.props.change('officeInfo.officeImages1', { url: info.fileUrl });
   }
 
   setOfficeImage2 = (info) => {
-    this.props.change('officeInfo.officeImages2', info.fileUrl);
+    this.props.change('officeInfo.officeImages2', { url: info.fileUrl });
   }
 
   getInput(props) {
@@ -297,15 +298,27 @@ class DentistEditProfileForm extends React.Component {
     }
   };
 
+  getS3FilenameFromURL(url) {
+    if (url) {
+      const pieces = url.split('amazonaws.com/');
+      if (pieces.length === 2) {
+        return pieces[1];
+      }
+    }
+    return '';
+  }
+
   /*
   Render
   ------------------------------------------------------------
   */
   render() {
+
     const {
       // passed in - state
       initialValues,
       dentistSpecialties,
+      pricing,
       //      pricingCodes,
       //      services,
 
@@ -320,6 +333,14 @@ class DentistEditProfileForm extends React.Component {
       handleSubmit,
       submitting
     } = this.props;
+
+    // Get office logo and profile picture names.
+    const logoFilename = this.getS3FilenameFromURL(initialValues.officeInfo.logo);
+    const avatarFilename = this.getS3FilenameFromURL(initialValues.user.avatar);
+
+    const office0Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages0.url);
+    const office1Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages1.url);
+    const office2Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages2.url);
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -370,6 +391,20 @@ class DentistEditProfileForm extends React.Component {
               placeholder=""
               className="col-sm-6"
             />
+            <Field
+              name="dentistSpecialtyId"
+              type="select"
+              label="Specialty"
+              component={this.getLabeledInput}
+              className="col-sm-6"
+            >
+              <option value="">Select a Specialty</option>
+              {dentistSpecialties.map((specialty, index) => (
+                <option value={specialty.id} key={index}>
+                  {specialty.name}
+                </option>
+              ))}
+            </Field>
           </Row>
 
           <hr styleName="spacer" />
@@ -389,23 +424,7 @@ class DentistEditProfileForm extends React.Component {
               placeholder=""
               className="col-sm-6"
             />
-
-            <Field
-              name="specialtyId"
-              type="select"
-              label="Specialty"
-              component={this.getLabeledInput}
-              className="col-sm-6"
-            >
-              <option value="">Select a Specialty</option>
-              {dentistSpecialties.map((specialty, index) => (
-                <option value={specialty.id} key={index}>
-                  {specialty.name}
-                </option>
-              ))}
-            </Field>
           </Row>
-
           <Row>
             <Field
               name="email"
@@ -521,6 +540,7 @@ class DentistEditProfileForm extends React.Component {
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeLogo}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
+                    filename={logoFilename}
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
@@ -547,6 +567,7 @@ class DentistEditProfileForm extends React.Component {
                   <DropzoneS3Uploader
                     onFinish={this.setProfilePicture}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
+                    filename={avatarFilename}
                     upload={{
                       signingUrl: "/s3/sign",
                       signingUrlMethod: "GET",
@@ -581,6 +602,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage0}
+                    filename={office0Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -600,6 +622,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage1}
+                    filename={office1Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -619,6 +642,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage2}
+                    filename={office2Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
                       signingUrl: "/s3/sign",
@@ -648,9 +672,7 @@ class DentistEditProfileForm extends React.Component {
         */}
         <FormSection name="pricing">
 
-          <FormSection name="codes">
-            <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
-
+          <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
             <div className="row" styleName="pricing-codes">
               <div className="col-sm-offset-2 col-sm-8">
 
@@ -662,19 +684,22 @@ class DentistEditProfileForm extends React.Component {
                     Price
                   </div>
                 </div>
-
-                {initialValues.pricing.codes.map((item) => {
-                  return (
-                    <div className="row" styleName="pricing-codes__entry" key={item.code}>
+                <FieldArray name="codes" component={codes =>
+                  <div>
+                    {codes.fields.map((code, codeIndex) => {
+                      const rowStyle = `row ${styles['pricing-codes__entry']}`;
+                      const entryStyle = styles['pricing-codes__entry__code'];
+                      return (
+                    <div className={rowStyle} key={codeIndex}>
                       <div className="col-sm-4">
-                        <div styleName="pricing-codes__entry__code">
-                          {item.code}
+                        <div className={entryStyle}>
+                          { initialValues.pricing.codes[codeIndex].code }
                         </div>
                       </div>
                       <div className="col-sm-8">
                         <Row>
                           <Field
-                            name={item.code}
+                            name={`${code}.price`}
                             type="number"
                             component={this.getInputGroup}
                             leftAddon="$"
@@ -685,15 +710,17 @@ class DentistEditProfileForm extends React.Component {
                           />
                         </Row>
                       </div>
-                    </div>
-                  );
-                })}
+                    </div>);
+                  }
+                    )}
+                  </div>
+                }/>
 
                 {/* End Pricing Codes Wrapper Column*/}
               </div>
               {/* End Pricing Codes Wrapper Row*/}
+
             </div>
-          </FormSection>
 
           <div styleName="field-instructions">
             <p>
@@ -705,104 +732,109 @@ class DentistEditProfileForm extends React.Component {
             </p>
           </div>
 
-          <FormGroup>
-            <div className="col-sm-8">
-              <ControlLabel>Recommended Adult Monthly Membership Fee:</ControlLabel>
-              <Row>
-                <Field
-                  name="adultMonthlyFee"
-                  type="number"
-                  component={this.getInputGroup}
-                  leftAddon="$"
-                  width={8}
-                />
-              </Row>
-            </div>
+          <FormSection name="adultMonthlyFee">
+            <FormGroup>
+              <div className="col-sm-8">
+                <ControlLabel>Recommended Adult Monthly Membership Fee:</ControlLabel>
+                <Row>
+                  <Field
+                    name="price"
+                    type="number"
+                    component={this.getInputGroup}
+                    leftAddon="$"
+                    width={8}
+                  />
+                </Row>
+              </div>
 
-            <div className="col-sm-4">
-              {recommendedFees.monthly.adult && (
-                <p styleName="fees__recommended">
-                  Our Recommendation:
-                  {' '}
-                  <span styleName="fees__recommended__amount">
-                    ${recommendedFees.monthly.adult}
-                  </span>
-                </p>
-              )}
-            </div>
-          </FormGroup>
+              <div className="col-sm-4">
+                {recommendedFees.monthly.adult && (
+                  <p styleName="fees__recommended">
+                    Our Recommendation:
+                    {' '}
+                    <span styleName="fees__recommended__amount">
+                      ${recommendedFees.monthly.adult}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </FormGroup>
+          </FormSection>
 
           <p styleName="field-instructions">
             *The miminum price for an adult monthly membership is $19.99.
           </p>
+          <FormSection name="childMonthlyFee">
+            <FormGroup>
+              <div className="col-sm-8">
+                <ControlLabel>Recommended Child Monthly Membership Fee:</ControlLabel>
+                <Row>
+                  <Field
+                    name="price"
+                    type="number"
+                    component={this.getInputGroup}
+                    leftAddon="$"
+                    width={8}
+                  />
+                </Row>
+              </div>
 
-          <FormGroup>
-            <div className="col-sm-8">
-              <ControlLabel>Recommended Child Monthly Membership Fee:</ControlLabel>
-              <Row>
-                <Field
-                  name="childMonthlyFee"
-                  type="number"
-                  component={this.getInputGroup}
-                  leftAddon="$"
-                  width={8}
-                />
-              </Row>
-            </div>
-
-            <div className="col-sm-4">
-              {recommendedFees.monthly.child && (
-                <p styleName="fees__recommended">
-                  Our Recommendation:
-                  {' '}
-                  <span styleName="fees__recommended__amount">
-                    ${recommendedFees.monthly.child}
-                  </span>
-                </p>
-              )}
-            </div>
-          </FormGroup>
+              <div className="col-sm-4">
+                {recommendedFees.monthly.child && (
+                  <p styleName="fees__recommended">
+                    Our Recommendation:
+                    {' '}
+                    <span styleName="fees__recommended__amount">
+                      ${recommendedFees.monthly.child}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </FormGroup>
+          </FormSection>
 
           <p styleName="field-instructions">
             *The miminum price for an child monthly membership is $14.99.
           </p>
 
-          <FormGroup>
-            <div className="col-sm-8">
-              <ControlLabel>Recommended Adult Annual Membership Fee:</ControlLabel>
-              <Row>
-                <Field
-                  name="adultYearlyFee"
-                  type="number"
-                  component={this.getInputGroup}
-                  leftAddon="$"
-                  width={8}
-                  disabled={!yearlyFeeActivated.adult}
-                />
-              </Row>
-            </div>
-
-            <div className="col-sm-4">
-              {recommendedFees.yearly.adult && (
-                <p styleName="fees__recommended">
-                  Our Recommendation:
-                  {' '}
-                  <span styleName="fees__recommended__amount">
-                    ${recommendedFees.yearly.adult}
-                  </span>
-                </p>
-              )}
-
-              <div styleName="fees__activation-checkbox">
-                <Field
-                  name="adultYearlyFeeActivated"
-                  component={this.getCheckbox}
-                >
-                  Activate this offer.
-                </Field>
+          <FormSection name="adultYearlyFee">
+            <FormGroup>
+              <div className="col-sm-8">
+                <ControlLabel>Recommended Adult Annual Membership Fee:</ControlLabel>
+                <Row>
+                  <Field
+                    name="price"
+                    type="number"
+                    component={this.getInputGroup}
+                    leftAddon="$"
+                    width={8}
+                    disabled={!yearlyFeeActivated.adult}
+                  />
+                </Row>
               </div>
-            </div>
-          </FormGroup>
+
+              <div className="col-sm-4">
+                {recommendedFees.yearly.adult && (
+                  <p styleName="fees__recommended">
+                    Our Recommendation:
+                    {' '}
+                    <span styleName="fees__recommended__amount">
+                      ${recommendedFees.yearly.adult}
+                    </span>
+                  </p>
+                )}
+
+                <div styleName="fees__activation-checkbox">
+                  <Field
+                    name="adultYearlyFeeActivated"
+                    component={this.getCheckbox}
+                  >
+                    Activate this offer.
+                  </Field>
+                </div>
+              </div>
+            </FormGroup>
+          </FormSection>
 
           <FormGroup>
             <div className="col-sm-8">

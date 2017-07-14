@@ -483,8 +483,8 @@ function* signupWatcher () {
 function* signup (data) {
   try {
     // send a post request with the desired user details
-    yield call(request, '/api/v1/dentists/' + data.user.id, {
-      method: 'PUT',
+    yield call(request, '/api/v1/dentists/edit/' + data.user.id, {
+      method: 'POST',
       body: JSON.stringify(data)
     });
     return true;
@@ -516,4 +516,3 @@ function* signup (data) {
     return false;
   }
 }
-
