@@ -338,9 +338,15 @@ class DentistEditProfileForm extends React.Component {
     const logoFilename = this.getS3FilenameFromURL(initialValues.officeInfo.logo);
     const avatarFilename = this.getS3FilenameFromURL(initialValues.user.avatar);
 
-    const office0Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages0.url);
-    const office1Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages1.url);
-    const office2Filename = this.getS3FilenameFromURL(initialValues.officeInfo.officeImages2.url);
+    const officePicUrl0 = initialValues.officeInfo.officeImages0 ?
+          initialValues.officeInfo.officeImages0.url : '';
+    const officePicUrl1 = initialValues.officeInfo.officeImages1 ?
+          initialValues.officeInfo.officeImages1.url : '';
+    const officePicUrl2 = initialValues.officeInfo.officeImages2 ?
+          initialValues.officeInfo.officeImages2.url : '';
+    const office0Filename = this.getS3FilenameFromURL(officePicUrl0);
+    const office1Filename = this.getS3FilenameFromURL(officePicUrl1);
+    const office2Filename = this.getS3FilenameFromURL(officePicUrl2);
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
