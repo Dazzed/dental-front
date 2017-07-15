@@ -134,8 +134,10 @@ class PatientsList extends React.Component {
       dentist,
     } = this.props;
 
-    console.log(patients, 'patients');
-    const patientRows = patients.map((patient) => {
+    const primaryMembers = patients.filter(patient => { return !patient.client.addedBy });
+
+    console.log(primaryMembers, 'patients');
+    const patientRows = primaryMembers.map((patient) => {
       const {
         client: { avatar,
         contactMethod,
@@ -203,14 +205,14 @@ class PatientsList extends React.Component {
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
       const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
-      
+
       let paymentDueAmount;
       if (membership.type === 'monthly') {
         paymentDueAmount = parseFloat(membership.monthlyPrice).toFixed(2);
       } else {
         paymentDueAmount = parseFloat(membership.annualPrice).toFixed(2);
       }
-      
+
 
       const waiveCancellationFee = !patient.cancellationFee;
       const waiveReEnrollmentFee = !patient.reEnrollmentFee;
