@@ -93,15 +93,15 @@ class PatientsList extends React.Component {
 
   onCancelationFeeClick = (patient) => {
     this.props.onToggleCancelationFee(patient, {
-      cancellationFee: !patient.cancellationFee,
-      reEnrollmentFee: patient.reEnrollmentFee,
+      cancellationFeeWaiver: !patient.client.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: patient.client.reEnrollmentFeeWaiver,
     });
   }
 
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient, {
-      cancellationFee: patient.cancellationFee,
-      reEnrollmentFee: !patient.reEnrollmentFee,
+      cancellationFeeWaiver: patient.client.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: !patient.client.reEnrollmentFeeWaiver,
     });
   }
 
@@ -214,8 +214,8 @@ class PatientsList extends React.Component {
       }
 
 
-      const waiveCancellationFee = !patient.cancellationFee;
-      const waiveReEnrollmentFee = !patient.reEnrollmentFee;
+      const waiveCancellationFee = !patient.client.cancellationFeeWaiver;
+      const waiveReEnrollmentFee = !patient.client.reEnrollmentFeeWaiver;
 
       let additionalMembershipContent = null;
       if (getAdditionalMembershipContent) {

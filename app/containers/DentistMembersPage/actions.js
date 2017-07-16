@@ -310,11 +310,12 @@ export function submitPatientPaymentForm(patient, payload) {
 Toggle Waive Patient Fees
 ------------------------------------------------------------
 */
-export function setTogglingWaivePatientFees(patient, payload) {
+export function setTogglingWaivePatientFees(patient, payload, toggleType) {
   return {
     type: TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
     patient,
     payload,
+    toggleType,
   };
 }
 
@@ -325,6 +326,7 @@ export function setToggledWaivePatientFees(patient, payload) {
     payload,
   }
 }
+
 
 /* Download Report
  * ------------------------------------------------------ */
