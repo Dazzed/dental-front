@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => {
   const {
     pricing,
-    workingHours,
+    workingHours
   } = valueSelector(state, 'pricing', 'workingHours');
 
   // precondition: Redux-form hasn't initialized yet.  Note that the
@@ -191,7 +191,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-
 /*
 Edit Profile Form
 ================================================================================
@@ -203,10 +202,19 @@ Edit Profile Form
 })
 @CSSModules(styles)
 class DentistEditProfileForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentServices: this.props.initialValues.officeInfo.services,
+      serviceList: this.props.allServices
+    };
+  }
   acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
+    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
@@ -269,6 +277,28 @@ class DentistEditProfileForm extends React.Component {
     this.props.change('officeInfo.officeImages2', { url: info.fileUrl });
   }
 
+  setServices = (info) => {
+    const serviceId = Number.parseInt(info.target.name.split(".")[1]);
+
+    const allServices = this.state.serviceList;
+    const serviceInfo = allServices.find(service => service.id === serviceId);
+    serviceInfo.enabled = info.target.checked;
+    if (info.target.checked) {
+      if (!this.state.currentServices.find(service => service.id === serviceId)) {
+        // Turning on the value.
+        this.state.currentServices.push({
+          id: serviceId,
+          name: serviceInfo.name
+        });
+      }
+    } else {
+      // Turning off the value.
+      this.state.currentServices = this.state.currentServices.filter(service => service.id !== serviceId);
+    }
+    this.props.change('officeInfo.services', this.state.currentServices);
+    this.forceUpdate();
+  }
+
   getInput(props) {
     return new Input(props);
   }
@@ -319,6 +349,7 @@ class DentistEditProfileForm extends React.Component {
       initialValues,
       dentistSpecialties,
       pricing,
+      allServices,
       //      pricingCodes,
       //      services,
 
@@ -908,17 +939,17 @@ class DentistEditProfileForm extends React.Component {
         <FormSection name="services">
           <ControlLabel>Services Offered:</ControlLabel>
 
-          {/* TODO: Need BE to send dentist services... */}
-          {/*
+
           <Row>
-            {services.map((service) => {
-              const serviceKey = "service-" + service.id;
+            {allServices.map((service, index) => {
 
               return (
-                <div className="col-sm-4" key={serviceKey}>
+                <div className="col-sm-4" key={index}>
                   <Field
-                    name={serviceKey}
+                    name={service.id}
                     component={this.getCheckbox}
+                    props={ {serviceEnabled: service.enabled }}
+                    onChange={this.setServices}
                   >
                     <span>{service.name}</span>
                   </Field>
@@ -926,7 +957,6 @@ class DentistEditProfileForm extends React.Component {
               );
             })}
           </Row>
-          */}
 
           <FormGroup>
             <div className="col-sm-12">
