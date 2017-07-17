@@ -152,7 +152,7 @@ function mapDispatchToProps(dispatch) {
     submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
 
     // toggle waive patient fees
-    setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
+    setTogglingWaivePatientFees: (patient, updatedFees, toggleType) => dispatch(setTogglingWaivePatientFees(patient, updatedFees, toggleType)),
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
@@ -266,11 +266,11 @@ class DentistMembersPage extends React.Component {
   }
 
   toggleCancelationFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees);
+    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'cancel');
   }
 
   toggleReEnrollmentFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees);
+    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'reenroll');
   }
 
   confirmUpdateMember = (user, member, submit) => {
