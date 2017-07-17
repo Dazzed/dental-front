@@ -159,37 +159,38 @@ class PatientsList extends React.Component {
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
-      const summaryStatus = patient.client.members ? patient.client.members.reduce(
-        (summaryStatus, member) => {
-          if (summaryStatus === 'Active' || member.status === 'active') {
-            return 'Active';
-          }
+      const summaryStatus = status.toLowerCase();
+      // const summaryStatus = patient.client.members ? patient.client.members.reduce(
+      //   (summaryStatus, member) => {
+      //     if (summaryStatus === 'Active' || member.status === 'active') {
+      //       return 'Active';
+      //     }
 
-          if (summaryStatus === 'Late' || member.status === 'past_due') {
-            return 'Late';
-          }
+      //     if (summaryStatus === 'Late' || member.status === 'past_due') {
+      //       return 'Late';
+      //     }
 
-          if (summaryStatus === 'Inactive' || member.status === 'canceled') {
-            return 'Inactive';
-          }
+      //     if (summaryStatus === 'Inactive' || member.status === 'canceled') {
+      //       return 'Inactive';
+      //     }
 
-          // defaults to inactive
-          return 'Inactive';
-        },
-        'Inactive'
-      ) : patient.status;
+      //     // defaults to inactive
+      //     return 'Inactive';
+      //   },
+      //   'Inactive'
+      // ) : patient.status;
 
       let statusStyle = "status";
       switch (summaryStatus) {
-        case 'Active':
+        case 'active':
           statusStyle += ' status--active';
           break;
 
-        case 'Late':
+        case 'late':
           statusStyle += ' status--past-due';
           break;
 
-        case 'Inactive':
+        case 'inactive':
           statusStyle += ' status--inactive';
           break;
 
@@ -223,6 +224,7 @@ class PatientsList extends React.Component {
       }
 
       const activeMembers = members.filter((member) => {
+        console.log("MEMBER",member)
 
         return member.membership && member.status === 'active' && member.membership.type === 'monthly';
       });
