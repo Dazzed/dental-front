@@ -9,6 +9,7 @@ Imports
 */
 // libs
 import React from 'react';
+import { isEmpty } from 'lodash';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
@@ -168,12 +169,11 @@ const mapStateToProps = (state) => {
     avatar: null,
     office: [],
   };
-
   return {
     // pricing
     yearlyFeeActivated: {
-      adult: pricing.adultYearlyFeeActivated === true,
-      child: pricing.childYearlyFeeActivated === true,
+      adult: !isEmpty(pricing.adultYearlyFee),
+      child: !isEmpty(pricing.childYearlyFee),
     },
 
     recommendedFees,
@@ -865,6 +865,7 @@ class DentistEditProfileForm extends React.Component {
                   <Field
                     name="adultYearlyFeeActivated"
                     component={this.getCheckbox}
+                    checked={yearlyFeeActivated.adult}
                   >
                     Activate this offer.
                   </Field>
@@ -873,42 +874,45 @@ class DentistEditProfileForm extends React.Component {
             </FormGroup>
           </FormSection>
 
-          <FormGroup>
-            <div className="col-sm-8">
-              <ControlLabel>Recommended Child Annual Membership Fee:</ControlLabel>
-              <Row>
-                <Field
-                  name="childYearlyFee"
-                  type="number"
-                  component={this.getInputGroup}
-                  leftAddon="$"
-                  width={8}
-                  disabled={!yearlyFeeActivated.child}
-                />
-              </Row>
-            </div>
-
-            <div className="col-sm-4">
-              {recommendedFees.yearly.child && (
-                <p styleName="fees__recommended">
-                  Our Recommendation:
-                  {' '}
-                  <span styleName="fees__recommended__amount">
-                    ${recommendedFees.yearly.child}
-                  </span>
-                </p>
-              )}
-
-              <div styleName="fees__activation-checkbox">
-                <Field
-                  name="childYearlyFeeActivated"
-                  component={this.getCheckbox}
-                >
-                  Activate this offer.
-                </Field>
+          <FormSection name="childYearlyFee">
+            <FormGroup>
+              <div className="col-sm-8">
+                <ControlLabel>Recommended Child Annual Membership Fee:</ControlLabel>
+                <Row>
+                  <Field
+                    name="price"
+                    type="number"
+                    component={this.getInputGroup}
+                    leftAddon="$"
+                    width={8}
+                    disabled={!yearlyFeeActivated.child}
+                  />
+                </Row>
               </div>
-            </div>
-          </FormGroup>
+
+              <div className="col-sm-4">
+                {recommendedFees.yearly.child && (
+                  <p styleName="fees__recommended">
+                    Our Recommendation:
+                    {' '}
+                    <span styleName="fees__recommended__amount">
+                      ${recommendedFees.yearly.child}
+                    </span>
+                  </p>
+                )}
+
+                <div styleName="fees__activation-checkbox">
+                  <Field
+                    name="childYearlyFeeActivated"
+                    checked={yearlyFeeActivated.child}
+                    component={this.getCheckbox}
+                  >
+                    Activate this offer.
+                  </Field>
+                </div>
+              </div>
+            </FormGroup>
+          </FormSection>
 
           <FormGroup>
             <div className="col-sm-8">
