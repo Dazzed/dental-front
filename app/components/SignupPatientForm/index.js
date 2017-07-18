@@ -183,8 +183,7 @@ class SignupForm extends React.Component {
     const {
       // passed in
       dentist: {
-        offices,
-        memberships
+        offices
       },
       formValues,
       // redux form
@@ -193,6 +192,13 @@ class SignupForm extends React.Component {
       submitting
     } = this.props;
 
+    let {
+      dentist: {
+        memberships
+      }
+    } = this.props;
+
+    memberships = memberships.filter(m => m.active);
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
 

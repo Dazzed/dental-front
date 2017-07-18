@@ -137,7 +137,7 @@ function mapDispatchToProps(dispatch) {
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
-    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
+    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
 
     // edit patient profile
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -256,8 +256,8 @@ class DentistMembersPage extends React.Component {
     alert('TODO: re-enroll member');
   }
 
-  removeMember = (patient, member) => {
-    this.props.setRemovingMember(patient, member);
+  removeMember = (patient, member, dentistId) => {
+    this.props.setRemovingMember(patient, member, dentistId);
   }
 
   updateMemberConfirm = (patient, member, submit) => {
@@ -477,6 +477,7 @@ class DentistMembersPage extends React.Component {
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
+            onUpdateMember={this.updateMember}
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
