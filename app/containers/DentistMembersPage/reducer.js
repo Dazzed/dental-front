@@ -306,7 +306,8 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case TOGGLE_WAIVE_PATIENT_FEES_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      // patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(patient => patient.client.id === action.patient.client.id);
       prevStatePatient = state.patients[patientIdx];
 
       return {
@@ -315,8 +316,11 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           {
             ...prevStatePatient,
-            cancellationFee: action.payload.cancellationFee,
-            reEnrollmentFee: action.payload.reEnrollmentFee,
+            client: {
+              ...prevStatePatient.client,
+              cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
+              reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
+            }
           },
           ...state.patients.slice(patientIdx + 1),
         ],

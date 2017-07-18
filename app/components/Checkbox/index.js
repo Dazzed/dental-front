@@ -20,7 +20,7 @@ Checkbox
 ================================================================================
 */
 export default class Checkbox extends React.Component {
-  
+
   static propTypes = {
     input: React.PropTypes.object.isRequired,
     meta: React.PropTypes.object.isRequired,
@@ -33,6 +33,11 @@ export default class Checkbox extends React.Component {
       meta: { touched, error },
       children
     } = this.props;
+
+    // Hack to get this working with the "Services Offered" checkbox list. 
+    if (this.props.serviceEnabled) {
+      input.value = this.props.serviceEnabled;
+    }
 
     return (
       <FormGroup className={touched && error ? 'has-error' : ''}>

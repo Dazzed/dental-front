@@ -60,9 +60,9 @@ import {
   TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
 
   // download report
-  DOWNLOAD_MASTER_REPORT_REQUEST,
-  DOWNLOAD_MASTER_REPORT_SUCCESS,
-  DOWNLOAD_MASTER_REPORT_ERROR,
+  DOWNLOAD_REPORT_REQUEST,
+  DOWNLOAD_REPORT_SUCCESS,
+  DOWNLOAD_REPORT_ERROR,
 
   // image upload
   UPLOAD_IMAGE_REQUEST,
@@ -310,11 +310,12 @@ export function submitPatientPaymentForm(patient, payload) {
 Toggle Waive Patient Fees
 ------------------------------------------------------------
 */
-export function setTogglingWaivePatientFees(patient, payload) {
+export function setTogglingWaivePatientFees(patient, payload, toggleType) {
   return {
     type: TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
     patient,
     payload,
+    toggleType,
   };
 }
 
@@ -325,6 +326,7 @@ export function setToggledWaivePatientFees(patient, payload) {
     payload,
   }
 }
+
 
 /* Download Report
  * ------------------------------------------------------ */

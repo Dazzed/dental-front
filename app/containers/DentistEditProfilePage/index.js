@@ -40,6 +40,15 @@ import {
   // submit
   signupRequest,
 } from 'containers/DentistMembersPage/actions';
+
+import {
+  requestServices,
+} from 'containers/App/actions';
+
+import {
+  selectServices,
+} from 'containers/App/selectors';
+
 import {
   // fetch
   selectDentistReports,
@@ -62,6 +71,7 @@ function mapStateToProps (state) {
     patients: selectPatients(state),
     dentistSpecialties: dentistSpecialtiesSelector(state),
     user: selectCurrentUser(state),
+    allServices: selectServices(state),
   };
 }
 
@@ -76,6 +86,7 @@ function mapDispatchToProps (dispatch) {
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
+    requestServices: () => dispatch(requestServices()),
 
     // image upload
     uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
@@ -128,6 +139,7 @@ export default class DentistEditProfilePage extends Component {
     fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
     getDentistSpecialties: React.PropTypes.func.isRequired,
+    requestServices: React.PropTypes.func.isRequired,
 
     // image upload - dispatch
     uploadImage: React.PropTypes.func.isRequired,
@@ -144,6 +156,7 @@ export default class DentistEditProfilePage extends Component {
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
     this.props.getDentistSpecialties();
+    this.props.requestServices();
   }
 
   componentDidMount() {
@@ -174,6 +187,15 @@ export default class DentistEditProfilePage extends Component {
     this.props.downloadReport(reportName, url);
   }
 
+  updateServiceState(allServices, selectedServices) {
+    for (let i = 0; i < allServices.length; i++) {
+      const service = allServices[i];
+      const matchingService =
+          selectedServices.find(selected => selected.id === service.id);
+      allServices[i].enabled = !!matchingService;
+    }
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -185,6 +207,7 @@ export default class DentistEditProfilePage extends Component {
       dentistInfo,
       patients,
       dentistSpecialties,
+      allServices,
       user,
     } = this.props;
 
@@ -216,6 +239,7 @@ export default class DentistEditProfilePage extends Component {
     if (initialValues === null) {
       initialValues = formatDentistProfileFormInitialValues(user, dentistInfo);
     }
+    this.updateServiceState(allServices, initialValues.officeInfo.services);
 
     return (
       <div>
@@ -236,6 +260,7 @@ export default class DentistEditProfilePage extends Component {
               <DentistEditProfileForm
                 dentistSpecialties={dentistSpecialties}
 
+                allServices={allServices}
                 initialValues={initialValues}
                 onSubmit={this.onSubmit}
 

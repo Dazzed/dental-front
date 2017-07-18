@@ -69,7 +69,7 @@ import {
 import {
   // fetch
   dentistSelector,
-  membersSelector,
+  familyMembersSelector,
 
   // add / edit member
   editingMemberSelector,
@@ -96,7 +96,7 @@ function mapStateToProps(state) {
   return {
     // fetch
     dentist: dentistSelector(state),
-    members: membersSelector(state),
+    familyMembers: familyMembersSelector(state),
     user: selectCurrentUser(state),
 
     // add / edit member
@@ -178,7 +178,7 @@ class PatientProfilePage extends React.Component {
 
     // fetch - state
     fetchDentist: React.PropTypes.func.isRequired,
-    members: React.PropTypes.oneOfType([
+    familyMembers: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.array,
     ]),
@@ -429,7 +429,7 @@ class PatientProfilePage extends React.Component {
 
       // fetch
       dentist,
-      members,
+      familyMembers,
       user,
 
       // add / edit
@@ -448,15 +448,15 @@ class PatientProfilePage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (user === false || members === false || dentist === false || !dentist.dentistInfo) {
-      console.log(user, '-user-', members, '-members-', dentist, '-dentist-');
+    if (user === false || !familyMembers || dentist === false || !dentist.dentistInfo) {
+      console.log(user, '-user-', familyMembers, '-members-', dentist, '-dentist-');
       return (
         <div>
           <NavBar pathname={location.pathname} logo={false} />
           <PatientDashboardTabs active="profile" />
           <div styleName="content">
             {
-              user && members && dentist && !dentist.dentistInfo ?
+              user && familyMembers  && dentist && !dentist.dentistInfo ?
                 <h3 className="text-muted block text-center">You Have No Membership</h3> :
                 <LoadingSpinner showOnlyIcon={false} />
             }
@@ -470,11 +470,11 @@ class PatientProfilePage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
-    user.members = members;
 
+    user.members = familyMembers;
 
     const aggregateSubscription = {
-      status: members.reduce(
+      status: familyMembers.reduce(
         function (aggregateStatus, member) {
           if ((member.subscription && member.subscription.status === 'past_due')
             || aggregateStatus === 'past_due'
@@ -499,7 +499,7 @@ class PatientProfilePage extends React.Component {
         'inactive'
       ),
 
-      total: members.reduce(
+      total: familyMembers.reduce(
         function (aggregateTotal, member) {
           if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
             aggregateTotal += parseFloat(member.subscription.monthly);
@@ -509,7 +509,7 @@ class PatientProfilePage extends React.Component {
         0
       ),
 
-      dueDate: members.reduce(
+      dueDate: familyMembers.reduce(
         function (nearestPaymentDueDate, member) {
           const memberDueDate = moment(member.subscription ? member.subscription.endAt : null);
 
@@ -552,7 +552,7 @@ class PatientProfilePage extends React.Component {
               <div className="col-sm-9">
                 <div styleName="account-status">
                   <p>
-                    <span styleName="text--inline-label">Primary Account Hoder:</span>
+                    <span styleName="text--inline-label">Primary Account Holder:</span>
                     <span styleName="text--primary--bold">{user.firstName} {user.lastName}</span>
                   </p>
                   <p>
@@ -628,6 +628,7 @@ class PatientProfilePage extends React.Component {
             <div styleName="patients-list-wrapper">
               <FamilyMembersList
                 patient={user}
+                dentist={dentist}
 
                 onReEnrollMember={this.reEnrollMember}
                 onRemoveMember={this.removeMember}
