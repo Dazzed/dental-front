@@ -1,3 +1,20 @@
+const compareMembershipChange = (memberships, data) => {
+  return memberships.filter(membership => {
+    switch (membership.name) {
+      case 'default annual membership':
+        return membership.price !== data.adultYearlyFee.price;
+      case 'default monthly child membership':
+        return membership.price !== data.childMonthlyFee.price;
+      case 'default monthly membership':
+        return membership.price !== data.adultMonthlyFee.price;
+      case 'default annual child membership':
+        return membership.price !== data.childYearlyFee.price;
+      default:
+        return false;
+    }
+  });
+};
+
 /*
 Dentist Edit Profile Form - Format Submission Data
 ================================================================================
@@ -49,7 +66,7 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
 
     officeInfo: {
       ...data.officeInfo,
-
+      memberships: compareMembershipChange(data.officeInfo.memberships, data.pricing),
       marketplaceOptIn: data.marketplace.optIn === true,
 
       // MOVE the office images into an array (part 2).
@@ -68,10 +85,10 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
 
       // ALTER the fees: normalize the price values.
-      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee).toFixed(2),
-      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee).toFixed(2),
-      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2), // CONDITIONAL
-      childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2), // CONDITIONAL
+      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee.price).toFixed(2),
+      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee.price).toFixed(2),
+      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee.price).toFixed(2), // CONDITIONAL
+      childYearlyFee: parseFloat(data.pricing.childYearlyFee.price).toFixed(2), // CONDITIONAL
     },
 
     // ALTER the services from an object with serviceKey => bool entries
@@ -143,12 +160,12 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
     delete processedData.officeInfo.childStartingAge;
   }
 
-  if (processedData.pricing.adultYearlyFeeActivated === false) {
-    delete processedData.pricing.adultYearlyFee;
-  }
-  if (processedData.pricing.childYearlyFeeActivated === false) {
-    delete processedData.pricing.childYearlyFee;
-  }
+  // if (processedData.pricing.adultYearlyFeeActivated === false) {
+  //   delete processedData.pricing.adultYearlyFee;
+  // }
+  // if (processedData.pricing.childYearlyFeeActivated === false) {
+  //   delete processedData.pricing.childYearlyFee;
+  // }
 
   return processedData;
 };
