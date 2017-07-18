@@ -64,10 +64,20 @@ export default class MemberFormModal extends React.Component {
 
   constructor(props) {
     super(props);
+    this.onBirthdayChanged = this.onBirthdayChanged.bind(this);
 
     this.state = {
       childWarning: false,
+      age: null
     }
+  }
+
+  onBirthdayChanged(birthDate) {
+    const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
+    this.setState({
+      ...this.state,
+      age: age,
+    });
   }
 
   handleFormSubmit = (values) => {
@@ -89,16 +99,13 @@ export default class MemberFormModal extends React.Component {
 
     const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
 
-    if (acceptsChildren === false
-      && childWarning === false
-    ) {
+    // Adult: >=14
+    // Child: <=13
+    if (!acceptsChildren && age < 14 && !childWarning) {
       this.setChildWarning(`Your dentist does not usually accept children as patients.  Would you still like to add ${firstName} ${lastName} (age ${age}) as a member of your plan?`);
     }
 
-    else if (
-      age < childStartingAge
-      && childWarning === false
-    ) {
+    else if (age < childStartingAge && !childWarning) {
       this.setChildWarning(`${firstName} ${lastName} is age ${age}, but your dentist usually only accepts children that are age ${childStartingAge} or older.  Would you still like to add them as a member of your plan?`);
     }
 
@@ -109,7 +116,7 @@ export default class MemberFormModal extends React.Component {
         this.props.onFormSubmit(values);
       }
 
-      if (childWarning !== false) {
+      if (childWarning) {
         this.clearChildWarning();
       }
     }
@@ -142,36 +149,27 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
-    // console.log(this.props);
-    // console.log(this.props.dentist, 'dentist');
     const { dentist: { memberships } } = this.props;
-    // let membershipTypes = [];
-    // let price = 0;
-    // if (acceptsChildren) {
-    //   price = this.processPrice(childMembership.monthly, childMembership.discount);
-    //   membershipTypes.push({
-    //     price,
-    //     name: `Child Monthly Recurring — $${price}`
-    //   });
 
-    //   price = this.processPrice(childMembership.yearly, childMembership.discount);
-    //   membershipTypes.push({
-    //     price,
-    //     name: `Child Yearly Nonrecurring — $${price}`
-    //   });
-    // }
+    const {
+      acceptsChildren,
+      childStartingAge,
+    } = this.props.dentist.dentistInfo;
 
-    // price = this.processPrice(membership.monthly, membership.discount);
-    // membershipTypes.push({
-    //   price,
-    //   name: `Adult Monthly Recurring — $${price}`
-    // });
+    let filteredMemberships = [];
+    const adultMemberships =
+        memberships.filter(m => m.subscription_age_group === 'adult');
+    const childMemberships =
+        memberships.filter(m => m.subscription_age_group === 'child');
 
-    // price = this.processPrice(membership.yearly, membership.discount);
-    // membershipTypes.push({
-    //   price,
-    //   name: `Adult Yearly Nonrecurring — $${price}`
-    // });
+    if (this.state.age !== null) {
+      if (acceptsChildren && childMemberships.length > 0 && this.state.age < 14) {
+        filteredMemberships = childMemberships;
+      } else {
+        // Show adult options.
+        filteredMemberships = adultMemberships;
+      }
+    }
 
     return (<Field
       name="membershipId"
@@ -182,7 +180,7 @@ export default class MemberFormModal extends React.Component {
     >
       <option>Membership Type</option>
       {
-        memberships
+        filteredMemberships
           .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
           .map(membership =>
             <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
@@ -324,6 +322,7 @@ export default class MemberFormModal extends React.Component {
                     type="date"
                     component={this.getDatePicker}
                     label="Birthdate"
+                    onChange={this.onBirthdayChanged}
                     className="col-md-6"
                   />
                 </Row>
@@ -343,7 +342,6 @@ export default class MemberFormModal extends React.Component {
                       </option>
                     )}
                   </Field>
-
                   {this.renderMembershipType()}
                 </Row>
               </div>)}
