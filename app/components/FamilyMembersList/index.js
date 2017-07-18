@@ -122,7 +122,7 @@ class FamilyMembersList extends React.Component {
         moment().add(100, 'years'), // obviously larger than any paid subscription period
       ),
     };
-
+    
     let statusStyle;
     if (aggregateSubscription.status === 'active') {
       aggregateSubscription.status = 'Active';
@@ -149,6 +149,7 @@ class FamilyMembersList extends React.Component {
         <div className="col-sm-9">
           <MembersList
             patient={patient}
+            dentist={this.props.dentist}
 
             onReEnrollMember={onReEnrollMember}
             onRemoveMember={onRemoveMember}
