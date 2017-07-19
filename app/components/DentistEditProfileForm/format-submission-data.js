@@ -24,6 +24,13 @@ component.
 */
 const formatDentistEditProfileFormSubmissionData = (data) => {
 
+  const getFee = (feeInfo) => {
+    if (!feeInfo || !feeInfo.price) {
+      return '';
+    }
+    return parseFloat(feeInfo.price).toFixed(2);
+  }
+
   /*
   Pre-Processing: Office Images
   ------------------------------------------------------------
@@ -85,10 +92,10 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
 
       // ALTER the fees: normalize the price values.
-      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee.price).toFixed(2),
-      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee.price).toFixed(2),
-      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee.price).toFixed(2), // CONDITIONAL
-      childYearlyFee: parseFloat(data.pricing.childYearlyFee.price).toFixed(2), // CONDITIONAL
+      adultMonthlyFee: getFee(data.pricing.adultMonthlyFee),
+      childMonthlyFee: getFee(data.pricing.childMonthlyFee),
+      adultYearlyFee: getFee(data.pricing.adultYearlyFee), // CONDITIONAL
+      childYearlyFee: getFee(data.pricing.childYearlyFee), // CONDITIONAL
     },
 
     // ALTER the services from an object with serviceKey => bool entries
