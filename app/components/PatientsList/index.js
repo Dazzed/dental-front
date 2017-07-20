@@ -223,10 +223,9 @@ class PatientsList extends React.Component {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
-      const activeMembers = members.filter((member) => {
-        console.log("MEMBER",member)
-
-        return member.membership && member.status === 'active' && member.membership.type === 'monthly';
+      const activeMembers = patients.filter((member) => {
+        return member.membership && member.status === 'active' && member.membership.type === 'monthly'
+            && member.client.addedBy === id;
       });
 
       return (
