@@ -258,6 +258,7 @@ function* removeMemberWatcher () {
 
       yield put(setRemovedMember(patient, payload.id));
     } catch (err) {
+      console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
     }

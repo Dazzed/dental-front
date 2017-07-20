@@ -218,9 +218,10 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = findIndex(prevStatePatient.members, { id: action.memberId });
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      prevStatePatient.client.members[memberIdx].status = 'inactive';
 
       newStatePatient = {
         ...prevStatePatient,

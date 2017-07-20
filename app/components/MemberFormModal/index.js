@@ -149,8 +149,9 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
-    const { dentist: { memberships } } = this.props;
-
+    let { dentist: { memberships } } = this.props;
+    memberships = memberships.filter(m => m.active);
+    console.log(memberships)
     const {
       acceptsChildren,
       childStartingAge,
