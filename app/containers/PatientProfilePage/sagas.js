@@ -213,7 +213,7 @@ function* submitEditMemberForm(payload, userId) {
       yield (dentistFetcher());
     }
 
-    yield put(setEditedMember(response.data, userId));
+    yield put(setEditedMember(payload, userId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
