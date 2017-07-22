@@ -267,10 +267,17 @@ function* submitProfileFormWatcher() {
       'zipCode',
       'phone',
       'contactMethod',
+      'clientSubscription',
+      'firstName',
+      'lastName',
+      'middleName',
+      'birthDate',
+      'sex',
+      'familyRelationship'
     );
 
     try {
-      const requestURL = `/api/v1/users/${userId}/patients/${userId}`;
+      const requestURL = `/api/v1/users/${userId}/members/${userId}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
