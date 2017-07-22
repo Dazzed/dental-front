@@ -143,7 +143,7 @@ export default class PatientProfileFormModal extends React.Component {
             <Row>
               {this.renderMembershipType()}
             </Row>
-            {/* <Row>
+           <Row>
               <Field
                 name="address"
                 type="text"
@@ -219,7 +219,7 @@ export default class PatientProfileFormModal extends React.Component {
                   </option>
                 )}
               </Field>
-            </Row> */}
+            </Row>
 
             {goToSecurityForm && (
               <p styleName="field-instructions">
