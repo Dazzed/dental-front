@@ -80,7 +80,7 @@ export default class PatientProfileFormModal extends React.Component {
   renderMembershipType = () => {
     const { dentist: { memberships } } = this.props;
     return (<Field
-      name="membershipId"
+      name="clientSubscription.membershipId"
       type="select"
       component={this.getLabeledInput}
       label="Membership Type"
