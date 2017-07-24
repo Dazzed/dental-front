@@ -273,6 +273,12 @@ function* submitPatientProfileFormWatcher() {
 
     const allowedFields = pick(
       payload,
+      'id',
+      'firstName',
+      'lastName',
+      'clientSubscription',
+      'sex',
+      'birthDate',
       'address',
       'city',
       'state',
@@ -282,17 +288,17 @@ function* submitPatientProfileFormWatcher() {
     );
 
     try {
-      // TODO: Need backend API endpoint setup.
-      // https://trello.com/c/SdL5DChA/104-dentist-update-patient-s-primary-contact-info
-      /*
-      const requestURL = `TODO`;
+
+      // For now: Only allowed to update the primary member account.
+      // Later: Support updating family members.
+      const requestURL = `/api/v1/users/${allowedFields.id}/members/${allowedFields.id}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
       };
 
       const response = yield call(request, requestURL, params);
-      */
+
       const message = `The patient's profile has been updated.`;
       yield put(toastrActions.success('', message));
 

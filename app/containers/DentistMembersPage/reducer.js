@@ -258,7 +258,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_PATIENT_PROFILE_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.payload.id });
+      patientIdx = state.patients.findIndex(patient => patient.client.id === action.payload.id );
 
       // rebuild the updated patient's members list (and add them to the list)
       newStatePatient = {
@@ -269,13 +269,9 @@ function dentistMembersPageReducer(state = initialState, action) {
         ],
       };
 
+      state.patients[patientIdx].client = newStatePatient;
       return {
         ...state,
-        patients: [
-          ...state.patients.slice(0, patientIdx),
-          newStatePatient,
-          ...state.patients.slice(patientIdx + 1),
-        ],
         editingActive: false,
         editing: null,
       };
