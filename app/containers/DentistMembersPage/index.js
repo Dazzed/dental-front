@@ -251,9 +251,26 @@ class DentistMembersPage extends React.Component {
     this.props.setEditingMember(patient, null);
   }
 
-  reEnrollMember = (patient, member) => {
-    /* TODO, UNVERIFIED */
-    alert('TODO: re-enroll member');
+  reEnrollMember = (patient, member, type) => {
+    const { user: { memberships } } = this.props;
+    const enrollmentDiv = patient.reEnrollmentFee && <div>
+      <h3>Membership Fees</h3>
+      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(patient, member);
+        this.handleCloseDialog();
+      }
+    };
+    
+    this.setState({ dialog });
   }
 
   removeMember = (patient, member, dentistId) => {

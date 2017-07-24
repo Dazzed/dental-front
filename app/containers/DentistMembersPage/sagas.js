@@ -177,14 +177,14 @@ Add / Edit Member
 */
 function* submitMemberFormWatcher () {
   while (true) {
-    const { patient, payload } = yield take(SUBMIT_MEMBER_FORM);
-
-    if (payload.id === undefined) {
-      yield submitAddMemberForm(patient, payload);
-    }
-    else {
-      yield submitEditMemberForm(patient, payload);
-    }
+    yield takeLatest(SUBMIT_MEMBER_FORM, function* handler ({ patient, payload }) {
+      if (payload.id === undefined) {
+        yield submitAddMemberForm(patient, payload);
+      }
+      else {
+        yield submitEditMemberForm(patient, payload);
+      }
+    });
   }
 }
 
@@ -215,7 +215,11 @@ function* submitAddMemberForm(patient, payload) {
 
 function* submitEditMemberForm (patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+    // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+    let requestURL;
+    if (payload.isEnrolling) {
+      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
+    }
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),

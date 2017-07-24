@@ -163,14 +163,14 @@ export default class MemberFormModal extends React.Component {
     const childMemberships =
         memberships.filter(m => m.subscription_age_group === 'child');
 
-    if (this.state.age !== null) {
+    // if (this.state.age !== null) {
       if (acceptsChildren && childMemberships.length > 0 && this.state.age < 14) {
         filteredMemberships = childMemberships;
       } else {
         // Show adult options.
         filteredMemberships = adultMemberships;
       }
-    }
+    // }
 
     return (<Field
       name="membershipId"
