@@ -176,6 +176,7 @@ export default class MemberFormModal extends React.Component {
         // Show adult options.
         filteredMemberships = adultMemberships;
       }
+    }
     // }
 
     // This is needed since the same component is being used for multiple views...
