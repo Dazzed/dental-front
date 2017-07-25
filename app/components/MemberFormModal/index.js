@@ -149,8 +149,9 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
-    const { dentist: { memberships } } = this.props;
-
+    let { dentist: { memberships } } = this.props;
+    memberships = memberships.filter(m => m.active);
+    console.log(memberships)
     const {
       acceptsChildren,
       childStartingAge,
@@ -175,7 +176,7 @@ export default class MemberFormModal extends React.Component {
         // Show adult options.
         filteredMemberships = adultMemberships;
       }
-    }
+    // }
 
     // This is needed since the same component is being used for multiple views...
     // sometimes we get this value from "clientSubscription.membershipId", other

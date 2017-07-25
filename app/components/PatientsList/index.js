@@ -23,7 +23,7 @@ import {
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
 import Avatar from 'components/Avatar';
-import MembersList from 'components/MembersList';
+import MemberListEdit from 'components/MemberListEdit';
 
 // local
 import styles from './styles.css';
@@ -323,7 +323,15 @@ class PatientsList extends React.Component {
                     ------------------------------------------------------------
                     */}
                     <div className="col-sm-9">
-                      <MembersList
+                      {/*<MembersList
+                        patient={patient.client}
+                        dentist={dentist}
+                        onReEnrollMember={onReEnrollMember}
+                        onRemoveMember={onRemoveMember}
+                        onRenewMember={onRenewMember}
+                        onUpdateMember={onUpdateMember}
+                      />*/}
+                      <MemberListEdit 
                         patient={patient.client}
                         dentist={dentist}
                         onReEnrollMember={onReEnrollMember}

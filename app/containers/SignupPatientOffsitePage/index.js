@@ -471,8 +471,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
     // };
 
     // NEW CODE
-    const { memberships } = dentist;
-
+    let { memberships } = dentist;
+    memberships = memberships.filter(m => m.active);
     const adultMembership = (() => {
       let adultMonthly = memberships.find(m => m.name === 'default monthly membership');
       // let adultAnnual = memberships.find(m => m.name === 'default annual membership');

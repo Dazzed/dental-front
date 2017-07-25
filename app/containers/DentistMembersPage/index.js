@@ -137,7 +137,7 @@ function mapDispatchToProps(dispatch) {
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
-    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
+    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
 
     // edit patient profile
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -251,13 +251,30 @@ class DentistMembersPage extends React.Component {
     this.props.setEditingMember(patient, null);
   }
 
-  reEnrollMember = (patient, member) => {
-    /* TODO, UNVERIFIED */
-    alert('TODO: re-enroll member');
+  reEnrollMember = (patient, member, type) => {
+    const { user: { memberships } } = this.props;
+    const enrollmentDiv = patient.reEnrollmentFee && <div>
+      <h3>Membership Fees</h3>
+      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(patient, member);
+        this.handleCloseDialog();
+      }
+    };
+    
+    this.setState({ dialog });
   }
 
-  removeMember = (patient, member) => {
-    this.props.setRemovingMember(patient, member);
+  removeMember = (patient, member, dentistId) => {
+    this.props.setRemovingMember(patient, member, dentistId);
   }
 
   updateMemberConfirm = (patient, member, submit) => {
@@ -477,6 +494,7 @@ class DentistMembersPage extends React.Component {
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
+            onUpdateMember={this.updateMember}
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
