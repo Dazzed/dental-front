@@ -219,6 +219,8 @@ function* submitEditMemberForm (patient, payload) {
     let requestURL;
     if (payload.isEnrolling) {
       requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
+    } else {
+      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
     }
     const params = {
       method: 'PUT',
