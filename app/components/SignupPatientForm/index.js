@@ -393,7 +393,7 @@ class SignupForm extends React.Component {
                   <option>Membership Type</option>
                   {
                     memberships
-                      .filter(({ subscription_age_group: age }) => age === 'adult')
+                      .filter(m => m.subscription_age_group === 'adult' && m.active)
                       .map(membership =>
                         <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
                       )

@@ -190,8 +190,7 @@ export default class DentistEditProfilePage extends Component {
   updateServiceState(allServices, selectedServices) {
     for (let i = 0; i < allServices.length; i++) {
       const service = allServices[i];
-      const matchingService =
-          selectedServices.find(selected => selected.id === service.id);
+      const matchingService = selectedServices.find(selected => selected.id === service.id);
       allServices[i].enabled = !!matchingService;
     }
   }

@@ -151,7 +151,19 @@ export default class MemberFormModal extends React.Component {
   renderMembershipType = () => {
     let { dentist: { memberships } } = this.props;
     memberships = memberships.filter(m => m.active);
-    console.log(memberships)
+
+    if (this.props.initialValues && this.props.initialValues.birthDate) {
+      const birthDate = this.props.initialValues.birthDate;
+      const age = moment().diff(birthDate, 'years');
+      if (age !== this.state.age) {
+        this.setState({
+          ...this.state,
+          age: age,
+        });
+        return;
+      }
+    }
+
     const {
       acceptsChildren,
       childStartingAge,

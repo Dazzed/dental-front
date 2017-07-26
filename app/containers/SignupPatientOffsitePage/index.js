@@ -474,7 +474,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     let { memberships } = dentist;
     memberships = memberships.filter(m => m.active);
     const adultMembership = (() => {
-      let adultMonthly = memberships.find(m => m.name === 'default monthly membership');
+      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
       // let adultAnnual = memberships.find(m => m.name === 'default annual membership');
       if (adultMonthly) {
         let savings = Number(adultMonthly.price) * 4;
@@ -491,7 +491,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     })();
 
     const childMembership = (() => {
-      let childMonthly = memberships.find(m => m.name === 'default monthly child membership');
+      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
       if (childMonthly) {
         let savings = Number(childMonthly.price) * (36/7);
         return {

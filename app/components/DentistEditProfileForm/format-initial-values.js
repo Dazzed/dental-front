@@ -32,13 +32,13 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
       */
 
       adultMonthlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'month' && sub.subscription_age_group === 'adult'),
+          sub => sub.type == 'month' && sub.subscription_age_group === 'adult' && sub.active),
       childMonthlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'month' && sub.subscription_age_group === 'child'),
+          sub => sub.type == 'month' && sub.subscription_age_group === 'child' && sub.active),
       adultYearlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'year' && sub.subscription_age_group === 'adult'),
+          sub => sub.type == 'year' && sub.subscription_age_group === 'adult' && sub.active),
       childYearlyFee: dentistInfo.memberships.find(
-          sub => sub.type == 'year' && sub.subscription_age_group === 'child'),
+          sub => sub.type == 'year' && sub.subscription_age_group === 'child' && sub.active),
 
       // TODO: Hardcoded to the first membership for now. Fix this field to
       // distinguish between discounts.
@@ -66,6 +66,9 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
     }, {}),
   };
 
+  if (initialValues.officeInfo.services) {
+    initialValues.officeInfo.services = initialValues.officeInfo.services.filter(service => service != null);
+  }
   return initialValues;
 };
 

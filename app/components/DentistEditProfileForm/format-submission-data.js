@@ -1,18 +1,34 @@
 const compareMembershipChange = (memberships, data) => {
-  return memberships.filter(membership => {
+  const changedMemberships = [];
+  for (const membership of memberships) {
     switch (membership.name) {
       case 'default annual membership':
-        return membership.price !== data.adultYearlyFee.price;
+        if (membership.price !== data.adultYearlyFee.price) {
+          membership.price = data.adultYearlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default monthly child membership':
-        return membership.price !== data.childMonthlyFee.price;
+        if (membership.price !== data.childMonthlyFee.price) {
+          membership.price = data.childMonthlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default monthly membership':
-        return membership.price !== data.adultMonthlyFee.price;
+        if (membership.price !== data.adultMonthlyFee.price) {
+          membership.price = data.adultMonthlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default annual child membership':
-        return membership.price !== data.childYearlyFee.price;
-      default:
-        return false;
+        if (membership.price !== data.childYearlyFee.price) {
+          membership.price = data.childYearlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
     }
-  });
+  }
+  return changedMemberships;
 };
 
 /*

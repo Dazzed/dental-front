@@ -95,6 +95,7 @@ export default class PatientProfileFormModal extends React.Component {
       <option>Membership Type</option>
       {
         memberships
+          .filter(membership => membership.active && membership.type === 'adult')
           .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
           .map(membership =>
             <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>

@@ -200,14 +200,14 @@ class PatientMembershipInfoPage extends React.Component {
     }
 
     const adultMembershipInfo =
-        dentist.memberships.find( (el) => el.subscription_age_group === 'adult');
+        dentist.memberships.find( (el) => el.subscription_age_group === 'adult' && el.active && el.type === 'month');
     const adultMembership = {
       monthly: adultMembershipInfo.price.replace(".00", ""),
       savings: String(adultMembershipInfo.discount).replace(".00", ""),
     };
 
     const childMembershipInfo =
-        dentist.memberships.find( (el) => el.subscription_age_group === 'child');
+        dentist.memberships.find( (el) => el.subscription_age_group === 'child' && el.active && el.type === 'month');
     const childMembership = {
       monthly: childMembershipInfo.price.replace(".00", ""),
       savings: String(childMembershipInfo.discount).replace(".00", ""),
