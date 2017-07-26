@@ -197,6 +197,12 @@ export default class MemberFormModal extends React.Component {
     const fieldName = (this.props.initialValues && this.props.initialValues.clientSubscription) ?
         'clientSubscription.membershipId' : 'membershipId';
 
+    // This is needed since the same component is being used for multiple views...
+    // sometimes we get this value from "clientSubscription.membershipId", other
+    // times 'membershipId'.
+    const fieldName = (this.props.initialValues && this.props.initialValues.clientSubscription) ?
+        'clientSubscription.membershipId' : 'membershipId';
+
     return (<Field
       name={fieldName}
       type="select"
