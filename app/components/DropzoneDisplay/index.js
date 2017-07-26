@@ -12,6 +12,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
 import FaPlus from 'react-icons/lib/fa/plus';
+import FaTimesCircleO from 'react-icons/lib/fa/times-circle-o';
 import FaTasks from 'react-icons/lib/fa/tasks';
 
 // local
@@ -24,7 +25,6 @@ Dropzone Display
 */
 @CSSModules(styles, { allowMultiple: true })
 export default class UploadDisplay extends React.Component {
-
   render() {
     const {
       error,
@@ -73,7 +73,7 @@ export default class UploadDisplay extends React.Component {
       return (
         <div styleName="dropzone-display dropzone-display--success">
           <span styleName="dropzone-display__icon">
-            <FaPlus size={48} />
+            <FaTimesCircleO size={48} />
           </span>
           <img src={url} alt="Your Uploaded Image" styleName="dropzone-display__img" />
         </div>
