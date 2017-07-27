@@ -101,8 +101,8 @@ class FamilyMembersList extends React.Component {
 
       total: patient.members.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
-            aggregateTotal += parseFloat(member.subscription.monthly);
+          if (member.subscription && member.subscription.status === 'active' && member.subscription.costs.type === 'monthly') {
+            aggregateTotal += parseFloat(member.subscription.costs.monthlyPrice);
           }
           return aggregateTotal;
         },
@@ -122,7 +122,7 @@ class FamilyMembersList extends React.Component {
         moment().add(100, 'years'), // obviously larger than any paid subscription period
       ),
     };
-    
+
     let statusStyle;
     if (aggregateSubscription.status === 'active') {
       aggregateSubscription.status = 'Active';
