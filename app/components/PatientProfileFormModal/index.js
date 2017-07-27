@@ -82,11 +82,24 @@ export default class PatientProfileFormModal extends React.Component {
     this.props.goToSecurityForm();
   }
 
-
   renderMembershipType = () => {
     const { dentist: { memberships } } = this.props;
+
+    let membershipId = -1;
+    if (this.props.initialValues) {
+      membershipId = this.props.initialValues.clientSubscription ?
+          this.props.initialValues.clientSubscription.membershipId :
+          this.props.initialValues.membershipId;
+    }
+
+    // This is needed since the same component is being used for multiple views...
+    // sometimes we get this value from "clientSubscription.membershipId", other
+    // times 'membershipId'.
+    const fieldName = (this.props.initialValues && this.props.initialValues.clientSubscription) ?
+        'clientSubscription.membershipId' : 'membershipId';
+
     return (<Field
-      name="clientSubscription.membershipId"
+      name={fieldName}
       type="select"
       component={this.getLabeledInput}
       label="Membership Type"
@@ -95,7 +108,7 @@ export default class PatientProfileFormModal extends React.Component {
       <option>Membership Type</option>
       {
         memberships
-          .filter(membership => membership.active && membership.type === 'adult')
+          .filter(membership => (membership.active && membership.subscription_age_group === 'adult') || membershipId === membership.id)
           .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
           .map(membership =>
             <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>

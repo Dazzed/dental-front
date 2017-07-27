@@ -150,7 +150,14 @@ export default class MemberFormModal extends React.Component {
 
   renderMembershipType = () => {
     let { dentist: { memberships } } = this.props;
-    memberships = memberships.filter(m => m.active);
+    
+    let membershipId = -1;
+    if (this.props.initialValues) {
+      membershipId = this.props.initialValues.clientSubscription ?
+          this.props.initialValues.clientSubscription.membershipId :
+          this.props.initialValues.membershipId;
+    }
+    memberships = memberships.filter(m => (m.active || membershipId === m.id));
 
     if (this.props.initialValues && this.props.initialValues.birthDate) {
       const birthDate = this.props.initialValues.birthDate;
