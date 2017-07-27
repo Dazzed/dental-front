@@ -233,11 +233,12 @@ export function setEditedMember(patient, payload) {
 Remove Member
 ------------------------------------------------------------
 */
-export function setRemovingMember(patient, payload) {
+export function setRemovingMember(patient, payload, dentistId) {
   return {
     type: REMOVE_MEMBER_REQUEST,
     patient,
     payload,
+    dentistId
   };
 }
 

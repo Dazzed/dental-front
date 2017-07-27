@@ -177,14 +177,14 @@ Add / Edit Member
 */
 function* submitMemberFormWatcher () {
   while (true) {
-    const { patient, payload } = yield take(SUBMIT_MEMBER_FORM);
-
-    if (payload.id === undefined) {
-      yield submitAddMemberForm(patient, payload);
-    }
-    else {
-      yield submitEditMemberForm(patient, payload);
-    }
+    yield takeLatest(SUBMIT_MEMBER_FORM, function* handler ({ patient, payload }) {
+      if (payload.id === undefined) {
+        yield submitAddMemberForm(patient, payload);
+      }
+      else {
+        yield submitEditMemberForm(patient, payload);
+      }
+    });
   }
 }
 
@@ -215,7 +215,13 @@ function* submitAddMemberForm(patient, payload) {
 
 function* submitEditMemberForm (patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+    // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+    let requestURL;
+    if (payload.isEnrolling) {
+      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
+    } else {
+      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+    }
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -241,10 +247,11 @@ Remove Member
 */
 function* removeMemberWatcher () {
   while (true) {
-    const { patient, payload } = yield take(REMOVE_MEMBER_REQUEST);
+    const { patient, payload, dentistId } = yield take(REMOVE_MEMBER_REQUEST);
 
     try {
-      const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+      // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+      const requestURL = `/api/v1/dentists/${dentistId}/subscription/members/${payload.id}/plan`;
       const params = {
         method: 'DELETE',
       };
@@ -257,6 +264,7 @@ function* removeMemberWatcher () {
 
       yield put(setRemovedMember(patient, payload.id));
     } catch (err) {
+      console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
     }
@@ -273,6 +281,12 @@ function* submitPatientProfileFormWatcher() {
 
     const allowedFields = pick(
       payload,
+      'id',
+      'firstName',
+      'lastName',
+      'clientSubscription',
+      'sex',
+      'birthDate',
       'address',
       'city',
       'state',
@@ -282,17 +296,17 @@ function* submitPatientProfileFormWatcher() {
     );
 
     try {
-      // TODO: Need backend API endpoint setup.
-      // https://trello.com/c/SdL5DChA/104-dentist-update-patient-s-primary-contact-info
-      /*
-      const requestURL = `TODO`;
+
+      // For now: Only allowed to update the primary member account.
+      // Later: Support updating family members.
+      const requestURL = `/api/v1/users/${allowedFields.id}/members/${allowedFields.id}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
       };
 
       const response = yield call(request, requestURL, params);
-      */
+
       const message = `The patient's profile has been updated.`;
       yield put(toastrActions.success('', message));
 

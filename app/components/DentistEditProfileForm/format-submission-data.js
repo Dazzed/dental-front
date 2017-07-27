@@ -1,18 +1,34 @@
 const compareMembershipChange = (memberships, data) => {
-  return memberships.filter(membership => {
+  const changedMemberships = [];
+  for (const membership of memberships) {
     switch (membership.name) {
       case 'default annual membership':
-        return membership.price !== data.adultYearlyFee.price;
+        if (membership.price !== data.adultYearlyFee.price) {
+          membership.price = data.adultYearlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default monthly child membership':
-        return membership.price !== data.childMonthlyFee.price;
+        if (membership.price !== data.childMonthlyFee.price) {
+          membership.price = data.childMonthlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default monthly membership':
-        return membership.price !== data.adultMonthlyFee.price;
+        if (membership.price !== data.adultMonthlyFee.price) {
+          membership.price = data.adultMonthlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
       case 'default annual child membership':
-        return membership.price !== data.childYearlyFee.price;
-      default:
-        return false;
+        if (membership.price !== data.childYearlyFee.price) {
+          membership.price = data.childYearlyFee.price;
+          changedMemberships.push(membership);
+        }
+        break;
     }
-  });
+  }
+  return changedMemberships;
 };
 
 /*
@@ -23,6 +39,13 @@ be called by the `onSubmit` function passed to the `<DentistEditProfileForm>`
 component.
 */
 const formatDentistEditProfileFormSubmissionData = (data) => {
+
+  const getFee = (feeInfo) => {
+    if (!feeInfo || !feeInfo.price) {
+      return '';
+    }
+    return parseFloat(feeInfo.price).toFixed(2);
+  }
 
   /*
   Pre-Processing: Office Images
@@ -85,10 +108,10 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
 
       // ALTER the fees: normalize the price values.
-      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee.price).toFixed(2),
-      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee.price).toFixed(2),
-      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee.price).toFixed(2), // CONDITIONAL
-      childYearlyFee: parseFloat(data.pricing.childYearlyFee.price).toFixed(2), // CONDITIONAL
+      adultMonthlyFee: getFee(data.pricing.adultMonthlyFee),
+      childMonthlyFee: getFee(data.pricing.childMonthlyFee),
+      adultYearlyFee: getFee(data.pricing.adultYearlyFee), // CONDITIONAL
+      childYearlyFee: getFee(data.pricing.childYearlyFee), // CONDITIONAL
     },
 
     // ALTER the services from an object with serviceKey => bool entries

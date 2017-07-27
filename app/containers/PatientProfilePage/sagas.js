@@ -213,7 +213,7 @@ function* submitEditMemberForm(payload, userId) {
       yield (dentistFetcher());
     }
 
-    yield put(setEditedMember(response.data, userId));
+    yield put(setEditedMember(payload, userId));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
@@ -267,10 +267,17 @@ function* submitProfileFormWatcher() {
       'zipCode',
       'phone',
       'contactMethod',
+      'clientSubscription',
+      'firstName',
+      'lastName',
+      'middleName',
+      'birthDate',
+      'sex',
+      'familyRelationship'
     );
 
     try {
-      const requestURL = `/api/v1/users/${userId}/patients/${userId}`;
+      const requestURL = `/api/v1/users/${userId}/members/${userId}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),

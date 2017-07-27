@@ -15,7 +15,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 import CSSModules from 'react-css-modules';
-import DropzoneS3Uploader from 'react-dropzone-s3-uploader';
+import DropzoneS3Uploader from 'react-dropzone-s3-uploader-with-remove';
 import { connect } from 'react-redux';
 import { actions as toastrActions } from 'react-redux-toastr';
 import {
@@ -204,9 +204,15 @@ Edit Profile Form
 class DentistEditProfileForm extends React.Component {
   constructor(props) {
     super(props);
+    const initialValues = this.props.initialValues;
     this.state = {
-      currentServices: this.props.initialValues.officeInfo.services,
-      serviceList: this.props.allServices
+      currentServices: initialValues.officeInfo.services,
+      serviceList: this.props.allServices,
+      officeImage0: initialValues.officeInfo.officeImages0,
+      officeImage1: initialValues.officeInfo.officeImages1,
+      officeImage2: initialValues.officeInfo.officeImages2,
+      officeLogoUrl: initialValues.officeInfo.logo,
+      officeAvatarUrl: initialValues.user.avatar
     };
   }
   acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
@@ -252,12 +258,25 @@ class DentistEditProfileForm extends React.Component {
   Actions
   ------------------------------------------------------------
   */
+
   setOfficeLogo = (info) => {
+    this.setState({ officeLogoUrl: info.fileUrl });
     this.props.change('officeInfo.logo', info.fileUrl);
   }
 
+  removeOfficeLogo = () => {
+    this.setState({ officeLogoUrl: null });
+    this.props.change('officeInfo.logo', null);
+  }
+
   setProfilePicture = (info) => {
+    this.setState({ officeAvatarUrl: info.fileUrl });
     this.props.change('user.avatar', info.fileUrl);
+  }
+
+  removeProfilePicture = () => {
+    this.setState({ officeAvatarUrl: null });
+    this.props.change('user.avatar', null);
   }
 
   // NOTE: You can't bind functions in render in highly rendered components
@@ -266,15 +285,33 @@ class DentistEditProfileForm extends React.Component {
   //
   //       See https://github.com/erikras/redux-form/issues/1609
   setOfficeImage0 = (info) => {
+    this.setState({ officeImages0: {url: info.fileUrl} });
     this.props.change('officeInfo.officeImages0', { url: info.fileUrl });
   }
 
+  removeOfficeImage0 = () => {
+    this.setState({ officeImages0: null });
+    this.props.change('officeInfo.officeImages0', null);
+  }
+
   setOfficeImage1 = (info) => {
+    this.setState({ officeImages1: {url: info.fileUrl} });
     this.props.change('officeInfo.officeImages1', { url: info.fileUrl });
   }
 
+  removeOfficeImage1 = () => {
+    this.setState({ officeImages1: null });
+    this.props.change('officeInfo.officeImages1', null);
+  }
+
   setOfficeImage2 = (info) => {
+    this.setState({ officeImages2: {url: info.fileUrl} });
     this.props.change('officeInfo.officeImages2', { url: info.fileUrl });
+  }
+
+  removeOfficeImage2 = () => {
+    this.setState({ officeImages2: null });
+    this.props.change('officeInfo.officeImages2', null);
   }
 
   setServices = (info) => {
@@ -343,7 +380,6 @@ class DentistEditProfileForm extends React.Component {
   ------------------------------------------------------------
   */
   render() {
-
     const {
       // passed in - state
       initialValues,
@@ -366,15 +402,13 @@ class DentistEditProfileForm extends React.Component {
     } = this.props;
 
     // Get office logo and profile picture names.
-    const logoFilename = this.getS3FilenameFromURL(initialValues.officeInfo.logo);
-    const avatarFilename = this.getS3FilenameFromURL(initialValues.user.avatar);
+    const logoFilename = this.getS3FilenameFromURL(this.state.officeLogoUrl);
+    const avatarFilename = this.getS3FilenameFromURL(this.state.officeAvatarUrl);
 
-    const officePicUrl0 = initialValues.officeInfo.officeImages0 ?
-          initialValues.officeInfo.officeImages0.url : '';
-    const officePicUrl1 = initialValues.officeInfo.officeImages1 ?
-          initialValues.officeInfo.officeImages1.url : '';
-    const officePicUrl2 = initialValues.officeInfo.officeImages2 ?
-          initialValues.officeInfo.officeImages2.url : '';
+    const officePicUrl0 = this.state.officeImage0 ? this.state.officeImage0.url : '';
+    const officePicUrl1 = this.state.officeImage1 ? this.state.officeImage1.url : '';
+    const officePicUrl2 = this.state.officeImage2 ? this.state.officeImage2.url : '';
+
     const office0Filename = this.getS3FilenameFromURL(officePicUrl0);
     const office1Filename = this.getS3FilenameFromURL(officePicUrl1);
     const office2Filename = this.getS3FilenameFromURL(officePicUrl2);
@@ -576,6 +610,7 @@ class DentistEditProfileForm extends React.Component {
 
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeLogo}
+                    onRemove={this.removeOfficeLogo}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     filename={logoFilename}
                     upload={{
@@ -603,6 +638,7 @@ class DentistEditProfileForm extends React.Component {
 
                   <DropzoneS3Uploader
                     onFinish={this.setProfilePicture}
+                    onRemove={this.removeProfilePicture}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     filename={avatarFilename}
                     upload={{
@@ -639,6 +675,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage0}
+                    onRemove={this.removeOfficeImage0}
                     filename={office0Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
@@ -659,6 +696,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage1}
+                    onRemove={this.removeOfficeImage1}
                     filename={office1Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{
@@ -679,6 +717,7 @@ class DentistEditProfileForm extends React.Component {
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage2}
+                    onRemove={this.removeOfficeImage2}
                     filename={office2Filename}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
                     upload={{

@@ -130,14 +130,8 @@ class DentistDashboardHeader extends React.Component {
     let activeMemberCount = 0;
     for (let i = 0; i < patients.length; i++) {
       const patient = patients[i];
-      if (patient.status === 'active') {
+      if (patient && patient.status === 'active') {
         activeMemberCount++;
-      }
-
-      for (let j = 0; j < patient.client.members.length; j++) {
-        if (patient.client.members[j].status === 'active') {
-          activeMemberCount++;
-        }
       }
     }
 

@@ -93,9 +93,11 @@ const selectProcessedPatients = createSelector(
       patientA.members = patientA.members || [];
       patientB.members = patientB.members || [];
       const matchA = patientA.members.some((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
       const matchB = patientB.members.some((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
 
@@ -108,9 +110,11 @@ const selectProcessedPatients = createSelector(
 
       // one matches w/ every member, the other doesn't
       const matchAllA = patientA.members.every((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
       const matchAllB = patientB.members.every((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
 

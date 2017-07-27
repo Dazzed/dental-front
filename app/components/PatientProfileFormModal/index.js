@@ -17,10 +17,12 @@ import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
 // app
 import {
+  SEX_TYPES,
   PREFERRED_CONTACT_METHODS,
   US_STATES,
 } from 'common/constants';
 import LabeledInput from 'components/LabeledInput';
+import renderDatePicker from 'components/DatePicker';
 
 // local
 import styles from './styles.css';
@@ -67,6 +69,10 @@ export default class PatientProfileFormModal extends React.Component {
     return new LabeledInput(props);
   }
 
+  getDatePicker(props) {
+    return new renderDatePicker(props);
+  }
+
   /*
   Event Handlers
   ------------------------------------------------------------
@@ -76,11 +82,24 @@ export default class PatientProfileFormModal extends React.Component {
     this.props.goToSecurityForm();
   }
 
-
   renderMembershipType = () => {
     const { dentist: { memberships } } = this.props;
+
+    let membershipId = -1;
+    if (this.props.initialValues) {
+      membershipId = this.props.initialValues.clientSubscription ?
+          this.props.initialValues.clientSubscription.membershipId :
+          this.props.initialValues.membershipId;
+    }
+
+    // This is needed since the same component is being used for multiple views...
+    // sometimes we get this value from "clientSubscription.membershipId", other
+    // times 'membershipId'.
+    const fieldName = (this.props.initialValues && this.props.initialValues.clientSubscription) ?
+        'clientSubscription.membershipId' : 'membershipId';
+
     return (<Field
-      name="membershipId"
+      name={fieldName}
       type="select"
       component={this.getLabeledInput}
       label="Membership Type"
@@ -89,6 +108,7 @@ export default class PatientProfileFormModal extends React.Component {
       <option>Membership Type</option>
       {
         memberships
+          .filter(membership => (membership.active && membership.subscription_age_group === 'adult') || membershipId === membership.id)
           .sort((a, b) => a.subscription_age_group - b.subscription_age_group)
           .map(membership =>
             <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
@@ -143,7 +163,51 @@ export default class PatientProfileFormModal extends React.Component {
             <Row>
               {this.renderMembershipType()}
             </Row>
-            {/* <Row>
+
+            <Row>
+              <Field
+                name="firstName"
+                type="text"
+                component={this.getLabeledInput}
+                label="First Name"
+                className="col-md-6"
+              />
+
+              <Field
+                name="lastName"
+                type="text"
+                component={this.getLabeledInput}
+                label="Last Name"
+                className="col-md-6"
+              />
+            </Row>
+
+            <Row>
+              <Field
+                name="sex"
+                type="select"
+                label="Sex"
+                component={this.getLabeledInput}
+                className="col-md-6"
+              >
+                <option value="">Select sex</option>
+                {Object.keys(SEX_TYPES).map(key =>
+                  <option value={key} key={key}>
+                    {SEX_TYPES[key]}
+                  </option>
+                )}
+              </Field>
+
+              <Field
+                name="birthDate"
+                type="date"
+                component={this.getDatePicker}
+                label="Birthdate"
+                className="col-md-6"
+              />
+            </Row>
+
+           <Row>
               <Field
                 name="address"
                 type="text"
@@ -219,7 +283,7 @@ export default class PatientProfileFormModal extends React.Component {
                   </option>
                 )}
               </Field>
-            </Row> */}
+            </Row>
 
             {goToSecurityForm && (
               <p styleName="field-instructions">

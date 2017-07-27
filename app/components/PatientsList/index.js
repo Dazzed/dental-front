@@ -23,7 +23,7 @@ import {
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
 import Avatar from 'components/Avatar';
-import MembersList from 'components/MembersList';
+import MemberListEdit from 'components/MemberListEdit';
 
 // local
 import styles from './styles.css';
@@ -223,10 +223,9 @@ class PatientsList extends React.Component {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
-      const activeMembers = members.filter((member) => {
-        console.log("MEMBER",member)
-
-        return member.membership && member.status === 'active' && member.membership.type === 'monthly';
+      const activeMembers = patients.filter((member) => {
+        return member.membership && member.status === 'active' && member.membership.type === 'monthly'
+            && member.client.addedBy === id;
       });
 
       return (
@@ -324,7 +323,15 @@ class PatientsList extends React.Component {
                     ------------------------------------------------------------
                     */}
                     <div className="col-sm-9">
-                      <MembersList
+                      {/*<MembersList
+                        patient={patient.client}
+                        dentist={dentist}
+                        onReEnrollMember={onReEnrollMember}
+                        onRemoveMember={onRemoveMember}
+                        onRenewMember={onRenewMember}
+                        onUpdateMember={onUpdateMember}
+                      />*/}
+                      <MemberListEdit 
                         patient={patient.client}
                         dentist={dentist}
                         onReEnrollMember={onReEnrollMember}

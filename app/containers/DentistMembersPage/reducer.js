@@ -189,9 +189,10 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = findIndex(prevStatePatient.members, { id: action.payload.id });
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      prevStatePatient.client.members[memberIdx].status = 'active';
 
       newStatePatient = {
         ...prevStatePatient,
@@ -218,9 +219,10 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = findIndex(prevStatePatient.members, { id: action.memberId });
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      prevStatePatient.client.members[memberIdx].status = 'canceled';
 
       newStatePatient = {
         ...prevStatePatient,
@@ -258,7 +260,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_PATIENT_PROFILE_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.payload.id });
+      patientIdx = state.patients.findIndex(patient => patient.client.id === action.payload.id );
 
       // rebuild the updated patient's members list (and add them to the list)
       newStatePatient = {
@@ -269,13 +271,9 @@ function dentistMembersPageReducer(state = initialState, action) {
         ],
       };
 
+      state.patients[patientIdx].client = newStatePatient;
       return {
         ...state,
-        patients: [
-          ...state.patients.slice(0, patientIdx),
-          newStatePatient,
-          ...state.patients.slice(patientIdx + 1),
-        ],
         editingActive: false,
         editing: null,
       };

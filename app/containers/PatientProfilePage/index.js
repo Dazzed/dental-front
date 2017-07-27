@@ -309,7 +309,7 @@ class PatientProfilePage extends React.Component {
   // profile
   updateProfile = (user = null) => {
     this.props.resetProfileForm();
-    this.props.setEditingProfile(user || this.props.user);
+    this.props.setEditingProfile(this.props.user);
   }
 
   // reviews

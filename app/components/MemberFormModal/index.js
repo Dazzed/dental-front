@@ -149,7 +149,27 @@ export default class MemberFormModal extends React.Component {
   }
 
   renderMembershipType = () => {
-    const { dentist: { memberships } } = this.props;
+    let { dentist: { memberships } } = this.props;
+    
+    let membershipId = -1;
+    if (this.props.initialValues) {
+      membershipId = this.props.initialValues.clientSubscription ?
+          this.props.initialValues.clientSubscription.membershipId :
+          this.props.initialValues.membershipId;
+    }
+    memberships = memberships.filter(m => (m.active || membershipId === m.id));
+
+    if (this.props.initialValues && this.props.initialValues.birthDate) {
+      const birthDate = this.props.initialValues.birthDate;
+      const age = moment().diff(birthDate, 'years');
+      if (age !== this.state.age) {
+        this.setState({
+          ...this.state,
+          age: age,
+        });
+        return;
+      }
+    }
 
     const {
       acceptsChildren,
@@ -162,17 +182,30 @@ export default class MemberFormModal extends React.Component {
     const childMemberships =
         memberships.filter(m => m.subscription_age_group === 'child');
 
-    if (this.state.age !== null) {
-      if (acceptsChildren && childMemberships.length > 0 && this.state.age < 14) {
+    let age = this.state.age;
+    if (!age && this.props.initialValues && this.props.initialValues.birthDate) {
+      const birthDate = this.props.initialValues.birthDate;
+      age = moment().diff(birthDate, 'years');
+    }
+
+    if (age !== null) {
+      if (acceptsChildren && childMemberships.length > 0 && age < 14) {
         filteredMemberships = childMemberships;
       } else {
         // Show adult options.
         filteredMemberships = adultMemberships;
       }
     }
+    // }
+
+    // This is needed since the same component is being used for multiple views...
+    // sometimes we get this value from "clientSubscription.membershipId", other
+    // times 'membershipId'.
+    const fieldName = (this.props.initialValues && this.props.initialValues.clientSubscription) ?
+        'clientSubscription.membershipId' : 'membershipId';
 
     return (<Field
-      name="membershipId"
+      name={fieldName}
       type="select"
       component={this.getLabeledInput}
       label="Membership Type"
