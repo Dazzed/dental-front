@@ -207,13 +207,6 @@ class PatientsList extends React.Component {
 
       const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
 
-      let paymentDueAmount;
-      if (membership.type === 'monthly') {
-        paymentDueAmount = parseFloat(membership.monthlyPrice).toFixed(2);
-      } else {
-        paymentDueAmount = parseFloat(membership.annualPrice).toFixed(2);
-      }
-
 
       const waiveCancellationFee = !patient.client.cancellationFeeWaiver;
       const waiveReEnrollmentFee = !patient.client.reEnrollmentFeeWaiver;
@@ -225,8 +218,18 @@ class PatientsList extends React.Component {
 
       const activeMembers = patients.filter((member) => {
         return member.membership && member.status === 'active' && member.membership.type === 'monthly'
-            && member.client.addedBy === id;
+            && (member.client.addedBy === id || member.client.id === id);
       });
+
+      let paymentDueAmount = 0;
+      for (const activeMember of activeMembers) {
+        if (membership.type === 'monthly') {
+          paymentDueAmount += parseFloat(membership.monthlyPrice);
+        } else {
+          paymentDueAmount += parseFloat(membership.annualPrice);
+        }
+      }
+      paymentDueAmount = paymentDueAmount.toFixed(2);
 
       return (
         <div key={id} styleName="patient-list__entry">
@@ -331,7 +334,7 @@ class PatientsList extends React.Component {
                         onRenewMember={onRenewMember}
                         onUpdateMember={onUpdateMember}
                       />*/}
-                      <MemberListEdit 
+                      <MemberListEdit
                         patient={patient.client}
                         dentist={dentist}
                         onReEnrollMember={onReEnrollMember}

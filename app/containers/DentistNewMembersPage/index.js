@@ -301,9 +301,36 @@ class DentistNewMembersPage extends React.Component {
     this.props.setTogglingWaivePatientFees(patient, updatedFees, 'reenroll');
   }
 
+  confirmUpdateMember = (user, member, submit) => {
+    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
+    const cost = { monthly, yearly, discount };
+    const enrollmentDiv = user.reEnrollmentFee && <div>
+      <h3>{cost.discount}% Discount</h3>
+      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
+    </div>;
+
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Confirm Member Update',
+      confirm: () => {
+        submit();
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
+  };
+
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(patient, member);
+    member.fromDentist = true;
+
+    console.log('can update member');
+    this.props.setEditingMember(patient, member, (submit) => {
+      this.updateMemberConfirm(patient, member, submit);
+    });
   }
 
   updatePatientProfile = (patient) => {
@@ -492,19 +519,12 @@ class DentistNewMembersPage extends React.Component {
             </select>
           </div>
 
-          {/* TODO: onUpdateMember was removed so that the `update` action would
-              be hidden until the extra fields can be removed, and there are
-              multiple membership types for a dentist to choose from.
-
-              onUpdateMember={this.updateMember}
-
-              https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
-          */}
           <PatientsList
             patients={patientsWithNewMembers}
             dentist={dentistInfo}
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
+            onUpdateMember={this.updateMember}
             onRemoveMember={this.removeMember}
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}

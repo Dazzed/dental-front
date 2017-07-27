@@ -132,7 +132,7 @@ export default class MemberListEdit extends Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {amount}
+            ${amount}
           </div>
         </div>
         <div className="col-sm-3">
@@ -241,7 +241,8 @@ export default class MemberListEdit extends Component {
       || onUpdateMember
       || onRemoveMember;
 
-    const members = removeDuplicates(patient.members, 'id');
+    patient.membershipId = patient.clientSubscription.membershipId;
+    const members = removeDuplicates([...patient.members, patient], 'id');
     const memberRows = [];
 
     for (let i = 0; i < members.length; i++) {

@@ -150,7 +150,7 @@ export default class MembersList extends React.Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {amount}
+            ${amount}
           </div>
         </div>
         <div className="col-sm-3">
@@ -314,10 +314,10 @@ export default class MembersList extends React.Component {
             )}
             {memberRows}
           </div>
-          {subTotal &&
+          {/*subTotal &&
             <div styleName="subtotal">
-              <strong>SubTotal: </strong>{subTotal}$
-          </div>}
+              <strong>Subtotal: </strong>${subTotal}
+          </div>*/}
         </div>
       </div>
     );

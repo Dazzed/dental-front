@@ -118,7 +118,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // app 
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
     // fetch
@@ -269,7 +269,7 @@ class DentistMembersPage extends React.Component {
         this.handleCloseDialog();
       }
     };
-    
+
     this.setState({ dialog });
   }
 
@@ -316,7 +316,7 @@ class DentistMembersPage extends React.Component {
     this.props.resetMemberForm();
     member.fromDentist = true;
 
-    console.log('can upate member');
+    console.log('can update member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -480,14 +480,6 @@ class DentistMembersPage extends React.Component {
             </select>
           </div>
 
-          {/* TODO: onUpdateMember was removed so that the `update` action would
-              be hidden until the extra fields can be removed, and there are
-              multiple membership types for a dentist to choose from.
-
-              onUpdateMember={this.updateMember}
-
-              https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
-          */}
           <PatientsList
             patients={patients}
             dentist={dentistInfo}
