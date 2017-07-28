@@ -81,6 +81,8 @@ export default class MemberFormModal extends React.Component {
   }
 
   handleFormSubmit = (values) => {
+    values.dentistId = this.props.dentist.id;
+    
     const {
       acceptsChildren,
       childStartingAge,
@@ -98,6 +100,7 @@ export default class MemberFormModal extends React.Component {
     } = values;
 
     console.log('handle form submit');
+    console.log(this.props.dentist);
 
     const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
 

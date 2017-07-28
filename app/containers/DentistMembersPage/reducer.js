@@ -72,6 +72,7 @@ Reducers
 */
 function dentistMembersPageReducer(state = initialState, action) {
   let memberIdx, patients, patientIdx, prevStatePatient, newStatePatient;
+  console.log(action.type);
 
   switch (action.type) {
     /*
@@ -189,25 +190,20 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_MEMBER_SUCCESS:
+      const memberId = action.memberId || action.payload.id;
       patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === memberId);
 
       if (memberIdx >= 0) {
         prevStatePatient.client.members[memberIdx].status = 'active';
-        newStatePatient = {
-          ...prevStatePatient,
-          members: [
-            ...prevStatePatient.members.slice(0, memberIdx),
-            action.payload,
-            ...prevStatePatient.members.slice(memberIdx + 1),
-          ],
-        };
+        prevStatePatient.members = prevStatePatient.client.members;
       } else {
         prevStatePatient.status = 'active';
-        newStatePatient = prevStatePatient;
+        prevStatePatient.members = prevStatePatient.client.members;
       }
-
+      newStatePatient = prevStatePatient;
+      console.log(newStatePatient);
 
       return {
         ...state,
@@ -237,8 +233,6 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
-      console.log('new state: ');
-      console.log(newStatePatient);
 
       return {
         ...state,

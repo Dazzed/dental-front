@@ -214,9 +214,9 @@ function* submitAddMemberForm(patient, payload) {
 }
 
 function* submitEditMemberForm (patient, payload) {
+  console.log('payload::::');
   console.log(payload);
-  console.log('hay submit');
-  const dentistId = payload.clientSubscription ? payload.clientSubscription.dentistId : payload.membership.dentistId;
+  const dentistId = payload.dentistId;
   try {
     // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
     let requestURL;
@@ -237,8 +237,10 @@ function* submitEditMemberForm (patient, payload) {
     yield put(toastrActions.success('', message));
 
     console.log('success');
-    yield put(setEditedMember(patient, response.data));
+    yield put(setEditedMember(patient, payload));
     console.log('success 2');
+    console.log(patient);
+    console.log(payload);
 
   } catch (err) {
     console.log(err);
