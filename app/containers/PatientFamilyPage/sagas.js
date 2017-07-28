@@ -111,7 +111,6 @@ function* submitAddMemberForm(payload, userId) {
 }
 
 function* submitEditMemberForm (payload, userId) {
-  console.log('haaaay');
   try {
     const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
     const params = {

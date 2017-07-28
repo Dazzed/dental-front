@@ -276,7 +276,7 @@ class DentistNewMembersPage extends React.Component {
     };
 
     this.setState({ dialog });
-  };
+  }
 
   handleCloseDialog = () => {
     let dialog = this.state.dialog;
