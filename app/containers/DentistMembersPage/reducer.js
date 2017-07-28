@@ -200,6 +200,7 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.members = prevStatePatient.client.members;
       } else {
         prevStatePatient.status = 'active';
+        prevStatePatient.client.status = 'active';
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
@@ -229,10 +230,11 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.client.members[memberIdx].status = 'canceled';
         prevStatePatient.members = prevStatePatient.client.members;
       } else {
-        prevStatePatient.status = 'canceled';
+        prevStatePatient.client.status = 'canceled';
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
+      console.log(newStatePatient);
 
       return {
         ...state,
