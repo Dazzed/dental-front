@@ -231,17 +231,14 @@ function dentistMembersPageReducer(state = initialState, action) {
       memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
       if (memberIdx >= 0) {
         prevStatePatient.client.members[memberIdx].status = 'canceled';
-        newStatePatient = {
-          ...prevStatePatient,
-          members: [
-            ...prevStatePatient.members.slice(0, memberIdx),
-            ...prevStatePatient.members.slice(memberIdx + 1),
-          ],
-        };
+        prevStatePatient.members = prevStatePatient.client.members;
       } else {
         prevStatePatient.status = 'canceled';
-        newStatePatient = prevStatePatient;
+        prevStatePatient.members = prevStatePatient.client.members;
       }
+      newStatePatient = prevStatePatient;
+      console.log('new state: ');
+      console.log(newStatePatient);
 
       return {
         ...state,

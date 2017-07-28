@@ -88,7 +88,6 @@ export default class MemberListEdit extends Component {
       id,
       lastName,
     } = member;
-    const status = member.clientSubscription.status || 'N/A';
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -104,7 +103,10 @@ export default class MemberListEdit extends Component {
     amount = pluckMembershipfee(member, membershipPlans);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
+    const status = member.status || 'N/A';
+    console.log('RENDERING ROWS');
     console.log(membership);
+    console.log(status);
 
     return (
       <div key={id} className="row" styleName="member">
