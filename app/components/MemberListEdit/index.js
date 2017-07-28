@@ -88,7 +88,7 @@ export default class MemberListEdit extends Component {
       id,
       lastName,
     } = member;
-    const status = patient.clientSubscription.status || 'N/A';
+    const status = member.clientSubscription.status || 'N/A';
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -244,11 +244,12 @@ export default class MemberListEdit extends Component {
       || onRemoveMember;
 
     patient.membershipId = patient.clientSubscription.membershipId;
-    const members = removeDuplicates([...patient.members, patient], 'id');
+    const members = [patient, ...patient.members];
     const memberRows = [];
 
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
+      console.log(member);
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
     }
 

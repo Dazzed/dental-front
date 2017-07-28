@@ -223,13 +223,14 @@ class PatientsList extends React.Component {
 
       let paymentDueAmount = 0;
       for (const activeMember of activeMembers) {
-        if (membership.type === 'monthly') {
-          paymentDueAmount += parseFloat(membership.monthlyPrice);
+        if (activeMember.membership.type === 'monthly') {
+          paymentDueAmount += parseFloat(activeMember.membership.monthlyPrice);
         } else {
-          paymentDueAmount += parseFloat(membership.annualPrice);
+          paymentDueAmount += parseFloat(activeMember.membership.annualPrice);
         }
       }
       paymentDueAmount = paymentDueAmount.toFixed(2);
+      console.log('--row end--');
 
       return (
         <div key={id} styleName="patient-list__entry">
