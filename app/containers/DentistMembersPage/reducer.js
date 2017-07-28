@@ -192,16 +192,22 @@ function dentistMembersPageReducer(state = initialState, action) {
       patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
       memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
-      prevStatePatient.client.members[memberIdx].status = 'active';
 
-      newStatePatient = {
-        ...prevStatePatient,
-        members: [
-          ...prevStatePatient.members.slice(0, memberIdx),
-          action.payload,
-          ...prevStatePatient.members.slice(memberIdx + 1),
-        ],
-      };
+      if (memberIdx >= 0) {
+        prevStatePatient.client.members[memberIdx].status = 'active';
+        newStatePatient = {
+          ...prevStatePatient,
+          members: [
+            ...prevStatePatient.members.slice(0, memberIdx),
+            action.payload,
+            ...prevStatePatient.members.slice(memberIdx + 1),
+          ],
+        };
+      } else {
+        prevStatePatient.status = 'active';
+        newStatePatient = prevStatePatient;
+      }
+
 
       return {
         ...state,
@@ -221,16 +227,21 @@ function dentistMembersPageReducer(state = initialState, action) {
     case REMOVE_MEMBER_SUCCESS:
       patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
-      prevStatePatient.client.members[memberIdx].status = 'canceled';
 
-      newStatePatient = {
-        ...prevStatePatient,
-        members: [
-          ...prevStatePatient.members.slice(0, memberIdx),
-          ...prevStatePatient.members.slice(memberIdx + 1),
-        ],
-      };
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      if (memberIdx >= 0) {
+        prevStatePatient.client.members[memberIdx].status = 'canceled';
+        newStatePatient = {
+          ...prevStatePatient,
+          members: [
+            ...prevStatePatient.members.slice(0, memberIdx),
+            ...prevStatePatient.members.slice(memberIdx + 1),
+          ],
+        };
+      } else {
+        prevStatePatient.status = 'canceled';
+        newStatePatient = prevStatePatient;
+      }
 
       return {
         ...state,

@@ -97,6 +97,8 @@ export default class MemberFormModal extends React.Component {
       lastName,
     } = values;
 
+    console.log('handle form submit');
+
     const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
 
     // Adult: >=14
@@ -150,7 +152,7 @@ export default class MemberFormModal extends React.Component {
 
   renderMembershipType = () => {
     let { dentist: { memberships } } = this.props;
-    
+
     let membershipId = -1;
     if (this.props.initialValues) {
       membershipId = this.props.initialValues.clientSubscription ?

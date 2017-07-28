@@ -88,8 +88,7 @@ export default class MemberListEdit extends Component {
       id,
       lastName,
     } = member;
-
-    const status = member.status || 'N/A';
+    const status = patient.clientSubscription.status || 'N/A';
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -104,6 +103,8 @@ export default class MemberListEdit extends Component {
 
     amount = pluckMembershipfee(member, membershipPlans);
 
+    const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
+    console.log(membership);
 
     return (
       <div key={id} className="row" styleName="member">
@@ -139,7 +140,7 @@ export default class MemberListEdit extends Component {
           {/* TODO: Enable actions for the patient / patient-user so they can
               be treated like any other member?
           */}
-          {id !== patient.id && showControlCol && (
+          {membership && showControlCol && (
             <div styleName="member__detail">
               {/* The actions for a member depend on their subscription status
                   and type:
@@ -160,14 +161,14 @@ export default class MemberListEdit extends Component {
               }
 
               {this.props.onRemoveMember
-                && member.membership.type === 'monthly'
+                && membership.type === 'month'
                 && (status === "active")
                 && (
                   <input
                     type="button"
                     styleName="button--small"
                     value="X"
-                    onClick={this.onRemoveClick.bind(this, patient, member, member.membership.dentistId)}
+                    onClick={this.onRemoveClick.bind(this, patient, member, membership.dentistId)}
                   />
                 )
               }
@@ -223,6 +224,7 @@ export default class MemberListEdit extends Component {
   }
 
   render () {
+      console.log('oh hay here');
 
     const {
       patient,

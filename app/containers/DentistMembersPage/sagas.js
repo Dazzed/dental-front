@@ -214,26 +214,34 @@ function* submitAddMemberForm(patient, payload) {
 }
 
 function* submitEditMemberForm (patient, payload) {
+  console.log(payload);
+  console.log('hay submit');
+  const dentistId = payload.clientSubscription ? payload.clientSubscription.dentistId : payload.membership.dentistId;
   try {
     // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
     let requestURL;
     if (payload.isEnrolling) {
-      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
     } else {
-      requestURL = `/api/v1/dentists/${payload.membership.dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
     }
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
     };
 
+    console.log('after yield');
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
+
     yield put(toastrActions.success('', message));
 
+    console.log('success');
     yield put(setEditedMember(patient, response.data));
+    console.log('success 2');
 
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
