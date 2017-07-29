@@ -134,9 +134,19 @@ class PatientsList extends React.Component {
       dentist,
     } = this.props;
 
-    const primaryMembers = patients.filter(patient => { return !patient.client.addedBy });
+    const primaryMembers = patients
+      .filter(patient => { return !patient.client.addedBy });
 
-    console.log(primaryMembers, 'patients');
+    let paymentDueAmount = patients.reduce((acc, p) => {
+      let isMonthly = p.membership.type == 'monthly';
+      if (isMonthly) {
+        return acc += p.membership.monthlyPrice;
+      } else {
+        return acc += 0;
+      }
+    },0);
+    
+    paymentDueAmount = paymentDueAmount.toFixed(2);
     const patientRows = primaryMembers.map((patient) => {
       const {
         client: { avatar,
@@ -154,7 +164,7 @@ class PatientsList extends React.Component {
         status,
         endAt,
         stripeSubscriptionId,
-        membership
+        membership,
       } = patient;
 
       const memberOrigin = MEMBER_ORIGINS[origin];
@@ -217,19 +227,8 @@ class PatientsList extends React.Component {
       }
 
       const activeMembers = patients.filter((member) => {
-        return member.membership && member.status === 'active' && member.membership.type === 'monthly'
-            && (member.client.addedBy === id || member.client.id === id);
+        return member.membership && member.status === 'active';
       });
-
-      let paymentDueAmount = 0;
-      for (const activeMember of activeMembers) {
-        if (membership.type === 'monthly') {
-          paymentDueAmount += parseFloat(membership.monthlyPrice);
-        } else {
-          paymentDueAmount += parseFloat(membership.annualPrice);
-        }
-      }
-      paymentDueAmount = paymentDueAmount.toFixed(2);
 
       return (
         <div key={id} styleName="patient-list__entry">
