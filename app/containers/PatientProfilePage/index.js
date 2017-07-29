@@ -253,7 +253,7 @@ class PatientProfilePage extends React.Component {
   // members
   addMember = (user) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember({});
+    this.props.setEditingMember(user);
   }
 
   reEnrollMember = (patient, member, type) => {
