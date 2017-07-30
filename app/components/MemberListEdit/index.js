@@ -103,7 +103,7 @@ export default class MemberListEdit extends Component {
     amount = pluckMembershipfee(member, membershipPlans);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
-    const status = member.status || 'N/A';
+    const status = member.clientSubscription ? member.clientSubscription.status : member.status;
 
     return (
       <div key={id} className="row" styleName="member">
