@@ -272,7 +272,7 @@ class DentistMembersPage extends React.Component {
     };
 
     this.setState({ dialog });
-  }
+  };
 
   removeMember = (patient, member, dentistId) => {
     this.props.setRemovingMember(patient, member, dentistId);
@@ -317,7 +317,6 @@ class DentistMembersPage extends React.Component {
     this.props.resetMemberForm();
     member.fromDentist = true;
 
-    console.log('can update member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });

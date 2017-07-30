@@ -222,7 +222,6 @@ export function setAddedMember(patient, payload) {
 }
 
 export function setEditedMember(patient, payload) {
-  console.log('SETTING EDITED MEMBER....');
   return {
     type: EDIT_MEMBER_SUCCESS,
     patient,

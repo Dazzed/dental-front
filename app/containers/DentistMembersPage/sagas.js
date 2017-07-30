@@ -236,7 +236,6 @@ function* submitEditMemberForm (patient, payload) {
     yield put(setEditedMember(patient, payload));
 
   } catch (err) {
-    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));

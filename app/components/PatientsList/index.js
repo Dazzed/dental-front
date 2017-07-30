@@ -230,7 +230,6 @@ class PatientsList extends React.Component {
         }
       }
       paymentDueAmount = paymentDueAmount.toFixed(2);
-      console.log('--row end--');
 
       return (
         <div key={id} styleName="patient-list__entry">

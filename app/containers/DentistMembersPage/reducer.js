@@ -72,7 +72,6 @@ Reducers
 */
 function dentistMembersPageReducer(state = initialState, action) {
   let memberIdx, patients, patientIdx, prevStatePatient, newStatePatient;
-  console.log(action.type);
 
   switch (action.type) {
     /*
@@ -204,7 +203,6 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
-      console.log(newStatePatient);
 
       return {
         ...state,
@@ -234,7 +232,6 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
-      console.log(newStatePatient);
 
       return {
         ...state,

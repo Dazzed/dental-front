@@ -104,9 +104,6 @@ export default class MemberListEdit extends Component {
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
     const status = member.status || 'N/A';
-    console.log('RENDERING ROWS');
-    console.log(membership);
-    console.log(status);
 
     return (
       <div key={id} className="row" styleName="member">
@@ -226,8 +223,6 @@ export default class MemberListEdit extends Component {
   }
 
   render () {
-      console.log('oh hay here');
-
     const {
       patient,
       dentist,
@@ -251,7 +246,6 @@ export default class MemberListEdit extends Component {
 
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      console.log(member);
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
     }
 
