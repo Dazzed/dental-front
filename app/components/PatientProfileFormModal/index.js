@@ -160,7 +160,7 @@ export default class PatientProfileFormModal extends React.Component {
             onSubmit={handleSubmit}
             className="form-horizontal"
           >
-            <Row>
+            { /*<Row>
               {this.renderMembershipType()}
             </Row>
 
@@ -205,7 +205,7 @@ export default class PatientProfileFormModal extends React.Component {
                 label="Birthdate"
                 className="col-md-6"
               />
-            </Row>
+            </Row> */}
 
            <Row>
               <Field

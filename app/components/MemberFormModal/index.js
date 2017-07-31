@@ -313,7 +313,7 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Body>
           <form className="form-horizontal">
-            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist) ?
+            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist || initialValues.id) ?
               (<Row>
                 {this.renderMembershipType()}
               </Row>) :
