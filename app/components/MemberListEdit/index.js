@@ -88,8 +88,6 @@ export default class MemberListEdit extends Component {
       id,
       lastName,
     } = member;
-
-    const status = member.status || 'N/A';
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -104,6 +102,8 @@ export default class MemberListEdit extends Component {
 
     amount = pluckMembershipfee(member, membershipPlans);
 
+    const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
+    const status = member.clientSubscription ? member.clientSubscription.status : member.status;
 
     return (
       <div key={id} className="row" styleName="member">
@@ -139,7 +139,7 @@ export default class MemberListEdit extends Component {
           {/* TODO: Enable actions for the patient / patient-user so they can
               be treated like any other member?
           */}
-          {id !== patient.id && showControlCol && (
+          {membership && showControlCol && (
             <div styleName="member__detail">
               {/* The actions for a member depend on their subscription status
                   and type:
@@ -160,14 +160,14 @@ export default class MemberListEdit extends Component {
               }
 
               {this.props.onRemoveMember
-                && member.membership.type === 'monthly'
+                && membership.type === 'month'
                 && (status === "active")
                 && (
                   <input
                     type="button"
                     styleName="button--small"
                     value="X"
-                    onClick={this.onRemoveClick.bind(this, patient, member, member.membership.dentistId)}
+                    onClick={this.onRemoveClick.bind(this, patient, member, membership.dentistId)}
                   />
                 )
               }
@@ -223,7 +223,6 @@ export default class MemberListEdit extends Component {
   }
 
   render () {
-
     const {
       patient,
       dentist,
@@ -242,7 +241,7 @@ export default class MemberListEdit extends Component {
       || onRemoveMember;
 
     patient.membershipId = patient.clientSubscription.membershipId;
-    const members = removeDuplicates([...patient.members, patient], 'id');
+    const members = [patient, ...patient.members];
     const memberRows = [];
 
     for (let i = 0; i < members.length; i++) {

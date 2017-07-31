@@ -252,7 +252,8 @@ class DentistMembersPage extends React.Component {
   }
 
   reEnrollMember = (patient, member, type) => {
-    const { user: { memberships } } = this.props;
+    let { user: { memberships } } = this.props;
+    memberships = memberships.filter(m => m && m.active);
     const enrollmentDiv = patient.reEnrollmentFee && <div>
       <h3>Membership Fees</h3>
       {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
@@ -271,7 +272,7 @@ class DentistMembersPage extends React.Component {
     };
 
     this.setState({ dialog });
-  }
+  };
 
   removeMember = (patient, member, dentistId) => {
     this.props.setRemovingMember(patient, member, dentistId);
@@ -316,7 +317,6 @@ class DentistMembersPage extends React.Component {
     this.props.resetMemberForm();
     member.fromDentist = true;
 
-    console.log('can update member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
