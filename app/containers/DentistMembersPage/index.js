@@ -280,7 +280,18 @@ class DentistMembersPage extends React.Component {
   };
 
   removeMember = (patient, member, dentistId) => {
-    this.props.setRemovingMember(patient, member, dentistId);
+    const dialog = {
+      message: <div>A cancellation fee might be charged by your dentist.
+        </div>,
+      showDialog: true,
+      title: 'Confirm Member Cancel',
+      confirm: () => {
+        this.props.setRemovingMember(patient, member, dentistId);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   updateMemberConfirm = (patient, member, submit) => {
