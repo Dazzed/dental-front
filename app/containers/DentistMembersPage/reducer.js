@@ -197,6 +197,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       if (memberIdx >= 0) {
         prevStatePatient.client.members[memberIdx].status = 'active';
         prevStatePatient.members = prevStatePatient.client.members;
+        prevStatePatient.client.members[memberIdx].membershipId = action.payload.clientSubscription.membershipId;
       } else {
         prevStatePatient.status = 'active';
         prevStatePatient.client.status = 'active';

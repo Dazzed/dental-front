@@ -236,10 +236,15 @@ class DentistMembersPage extends React.Component {
     this.props.fetchPatients();
     this.props.fetchDentistReports();
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
   componentDidMount() {
     this.props.changePageTitle('Members');
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
   }
 
   /*
@@ -316,7 +321,7 @@ class DentistMembersPage extends React.Component {
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
     member.fromDentist = true;
-
+    
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
