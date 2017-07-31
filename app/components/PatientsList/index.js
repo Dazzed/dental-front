@@ -135,8 +135,21 @@ class PatientsList extends React.Component {
     } = this.props;
 
     const primaryMembers = patients
-      .filter(patient => { return !patient.client.addedBy });
-
+      .filter(patient => { return !patient.client.addedBy })
+      .map(primaryMember => {
+        let childMembers = patients.reduce((acc, p) => {
+          if (p.client.addedBy == primaryMember.client.id && p.status === 'active') {
+            return acc += 1;
+          } else {
+            return acc += 0;
+          }
+        },0)
+        return {
+          ...primaryMember,
+          childMemberCount: childMembers
+        };
+      });
+    
     let paymentDueAmount = patients.reduce((acc, p) => {
       let isMonthly = p.membership.type == 'monthly';
       if (isMonthly) {
@@ -165,6 +178,7 @@ class PatientsList extends React.Component {
         endAt,
         stripeSubscriptionId,
         membership,
+        childMemberCount,
       } = patient;
 
       const memberOrigin = MEMBER_ORIGINS[origin];
@@ -226,9 +240,9 @@ class PatientsList extends React.Component {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
-      const activeMembers = patients.filter((member) => {
-        return member.membership && member.status === 'active';
-      });
+      // const activeMembers = patients.filter((member) => {
+      //   return member.membership && member.status === 'active';
+      // });
 
       return (
         <div key={id} styleName="patient-list__entry">
@@ -277,7 +291,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{activeMembers.length}</span>
+                    <span styleName="member-overview__info">{childMemberCount}</span>
                   </div>
                 </div>
 
