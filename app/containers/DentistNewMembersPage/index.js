@@ -240,10 +240,15 @@ class DentistNewMembersPage extends React.Component {
     this.props.fetchPatients();
     this.props.fetchDentistReports();
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
   componentDidMount() {
     this.props.changePageTitle('New Members');
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
   }
 
   /*

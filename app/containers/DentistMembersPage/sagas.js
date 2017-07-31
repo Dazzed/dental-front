@@ -219,9 +219,9 @@ function* submitEditMemberForm (patient, payload) {
     // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
     let requestURL;
     if (payload.isEnrolling) {
-      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
     } else {
-      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
     }
     const params = {
       method: 'PUT',
@@ -236,6 +236,7 @@ function* submitEditMemberForm (patient, payload) {
     yield put(setEditedMember(patient, payload));
 
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
