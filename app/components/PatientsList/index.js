@@ -397,7 +397,7 @@ class PatientsList extends React.Component {
                           <p>
                             <input
                               type="button"
-                              styleName="button--full-width"
+                              styleName="button--full-width" style="font-size: 12px;" 
                               value="EDIT PAYMENT INFO"
                               onClick={this.onUpdatePaymentClick.bind(this, patient)}
                             />

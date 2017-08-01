@@ -305,13 +305,13 @@ export default class MembersList extends React.Component {
                 Fee
               </div>
             </div>
-            {showControlCol && (
-              <div className="col-sm-3">
+            <div className="col-sm-3"> &nbsp; 
+              {showControlCol && (
                 <div styleName="members__title--first-only">
                   Edit
                 </div>
-              </div>
-            )}
+              )}
+            </div>
             {memberRows}
           </div>
           {/*subTotal &&
