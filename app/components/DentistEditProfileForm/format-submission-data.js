@@ -1,5 +1,6 @@
 const compareMembershipChange = (memberships, data) => {
   const changedMemberships = [];
+  memberships = memberships.filter(m => m.active);
   for (const membership of memberships) {
     switch (membership.name) {
       case 'default annual membership':
@@ -27,6 +28,26 @@ const compareMembershipChange = (memberships, data) => {
         }
         break;
     }
+  }
+  if (data.adultYearlyFee && !memberships.find(m => m.type === 'year' && m.subscription_age_group === 'adult')) {
+    const yearAdultMembership = {
+      name: 'default annual membership',
+      price: data.adultYearlyFee.price,
+      type: 'year',
+      subscription_age_group: 'adult',
+      discount: data.treatmentDiscount
+    };
+    changedMemberships.push(yearAdultMembership);
+  }
+  if (data.childYearlyFee && !memberships.find(m => m.type === 'year' && m.subscription_age_group === 'child')) {
+    const yearChildMembership = {
+      name: 'default annual child membership',
+      price: data.childYearlyFee.price,
+      type: 'year',
+      subscription_age_group: 'child',
+      discount: data.treatmentDiscount
+    };
+    changedMemberships.push(yearChildMembership);
   }
   return changedMemberships;
 };
@@ -104,8 +125,8 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       ...data.pricing,
 
       // ALTER the activated indicators to ensure each value is a boolean.
-      adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated === true,
-      childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
+      adultYearlyFeeActivated: data.pricing.adultYearlyFee ? data.pricing.adultYearlyFee.adultYearlyFeeActivated : false,
+      childYearlyFeeActivated: data.pricing.childYearlyFee ? data.pricing.childYearlyFee.childYearlyFeeActivated : false,
 
       // ALTER the fees: normalize the price values.
       adultMonthlyFee: getFee(data.pricing.adultMonthlyFee),
@@ -189,7 +210,6 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
   // if (processedData.pricing.childYearlyFeeActivated === false) {
   //   delete processedData.pricing.childYearlyFee;
   // }
-
   return processedData;
 };
 

@@ -34,9 +34,18 @@ export default class Checkbox extends React.Component {
       children
     } = this.props;
 
-    // Hack to get this working with the "Services Offered" checkbox list. 
+    // Hack to get this working with the "Services Offered" checkbox list.
     if (this.props.serviceEnabled) {
       input.value = this.props.serviceEnabled;
+    }
+
+    // Hack to get this working with annual accounts.
+    if (this.props.adultYearlyFeeActivated) {
+      input.value = this.props.adultYearlyFeeActivated;
+    }
+
+    if (this.props.childYearlyFeeActivated) {
+      input.value = this.props.childYearlyFeeActivated;
     }
 
     return (

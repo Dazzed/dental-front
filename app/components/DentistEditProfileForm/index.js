@@ -169,6 +169,7 @@ const mapStateToProps = (state) => {
     avatar: null,
     office: [],
   };
+
   return {
     // pricing
     yearlyFeeActivated: {
@@ -336,6 +337,14 @@ class DentistEditProfileForm extends React.Component {
     this.forceUpdate();
   }
 
+  setAdultAnnualMembership = (info) => {
+    this.setState({ adultYearlyFeeActivated: info.target.checked, adultYearlyFeeChecked: true });
+  }
+
+  setChildAnnualMembership = (info) => {
+    this.setState({ childYearlyFeeActivated: info.target.checked, childYearlyFeeChecked: true });
+  }
+
   getInput(props) {
     return new Input(props);
   }
@@ -400,6 +409,13 @@ class DentistEditProfileForm extends React.Component {
       handleSubmit,
       submitting
     } = this.props;
+
+    // const adultYearlyFeeActivated = this.state.adultYearlyFeeChecked ? this.state.adultYearlyFeeActivated : !!this.props.initialValues.pricing.adultYearlyFee;
+    // const childYearlyFeeActivated = this.state.childYearlyFeeChecked ? this.state.childYearlyFeeActivated : !!this.props.initialValues.pricing.childYearlyFee;
+
+    // For now, it's not possible to deactivate an annual membership.
+    const adultYearlyFeeActivated = !!this.props.initialValues.pricing.adultYearlyFee;
+    const childYearlyFeeActivated = !!this.props.initialValues.pricing.childYearlyFee;
 
     // Get office logo and profile picture names.
     const logoFilename = this.getS3FilenameFromURL(this.state.officeLogoUrl);
@@ -904,7 +920,8 @@ class DentistEditProfileForm extends React.Component {
                   <Field
                     name="adultYearlyFeeActivated"
                     component={this.getCheckbox}
-                    checked={yearlyFeeActivated.adult}
+                    adultYearlyFeeActivated={adultYearlyFeeActivated}
+                    onChange={this.setAdultAnnualMembership}
                   >
                     Activate this offer.
                   </Field>
@@ -943,8 +960,9 @@ class DentistEditProfileForm extends React.Component {
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="childYearlyFeeActivated"
-                    checked={yearlyFeeActivated.child}
+                    childYearlyFeeActivated={childYearlyFeeActivated}
                     component={this.getCheckbox}
+                    onChange={this.setChildAnnualMembership}
                   >
                     Activate this offer.
                   </Field>
