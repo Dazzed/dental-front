@@ -129,7 +129,7 @@ function mapDispatchToProps(dispatch) {
     resetMemberForm: () => dispatch(resetForm('familyMember')),
     setEditingMember: (member) => dispatch(setEditingMember(member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
-    submitMemberForm: (values, userId) => dispatch(submitMemberForm(values, userId)),
+    submitMemberForm: (values, userId, user) => dispatch(submitMemberForm(values, userId, user)),
 
     // edit profile
     resetProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -358,7 +358,7 @@ class PatientProfilePage extends React.Component {
   */
   // members
   handleMemberFormSubmit = (values) => {
-    this.props.submitMemberForm(values, this.props.user.id);
+    this.props.submitMemberForm(values, this.props.user.id, this.props.user);
   }
 
   cancelMemberFormAction = () => {

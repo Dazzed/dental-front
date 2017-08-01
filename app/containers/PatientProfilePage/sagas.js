@@ -155,10 +155,13 @@ Add / Edit Member
 */
 function* submitMemberFormWatcher() {
   while (true) {
-    const { payload, userId } = yield take(SUBMIT_MEMBER_FORM);
+    const result = yield take(SUBMIT_MEMBER_FORM);
+    const payload = result.payload;
+    const userId = result.userId;
+    const user = result.user;
 
     if (payload.id === undefined) {
-      yield submitAddMemberForm(payload, userId);
+      yield submitAddMemberForm(payload, userId, user);
     }
     else {
       yield submitEditMemberForm(payload, userId);
@@ -166,21 +169,26 @@ function* submitMemberFormWatcher() {
   }
 }
 
-function* submitAddMemberForm(payload, userId) {
+function* submitAddMemberForm(payload, userId, user) {
   try {
     const requestURL = `/api/v1/users/${userId}/members`;
+    let body = JSON.stringify({
+      parentMember: user,
+      member: payload
+    });
     const params = {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body,
     };
 
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been added.`;
     yield put(toastrActions.success('', message));
 
-    yield put(setAddedMember(response.data, userId));
+    yield put(setAddedMember(payload, userId));
 
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
