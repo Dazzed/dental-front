@@ -136,11 +136,12 @@ export function clearEditingMember() {
   };
 }
 
-export function submitMemberForm(payload, userId) {
+export function submitMemberForm(payload, userId, user) {
   return {
     type: SUBMIT_MEMBER_FORM,
     payload,
     userId,
+    user
   };
 }
 
@@ -161,7 +162,7 @@ export function setEditedMember(payload, userId) {
 }
 
 /*
-Remove Member 
+Remove Member
 ------------------------------------------------------------
 */
 export function setRemovingMember(payload, userId) {

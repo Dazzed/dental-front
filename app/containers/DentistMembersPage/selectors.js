@@ -45,7 +45,13 @@ Fetch
 */
 const selectDentistInfo = createSelector(
   domainSelector,
-  (substate) => substate.dentistInfo
+  (substate) => {
+    let { dentistInfo } = substate;
+    if (dentistInfo) {
+      dentistInfo.memberships = replaceDefaultToStandard(dentistInfo.memberships);
+    }
+    return dentistInfo
+  }
 );
 
 const dentistSpecialtiesSelector = createSelector(
@@ -214,3 +220,16 @@ export {
   selectEditingPatientProfile,
   selectEditingPatientPayment,
 };
+
+function replaceDefaultToStandard(memberships) {
+  if (memberships) {
+    return memberships.map(m => {
+      return {
+        ...m,
+        name: m.name.replace('default','standard')
+      };
+    });
+  } else {
+    return memberships;
+  }
+}

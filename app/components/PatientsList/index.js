@@ -134,9 +134,32 @@ class PatientsList extends React.Component {
       dentist,
     } = this.props;
 
-    const primaryMembers = patients.filter(patient => { return !patient.client.addedBy });
-
-    console.log(primaryMembers, 'patients');
+    const primaryMembers = patients
+      .filter(patient => { return !patient.client.addedBy })
+      .map(primaryMember => {
+        let childMembers = patients.reduce((acc, p) => {
+          if (p.client.addedBy == primaryMember.client.id && p.status === 'active') {
+            return acc += 1;
+          } else {
+            return acc += 0;
+          }
+        },0)
+        return {
+          ...primaryMember,
+          childMemberCount: childMembers
+        };
+      });
+    
+    let paymentDueAmount = patients.reduce((acc, p) => {
+      let isMonthly = p.membership.type == 'monthly';
+      if (isMonthly) {
+        return acc += p.membership.monthlyPrice;
+      } else {
+        return acc += 0;
+      }
+    },0);
+    
+    paymentDueAmount = paymentDueAmount.toFixed(2);
     const patientRows = primaryMembers.map((patient) => {
       const {
         client: { avatar,
@@ -154,7 +177,8 @@ class PatientsList extends React.Component {
         status,
         endAt,
         stripeSubscriptionId,
-        membership
+        membership,
+        childMemberCount,
       } = patient;
 
       const memberOrigin = MEMBER_ORIGINS[origin];
@@ -216,20 +240,9 @@ class PatientsList extends React.Component {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
-      const activeMembers = patients.filter((member) => {
-        return member.membership && member.status === 'active' && member.membership.type === 'monthly'
-            && (member.client.addedBy === id || member.client.id === id);
-      });
-
-      let paymentDueAmount = 0;
-      for (const activeMember of activeMembers) {
-        if (membership.type === 'monthly') {
-          paymentDueAmount += parseFloat(membership.monthlyPrice);
-        } else {
-          paymentDueAmount += parseFloat(membership.annualPrice);
-        }
-      }
-      paymentDueAmount = paymentDueAmount.toFixed(2);
+      // const activeMembers = patients.filter((member) => {
+      //   return member.membership && member.status === 'active';
+      // });
 
       return (
         <div key={id} styleName="patient-list__entry">
@@ -278,7 +291,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{activeMembers.length}</span>
+                    <span styleName="member-overview__info">{childMemberCount}</span>
                   </div>
                 </div>
 

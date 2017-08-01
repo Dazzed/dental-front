@@ -236,10 +236,15 @@ class DentistMembersPage extends React.Component {
     this.props.fetchPatients();
     this.props.fetchDentistReports();
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
   componentDidMount() {
     this.props.changePageTitle('Members');
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
   }
 
   /*
@@ -252,7 +257,8 @@ class DentistMembersPage extends React.Component {
   }
 
   reEnrollMember = (patient, member, type) => {
-    const { user: { memberships } } = this.props;
+    let { user: { memberships } } = this.props;
+    memberships = memberships.filter(m => m && m.active);
     const enrollmentDiv = patient.reEnrollmentFee && <div>
       <h3>Membership Fees</h3>
       {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
@@ -271,10 +277,21 @@ class DentistMembersPage extends React.Component {
     };
 
     this.setState({ dialog });
-  }
+  };
 
   removeMember = (patient, member, dentistId) => {
-    this.props.setRemovingMember(patient, member, dentistId);
+    const dialog = {
+      message: <div>A cancellation fee might be charged by your dentist.
+        </div>,
+      showDialog: true,
+      title: 'Confirm Member Cancel',
+      confirm: () => {
+        this.props.setRemovingMember(patient, member, dentistId);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   updateMemberConfirm = (patient, member, submit) => {
@@ -315,8 +332,7 @@ class DentistMembersPage extends React.Component {
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
     member.fromDentist = true;
-
-    console.log('can update member');
+    
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });

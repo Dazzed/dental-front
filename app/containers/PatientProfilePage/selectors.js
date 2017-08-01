@@ -25,7 +25,13 @@ Fetch Dentist
 */
 const dentistSelector = createSelector(
   domainSelector,
-  (substate) => { return substate.dentist; }
+  (substate) => {
+    let { dentist } = substate;
+    if (dentist) {
+      dentist.memberships = replaceDefaultToStandard(dentist.memberships);
+    }
+    return dentist;
+  }
 );
 
 /*
@@ -155,3 +161,16 @@ export {
   editingSecuritySelector,
   editingPaymentSelector,
 };
+
+function replaceDefaultToStandard(memberships) {
+  if (memberships) {
+    return memberships.map(m => {
+      return {
+        ...m,
+        name: m.name.replace('default','standard')
+      };
+    });
+  } else {
+    return memberships;
+  }
+}

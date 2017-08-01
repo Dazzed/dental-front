@@ -140,7 +140,7 @@ function mapDispatchToProps(dispatch) {
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
-    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
+    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
 
     // edit patient profile
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -240,10 +240,15 @@ class DentistNewMembersPage extends React.Component {
     this.props.fetchPatients();
     this.props.fetchDentistReports();
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
   componentDidMount() {
     this.props.changePageTitle('New Members');
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
   }
 
   /*
@@ -256,7 +261,8 @@ class DentistNewMembersPage extends React.Component {
   }
 
   reEnrollMember = (patient, member, type) => {
-    const { user: { memberships } } = this.props;
+    let { user: { memberships } } = this.props;
+    memberships = memberships.filter(m => m && m.active);
     const enrollmentDiv = patient.reEnrollmentFee && <div>
       <h3>Membership Fees</h3>
       {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
@@ -275,7 +281,7 @@ class DentistNewMembersPage extends React.Component {
     };
 
     this.setState({ dialog });
-  };
+  }
 
   handleCloseDialog = () => {
     let dialog = this.state.dialog;
@@ -284,8 +290,19 @@ class DentistNewMembersPage extends React.Component {
   };
 
 
-  removeMember = (patient, member) => {
-    this.props.setRemovingMember(patient, member);
+  removeMember = (patient, member, dentistId) => {
+    const dialog = {
+      message: <div>A cancellation fee might be charged by your dentist.
+        </div>,
+      showDialog: true,
+      title: 'Confirm Member Cancel',
+      confirm: () => {
+        this.props.setRemovingMember(patient, member, dentistId);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   renewMember = (patient, member) => {

@@ -206,6 +206,11 @@ export function clearEditingMember() {
 }
 
 export function submitMemberForm(patient, payload) {
+  if (payload.clientSubscription && payload.clientSubscription.status !== 'active') {
+    payload.isEnrolling = true;
+  } else {
+    payload.isEnrolling = false;
+  }
   return {
     type: SUBMIT_MEMBER_FORM,
     patient,

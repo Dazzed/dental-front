@@ -81,6 +81,8 @@ export default class MemberFormModal extends React.Component {
   }
 
   handleFormSubmit = (values) => {
+    values.dentistId = this.props.dentist.id;
+
     const {
       acceptsChildren,
       childStartingAge,
@@ -150,7 +152,7 @@ export default class MemberFormModal extends React.Component {
 
   renderMembershipType = () => {
     let { dentist: { memberships } } = this.props;
-    
+
     let membershipId = -1;
     if (this.props.initialValues) {
       membershipId = this.props.initialValues.clientSubscription ?
@@ -311,7 +313,7 @@ export default class MemberFormModal extends React.Component {
         */}
         <Modal.Body>
           <form className="form-horizontal">
-            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist) ?
+            {initialValues && (initialValues.isEnrolling || initialValues.fromDentist || initialValues.id) ?
               (<Row>
                 {this.renderMembershipType()}
               </Row>) :
