@@ -143,7 +143,10 @@ class PatientsList extends React.Component {
           } else {
             return acc += 0;
           }
-        },0)
+        },0);
+        if (primaryMember.status === 'active') {
+          childMembers += 1;
+        }
         return {
           ...primaryMember,
           childMemberCount: childMembers
