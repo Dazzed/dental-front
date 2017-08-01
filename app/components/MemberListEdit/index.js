@@ -108,7 +108,9 @@ export default class MemberListEdit extends Component {
     return (
       <div key={id} className="row" styleName="member">
         <div className="col-sm-2">
-          <Avatar url={avatar} size={'100%'} />
+          <div styleName="member__detail">
+            {status}
+          </div>
         </div>
         <div className="col-sm-2">
           <div styleName="member__detail">

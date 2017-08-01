@@ -229,7 +229,7 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
+      const paymentDueDate = moment(membership.endAt).add(1,'M').format('MMMM D, YYYY');
 
 
       const waiveCancellationFee = !patient.client.cancellationFeeWaiver;
