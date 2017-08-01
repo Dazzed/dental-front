@@ -108,7 +108,9 @@ export default class MemberListEdit extends Component {
     return (
       <div key={id} className="row" styleName="member">
         <div className="col-sm-2">
-          <Avatar url={avatar} size={'100%'} />
+          <div styleName="member__detail">
+            {status}
+          </div>
         </div>
         <div className="col-sm-2">
           <div styleName="member__detail">
@@ -241,12 +243,38 @@ export default class MemberListEdit extends Component {
       || onRemoveMember;
 
     patient.membershipId = patient.clientSubscription.membershipId;
-    const members = [patient, ...patient.members];
+    const members = [patient, ...patient.members]
+      .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
     const memberRows = [];
-
+    let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
+      console.log(member.clientSubscription)
+      if (member.clientSubscription.membership.type == 'year' && !annualSeparated) {
+        annualSeparated = true;
+        memberRows.push(
+          <div key={Math.random()} className="row" styleName="member">
+            <div className="col-sm-6 col-md-6">
+              <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                Annual Memberships
+              </div>
+            </div>
+          </div>
+        );
+      }
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
+      if (member.clientSubscription.membership.type == 'year') {
+        annualSeparated = true;
+        memberRows.push(
+          <div key={Math.random()} className="row" styleName="member">
+            <div className="col-sm-6 col-md-6">
+              <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                Expires At: {moment(member.clientSubscription.membership.createdAt).add(1,'year').format('MMMM D, YYYY')}
+              </div>
+            </div>
+          </div>
+        );
+      }
     }
 
     return (
@@ -255,7 +283,7 @@ export default class MemberListEdit extends Component {
           <div className="row" styleName="members__title-row">
             <div className="col-sm-2">
               <div styleName="status--signup">
-                Monthly
+                Status
               </div>
             </div>
             <div className="col-sm-2">
