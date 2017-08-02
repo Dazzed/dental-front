@@ -12,6 +12,7 @@ import get from 'lodash/get';
 import findIndex from 'lodash/findIndex';
 import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
+import _ from 'lodash';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { change, reset, stopSubmit } from 'redux-form';
@@ -217,12 +218,19 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     return response;
 
   } catch (err) {
-    const errors = mapValues(err.errors, (value) => value.msg);
-    // Map from known response errors to their form field identifiers.
-    // Currently, only server-side-only validation is included most of the
-    // validation is identical on the client and the server.  Thus a
-    // non-malicious user will have already checked the other possible error
-    // responses.
+    // const errors = mapValues(err.errors, (value) => value.msg);
+    // We get err.errors as array if 500 or err.errors as object if 400.
+    let errors;
+    if (_.isArray(err.errors)) {
+      errors = err.errors.reduce((acc, error) => {
+        return {
+          ...acc,
+          [error.path]: error.value
+        }
+      },{});
+    } else {
+      errors = mapValues(err.errors, (value) => value.msg);
+    }
     const formErrors = {};
 
     if (errors.email) {
@@ -231,11 +239,19 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
       };
     }
 
+    if (errors.number) {
+      formErrors.user = {
+        number: errors.number
+      };
+    }
+    console.info(formErrors)
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
-    else if (Object.keys(formErrors).length === 1 && formErrors.user.email) {
+    else if (formErrors.user.email) {
       yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
+    } else if (formErrors.user.number) {
+      yield put(toastrActions.error('', 'The entered phone number is already registered.  Please enter another phone number.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
