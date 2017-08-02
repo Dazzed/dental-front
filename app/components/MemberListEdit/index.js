@@ -101,6 +101,7 @@ export default class MemberListEdit extends Component {
     let amount = '-----';
 
     amount = pluckMembershipfee(member, membershipPlans);
+    console.log(amount);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
     const status = member.status;
@@ -169,7 +170,7 @@ export default class MemberListEdit extends Component {
                     type="button"
                     styleName="button--small"
                     value="X"
-                    onClick={this.onRemoveClick.bind(this, patient, member, member.membership.userId)}
+                    onClick={this.onRemoveClick.bind(this, patient, member, membership.userId)}
                   />
                 )
               }
@@ -244,12 +245,12 @@ export default class MemberListEdit extends Component {
 
     patient.membershipId = patient.clientSubscription.membershipId;
     const members = [patient, ...patient.members]
+      .filter(m => m.clientSubscription)
       .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
     const memberRows = [];
     let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      console.log(member.clientSubscription)
       if (member.clientSubscription.membership.type == 'year' && !annualSeparated) {
         annualSeparated = true;
         memberRows.push(

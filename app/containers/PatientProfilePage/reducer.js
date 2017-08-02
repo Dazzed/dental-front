@@ -129,6 +129,8 @@ function patientProfilePageReducer(state = initialState, action) {
       };
 
     case ADD_MEMBER_SUCCESS:
+      console.log('---member success--');
+      console.log(action.payload);
       return {
         ...state,
         familyMembers: [

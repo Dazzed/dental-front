@@ -184,8 +184,7 @@ function* submitAddMemberForm(payload, userId, user) {
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been added.`;
     yield put(toastrActions.success('', message));
-
-    yield put(setAddedMember(payload, userId));
+    yield put(setAddedMember(response.data, userId));
 
   } catch (err) {
     console.log(err);
