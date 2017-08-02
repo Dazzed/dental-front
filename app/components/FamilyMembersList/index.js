@@ -137,7 +137,7 @@ class FamilyMembersList extends React.Component {
       statusStyle = 'status status--inactive';
     }
     aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
-    aggregateSubscription.dueDate = aggregateSubscription.dueDate.format("MMMM D, YYYY");
+    aggregateSubscription.dueDate = aggregateSubscription.dueDate.add(1,'month').format("MMMM D, YYYY");
 
     return (
       <div className="row">
