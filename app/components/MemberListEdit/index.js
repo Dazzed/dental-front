@@ -101,7 +101,6 @@ export default class MemberListEdit extends Component {
     let amount = '-----';
 
     amount = pluckMembershipfee(member, membershipPlans);
-    console.log(amount);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
     const status = member.status;
