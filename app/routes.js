@@ -26,7 +26,7 @@ const loadModule = (cb) => (componentModule) => {
 export default function createRoutes(store) {
   // Create reusable async injectors using getAsyncInjectors factory
   const {
-    injectReducer, injectSagas, redirectToDashboard, redirectToLogin, redirectTo404
+    injectReducer, injectSagas, redirectToDashboard, redirectToLogin, redirectTo404, logoutReducer,
   } = getHooks(store);
 
   return [
@@ -140,6 +140,7 @@ export default function createRoutes(store) {
         importModules.then(([sagas, component]) => {
           injectSagas(sagas.default);
           renderRoute(component);
+          logoutReducer();
         });
       },
     }, {
