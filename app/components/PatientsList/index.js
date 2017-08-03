@@ -137,32 +137,16 @@ class PatientsList extends React.Component {
     const primaryMembers = patients
       .filter(patient => { return !patient.client.addedBy })
       .map(primaryMember => {
-        let childMembers = patients.reduce((acc, p) => {
-          if (p.client.addedBy == primaryMember.client.id && p.status === 'active') {
-            return acc += 1;
-          } else {
-            return acc += 0;
-          }
-        },0);
+        const activeMembers = primaryMember.client.members.filter(m => m.status === 'active');
+        let childMembers = activeMembers.length;
         if (primaryMember.status === 'active') {
-          childMembers += 1;
+          childMembers++;
         }
         return {
           ...primaryMember,
           childMemberCount: childMembers
         };
       });
-    
-    let paymentDueAmount = patients.reduce((acc, p) => {
-      let isMonthly = p.membership.type == 'monthly';
-      if (isMonthly) {
-        return acc += p.membership.monthlyPrice;
-      } else {
-        return acc += 0;
-      }
-    },0);
-    
-    paymentDueAmount = paymentDueAmount.toFixed(2);
     const patientRows = primaryMembers.map((patient) => {
       const {
         client: { avatar,
@@ -183,6 +167,21 @@ class PatientsList extends React.Component {
         membership,
         childMemberCount,
       } = patient;
+
+      const activeFamilyMembers = members.filter(m => m.status === 'active');
+      let paymentDueAmount = activeFamilyMembers.reduce((acc, p) => {
+        if (p.membership.type === 'month') {
+          return acc += Number.parseFloat(p.membership.price);
+        } else {
+          return acc += 0;
+        }
+      },0);
+
+      if (status === 'active' && membership.type === 'monthly') {
+        paymentDueAmount += membership.monthlyPrice;
+      }
+
+      paymentDueAmount = paymentDueAmount.toFixed(2);
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
@@ -388,6 +387,7 @@ class PatientsList extends React.Component {
                       ------------------------------------------------------------
                       */}
                       <div styleName="controls">
+                      {this.props.onAddMember && (
                         <p>
                           <input
                             type="button"
@@ -396,6 +396,7 @@ class PatientsList extends React.Component {
                             onClick={this.onAddClick.bind(this, patient)}
                           />
                         </p>
+                        )}
                         {this.props.onUpdatePatientProfile && (
                           <p>
                             <input

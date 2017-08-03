@@ -39,11 +39,13 @@ const selectPatientReviews = createSelector(
 
     return patients.reduce((reviewsCollector, patient) => {
       // precondition: the patient has written a review
-      if (!Array.isArray(patient.reviews) || patient.reviews.length === 0) {
+      if (!patient.client ||
+          !Array.isArray(patient.client.clientReviews) ||
+          patient.client.clientReviews.length === 0) {
         return reviewsCollector;
       }
 
-      var patientReviews = patient.reviews.map((review) => {
+      var patientReviews = patient.client.clientReviews.map((review) => {
         return {
           reviewer: patient,
           review: review,
@@ -132,7 +134,7 @@ const selectDataLoaded = createSelector(
     return user !== false && dentistInfo !== null && patients !== null;
   }
 );
- 
+
 /*
 Export
 ------------------------------------------------------------
