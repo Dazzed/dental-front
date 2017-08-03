@@ -209,6 +209,14 @@ export default class PatientProfileFormModal extends React.Component {
 
            <Row>
               <Field
+                name="email"
+                type="text"
+                component={this.getLabeledInput}
+                label="Email"
+                placeholder=""
+                className="col-sm-12"
+              />
+              <Field
                 name="address"
                 type="text"
                 component={this.getLabeledInput}
