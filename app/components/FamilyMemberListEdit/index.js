@@ -40,7 +40,7 @@ Members List
 ================================================================================
 */
 @CSSModules(styles, { allowMultiple: true })
-export default class MemberListEdit extends Component {
+export default class FamilyMemberListEdit extends Component {
 
   static propTypes = {
     // passed in - data
@@ -88,6 +88,7 @@ export default class MemberListEdit extends Component {
       id,
       lastName,
     } = member;
+
     const relationship = familyRelationship
       ? MEMBER_RELATIONSHIP_TYPES[familyRelationship]
       : 'ACCOUNT OWNER';
@@ -103,7 +104,7 @@ export default class MemberListEdit extends Component {
     amount = pluckMembershipfee(member, membershipPlans);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
-    const status = member.status;
+    const status = member.clientSubscription.status;
 
     return (
       <div key={id} className="row" styleName="member">
@@ -185,34 +186,6 @@ export default class MemberListEdit extends Component {
                   />
                 )
               }
-
-              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-              {/*
-              {    this.props.onRenewMember
-                && !subscription.monthly
-                && subscription.status === "active"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RENEW"
-                    onCLick={this.onRenewClick.bind(this, patient, member)}
-                  />
-                )
-              }
-
-              {    this.props.onReEnrollMember
-                && subscription.status === "inactive"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RE-ENROLL"
-                    onClick={this.onReEnrollClick.bind(this, patient, member)}
-                  />
-                )
-              }
-              */}
             </div>
           )}
         </div>
@@ -221,10 +194,10 @@ export default class MemberListEdit extends Component {
   }
 
   componentWillMount() {
-    console.log("MemberListEdit is mounted with ",this.props);
+    console.log("FamilyMemberListEdit is mounted with ", this.props);
   }
 
-  render () {
+  render() {
     const {
       patient,
       dentist,
@@ -233,6 +206,8 @@ export default class MemberListEdit extends Component {
       onUpdateMember,
       onRemoveMember,
     } = this.props;
+
+    const primaryPatient = patient.members.find(m => m.id === patient.id);
 
     if (!dentist) {
       return null;
@@ -243,9 +218,20 @@ export default class MemberListEdit extends Component {
       || onRemoveMember;
 
     patient.membershipId = patient.clientSubscription.membershipId;
-    const members = [patient, ...patient.members]
+    let members = [patient, ...patient.members]
       .filter(m => m.clientSubscription)
       .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
+
+    // removes duplicate members in the members array. 
+    members = members.reduce((acc, m) => {
+      if (acc.map(t => t.id).includes(m.id)) {
+        return acc;
+      } else {
+        acc.push(m);
+        return acc;
+      }
+    }, []);
+
     const memberRows = [];
     let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
@@ -255,21 +241,21 @@ export default class MemberListEdit extends Component {
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
-              <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+              <div styleName="member__detail" style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
                 Annual Memberships
               </div>
             </div>
           </div>
         );
       }
-      memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
+      memberRows.push(this.renderMember(primaryPatient, member, showControlCol, dentist.memberships));
       if (member.clientSubscription.membership.type == 'year') {
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
-              <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
-                Expires At: {moment(member.clientSubscription.membership.createdAt).add(1,'year').format('MMMM D, YYYY')}
+              <div styleName="member__detail" style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
+                Expires At: {moment(member.clientSubscription.membership.createdAt).add(1, 'year').format('MMMM D, YYYY')}
               </div>
             </div>
           </div>

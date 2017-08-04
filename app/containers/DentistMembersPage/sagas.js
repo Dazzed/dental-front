@@ -206,6 +206,7 @@ function* submitAddMemberForm(patient, payload) {
 
     yield put(setAddedMember(patient, response.data));
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
@@ -286,6 +287,7 @@ function* submitPatientProfileFormWatcher() {
       payload,
       'id',
       'firstName',
+      'email',
       'lastName',
       'clientSubscription',
       'sex',

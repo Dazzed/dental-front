@@ -63,8 +63,9 @@ import {
   setEditingPayment,
   clearEditingPayment,
   submitPaymentForm,
-  // cancel membership,
-  cancelMembership
+
+  //remove member
+  setRemovingMember,
 } from './actions';
 import {
   // fetch
@@ -127,9 +128,9 @@ function mapDispatchToProps(dispatch) {
 
     // add / edit member
     resetMemberForm: () => dispatch(resetForm('familyMember')),
-    setEditingMember: (member) => dispatch(setEditingMember(member)),
+    setEditingMember: (patient, member) => dispatch(setEditingMember(patient, member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
-    submitMemberForm: (values, userId, user) => dispatch(submitMemberForm(values, userId, user)),
+    submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // edit profile
     resetProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -155,8 +156,8 @@ function mapDispatchToProps(dispatch) {
     clearEditingPayment: () => dispatch(clearEditingPayment()),
     submitPaymentForm: (values, userId) => dispatch(submitPaymentForm(values, userId)),
 
-    // cancel membership
-    cancelMembership: () => dispatch(cancelMembership()),
+    // remove member
+    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
   };
 }
 
@@ -234,10 +235,14 @@ class PatientProfilePage extends React.Component {
     setEditingPayment: React.PropTypes.func.isRequired,
     clearEditingPayment: React.PropTypes.func.isRequired,
     submitPaymentForm: React.PropTypes.func.isRequired,
+
+    // remove member - dispatch
+    setRemovingMember: React.PropTypes.func.isRequired,
   }
 
   componentWillMount = () => {
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   };
 
   componentDidMount() {
@@ -246,36 +251,29 @@ class PatientProfilePage extends React.Component {
     this.props.fetchFamilyMembers();
   }
 
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
+  }
+
   /*
   Page Actions
   ------------------------------------------------------------
   */
   // members
-  addMember = (user) => {
+  addMember = (patient) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(user);
+    patient.client = {};
+    patient.client.id = patient.id;
+    patient.client.email = patient.email;
+    this.props.setEditingMember(patient, null);
   }
 
   reEnrollMember = (patient, member, type) => {
-    const { dentist: { memberships } } = this.props;
-    // switch (type) {
-    //   case 'adult':
-    //     cost.yearly = dentistInfo.adultMembership.yearly;
-    //     cost.monthly = dentistInfo.adultMembership.monthly;
-    //     cost.discount = dentistInfo.adultMembership.discount;
-    //     break;
-    //   case 'child':
-    //     cost.yearly = dentistInfo.childMembership.yearly;
-    //     cost.monthly = dentistInfo.childMembership.monthly;
-    //     cost.discount = dentistInfo.childMembership.discount;
-    //     break;
-    // }
+    let { dentist: { memberships } } = this.props;
+    memberships = memberships.filter(m => m && m.active);
     const enrollmentDiv = patient.reEnrollmentFee && <div>
       <h3>Membership Fees</h3>
-      {
-        memberships.map(({ name, price, discount }, idx) =>
-          <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)
-      }
+      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
     </div>;
 
     const dialog = {
@@ -291,19 +289,33 @@ class PatientProfilePage extends React.Component {
     };
 
     this.setState({ dialog });
-  }
+  };
 
-  removeMember = (user, member) => {
-    alert('TODO: remove member');
+  removeMember = (patient, member, dentistId) => {
+    const dialog = {
+      message: <div>A cancellation fee might be charged by your dentist.
+        </div>,
+      showDialog: true,
+      title: 'Confirm Member Cancel',
+      confirm: () => {
+        this.props.setRemovingMember(patient, member, dentistId);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   renewMember = (user, member) => {
     alert('TODO: renew member');
   }
 
-  updateMember = (user, member) => {
+  updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(member);
+    
+    this.props.setEditingMember(patient, member, (submit) => {
+      this.updateMemberConfirm(patient, member, submit);
+    });
   }
 
   // profile
@@ -317,22 +329,6 @@ class PatientProfilePage extends React.Component {
     this.props.resetReviewForm();
     this.props.setEditingReview({});
   }
-
-  cancelMembershipAction = () => {
-    this.props.cancelMembership();
-    this.handleCloseDialog();
-  };
-
-  cancelMembership = () => {
-    const dialog = {
-      message: 'Are you sure you want to cancel your membership',
-      showDialog: true,
-      title: 'Cancel Membership',
-      confirm: this.cancelMembershipAction
-    };
-
-    this.setState({ dialog });
-  };
 
   handleCloseDialog = () => {
     let dialog = this.state.dialog;
@@ -358,7 +354,7 @@ class PatientProfilePage extends React.Component {
   */
   // members
   handleMemberFormSubmit = (values) => {
-    this.props.submitMemberForm(values, this.props.user.id, this.props.user);
+    this.props.submitMemberForm(this.props.editingMember.patient, values);
   }
 
   cancelMemberFormAction = () => {
@@ -586,12 +582,6 @@ class PatientProfilePage extends React.Component {
                     value="REVIEW DENTIST"
                     onClick={this.addReview}
                   />
-                  <input
-                    type="button"
-                    styleName="button--full-width"
-                    value="CANCEL MEMBERSHIP"
-                    onClick={this.cancelMembership}
-                  />
                 </div>
               </div>
 
@@ -619,7 +609,7 @@ class PatientProfilePage extends React.Component {
                     type="button"
                     styleName="button--full-width"
                     value="ADD MEMBER"
-                    onClick={this.addMember}
+                    onClick={this.addMember.bind(this, user)}
                   />
                 </div>
               </div>
@@ -629,7 +619,7 @@ class PatientProfilePage extends React.Component {
               <FamilyMembersList
                 patient={user}
                 dentist={dentist}
-
+                familyMembers={familyMembers}
                 onReEnrollMember={this.reEnrollMember}
                 onRemoveMember={this.removeMember}
                 onRenewMember={this.renewMember}
@@ -732,7 +722,7 @@ class PatientProfilePage extends React.Component {
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
-          initialValues={editingMember}
+          initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
         />
 

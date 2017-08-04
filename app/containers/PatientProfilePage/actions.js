@@ -123,10 +123,12 @@ export function setFamilyMembersErrors(payload) {
 Add / Edit Member
 ------------------------------------------------------------
 */
-export function setEditingMember(member) {
+export function setEditingMember(patient, member, callback) {
   return {
     type: SET_EDITING_MEMBER,
-    member
+    patient,
+    member,
+    callback
   };
 }
 
@@ -136,28 +138,34 @@ export function clearEditingMember() {
   };
 }
 
-export function submitMemberForm(payload, userId, user) {
+export function submitMemberForm(patient, payload) {
+  if (payload.clientSubscription) {
+    if (payload.clientSubscription.status !== 'active') {
+      payload.isEnrolling = true;
+    }
+  } else {
+    payload.isEnrolling = false;
+  }
   return {
     type: SUBMIT_MEMBER_FORM,
+    patient,
     payload,
-    userId,
-    user
   };
 }
 
-export function setAddedMember(payload, userId) {
+export function setAddedMember(patient, payload) {
   return {
     type: ADD_MEMBER_SUCCESS,
+    patient,
     payload,
-    userId,
   };
 }
 
-export function setEditedMember(payload, userId) {
+export function setEditedMember(patient, payload) {
   return {
     type: EDIT_MEMBER_SUCCESS,
+    patient,
     payload,
-    userId,
   };
 }
 
@@ -165,19 +173,20 @@ export function setEditedMember(payload, userId) {
 Remove Member
 ------------------------------------------------------------
 */
-export function setRemovingMember(payload, userId) {
+export function setRemovingMember(patient, payload, dentistId) {
   return {
     type: REMOVE_MEMBER_REQUEST,
+    patient,
     payload,
-    userId,
+    dentistId
   };
 }
 
-export function setRemovedMember(memberId, userId) {
+export function setRemovedMember(patient, memberId) {
   return {
     type: REMOVE_MEMBER_SUCCESS,
+    patient,
     memberId,
-    userId,
   }
 }
 

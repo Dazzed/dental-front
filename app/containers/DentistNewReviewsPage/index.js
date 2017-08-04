@@ -491,15 +491,6 @@ class DentistNewReviewsPage extends React.Component {
             patients={recentReviewerPatients}
             dentist={dentistInfo}
             getAdditionalMembershipContent={this.getRecentPatientReviews}
-
-            onAddMember={this.addMember}
-            onReEnrollMember={this.reEnrollMember}
-            onRemoveMember={this.removeMember}
-            onRenewMember={this.renewMember}
-            onToggleCancelationFee={this.toggleCancelationFee}
-            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-            onUpdatePatientProfile={this.updatePatientProfile}
-            onUpdatePatientPayment={this.updatePatientPaymentInfo}
           />
         </div>
 

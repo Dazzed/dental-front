@@ -126,111 +126,29 @@ export default class MembersList extends React.Component {
     return (
       <div key={id} className="row" styleName="member">
         <div className="col-sm-2">
-          <Avatar url={avatar} size={'100%'} />
-        </div>
-        <div className="col-sm-2">
           <div styleName="member__detail">
             {firstName} {lastName}
           </div>
         </div>
-        <div className="col-sm-2">
+        <div className="col-sm-3">
           <div styleName="member__detail">
             {relationship === "ACCOUNT OWNER" ? (<strong>{relationship}</strong>) : relationship}
           </div>
         </div>
-        <div className="col-sm-1">
+        <div className="col-sm-2">
           <div styleName="member__detail">
             {age}
           </div>
         </div>
-        <div className="col-sm-1">
+        <div className="col-sm-2">
           <div styleName="member__detail">
             {subscriptionType}
           </div>
         </div>
-        <div className="col-sm-1">
+        <div className="col-sm-2">
           <div styleName="member__detail">
             ${amount}
           </div>
-        </div>
-        <div className="col-sm-3">
-          {/* TODO: Enable actions for the patient / patient-user so they can
-              be treated like any other member?
-          */}
-          {id !== patient.id && showControlCol && (
-            <div styleName="member__detail">
-              {/* The actions for a member depend on their subscription status
-                  and type:
-                    - active monthly => Update & Remove
-                    - active yearly => Update & Renew
-                    - inactive => Re-Enroll
-              */}
-              {this.props.onUpdateMember
-                && (subscription.status === "active" || subscription.status === "signup")
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="UPDATE"
-                    onClick={this.onUpdateClick.bind(this, patient, member)}
-                  />
-                )
-              }
-
-              {this.props.onRemoveMember
-                && subscription.monthly
-                && (subscription.status === "active" || subscription.status === "signup")
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="X"
-                    onClick={this.onRemoveClick.bind(this, patient, member)}
-                  />
-                )
-              }
-
-              {this.props.onReEnrollMember
-                && subscription.status === "inactive"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RE-ENROLL"
-                    onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
-                  />
-                )
-              }
-
-              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-              {/*
-              {    this.props.onRenewMember
-                && !subscription.monthly
-                && subscription.status === "active"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RENEW"
-                    onCLick={this.onRenewClick.bind(this, patient, member)}
-                  />
-                )
-              }
-
-              {    this.props.onReEnrollMember
-                && subscription.status === "inactive"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RE-ENROLL"
-                    onClick={this.onReEnrollClick.bind(this, patient, member)}
-                  />
-                )
-              }
-              */}
-            </div>
-          )}
         </div>
       </div>
     );
@@ -276,44 +194,32 @@ export default class MembersList extends React.Component {
         <div styleName="members__segment">
           <div className="row" styleName="members__title-row">
             <div className="col-sm-2">
-              <div styleName="status--signup">
-                Monthly
-              </div>
-            </div>
-            <div className="col-sm-2">
               <div styleName="members__title--first-only">
                 Name
               </div>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-3">
               <div styleName="members__title--first-only">
                 Relationship
               </div>
             </div>
-            <div className="col-sm-1">
+            <div className="col-sm-2">
               <div styleName="members__title--first-only">
                 Age
               </div>
             </div>
-            <div className="col-sm-1">
+            <div className="col-sm-2">
               <div styleName="members__title--first-only">
                 Type
               </div>
             </div>
-            <div className="col-sm-1">
+            <div className="col-sm-2">
               <div styleName="members__title--first-only">
                 Fee
               </div>
             </div>
-            {showControlCol && (
-              <div className="col-sm-3">
-                <div styleName="members__title--first-only">
-                  Edit
-                </div>
-              </div>
-            )}
-            {memberRows}
           </div>
+          {memberRows}
           {/*subTotal &&
             <div styleName="subtotal">
               <strong>Subtotal: </strong>${subTotal}
