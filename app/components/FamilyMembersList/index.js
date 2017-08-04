@@ -18,7 +18,7 @@ import FaUser from 'react-icons/lib/fa/user';
 import {
   MEMBER_RELATIONSHIP_TYPES
 } from 'common/constants';
-import MemberListEdit from 'components/MemberListEdit';
+import FamilyMemberListEdit from 'components/FamilyMemberListEdit';
 
 // local
 import styles from './styles.css';
@@ -147,10 +147,9 @@ class FamilyMembersList extends React.Component {
         ------------------------------------------------------------
         */}
         <div className="col-sm-9">
-          <MemberListEdit
+          <FamilyMemberListEdit
             patient={patient}
             dentist={this.props.dentist}
-
             onReEnrollMember={onReEnrollMember}
             onRemoveMember={onRemoveMember}
             onRenewMember={onRenewMember}

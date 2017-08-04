@@ -155,17 +155,14 @@ Add / Edit Member
 */
 function* submitMemberFormWatcher() {
   while (true) {
-    const result = yield take(SUBMIT_MEMBER_FORM);
-    const payload = result.payload;
-    const userId = result.userId;
-    const user = result.user;
-
-    if (payload.id === undefined) {
-      yield submitAddMemberForm(payload, userId, user);
-    }
-    else {
-      yield submitEditMemberForm(payload, userId);
-    }
+    yield takeLatest(SUBMIT_MEMBER_FORM, function* handler ({ patient, payload }) {
+      if (payload.id === undefined) {
+        yield submitAddMemberForm(patient, payload);
+      }
+      else {
+        yield submitEditMemberForm(patient, payload);
+      }
+    });
   }
 }
 
@@ -195,18 +192,16 @@ function* submitAddMemberForm(payload, userId, user) {
   }
 }
 
-function* submitEditMemberForm(payload, userId) {
+function* submitEditMemberForm(patient, payload) {
+
+  const dentistId = payload.dentistId;
   try {
-    let requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
-    const isEnrollment = payload.subscription && payload.subscription.status === 'inactive'
-    if (/^{.*.}$/.test(payload.membershipType)) {
-      payload.membershipType = JSON.parse(payload.membershipType);
+    let requestURL;
+    if (payload.isEnrolling) {
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
+    } else {
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
     }
-
-    if (isEnrollment) {
-      requestURL = `/api/v1/users/${userId}/members/${payload.id}/enroll`;
-    }
-
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -214,15 +209,13 @@ function* submitEditMemberForm(payload, userId) {
 
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
-    yield put(toastrActions.success('', message));
-    if (isEnrollment) {
-      yield (familyMembersFetcher());
-      yield (dentistFetcher());
-    }
 
-    yield put(setEditedMember(payload, userId));
+    yield put(toastrActions.success('', message));
+
+    yield put(setEditedMember(patient, payload));
 
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
@@ -234,12 +227,12 @@ function* submitEditMemberForm(payload, userId) {
 Remove Member
 ------------------------------------------------------------
 */
-function* removeMemberWatcher() {
+function* removeMemberWatcher () {
   while (true) {
-    const { payload, userId } = yield take(REMOVE_MEMBER_REQUEST);
-
+    const { patient, payload, dentistId } = yield take(REMOVE_MEMBER_REQUEST);
+    console.log(patient, payload, dentistId);
     try {
-      const requestURL = `/api/v1/users/${userId}/members/${payload.id}`;
+      const requestURL = `/api/v1/dentists/${dentistId}/subscription/members/${payload.id}/plan`;
       const params = {
         method: 'DELETE',
       };
@@ -250,8 +243,9 @@ function* removeMemberWatcher() {
         has been deleted.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setRemovedMember(payload.id, userId));
+      yield put(setRemovedMember(patient, payload.id));
     } catch (err) {
+      console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
     }

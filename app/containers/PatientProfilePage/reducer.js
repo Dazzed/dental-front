@@ -68,6 +68,7 @@ function patientProfilePageReducer(state = initialState, action) {
   let memberIdx;
   let reviewIdx;
   let reviews;
+  let alteredFamilyMember;
 
   switch (action.type) {
 
@@ -118,7 +119,11 @@ function patientProfilePageReducer(state = initialState, action) {
       return {
         ...state,
         editingActive: 'member',
-        editing: action.member,
+        onSubmitCb: action.callback,
+        editing: {
+          member: action.member,
+          patient: action.patient
+        },
       };
 
     case CLEAR_EDITING_MEMBER:
@@ -140,14 +145,25 @@ function patientProfilePageReducer(state = initialState, action) {
       };
 
     case EDIT_MEMBER_SUCCESS:
-      memberIdx = findIndex(state.familyMembers, { id: action.payload.id });
+      memberIdx = state.familyMembers.findIndex(m => m.id === action.payload.id);
+      alteredFamilyMember = state.familyMembers[memberIdx];
+      alteredFamilyMember.clientSubscription = action.payload.clientSubscription;
+      alteredFamilyMember.clientSubscription.status = 'active';
+
+      const newMembershipId = parseInt(action.payload.clientSubscription.membershipId);
+      const newMembership = state.dentist.memberships.find(m => m.id === newMembershipId);
+      alteredFamilyMember.membershipId = newMembershipId;
+      alteredFamilyMember.clientSubscription.membership = {
+        ...alteredFamilyMember.clientSubscription.membership,
+        ...newMembership
+      };
 
       return {
         ...state,
         familyMembers: [
           ...state.familyMembers.slice(0, memberIdx),
-          action.payload,
           ...state.familyMembers.slice(memberIdx + 1),
+          alteredFamilyMember,
         ],
         editingActive: false,
         editing: null,
@@ -158,14 +174,17 @@ function patientProfilePageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_MEMBER_SUCCESS:
-      memberIdx = findIndex(state.familyMembers, { id: action.memberId });
-
+      memberIdx = state.familyMembers.findIndex(m => m.id === action.memberId);
+      alteredFamilyMember = state.familyMembers[memberIdx];
+      alteredFamilyMember.clientSubscription.status = 'canceled';
+      
       return {
         ...state,
         familyMembers: [
           ...state.familyMembers.slice(0, memberIdx),
           ...state.familyMembers.slice(memberIdx + 1),
-        ],
+          alteredFamilyMember,
+        ]
       };
 
     /*
