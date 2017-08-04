@@ -260,9 +260,12 @@ class PatientProfilePage extends React.Component {
   ------------------------------------------------------------
   */
   // members
-  addMember = (user) => {
+  addMember = (patient) => {
     this.props.resetMemberForm();
-    this.props.setEditingMember(user);
+    patient.client = {};
+    patient.client.id = patient.id;
+    patient.client.email = patient.email;
+    this.props.setEditingMember(patient, null);
   }
 
   reEnrollMember = (patient, member, type) => {
@@ -606,7 +609,7 @@ class PatientProfilePage extends React.Component {
                     type="button"
                     styleName="button--full-width"
                     value="ADD MEMBER"
-                    onClick={this.addMember}
+                    onClick={this.addMember.bind(this, user)}
                   />
                 </div>
               </div>

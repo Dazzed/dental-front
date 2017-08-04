@@ -139,8 +139,10 @@ export function clearEditingMember() {
 }
 
 export function submitMemberForm(patient, payload) {
-  if (payload.clientSubscription && payload.clientSubscription.status !== 'active') {
-    payload.isEnrolling = true;
+  if (payload.clientSubscription) {
+    if (payload.clientSubscription.status !== 'active') {
+      payload.isEnrolling = true;
+    }
   } else {
     payload.isEnrolling = false;
   }
@@ -151,11 +153,11 @@ export function submitMemberForm(patient, payload) {
   };
 }
 
-export function setAddedMember(payload, userId) {
+export function setAddedMember(patient, payload) {
   return {
     type: ADD_MEMBER_SUCCESS,
+    patient,
     payload,
-    userId,
   };
 }
 

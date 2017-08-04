@@ -166,23 +166,23 @@ function* submitMemberFormWatcher() {
   }
 }
 
-function* submitAddMemberForm(payload, userId, user) {
+function* submitAddMemberForm (patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${userId}/members`;
-    let body = JSON.stringify({
-      parentMember: user,
+    const requestURL = `/api/v1/users/${patient.client.id}/members`;
+    const body = JSON.stringify({
+      parentMember: patient,
       member: payload
     });
     const params = {
       method: 'POST',
-      body,
+      body
     };
 
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been added.`;
     yield put(toastrActions.success('', message));
-    yield put(setAddedMember(response.data, userId));
 
+    yield put(setAddedMember(patient, response.data));
   } catch (err) {
     console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
