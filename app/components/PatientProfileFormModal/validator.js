@@ -18,6 +18,7 @@ Schema
 ------------------------------------------------------------
 */
 const schema = {
+  email: { presence: true, email: true },
   address: { presence: true },
   city: { presence: true },
   state: {

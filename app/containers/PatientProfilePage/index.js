@@ -62,9 +62,7 @@ import {
   // edit payment info
   setEditingPayment,
   clearEditingPayment,
-  submitPaymentForm,
-  // cancel membership,
-  cancelMembership
+  submitPaymentForm
 } from './actions';
 import {
   // fetch
@@ -154,9 +152,6 @@ function mapDispatchToProps(dispatch) {
     setEditingPayment: (paymentInfo) => dispatch(setEditingPayment(paymentInfo)),
     clearEditingPayment: () => dispatch(clearEditingPayment()),
     submitPaymentForm: (values, userId) => dispatch(submitPaymentForm(values, userId)),
-
-    // cancel membership
-    cancelMembership: () => dispatch(cancelMembership()),
   };
 }
 
@@ -317,22 +312,6 @@ class PatientProfilePage extends React.Component {
     this.props.resetReviewForm();
     this.props.setEditingReview({});
   }
-
-  cancelMembershipAction = () => {
-    this.props.cancelMembership();
-    this.handleCloseDialog();
-  };
-
-  cancelMembership = () => {
-    const dialog = {
-      message: 'Are you sure you want to cancel your membership',
-      showDialog: true,
-      title: 'Cancel Membership',
-      confirm: this.cancelMembershipAction
-    };
-
-    this.setState({ dialog });
-  };
 
   handleCloseDialog = () => {
     let dialog = this.state.dialog;
@@ -585,12 +564,6 @@ class PatientProfilePage extends React.Component {
                     styleName="button--full-width"
                     value="REVIEW DENTIST"
                     onClick={this.addReview}
-                  />
-                  <input
-                    type="button"
-                    styleName="button--full-width"
-                    value="CANCEL MEMBERSHIP"
-                    onClick={this.cancelMembership}
                   />
                 </div>
               </div>

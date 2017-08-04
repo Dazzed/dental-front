@@ -286,6 +286,7 @@ function* submitPatientProfileFormWatcher() {
       payload,
       'id',
       'firstName',
+      'email',
       'lastName',
       'clientSubscription',
       'sex',
