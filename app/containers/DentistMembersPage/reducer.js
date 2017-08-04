@@ -166,16 +166,20 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case ADD_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.client.id);
       prevStatePatient = state.patients[patientIdx];
-
+      let alteredPayload = action.payload;
+      alteredPayload.clientSubscription.status = 'active';
+      prevStatePatient.client.members.push(action.payload);
       newStatePatient = {
         ...prevStatePatient,
         members: [
           ...prevStatePatient.members,
-          action.payload,
+          alteredPayload,
         ],
       };
+
+      const newPatient = alteredPayload;
 
       return {
         ...state,
@@ -183,6 +187,7 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           newStatePatient,
           ...state.patients.slice(patientIdx + 1),
+          ...newPatient
         ],
         editingActive: false,
         editing: null,
