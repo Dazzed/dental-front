@@ -200,7 +200,7 @@ function* submitEditMemberForm(patient, payload) {
     if (payload.isEnrolling) {
       requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
     } else {
-      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId || payload.clientSubscription.id}`;
     }
     const params = {
       method: 'PUT',
