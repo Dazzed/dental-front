@@ -106,7 +106,6 @@ function* signupWatcher() {
     const stripeToken = yield call(makeStripeCreateTokenRequest, cardDetails);
 
     if (stripeToken !== false) {
-
       // NOTE: When making the subsequent checkout request, be sure to use the
       //       `userId` that was created on the server and included in the
       //       `signupResponse`.  Do not use `user.id`, since it is a locally
@@ -163,10 +162,10 @@ function* makeStripeCreateTokenRequest(cardDetails) {
     const token = yield call(createStripeToken, cardDetails);
     return token;
   } catch (err) {
-    console.log('Error in creating stripe token');
-    console.log(err);
+    // console.log('Error in creating stripe token');
+    // console.log(err);
 
-    yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    yield put(toastrActions.error('', err.message || 'Please Enter Valid Card details.'));
     yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
     yield put(stopSubmit('signupPatient', {}));
@@ -265,38 +264,6 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
 }
 
 function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
-  // const allowedFields = {
-  //   cancellationFeeWaiver: paymentInfo.feeWaiver,
-  //   periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
-  //   reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
-  //   termsAndConditions: paymentInfo.termsAndConditions,
-  // };
-  // // allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
-
-  // try {
-  //   const requestURL = `/api/v1/users/${userId}/account/payment/sources/${stripeToken}`;
-  //   const params = {
-  //     method: 'POST',
-  //     body: JSON.stringify(allowedFields),
-  //   };
-
-  //   const response = yield call(request, requestURL, params);
-  //   yield put(clearEditingCheckout());
-
-  //   return response;
-
-  // } catch (err) {
-  //   // Map from known response errors to their form field identifiers.
-  //   // In this case, Authorize.NET is the validator.
-  //   const formErrors = {
-  //     number: err.errors && err.errors.errorMessage
-  //   }
-
-  //   yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
-  //   yield put(stopSubmit('checkout', formErrors));
-  //   yield put(change('checkout', 'cardCode', null));
-  //   return false;
-  // }
   return true;
 }
 
@@ -317,7 +284,7 @@ function* subscribe(stripeToken, userId) {
       number: err.errors && err.errors.errorMessage
     }
 
-    yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
+    yield put(toastrActions.error('', 'There was an error processing the payment. Please try a different card.'));
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;
