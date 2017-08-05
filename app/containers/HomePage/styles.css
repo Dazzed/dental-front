@@ -173,6 +173,7 @@ Marketing Video / Modal
   width: 1000px;
 
   :global(.modal-header) {
+    /* NOTE: Has no content, just used to include the modal's .close button. */
     padding: 0 19px;
   }
 
@@ -349,7 +350,3 @@ Fourth Block
   }
 }
 
-.videoDiv {
-  width: 100%;
-  height: 100%;
-}
