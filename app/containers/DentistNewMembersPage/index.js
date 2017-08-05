@@ -554,6 +554,7 @@ class DentistNewMembersPage extends React.Component {
         <CheckoutFormModal
           show={editingPatientPayment !== null}
           onCancel={this.cancelPatientPaymentFormAction}
+          showWaiverCheckboxes={true}
 
           initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
           onSubmit={this.handlePatientPaymentFormSubmit}

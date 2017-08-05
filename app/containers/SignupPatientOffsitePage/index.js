@@ -752,6 +752,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
           show={editingCheckout !== null}
           dentist={dentist}
           onCancel={this.cancelCheckoutFormAction}
+          showWaiverCheckboxes={true}
+
 
           initialValues={editingCheckout}
           onSubmit={this.handleCheckoutFormSubmit}

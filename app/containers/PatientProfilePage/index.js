@@ -312,7 +312,7 @@ class PatientProfilePage extends React.Component {
 
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    
+
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -712,6 +712,7 @@ class PatientProfilePage extends React.Component {
         <CheckoutFormModal
           show={editingPayment !== null}
           onCancel={this.cancelPaymentFormAction}
+          showWaiverCheckboxes={false}
 
           initialValues={editingPayment}
           onSubmit={this.handlePaymentFormSubmit}
