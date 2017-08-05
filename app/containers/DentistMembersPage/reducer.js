@@ -201,11 +201,13 @@ function dentistMembersPageReducer(state = initialState, action) {
 
       if (memberIdx >= 0) {
         prevStatePatient.client.members[memberIdx].status = 'active';
+        prevStatePatient.client.members[memberIdx].clientSubscription.status = 'active';
         prevStatePatient.members = prevStatePatient.client.members;
         prevStatePatient.client.members[memberIdx].membershipId = action.payload.clientSubscription.membershipId;
       } else {
         prevStatePatient.status = 'active';
         prevStatePatient.client.status = 'active';
+        prevStatePatient.client.clientSubscription.status = 'active';
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
@@ -232,9 +234,11 @@ function dentistMembersPageReducer(state = initialState, action) {
       memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
       if (memberIdx >= 0) {
         prevStatePatient.client.members[memberIdx].status = 'canceled';
+        prevStatePatient.client.members[memberIdx].clientSubscription.status = 'canceled';
         prevStatePatient.members = prevStatePatient.client.members;
       } else {
         prevStatePatient.client.status = 'canceled';
+        prevStatePatient.client.clientSubscription.status = 'canceled';
         prevStatePatient.members = prevStatePatient.client.members;
       }
       newStatePatient = prevStatePatient;
