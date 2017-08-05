@@ -318,6 +318,13 @@ export default class MemberListEdit extends Component {
                 </div>
               </div>
             )}
+            <div key={Math.random()} className="row" styleName="member">
+              <div className="col-sm-6 col-md-6">
+                <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                  Monthly Memberships
+                </div>
+              </div>
+            </div>
             {memberRows}
           </div>
           {/*{subTotal &&

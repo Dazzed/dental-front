@@ -222,7 +222,7 @@ export default class FamilyMemberListEdit extends Component {
       .filter(m => m.clientSubscription)
       .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
 
-    // removes duplicate members in the members array. 
+    // removes duplicate members in the members array.
     members = members.reduce((acc, m) => {
       if (acc.map(t => t.id).includes(m.id)) {
         return acc;
@@ -304,6 +304,13 @@ export default class FamilyMemberListEdit extends Component {
                 </div>
               </div>
             )}
+            <div key={Math.random()} className="row" styleName="member">
+              <div className="col-sm-6 col-md-6">
+                <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                  Monthly Memberships
+                </div>
+              </div>
+            </div>
             {memberRows}
           </div>
           {/*{subTotal &&
