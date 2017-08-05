@@ -120,7 +120,7 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          <SearchForm />
+          {/*<SearchForm />*/}
 
           <div styleName="next-section-cover">
             <h3>
@@ -166,8 +166,9 @@ export default class HomePage extends React.Component {
                       controls
                       poster="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video-poster.png"
                       ref="video"
+                      style={{width: '100%', height: '100%'}}
                     >
-                      <source src="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video.mp4" type="video/mp4" />
+                      <source src="https://s3.amazonaws.com/dentalman_uploads/Dental%20HQ.mp4" type="video/mp4" />
                     </video>
                   </Modal.Body>
                 </Modal>

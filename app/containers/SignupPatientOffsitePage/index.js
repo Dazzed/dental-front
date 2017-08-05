@@ -27,7 +27,7 @@ import {
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
-import MembersList from 'components/MembersList';
+import MembersList from 'components/MembersList/checkout';
 import NavBar from 'components/NavBar';
 import PageHeader from 'components/PageHeader';
 import SignupPatientForm from 'components/SignupPatientForm';
