@@ -106,10 +106,19 @@ export default class FamilyMemberListEdit extends Component {
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
     const status = member.clientSubscription.status;
 
+    let statusStyle = 'member__detail'
+    if (status === 'active') {
+      statusStyle += ' status status--active';
+    } else if (status === 'past_due') {
+      statusStyle += ' status status--past-due';
+    } else if (status === 'inactive' || status === 'canceled') {
+      statusStyle += ' status status--inactive';
+    }
+
     return (
       <div key={id} className="row" styleName="member">
-        <div className="col-sm-2">
-          <div styleName="member__detail">
+        <div className="col-sm-2  status--active">
+          <div styleName={statusStyle}>
             {status}
           </div>
         </div>
