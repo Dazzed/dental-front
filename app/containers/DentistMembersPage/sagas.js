@@ -217,7 +217,6 @@ function* submitAddMemberForm(patient, payload) {
 function* submitEditMemberForm (patient, payload) {
   const dentistId = payload.dentistId;
   try {
-    // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
     let requestURL;
     if (payload.isEnrolling) {
       requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
@@ -254,7 +253,6 @@ function* removeMemberWatcher () {
     const { patient, payload, dentistId } = yield take(REMOVE_MEMBER_REQUEST);
 
     try {
-      // const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
       const requestURL = `/api/v1/dentists/${dentistId}/subscription/members/${payload.id}/plan`;
       const params = {
         method: 'DELETE',
