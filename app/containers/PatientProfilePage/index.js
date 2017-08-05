@@ -293,8 +293,7 @@ class PatientProfilePage extends React.Component {
 
   removeMember = (patient, member, dentistId) => {
     const dialog = {
-      message: <div>A cancellation fee might be charged by your dentist.
-        </div>,
+      message: <div>If canceling in less than 90 days, a $20 cancellation fee will apply.</div>,
       showDialog: true,
       title: 'Confirm Member Cancel',
       confirm: () => {
