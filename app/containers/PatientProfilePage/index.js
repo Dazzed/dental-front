@@ -561,7 +561,7 @@ class PatientProfilePage extends React.Component {
                   </p>
 
                   <p>
-                    <span styleName="text--inline-label">Payment Due Date:</span>
+                    <span styleName="text--inline-label">Last Payment Date:</span>
                     <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
                   </p>
                 </div>
