@@ -1,3 +1,5 @@
+// MembersList component which appears in the signup patient offsite page. (Dentist signs up primary account holder and his members)
+
 /*
 Members List Component
 ================================================================================
@@ -220,10 +222,10 @@ export default class MembersList extends React.Component {
             </div>
           </div>
           {memberRows}
-          {/*subTotal &&
+          {subTotal &&
             <div styleName="subtotal">
               <strong>Subtotal: </strong>${subTotal}
-          </div>*/}
+            </div>}
         </div>
       </div>
     );

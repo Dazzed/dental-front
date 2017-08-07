@@ -31,15 +31,18 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
       }, {}),
       */
 
-      adultYearlyFeeActivated: dentistInfo.membership.adultYearlyFeeActivated,
-      childYearlyFeeActivated: dentistInfo.childMembership.childYearlyFeeActivated,
+      adultMonthlyFee: dentistInfo.memberships.find(
+          sub => sub.type == 'month' && sub.subscription_age_group === 'adult' && sub.active),
+      childMonthlyFee: dentistInfo.memberships.find(
+          sub => sub.type == 'month' && sub.subscription_age_group === 'child' && sub.active),
+      adultYearlyFee: dentistInfo.memberships.find(
+          sub => sub.type == 'year' && sub.subscription_age_group === 'adult' && sub.active),
+      childYearlyFee: dentistInfo.memberships.find(
+          sub => sub.type == 'year' && sub.subscription_age_group === 'child' && sub.active),
 
-      adultMonthlyFee: dentistInfo.membership.monthly,
-      childMonthlyFee: dentistInfo.childMembership.monthly,
-      adultYearlyFee: dentistInfo.membership.yearly,
-      childYearlyFee: dentistInfo.childMembership.yearly,
-
-      treatmentDiscount: dentistInfo.membership.discount,
+      // TODO: Hardcoded to the first membership for now. Fix this field to
+      // distinguish between discounts.
+      treatmentDiscount: dentistInfo.memberships[0].discount,
     },
 
     marketplace: {
@@ -63,6 +66,9 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
     }, {}),
   };
 
+  if (initialValues.officeInfo.services) {
+    initialValues.officeInfo.services = initialValues.officeInfo.services.filter(service => service != null);
+  }
   return initialValues;
 };
 

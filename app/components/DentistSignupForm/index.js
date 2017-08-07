@@ -21,6 +21,7 @@ import {
   Field,
   FormSection,
   formValueSelector,
+  SubmissionError,
   reduxForm
 } from 'redux-form';
 
@@ -233,7 +234,7 @@ class DentistSignupForm extends React.Component {
 
     // redux form
     change: React.PropTypes.func.isRequired,
-    error: React.PropTypes.object,
+    error: React.PropTypes.oneOfType([React.PropTypes.object, React.PropTypes.string]),
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
   };
@@ -318,8 +319,20 @@ class DentistSignupForm extends React.Component {
       submitting
     } = this.props;
 
+    const validateSubmission = (data) => {
+      if (!data.services) {
+        throw new SubmissionError({
+          _error: 'Please specify at least 1 service offered.'
+        })
+      } else {
+        this.props.onSubmit(data);
+        return Promise.resolve();
+      }
+    };
+
+
     return (
-      <form onSubmit={handleSubmit} className="form-horizontal">
+      <form onSubmit={handleSubmit(validateSubmission)} className="form-horizontal">
 
         {/*
         User Info
@@ -410,7 +423,7 @@ class DentistSignupForm extends React.Component {
           </Row>
 
           <p styleName="field-instructions">
-            *Password must be at least 8 characters and include one (1) capital letter, one (1) number, and one (1) special character.
+            *Password must be at least 8 characters and include one (1) capital letter, one (1) number.
           </p>
 
           <hr styleName="spacer" />

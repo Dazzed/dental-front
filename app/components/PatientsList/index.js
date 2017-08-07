@@ -23,7 +23,7 @@ import {
   PREFERRED_CONTACT_METHODS_DENTIST_POV,
 } from 'common/constants';
 import Avatar from 'components/Avatar';
-import MembersList from 'components/MembersList';
+import MemberListEdit from 'components/MemberListEdit';
 
 // local
 import styles from './styles.css';
@@ -53,6 +53,7 @@ class PatientsList extends React.Component {
     onRemoveMember: React.PropTypes.func,
     onRenewMember: React.PropTypes.func,
     onUpdateMember: React.PropTypes.func,
+    dentist: React.PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -92,15 +93,15 @@ class PatientsList extends React.Component {
 
   onCancelationFeeClick = (patient) => {
     this.props.onToggleCancelationFee(patient, {
-      cancellationFee: !patient.cancellationFee,
-      reEnrollmentFee: patient.reEnrollmentFee,
+      cancellationFeeWaiver: !patient.client.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: patient.client.reEnrollmentFeeWaiver,
     });
   }
 
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient, {
-      cancellationFee: patient.cancellationFee,
-      reEnrollmentFee: !patient.reEnrollmentFee,
+      cancellationFeeWaiver: patient.client.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: !patient.client.reEnrollmentFeeWaiver,
     });
   }
 
@@ -130,10 +131,23 @@ class PatientsList extends React.Component {
       onRemoveMember,
       onRenewMember,
       onUpdateMember,
+      dentist,
     } = this.props;
 
-    console.log(patients, 'patients');
-    const patientRows = patients.map((patient) => {
+    const primaryMembers = patients
+      .filter(patient => { return !patient.client.addedBy })
+      .map(primaryMember => {
+        const activeMembers = primaryMember.client.members.filter(m => m.status === 'active');
+        let childMembers = activeMembers.length;
+        if (primaryMember.status === 'active') {
+          childMembers++;
+        }
+        return {
+          ...primaryMember,
+          childMemberCount: childMembers
+        };
+      });
+    const patientRows = primaryMembers.map((patient) => {
       const {
         client: { avatar,
         contactMethod,
@@ -150,42 +164,59 @@ class PatientsList extends React.Component {
         status,
         endAt,
         stripeSubscriptionId,
-        membership
+        membership,
+        childMemberCount,
       } = patient;
+
+      const activeFamilyMembers = members.filter(m => m.status === 'active');
+      let paymentDueAmount = activeFamilyMembers.reduce((acc, p) => {
+        if (p.membership.type === 'month') {
+          return acc += Number.parseFloat(p.membership.price);
+        } else {
+          return acc += 0;
+        }
+      },0);
+
+      if (status === 'active' && membership.type === 'monthly') {
+        paymentDueAmount += membership.monthlyPrice;
+      }
+
+      paymentDueAmount = paymentDueAmount.toFixed(2);
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
-      const summaryStatus = patient.client.members ? patient.client.members.reduce(
-        (summaryStatus, member) => {
-          if (summaryStatus === 'Active' || member.status === 'active') {
-            return 'Active';
-          }
+      const summaryStatus = status.toLowerCase();
+      // const summaryStatus = patient.client.members ? patient.client.members.reduce(
+      //   (summaryStatus, member) => {
+      //     if (summaryStatus === 'Active' || member.status === 'active') {
+      //       return 'Active';
+      //     }
 
-          if (summaryStatus === 'Late' || member.status === 'past_due') {
-            return 'Late';
-          }
+      //     if (summaryStatus === 'Late' || member.status === 'past_due') {
+      //       return 'Late';
+      //     }
 
-          if (summaryStatus === 'Inactive' || member.status === 'canceled') {
-            return 'Inactive';
-          }
+      //     if (summaryStatus === 'Inactive' || member.status === 'canceled') {
+      //       return 'Inactive';
+      //     }
 
-          // defaults to inactive
-          return 'Inactive';
-        },
-        'Inactive'
-      ) : patient.status;
+      //     // defaults to inactive
+      //     return 'Inactive';
+      //   },
+      //   'Inactive'
+      // ) : patient.status;
 
       let statusStyle = "status";
       switch (summaryStatus) {
-        case 'Active':
+        case 'active':
           statusStyle += ' status--active';
           break;
 
-        case 'Late':
+        case 'late':
           statusStyle += ' status--past-due';
           break;
 
-        case 'Inactive':
+        case 'inactive':
           statusStyle += ' status--inactive';
           break;
 
@@ -200,22 +231,20 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      const paymentDueDate = moment(membership.endAt).format('MMMM D, YYYY');
+      const paymentDueDate = moment(membership.endAt).add(1,'M').format('MMMM D, YYYY');
 
-      const paymentDueAmount = parseFloat(membership.total).toFixed(2);
 
-      const waiveCancellationFee = !patient.cancellationFee;
-      const waiveReEnrollmentFee = !patient.reEnrollmentFee;
+      const waiveCancellationFee = !patient.client.cancellationFeeWaiver;
+      const waiveReEnrollmentFee = !patient.client.reEnrollmentFeeWaiver;
 
       let additionalMembershipContent = null;
       if (getAdditionalMembershipContent) {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
 
-      const activeMembers = members.filter((member) => {
-
-        return member.membership && member.status === 'active' && member.membership.type === 'monthly';
-      });
+      // const activeMembers = patients.filter((member) => {
+      //   return member.membership && member.status === 'active';
+      // });
 
       return (
         <div key={id} styleName="patient-list__entry">
@@ -264,7 +293,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{activeMembers.length}</span>
+                    <span styleName="member-overview__info">{childMemberCount}</span>
                   </div>
                 </div>
 
@@ -312,9 +341,17 @@ class PatientsList extends React.Component {
                     ------------------------------------------------------------
                     */}
                     <div className="col-sm-9">
-                      <MembersList
+                      {/*<MembersList
                         patient={patient.client}
-
+                        dentist={dentist}
+                        onReEnrollMember={onReEnrollMember}
+                        onRemoveMember={onRemoveMember}
+                        onRenewMember={onRenewMember}
+                        onUpdateMember={onUpdateMember}
+                      />*/}
+                      <MemberListEdit
+                        patient={patient.client}
+                        dentist={dentist}
                         onReEnrollMember={onReEnrollMember}
                         onRemoveMember={onRemoveMember}
                         onRenewMember={onRenewMember}
@@ -350,6 +387,7 @@ class PatientsList extends React.Component {
                       ------------------------------------------------------------
                       */}
                       <div styleName="controls">
+                      {this.props.onAddMember && (
                         <p>
                           <input
                             type="button"
@@ -358,6 +396,7 @@ class PatientsList extends React.Component {
                             onClick={this.onAddClick.bind(this, patient)}
                           />
                         </p>
+                        )}
                         {this.props.onUpdatePatientProfile && (
                           <p>
                             <input

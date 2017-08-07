@@ -166,41 +166,50 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case ADD_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.client.id);
       prevStatePatient = state.patients[patientIdx];
-
+      let alteredPayload = action.payload;
+      alteredPayload.clientSubscription.status = 'active';
+      prevStatePatient.client.members.push(action.payload);
       newStatePatient = {
         ...prevStatePatient,
         members: [
           ...prevStatePatient.members,
-          action.payload,
+          alteredPayload,
         ],
       };
 
+      const newPatient = { ...alteredPayload, client: alteredPayload };
       return {
         ...state,
         patients: [
           ...state.patients.slice(0, patientIdx),
           newStatePatient,
           ...state.patients.slice(patientIdx + 1),
+          newPatient
         ],
         editingActive: false,
         editing: null,
       };
 
     case EDIT_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      const memberId = action.memberId || action.payload.id;
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = findIndex(prevStatePatient.members, { id: action.payload.id });
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === memberId);
 
-      newStatePatient = {
-        ...prevStatePatient,
-        members: [
-          ...prevStatePatient.members.slice(0, memberIdx),
-          action.payload,
-          ...prevStatePatient.members.slice(memberIdx + 1),
-        ],
-      };
+      if (memberIdx >= 0) {
+        prevStatePatient.client.members[memberIdx].status = 'active';
+        prevStatePatient.client.members[memberIdx].clientSubscription.status = 'active';
+        prevStatePatient.members = prevStatePatient.client.members;
+        prevStatePatient.client.members[memberIdx].membershipId = action.payload.clientSubscription.membershipId;
+      } else {
+        prevStatePatient.status = 'active';
+        prevStatePatient.client.status = 'active';
+        prevStatePatient.client.clientSubscription.status = 'active';
+        prevStatePatient.members = prevStatePatient.client.members;
+      }
+      newStatePatient = prevStatePatient;
 
       return {
         ...state,
@@ -218,17 +227,20 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case REMOVE_MEMBER_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(p => p.client.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      memberIdx = findIndex(prevStatePatient.members, { id: action.memberId });
 
-      newStatePatient = {
-        ...prevStatePatient,
-        members: [
-          ...prevStatePatient.members.slice(0, memberIdx),
-          ...prevStatePatient.members.slice(memberIdx + 1),
-        ],
-      };
+      memberIdx = prevStatePatient.client.members.findIndex(m => m.id === action.memberId);
+      if (memberIdx >= 0) {
+        prevStatePatient.client.members[memberIdx].status = 'canceled';
+        prevStatePatient.client.members[memberIdx].clientSubscription.status = 'canceled';
+        prevStatePatient.members = prevStatePatient.client.members;
+      } else {
+        prevStatePatient.client.status = 'canceled';
+        prevStatePatient.client.clientSubscription.status = 'canceled';
+        prevStatePatient.members = prevStatePatient.client.members;
+      }
+      newStatePatient = prevStatePatient;
 
       return {
         ...state,
@@ -258,7 +270,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_PATIENT_PROFILE_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.payload.id });
+      patientIdx = state.patients.findIndex(patient => patient.client.id === action.payload.id );
 
       // rebuild the updated patient's members list (and add them to the list)
       newStatePatient = {
@@ -269,13 +281,9 @@ function dentistMembersPageReducer(state = initialState, action) {
         ],
       };
 
+      state.patients[patientIdx].client = newStatePatient;
       return {
         ...state,
-        patients: [
-          ...state.patients.slice(0, patientIdx),
-          newStatePatient,
-          ...state.patients.slice(patientIdx + 1),
-        ],
         editingActive: false,
         editing: null,
       };
@@ -306,7 +314,8 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     case TOGGLE_WAIVE_PATIENT_FEES_SUCCESS:
-      patientIdx = findIndex(state.patients, { id: action.patient.id });
+      // patientIdx = findIndex(state.patients, { id: action.patient.id });
+      patientIdx = state.patients.findIndex(patient => patient.client.id === action.patient.client.id);
       prevStatePatient = state.patients[patientIdx];
 
       return {
@@ -315,8 +324,11 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           {
             ...prevStatePatient,
-            cancellationFee: action.payload.cancellationFee,
-            reEnrollmentFee: action.payload.reEnrollmentFee,
+            client: {
+              ...prevStatePatient.client,
+              cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
+              reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
+            }
           },
           ...state.patients.slice(patientIdx + 1),
         ],

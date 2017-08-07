@@ -60,9 +60,9 @@ import {
   TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
 
   // download report
-  DOWNLOAD_MASTER_REPORT_REQUEST,
-  DOWNLOAD_MASTER_REPORT_SUCCESS,
-  DOWNLOAD_MASTER_REPORT_ERROR,
+  DOWNLOAD_REPORT_REQUEST,
+  DOWNLOAD_REPORT_SUCCESS,
+  DOWNLOAD_REPORT_ERROR,
 
   // image upload
   UPLOAD_IMAGE_REQUEST,
@@ -206,6 +206,11 @@ export function clearEditingMember() {
 }
 
 export function submitMemberForm(patient, payload) {
+  if (payload.clientSubscription && payload.clientSubscription.status !== 'active') {
+    payload.isEnrolling = true;
+  } else {
+    payload.isEnrolling = false;
+  }
   return {
     type: SUBMIT_MEMBER_FORM,
     patient,
@@ -233,11 +238,12 @@ export function setEditedMember(patient, payload) {
 Remove Member
 ------------------------------------------------------------
 */
-export function setRemovingMember(patient, payload) {
+export function setRemovingMember(patient, payload, dentistId) {
   return {
     type: REMOVE_MEMBER_REQUEST,
     patient,
     payload,
+    dentistId
   };
 }
 
@@ -310,11 +316,12 @@ export function submitPatientPaymentForm(patient, payload) {
 Toggle Waive Patient Fees
 ------------------------------------------------------------
 */
-export function setTogglingWaivePatientFees(patient, payload) {
+export function setTogglingWaivePatientFees(patient, payload, toggleType) {
   return {
     type: TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
     patient,
     payload,
+    toggleType,
   };
 }
 
@@ -325,6 +332,7 @@ export function setToggledWaivePatientFees(patient, payload) {
     payload,
   }
 }
+
 
 /* Download Report
  * ------------------------------------------------------ */

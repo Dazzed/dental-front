@@ -27,7 +27,7 @@ import {
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
-import MembersList from 'components/MembersList';
+import MembersList from 'components/MembersList/checkout';
 import NavBar from 'components/NavBar';
 import PageHeader from 'components/PageHeader';
 import SignupPatientForm from 'components/SignupPatientForm';
@@ -471,26 +471,46 @@ export default class PatientOffsiteSignupPage extends React.Component {
     // };
 
     // NEW CODE
-    const { memberships } = dentist;
-
+    let { memberships } = dentist;
+    memberships = memberships.filter(m => m.active);
     const adultMembership = (() => {
-      let adultMonthly = memberships.find(m => m.name === 'default monthly membership');
+      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
       // let adultAnnual = memberships.find(m => m.name === 'default annual membership');
-      let savings = Number(adultMonthly.price) * 4;
-      return {
-        monthly: adultMonthly.price.replace('.00', ''),
-        savings: String(Math.floor(savings))
-      };
+      if (adultMonthly) {
+        let savings = Number(adultMonthly.price) * 4;
+        return {
+          monthly: adultMonthly.price.replace('.00', ''),
+          savings: String(Math.floor(savings))
+        };
+      } else {
+        return {
+          monthly: '',
+          savings: '',
+        };
+      }
     })();
+
+    const adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
+    const adultDiscount = adultMonthly.discount;
 
     const childMembership = (() => {
-      let childMonthly = memberships.find(m => m.name === 'default monthly child membership');
-      let savings = Number(childMonthly.price) * (36/7);
-      return {
-        monthly: childMonthly.price.replace('.00', ''),
-        savings: String(Math.floor(savings))
-      };
+      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
+      if (childMonthly) {
+        let savings = Number(childMonthly.price) * (36/7);
+        return {
+          monthly: childMonthly.price.replace('.00', ''),
+          savings: String(Math.floor(savings))
+        };
+      } else {
+          return {
+            monthly: '',
+            savings: '',
+          };
+      }
     })();
+
+    const childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
+    const childDiscount = childMonthly.discount;
 
     dentist.dentistInfo.membership = adultMembership;
     dentist.dentistInfo.childMembership = childMembership;
@@ -552,7 +572,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> 1-2 exams/year</li>
                   <li><FaCheck /> Xrays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with xray/year</li>
-                  <li><FaCheck /> 10% off any needed treatment</li>
+                  <li><FaCheck /> {adultDiscount}% off any needed treatment</li>
                 </ul>
 
                 <p styleName="membership__cost">
@@ -595,7 +615,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> Xrays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with xray/year</li>
                   <li><FaCheck /> 1 Fluoride treatment/year</li>
-                  <li><FaCheck /> 10% off any needed treatment</li>
+                  <li><FaCheck /> {childDiscount}% off any needed treatment</li>
                 </ul>
 
                 <p styleName="membership__cost">
@@ -732,6 +752,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
           show={editingCheckout !== null}
           dentist={dentist}
           onCancel={this.cancelCheckoutFormAction}
+          showWaiverCheckboxes={true}
+
 
           initialValues={editingCheckout}
           onSubmit={this.handleCheckoutFormSubmit}

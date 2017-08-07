@@ -65,16 +65,6 @@ const schema = {
     }
   },
 
-  periodontalDiseaseWaiver: {
-    presence: { message: '^You must agree to all waivers in order to create an account.' },
-  },
-  feeWaiver: {
-    presence: { message: '^You must agree to all waivers in order to create an account.' },
-  },
-  termsAndConditions: {
-    presence: { message: '^You must agree to the Terms and Conditions in order to create an account.' },
-  },
-
 };
 
 export default validatorFactory(schema);

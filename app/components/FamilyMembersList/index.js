@@ -18,7 +18,7 @@ import FaUser from 'react-icons/lib/fa/user';
 import {
   MEMBER_RELATIONSHIP_TYPES
 } from 'common/constants';
-import MembersList from 'components/MembersList';
+import FamilyMemberListEdit from 'components/FamilyMemberListEdit';
 
 // local
 import styles from './styles.css';
@@ -101,8 +101,8 @@ class FamilyMembersList extends React.Component {
 
       total: patient.members.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
-            aggregateTotal += parseFloat(member.subscription.monthly);
+          if (member.subscription && member.subscription.status === 'active' && member.subscription.costs.type === 'monthly') {
+            aggregateTotal += parseFloat(member.subscription.costs.monthlyPrice);
           }
           return aggregateTotal;
         },
@@ -137,7 +137,7 @@ class FamilyMembersList extends React.Component {
       statusStyle = 'status status--inactive';
     }
     aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
-    aggregateSubscription.dueDate = aggregateSubscription.dueDate.format("MMMM D, YYYY");
+    aggregateSubscription.dueDate = aggregateSubscription.dueDate.add(1,'month').format("MMMM D, YYYY");
 
     return (
       <div className="row">
@@ -147,9 +147,9 @@ class FamilyMembersList extends React.Component {
         ------------------------------------------------------------
         */}
         <div className="col-sm-9">
-          <MembersList
+          <FamilyMemberListEdit
             patient={patient}
-
+            dentist={this.props.dentist}
             onReEnrollMember={onReEnrollMember}
             onRemoveMember={onRemoveMember}
             onRenewMember={onRenewMember}

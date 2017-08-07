@@ -81,7 +81,7 @@ class PatientReviews extends React.Component {
               </div>
 
               <div className="col-sm-6" styleName="review__date">
-                Review Date: 
+                Review Date:
                 {' '}
                 <span styleName="review__info">{reviewDate}</span>
               </div>
@@ -111,7 +111,7 @@ class PatientReviews extends React.Component {
 
             {user.type === "dentist" && (
               <div styleName="review__controls">
-                <a href={`mailto:${reviewer.email}`}>
+                <a href={`mailto:${reviewer.client.email}`}>
                   <input
                     type="button"
                     styleName="button--wide"

@@ -177,23 +177,27 @@ Add / Edit Member
 */
 function* submitMemberFormWatcher () {
   while (true) {
-    const { patient, payload } = yield take(SUBMIT_MEMBER_FORM);
-
-    if (payload.id === undefined) {
-      yield submitAddMemberForm(patient, payload);
-    }
-    else {
-      yield submitEditMemberForm(patient, payload);
-    }
+    yield takeLatest(SUBMIT_MEMBER_FORM, function* handler ({ patient, payload }) {
+      if (payload.id === undefined) {
+        yield submitAddMemberForm(patient, payload);
+      }
+      else {
+        yield submitEditMemberForm(patient, payload);
+      }
+    });
   }
 }
 
 function* submitAddMemberForm(patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${patient.id}/members`;
+    const requestURL = `/api/v1/users/${patient.client.id}/members`;
+    let body = JSON.stringify({
+      parentMember: patient,
+      member: payload
+    });
     const params = {
       method: 'POST',
-      body: JSON.stringify(payload),
+      body
     };
 
     const response = yield call(request, requestURL, params);
@@ -201,8 +205,8 @@ function* submitAddMemberForm(patient, payload) {
     yield put(toastrActions.success('', message));
 
     yield put(setAddedMember(patient, response.data));
-
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
@@ -211,8 +215,14 @@ function* submitAddMemberForm(patient, payload) {
 }
 
 function* submitEditMemberForm (patient, payload) {
+  const dentistId = payload.dentistId;
   try {
-    const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+    let requestURL;
+    if (payload.isEnrolling) {
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
+    } else {
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+    }
     const params = {
       method: 'PUT',
       body: JSON.stringify(payload),
@@ -220,11 +230,13 @@ function* submitEditMemberForm (patient, payload) {
 
     const response = yield call(request, requestURL, params);
     const message = `'${payload.firstName} ${payload.lastName}' has been modified.`;
+
     yield put(toastrActions.success('', message));
 
-    yield put(setEditedMember(patient, response.data));
+    yield put(setEditedMember(patient, payload));
 
   } catch (err) {
+    console.log(err);
     const errors = mapValues(err.errors, (value) => value.msg);
 
     yield put(toastrActions.error('', 'Please fix errors on the form!'));
@@ -238,10 +250,10 @@ Remove Member
 */
 function* removeMemberWatcher () {
   while (true) {
-    const { patient, payload } = yield take(REMOVE_MEMBER_REQUEST);
+    const { patient, payload, dentistId } = yield take(REMOVE_MEMBER_REQUEST);
 
     try {
-      const requestURL = `/api/v1/users/${patient.id}/members/${payload.id}`;
+      const requestURL = `/api/v1/dentists/${dentistId}/subscription/members/${payload.id}/plan`;
       const params = {
         method: 'DELETE',
       };
@@ -254,6 +266,7 @@ function* removeMemberWatcher () {
 
       yield put(setRemovedMember(patient, payload.id));
     } catch (err) {
+      console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
       yield put(toastrActions.error('', errorMessage));
     }
@@ -270,6 +283,13 @@ function* submitPatientProfileFormWatcher() {
 
     const allowedFields = pick(
       payload,
+      'id',
+      'firstName',
+      'email',
+      'lastName',
+      'clientSubscription',
+      'sex',
+      'birthDate',
       'address',
       'city',
       'state',
@@ -279,17 +299,17 @@ function* submitPatientProfileFormWatcher() {
     );
 
     try {
-      // TODO: Need backend API endpoint setup.
-      // https://trello.com/c/SdL5DChA/104-dentist-update-patient-s-primary-contact-info
-      /*
-      const requestURL = `TODO`;
+
+      // For now: Only allowed to update the primary member account.
+      // Later: Support updating family members.
+      const requestURL = `/api/v1/users/${allowedFields.id}/members/${allowedFields.id}`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(allowedFields),
       };
 
       const response = yield call(request, requestURL, params);
-      */
+
       const message = `The patient's profile has been updated.`;
       yield put(toastrActions.success('', message));
 
@@ -361,10 +381,14 @@ Toggle Waive Patient Fees
 */
 function* toggleWaivePatientFeesWatcher () {
   while (true) {
-    const { patient, payload } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
-
+    const { patient, payload, toggleType } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
     try {
-      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/waive-fees`;
+      let requestURL;
+      if (toggleType === 'cancel') {
+        requestURL = `/api/v1/dentists/me/patients/${patient.client.id}/toggle-cancellation-waiver`;
+      } else {
+        requestURL = `/api/v1/dentists/me/patients/${patient.client.id}/toggle-reenrollment-waiver`;
+      }
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),
@@ -480,8 +504,8 @@ function* signupWatcher () {
 function* signup (data) {
   try {
     // send a post request with the desired user details
-    yield call(request, '/api/v1/dentists/' + data.user.id, {
-      method: 'PUT',
+    yield call(request, '/api/v1/dentists/edit/' + data.user.id, {
+      method: 'POST',
       body: JSON.stringify(data)
     });
     return true;
@@ -513,4 +537,3 @@ function* signup (data) {
     return false;
   }
 }
-

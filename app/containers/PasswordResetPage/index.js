@@ -30,7 +30,8 @@ Redux
 */
 function mapDispatchToProps(dispatch) {
   return {
-    onResetPassword: (data) => ( // handle async tasks with sagas
+    onResetPassword: (data) => (// handle async tasks with sagas
+
       new Promise((resolve, reject) => {
         dispatch(
           passwordResetRequest({
@@ -53,7 +54,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-
 /*
 Login
 ================================================================================
@@ -71,6 +71,12 @@ class PasswordResetPage extends Component {
     this.onResetPassword = this.props.onResetPassword.bind(this);
   }
 
+  handleSubmit = data => {
+    const { onResetPassword, params: { token } } = this.props;
+    data.token = token;
+    onResetPassword(data);
+  };
+
   render() {
     return (
       <div styleName="container-wrapper">
@@ -78,7 +84,7 @@ class PasswordResetPage extends Component {
         <div className="container">
           <div styleName="password-reset-wrapper">
             <div styleName="password-reset">
-              <PasswordResetForm token={this.props.location.query.token} onSubmit={this.onResetPassword} />
+              <PasswordResetForm token={this.props.params.token} onSubmit={this.handleSubmit} />
             </div>
           </div>
         </div>

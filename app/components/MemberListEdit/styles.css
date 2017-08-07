@@ -48,6 +48,14 @@ Members List
 Status
 ------------------------------------------------------------
 */
+
+.status {
+  color: $color-black;
+
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
 .status--signup {
   color: $color-default;
 
@@ -61,8 +69,7 @@ Status
 }
 
 .status--past-due {
-  /* TODO: choose a better yellow, see PatientsList css */
-  color: yellow;
+  color: #c5bf66;
 
   font-style: italic;
   text-align: center;

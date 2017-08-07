@@ -118,7 +118,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // app 
+    // app
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
     // fetch
@@ -137,7 +137,7 @@ function mapDispatchToProps(dispatch) {
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
-    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
+    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
 
     // edit patient profile
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -152,7 +152,7 @@ function mapDispatchToProps(dispatch) {
     submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
 
     // toggle waive patient fees
-    setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
+    setTogglingWaivePatientFees: (patient, updatedFees, toggleType) => dispatch(setTogglingWaivePatientFees(patient, updatedFees, toggleType)),
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
@@ -236,10 +236,15 @@ class DentistMembersPage extends React.Component {
     this.props.fetchPatients();
     this.props.fetchDentistReports();
     this.state = { dialog: {} };
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
 
   componentDidMount() {
     this.props.changePageTitle('Members');
+  }
+
+  handleCloseDialog() {
+    this.setState({ dialog: {} });
   }
 
   /*
@@ -251,13 +256,41 @@ class DentistMembersPage extends React.Component {
     this.props.setEditingMember(patient, null);
   }
 
-  reEnrollMember = (patient, member) => {
-    /* TODO, UNVERIFIED */
-    alert('TODO: re-enroll member');
-  }
+  reEnrollMember = (patient, member, type) => {
+    let { user: { memberships } } = this.props;
+    memberships = memberships.filter(m => m && m.active);
+    const enrollmentDiv = patient.reEnrollmentFee && <div>
+      <h3>Membership Fees</h3>
+      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
+    </div>;
 
-  removeMember = (patient, member) => {
-    this.props.setRemovingMember(patient, member);
+    const dialog = {
+      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+        {enrollmentDiv}</div>,
+      showDialog: true,
+      title: 'Re-enroll Member',
+      confirm: () => {
+        member.isEnrolling = true;
+        this.updateMember(patient, member);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
+  };
+
+  removeMember = (patient, member, dentistId) => {
+    const dialog = {
+      message: <div>If canceling in less than 90 days, a $20 cancellation fee will apply.</div>,
+      showDialog: true,
+      title: 'Confirm Member Cancel',
+      confirm: () => {
+        this.props.setRemovingMember(patient, member, dentistId);
+        this.handleCloseDialog();
+      }
+    };
+
+    this.setState({ dialog });
   }
 
   updateMemberConfirm = (patient, member, submit) => {
@@ -266,11 +299,11 @@ class DentistMembersPage extends React.Component {
   }
 
   toggleCancelationFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees);
+    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'cancel');
   }
 
   toggleReEnrollmentFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees);
+    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'reenroll');
   }
 
   confirmUpdateMember = (user, member, submit) => {
@@ -299,7 +332,6 @@ class DentistMembersPage extends React.Component {
     this.props.resetMemberForm();
     member.fromDentist = true;
 
-    console.log('can upate member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -463,20 +495,13 @@ class DentistMembersPage extends React.Component {
             </select>
           </div>
 
-          {/* TODO: onUpdateMember was removed so that the `update` action would
-              be hidden until the extra fields can be removed, and there are
-              multiple membership types for a dentist to choose from.
-
-              onUpdateMember={this.updateMember}
-
-              https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
-          */}
           <PatientsList
             patients={patients}
-
+            dentist={dentistInfo}
             onAddMember={this.addMember}
             onReEnrollMember={this.reEnrollMember}
             onRemoveMember={this.removeMember}
+            onUpdateMember={this.updateMember}
             onRenewMember={this.renewMember}
             onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
@@ -488,13 +513,14 @@ class DentistMembersPage extends React.Component {
         <CheckoutFormModal
           show={editingPatientPayment !== null}
           onCancel={this.cancelPatientPaymentFormAction}
+          showWaiverCheckboxes={true}
 
           initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
           onSubmit={this.handlePatientPaymentFormSubmit}
         />
 
         <MemberFormModal
-          dentist={dentistInfo}
+          dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
 
@@ -513,7 +539,7 @@ class DentistMembersPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

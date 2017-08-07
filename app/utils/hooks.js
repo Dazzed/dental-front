@@ -63,6 +63,12 @@ function redirectTo404 (store) {
   };
 }
 
+function logoutReducer(store) {
+  return (nextState, replace) => {
+    store.replaceReducer(createReducer({}));
+  };
+}
+
 /**
  * Helper for creating injectors
  */
@@ -73,5 +79,6 @@ export default function getHooks (store) {
     redirectToLogin: redirectToLogin(store),
     redirectToDashboard: redirectToDashboard(store),
     redirectTo404: redirectTo404(store),
+    logoutReducer: logoutReducer(store),
   };
 }

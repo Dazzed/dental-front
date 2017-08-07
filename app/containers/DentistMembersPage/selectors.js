@@ -45,7 +45,13 @@ Fetch
 */
 const selectDentistInfo = createSelector(
   domainSelector,
-  (substate) => substate.dentistInfo
+  (substate) => {
+    let { dentistInfo } = substate;
+    if (dentistInfo) {
+      dentistInfo.memberships = replaceDefaultToStandard(dentistInfo.memberships);
+    }
+    return dentistInfo
+  }
 );
 
 const dentistSpecialtiesSelector = createSelector(
@@ -93,9 +99,11 @@ const selectProcessedPatients = createSelector(
       patientA.members = patientA.members || [];
       patientB.members = patientB.members || [];
       const matchA = patientA.members.some((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
       const matchB = patientB.members.some((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
 
@@ -108,9 +116,11 @@ const selectProcessedPatients = createSelector(
 
       // one matches w/ every member, the other doesn't
       const matchAllA = patientA.members.every((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
       const matchAllB = patientB.members.every((member) => {
+        if (!member.subscription) return false;
         return member.subscription.status === sortStatus;
       });
 
@@ -210,3 +220,16 @@ export {
   selectEditingPatientProfile,
   selectEditingPatientPayment,
 };
+
+function replaceDefaultToStandard(memberships) {
+  if (memberships) {
+    return memberships.map(m => {
+      return {
+        ...m,
+        name: m.name.replace('default','standard')
+      };
+    });
+  } else {
+    return memberships;
+  }
+}

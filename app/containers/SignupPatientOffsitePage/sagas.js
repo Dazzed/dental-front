@@ -12,6 +12,7 @@ import get from 'lodash/get';
 import findIndex from 'lodash/findIndex';
 import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
+import _ from 'lodash';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { change, reset, stopSubmit } from 'redux-form';
@@ -105,27 +106,30 @@ function* signupWatcher() {
     const stripeToken = yield call(makeStripeCreateTokenRequest, cardDetails);
 
     if (stripeToken !== false) {
-
       // NOTE: When making the subsequent checkout request, be sure to use the
       //       `userId` that was created on the server and included in the
       //       `signupResponse`.  Do not use `user.id`, since it is a locally
       //       created temporary id only used / understood by the frontend.
-      const signupResponse = yield call(makeSignupRequest, user, paymentInfo);
+      const signupResponse = yield call(makeSignupRequest, user, paymentInfo, stripeToken);
 
       if (signupResponse !== false) {
         const realUserId = signupResponse.data[0].id;
         const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId, paymentInfo);
 
         if (checkoutResponse !== false) {
-          // ensure form values are erased
-          reset('signupPatient');
-          reset('familyMember');
-          reset('checkout');
+          const paymentSourceAndSubscribeResponse = yield call(subscribe, stripeToken, realUserId);
 
-          yield put(signupSuccess({
-            fullName: `${user.firstName} ${user.lastName}`,
-            loginEmail: user.email,
-          }));
+          if (paymentSourceAndSubscribeResponse !== false) {
+            // ensure form values are erased
+            reset('signupPatient');
+            reset('familyMember');
+            reset('checkout');
+
+            yield put(signupSuccess({
+              fullName: `${user.firstName} ${user.lastName}`,
+              loginEmail: user.email,
+            }));
+          }
         }
       }
     }
@@ -158,10 +162,10 @@ function* makeStripeCreateTokenRequest(cardDetails) {
     const token = yield call(createStripeToken, cardDetails);
     return token;
   } catch (err) {
-    console.log('Error in creating stripe token');
-    console.log(err);
+    // console.log('Error in creating stripe token');
+    // console.log(err);
 
-    yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    yield put(toastrActions.error('', err.message || 'Please Enter Valid Card details.'));
     yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
     yield put(stopSubmit('signupPatient', {}));
@@ -169,7 +173,7 @@ function* makeStripeCreateTokenRequest(cardDetails) {
   }
 }
 
-function* makeSignupRequest(user, paymentInfo) {
+function* makeSignupRequest(user, paymentInfo, stripeToken) {
   // NOTE: The user and each member have fake `id` fields to keep track of them
   //       while the user is filling out the form.  These need to be removed,
   //       but without messing up the existing objects in case they are still
@@ -199,6 +203,7 @@ function* makeSignupRequest(user, paymentInfo) {
     zipCode: paymentInfo.zip,
 
     members: cleanedMembers,
+    stripeToken
   };
 
   try {
@@ -212,24 +217,40 @@ function* makeSignupRequest(user, paymentInfo) {
     return response;
 
   } catch (err) {
-    const errors = mapValues(err.errors, (value) => value.msg);
-
-    // Map from known response errors to their form field identifiers.
-    // Currently, only server-side-only validation is included most of the
-    // validation is identical on the client and the server.  Thus a
-    // non-malicious user will have already checked the other possible error
-    // responses.
+    // const errors = mapValues(err.errors, (value) => value.msg);
+    // We get err.errors as array if 500 or err.errors as object if 400.
+    let errors;
+    if (_.isArray(err.errors)) {
+      errors = err.errors.reduce((acc, error) => {
+        return {
+          ...acc,
+          [error.path]: error.value
+        }
+      },{});
+    } else {
+      errors = mapValues(err.errors, (value) => value.msg);
+    }
     const formErrors = {};
 
     if (errors.email) {
-      formErrors.email = errors.email;
+      formErrors.user = {
+        email: errors.email
+      };
     }
 
+    if (errors.number) {
+      formErrors.user = {
+        number: errors.number
+      };
+    }
+    console.info(formErrors)
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
-    else if (Object.keys(formErrors).length === 1 && formErrors.email) {
-      yield put(toastrActions.error('', 'The email address ' + user.email + ' is already registered.  Please enter another email in Step 1.'));
+    else if (formErrors.user.email) {
+      yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
+    } else if (formErrors.user.number) {
+      yield put(toastrActions.error('', 'The entered phone number is already registered.  Please enter another phone number.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
@@ -243,24 +264,17 @@ function* makeSignupRequest(user, paymentInfo) {
 }
 
 function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
-  const allowedFields = {
-    cancellationFeeWaiver: paymentInfo.feeWaiver,
-    periodontalDiseaseWaiver: paymentInfo.periodontalDiseaseWaiver,
-    reEnrollmentFeeWaiver: paymentInfo.feeWaiver,
-    termsAndConditions: paymentInfo.termsAndConditions,
-  };
-  // allowedFields.card.address = `${paymentInfo.address}, ${paymentInfo.state}, ${paymentInfo.city}`;
+  return true;
+}
 
+function* subscribe(stripeToken, userId) {
   try {
-    const requestURL = `/api/v1/users/${userId}/account/payment/sources/${stripeToken}`;
+    const requestURL = `/api/v1/users/${userId}/account/payment/subscribe`;
     const params = {
       method: 'POST',
-      body: JSON.stringify(allowedFields),
     };
 
     const response = yield call(request, requestURL, params);
-    yield put(clearEditingCheckout());
-
     return response;
 
   } catch (err) {
@@ -270,7 +284,7 @@ function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
       number: err.errors && err.errors.errorMessage
     }
 
-    yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
+    yield put(toastrActions.error('', 'There was an error processing the payment. Please try a different card.'));
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;

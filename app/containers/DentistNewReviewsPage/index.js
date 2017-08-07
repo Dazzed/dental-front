@@ -489,33 +489,24 @@ class DentistNewReviewsPage extends React.Component {
           */}
           <PatientsList
             patients={recentReviewerPatients}
-
+            dentist={dentistInfo}
             getAdditionalMembershipContent={this.getRecentPatientReviews}
-
-            onAddMember={this.addMember}
-            onReEnrollMember={this.reEnrollMember}
-            onRemoveMember={this.removeMember}
-            onRenewMember={this.renewMember}
-            onToggleCancelationFee={this.toggleCancelationFee}
-            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-            onUpdatePatientProfile={this.updatePatientProfile}
-            onUpdatePatientPayment={this.updatePatientPaymentInfo}
           />
         </div>
 
         <CheckoutFormModal
           show={editingPatientPayment !== null}
           onCancel={this.cancelPatientPaymentFormAction}
+          showWaiverCheckboxes={true}
 
           initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
           onSubmit={this.handlePatientPaymentFormSubmit}
         />
 
         <MemberFormModal
-          dentist={dentist}
+          dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
-
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
         />
@@ -523,7 +514,7 @@ class DentistNewReviewsPage extends React.Component {
         <PatientProfileFormModal
           show={editingPatientProfile !== null}
           onCancel={this.cancelPatientProfileFormAction}
-
+          dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />

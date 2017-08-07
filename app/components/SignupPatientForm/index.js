@@ -183,8 +183,7 @@ class SignupForm extends React.Component {
     const {
       // passed in
       dentist: {
-        offices,
-        memberships
+        offices
       },
       formValues,
       // redux form
@@ -193,6 +192,13 @@ class SignupForm extends React.Component {
       submitting
     } = this.props;
 
+    let {
+      dentist: {
+        memberships
+      }
+    } = this.props;
+
+    memberships = memberships.filter(m => m.active);
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
 
@@ -325,7 +331,7 @@ class SignupForm extends React.Component {
 
           <div className="col-sm-12">
             <h5 styleName="field-instructions">
-              *Password must be at least 8 characters and include one (1) capital letter, one (1) number, and one (1) special character.
+              *Password must be at least 8 characters and include one (1) capital letter, one (1) number.
             </h5>
           </div>
         </Row>
@@ -387,7 +393,7 @@ class SignupForm extends React.Component {
                   <option>Membership Type</option>
                   {
                     memberships
-                      .filter(({ subscription_age_group: age }) => age === 'adult')
+                      .filter(m => m.subscription_age_group === 'adult' && m.active)
                       .map(membership =>
                         <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
                       )
