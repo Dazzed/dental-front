@@ -179,15 +179,14 @@ function dentistMembersPageReducer(state = initialState, action) {
         ],
       };
 
-      const newPatient = alteredPayload;
-
+      const newPatient = { ...alteredPayload, client: alteredPayload };
       return {
         ...state,
         patients: [
           ...state.patients.slice(0, patientIdx),
           newStatePatient,
           ...state.patients.slice(patientIdx + 1),
-          ...newPatient
+          newPatient
         ],
         editingActive: false,
         editing: null,

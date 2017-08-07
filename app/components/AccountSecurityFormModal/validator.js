@@ -21,7 +21,7 @@ const schema = {
   newPassword: {
     format: {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\$\/\*!]{8,}$/,
-      message: `^Password must be at least 8 characters and include one (1) special character and one (1) capital letter.`,
+      message: `^Password must be at least 8 characters and include one (1) capital letter.`,
     },
     equality: {
       attribute: "oldPassword",
