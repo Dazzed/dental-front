@@ -423,7 +423,7 @@ class DentistSignupForm extends React.Component {
           </Row>
 
           <p styleName="field-instructions">
-            *Password must be at least 8 characters and include one (1) capital letter, one (1) number, and one (1) special character.
+            *Password must be at least 8 characters and include one (1) capital letter, one (1) number.
           </p>
 
           <hr styleName="spacer" />

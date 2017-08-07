@@ -106,10 +106,19 @@ export default class FamilyMemberListEdit extends Component {
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
     const status = member.clientSubscription.status;
 
+    let statusStyle = 'member__detail'
+    if (status === 'active') {
+      statusStyle += ' status status--active';
+    } else if (status === 'past_due') {
+      statusStyle += ' status status--past-due';
+    } else if (status === 'inactive' || status === 'canceled') {
+      statusStyle += ' status status--inactive';
+    }
+
     return (
       <div key={id} className="row" styleName="member">
-        <div className="col-sm-2">
-          <div styleName="member__detail">
+        <div className="col-sm-2  status--active">
+          <div styleName={statusStyle}>
             {status}
           </div>
         </div>
@@ -222,7 +231,7 @@ export default class FamilyMemberListEdit extends Component {
       .filter(m => m.clientSubscription)
       .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
 
-    // removes duplicate members in the members array. 
+    // removes duplicate members in the members array.
     members = members.reduce((acc, m) => {
       if (acc.map(t => t.id).includes(m.id)) {
         return acc;
@@ -304,6 +313,13 @@ export default class FamilyMemberListEdit extends Component {
                 </div>
               </div>
             )}
+            <div key={Math.random()} className="row" styleName="member">
+              <div className="col-sm-6 col-md-6">
+                <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
+                  Monthly Memberships
+                </div>
+              </div>
+            </div>
             {memberRows}
           </div>
           {/*{subTotal &&

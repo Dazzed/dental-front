@@ -142,6 +142,8 @@ export function submitMemberForm(patient, payload) {
   if (payload.clientSubscription) {
     if (payload.clientSubscription.status !== 'active') {
       payload.isEnrolling = true;
+    } else {
+      payload.isEnrolling = false;
     }
   } else {
     payload.isEnrolling = false;

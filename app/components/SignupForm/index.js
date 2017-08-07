@@ -264,7 +264,7 @@ class SignupForm extends React.Component {
 
           <div className="col-sm-12">
             <h5 styleName="field-instructions">
-              *Password must be at least 8 characters and include one (1) special character and one (1) capital letter.
+              *Password must be at least 8 characters and include one (1) capital letter.
             </h5>
           </div>
         </Row>

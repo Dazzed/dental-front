@@ -293,8 +293,7 @@ class PatientProfilePage extends React.Component {
 
   removeMember = (patient, member, dentistId) => {
     const dialog = {
-      message: <div>A cancellation fee might be charged by your dentist.
-        </div>,
+      message: <div>If canceling in less than 90 days, a $20 cancellation fee will apply.</div>,
       showDialog: true,
       title: 'Confirm Member Cancel',
       confirm: () => {
@@ -312,7 +311,7 @@ class PatientProfilePage extends React.Component {
 
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    
+
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -561,7 +560,7 @@ class PatientProfilePage extends React.Component {
                   </p>
 
                   <p>
-                    <span styleName="text--inline-label">Payment Due Date:</span>
+                    <span styleName="text--inline-label">Last Payment Date:</span>
                     <span styleName="text--bold">{aggregateSubscription.dueDate}</span>
                   </p>
                 </div>
@@ -712,6 +711,7 @@ class PatientProfilePage extends React.Component {
         <CheckoutFormModal
           show={editingPayment !== null}
           onCancel={this.cancelPaymentFormAction}
+          showWaiverCheckboxes={false}
 
           initialValues={editingPayment}
           onSubmit={this.handlePaymentFormSubmit}
