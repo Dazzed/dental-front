@@ -40,6 +40,23 @@ const mapDispatchToProps = (dispatch) => ({
   submit: () => dispatch(submitForm('checkout')),
 });
 
+const periodontalDiseaseWaiverValidator = (value) => {
+  return value !== undefined
+    ? undefined // all good
+    : 'You must agree to all waivers in order to create an account.';
+};
+
+const feeWaiverValidator = (value) => {
+  return value !== undefined
+    ? undefined // all good
+    : 'You must agree to all waivers in order to create an account.';
+};
+
+const termsAndConditionsValidator = (value) => {
+  return value !== undefined
+    ? undefined // all good
+    : 'You must agree to the Terms and Conditions in order to create an account.';
+};
 
 /*
 Checkout Form Modal
@@ -68,6 +85,7 @@ export default class CheckoutFormModal extends React.Component {
     // modal related - passed in
     show: React.PropTypes.bool.isRequired,
     onCancel: React.PropTypes.func.isRequired,
+    showWaiverCheckboxes: React.PropTypes.bool,
   };
 
   getCheckbox(props) {
@@ -103,6 +121,7 @@ export default class CheckoutFormModal extends React.Component {
       show,
       stripe,
       onCancel,
+      showWaiverCheckboxes,
     } = this.props;
 
     const infoPopover = (
@@ -115,7 +134,7 @@ export default class CheckoutFormModal extends React.Component {
         Periodontal Disease is the inflammation and/or infection of the tissues around your teeth. Roughly 5-10% of the population requires additional treatment for this prior to their basic cleaning included with your membership.
       </Popover>
     );
-    
+
     return (
       <Modal
         backdrop={'static'}
@@ -258,11 +277,13 @@ export default class CheckoutFormModal extends React.Component {
 
             <hr styleName="spacer" />
 
+            {showWaiverCheckboxes && (
             <FormGroup>
               <div className="col-sm-12">
                 <Field
                   name="periodontalDiseaseWaiver"
                   component={this.getCheckbox}
+                  validate={[periodontalDiseaseWaiverValidator]}
                 >
                   I understand that if
                   {' '}
@@ -285,6 +306,7 @@ export default class CheckoutFormModal extends React.Component {
                 <Field
                   name="feeWaiver"
                   component={this.getCheckbox}
+                  validate={[feeWaiverValidator]}
                 >
                   I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
                 </Field>
@@ -294,11 +316,13 @@ export default class CheckoutFormModal extends React.Component {
                 <Field
                   name="termsAndConditions"
                   component={this.getCheckbox}
+                  validate={[termsAndConditionsValidator]}
                 >
                   I agree with the <a href="/terms" target="_blank">Terms and Conditions</a>.
                 </Field>
               </div>
             </FormGroup>
+          )}
 
           </form>
         </Modal.Body>

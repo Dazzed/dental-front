@@ -490,6 +490,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
       }
     })();
 
+    const adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
+    const adultDiscount = adultMonthly.discount;
+
     const childMembership = (() => {
       let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
       if (childMonthly) {
@@ -505,6 +508,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
           };
       }
     })();
+
+    const childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
+    const childDiscount = childMonthly.discount;
 
     dentist.dentistInfo.membership = adultMembership;
     dentist.dentistInfo.childMembership = childMembership;
@@ -566,7 +572,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> 1-2 exams/year</li>
                   <li><FaCheck /> Xrays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with xray/year</li>
-                  <li><FaCheck /> 10% off any needed treatment</li>
+                  <li><FaCheck /> {adultDiscount}% off any needed treatment</li>
                 </ul>
 
                 <p styleName="membership__cost">
@@ -609,7 +615,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> Xrays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with xray/year</li>
                   <li><FaCheck /> 1 Fluoride treatment/year</li>
-                  <li><FaCheck /> 10% off any needed treatment</li>
+                  <li><FaCheck /> {childDiscount}% off any needed treatment</li>
                 </ul>
 
                 <p styleName="membership__cost">
@@ -746,6 +752,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
           show={editingCheckout !== null}
           dentist={dentist}
           onCancel={this.cancelCheckoutFormAction}
+          showWaiverCheckboxes={true}
+
 
           initialValues={editingCheckout}
           onSubmit={this.handleCheckoutFormSubmit}
