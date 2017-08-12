@@ -206,6 +206,8 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     stripeToken
   };
 
+  user.membershipId = isNaN(Number(user.membershipId)) ? null : user.membershipId;
+
   try {
     const requestURL = '/api/v1/accounts/signup';
     const params = {

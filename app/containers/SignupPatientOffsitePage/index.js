@@ -312,32 +312,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   handleCheckoutFormSubmit = (paymentInfo) => {
-    //     const { user, dentist, toastError } = this.props;
-    //     const { number, expiry, cvc, fullName, zip: address_zip } = paymentInfo;
-    //     console.log(paymentInfo, 'card element');
-    //     const expiry_ = expiry.split('/');
-    //     Stripe.createToken({
-    //       number,
-    //       name: fullName,
-    //       exp_month: expiry_[0],
-    //       exp_year: expiry_[1],
-    //       cvc,
-    //       address_zip
-    //     }, (status, response) => {
-    //       console.log(response);
-    //       if (!response.error) {
-    //         // delete paymentInfo.number;
-    //         // delete paymentInfo.cvc;
-    //         // delete paymentInfo.expiry;
-    //         paymentInfo.stripeToken = response.id;
-    //         console.log(paymentInfo);
-    //         this.props.makeSignupRequest(user, paymentInfo, dentist);
-    //       } else {
-    //         toastError(`Error generating card token, please double check your credit card data. Status — ${status}`);
-    //       }
-    //     })
-    //   };
-
     this.props.createStripeToken({
       number: paymentInfo.number,
       name: paymentInfo.fullName,

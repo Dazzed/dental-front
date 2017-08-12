@@ -38,7 +38,11 @@ export function calculateSubtotal (users, dentistMemberships) {
   }, {});
   try {
     const subTotal = users.reduce((acc, u) => {
-      return acc += Number(normalizedDentistMemberships[u.membershipId].price);
+      if (normalizedDentistMemberships[u.membershipId]) {
+        return acc += Number(normalizedDentistMemberships[u.membershipId].price);
+      } else {
+        return acc;
+      }
     }, 0);
     return String(subTotal);
   } catch (e) {
