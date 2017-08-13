@@ -265,7 +265,7 @@ class DentistMembersPage extends React.Component {
     </div>;
 
     const dialog = {
-      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
+      message: <div>If you are re-enrolling from a monthly membership into a monthly membership a $99 fee plus your membership payment will apply. Do you wish to continue?
         {enrollmentDiv}</div>,
       showDialog: true,
       title: 'Re-enroll Member',

@@ -286,7 +286,7 @@ function* subscribe(stripeToken, userId) {
       number: err.errors && err.errors.errorMessage
     }
 
-    yield put(toastrActions.error('', 'There was an error processing the payment. Please try a different card.'));
+    yield put(toastrActions.error('', 'There was a problem with your payment details, please correct them and proceed.'));
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;

@@ -78,7 +78,7 @@ class LoginForm extends React.Component {
 
         <FormGroup className="has-error">
           <Col sm={12}>
-            {error && <HelpBlock>{error}</HelpBlock>}
+            {error && <HelpBlock>Invalid Email / Password, please try again.</HelpBlock>}
           </Col>
         </FormGroup>
         <div className="clearfix"></div>
