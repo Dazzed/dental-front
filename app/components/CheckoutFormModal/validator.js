@@ -18,11 +18,12 @@ Schema
 ------------------------------------------------------------
 */
 const schema = {
+  // VISA | MASTERCARD | AMEX
   number: {
     presence: true,
     format: {
-      pattern: /^\d{4,4} \d{4,4} \d{4,4} \d{4,4}$/,
-      message: '^Please enter a valid 13-16 digit credit card number.',
+      pattern: /^\d{4,4} \d{4,4} \d{4,4} \d{4,4}$|^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$|^3[47][0-9]{13}$/,
+      message: '^Please enter a valid credit card number.',
     },
   },
   cvc: {
