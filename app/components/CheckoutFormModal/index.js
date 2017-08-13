@@ -180,6 +180,7 @@ export default class CheckoutFormModal extends React.Component {
               <MembersList
                 dentist={dentist}
                 patient={user}
+                canRemove={false}
               />
 
               <hr styleName="spacer--members-list" />
@@ -207,8 +208,8 @@ export default class CheckoutFormModal extends React.Component {
               >
                 <option value="">Select Card Type</option>
                 {
-                  ["VISA","Mastercard","American Express"].map(type => {
-                    return <option value={type}>{type}</option>
+                  ["VISA","Mastercard","American Express"].map((type,i) => {
+                    return <option key={i} value={type}>{type}</option>
                   })
                 }
               </Field>

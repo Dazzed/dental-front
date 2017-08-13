@@ -665,6 +665,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     dentist={dentist}
                     onRemoveMember={this.removeMember}
                     onUpdateMember={this.updateMember}
+                    canRemove={true}
                   />
 
                   <div className="text-center">

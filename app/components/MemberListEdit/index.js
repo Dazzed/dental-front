@@ -195,6 +195,17 @@ export default class MemberListEdit extends Component {
                 )
               }
 
+              {this.props.onReEnrollMember
+                && status === "inactive"
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value="RE-ENROLL"
+                    onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
+                  />
+                )
+              }
               {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
               {/*
               {    this.props.onRenewMember
