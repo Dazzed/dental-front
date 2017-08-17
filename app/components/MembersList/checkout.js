@@ -91,7 +91,7 @@ export default class MembersList extends React.Component {
   Member Render
   ------------------------------------------------------------
   */
-  renderMember(patient, member, showControlCol, membershipPlans) {
+  renderMember(patient, member, showControlCol, membershipPlans, canRemove) {
     const {
       avatar,
       birthDate,
@@ -152,6 +152,19 @@ export default class MembersList extends React.Component {
             ${amount}
           </div>
         </div>
+        {
+          canRemove &&
+            <div className="col-sm-1">
+              <div styleName="member__detail">
+                <input
+                    type="button"
+                    styleName="button--small"
+                    value="X"
+                    onClick={() =>this.onRemoveClick(patient, member)}
+                  />
+              </div>
+            </div>
+        }
       </div>
     );
   }
@@ -168,6 +181,7 @@ export default class MembersList extends React.Component {
       onRenewMember,
       onUpdateMember,
       onRemoveMember,
+      canRemove
     } = this.props;
 
     if (!dentist) {
@@ -186,7 +200,7 @@ export default class MembersList extends React.Component {
     const memberRows = [];
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
+      memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships, canRemove));
     }
 
 

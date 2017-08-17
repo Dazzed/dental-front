@@ -21,7 +21,11 @@ export function removeDuplicates(array, key) {
   returns: amount <String>
 */
 export function pluckMembershipfee (user, dentistMemberships) {
-  const { membershipId } = user;
+  let { membershipId } = user;
+  if (!membershipId) {
+    if (user.subscription)
+      membershipId = user.subscription.membershipId;
+  }
   const membership = dentistMemberships.find(m => String(m.id) === String(membershipId));
   if (membership) {
     return membership.price;
@@ -38,7 +42,11 @@ export function calculateSubtotal (users, dentistMemberships) {
   }, {});
   try {
     const subTotal = users.reduce((acc, u) => {
-      return acc += Number(normalizedDentistMemberships[u.membershipId].price);
+      if (normalizedDentistMemberships[u.membershipId]) {
+        return acc += Number(normalizedDentistMemberships[u.membershipId].price);
+      } else {
+        return acc;
+      }
     }, 0);
     return String(subTotal);
   } catch (e) {
