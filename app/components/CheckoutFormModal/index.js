@@ -71,6 +71,14 @@ Checkout Form Modal
 @CSSModules(styles)
 export default class CheckoutFormModal extends React.Component {
 
+  
+  componentWillMount() {
+    this.state = {
+      card_type: null
+    };
+  }
+  
+
   static propTypes = {
     // settings - passed in
     listMembers: React.PropTypes.bool,
@@ -135,6 +143,16 @@ export default class CheckoutFormModal extends React.Component {
       </Popover>
     );
 
+    let maskChar;
+    if (this.state.card_type === "VISA") {
+      maskChar = "9999 9999 9999 9999";
+    }
+    else if (this.state.card_type === "Mastercard") {
+      maskChar = "9999999999999999";
+    } else if (this.state.card_type === "American Express") {
+      maskChar = "999999999999999";
+    }
+    
     return (
       <Modal
         backdrop={'static'}
@@ -162,6 +180,7 @@ export default class CheckoutFormModal extends React.Component {
               <MembersList
                 dentist={dentist}
                 patient={user}
+                canRemove={false}
               />
 
               <hr styleName="spacer--members-list" />
@@ -180,150 +199,169 @@ export default class CheckoutFormModal extends React.Component {
             <div id="card-element"></div>
             <Row>
               <Field
-                name="number"
-                type="text"
-                component={this.getLabeledInput}
-                label="Card Number"
-                mask="9999 9999 9999 9999"
-                id="card_number"
-                maskChar=" "
-                placeholder=""
-                className="col-sm-8"
-              />
-
-              <Field
-                name="cvc"
-                type="text"
-                component={this.getLabeledInput}
-                label="CVV2"
-                placeholder=""
-                className="col-sm-4"
-              />
-            </Row>
-
-            <Row>
-              <Field
-                name="fullName"
-                type="text"
-                component={this.getLabeledInput}
-                label="Name On Card"
-                placeholder=""
-                className="col-sm-8"
-              />
-
-              <Field
-                name="expiry"
-                type="text"
-                mask="99/99"
-                maskChar=" "
-                component={this.getLabeledInput}
-                label="Expiration Month / Year"
-                placeholder="MM/YY"
-                className="col-sm-4"
-              />
-            </Row>
-
-            <hr styleName="spacer" />
-
-            <Row>
-              <Field
-                name="address"
-                type="text"
-                component={this.getLabeledInput}
-                label="Billing Address"
-                placeholder=""
-                className="col-sm-12"
-              />
-            </Row>
-
-            <Row>
-              <Field
-                name="city"
-                type="text"
-                component={this.getLabeledInput}
-                label="City"
-                placeholder=""
-                className="col-sm-4"
-              />
-
-              <Field
-                name="state"
+                name="card_type"
                 type="select"
                 component={this.getLabeledInput}
-                label="State"
+                label="Card Type"
                 className="col-sm-4"
+                onChange={(evt) => {this.props.reset();this.setState({card_type: evt.target.value})}}
               >
-                <option value="">Select state</option>
-                {US_STATES &&
-                  Object.keys(US_STATES).map(key => (
-                    <option value={key} key={key}>
-                      {US_STATES[key]}
-                    </option>
-                  ))
+                <option value="">Select Card Type</option>
+                {
+                  ["VISA","Mastercard","American Express"].map((type,i) => {
+                    return <option key={i} value={type}>{type}</option>
+                  })
                 }
               </Field>
-
-              <Field
-                name="zip"
-                type="text"
-                mask="99999"
-                maskChar=" "
-                component={this.getLabeledInput}
-                label="Zip Code"
-                placeholder=""
-                className="col-sm-4"
-              />
             </Row>
+            { this.state.card_type &&
+              <div className="sub-payment-details-container">
+                <Row>
+                  <Field
+                    name="number"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="Card Number"
+                    id="card_number"
+                    mask={maskChar}
+                    placeholder=""
+                    className="col-sm-8"
+                  />
+                
+                  <Field
+                    name="cvc"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="CVV2"
+                    placeholder=""
+                    className="col-sm-4"
+                  />
+                </Row>
 
-            <hr styleName="spacer" />
+                <Row>
+                  <Field
+                    name="fullName"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="Name On Card"
+                    placeholder=""
+                    className="col-sm-8"
+                  />
 
-            {showWaiverCheckboxes && (
-            <FormGroup>
-              <div className="col-sm-12">
-                <Field
-                  name="periodontalDiseaseWaiver"
-                  component={this.getCheckbox}
-                  validate={[periodontalDiseaseWaiverValidator]}
-                >
-                  I understand that if
-                  {' '}
-                  <strong>Periodontal Disease</strong>
-                  {' '}
-                  <OverlayTrigger
-                    overlay={infoPopover}
-                    placement="bottom"
-                    rootClose
-                    trigger={['click', 'focus', 'hover']}
+                  <Field
+                    name="expiry"
+                    type="text"
+                    mask="99/99"
+                    maskChar=" "
+                    component={this.getLabeledInput}
+                    label="Expiration Month / Year"
+                    placeholder="MM/YY"
+                    className="col-sm-4"
+                  />
+                </Row>
+
+                <hr styleName="spacer" />
+
+                <Row>
+                  <Field
+                    name="address"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="Billing Address"
+                    placeholder=""
+                    className="col-sm-12"
+                  />
+                </Row>
+
+                <Row>
+                  <Field
+                    name="city"
+                    type="text"
+                    component={this.getLabeledInput}
+                    label="City"
+                    placeholder=""
+                    className="col-sm-4"
+                  />
+
+                  <Field
+                    name="state"
+                    type="select"
+                    component={this.getLabeledInput}
+                    label="State"
+                    className="col-sm-4"
                   >
-                    <span styleName="info-trigger">(?)</span>
-                  </OverlayTrigger>
-                  {' '}
-                  is present additional treatment may be necessary prior to my cleaning.
-                </Field>
-              </div>
+                    <option value="">Select state</option>
+                    {US_STATES &&
+                      Object.keys(US_STATES).map(key => (
+                        <option value={key} key={key}>
+                          {US_STATES[key]}
+                        </option>
+                      ))
+                    }
+                  </Field>
 
-              <div className="col-sm-12">
-                <Field
-                  name="feeWaiver"
-                  component={this.getCheckbox}
-                  validate={[feeWaiverValidator]}
-                >
-                  I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
-                </Field>
-              </div>
+                  <Field
+                    name="zip"
+                    type="text"
+                    mask="99999"
+                    maskChar=" "
+                    component={this.getLabeledInput}
+                    label="Zip Code"
+                    placeholder=""
+                    className="col-sm-4"
+                  />
+                </Row>
 
-              <div className="col-sm-12">
-                <Field
-                  name="termsAndConditions"
-                  component={this.getCheckbox}
-                  validate={[termsAndConditionsValidator]}
-                >
-                  I agree with the <a href="/terms" target="_blank">Terms and Conditions</a>.
-                </Field>
-              </div>
-            </FormGroup>
-          )}
+                <hr styleName="spacer" />
 
+                {showWaiverCheckboxes && (
+                <FormGroup>
+                  <div className="col-sm-12">
+                    <Field
+                      name="periodontalDiseaseWaiver"
+                      component={this.getCheckbox}
+                      validate={[periodontalDiseaseWaiverValidator]}
+                    >
+                      I understand that if
+                      {' '}
+                      <strong>Periodontal Disease</strong>
+                      {' '}
+                      <OverlayTrigger
+                        overlay={infoPopover}
+                        placement="bottom"
+                        rootClose
+                        trigger={['click', 'focus', 'hover']}
+                      >
+                        <span styleName="info-trigger">(?)</span>
+                      </OverlayTrigger>
+                      {' '}
+                      is present additional treatment may be necessary prior to my cleaning.
+                    </Field>
+                  </div>
+
+                  <div className="col-sm-12">
+                    <Field
+                      name="feeWaiver"
+                      component={this.getCheckbox}
+                      validate={[feeWaiverValidator]}
+                    >
+                      I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
+                    </Field>
+                  </div>
+
+                  <div className="col-sm-12">
+                    <Field
+                      name="termsAndConditions"
+                      component={this.getCheckbox}
+                      validate={[termsAndConditionsValidator]}
+                    >
+                      I agree with the <a href="/terms" target="_blank">Terms and Conditions</a>.
+                    </Field>
+                  </div>
+                </FormGroup>
+              )}
+              </div>
+            }
           </form>
         </Modal.Body>
 
@@ -331,17 +369,19 @@ export default class CheckoutFormModal extends React.Component {
         Modal Footer
         ------------------------------------------------------------
         */}
-        <Modal.Footer>
-          <div className="modal-controls">
-            <input
-              type="button"
-              className="modal-control"
-              disabled={submitting}
-              onClick={submit}
-              value="SUBMIT"
-            />
-          </div>
-        </Modal.Footer>
+        { this.state.card_type &&
+          <Modal.Footer>
+            <div className="modal-controls">
+              <input
+                type="button"
+                className="modal-control"
+                disabled={submitting}
+                onClick={submit}
+                value="SUBMIT"
+              />
+            </div>
+          </Modal.Footer>
+        }
       </Modal>
     );
   }
