@@ -10,7 +10,15 @@ function selectGlobal (state) {
 
 const selectCurrentUser = createSelector(
   selectGlobal,
-  (substate) => get(substate, 'currentUser')
+  (substate) => {
+    let currentUser = get(substate, 'currentUser')
+    if (currentUser) {
+      if (currentUser.memberships) {
+        currentUser.memberships = replaceDefaultToStandard(currentUser.memberships);
+      }
+    }
+    return currentUser;
+  }
 );
 
 const selectUserType = createSelector(
@@ -79,3 +87,16 @@ export {
   selectPageTitle,
   selectServices,
 };
+
+function replaceDefaultToStandard(memberships) {
+  if (memberships) {
+    return memberships.map(m => {
+      return {
+        ...m,
+        name: m.name.replace('default','standard')
+      };
+    });
+  } else {
+    return memberships;
+  }
+}

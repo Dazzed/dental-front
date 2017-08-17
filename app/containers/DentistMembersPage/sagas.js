@@ -190,7 +190,7 @@ function* submitMemberFormWatcher () {
 
 function* submitAddMemberForm(patient, payload) {
   try {
-    const requestURL = `/api/v1/users/${patient.client.id}/members`;
+    const requestURL = `/api/v1/users/${patient.id}/members`;
     let body = JSON.stringify({
       parentMember: patient,
       member: payload
@@ -219,9 +219,9 @@ function* submitEditMemberForm (patient, payload) {
   try {
     let requestURL;
     if (payload.isEnrolling) {
-      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.clientSubscription.membershipId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.id}/re-enroll?membershipId=${payload.membershipId}`;
     } else {
-      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.clientSubscription.membershipId}/user/${payload.id}?subscriptionId=${payload.subscriptionId}`;
+      requestURL = `/api/v1/dentists/${dentistId}/subscription/plan/${payload.membershipId}/user/${payload.id}?subscriptionId=${payload.subscription.id}`;
     }
     const params = {
       method: 'PUT',
