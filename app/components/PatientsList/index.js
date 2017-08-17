@@ -134,22 +134,9 @@ class PatientsList extends React.Component {
       dentist,
     } = this.props;
 
-    const primaryMembers = patients
-      .filter(patient => { return !patient.client.addedBy })
-      .map(primaryMember => {
-        const activeMembers = primaryMember.client.members.filter(m => m.status === 'active');
-        let childMembers = activeMembers.length;
-        if (primaryMember.status === 'active') {
-          childMembers++;
-        }
-        return {
-          ...primaryMember,
-          childMemberCount: childMembers
-        };
-      });
-    const patientRows = primaryMembers.map((patient) => {
+    const patientRows = patients.map((patient) => {
       const {
-        client: { avatar,
+        avatar,
         contactMethod,
         createdAt,
         email,
@@ -159,25 +146,21 @@ class PatientsList extends React.Component {
         members,
         origin,
         phone,
-        type },
+        type,
         subscription,
-        status,
-        endAt,
-        stripeSubscriptionId,
         membership,
-        childMemberCount,
       } = patient;
 
-      const activeFamilyMembers = members.filter(m => m.status === 'active');
+      const activeFamilyMembers = members.filter(m => m.subscription.status === 'active');
       let paymentDueAmount = activeFamilyMembers.reduce((acc, p) => {
-        if (p.membership.type === 'month') {
-          return acc += Number.parseFloat(p.membership.price);
+        if (p.subscription.membership.type === 'month') {
+          return acc += Number.parseFloat(p.subscription.membership.price);
         } else {
           return acc += 0;
         }
       },0);
 
-      if (status === 'active' && membership.type === 'monthly') {
+      if (subscription.status === 'active' && subscription.membership.type === 'monthly') {
         paymentDueAmount += membership.monthlyPrice;
       }
 
@@ -185,26 +168,7 @@ class PatientsList extends React.Component {
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
-      const summaryStatus = status.toLowerCase();
-      // const summaryStatus = patient.client.members ? patient.client.members.reduce(
-      //   (summaryStatus, member) => {
-      //     if (summaryStatus === 'Active' || member.status === 'active') {
-      //       return 'Active';
-      //     }
-
-      //     if (summaryStatus === 'Late' || member.status === 'past_due') {
-      //       return 'Late';
-      //     }
-
-      //     if (summaryStatus === 'Inactive' || member.status === 'canceled') {
-      //       return 'Inactive';
-      //     }
-
-      //     // defaults to inactive
-      //     return 'Inactive';
-      //   },
-      //   'Inactive'
-      // ) : patient.status;
+      const summaryStatus = subscription.status.toLowerCase();
 
       let statusStyle = "status";
       switch (summaryStatus) {
@@ -231,21 +195,16 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      const paymentDueDate = moment(membership.endAt).add(1,'M').format('MMMM D, YYYY');
+      const paymentDueDate = moment(subscription.membership.endAt).add(1,'M').format('MMMM D, YYYY');
 
 
-      const waiveCancellationFee = !patient.client.cancellationFeeWaiver;
-      const waiveReEnrollmentFee = !patient.client.reEnrollmentFeeWaiver;
+      const waiveCancellationFee = !patient.cancellationFeeWaiver;
+      const waiveReEnrollmentFee = !patient.reEnrollmentFeeWaiver;
 
       let additionalMembershipContent = null;
       if (getAdditionalMembershipContent) {
         additionalMembershipContent = getAdditionalMembershipContent(patient);
       }
-
-      // const activeMembers = patients.filter((member) => {
-      //   return member.membership && member.status === 'active';
-      // });
-
       return (
         <div key={id} styleName="patient-list__entry">
           <div className="row">
@@ -293,7 +252,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{childMemberCount}</span>
+                    <span styleName="member-overview__info">{patient.members.length}</span>
                   </div>
                 </div>
 
@@ -341,16 +300,8 @@ class PatientsList extends React.Component {
                     ------------------------------------------------------------
                     */}
                     <div className="col-sm-9">
-                      {/*<MembersList
-                        patient={patient.client}
-                        dentist={dentist}
-                        onReEnrollMember={onReEnrollMember}
-                        onRemoveMember={onRemoveMember}
-                        onRenewMember={onRenewMember}
-                        onUpdateMember={onUpdateMember}
-                      />*/}
                       <MemberListEdit
-                        patient={patient.client}
+                        patient={patient}
                         dentist={dentist}
                         onReEnrollMember={onReEnrollMember}
                         onRemoveMember={onRemoveMember}

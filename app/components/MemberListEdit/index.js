@@ -102,8 +102,8 @@ export default class MemberListEdit extends Component {
 
     amount = pluckMembershipfee(member, membershipPlans);
 
-    const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
-    const status = member.status;
+    const membership = member.subscription ? member.subscription.membership : {};
+    const status = member.subscription.status;
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -262,15 +262,16 @@ export default class MemberListEdit extends Component {
       || onUpdateMember
       || onRemoveMember;
 
-    patient.membershipId = patient.clientSubscription.membershipId;
+    patient.membershipId = patient.subscription.membershipId;
     const members = [patient, ...patient.members]
-      .filter(m => m.clientSubscription)
-      .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
+      .filter(m => m.subscription)
+      .sort(m => m.subscription.membership.type == 'year' ? 1 : -1);
+
     const memberRows = [];
     let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      if (member.clientSubscription.membership.type == 'year' && !annualSeparated) {
+      if (member.subscription.membership.type == 'year' && !annualSeparated) {
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
@@ -283,13 +284,13 @@ export default class MemberListEdit extends Component {
         );
       }
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
-      if (member.clientSubscription.membership.type == 'year') {
+      if (member.subscription.membership.type == 'year') {
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
               <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
-                Expires At: {moment(member.clientSubscription.membership.createdAt).add(1,'year').format('MMMM D, YYYY')}
+                Expires At: {moment(member.subscription.stripeSubscriptionIdUpdatedAt).add(1,'year').format('MMMM D, YYYY')}
               </div>
             </div>
           </div>
