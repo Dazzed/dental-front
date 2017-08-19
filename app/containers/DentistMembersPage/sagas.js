@@ -385,9 +385,9 @@ function* toggleWaivePatientFeesWatcher () {
     try {
       let requestURL;
       if (toggleType === 'cancel') {
-        requestURL = `/api/v1/dentists/me/patients/${patient.client.id}/toggle-cancellation-waiver`;
+        requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-cancellation-waiver`;
       } else {
-        requestURL = `/api/v1/dentists/me/patients/${patient.client.id}/toggle-reenrollment-waiver`;
+        requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-reenrollment-waiver`;
       }
       const params = {
         method: 'PUT',

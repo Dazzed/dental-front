@@ -292,8 +292,14 @@ class PatientProfilePage extends React.Component {
   };
 
   removeMember = (patient, member, dentistId) => {
+    let message;
+    if (member.clientSubscription.membership.type == 'month') {
+      message = "We're sorry you have decided to cancel your membership. If you are cancelling prior to 3 payment a $20 cancellation fee will apply. Also should you chose to re-enroll into a monthly membership a $99 re-enrollment fee will apply. Are you sure you wish to proceed?";
+    } else {
+      message = "Were sorry you have decided to cancel your membership, your membership will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
+    }
     const dialog = {
-      message: <div>If canceling in less than 90 days, a $20 cancellation fee will apply.</div>,
+      message: <div>{message}</div>,
       showDialog: true,
       title: 'Confirm Member Cancel',
       confirm: () => {

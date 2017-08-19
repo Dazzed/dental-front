@@ -103,7 +103,7 @@ export default class MemberListEdit extends Component {
     amount = pluckMembershipfee(member, membershipPlans);
 
     const membership = member.subscription ? member.subscription.membership : {};
-    const status = member.subscription.status;
+    let status = member.subscription.status;
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -111,6 +111,9 @@ export default class MemberListEdit extends Component {
     } else if (status === 'past_due') {
       statusStyle += ' status status--past-due';
     } else if (status === 'inactive' || status === 'canceled') {
+      statusStyle += ' status status--inactive';
+    } else if (status === 'cancellation_requested') {
+      status = 'Cancellation Requested';
       statusStyle += ' status status--inactive';
     }
 
@@ -160,6 +163,7 @@ export default class MemberListEdit extends Component {
               */}
               {this.props.onUpdateMember
                 && (status === "active")
+                && membership.type === 'month'
                 && (
                   <input
                     type="button"
@@ -181,6 +185,43 @@ export default class MemberListEdit extends Component {
                     onClick={this.onRemoveClick.bind(this, patient, member, membership.userId)}
                   />
                 )
+              }
+
+              {
+                status === "active"
+                  && membership.type === 'year'
+                  && status === 'active'
+                  && moment(member.subscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
+                  && (
+                    <div>
+                      <input
+                        type="button"
+                        styleName="button--small"
+                        value="UPDATE"
+                        onClick={this.onUpdateClick.bind(this, patient, member)}
+                      />
+                      <input
+                        type="button"
+                        styleName="button--small"
+                        value="X"
+                        onClick={this.onRemoveClick.bind(this, patient, member, membership.userId)}
+                      />
+                    </div>
+                  )
+              }
+
+              {
+                membership.type === 'month'
+                  && status === 'Cancellation Requested'
+                  && (
+                    <input 
+                      type="button"
+                      styleName="button--small"
+                      style={{fontSize: '10px'}}
+                      value={`Expires ${moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY')}`}
+                      disabled
+                    />
+                  )
               }
 
               {this.props.onReEnrollMember
@@ -206,33 +247,6 @@ export default class MemberListEdit extends Component {
                   />
                 )
               }
-              {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-              {/*
-              {    this.props.onRenewMember
-                && !subscription.monthly
-                && subscription.status === "active"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RENEW"
-                    onCLick={this.onRenewClick.bind(this, patient, member)}
-                  />
-                )
-              }
-
-              {    this.props.onReEnrollMember
-                && subscription.status === "inactive"
-                && (
-                  <input
-                    type="button"
-                    styleName="button--small"
-                    value="RE-ENROLL"
-                    onClick={this.onReEnrollClick.bind(this, patient, member)}
-                  />
-                )
-              }
-              */}
             </div>
           )}
         </div>

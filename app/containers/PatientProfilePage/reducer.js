@@ -176,7 +176,7 @@ function patientProfilePageReducer(state = initialState, action) {
     case REMOVE_MEMBER_SUCCESS:
       memberIdx = state.familyMembers.findIndex(m => m.id === action.memberId);
       alteredFamilyMember = state.familyMembers[memberIdx];
-      alteredFamilyMember.clientSubscription.status = 'canceled';
+      alteredFamilyMember.clientSubscription.status = 'cancellation_requested';
       
       return {
         ...state,

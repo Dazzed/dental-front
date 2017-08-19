@@ -475,11 +475,6 @@ function* submitPaymentFormWatcher() {
         'cvc',
         'zip',
       ),
-
-      cancellationFeeWaiver: payload.feeWaiver,
-      periodontalDiseaseWaiver: payload.periodontalDiseaseWaiver,
-      reEnrollmentFeeWaiver: payload.feeWaiver,
-      termsAndConditions: payload.termsAndConditions,
     };
     allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
 
