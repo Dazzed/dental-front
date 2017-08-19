@@ -119,6 +119,7 @@ function* dentistInfoFetcher () {
   yield* takeLatest(FETCH_DENTIST_INFO_REQUEST, function* handler() {
     try {
       const response = yield call(request, '/api/v1/users/me/dentist-info')
+      Stripe.setPublishableKey(response.stripe_public_key || 'pk_test_6pRNASCoBOKtIshFeQd4XMUh');
       yield put(fetchDentistInfoSuccess(response.data));
     }
     catch (error) {
@@ -330,44 +331,27 @@ function* submitPatientPaymentFormWatcher () {
   while (true) {
     const { patient, payload, } = yield take(SUBMIT_PATIENT_PAYMENT_FORM);
 
-    const allowedFields = {
-      card: pick(
-        payload,
-        'fullName',
-        'number',
-        'expiry',
-        'cvc',
-        'zip',
-      ),
-
-      cancellationFeeWaiver: payload.feeWaiver,
-      periodontalDiseaseWaiver: payload.periodontalDiseaseWaiver,
-      reEnrollmentFeeWaiver: payload.feeWaiver,
-      termsAndConditions: payload.termsAndConditions,
-    };
-    allowedFields.card.address = `${payload.address}, ${payload.state}, ${payload.city}`;
-
     try {
-      const requestURL = `/api/v1/dentists/me/patients/${patient.id}/update-card`;
-      const params = {
-        method: 'PUT',
-        body: JSON.stringify(allowedFields),
-      };
+      const stripeToken = yield call(makeStripeCreateTokenRequest, payload);
+      if (stripeToken) {
+        const requestURL = `/api/v1/users/${patient.id}/account/payment/sources/${stripeToken}/`;
+        const params = {
+          method: 'POST',
+          body: JSON.stringify({ token: stripeToken }),
+        };
 
-      const response = yield call(request, requestURL, params);
-      const message = `The patient's payment information has been updated.`;
-      yield put(toastrActions.success('', message));
+        const response = yield call(request, requestURL, params);
+        const message = `Your account payment information has been updated.`;
+        yield put(toastrActions.success('', message));
 
-      yield put(clearEditingPatientPayment());
-
+        yield put(clearEditingPatientPayment());
+      }
     } catch (err) {
-      // Map from known response errors to their form field identifiers.
-      // In this case, Authorize.NET is the validator.
       const formErrors = {
         number: err.errors && err.errors.errorMessage
-      }
+      };
 
-      yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it in Step 3!'));
+      yield put(toastrActions.error('', 'There was an issue with your payment information.  Please correct it!'));
       yield put(stopSubmit('checkout', formErrors));
       yield put(change('checkout', 'cardCode', null));
       return false;
@@ -534,6 +518,44 @@ function* signup (data) {
     }
 
     yield put(stopSubmit('dentist-edit-profile', formErrors));
+    return false;
+  }
+}
+
+function createStripeToken(cardDetails) {
+  let stripe_obj = {
+    name: cardDetails.name,
+    number: cardDetails.number,
+    cvc: cardDetails.cvc,
+    exp_month: cardDetails.expiry.split('/')[0],
+    exp_year: cardDetails.expiry.split('/')[1]
+  };
+  return new Promise((resolve, reject) => {
+    Stripe.card.createToken({
+      ...stripe_obj
+    }, (status, response) => {
+      if (response.error) {
+        reject(response.error);
+      } else {
+        resolve(response.id);
+      }
+    })
+  });
+}
+
+function* makeStripeCreateTokenRequest(cardDetails) {
+  try {
+    const token = yield call(createStripeToken, cardDetails);
+    return token;
+  } catch (err) {
+    // console.log('Error in creating stripe token');
+    // console.log(err);
+    const formErrors = {
+      number: err.errors && err.errors.errorMessage
+    }
+    yield put(toastrActions.error('', err.message || 'Please Enter Valid Card details.'));
+    yield put(stopSubmit('checkout', formErrors));
+    yield put(change('checkout', 'cardCode', null));
     return false;
   }
 }

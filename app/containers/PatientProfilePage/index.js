@@ -348,9 +348,9 @@ class PatientProfilePage extends React.Component {
   }
 
   // payments
-  updatePaymentInfo = () => {
+  updatePaymentInfo = (user) => {
     this.props.resetPaymentForm();
-    this.props.setEditingPayment({});
+    this.props.setEditingPayment(user);
   }
 
   /*
@@ -411,7 +411,7 @@ class PatientProfilePage extends React.Component {
 
   // payment
   handlePaymentFormSubmit = (values) => {
-    this.props.submitPaymentForm(values, this.props.dentist.id, this.props.user.id);
+    this.props.submitPaymentForm(values, this.props.user);
   }
 
   cancelPaymentFormAction = () => {
@@ -671,7 +671,7 @@ class PatientProfilePage extends React.Component {
                 <p>
                   <span styleName="text--label">Payment Info:</span>
 
-                  <span styleName="personal-info__change-link" onClick={this.updatePaymentInfo}>
+                  <span styleName="personal-info__change-link" onClick={() => this.updatePaymentInfo(user)}>
                     Update Payment Method
                   </span>
                 </p>

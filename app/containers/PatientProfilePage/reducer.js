@@ -304,7 +304,7 @@ function patientProfilePageReducer(state = initialState, action) {
       return {
         ...state,
         editingActive: 'payment',
-        editing: action.paymentInfo,
+        editing: action.user,
       };
 
     case CLEAR_EDITING_PAYMENT:
