@@ -215,11 +215,11 @@ function dentistMembersPageReducer(state = initialState, action) {
       prevStatePatient = state.patients[patientIdx];
       // If we are cancelling Primary account holder.
       if (prevStatePatient.id === action.memberId) {
-        prevStatePatient.subscription.status = 'canceled';
+        prevStatePatient.subscription.status = 'cancellation_requested';
       } else {
         memberIdx = prevStatePatient.members.findIndex(m => m.id === action.memberId);
         member = prevStatePatient.members[memberIdx];
-        prevStatePatient.members[memberIdx].subscription.status = 'canceled';
+        prevStatePatient.members[memberIdx].subscription.status = 'cancellation_requested';
       }
       newStatePatient = prevStatePatient;
       return {
@@ -250,7 +250,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case EDIT_PATIENT_PROFILE_SUCCESS:
-      patientIdx = state.patients.findIndex(patient => patient.client.id === action.payload.id);
+      patientIdx = state.patients.findIndex(patient => patient.id === action.payload.id);
 
       // rebuild the updated patient's members list (and add them to the list)
       newStatePatient = {
@@ -261,7 +261,7 @@ function dentistMembersPageReducer(state = initialState, action) {
         ],
       };
 
-      state.patients[patientIdx].client = newStatePatient;
+      state.patients[patientIdx] = newStatePatient;
       return {
         ...state,
         editingActive: false,
@@ -295,7 +295,7 @@ function dentistMembersPageReducer(state = initialState, action) {
     */
     case TOGGLE_WAIVE_PATIENT_FEES_SUCCESS:
       // patientIdx = findIndex(state.patients, { id: action.patient.id });
-      patientIdx = state.patients.findIndex(patient => patient.client.id === action.patient.client.id);
+      patientIdx = state.patients.findIndex(patient => patient.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
 
       return {
@@ -304,15 +304,12 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           {
             ...prevStatePatient,
-          client: {
-              ...prevStatePatient.client,
-          cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
-          reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
-            }
-  },
+            cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
+            reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
+          },
           ...state.patients.slice(patientIdx + 1),
         ],
-};
+      };
 
     /*
     Default Reducer

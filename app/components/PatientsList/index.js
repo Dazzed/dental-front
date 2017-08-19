@@ -93,15 +93,15 @@ class PatientsList extends React.Component {
 
   onCancelationFeeClick = (patient) => {
     this.props.onToggleCancelationFee(patient, {
-      cancellationFeeWaiver: !patient.client.cancellationFeeWaiver,
-      reEnrollmentFeeWaiver: patient.client.reEnrollmentFeeWaiver,
+      cancellationFeeWaiver: !patient.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: patient.reEnrollmentFeeWaiver,
     });
   }
 
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient, {
-      cancellationFeeWaiver: patient.client.cancellationFeeWaiver,
-      reEnrollmentFeeWaiver: !patient.client.reEnrollmentFeeWaiver,
+      cancellationFeeWaiver: patient.cancellationFeeWaiver,
+      reEnrollmentFeeWaiver: !patient.reEnrollmentFeeWaiver,
     });
   }
 
@@ -195,7 +195,12 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      const paymentDueDate = moment(subscription.membership.endAt).add(1,'M').format('MMMM D, YYYY');
+      let paymentDueDate;
+      if (patient.recurring_payment_date) {
+        paymentDueDate = moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY');
+      } else {
+        paymentDueDate = 'N/A';
+      }
 
 
       const waiveCancellationFee = !patient.cancellationFeeWaiver;

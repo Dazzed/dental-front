@@ -309,10 +309,10 @@ export function submitSecurityForm(payload, user) {
 
 /* Edit Payment Info
  * ------------------------------------------------------ */
-export function setEditingPayment(paymentInfo) {
+export function setEditingPayment(user) {
   return {
     type: SET_EDITING_PAYMENT,
-    paymentInfo,
+    user
   };
 }
 
@@ -322,12 +322,11 @@ export function clearEditingPayment() {
   };
 }
 
-export function submitPaymentForm(payload, dentistId, userId) {
+export function submitPaymentForm(payload, user) {
   return {
     type: SUBMIT_PAYMENT_FORM,
     payload,
-    dentistId,
-    userId,
+    user,
   };
 }
 
