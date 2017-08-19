@@ -292,8 +292,14 @@ class PatientProfilePage extends React.Component {
   };
 
   removeMember = (patient, member, dentistId) => {
+    let message;
+    if (member.clientSubscription.membership.type == 'month') {
+      message = "We're sorry you have decided to cancel your membership. If you are cancelling prior to 3 payment a $20 cancellation fee will apply. Also should you chose to re-enroll into a monthly membership a $99 re-enrollment fee will apply. Are you sure you wish to proceed?";
+    } else {
+      message = "Were sorry you have decided to cancel your membership, your membership will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
+    }
     const dialog = {
-      message: <div>If canceling in less than 90 days, a $20 cancellation fee will apply.</div>,
+      message: <div>{message}</div>,
       showDialog: true,
       title: 'Confirm Member Cancel',
       confirm: () => {
@@ -342,9 +348,9 @@ class PatientProfilePage extends React.Component {
   }
 
   // payments
-  updatePaymentInfo = () => {
+  updatePaymentInfo = (user) => {
     this.props.resetPaymentForm();
-    this.props.setEditingPayment({});
+    this.props.setEditingPayment(user);
   }
 
   /*
@@ -405,7 +411,7 @@ class PatientProfilePage extends React.Component {
 
   // payment
   handlePaymentFormSubmit = (values) => {
-    this.props.submitPaymentForm(values, this.props.dentist.id, this.props.user.id);
+    this.props.submitPaymentForm(values, this.props.user);
   }
 
   cancelPaymentFormAction = () => {
@@ -665,7 +671,7 @@ class PatientProfilePage extends React.Component {
                 <p>
                   <span styleName="text--label">Payment Info:</span>
 
-                  <span styleName="personal-info__change-link" onClick={this.updatePaymentInfo}>
+                  <span styleName="personal-info__change-link" onClick={() => this.updatePaymentInfo(user)}>
                     Update Payment Method
                   </span>
                 </p>
