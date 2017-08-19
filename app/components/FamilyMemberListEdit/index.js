@@ -104,7 +104,7 @@ export default class FamilyMemberListEdit extends Component {
     amount = pluckMembershipfee(member, membershipPlans);
 
     const membership = member.clientSubscription ? member.clientSubscription.membership : member.membership;
-    const status = member.clientSubscription.status;
+    let status = member.clientSubscription.status;
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -112,6 +112,9 @@ export default class FamilyMemberListEdit extends Component {
     } else if (status === 'past_due') {
       statusStyle += ' status status--past-due';
     } else if (status === 'inactive' || status === 'canceled') {
+      statusStyle += ' status status--inactive';
+    } else if (status === 'cancellation_requested') {
+      status = 'Cancellation Requested';
       statusStyle += ' status status--inactive';
     }
 
@@ -161,6 +164,7 @@ export default class FamilyMemberListEdit extends Component {
               */}
               {this.props.onUpdateMember
                 && (status === "active")
+                && membership.type === 'month'
                 && (
                   <input
                     type="button"
@@ -194,6 +198,43 @@ export default class FamilyMemberListEdit extends Component {
                     onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )
+              }
+
+              {
+                status === "active"
+                  && membership.type === 'year'
+                  && status === 'active'
+                  && moment(member.subscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
+                  && (
+                    <div>
+                      <input
+                        type="button"
+                        styleName="button--small"
+                        value="UPDATE"
+                        onClick={this.onUpdateClick.bind(this, patient, member)}
+                      />
+                      <input
+                        type="button"
+                        styleName="button--small"
+                        value="X"
+                        onClick={this.onRemoveClick.bind(this, patient, member, membership.userId)}
+                      />
+                    </div>
+                  )
+              }
+
+              {
+                membership.type === 'month'
+                  && status === 'Cancellation Requested'
+                  && (
+                    <input 
+                      type="button"
+                      styleName="button--small"
+                      style={{fontSize: '10px'}}
+                      value={`Expires less than a month`}
+                      disabled
+                    />
+                  )
               }
             </div>
           )}

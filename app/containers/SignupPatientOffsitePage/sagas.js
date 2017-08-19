@@ -280,8 +280,6 @@ function* subscribe(stripeToken, userId) {
     return response;
 
   } catch (err) {
-    // Map from known response errors to their form field identifiers.
-    // In this case, Authorize.NET is the validator.
     const formErrors = {
       number: err.errors && err.errors.errorMessage
     }

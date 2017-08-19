@@ -176,7 +176,7 @@ function patientProfilePageReducer(state = initialState, action) {
     case REMOVE_MEMBER_SUCCESS:
       memberIdx = state.familyMembers.findIndex(m => m.id === action.memberId);
       alteredFamilyMember = state.familyMembers[memberIdx];
-      alteredFamilyMember.clientSubscription.status = 'canceled';
+      alteredFamilyMember.clientSubscription.status = 'cancellation_requested';
       
       return {
         ...state,
@@ -304,7 +304,7 @@ function patientProfilePageReducer(state = initialState, action) {
       return {
         ...state,
         editingActive: 'payment',
-        editing: action.paymentInfo,
+        editing: action.user,
       };
 
     case CLEAR_EDITING_PAYMENT:
