@@ -160,6 +160,11 @@ class PatientsList extends React.Component {
         }
       },0);
 
+      paymentDueAmount += subscription.status === 'active' ? Number.parseFloat(subscription.membership.price) : 0;
+
+      let activeFamilyMembersCount = activeFamilyMembers.length;
+      activeFamilyMembersCount += (subscription.status === 'active' || subscription.status == 'cancellation_requested') ? 1 : 0;
+
       if (subscription.status === 'active' && subscription.membership.type === 'monthly') {
         paymentDueAmount += membership.monthlyPrice;
       }
@@ -257,7 +262,7 @@ class PatientsList extends React.Component {
                   <div className="col-sm-5 text-right">
                     Active Family Members:
                     {' '}
-                    <span styleName="member-overview__info">{patient.members.length}</span>
+                    <span styleName="member-overview__info">{activeFamilyMembersCount}</span>
                   </div>
                 </div>
 
