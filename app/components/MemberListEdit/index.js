@@ -210,18 +210,16 @@ export default class MemberListEdit extends Component {
                   )
               }
 
-              {
-                membership.type === 'month'
-                  && status === 'Cancellation Requested'
-                  && (
-                    <input 
-                      type="button"
-                      styleName="button--small"
-                      style={{fontSize: '10px'}}
-                      value={`Expires ${moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY')}`}
-                      disabled
-                    />
-                  )
+              {status === 'Cancellation Requested'
+                && (
+                  <input 
+                    type="button"
+                    styleName="button--small"
+                    style={{fontSize: '10px'}}
+                    value={`Expires ${moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY')}`}
+                    disabled
+                  />
+                )
               }
 
               {this.props.onReEnrollMember

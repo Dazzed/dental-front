@@ -234,7 +234,7 @@ function* submitEditMemberForm (patient, payload) {
 
     yield put(toastrActions.success('', message));
 
-    yield put(setEditedMember(patient, payload));
+    yield put(setEditedMember(patient, payload, response.data));
 
   } catch (err) {
     console.log(err);
