@@ -226,11 +226,12 @@ export function setAddedMember(patient, payload) {
   };
 }
 
-export function setEditedMember(patient, payload) {
+export function setEditedMember(patient, payload, subscription) {
   return {
     type: EDIT_MEMBER_SUCCESS,
     patient,
     payload,
+    subscription,
   };
 }
 

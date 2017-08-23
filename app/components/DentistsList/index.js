@@ -53,7 +53,7 @@ export default class DentistsList extends React.Component {
             key={dentist.id}
             dentist={dentist}
             position={index + 1}
-            selected={dentist === selectedDentist}
+            selected={dentist.id === (selectedDentist ? selectedDentist.id : null)}
 
             selectDentist={selectDentist}
             renderListEntryBody={renderListEntryBody}
