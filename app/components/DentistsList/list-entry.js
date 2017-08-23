@@ -24,7 +24,7 @@ export default class DentistsListEntry extends React.Component {
     // passed in - data
     dentist: React.PropTypes.object.isRequired,
     position: React.PropTypes.number.isRequired,
-    selected: React.PropTypes.bool.isRequired,
+    selected: React.PropTypes.bool,
 
     // passed in - event handlers
     selectDentist: React.PropTypes.func.isRequired,
