@@ -227,11 +227,11 @@ export default class AdminDentistsPage extends React.Component {
    * ------------------------------------------------------ */
   renderDentistDetails = (dentist) => {
     const {
-      dentistDetails
+      selectedDentist
     } = this.props;
 
     // precondition render: the data must be loaded, otherwise wait for it
-    if (dentistDetails === null) {
+    if (!selectedDentist) {
       return (
         <div className="text-center">
           <LoadingSpinner showOnlyIcon={true} />
@@ -243,7 +243,7 @@ export default class AdminDentistsPage extends React.Component {
       createdAt,
       email,
       phone,
-    } = dentistDetails;
+    } = selectedDentist;
 
     const {
       address,
@@ -255,8 +255,7 @@ export default class AdminDentistsPage extends React.Component {
       marketplaceOptIn,
 
       priceCodes,
-      membership: { discount }
-    } = dentistDetails.dentistInfo;
+    } = selectedDentist.dentistInfo;
 
     const activeSince = moment(createdAt).format("MMMM Do, YYYY");
 
@@ -358,13 +357,13 @@ export default class AdminDentistsPage extends React.Component {
             );
           })}
 
-          <p>
+          {/*<p>
             Discount:
             {' '}
             <span className={styles['dentist-details__value']}>
               {discount}%
             </span>
-          </p>
+          </p>*/}
 
           <p className="text-right">
             <input
