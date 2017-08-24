@@ -12,6 +12,7 @@ import '!file?name=[name].[ext]!./manifest.json';
 import 'file?name=[name].[ext]!./.htaccess';
 import 'file?name=[name].[ext]!./assets/robots.txt';
 import 'file?name=[name].[ext]!./assets/favicon.ico';
+import '!file?name=hq-email-signature/[name].[ext]!./assets/images/hq-email-sig-logo.png';
 /* eslint-enable import/no-unresolved */
 
 // Import all the third party stuff
