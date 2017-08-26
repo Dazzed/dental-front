@@ -58,6 +58,9 @@ import {
   DELETE_DENTIST_REVIEW_REQUEST,
   DELETE_DENTIST_REVIEW_SUCCESS,
   DELETE_DENTIST_REVIEW_ERROR,
+
+  //managers
+  FETCH_MANAGERS_REQUEST,
 } from './constants';
 
 
@@ -233,11 +236,11 @@ export function sort (status) {
 
 /* Edit Dentist
  * ------------------------------------------------------ */
-export function editDentist (dentist, id) {
+export function editDentist (selectedDentist, values) {
   return {
     type: EDIT_DENTIST_REQUEST,
-    dentist,
-    id,
+    selectedDentist,
+    values
   };
 }
 
@@ -323,5 +326,12 @@ export function deleteDentistReviewError (payload) {
   return {
     type: DELETE_DENTIST_REVIEW_ERROR,
     payload,
+  };
+}
+
+// Managers
+export function fetchManagers() {
+  return {
+    type: FETCH_MANAGERS_REQUEST,
   };
 }
