@@ -141,6 +141,15 @@ class SignupForm extends React.Component {
   validating the form on every change, which makes this a linear-time slowdown.
   */
   componentWillReceiveProps(nextProps) {
+    let validPOHMembership = false;
+    if (nextProps.formValues.payingMember) {
+      if (nextProps.formValues.membershipId && nextProps.formValues.membershipId !== '0') {
+        validPOHMembership = true;
+      }
+    } else {
+      validPOHMembership = true;
+    }
+
     const {
       // passed in
       autosubmit,
@@ -153,6 +162,7 @@ class SignupForm extends React.Component {
       && Object.keys(                                   // the form is valid (including the change)
         SignupFormValidator(nextProps.formValues)
       ).length === 0
+      && validPOHMembership
     ) {
       onSubmit(nextProps.formValues);
     }
@@ -390,7 +400,7 @@ class SignupForm extends React.Component {
                   label="Membership Type"
                   className="col-md-6"
                 >
-                  <option>Membership Type</option>
+                  <option value="0">Membership Type</option>
                   {
                     memberships
                       .filter(m => m.subscription_age_group === 'adult' && m.active)
