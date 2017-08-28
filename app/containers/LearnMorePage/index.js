@@ -212,7 +212,7 @@ export default class LearnMorePage extends React.Component {
               poster="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video-poster.png"
               ref="video"
             >
-              <source src="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video.mp4" type="video/mp4" />
+              <source src="https://s3.amazonaws.com/dentalman_uploads/Dental%20HQ.mp4" type="video/mp4" />
             </video>
           </Modal.Body>
         </Modal>

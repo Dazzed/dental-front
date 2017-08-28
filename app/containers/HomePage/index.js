@@ -168,7 +168,7 @@ export default class HomePage extends React.Component {
                       ref="video"
                       style={{width: '100%', height: '100%'}}
                     >
-                      <source src="https://s3.amazonaws.com/dentalman_uploads/Dental%20HQ.mp4" type="video/mp4" />
+                      <source src="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video.mp4" type="video/mp4" />
                     </video>
                   </Modal.Body>
                 </Modal>
@@ -179,7 +179,7 @@ export default class HomePage extends React.Component {
                 </h2>
 
                 <p styleName="large-text">
-                  Why deal with an expensive, restrictive private insurnace plan when you can find the best dental practices near you offering affordable monthly membership plans?
+                  Why deal with an expensive, restrictive private insurance plan when you can find the best dental practices near you offering affordable monthly membership plans?
                 </p>
               </div>
             </div>
