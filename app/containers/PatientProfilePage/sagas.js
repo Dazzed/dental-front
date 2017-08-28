@@ -424,7 +424,7 @@ function* submitAccountSecurityFormWatcher() {
     const { payload, user } = yield take(SUBMIT_SECURITY_FORM);
 
     try {
-      const requestURL = `/api/v1/users/me/change-auth`;
+      const requestURL = `/api/v1/users/${user.id}/account/change-auth`;
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),
