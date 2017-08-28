@@ -101,6 +101,7 @@ export default class ReviewFormModal extends React.Component {
       // modal related
       show,
       onCancel,
+      valid,
     } = this.props;
 
     let title = "Edit Your Review";
@@ -178,7 +179,7 @@ export default class ReviewFormModal extends React.Component {
             <input
               type="button"
               className="modal-control"
-              disabled={submitting}
+              disabled={submitting || !valid}
               onClick={submit}
               value={saveText}
             />
