@@ -20,6 +20,7 @@ import Avatar from 'components/Avatar';
 import {
   changePageTitle,
 } from 'containers/App/actions';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 // local
 import styles from './styles.css';
@@ -28,7 +29,14 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapDispatchToProps (dispatch) {
+
+function mapStateToProps(state) {
+  return {
+    user: state.global.currentUser,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
   return {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
   };
@@ -39,7 +47,7 @@ function mapDispatchToProps (dispatch) {
 Contact Admin
 ================================================================================
 */
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 export default class ContactAdminPage extends Component {
 
@@ -47,71 +55,110 @@ export default class ContactAdminPage extends Component {
     changePageTitle: React.PropTypes.func.isRequired,
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.changePageTitle('Contact Admin');
   }
 
-  render () {
-    return (
-      <div>
-        <Tabs activeKey="contact-admin" id="contact-admin-tabs" styleName="tabs">
-          <Tab eventKey="contact-admin" title="Admin Contact Info"></Tab>
-        </Tabs>
+  render() {
+    const {
+      user
+    } = this.props;
 
-        <div styleName="content">
-          <div styleName="admin">
-            <div className="row">
+    if (!user.dentistInfo) {
+      return (
+        <div>
+          <div>
+            <LoadingSpinner showOnlyIcon={false} />
+          </div>
+        </div>
+      );
+    }
+    else {
+      const {
+        dentistInfo:{
+          manager
+        }
+      } = user;
+      if (!manager) {
+        return (
+          <div>
+            <Tabs defaultActiveKey="contact-admin" id="contact-admin-tabs" styleName="tabs">
+              <Tab eventKey="contact-admin" title="Admin Contact Info"></Tab>
+            </Tabs>
 
-              {/*
+            <div styleName="content">
+              <div styleName="admin">
+                <div className="row">
+                  <h3 styleName="admin-overview__name">
+                    You do not have any Account Managers assigned yet.
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+      return (
+        <div>
+          <Tabs defaultActiveKey="contact-admin" id="contact-admin-tabs" styleName="tabs">
+            <Tab eventKey="contact-admin" title="Admin Contact Info"></Tab>
+          </Tabs>
+
+          <div styleName="content">
+            <div styleName="admin">
+              <div className="row">
+
+                {/*
               Avatar
               ------------------------------------------------------------
               */}
-              <div className="col-sm-2">
-                <div styleName="admin-avatar">
-                  <Avatar url={contactAdminProfilePhoto} size={'100%'} />
+                <div className="col-sm-2">
+                  <div styleName="admin-avatar">
+                    <Avatar url={""} size={'100%'} />
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-sm-10">
+                <div className="col-sm-10">
 
-                {/*
+                  {/*
                 Member Overview
                 ------------------------------------------------------------
                 */}
-                <div styleName="admin-overview">
-                  <div className="row">
-                    <div className="col-sm-7">
-                      <h3 styleName="admin-overview__name">
-                        Ashley Woodruff
-                        {' '}
-                        <small>(Account Manager)</small>
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div styleName="divided-row">
+                  <div styleName="admin-overview">
                     <div className="row">
-                      <div className="col-sm-3">
-                        <span styleName="admin-overview__info">919-825-1239</span>
+                      <div className="col-sm-7">
+                        <h3 styleName="admin-overview__name">
+                          {`${manager.firstName} ${manager.lastName}`}
+                          {' '}
+                          <small>(Account Manager)</small>
+                        </h3>
                       </div>
-                      <div className="col-sm-6">
-                        <a href="mailto:ashley@dentalhq.com" styleName="admin-overview__email">ashley@dentalhq.com</a>
+                    </div>
+
+                    <div styleName="divided-row">
+                      <div className="row">
+                        <div className="col-sm-3">
+                          <span styleName="admin-overview__info">{manager.phoneNumbers[0].number}</span>
+                        </div>
+                        <div className="col-sm-6">
+                          <a href="mailto:ashley@dentalhq.com" styleName="admin-overview__email">{manager.email}</a>
+                        </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* End Admin Col */}
                 </div>
-
-              {/* End Admin Col */}
+                {/* End Admin Row */}
               </div>
-            {/* End Admin Row */}
+              {/* End Admin Div */}
             </div>
-          {/* End Admin Div */}
-          </div>
 
-        {/* End Content Div */}
+            {/* End Content Div */}
+          </div>
+          {/* End Wrapper Div */}
         </div>
-      {/* End Wrapper Div */}
-      </div>
-    );
+      );
+    }
   }
 }

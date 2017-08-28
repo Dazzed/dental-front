@@ -281,6 +281,48 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
+    },{
+      onEnter: redirectToLogin,
+      path: '/admin/manage',
+      name: 'adminManagePage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminManagePage/reducer'),
+          System.import('containers/AdminManagePage/sagas'),
+          System.import('containers/AdminManagePage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('AdminManagePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },{
+      onEnter: redirectToLogin,
+      path: '/admin/services',
+      name: 'adminServicesPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminManagePage/reducer'),
+          System.import('containers/AdminManagePage/sagas'),
+          System.import('containers/AdminServicesPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('AdminManagePage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
     }, {
       path: '/charge15',
       name: 'chargePage15',
