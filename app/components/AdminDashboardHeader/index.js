@@ -73,7 +73,7 @@ export default class AdminDashboardHeader extends React.Component {
               </Link>
             </li>
             <li>
-              <Link styleName="quick-links__link" to="#">
+              <Link styleName="quick-links__link" to="/admin/services">
                 Services
               </Link>
             </li>
