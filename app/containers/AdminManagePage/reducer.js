@@ -6,6 +6,10 @@ import {
   ADD_MANAGER_SUCCESS,
   TOGGLE_EDITING_MANAGER,
   EDIT_MANAGER_SUCCESS,
+  FETCH_SERVICES_SUCCESS,
+  ADD_SERVICE_SUCCESS,
+  DELETE_SERVICE_SUCCESS,
+  TOGGLE_ADD_SERVICE,
 } from './constants';
 
 const initialState = {
@@ -13,6 +17,8 @@ const initialState = {
   selectedManager: null,
   addingManager: false,
   editingManager: null,
+  services: [],
+  addingService: false,
 };
 
 export default function (state = initialState, action) {
@@ -57,6 +63,27 @@ export default function (state = initialState, action) {
           ...state.managers.slice(targetManagerIndex+1)
         ],
         editingManager: null,
+      };
+    case FETCH_SERVICES_SUCCESS:
+      return {
+        ...state,
+        services: action.payload.data,
+      };
+    case ADD_SERVICE_SUCCESS:
+      return {
+        ...state,
+        services: state.services.concat(action.payload),
+        addingService: false,
+      };
+    case DELETE_SERVICE_SUCCESS:
+      return {
+        ...state,
+        services: state.services.filter(s => s.id !== action.payload.service.id ),
+      };
+    case TOGGLE_ADD_SERVICE:
+      return {
+        ...state,
+        addingService: action.payload,
       };
     default:
       return {

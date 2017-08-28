@@ -151,7 +151,7 @@ class PatientsList extends React.Component {
         membership,
       } = patient;
 
-      const activeFamilyMembers = members.filter(m => m.subscription.status === 'active');
+      const activeFamilyMembers = members.filter(m => m.subscription.status === 'active' || m.subscription.status === 'cancellation_requested');;
       let paymentDueAmount = activeFamilyMembers.reduce((acc, p) => {
         if (p.subscription.membership.type === 'month') {
           return acc += Number.parseFloat(p.subscription.membership.price);
@@ -173,7 +173,8 @@ class PatientsList extends React.Component {
 
       const memberOrigin = MEMBER_ORIGINS[origin];
 
-      const summaryStatus = subscription.status.toLowerCase();
+      // const summaryStatus = subscription.status.toLowerCase();
+      const summaryStatus = (subscription.status === 'active' || 'cancellation_requested') || activeFamilyMembers ? 'active' : 'inactive';
 
       let statusStyle = "status";
       switch (summaryStatus) {

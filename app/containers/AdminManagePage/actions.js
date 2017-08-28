@@ -5,7 +5,11 @@ import {
   TOGGLE_ADDING_MANAGER,
   ADD_MANAGER,
   TOGGLE_EDITING_MANAGER,
-  EDIT_MANAGER
+  EDIT_MANAGER,
+  FETCH_SERVICES_REQUEST,
+  ADD_SERVICE_REQUEST,
+  DELETE_SERVICE_REQUEST,
+  TOGGLE_ADD_SERVICE,
 } from './constants';
 
 export function changePageTitle (payload) {
@@ -55,3 +59,32 @@ export function editManager(values) {
     payload: values
   };
 }
+
+export function fetchServices() {
+  return {
+    type: FETCH_SERVICES_REQUEST,
+  }
+}
+
+export function addService(service) {
+  return {
+    type: ADD_SERVICE_REQUEST,
+    payload: service,
+  };
+}
+
+export function deleteService(service) {
+  return {
+    type: DELETE_SERVICE_REQUEST,
+    payload: service,
+  };
+}
+
+export function toggleAddService(value) {
+  return {
+    type: TOGGLE_ADD_SERVICE,
+    payload: value,
+  }
+}
+
+

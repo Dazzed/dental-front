@@ -1,0 +1,234 @@
+/*
+Contact Admin Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  min-height: 400px;
+  padding: 4.5rem 2rem 2rem 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.divided-row {
+  margin-top: 1rem;
+  border-top: 1px solid $color-secondary-lowlight;
+  padding-top: 1rem;
+}
+
+
+/*
+Contact Admin
+================================================================================
+*/
+
+/*
+Tabs
+------------------------------------------------------------
+*/
+.tabs {
+  :global .nav-tabs {
+    border: none;
+
+    text-align: left;
+  }
+
+  :global .nav-tabs > li {
+    float: none;
+    display: inline-block;
+    margin-bottom: 0;
+
+    & > a {
+      margin: 0 2rem 0.5rem 0;
+      border: none;
+      border-radius: 1rem 1rem 0 0;
+      padding: 1rem 3rem;
+
+      color: $color-primary-highlight;
+      background-color: $color-primary-background;
+
+      font-size: 1.25rem;
+
+      &:hover {
+        background-color: $color-primary-background-hover;
+      }
+
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &:last-child > a {
+      margin-right: 0;
+    }
+
+    &.active > a {
+      margin-bottom: 0;
+      padding-bottom: 1.5rem;
+
+      background-color: $color-secondary-background;
+
+      &:focus,
+      &:hover {
+        border: 0;
+
+        color: $color-primary-highlight;
+      }
+    }
+  }
+}
+
+/*
+Admin Contact Entry
+------------------------------------------------------------
+*/
+.admin {
+  padding: 1rem;
+  border-radius: 1rem;
+
+  background-color: rgb(250, 250, 250);
+}
+
+.admin-avatar {
+  max-width: 124px;
+  margin: -46px auto 0 auto; /* -46px = admin-avatar height - admin-overview height */
+}
+
+.admin-overview {
+  color: $color-primary-lowlight;
+
+  font-size: 1.125rem;
+  font-weight: 300;
+}
+
+.admin-overview__name {
+  display: inline-block;
+  margin: 0;
+
+  color: $color-primary-highlight;
+
+  small {
+    color: $color-primary-highlight;
+  }
+}
+
+.admin-overview__info {
+  color: $color-black;
+
+  font-weight: bold;
+}
+
+.admin-overview__email {
+  font-weight: bold;
+}
+
+.content {
+  padding: 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.content--filler {
+  min-height: 500px;
+}
+
+.button--short {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* Dentist List Entry Component Styles
+ * ========================================================================== */
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+
+
+
+/* Dentist List Entry
+ * ========================================================================== */
+.list-entry__wrapper {
+  margin-bottom: 2rem;
+  border-bottom: 1px dashed $color-primary-lowlight;
+  padding-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.list-entry {
+  padding: 1.5rem;
+  border-radius: 1rem;
+
+  background-color: $color-white;
+}
+
+.list-entry__header {
+  font-size: 2rem;
+
+  cursor: pointer;
+
+  .list-entry__title {
+    color: $color-primary-highlight;
+  }
+
+  .list-entry__toggle {
+    float: right;
+
+    color: $color-secondary-lowlight;
+  }
+
+  &:hover .list-entry__toggle {
+    color: $color-primary-lowlight;
+  }
+}
+
+.list-entry__body {
+  margin-top: 1rem;
+  border-top: 1px solid $color-secondary-lowlight;
+  padding-top: 1rem;
+}
+
