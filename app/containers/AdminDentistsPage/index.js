@@ -46,6 +46,7 @@ import {
 
   // actions
   editDentist,
+  fetchManagers,
 } from './actions';
 import {
   // fetch
@@ -60,6 +61,7 @@ import {
   selectSearch,
   selectSort,
   selectProcessedDentists,
+  selectManagers,
 } from './selectors';
 import styles from './styles.css';
 
@@ -82,6 +84,7 @@ function mapStateToProps (state) {
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
+    managers: selectManagers(state),
   };
 }
 
@@ -103,8 +106,9 @@ function mapDispatchToProps (dispatch) {
     sortDentists: (status) => dispatch(sort(status)),
 
     // actions
-    editDentist: (values, id) => dispatch(editDentist(values, id)),
+    editDentist: (selectedDentist, values) => dispatch(editDentist(selectedDentist, values)),
     resetEditDentistForm: () => dispatch(resetForm('adminEditDentist')),
+    fetchManagers: () => dispatch(fetchManagers()),
   };
 }
 
@@ -168,6 +172,7 @@ export default class AdminDentistsPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentists();
     this.props.fetchStats();
+    this.props.fetchManagers();
   }
 
   componentDidMount() {
@@ -180,9 +185,9 @@ export default class AdminDentistsPage extends React.Component {
   */
   // select dentist
   onSelectDentist = (dentist) => {
-    if (dentist !== null) {
-      this.props.fetchDentistDetails(dentist.id);
-    }
+    // if (dentist !== null) {
+    //   this.props.fetchDentistDetails(dentist.id);
+    // }
 
     this.props.setSelectedDentist(dentist);
   }
@@ -220,7 +225,7 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   onEditDentistSubmit = (values) => {
-    this.props.editDentist(values, this.props.selectedDentist.id);
+    this.props.editDentist(this.props.selectedDentist, values);
   }
 
   /* Render Dentist Details
@@ -242,7 +247,6 @@ export default class AdminDentistsPage extends React.Component {
     const {
       createdAt,
       email,
-      phone,
     } = selectedDentist;
 
     const {
@@ -258,6 +262,8 @@ export default class AdminDentistsPage extends React.Component {
     } = selectedDentist.dentistInfo;
 
     const activeSince = moment(createdAt).format("MMMM Do, YYYY");
+
+    const phone = selectedDentist.phoneNumbers[0].number;
 
     return (
       <div className={'row ' + styles['dentist-details']}>
@@ -396,6 +402,7 @@ export default class AdminDentistsPage extends React.Component {
       // search / sort dentists
       currentSortTerm,
       processedDentists,
+      managers,
     } = this.props;
 
     const {
@@ -490,14 +497,16 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        <AdminEditDentistFormModal
-          show={this.state.showEditDentistModal}
-          onCancel={this.onEditDentistCancel}
+        { selectedDentist && 
+          <AdminEditDentistFormModal
+            show={this.state.showEditDentistModal}
+            onCancel={this.onEditDentistCancel}
 
-          initialValues={selectedDentist}
-          onSubmit={this.onEditDentistSubmit}
-        />
-
+            initialValues={selectedDentist}
+            onSubmit={this.onEditDentistSubmit}
+            managers={managers}
+          />
+        }
       </div>
     );
   }

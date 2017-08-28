@@ -24,6 +24,15 @@ const schema = {
       message: '^Please enter a 10-digit US phone number.'
     }
   },
+  email: {
+    presence: true, email: true
+  },
+  affordabilityScore: {
+    format: {
+      pattern: /[1-4]/,
+      message: 'Affordabilty score can only be between 1-4.'
+    }
+  }
 };
 
 export default validatorFactory(schema);
