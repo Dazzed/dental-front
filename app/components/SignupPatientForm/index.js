@@ -38,6 +38,25 @@ import styles from './styles.css';
 import SignupFormValidator from './validator';
 
 /*
+Field Validators
+------------------------------------------------------------
+*/
+const membershipSelectionValidator = (membershipId, formValues) => {
+  // Error: Patient has indicated they will also be a paying member, but haven't
+  // chosen their membership plan.
+  if ( formValues.payingMember === true
+    && (membershipId === undefined || membershipId === '0')
+  ) {
+    return 'Please choose your membership plan.';
+  }
+
+  // valid
+  else {
+    return undefined;
+  }
+}
+
+/*
 Redux
 ------------------------------------------------------------
 */
@@ -141,14 +160,10 @@ class SignupForm extends React.Component {
   validating the form on every change, which makes this a linear-time slowdown.
   */
   componentWillReceiveProps(nextProps) {
-    let validPOHMembership = false;
-    if (nextProps.formValues.payingMember) {
-      if (nextProps.formValues.membershipId && nextProps.formValues.membershipId !== '0') {
-        validPOHMembership = true;
-      }
-    } else {
-      validPOHMembership = true;
-    }
+    let validPOHMembership = membershipSelectionValidator(
+      nextProps.formValues.membershipId,
+      nextProps.formValues
+    ) === undefined; // implies it's valid
 
     const {
       // passed in
@@ -156,7 +171,7 @@ class SignupForm extends React.Component {
       onSubmit,
     } = this.props;
 
-    if (autosubmit === true                            // autosubmit is requested
+    if (autosubmit === true                             // autosubmit is requested
       && nextProps.dirty === true                       // the form has been touched
       && this.props.formValues !== nextProps.formValues // a change was made
       && Object.keys(                                   // the form is valid (including the change)
@@ -399,6 +414,7 @@ class SignupForm extends React.Component {
                   component={this.getLabeledInput}
                   label="Membership Type"
                   className="col-md-6"
+                  validate={[membershipSelectionValidator]}
                 >
                   <option value="0">Membership Type</option>
                   {
