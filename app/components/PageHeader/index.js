@@ -29,6 +29,7 @@ const dashboardPages = [
   '/admin/dentists',
   '/admin/members',
   '/admin/reviews',
+  '/admin/manage',
 ];
 
 
@@ -119,7 +120,11 @@ function PageHeader ({ borderContent, children, pathname, title, user, imgX, img
           </div>
 
           <div className="pull-right">
-            <span styleName={"header-link" + (dashboardPages.indexOf(pathname) > -1 ? " header-link--current" : "")}>
+            <span styleName={"header-link" + (pathname === '/admin/manage' ? " header-link--current" : "")}>
+              <Link to="/admin/manage">Manage Admins</Link>
+            </span>
+            |
+            <span styleName={"header-link" + (pathname === '/admin/dentists' ? " header-link--current" : "")}>
               <Link to="/admin/dentists">Dashboard</Link>
             </span>
             |
