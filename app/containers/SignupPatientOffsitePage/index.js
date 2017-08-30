@@ -227,7 +227,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
-      toastError('There was an error embedding Stripe, please reload the page');
+      this.props.toastError('There was an error embedding Stripe, please reload the page');
     }
   }
 
