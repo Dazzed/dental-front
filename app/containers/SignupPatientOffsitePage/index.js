@@ -379,7 +379,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
                 <div styleName="stage">
                   <h2 styleName="large-title">
-                    Dentit Not Found
+                    Dentist Not Found
                   </h2>
 
                   <p styleName="error-message">
