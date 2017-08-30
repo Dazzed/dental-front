@@ -48,6 +48,17 @@ const addDevMiddlewares = (app, webpackConfig) => {
 
 // Production middlewares
 const addProdMiddlewares = (app, options) => {
+  // redirect 'http' to 'https' on Heroku
+  // based on: https://jaketrent.com/post/https-redirect-node-heroku/
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect('https://' + req.header('host') + req.url);
+    }
+    else {
+      next();
+    }
+  });
+
   const publicPath = options.publicPath || '/';
   const outputPath = options.outputPath || path.resolve(process.cwd(), 'build');
 
