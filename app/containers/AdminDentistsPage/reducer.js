@@ -34,6 +34,7 @@ import {
   // actions
   EDIT_DENTIST_SUCCESS,
   DELETE_DENTIST_REVIEW_SUCCESS,
+  FETCH_MANAGERS_SUCCESS,
 } from './constants';
 
 /*
@@ -43,6 +44,7 @@ Initial State
 const initialState = {
   // fetch
   dentists: null,
+  managers: null,
   dentistDetails: null,
   dentistMembers: null,
   dentistReviews: null,
@@ -160,7 +162,7 @@ export default function adminPageReducer (state = initialState, action) {
     /* Actions
      * ------------------------------------------------------ */
     case EDIT_DENTIST_SUCCESS:
-      dentistIdx = findIndex(state.dentists, { id: action.payload.id });
+      dentistIdx = state.dentists.findIndex(d => d.id === action.payload.id);
 
       return {
         ...state,
@@ -169,7 +171,7 @@ export default function adminPageReducer (state = initialState, action) {
           action.payload,
           ...state.dentists.slice(dentistIdx + 1),
         ],
-        selectedDentist: action.dentist,
+        selectedDentist: null,
       };
 
     case DELETE_DENTIST_REVIEW_SUCCESS:
@@ -179,7 +181,11 @@ export default function adminPageReducer (state = initialState, action) {
           return review.id !== action.reviewId;
         }),
       };
-
+    case FETCH_MANAGERS_SUCCESS:
+      return {
+        ...state,
+        managers: action.payload,
+      };
     /*
     Default Reducer
     ------------------------------------------------------------

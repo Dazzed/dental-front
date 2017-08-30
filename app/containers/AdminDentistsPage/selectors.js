@@ -29,6 +29,11 @@ const selectDentists = createSelector(
   (substate) => substate.dentists
 );
 
+const selectManagers = createSelector(
+  domainSelector,
+  (substate) => substate.managers
+);
+
 const selectDentistDetails = createSelector(
   domainSelector,
   (substate) => substate.dentistDetails
@@ -153,4 +158,5 @@ export {
   selectSearch,
   selectSort,
   selectProcessedDentists,
+  selectManagers,
 };

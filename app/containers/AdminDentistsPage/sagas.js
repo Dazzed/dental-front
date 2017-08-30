@@ -69,8 +69,12 @@ import {
   DELETE_DENTIST_REVIEW_REQUEST,
   DOWNLOAD_REPORT_REQUEST,
   DOWNLOAD_MASTER_REPORT_REQUEST,
+  FETCH_MANAGERS_REQUEST,
+  FETCH_MANAGERS_SUCCESS,
+  FETCH_MANAGERS_ERROR,
 } from './constants';
 
+import superCompare from 'utils/superCompare';
 
 /*
 Sagas
@@ -92,6 +96,7 @@ function* main () {
   const watcherH = yield fork(deleteDentistReview);
   const watcherI = yield fork(downloadReport);
   const watcherJ = yield fork(downloadMasterReport);
+  const watcherK = yield fork(managersFetcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -104,6 +109,7 @@ function* main () {
   yield cancel(watcherH);
   yield cancel(watcherI);
   yield cancel(watcherJ);
+  yield cancel(watcherK);
 }
 
 
@@ -215,29 +221,31 @@ function* statsFetcher () {
  * ------------------------------------------------------ */
 function* editDentist () {
   while (true) {
-    const { dentist, id } = yield take(EDIT_DENTIST_REQUEST);
+    yield takeLatest(EDIT_DENTIST_REQUEST, function* handler(data) {
+      const { selectedDentist, values } = data;
+      try {
+        const requestURL = `/api/v1/dentists/${selectedDentist.id}`;
+        const params = {
+          method: 'PATCH',
+          body: JSON.stringify(values)
+        };
 
-    try {
-      const requestURL = `/api/v1/dentists/${id}`;
-      const params = {
-        method: 'PUT',
-        body: JSON.stringify(dentist),
-      };
+        const response = yield call(request, requestURL, params);
 
-      const response = yield call(request, requestURL, params);
+        const message = `The dentist has been updated.`;
+        yield put(toastrActions.success('', message));
 
-      const message = `The dentist has been updated.`;
-      yield put(toastrActions.success('', message));
-
-      yield put(editDentistSuccess(dentist));
-      yield put(fetchDentistDetails(id));
-
-    } catch (err) {
-      const errors = mapValues(err.errors, (value) => value.msg);
-
-      yield put(toastrActions.error('', 'Please fix errors on the form!'));
-      yield put(stopSubmit('adminEditDentist', errors));
-    }
+        yield put(editDentistSuccess(response));
+      } catch (e) {
+        if (typeof e.errors === 'string')
+          yield put(toastrActions.error('', e.errors.toString()));
+        else {
+          for (let key in e.errors)
+          yield put(toastrActions.error('', e.errors[key].msg));
+        }
+        yield put(stopSubmit('adminEditDentist', {}));
+      }
+    });
   }
 }
 
@@ -323,5 +331,23 @@ function* downloadMasterReport () {
       yield put(toastrActions.error('', errorMessage));
       downloadMasterReportFailure(err);
     }
+  }
+}
+
+// managers
+function* managersFetcher () {
+  while (true) {
+    yield* takeLatest(FETCH_MANAGERS_REQUEST, function* handler() {
+      try {
+        const managers = yield call(request, '/api/v1/admin/managers/list' );
+        yield put({
+          type: FETCH_MANAGERS_SUCCESS,
+          payload: managers
+        });
+      } catch (e) {
+        console.log(e)
+        yield put({type: FETCH_MANAGERS_ERROR});
+      }
+    });
   }
 }

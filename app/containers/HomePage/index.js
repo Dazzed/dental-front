@@ -121,7 +121,9 @@ export default class HomePage extends React.Component {
           </header>
 
           {/*<SearchForm />*/}
-
+          <div className="coming-soon-header">
+            <h1 style={{color: '#446C7A',fontSize: '90px'}}>Coming Soon...</h1>
+          </div>
           <div styleName="next-section-cover">
             <h3>
               Find affordable monthly service plans from the best dentists in your area!
@@ -168,7 +170,7 @@ export default class HomePage extends React.Component {
                       ref="video"
                       style={{width: '100%', height: '100%'}}
                     >
-                      <source src="https://s3.amazonaws.com/dentalman_uploads/Dental%20HQ.mp4" type="video/mp4" />
+                      <source src="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video.mp4" type="video/mp4" />
                     </video>
                   </Modal.Body>
                 </Modal>
@@ -179,7 +181,7 @@ export default class HomePage extends React.Component {
                 </h2>
 
                 <p styleName="large-text">
-                  Why deal with an expensive, restrictive private insurnace plan when you can find the best dental practices near you offering affordable monthly membership plans?
+                  Why deal with an expensive, restrictive private insurance plan when you can find the best dental practices near you offering affordable monthly membership plans?
                 </p>
               </div>
             </div>

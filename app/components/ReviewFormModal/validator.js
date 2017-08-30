@@ -16,7 +16,7 @@ Schema
 */
 const schema = {
   rating: {
-    presence: true,
+    // presence: true,
     numericality: {
       onlyInteger: true,
       greaterThanOrEqualTo: 0,
