@@ -72,6 +72,9 @@ import {
   FETCH_MANAGERS_REQUEST,
   FETCH_MANAGERS_SUCCESS,
   FETCH_MANAGERS_ERROR,
+  INITIATE_REFUNDING_MEMBER,
+  FAILED_REFUNDING_MEMBER,
+  REFUNDING_MEMBER_SUCCESS,
 } from './constants';
 
 import superCompare from 'utils/superCompare';
@@ -97,6 +100,7 @@ function* main () {
   const watcherI = yield fork(downloadReport);
   const watcherJ = yield fork(downloadMasterReport);
   const watcherK = yield fork(managersFetcher);
+  const watcherL = yield fork(refundSubmitWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -110,6 +114,7 @@ function* main () {
   yield cancel(watcherI);
   yield cancel(watcherJ);
   yield cancel(watcherK);
+  yield cancel(watcherL);
 }
 
 
@@ -347,6 +352,46 @@ function* managersFetcher () {
       } catch (e) {
         console.log(e)
         yield put({type: FETCH_MANAGERS_ERROR});
+      }
+    });
+  }
+}
+
+function* refundSubmitWatcher() {
+  while (true) {
+    yield* takeLatest(INITIATE_REFUNDING_MEMBER, function* handler(action) {
+      try {
+        const body = {
+          userId: action.id,
+          refundAmount: action.amount,
+        };
+        const params = {
+          method: "POST",
+          body: JSON.stringify(body),
+        };
+        const requestURL = '/api/v1/admin/refunds';
+        const refund = yield call(request, requestURL, params);
+        yield put({
+          type: REFUNDING_MEMBER_SUCCESS,
+        });
+
+        const { message } = refund;
+        yield put(toastrActions.success('', message));
+      } catch (e) {
+        console.log(e);
+        yield put({ type: FAILED_REFUNDING_MEMBER });
+        if (e.errors) {
+          if (typeof e.errors === 'string') {
+            yield put(toastrActions.error('', e.errors.toString()));
+          }
+          else {
+            for (let key in e.errors) {
+              yield put(toastrActions.error('', e.errors[key].msg));
+            }
+          }
+        } else {
+          yield put(toastrActions.error('','Please  Try again later'));
+        }
       }
     });
   }

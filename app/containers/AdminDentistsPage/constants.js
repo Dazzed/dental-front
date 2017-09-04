@@ -53,3 +53,8 @@ export const DOWNLOAD_MASTER_REPORT_ERROR   = 'app/AdminDentistPage/DOWNLOAD_MAS
 export const FETCH_MANAGERS_REQUEST = 'app/AdminDentistsPage/FETCH_MANAGERS_REQUEST';
 export const FETCH_MANAGERS_SUCCESS = 'app/AdminDentistsPage/FETCH_MANAGERS_SUCCESS';
 export const FETCH_MANAGERS_ERROR   = 'app/AdminDentistsPage/FETCH_MANAGERS_ERROR';
+
+export const TOGGLE_REFUNDING_MEMBER = 'app/AdminDentistsPage/TOGGLE_REFUNDING_MEMBER';
+export const INITIATE_REFUNDING_MEMBER = 'app/AdminDentistsPage/INITIATE_REFUNDING_MEMBER';
+export const REFUNDING_MEMBER_SUCCESS = 'app/AdminDentistsPage/REFUNDING_MEMBER_SUCCESS';
+export const FAILED_REFUNDING_MEMBER = 'app/AdminDentistsPage/FAILED_REFUNDING_MEMBER';

@@ -80,6 +80,11 @@ const selectSort = createSelector(
   (substate) => substate.sortStatus
 );
 
+const selectRefundingMember = createSelector(
+  domainSelector,
+  (substate) => substate.refundingMember
+);
+
 const selectProcessedDentists = createSelector(
   selectDentists,
   selectSearch,
@@ -159,4 +164,5 @@ export {
   selectSort,
   selectProcessedDentists,
   selectManagers,
+  selectRefundingMember,
 };
