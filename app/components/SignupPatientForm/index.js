@@ -38,25 +38,6 @@ import styles from './styles.css';
 import SignupFormValidator from './validator';
 
 /*
-Field Validators
-------------------------------------------------------------
-*/
-const membershipSelectionValidator = (membershipId, formValues) => {
-  // Error: Patient has indicated they will also be a paying member, but haven't
-  // chosen their membership plan.
-  if ( formValues.payingMember === true
-    && (membershipId === undefined || membershipId === '0')
-  ) {
-    return 'Please choose your membership plan.';
-  }
-
-  // valid
-  else {
-    return undefined;
-  }
-}
-
-/*
 Redux
 ------------------------------------------------------------
 */
@@ -160,11 +141,6 @@ class SignupForm extends React.Component {
   validating the form on every change, which makes this a linear-time slowdown.
   */
   componentWillReceiveProps(nextProps) {
-    let validPOHMembership = membershipSelectionValidator(
-      nextProps.formValues.membershipId,
-      nextProps.formValues
-    ) === undefined; // implies it's valid
-
     const {
       // passed in
       autosubmit,
@@ -177,7 +153,6 @@ class SignupForm extends React.Component {
       && Object.keys(                                   // the form is valid (including the change)
         SignupFormValidator(nextProps.formValues)
       ).length === 0
-      && validPOHMembership
     ) {
       onSubmit(nextProps.formValues);
     }
@@ -395,37 +370,34 @@ class SignupForm extends React.Component {
             )
           }
 
-          {/* TODO: select membership type here */}
-
-          <div className="col-sm-4" styleName="align-with-input">
+          <div className="col">
             <Field
-              name="payingMember"
-              component={this.getCheckbox}
+              name="membershipId"
+              type="select"
+              component={this.getLabeledInput}
+              label="Membership Type"
+              className="col-md-6"
             >
-              <strong>I Will Also Be A Member</strong>
+              <option value="-1">I will not be a member.</option>
+              {
+                memberships
+                  .filter(m => m.subscription_age_group === 'adult' && m.active)
+                  .map(membership =>
+                    <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
+                  )
+              }
             </Field>
           </div>
-          <div className="col">
-            {
-              formValues && formValues.payingMember ?
-                <Field
-                  name="membershipId"
-                  type="select"
-                  component={this.getLabeledInput}
-                  label="Membership Type"
-                  className="col-md-6"
-                  validate={[membershipSelectionValidator]}
-                >
-                  <option value="0">Membership Type</option>
-                  {
-                    memberships
-                      .filter(m => m.subscription_age_group === 'adult' && m.active)
-                      .map(membership =>
-                        <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
-                      )
-                  }
-                </Field> : null
-            }
+
+          <div className="col-sm-12">
+            <h5 styleName="field-instructions">
+              *Select a membership if you want your own membership.
+            </h5>
+
+            <h5 styleName="field-instructions">
+              *You can choose not to have a personal membership if you are only
+              signing up other family members.
+            </h5>
           </div>
         </Row>
 
