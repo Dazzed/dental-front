@@ -110,7 +110,6 @@ class PatientsList extends React.Component {
   }
 
   onUpdateProfileClick = (patient) => {
-    console.log(patient, 'patient-s');
     this.props.onUpdatePatientProfile(patient);
   }
 

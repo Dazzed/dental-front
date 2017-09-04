@@ -154,7 +154,6 @@ const selectDataLoaded = createSelector(
   selectDentistInfo,
   selectPatients,
   (user, dentistInfo, patients) => {
-    console.log('user', user, 'di', dentistInfo, 'patients', patients);
     return user !== false && dentistInfo !== null && patients !== null;
   }
 );

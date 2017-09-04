@@ -143,7 +143,7 @@ function mapDispatchToProps(dispatch) {
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
     setEditingPatientProfile: (patient) => dispatch(setEditingPatientProfile(patient)),
     clearEditingPatientProfile: () => dispatch(clearEditingPatientProfile()),
-    submitPatientProfileForm: (values) => dispatch(submitPatientProfileForm(values)),
+    submitPatientProfileForm: (patient) => dispatch(submitPatientProfileForm(patient)),
 
     // edit patient payment info
     resetPatientPaymentForm: () => dispatch(resetForm('checkout')),
@@ -372,8 +372,8 @@ class DentistMembersPage extends React.Component {
     this.props.clearEditingPatientProfile();
   }
 
-  handlePatientProfileFormSubmit = (values) => {
-    this.props.submitPatientProfileForm(values, values.id);
+  handlePatientProfileFormSubmit = (patient) => {
+    this.props.submitPatientProfileForm(patient);
   };
 
   // payment
@@ -435,14 +435,12 @@ class DentistMembersPage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    console.log(dataLoaded, 'dataLoaded');
     if (dataLoaded === false) {
       return (
         <div>
           <DentistDashboardTabs active="members" />
 
           <div styleName="content content--filler">
-            Drosss
             <LoadingSpinner showOnlyIcon={false} />
           </div>
         </div>
