@@ -151,30 +151,40 @@ class PatientsList extends React.Component {
         membership,
       } = patient;
 
-      const activeFamilyMembers = members.filter(m => m.subscription.status === 'active' || m.subscription.status === 'cancellation_requested');;
-      let paymentDueAmount = activeFamilyMembers.reduce((acc, p) => {
-        if (p.subscription.membership.type === 'month') {
-          return acc += Number.parseFloat(p.subscription.membership.price);
-        } else {
-          return acc += 0;
-        }
-      },0);
-
-      paymentDueAmount += subscription.status === 'active' ? Number.parseFloat(subscription.membership.price) : 0;
-
-      let activeFamilyMembersCount = activeFamilyMembers.length;
-      activeFamilyMembersCount += (subscription.status === 'active' || subscription.status == 'cancellation_requested') ? 1 : 0;
-
-      if (subscription.status === 'active' && subscription.membership.type === 'monthly') {
-        paymentDueAmount += membership.monthlyPrice;
+      // find active members w/o a cancellation pending
+      let activeMembers = members.filter((member) => {
+        return member.subscription !== undefined && member.subscription.status === 'active';
+      });
+      if (patient.subscription !== undefined && patient.subscription.status === 'active') {
+        activeMembers.push(patient);
       }
 
-      paymentDueAmount = paymentDueAmount.toFixed(2);
+      // find active members w/ a cancellation pending
+      let cancellingMembers = members.filter((member) => {
+        return member.subscription !== undefined && member.subscription.status === 'cancellation_requested';
+      });
+      if (patient.subscription !== undefined && patient.subscription.status === 'cancellation_requested') {
+        cancellingMembers.push(patient);
+      }
 
-      const memberOrigin = MEMBER_ORIGINS[origin];
+      // calculate the next month's subscription price
+      // (only members w/o a cancellation pending)
+      const paymentDueAmount = activeMembers
+        .reduce((paymentDueAccumulator, member) => {
+          if (member.subscription.membership.type === 'month') {
+            paymentDueAccumulator += Number.parseFloat(member.subscription.membership.price);
+          }
+          return paymentDueAccumulator;
+        }, 0)
+        .toFixed(2);
 
-      // const summaryStatus = subscription.status.toLowerCase();
-      const summaryStatus = (subscription.status === 'active' || 'cancellation_requested') || activeFamilyMembers ? 'active' : 'inactive';
+      // calculate the total number of active subscriptions
+      // (including currently active members w/ a cancellation pending)
+      const activeMembersCount = activeMembers.length + cancellingMembers.length;
+
+      // determine how to style the account's summary status
+      // TODO: need to include other statuses beyond 'active' and 'inactive'
+      const summaryStatus = activeMembersCount > 0 ? 'active' : 'inactive';
 
       let statusStyle = "status";
       switch (summaryStatus) {
@@ -195,6 +205,8 @@ class PatientsList extends React.Component {
           break;
       }
 
+      const memberOrigin = MEMBER_ORIGINS[origin];
+
       const contactMethodMessage = type === 'client'
         ? PREFERRED_CONTACT_METHODS[contactMethod]
         : PREFERRED_CONTACT_METHODS_DENTIST_POV[contactMethod];
@@ -207,7 +219,6 @@ class PatientsList extends React.Component {
       } else {
         paymentDueDate = 'N/A';
       }
-
 
       const waiveCancellationFee = !patient.cancellationFeeWaiver;
       const waiveReEnrollmentFee = !patient.reEnrollmentFeeWaiver;
@@ -261,9 +272,9 @@ class PatientsList extends React.Component {
                     <span styleName="member-overview__info">{contactMethodMessage}</span>
                   </div>
                   <div className="col-sm-5 text-right">
-                    Active Family Members:
+                    Active Members:
                     {' '}
-                    <span styleName="member-overview__info">{activeFamilyMembersCount}</span>
+                    <span styleName="member-overview__info">{activeMembersCount}</span>
                   </div>
                 </div>
 
