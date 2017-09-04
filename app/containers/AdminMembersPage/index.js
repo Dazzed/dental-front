@@ -39,6 +39,8 @@ import {
   // search / sort dentists
   search,
   sort,
+  toggleRefundingMember,
+  initiateRefundingMember,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -53,11 +55,13 @@ import {
   selectSearch,
   selectSort,
   selectProcessedDentists,
+  selectRefundingMember,
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
 import styles from './styles.css';
 
+import RefundMemberForm from './modals/refund';
 /*
 Redux
 ------------------------------------------------------------
@@ -77,6 +81,7 @@ function mapStateToProps (state) {
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
+    refundingMember: selectRefundingMember(state),
   };
 }
 
@@ -96,6 +101,8 @@ function mapDispatchToProps (dispatch) {
     // search / sort patients
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
+    toggleRefundingMember: (id) => dispatch(toggleRefundingMember(id)),
+    initiateRefundingMember: (id, amount) => dispatch(initiateRefundingMember(id, amount)),
   };
 }
 
@@ -192,7 +199,7 @@ export default class AdminDentistsPage extends React.Component {
 
   // on refund / transfer
   onRefund = (dentist, patient) => {
-    alert('refund "' + patient.firstName + ' ' + patient.lastName + '"');
+    this.props.toggleRefundingMember(patient.id);
   }
 
   onTransfer = (dentist, patient) => {
@@ -362,6 +369,14 @@ export default class AdminDentistsPage extends React.Component {
     );
   }
 
+  handleRefundSubmit = (values) => {
+    this.props.initiateRefundingMember(this.props.refundingMember, values.amount);
+  };
+
+  cancelRefunding = () => {
+    this.props.toggleRefundingMember(null);
+  };
+
   /*
   Render
   ------------------------------------------------------------
@@ -472,10 +487,11 @@ export default class AdminDentistsPage extends React.Component {
           />
         </div>
 
-        {/* Modals
-         * ------------------------------------------------------ */}
-        {/* TODO */}
-
+        <RefundMemberForm
+          refundingMember={this.props.refundingMember ? true : false}
+          onSubmit={this.handleRefundSubmit}
+          onCancel={this.cancelRefunding}
+         />
       </div>
     );
   }
