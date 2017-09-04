@@ -35,6 +35,9 @@ import {
   EDIT_DENTIST_SUCCESS,
   DELETE_DENTIST_REVIEW_SUCCESS,
   FETCH_MANAGERS_SUCCESS,
+  TOGGLE_REFUNDING_MEMBER,
+  FAILED_REFUNDING_MEMBER,
+  REFUNDING_MEMBER_SUCCESS,
 } from './constants';
 
 /*
@@ -57,6 +60,7 @@ const initialState = {
   // search / sort patients
   searchName: null,
   sortStatus: "date",
+  refundingMember: null,
 };
 
 
@@ -185,6 +189,17 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         managers: action.payload,
+      };
+    case TOGGLE_REFUNDING_MEMBER:
+      return {
+        ...state,
+        refundingMember: action.payload
+      };
+    case REFUNDING_MEMBER_SUCCESS:
+    case FAILED_REFUNDING_MEMBER:
+      return {
+        ...state,
+        refundingMember: null,
       };
     /*
     Default Reducer
