@@ -62,7 +62,7 @@ export default class RefundMemberForm extends React.Component {
                 name="amount"
                 type="number"
                 component={this.getLabeledInput}
-                label="Amount (in cents)"
+                label="Amount (in dollars)"
                 placeholder=""
                 width={6}
                 className="col-sm-12"
