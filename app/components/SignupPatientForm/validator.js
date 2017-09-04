@@ -72,9 +72,10 @@ const schema = {
   officeId: {
     presence: { message: '^Please select a dental office' },
   },
-  // TODO: membership type, depends on custom memberships
-  // https://trello.com/c/4ncylJjw/86-core-add-support-for-custom-memberships
-  // payingMember is optional
+
+  membershipId: {
+    presence: true,
+  },
 };
 
 export default validatorFactory(schema);

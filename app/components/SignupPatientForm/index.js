@@ -141,28 +141,18 @@ class SignupForm extends React.Component {
   validating the form on every change, which makes this a linear-time slowdown.
   */
   componentWillReceiveProps(nextProps) {
-    let validPOHMembership = false;
-    if (nextProps.formValues.payingMember) {
-      if (nextProps.formValues.membershipId && nextProps.formValues.membershipId !== '0') {
-        validPOHMembership = true;
-      }
-    } else {
-      validPOHMembership = true;
-    }
-
     const {
       // passed in
       autosubmit,
       onSubmit,
     } = this.props;
 
-    if (autosubmit === true                            // autosubmit is requested
+    if (autosubmit === true                             // autosubmit is requested
       && nextProps.dirty === true                       // the form has been touched
       && this.props.formValues !== nextProps.formValues // a change was made
       && Object.keys(                                   // the form is valid (including the change)
         SignupFormValidator(nextProps.formValues)
       ).length === 0
-      && validPOHMembership
     ) {
       onSubmit(nextProps.formValues);
     }
@@ -380,36 +370,34 @@ class SignupForm extends React.Component {
             )
           }
 
-          {/* TODO: select membership type here */}
-
-          <div className="col-sm-4" styleName="align-with-input">
+          <div className="col">
             <Field
-              name="payingMember"
-              component={this.getCheckbox}
+              name="membershipId"
+              type="select"
+              component={this.getLabeledInput}
+              label="Membership Type"
+              className="col-md-6"
             >
-              <strong>I Will Also Be A Member</strong>
+              <option value="-1">I will not be a member.</option>
+              {
+                memberships
+                  .filter(m => m.subscription_age_group === 'adult' && m.active)
+                  .map(membership =>
+                    <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
+                  )
+              }
             </Field>
           </div>
-          <div className="col">
-            {
-              formValues && formValues.payingMember ?
-                <Field
-                  name="membershipId"
-                  type="select"
-                  component={this.getLabeledInput}
-                  label="Membership Type"
-                  className="col-md-6"
-                >
-                  <option value="0">Membership Type</option>
-                  {
-                    memberships
-                      .filter(m => m.subscription_age_group === 'adult' && m.active)
-                      .map(membership =>
-                        <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
-                      )
-                  }
-                </Field> : null
-            }
+
+          <div className="col-sm-12">
+            <h5 styleName="field-instructions">
+              *Select a membership if you want your own membership.
+            </h5>
+
+            <h5 styleName="field-instructions">
+              *You can choose not to have a personal membership if you are only
+              signing up other family members.
+            </h5>
           </div>
         </Row>
 
