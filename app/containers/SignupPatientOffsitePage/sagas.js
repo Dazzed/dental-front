@@ -202,11 +202,11 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     state: paymentInfo.state,
     zipCode: paymentInfo.zip,
 
+    membershipId: user.membershipId === '-1' ? null : user.membershipId,
+
     members: cleanedMembers,
     stripeToken
   };
-
-  user.membershipId = isNaN(Number(user.membershipId)) ? null : user.membershipId;
 
   try {
     const requestURL = '/api/v1/accounts/signup';

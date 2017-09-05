@@ -227,7 +227,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
-      toastError('There was an error embedding Stripe, please reload the page');
+      this.props.toastError('There was an error embedding Stripe, please reload the page');
     }
   }
 
@@ -266,7 +266,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     } = this.state;
 
     if (user.members.length === 1
-      && user.payingMember === true
+      && user.membershipId !== '-1'
       && soloAccountMemberConfirmation === false
     ) {
       this.setState({
@@ -379,7 +379,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
                 <div styleName="stage">
                   <h2 styleName="large-title">
-                    Dentit Not Found
+                    Dentist Not Found
                   </h2>
 
                   <p styleName="error-message">
