@@ -141,7 +141,7 @@ function mapDispatchToProps(dispatch) {
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
     setEditingPatientProfile: (patient) => dispatch(setEditingPatientProfile(patient)),
     clearEditingPatientProfile: () => dispatch(clearEditingPatientProfile()),
-    submitPatientProfileForm: (values) => dispatch(submitPatientProfileForm(values)),
+    submitPatientProfileForm: (patient) => dispatch(submitPatientProfileForm(patient)),
 
     // edit patient payment info
     resetPatientPaymentForm: () => dispatch(resetForm('checkout')),
@@ -303,8 +303,8 @@ class DentistNewReviewsPage extends React.Component {
     this.props.clearEditingPatientProfile();
   }
 
-  handlePatientProfileFormSubmit = (values) => {
-    this.props.submitPatientProfileForm(values, values.id);
+  handlePatientProfileFormSubmit = (patient) => {
+    this.props.submitPatientProfileForm(patient);
   };
 
   // payment
