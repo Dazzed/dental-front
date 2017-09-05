@@ -146,7 +146,7 @@ function mapDispatchToProps(dispatch) {
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
     setEditingPatientProfile: (patient) => dispatch(setEditingPatientProfile(patient)),
     clearEditingPatientProfile: () => dispatch(clearEditingPatientProfile()),
-    submitPatientProfileForm: (values) => dispatch(submitPatientProfileForm(values)),
+    submitPatientProfileForm: (patient) => dispatch(submitPatientProfileForm(patient)),
 
     // edit patient payment info
     resetPatientPaymentForm: () => dispatch(resetForm('checkout')),
@@ -349,7 +349,6 @@ class DentistNewMembersPage extends React.Component {
     this.props.resetMemberForm();
     member.fromDentist = true;
 
-    console.log('can update member');
     this.props.setEditingMember(patient, member, (submit) => {
       this.updateMemberConfirm(patient, member, submit);
     });
@@ -357,11 +356,7 @@ class DentistNewMembersPage extends React.Component {
 
   updatePatientProfile = (patient) => {
     this.props.resetPatientProfileForm();
-    this.props.setEditingPatientProfile({
-      ...patient.client,
-      membership: patient.membership,
-      fromDentist: true
-    });
+    this.props.setEditingPatientProfile(patient);
   }
 
   // payments
@@ -388,8 +383,8 @@ class DentistNewMembersPage extends React.Component {
     this.props.clearEditingPatientProfile();
   }
 
-  handlePatientProfileFormSubmit = (values) => {
-    this.props.submitPatientProfileForm(values, values.id);
+  handlePatientProfileFormSubmit = (patient) => {
+    this.props.submitPatientProfileForm(patient);
   };
 
   // payment

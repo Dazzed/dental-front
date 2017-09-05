@@ -132,7 +132,6 @@ export function fetchPatients() {
 }
 
 export function fetchPatientsSuccess(payload) {
-  console.log('got new payload', payload);
   return {
     type: FETCH_PATIENTS_SUCCESS,
     payload,
