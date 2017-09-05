@@ -9,6 +9,7 @@ Imports
 */
 // libs
 import findIndex from 'lodash/findIndex';
+import get from 'lodash/get';
 
 // local
 import {
@@ -103,10 +104,21 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     case FETCH_PATIENTS_SUCCESS:
-      const payload = action.payload;
+      patients = action.payload.map((patient) => {
+        return {
+          ...patient,
+
+          // set easy access to the patient's address and phone number
+          address: get(patient, 'addresses[0].value'),
+          phone: get(patient, 'phoneNumbers[0].number'),
+          addresses: undefined,
+          phoneNumbers: undefined,
+        };
+      });
+
       return {
         ...state,
-        patients: payload,
+        patients,
       };
 
     case FETCH_DENTIST_REPORTS_SUCCESS:
@@ -253,20 +265,15 @@ function dentistMembersPageReducer(state = initialState, action) {
     case EDIT_PATIENT_PROFILE_SUCCESS:
       patientIdx = state.patients.findIndex(patient => patient.id === action.payload.id);
 
-      // rebuild the updated patient's members list (and add them to the list)
-      newStatePatient = {
-        ...action.payload,
-        members: [
-          ...action.payload.members, // TODO: remove main account holder insert from members?
-          action.payload,
-        ],
-      };
-
-      state.patients[patientIdx] = newStatePatient;
       return {
         ...state,
         editingActive: false,
         editing: null,
+        patients: [
+          ...state.patients.slice(0, patientIdx),
+          action.payload,
+          ...state.patients.slice(patientIdx + 1),
+        ],
       };
 
     /* Edit Patient Payment Info
