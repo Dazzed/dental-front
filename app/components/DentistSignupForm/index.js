@@ -37,6 +37,15 @@ import LabeledInput from 'components/LabeledInput';
 // local
 import styles from './styles.css';
 import dentistSignupFormValidator from './validator';
+import FaTrash from 'react-icons/lib/ti/trash';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import {
+  logoSelector,
+  avatarSelector,
+  officeImage0Selector,
+  officeImage1Selector,
+  officeImage2Selector
+} from './selectors';
 
 /*
 Field Validators
@@ -65,6 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => {
+
   const {
     pricing,
     workingHours,
@@ -188,11 +198,18 @@ const mapStateToProps = (state) => {
       friday: workingHours.friday === undefined || workingHours.friday.isOpen === false,
       saturday: workingHours.saturday === undefined || workingHours.saturday.isOpen === false,
       sunday: workingHours.sunday === undefined || workingHours.sunday.isOpen === false,
-    }
+    },
+    officeLogo: logoSelector(state),
+    avatar: avatarSelector(state),
+    officeImages0: officeImage0Selector(state),
+    officeImages1: officeImage1Selector(state),
+    officeImages2: officeImage2Selector(state),
   };
 };
 
-
+const deleteTooltip = (
+  <Tooltip id="tooltip"><strong>Delete this image</strong></Tooltip>
+);
 /*
 Signup Form
 ================================================================================
@@ -275,6 +292,10 @@ class DentistSignupForm extends React.Component {
 
   setOfficeImage2 = (info) => {
     this.props.change('officeInfo.officeImages2', info.fileUrl);
+  }
+
+  deleteImage = (valueName) => {
+    this.props.change(valueName, null);
   }
 
   getInput(props) {
@@ -571,7 +592,13 @@ class DentistSignupForm extends React.Component {
               <FormGroup>
                 <div className="col-sm-12">
                   <ControlLabel>Upload Office Logo:</ControlLabel>
-
+                  <ControlLabel style={{display: this.props.officeLogo ? 'block' : 'none'}}>
+                    <OverlayTrigger overlay={deleteTooltip}>
+                      <div styleName="dropzone-display__icon_trash">
+                        <FaTrash size={48} onClick={() => this.deleteImage('officeInfo.logo')}/>
+                      </div>
+                    </OverlayTrigger>
+                  </ControlLabel>
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeLogo}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
@@ -586,7 +613,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay />
+                    <DropzoneDisplay actualValue={this.props.officeLogo} />
                   </DropzoneS3Uploader>
 
                 </div>
@@ -597,7 +624,13 @@ class DentistSignupForm extends React.Component {
               <FormGroup>
                 <div className="col-sm-12">
                   <ControlLabel>Upload Profile Picture:</ControlLabel>
-
+                  <ControlLabel style={{display: this.props.avatar ? 'block' : 'none'}}>
+                    <OverlayTrigger overlay={deleteTooltip}>
+                      <div styleName="dropzone-display__icon_trash">
+                        <FaTrash size={48} onClick={() => this.deleteImage('user.avatar')}/>
+                      </div>
+                    </OverlayTrigger>
+                  </ControlLabel>
                   <DropzoneS3Uploader
                     onFinish={this.setProfilePicture}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
@@ -612,7 +645,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay />
+                    <DropzoneDisplay actualValue={this.props.avatar} />
                   </DropzoneS3Uploader>
 
                 </div>
@@ -630,9 +663,15 @@ class DentistSignupForm extends React.Component {
           <FormGroup>
             <div className="col-sm-12">
               <ControlLabel>Upload Office Images:</ControlLabel>
-
               <Row>
                 <div className="col-sm-4">
+                  <ControlLabel style={{display: this.props.officeImages0 ? 'block' : 'none'}}>
+                    <OverlayTrigger overlay={deleteTooltip}>
+                      <div styleName="dropzone-display__icon_trash">
+                        <FaTrash size={48} onClick={() => this.deleteImage('officeInfo.officeImages0')}/>
+                      </div>
+                    </OverlayTrigger>
+                  </ControlLabel>
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage0}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
@@ -647,11 +686,18 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay />
+                    <DropzoneDisplay actualValue={this.props.officeImages0} />
                   </DropzoneS3Uploader>
                 </div>
 
                 <div className="col-sm-4">
+                  <ControlLabel style={{display: this.props.officeImages1 ? 'block' : 'none'}}>
+                    <OverlayTrigger overlay={deleteTooltip}>
+                      <div styleName="dropzone-display__icon_trash">
+                        <FaTrash size={48} onClick={() => this.deleteImage('officeInfo.officeImages1')}/>
+                      </div>
+                    </OverlayTrigger>
+                  </ControlLabel>
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage1}
                     s3Url='https://dentalman_uploads.s3.amazonaws.com'
@@ -666,10 +712,17 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay />
+                    <DropzoneDisplay actualValue={this.props.officeImages1} />
                   </DropzoneS3Uploader>
                 </div>
 
+                <ControlLabel style={{display: this.props.officeImages2 ? 'block' : 'none'}}>
+                  <OverlayTrigger overlay={deleteTooltip}>
+                    <div styleName="dropzone-display__icon_trash">
+                      <FaTrash size={48} onClick={() => this.deleteImage('officeInfo.officeImages2')}/>
+                    </div>
+                  </OverlayTrigger>
+                </ControlLabel>
                 <div className="col-sm-4">
                   <DropzoneS3Uploader
                     onFinish={this.setOfficeImage2}
@@ -685,7 +738,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay />
+                    <DropzoneDisplay actualValue={this.props.officeImages2} />
                   </DropzoneS3Uploader>
                 </div>
               </Row>
