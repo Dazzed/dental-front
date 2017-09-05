@@ -30,7 +30,18 @@ export default class UploadDisplay extends React.Component {
       error,
       progress,
       uploadedFiles,
+      actualValue,
     } = this.props;
+
+    if (!actualValue) {
+      return (
+        <div styleName="dropzone-display dropzone-display--prompt">
+          <span styleName="dropzone-display__icon">
+            <FaPlus size={48} />
+          </span>
+        </div>
+      );
+    }
 
     /*
     Render Error State
