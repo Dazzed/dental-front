@@ -85,6 +85,11 @@ const selectRefundingMember = createSelector(
   (substate) => substate.refundingMember
 );
 
+const selectMasterReportsDates = createSelector(
+  domainSelector,
+  (substate) => substate.masterReportsDates
+);
+
 const selectProcessedDentists = createSelector(
   selectDentists,
   selectSearch,
@@ -165,4 +170,6 @@ export {
   selectProcessedDentists,
   selectManagers,
   selectRefundingMember,
+  // reports
+  selectMasterReportsDates,
 };
