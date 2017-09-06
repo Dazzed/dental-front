@@ -22,7 +22,7 @@ export default class MasterReports extends React.Component {
 
   static propTypes = {
     reportDates: React.PropTypes.object.isRequired,
-    // renderListEntryBody: React.PropTypes.func.isRequired,
+    onMasterReportSelected: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -39,7 +39,7 @@ export default class MasterReports extends React.Component {
             <div className="col-sm-12">
               <div styleName="list-entry">
                 <div styleName="list-entry__header">
-                  <span styleName="list-entry__title">
+                  <span styleName="list-entry__title" onClick={(evt) => this.props.onMasterReportSelected({ year, month: yearData.monthShort })}>
                     {yearData.month}
                   </span>
                 </div>

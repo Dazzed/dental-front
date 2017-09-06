@@ -324,7 +324,7 @@ function* downloadMasterReport () {
       const params = {
         method: "GET",
       };
-      const requestUrl = `/api/v1/reports/dentists/${year}/${month}`;
+      const requestUrl = `/api/v1/reports/admin/master_report/${year}/${month}`;
       const pdfBlob = yield call(request, requestUrl, params);
 
       var link = document.createElement('a');

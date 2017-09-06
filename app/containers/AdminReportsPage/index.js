@@ -116,25 +116,8 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-/* Master Report Date Info
- * ------------------------------------------------------ */
-// const masterReports = [];
-
-// let reportDate = moment();
-// let firstReport = moment("2017-01-01");
-// while (firstReport.isBefore(reportDate)) {
-//   masterReports.push({
-//     year: reportDate.format("YYYY"),
-//     month: reportDate.format("M"),
-//     text: reportDate.format("YYYY - MMMM"),
-//   });
-
-//   reportDate.subtract(1, 'month');
-// }
-
-
 /*
-Admin Dentists
+Admin Reports
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
@@ -224,7 +207,7 @@ export default class AdminDentistsPage extends React.Component {
     if (this.props.selectedDentist) {
       if (this.props.selectedDentist.id !== dentist.id) {
         this.props.setSelectedDentist(dentist);
-        this.props.fetchDentistReports(dentist.id);  
+        this.props.fetchDentistReports(dentist.id);
       } else {
         this.props.setSelectedDentist(null);
       }
@@ -260,8 +243,7 @@ export default class AdminDentistsPage extends React.Component {
     this.props.downloadReport(reportName, url);
   }
 
-  onMasterReportSelected = (evt) => {
-    const report = masterReports[evt.target.value];
+  onMasterReportSelected = (report) => {
     this.props.downloadMasterReport(report.year, report.month);
   }
 
@@ -436,6 +418,7 @@ export default class AdminDentistsPage extends React.Component {
                       <div className="col-sm-offset-1 col-sm-10">
                         <MasterReports
                           reportDates={this.props.masterReportsDates}
+                          onMasterReportSelected={this.onMasterReportSelected}
                          />
                       </div>
                     </div>
