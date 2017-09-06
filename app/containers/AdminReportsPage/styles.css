@@ -80,3 +80,69 @@ Page Wide
     text-decoration: none;
   }
 }
+
+/* List entry styles */
+/* Dentist List Entry Component Styles
+ * ========================================================================== */
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+
+
+
+/* Dentist List Entry
+ * ========================================================================== */
+.list-entry__wrapper {
+  margin-bottom: 2rem;
+  border-bottom: 1px dashed $color-primary-lowlight;
+  padding-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.list-entry {
+  padding: 1.5rem;
+  border-radius: 1rem;
+
+  background-color: $color-white;
+}
+
+.list-entry__header {
+  font-size: 2rem;
+
+  cursor: pointer;
+
+  .list-entry__title {
+    color: $color-primary-highlight;
+  }
+
+  .list-entry__toggle {
+    float: right;
+
+    color: $color-secondary-lowlight;
+  }
+
+  &:hover .list-entry__toggle {
+    color: $color-primary-lowlight;
+  }
+}
+
+.list-entry__body {
+  margin-top: 1rem;
+  border-top: 1px solid $color-secondary-lowlight;
+  padding-top: 1rem;
+}
