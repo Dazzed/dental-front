@@ -249,55 +249,55 @@ export default class AdminDentistsPage extends React.Component {
 
   /* Render Dentist Reports
    * ------------------------------------------------------ */
-  renderDentistReports = () => {
-    const {
-      dentistReports
-    } = this.props;
+  // renderDentistReports = () => {
+  //   const {
+  //     dentistReports
+  //   } = this.props;
 
-    // precondition render: the data must be loaded, otherwise wait for it
-    if (dentistReports === null) {
-      return (
-        <div className="text-center">
-          <LoadingSpinner showOnlyIcon={true} />
-        </div>
-      );
-    }
+  //   // precondition render: the data must be loaded, otherwise wait for it
+  //   if (dentistReports === null) {
+  //     return (
+  //       <div className="text-center">
+  //         <LoadingSpinner showOnlyIcon={true} />
+  //       </div>
+  //     );
+  //   }
 
-    // precondition render: there are no reports to display
-    if (dentistReports.length === 0) {
-      return (
-        <div>
-          The dentist does not have any reports yet.
-        </div>
-      );
-    }
+  //   // precondition render: there are no reports to display
+  //   if (dentistReports.length === 0) {
+  //     return (
+  //       <div>
+  //         The dentist does not have any reports yet.
+  //       </div>
+  //     );
+  //   }
 
-    return (
-      <div>
-        {dentistReports.map((report) => {
-          return this.renderDentistReport(report);
-        })}
-      </div>
-    );
-  }
+  //   return (
+  //     <div>
+  //       {dentistReports.map((report) => {
+  //         return this.renderDentistReport(report);
+  //       })}
+  //     </div>
+  //   );
+  // }
 
-  renderDentistReport = (report) => {
-    return (
-      <div className="row" key={report.year + " - " + report.month}>
-        <div className="col-sm-1">
-          {report.year}
-        </div>
-        <div className="col-sm-1">
-          {report.month}
-        </div>
-        <div className="col-sm-10">
-          <span className={styles['report-link']} onClick={this.onDentistReportLinkClick.bind(this, report)}>
-            Download Report
-          </span>
-        </div>
-      </div>
-    );
-  }
+  // renderDentistReport = (report) => {
+  //   return (
+  //     <div className="row" key={report.year + " - " + report.month}>
+  //       <div className="col-sm-1">
+  //         {report.year}
+  //       </div>
+  //       <div className="col-sm-1">
+  //         {report.month}
+  //       </div>
+  //       <div className="col-sm-10">
+  //         <span className={styles['report-link']} onClick={this.onDentistReportLinkClick.bind(this, report)}>
+  //           Download Report
+  //         </span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   /*
   Render
@@ -451,6 +451,7 @@ export default class AdminDentistsPage extends React.Component {
                           dentists={this.props.dentists}
                           onSelectDentist={this.onSelectDentist}
                           selectedDentist={this.props.selectedDentist}
+                          onDentistReportLinkClick={this.onDentistReportLinkClick}
                         />
                       </div>
                     </div>

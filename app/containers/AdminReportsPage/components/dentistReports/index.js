@@ -24,6 +24,7 @@ export default class DentistReports extends React.Component {
   static propTypes = {
     dentists: React.PropTypes.array.isRequired,
     onSelectDentist: React.PropTypes.func.isRequired,
+    onDentistReportLinkClick: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -46,7 +47,7 @@ export default class DentistReports extends React.Component {
           <div className="col-sm-12">
             <div styleName="list-entry">
               <div styleName="list-entry__header">
-                <span styleName="list-entry__title">
+                <span styleName="list-entry__title" onClick={(evt) => this.props.onDentistReportLinkClick({ year: year.year, month: year.monthShort, url: year.url })}>
                   {year.month}
                 </span>
               </div>
