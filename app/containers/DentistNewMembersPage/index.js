@@ -179,7 +179,7 @@ class DentistNewMembersPage extends React.Component {
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
     patientsWithNewMembers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the member lists
-    reports: React.PropTypes.arrayOf(React.PropTypes.object),
+    reports: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
