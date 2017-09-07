@@ -107,6 +107,6 @@ render(
 // it's not most important operation and if main code fails,
 // we do not want it installed
 
-const install = require('offline-plugin/runtime').install;
+// const install = require('offline-plugin/runtime').install;
 
-install();
+// install();
