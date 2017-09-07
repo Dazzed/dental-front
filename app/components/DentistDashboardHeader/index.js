@@ -43,7 +43,7 @@ class DentistDashboardHeader extends React.Component {
     currentSearchTerm: React.PropTypes.string,
     dentistInfo: React.PropTypes.object,
     patients: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-    reports: React.PropTypes.arrayOf(React.PropTypes.object),
+    reports: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,

@@ -130,12 +130,6 @@ export default class DentistReports extends React.Component {
                     </div>
                   }
 
-                  {/*{!selectedDentist && !selectedDentist.reports && 
-                    <div className="text-center">
-                      <LoadingSpinner showOnlyIcon />
-                    </div>
-                  }*/}
-
                 </div>
               </div>
             </div>

@@ -175,7 +175,7 @@ class DentistMembersPage extends React.Component {
     // fetch - state
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
-    reports: React.PropTypes.arrayOf(React.PropTypes.object),
+    reports: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool, // will be `false` until loaded
       React.PropTypes.object,
