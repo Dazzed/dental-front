@@ -122,12 +122,13 @@ Checkout
 ------------------------------------------------------------
 */
 
-export function createStripeToken(cardDetails, user, paymentInfo) {
+export function createStripeToken(cardDetails, user, paymentInfo, isLoggedIn) {
   return {
     type: STRIPE_CREATE_TOKEN,
     cardDetails,
     user,
-    paymentInfo
+    paymentInfo,
+    isLoggedIn
   }
 }
 
