@@ -31,6 +31,7 @@ import MembersList from 'components/MembersList/checkout';
 import NavBar from 'components/NavBar';
 import PageHeader from 'components/PageHeader';
 import SignupPatientForm from 'components/SignupPatientForm';
+import { selectAuthState } from 'containers/App/selectors';
 
 // local
 import {
@@ -85,6 +86,9 @@ Redux
 */
 function mapStateToProps(state) {
   return {
+    // app
+    isLoggedIn: selectAuthState(state),
+
     // fetch dentist
     dentist: dentistSelector(state),
     dentistError: dentistErrorSelector(state),
@@ -132,7 +136,7 @@ function mapDispatchToProps(dispatch) {
     resetCheckoutForm: () => dispatch(resetForm('checkout')),
     setEditingCheckout: (cardDetails) => dispatch(setEditingCheckout(cardDetails)),
     clearEditingCheckout: () => dispatch(clearEditingCheckout()),
-    createStripeToken: (cardDetails, user, paymentInfo) => dispatch(createStripeToken(cardDetails, user, paymentInfo)),
+    createStripeToken: (cardDetails, user, paymentInfo, isLoggedIn) => dispatch(createStripeToken(cardDetails, user, paymentInfo, isLoggedIn)),
 
     // signup
     clearSignupStatus: () => dispatch(clearSignupStatus()),
@@ -152,6 +156,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
   static propTypes = {
     // react
     location: React.PropTypes.object.isRequired,
+
+    // app - state
+    isLoggedIn: React.PropTypes.bool.isRequired,
 
     // app - dispatch
     changeRoute: React.PropTypes.func.isRequired,
@@ -317,7 +324,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
       name: paymentInfo.fullName,
       cvc: paymentInfo.cvc,
       expiry: paymentInfo.expiry
-    }, this.props.user, paymentInfo);
+    }, this.props.user, paymentInfo, this.props.isLoggedIn);
     // this.props.makeSignupRequest(this.props.user, paymentInfo);
   };
 
@@ -751,11 +758,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
               </p>
 
               <p>
-                You are now registered for our dental membership plan! You should receive a confirmation email with an activation link shortly. Please check your email address (<a href={`mailto:${accountInfo.loginEmail}`} target="_blank">{accountInfo.loginEmail}</a>), including your spam folder.
-              </p>
-
-              <p>
-                Once your account is activated, you will be able to access your dashboard where you can discover more about your dentist, members, and membership plans.
+                You are now registered for our dental membership plan! Continue to your dashboard where you can discover more about your dentist, members, and membership plans.
               </p>
 
               <p styleName="letter__from">
@@ -772,7 +775,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                 type="button"
                 className="modal-control"
                 onClick={this.goToLoginPage}
-                value="Login Page >"
+                value="Dashboard >"
               />
             </div>
           </Modal.Footer>

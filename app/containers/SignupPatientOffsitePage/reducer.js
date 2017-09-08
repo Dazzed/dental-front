@@ -55,6 +55,7 @@ const initialState = {
     id: uniqueId(),
     members: [],
     origin: "internal",
+    membershipId: "-1",
   },
 
   editingActive: false,
@@ -91,12 +92,20 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     ------------------------------------------------------------
     */
     case DENTIST_SUCCESS:
+      const firstAdultMembership = action.dentist
+      .memberships
+      .filter(m => m.subscription_age_group === 'adult' && m.active)[0];
+
       return {
         ...state,
         dentist: {
           ...action.dentist,
           offices: [action.dentist.dentistInfo],
         },
+        user: {
+          ...state.user,
+          membershipId: firstAdultMembership.id
+        }
       };
 
     case DENTIST_ERROR:
