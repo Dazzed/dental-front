@@ -124,7 +124,7 @@ function dentistMembersPageReducer(state = initialState, action) {
     case FETCH_DENTIST_REPORTS_SUCCESS:
       return {
         ...state,
-        dentistReports: action.payload.reverse(),
+        dentistReports: action.payload,
       };
 
     /*

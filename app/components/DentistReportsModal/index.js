@@ -18,7 +18,6 @@ import LoadingSpinner from 'components/LoadingSpinner';
 // local
 import styles from './styles.css';
 
-
 /*
 Dentist Reports Modal
 ================================================================================
@@ -32,8 +31,36 @@ export default class DentistReportsModal extends React.Component {
     onHide: React.PropTypes.func.isRequired,
 
     // reports related
-    reports: React.PropTypes.arrayOf(React.PropTypes.object),
+    reports: React.PropTypes.object,
     onReportSelected: React.PropTypes.func.isRequired,
+  };
+
+  renderReports = () => {
+    const { reports } = this.props;
+    const reportsList = [];
+    for (const key in reports) {
+      reports[key].forEach(r => {
+        reportsList.push(r);
+      });
+    }
+
+    return reportsList.map(r => {
+      return (
+        <div className="row" key={r.year + " - " + r.month}>
+          <div className="col-sm-1">
+            {r.year}
+          </div>
+          <div className="col-sm-1">
+            {r.month}
+          </div>
+          <div className="col-sm-push-1 col-sm-8">
+            <span styleName="report-link" onClick={() => {this.props.onReportSelected(r)}}>
+              Download Report
+            </span>
+          </div>
+        </div>
+      );
+    });
   };
 
   /*
@@ -74,23 +101,7 @@ export default class DentistReportsModal extends React.Component {
     else {
       modalBody = (
         <div>
-          {reports.map((report) => {
-            return (
-              <div className="row" key={report.year + " - " + report.month}>
-                <div className="col-sm-1">
-                  {report.year}
-                </div>
-                <div className="col-sm-1">
-                  {report.month}
-                </div>
-                <div className="col-sm-10">
-                  <span styleName="report-link" onClick={() => {this.props.onReportSelected(report)}}>
-                    Download Report
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+          {this.renderReports()}
         </div>
       );
     }

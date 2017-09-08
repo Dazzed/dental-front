@@ -179,7 +179,7 @@ class DentistNewMembersPage extends React.Component {
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
     patientsWithNewMembers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the member lists
-    reports: React.PropTypes.arrayOf(React.PropTypes.object),
+    reports: React.PropTypes.object,
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -268,17 +268,32 @@ class DentistNewMembersPage extends React.Component {
       {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
     </div>;
 
-    const dialog = {
-      message: <div>If you are re-enrolling from a monthly membership into a monthly membership a $99 fee plus your membership payment will apply. Do you wish to continue?
-        {enrollmentDiv}</div>,
-      showDialog: true,
-      title: 'Re-enroll Member',
-      confirm: () => {
-        member.isEnrolling = true;
-        this.updateMember(patient, member);
-        this.handleCloseDialog();
-      }
-    };
+    let dialog;
+    if (member.subscription.stripeSubscriptionIdUpdatedAt) {
+      dialog = {
+        message: <div>If you are re-enrolling from a monthly membership into a monthly membership a $99 fee plus your membership payment will apply. Do you wish to continue?
+          {enrollmentDiv}</div>,
+        showDialog: true,
+        title: 'Re-enroll Member',
+        confirm: () => {
+          member.isEnrolling = true;
+          this.updateMember(patient, member);
+          this.handleCloseDialog();
+        }
+      };
+    } else {
+      dialog = {
+        message: <div>It seems like you are Enrolling for the first time. There will be no Re-enrollment penality applicable.
+          {enrollmentDiv}</div>,
+        showDialog: true,
+        title: 'Enroll Member',
+        confirm: () => {
+          member.isEnrolling = true;
+          this.updateMember(patient, member);
+          this.handleCloseDialog();
+        }
+      };
+    }
 
     this.setState({ dialog });
   }

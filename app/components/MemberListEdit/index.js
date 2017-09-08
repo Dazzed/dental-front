@@ -240,7 +240,7 @@ export default class MemberListEdit extends Component {
                   <input
                     type="button"
                     styleName="button--small"
-                    value="RE-ENROLL"
+                    value={member.subscription.stripeSubscriptionIdUpdatedAt ? "RE-ENROLL" : "ENROLL"}
                     onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )

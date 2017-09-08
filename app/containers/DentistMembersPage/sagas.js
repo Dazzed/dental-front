@@ -163,7 +163,7 @@ Fetch Dentist Reports
 function* dentistReportsFetcher () {
   yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
     try {
-      const response = yield call(request, `/api/v1/reports/dentists/me/list`);
+      const response = yield call(request, `/api/v1/reports/dentist/dates/me/list`);
       yield put(fetchDentistReportsSuccess(response.data));
     }
     catch (error) {
