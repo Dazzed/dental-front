@@ -110,3 +110,17 @@ render(
 // const install = require('offline-plugin/runtime').install;
 
 // install();
+
+// Code to uninstall service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (const registration of registrations) {
+      registration.unregister()
+    }
+  })
+  caches.keys().then(keyList => {
+    return Promise.all(keyList.map(key => {
+      return caches.delete(key)
+    }))
+  })
+}
