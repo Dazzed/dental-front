@@ -35,6 +35,10 @@ import {
   EDIT_DENTIST_SUCCESS,
   DELETE_DENTIST_REVIEW_SUCCESS,
   FETCH_MANAGERS_SUCCESS,
+  TOGGLE_REFUNDING_MEMBER,
+  FAILED_REFUNDING_MEMBER,
+  REFUNDING_MEMBER_SUCCESS,
+  FETCH_MASTER_REPORTS_DATES_SUCCESS,
 } from './constants';
 
 /*
@@ -57,6 +61,8 @@ const initialState = {
   // search / sort patients
   searchName: null,
   sortStatus: "date",
+  refundingMember: null,
+  masterReportsDates: {},
 };
 
 
@@ -111,7 +117,10 @@ export default function adminPageReducer (state = initialState, action) {
     case FETCH_DENTIST_REPORTS_SUCCESS:
       return {
         ...state,
-        dentistReports: action.payload.reverse(),
+        selectedDentist: {
+          ...state.selectedDentist,
+          reports: action.payload
+        }
       };
 
     case FETCH_DENTIST_REVIEWS_REQUEST:
@@ -185,6 +194,22 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         managers: action.payload,
+      };
+    case TOGGLE_REFUNDING_MEMBER:
+      return {
+        ...state,
+        refundingMember: action.payload
+      };
+    case REFUNDING_MEMBER_SUCCESS:
+    case FAILED_REFUNDING_MEMBER:
+      return {
+        ...state,
+        refundingMember: null,
+      };
+    case FETCH_MASTER_REPORTS_DATES_SUCCESS:
+      return {
+        ...state,
+        masterReportsDates: action.payload,
       };
     /*
     Default Reducer

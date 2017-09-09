@@ -72,6 +72,11 @@ import {
   FETCH_MANAGERS_REQUEST,
   FETCH_MANAGERS_SUCCESS,
   FETCH_MANAGERS_ERROR,
+  INITIATE_REFUNDING_MEMBER,
+  FAILED_REFUNDING_MEMBER,
+  REFUNDING_MEMBER_SUCCESS,
+  FETCH_MASTER_REPORTS_DATES,
+  FETCH_MASTER_REPORTS_DATES_SUCCESS,
 } from './constants';
 
 import superCompare from 'utils/superCompare';
@@ -97,6 +102,8 @@ function* main () {
   const watcherI = yield fork(downloadReport);
   const watcherJ = yield fork(downloadMasterReport);
   const watcherK = yield fork(managersFetcher);
+  const watcherL = yield fork(refundSubmitWatcher);
+  const watcherM = yield fork(masterReportsDatesFetcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -110,6 +117,8 @@ function* main () {
   yield cancel(watcherI);
   yield cancel(watcherJ);
   yield cancel(watcherK);
+  yield cancel(watcherL);
+  yield cancel(watcherM);
 }
 
 
@@ -172,7 +181,7 @@ function* dentistReportsFetcher () {
   yield* takeLatest(FETCH_DENTIST_REPORTS_REQUEST, function* handler(action) {
     try {
       const { dentistId } = action;
-      const response = yield call(request, `/api/v1/reports/dentist/${dentistId}/list`);
+      const response = yield call(request, `/api/v1/reports/dentist/dates/${dentistId}/list`);
       yield put(fetchDentistReportsSuccess(response.data));
     }
     catch (error) {
@@ -315,7 +324,7 @@ function* downloadMasterReport () {
       const params = {
         method: "GET",
       };
-      const requestUrl = `/api/v1/reports/dentists/${year}/${month}`;
+      const requestUrl = `/api/v1/reports/admin/master_report/${year}/${month}`;
       const pdfBlob = yield call(request, requestUrl, params);
 
       var link = document.createElement('a');
@@ -347,6 +356,63 @@ function* managersFetcher () {
       } catch (e) {
         console.log(e)
         yield put({type: FETCH_MANAGERS_ERROR});
+      }
+    });
+  }
+}
+
+function* refundSubmitWatcher() {
+  while (true) {
+    yield* takeLatest(INITIATE_REFUNDING_MEMBER, function* handler(action) {
+      try {
+        const body = {
+          userId: action.id,
+          refundAmount: action.amount,
+        };
+        const params = {
+          method: "POST",
+          body: JSON.stringify(body),
+        };
+        const requestURL = '/api/v1/admin/refunds';
+        const refund = yield call(request, requestURL, params);
+        yield put({
+          type: REFUNDING_MEMBER_SUCCESS,
+        });
+
+        const { message } = refund;
+        yield put(toastrActions.success('', message));
+      } catch (e) {
+        console.log(e);
+        yield put({ type: FAILED_REFUNDING_MEMBER });
+        if (e.errors) {
+          if (typeof e.errors === 'string') {
+            yield put(toastrActions.error('', e.errors.toString()));
+          }
+          else {
+            for (let key in e.errors) {
+              yield put(toastrActions.error('', e.errors[key].msg));
+            }
+          }
+        } else {
+          yield put(toastrActions.error('','Please  Try again later'));
+        }
+      }
+    });
+  }
+}
+
+function* masterReportsDatesFetcher() {
+  while (true) {
+    yield* takeLatest(FETCH_MASTER_REPORTS_DATES, function* handler() {
+      try {
+        const dates = yield call(request, '/api/v1/reports/master_dates');
+        yield put({
+          type: FETCH_MASTER_REPORTS_DATES_SUCCESS,
+          payload: dates.data
+        });
+      } catch (e) {
+        console.log(e)
+        yield put(toastrActions.error('','There was an error fetching master reports dates'));
       }
     });
   }

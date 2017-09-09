@@ -121,3 +121,8 @@ Services
                          ) / 2
                     */
 }
+
+.dropzone-display__icon_trash {
+  cursor: pointer;
+  color: $red;
+}

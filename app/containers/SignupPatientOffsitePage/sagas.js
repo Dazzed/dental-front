@@ -18,8 +18,10 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { change, reset, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
+import { setItem, removeItem } from 'utils/localStorage';
 
 // app
+import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
 import request from 'utils/request';
 
 // local
@@ -101,7 +103,7 @@ See:
 function* signupWatcher() {
   while (true) {
 
-    const { cardDetails, user, paymentInfo } = yield take(STRIPE_CREATE_TOKEN);
+    const { cardDetails, user, paymentInfo, isLoggedIn } = yield take(STRIPE_CREATE_TOKEN);
     // const { user, paymentInfo } = yield takeLatest(SIGNUP_REQUEST);
     const stripeToken = yield call(makeStripeCreateTokenRequest, cardDetails);
 
@@ -113,10 +115,20 @@ function* signupWatcher() {
       const signupResponse = yield call(makeSignupRequest, user, paymentInfo, stripeToken);
 
       if (signupResponse !== false) {
+        // NOTE: The `paymentSourceAndSubscribe` call is authenticated, which means
+        //       that the user account owner or their dentist must be logged in.
+        //       If an existing account is logged in, assume it is the dentist and
+        //       they just clicked the "Add Member" signup link on their dashboard.
+        //       If noone is logged in, use the signup details to authenticate the
+        //       user before proceeding.
+        //
+        //       TODO: If noone is currently logged in, should we de-authenticate
+        //             the user after the `paymentSourceAndSubscribe` api call
+        //             is completed?
         const realUserId = signupResponse.data[0].id;
-        const checkoutResponse = yield call(makeCheckoutRequest, stripeToken, realUserId, paymentInfo);
+        const loginResponse = yield call(makeLoginRequest, user, isLoggedIn);
 
-        if (checkoutResponse !== false) {
+        if (loginResponse !== false) {
           const paymentSourceAndSubscribeResponse = yield call(subscribe, stripeToken, realUserId);
 
           if (paymentSourceAndSubscribeResponse !== false) {
@@ -265,8 +277,48 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
   }
 }
 
-function* makeCheckoutRequest(stripeToken, userId, paymentInfo) {
-  return true;
+function* makeLoginRequest(user, isLoggedIn) {
+  if (isLoggedIn) {
+    return true;
+  }
+
+  else {
+    try {
+      const loginData = {
+        email: user.email,
+        password: user.password,
+      };
+
+      const requestURL = `/api/v1/accounts/login`;
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(loginData),
+      };
+
+      const response = yield call(request, requestURL, params);
+
+      // dispatch action to set user details to app.currentUser
+      yield put(setAuthState(true));
+
+      // set auth token to localstorage
+      yield call(setItem, 'auth_token', response.token);
+
+      // load details of authenticated user
+      yield put(meFromToken());
+
+      // Post-processor is in common/sagas/index.js
+
+      return true;
+
+    } catch (err) {
+      console.log(err);
+      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+      yield put(stopSubmit('checkout', null));
+      yield put(change('checkout', 'cardCode', null));
+      yield put(stopSubmit('signupPatient', null));
+      return false;
+    }
+  }
 }
 
 function* subscribe(stripeToken, userId) {

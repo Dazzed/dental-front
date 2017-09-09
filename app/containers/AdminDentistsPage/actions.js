@@ -61,6 +61,9 @@ import {
 
   //managers
   FETCH_MANAGERS_REQUEST,
+  TOGGLE_REFUNDING_MEMBER,
+  INITIATE_REFUNDING_MEMBER,
+  FETCH_MASTER_REPORTS_DATES,
 } from './constants';
 
 
@@ -335,3 +338,25 @@ export function fetchManagers() {
     type: FETCH_MANAGERS_REQUEST,
   };
 }
+
+export function toggleRefundingMember(value) {
+  return {
+    type: TOGGLE_REFUNDING_MEMBER,
+    payload: value
+  };
+}
+
+export function initiateRefundingMember(id, amount) {
+  return {
+    type: INITIATE_REFUNDING_MEMBER,
+    id,
+    amount,
+  };
+}
+
+export function fetchMasterReportsDates() {
+  return {
+    type: FETCH_MASTER_REPORTS_DATES,
+  };
+}
+

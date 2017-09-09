@@ -20,6 +20,8 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaSearch from 'react-icons/lib/fa/search';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
+import CaretDown from 'react-icons/lib/fa/caret-down';
+import CaretRight from 'react-icons/lib/fa/caret-right';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
@@ -43,6 +45,7 @@ import {
   // download report
   downloadReport,
   downloadMasterReport,
+  fetchMasterReportsDates,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -57,7 +60,11 @@ import {
   selectSearch,
   selectSort,
   selectProcessedDentists,
+  selectMasterReportsDates,
 } from 'containers/AdminDentistsPage/selectors';
+
+import MasterReports from './components/masterReports';
+import DentistReports from './components/dentistReports';
 
 // local
 import styles from './styles.css';
@@ -81,6 +88,7 @@ function mapStateToProps (state) {
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
+    masterReportsDates: selectMasterReportsDates(state),
   };
 }
 
@@ -104,28 +112,12 @@ function mapDispatchToProps (dispatch) {
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
     downloadMasterReport: (year, month) => dispatch(downloadMasterReport(year, month)),
+    fetchMasterReportsDates: () => dispatch(fetchMasterReportsDates()),
   };
 }
 
-/* Master Report Date Info
- * ------------------------------------------------------ */
-const masterReports = [];
-
-let reportDate = moment();
-let firstReport = moment("2017-01-01");
-while (firstReport.isBefore(reportDate)) {
-  masterReports.push({
-    year: reportDate.format("YYYY"),
-    month: reportDate.format("M"),
-    text: reportDate.format("YYYY - MMMM"),
-  });
-
-  reportDate.subtract(1, 'month');
-}
-
-
 /*
-Admin Dentists
+Admin Reports
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
@@ -144,6 +136,7 @@ export default class AdminDentistsPage extends React.Component {
       React.PropTypes.bool,
       React.PropTypes.object,
     ]).isRequired,
+    masterReportsDates: React.PropTypes.object.isRequired,
 
     // fetch - dispatch
     fetchDentists: React.PropTypes.func.isRequired,
@@ -168,12 +161,15 @@ export default class AdminDentistsPage extends React.Component {
     // download report - dispatch
     downloadReport: React.PropTypes.func.isRequired,
     downloadMasterReport: React.PropTypes.func.isRequired,
+    fetchMasterReportsDates: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
     super(props);
 
     this.state = {
+      isMasterReportsOpen: false,
+      isDentistReportsOpen: false,
       searchTerm: this.props.currentSearchTerm !== null
                   ? this.props.currentSearchTerm
                   : '',
@@ -183,10 +179,23 @@ export default class AdminDentistsPage extends React.Component {
   componentWillMount() {
     this.props.fetchDentists();
     this.props.fetchStats();
+    this.props.fetchMasterReportsDates();
   }
 
   componentDidMount() {
     this.props.changePageTitle('Dentists');
+  }
+
+  onSelectReportType = (type) => {
+    if (type == 'master') {
+      this.setState({
+        isMasterReportsOpen: !this.state.isMasterReportsOpen
+      });
+    } else {
+      this.setState({
+        isDentistReportsOpen: !this.state.isDentistReportsOpen
+      });
+    }
   }
 
   /*
@@ -195,11 +204,17 @@ export default class AdminDentistsPage extends React.Component {
   */
   // select dentist
   onSelectDentist = (dentist) => {
-    if (dentist !== null) {
+    if (this.props.selectedDentist) {
+      if (this.props.selectedDentist.id !== dentist.id) {
+        this.props.setSelectedDentist(dentist);
+        this.props.fetchDentistReports(dentist.id);
+      } else {
+        this.props.setSelectedDentist(null);
+      }
+    } else {
+      this.props.setSelectedDentist(dentist);
       this.props.fetchDentistReports(dentist.id);
     }
-
-    this.props.setSelectedDentist(dentist);
   }
 
   // search & sort
@@ -228,67 +243,10 @@ export default class AdminDentistsPage extends React.Component {
     this.props.downloadReport(reportName, url);
   }
 
-  onMasterReportSelected = (evt) => {
-    const report = masterReports[evt.target.value];
+  onMasterReportSelected = (report) => {
     this.props.downloadMasterReport(report.year, report.month);
   }
 
-  /* Render Dentist Reports
-   * ------------------------------------------------------ */
-  renderDentistReports = () => {
-    const {
-      dentistReports
-    } = this.props;
-
-    // precondition render: the data must be loaded, otherwise wait for it
-    if (dentistReports === null) {
-      return (
-        <div className="text-center">
-          <LoadingSpinner showOnlyIcon={true} />
-        </div>
-      );
-    }
-
-    // precondition render: there are no reports to display
-    if (dentistReports.length === 0) {
-      return (
-        <div>
-          The dentist does not have any reports yet.
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        {dentistReports.map((report) => {
-          return this.renderDentistReport(report);
-        })}
-      </div>
-    );
-  }
-
-  renderDentistReport = (report) => {
-    return (
-      <div className="row" key={report.year + " - " + report.month}>
-        <div className="col-sm-1">
-          {report.year}
-        </div>
-        <div className="col-sm-1">
-          {report.month}
-        </div>
-        <div className="col-sm-10">
-          <span className={styles['report-link']} onClick={this.onDentistReportLinkClick.bind(this, report)}>
-            Download Report
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  /*
-  Render
-  ------------------------------------------------------------
-  */
   render () {
     const {
       // fetch
@@ -315,7 +273,7 @@ export default class AdminDentistsPage extends React.Component {
     ------------------------------------------------------------
     */
     // precondition: the data must be loaded, otherwise wait for it
-    if (dentists === null) {
+    if (dentists === null || Object.keys(this.props.masterReportsDates).length === 0) {
       return (
         <div>
           <h1 styleName="large-title">Reports</h1>
@@ -382,32 +340,72 @@ export default class AdminDentistsPage extends React.Component {
                 <option value="name">Name</option>
               </select>
             </div>
+          </div>
 
-            <div className="col-sm-5" styleName="match-form-group-offset">
-              <select value="-1" onChange={this.onMasterReportSelected}>
-                <option value="-1">Download Master Report</option>
-                {masterReports.map((dateInfo, i) => {
-                  return (
-                    <option value={i} key={dateInfo.year + "-" + dateInfo.month}>{dateInfo.text}</option>
-                  );
-                })}
-              </select>
+          <div className="row" styleName="list-entry__wrapper">
+            <div className="col-sm-8">
+              <div styleName="list-entry">
+
+                <div styleName="list-entry__header" onClick={() => this.onSelectReportType('master')}>
+                  <span styleName="list-entry__title">
+                    Master Reports
+                  </span>
+
+                  <span styleName="list-entry__toggle">
+                    {this.state.isMasterReportsOpen ? (<CaretDown />) : (<CaretRight />)}
+                  </span>
+                </div>
+
+                {this.state.isMasterReportsOpen && (
+                  <div styleName="list-entry__body">
+                    <div className="row">
+                      <div className="col-sm-offset-1 col-sm-10">
+                        <MasterReports
+                          reportDates={this.props.masterReportsDates}
+                          onMasterReportSelected={this.onMasterReportSelected}
+                         />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
             </div>
           </div>
 
-          <DentistList
-            dentists={processedDentists}
-            selectedDentist={selectedDentist}
+          <div className="row" styleName="list-entry__wrapper">
+            <div className="col-sm-8">
+              <div styleName="list-entry">
 
-            selectDentist={this.onSelectDentist}
-            renderListEntryBody={this.renderDentistReports}
-          />
+                <div styleName="list-entry__header" onClick={() => this.onSelectReportType('dentist')}>
+                  <span styleName="list-entry__title">
+                    Dentist Reports
+                  </span>
+
+                  <span styleName="list-entry__toggle">
+                    {this.state.isDentistReportsOpen ? (<CaretDown />) : (<CaretRight />)}
+                  </span>
+                </div>
+
+                {this.state.isDentistReportsOpen && (
+                  <div styleName="list-entry__body">
+                    <div className="row">
+                      <div className="col-sm-offset-1 col-sm-10">
+                        <DentistReports 
+                          dentists={this.props.dentists}
+                          onSelectDentist={this.onSelectDentist}
+                          selectedDentist={this.props.selectedDentist}
+                          onDentistReportLinkClick={this.onDentistReportLinkClick}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Modals
-         * ------------------------------------------------------ */}
-        {/* TODO */}
-
       </div>
     );
   }
