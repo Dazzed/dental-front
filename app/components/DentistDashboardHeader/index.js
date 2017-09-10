@@ -115,6 +115,7 @@ class DentistDashboardHeader extends React.Component {
       city,
       state,
       zipCode,
+      officeSlug,
     } = dentistInfo;
 
     const {
@@ -198,6 +199,10 @@ class DentistDashboardHeader extends React.Component {
                   {phone}
                   <br />
                   {email}
+                  <br />
+                  <Link to={`/signup/${officeSlug}`}>
+                    {window.location.hostname}/signup/{officeSlug}
+                  </Link>
                 </p>
               </div>
 
