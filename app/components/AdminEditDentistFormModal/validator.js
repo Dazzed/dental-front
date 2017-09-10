@@ -28,7 +28,6 @@ const schema = {
     presence: true, email: true
   },
   affordabilityScore: {
-    presence: false,
     format: {
       pattern: /[1-4]/,
       message: 'Affordabilty score can only be between 1-4.'
