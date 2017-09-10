@@ -1,0 +1,26 @@
+.stage {
+  margin: 2.5rem 0 5rem 0;
+
+  .large-title {
+    color: $color-primary-highlight;
+
+    text-align: center;
+  }
+
+  .instructions {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+
+    font-weight: 300;
+  }
+}
+
+.error-message {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.container {
+  margin: 5%;
+  color: #147CE0;
+}
