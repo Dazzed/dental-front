@@ -20,7 +20,6 @@ import CSSModules from 'react-css-modules';
 import FaClose from 'react-icons/lib/fa/close';
 import { Field, reduxForm, } from 'redux-form';
 import { connect } from 'react-redux';
-import Select from 'react-select';
 
 // app
 import {
@@ -44,20 +43,16 @@ function formatPhoneNumber(s) {
 
 function mapStateToProps(state) {
   if (state.adminDentistsPage.selectedDentist) {
-    const { selectedDentist } = state.adminDentistsPage;
     const {
       firstName,
       lastName,
       email,
       dentistInfo,
       verified,
-      links,
-    } = selectedDentist;
+    } = state.adminDentistsPage.selectedDentist;
 
     const phone = state.adminDentistsPage.selectedDentist.phoneNumbers[0].number;
     const { affordabilityScore, marketplaceOptIn } = dentistInfo;
-
-    const { dentists } = state.adminDentistsPage;
 
     return {
       initialValues: {
@@ -67,12 +62,9 @@ function mapStateToProps(state) {
         phone: formatPhoneNumber(phone),
         managerId: dentistInfo.managerId,
         verified,
-        affordabilityScore: affordabilityScore ? String(affordabilityScore) : undefined,
-        marketplaceOptIn,
-        links: links.map(l => ({ value: l.id, label: l.officeName }))
-      },
-      dentists,
-      selectedDentist
+        affordabilityScore: affordabilityScore || undefined,
+        marketplaceOptIn
+      }
     };
   }
   return {};
@@ -99,13 +91,6 @@ export default class AdminEditDentistFormModal extends React.Component {
     onCancel: React.PropTypes.func.isRequired,
   };
 
-  componentWillMount () {
-    const { initialValues: { links } } = this.props;
-    this.state = {
-      alteredLinks: links
-    };
-  }
-
   handleFormSubmit = (values) => {
     this.props.onSubmit(values);
   }
@@ -116,13 +101,6 @@ export default class AdminEditDentistFormModal extends React.Component {
 
   getCheckbox(props) {
     return new Checkbox(props);
-  }
-
-  onSelectLink = dentists => {
-    this.setState({
-      alteredLinks: dentists
-    });
-    this.props.change('links', dentists);
   }
 
   render () {
@@ -138,13 +116,7 @@ export default class AdminEditDentistFormModal extends React.Component {
       valid,
       dirty,
       managers,
-      dentists,
-      selectedDentist
     } = this.props;
-
-    const optionsForLinking = dentists
-      .map(d => ({ value: d.id, label: d.dentistInfo.officeName }))
-      .filter(d => d.value !== selectedDentist.id);
 
     return (
       <Modal
@@ -250,21 +222,6 @@ export default class AdminEditDentistFormModal extends React.Component {
               />
             </Row>
 
-            <Row>
-              <h4 style={{ paddingLeft: '2%' }}><strong>Link Offices: </strong></h4>
-              <p style={{ paddingLeft: '2%' }}>Select Offices you wish to link.</p>
-              <Select
-                className="col-sm-6"
-                name="links"
-                value={this.state.alteredLinks}
-                options={optionsForLinking}
-                multi
-                onChange={this.onSelectLink}
-                clearable={false}
-                placeholder="Select the offices to link..."
-              />
-            </Row>
-            <br />
             <Row>
               <Field
                 name="marketplaceOptIn"
