@@ -8,8 +8,8 @@
     "url": "git://github.com/mxstbr/react-boilerplate.git"
   },
   "engines": {
-    "node": "7.7.4",
-    "npm": "4.1.2"
+    "node": "7.5.x",
+    "npm": "4.1.x"
   },
   "author": "Max Stoiber",
   "license": "MIT",
