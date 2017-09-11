@@ -168,6 +168,7 @@ function* dentistMembersFetcher (action) {
       const response = yield call(request, `/api/v1/dentists/${dentistId}/members`);
       yield put(fetchDentistMembersSuccess(response.data));
     } catch (error) {
+      console.log(error);
       yield put(fetchDentistMembersError(error));
     }
   });
