@@ -20,6 +20,7 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaSearch from 'react-icons/lib/fa/search';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
+import 'react-select/dist/react-select.min.css';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
@@ -203,7 +204,6 @@ export default class AdminDentistsPage extends React.Component {
 
   updateSearchTerm = (evt) => {
     this.setState({
-      ...this.state,
       searchTerm: evt.target.value,
     });
   }
@@ -212,19 +212,22 @@ export default class AdminDentistsPage extends React.Component {
   onEditDentist = () => {
     this.props.resetEditDentistForm();
     this.setState({
-      ...this.state,
       showEditDentistModal: true,
     });
   }
 
   onEditDentistCancel = () => {
     this.setState({
-      ...this.state,
       showEditDentistModal: false,
     });
   }
 
   onEditDentistSubmit = (values) => {
+    values = {
+      ...values,
+      links: this.props.selectedDentist.links,
+      alteredLinks: values.links.map(l => ({ id: l.value })),
+    };
     this.props.editDentist(this.props.selectedDentist, values);
   }
 
@@ -497,7 +500,7 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        { selectedDentist && 
+        { selectedDentist && this.state.showEditDentistModal &&
           <AdminEditDentistFormModal
             show={this.state.showEditDentistModal}
             onCancel={this.onEditDentistCancel}
