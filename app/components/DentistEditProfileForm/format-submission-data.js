@@ -110,7 +110,6 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
 
     officeInfo: {
       ...data.officeInfo,
-      memberships: compareMembershipChange(data.officeInfo.memberships, data.pricing),
       marketplaceOptIn: data.marketplace.optIn === true,
 
       // MOVE the office images into an array (part 2).
@@ -129,10 +128,22 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       childYearlyFeeActivated: data.pricing.childYearlyFee ? data.pricing.childYearlyFee.childYearlyFeeActivated : false,
 
       // ALTER the fees: normalize the price values.
-      adultMonthlyFee: getFee(data.pricing.adultMonthlyFee),
-      childMonthlyFee: getFee(data.pricing.childMonthlyFee),
-      adultYearlyFee: getFee(data.pricing.adultYearlyFee), // CONDITIONAL
-      childYearlyFee: getFee(data.pricing.childYearlyFee), // CONDITIONAL
+      adultMonthlyFee: {
+        id: data.pricing.adultMonthlyFee.id,
+        value: getFee(data.pricing.adultMonthlyFee)
+      },
+      childMonthlyFee: {
+        id: data.pricing.childMonthlyFee.id,
+        value: getFee(data.pricing.childMonthlyFee)
+      },
+      adultYearlyFee: {
+        id: data.pricing.adultYearlyFee ? data.pricing.adultYearlyFee.id : null,
+        value: getFee(data.pricing.adultYearlyFee)
+      }, // CONDITIONAL
+      childYearlyFee: {
+        id: data.pricing.childYearlyFee ? data.pricing.childYearlyFee.id : null,
+        value: getFee(data.pricing.childYearlyFee)
+      } // CONDITIONAL
     },
 
     // ALTER the services from an object with serviceKey => bool entries

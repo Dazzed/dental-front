@@ -20,6 +20,7 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaSearch from 'react-icons/lib/fa/search';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
+import 'react-select/dist/react-select.min.css';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';

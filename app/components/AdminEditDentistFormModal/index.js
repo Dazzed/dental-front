@@ -20,6 +20,7 @@ import CSSModules from 'react-css-modules';
 import FaClose from 'react-icons/lib/fa/close';
 import { Field, reduxForm, } from 'redux-form';
 import { connect } from 'react-redux';
+import Select from 'react-select/dist/react-select';
 
 // app
 import {
