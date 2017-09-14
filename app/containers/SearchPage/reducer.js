@@ -2,7 +2,8 @@ import { createReducer } from 'redux-act';
 
 import {
   searchSuccess,
-  searchError
+  searchError,
+  specialtiesSuccess,
 } from './actions';
 
 const defaultState = {
@@ -16,7 +17,8 @@ const defaultState = {
       lat: 0,
       lng: 0
     },
-  }
+  },
+  specialtiesList: []
 };
 
 const searchReducer = {
@@ -24,6 +26,12 @@ const searchReducer = {
     return {
       ...state,
       searchResults: dentists
+    };
+  },
+  [specialtiesSuccess]: (state, specialtiesList) => {
+    return {
+      ...state,
+      specialtiesList
     };
   }
 };

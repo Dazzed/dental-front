@@ -9,6 +9,7 @@ import data from './mockData'; // TODO: Remove this once API is hooked up
 import {
   // search
   searchSuccess,
+  specialtiesSuccess,
 } from './actions';
 
 function* main() {
@@ -21,17 +22,24 @@ function* main() {
 
 function* searchWatcher() {
   while (true) {
-    yield takeLatest('SEARCH_PAGE_SEARCH_REQUEST', function* handler({payload}) {
+    yield takeLatest('SEARCH_PAGE_SEARCH_REQUEST', function* handler({payload}) { 
       try {
         const requestURL = '/api/v1/search/';
+        const { specialtiesRequired } = payload;
+        if (specialtiesRequired) {
+          payload.specialtiesRequired = true;
+        }
         const body = JSON.stringify(payload);
         const params = {
           method: 'POST',
           body
         };
-        const { dentists } = yield call(request, requestURL, params);
+        const { dentists, specialtiesList } = yield call(request, requestURL, params);
         
         yield put(searchSuccess(dentists));
+        if (specialtiesList) {
+          yield put(specialtiesSuccess(specialtiesList));
+        }
       } catch (e) {
         console.log(e);
       }

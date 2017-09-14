@@ -13,6 +13,7 @@ import PageHeader from 'components/PageHeader';
 import DentistCard from 'components/DentistCard';
 import GoogleMaps from 'components/GoogleMaps';
 import SearchForm from 'containers/SearchForm';
+import Filters from './components/filters';
 
 import {
   searchRequest,
@@ -20,6 +21,7 @@ import {
 
 import {
   searchResultsSelector,
+  specialtiesListSelector,
 } from './selectors';
 
 import styles from './styles.css';
@@ -31,6 +33,7 @@ Redux
 function mapStateToProps (state) {
   return {
     searchResults: searchResultsSelector(state),
+    specialtiesList: specialtiesListSelector(state),
   };
 }
 
@@ -40,7 +43,7 @@ function mapDispatchToProps (dispatch) {
     changeRoute: (url) => dispatch(push(url)),
 
     // // search
-    searchRequest: filters => dispatch(searchRequest(filters))
+    searchRequest: (filters, specialtiesRequired) => dispatch(searchRequest(filters, specialtiesRequired))
   };
 }
 
@@ -74,6 +77,7 @@ export default class SearchPage extends Component {
   static propTypes = {
     searchRequest: React.PropTypes.func.isRequired,
     searchResults: React.PropTypes.array.isRequired,
+    specialtiesList: React.PropTypes.array.isRequired,
   };
 
   constructor (props) {
@@ -85,6 +89,7 @@ export default class SearchPage extends Component {
   }
 
   componentWillMount () {
+    const specialtiesRequired = true;
     this.props.searchRequest({
       searchQuery: '',
       specialties: [],
@@ -93,7 +98,7 @@ export default class SearchPage extends Component {
         lat: 34.100000,
         lng: -118.500000
       }
-    });
+    }, specialtiesRequired);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -128,7 +133,7 @@ export default class SearchPage extends Component {
                   updateActiveId={this.updateActiveResultId}
                   handleClick={this.handleClick}
                 />
-              )
+              );
             })
           }
         </ul>
@@ -165,7 +170,7 @@ export default class SearchPage extends Component {
   render () {
     const borderContent = (
       <span className="text-uppercase">
-        {/* TODO: Add in filters */}
+        <Filters specialtiesList={this.props.specialtiesList} />
       </span>
     );
 

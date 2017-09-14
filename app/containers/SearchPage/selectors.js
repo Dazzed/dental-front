@@ -21,6 +21,11 @@ const searchResultsSelector = createSelector(
   (substate) => get(substate, 'searchResults')
 );
 
+const specialtiesListSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'specialtiesList')
+);
+
 /*
 Exports
 ------------------------------------------------------------
@@ -30,4 +35,5 @@ export default domainSelector;
 export {
   // search
   searchResultsSelector,
+  specialtiesListSelector,
 };
