@@ -1,14 +1,3 @@
-/*
-Search Page
-================================================================================
-Route: '/search'
-*/
-
-/*
-Imports
-------------------------------------------------------------
-*/
-// libs
 import React, { Component, PropTypes } from 'react';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
@@ -19,15 +8,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
-// app
 import logo from 'assets/images/wells-family-dentistry-logo.png';
 import PageHeader from 'components/PageHeader';
 import DentistCard from 'components/DentistCard';
 import GoogleMaps from 'components/GoogleMaps';
 import SearchForm from 'containers/SearchForm';
 
-
-// local
 import {
   searchRequest,
 } from './actions';
@@ -44,7 +30,6 @@ Redux
 */
 function mapStateToProps (state) {
   return {
-    // search
     searchResults: searchResultsSelector(state),
   };
 }
@@ -54,44 +39,44 @@ function mapDispatchToProps (dispatch) {
     // app
     changeRoute: (url) => dispatch(push(url)),
 
-    // search
-    getSearch: (query) => dispatch(searchRequest(query)),
+    // // search
+    searchRequest: filters => dispatch(searchRequest(filters))
   };
 }
 
-
-/*
-Search
-================================================================================
-*/
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 export default class SearchPage extends Component {
+  // static propTypes = {
+  //   searchResults: PropTypes.arrayOf(PropTypes.shape({
+  //     id: PropTypes.number.isRequired,
+  //     firstName: PropTypes.string.isRequired,
+  //     lastName: PropTypes.string.isRequired,
+  //     avatar: PropTypes.string,
+  //     rating: PropTypes.number,
+  //     type: PropTypes.string,
+  //     affordability: PropTypes.number,
+  //     planStartingCost: PropTypes.number,
+  //     dentistInfo: PropTypes.shape({
+  //       officeName: PropTypes.string,
+  //       url: PropTypes.string,
+  //       email: PropTypes.string,
+  //       address: PropTypes.string.isRequired,
+  //       city: PropTypes.string.isRequired,
+  //       state: PropTypes.string.isRequired,
+  //       zipCode: PropTypes.string.isRequired,
+  //       lat: PropTypes.number.isRequired,
+  //       lng: PropTypes.number.isRequired,
+  //     }).isRequired,
+  //   })).isRequired,
+  // };
+
   static propTypes = {
-    searchResults: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      avatar: PropTypes.string,
-      rating: PropTypes.number,
-      type: PropTypes.string,
-      affordability: PropTypes.number,
-      planStartingCost: PropTypes.number,
-      dentistInfo: PropTypes.shape({
-        officeName: PropTypes.string,
-        url: PropTypes.string,
-        email: PropTypes.string,
-        address: PropTypes.string.isRequired,
-        city: PropTypes.string.isRequired,
-        state: PropTypes.string.isRequired,
-        zipCode: PropTypes.string.isRequired,
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
-      }).isRequired,
-    })).isRequired,
+    searchRequest: React.PropTypes.func.isRequired,
+    searchResults: React.PropTypes.array.isRequired,
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -100,13 +85,21 @@ export default class SearchPage extends Component {
   }
 
   componentWillMount () {
-    this.props.getSearch(this.props.location.query.q);
+    this.props.searchRequest({
+      searchQuery: '',
+      specialties: [],
+      distance: 25,
+      coordinates: {
+        lat: 34.100000,
+        lng: -118.500000
+      }
+    });
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.location.query.q !== nextProps.location.query.q) {
-      this.props.getSearch(nextProps.location.query.q);
-    }
+    // if (this.props.location.query.q !== nextProps.location.query.q) {
+    //   this.props.getSearch(nextProps.location.query.q);
+    // }
   }
 
   updateActiveResultId = (id) => {
@@ -145,7 +138,7 @@ export default class SearchPage extends Component {
 
     return (
       // TODO: Need no results design!
-      <div>No Reults!</div>
+      <div>No Dentists found.</div>
     );
   }
 
@@ -158,8 +151,8 @@ export default class SearchPage extends Component {
         markerArray.push({
           id: searchResults[i].id,
           active: searchResults[i].id === this.state.activeResultId,
-          lat: searchResults[i].dentistInfo.lat,
-          lng: searchResults[i].dentistInfo.lng,
+          lat: searchResults[i].location.coordinates[0],
+          lng: searchResults[i].location.coordinates[1],
         });
       }
 

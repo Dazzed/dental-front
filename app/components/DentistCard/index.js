@@ -7,21 +7,23 @@ import ReviewScore from 'components/ReviewScore';
 
 import styles from './styles.css';
 
-function DentistCard(props) {
+function DentistCard(dentist) {
+  // TODO rating
+  const rating = 10;
+  
   const {
     id,
-    firstName,
-    lastName,
-    rating,
-    type,
-    dentistInfo,
-    affordability,
+    user: { firstName, lastName },
+    user: { dentistSpecialty: { name: type } },
+    city,
+    state,
+    affordabilityScore: affordability,
     planStartingCost,
     avatar,
     active,
     updateActiveId,
-    handleClick,
-  } = props;
+    handleClick
+  } = dentist;
 
   return (
     <li
@@ -39,7 +41,7 @@ function DentistCard(props) {
         <div styleName="name">{firstName} {lastName}</div>
         <div styleName="type">{type}</div>
 
-        <div styleName="location">{dentistInfo.city}, {US_STATES[dentistInfo.state]}</div>
+        <div styleName="location">{city}, {US_STATES[state]}</div>
         <div styleName="affordability">Affordability {affordability}/5</div>
 
         <div styleName="plan-cost">Plans starting at: <span styleName="price">${planStartingCost}</span></div>
@@ -48,22 +50,22 @@ function DentistCard(props) {
   );
 }
 
-DentistCard.propTypes = {
-  id: PropTypes.number.isRequired,
-  active: PropTypes.bool,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  avatar: PropTypes.string,
-  rating: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
-  affordability: PropTypes.number.isRequired,
-  planStartingCost: PropTypes.number.isRequired,
-  updateActiveId: PropTypes.func.isRequired,
-  handleClick: PropTypes.func.isRequired,
-  dentistInfo: PropTypes.shape({
-    city: PropTypes.string,
-    state: PropTypes.string,
-  }).isRequired,
-};
+// DentistCard.propTypes = {
+//   id: PropTypes.number.isRequired,
+//   active: PropTypes.bool,
+//   firstName: PropTypes.string.isRequired,
+//   lastName: PropTypes.string.isRequired,
+//   avatar: PropTypes.string,
+//   rating: PropTypes.number.isRequired,
+//   type: PropTypes.string.isRequired,
+//   affordability: PropTypes.number.isRequired,
+//   planStartingCost: PropTypes.number.isRequired,
+//   updateActiveId: PropTypes.func.isRequired,
+//   handleClick: PropTypes.func.isRequired,
+//   dentistInfo: PropTypes.shape({
+//     city: PropTypes.string,
+//     state: PropTypes.string,
+//   }).isRequired,
+// };
 
 export default CSSModules(styles, { allowMultiple: true })(DentistCard);
