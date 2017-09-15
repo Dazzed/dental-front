@@ -76,7 +76,7 @@ Page Wide
 .large-title--short {
   margin-bottom: 0.5rem;
 
-  font-size: 3rem;
+  font-size: 1.5rem;
   text-transform: capitalize;
 }
 
@@ -169,4 +169,9 @@ Map
   padding: 2rem;
 
   background-color: $color-secondary-lowlight;
+}
+
+.closed {
+  color: red;
+  text-align: center;
 }

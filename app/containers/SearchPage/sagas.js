@@ -4,8 +4,6 @@ import { takeLatest } from 'redux-saga';
 import { actions as toastrActions } from 'react-redux-toastr';
 import request from 'utils/request';
 
-import data from './mockData'; // TODO: Remove this once API is hooked up
-
 import {
   // search
   searchSuccess,

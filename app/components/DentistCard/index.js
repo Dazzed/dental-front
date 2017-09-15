@@ -13,7 +13,7 @@ function DentistCard(dentist) {
   
   const {
     id,
-    user: { firstName, lastName },
+    user: { firstName, lastName, id: userId },
     user: { dentistSpecialty: { name: type } },
     city,
     state,
@@ -29,7 +29,7 @@ function DentistCard(dentist) {
     <li
       styleName={`dentist-list-item ${active ? 'active' : ''}`}
       onMouseEnter={() => updateActiveId(id)}
-      onClick={() => handleClick(id)}
+      onClick={() => handleClick(userId)}
     >
       <div styleName="left">
         <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>

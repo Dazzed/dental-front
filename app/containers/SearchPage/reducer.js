@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act';
 
 import {
+  searchRequest,
   searchSuccess,
   searchError,
   specialtiesSuccess,
@@ -18,14 +19,22 @@ const defaultState = {
       lng: 0
     },
   },
-  specialtiesList: []
+  specialtiesList: [],
+  loadingResults: true
 };
 
 const searchReducer = {
+  [searchRequest]: (state) => {
+    return {
+      ...state,
+      loadingResults: true
+    };
+  },
   [searchSuccess]: (state, dentists) => {
     return {
       ...state,
-      searchResults: dentists
+      searchResults: dentists,
+      loadingResults: false
     };
   },
   [specialtiesSuccess]: (state, specialtiesList) => {
