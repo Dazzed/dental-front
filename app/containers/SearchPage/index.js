@@ -25,10 +25,6 @@ import {
 import LoadingSpinner from 'components/LoadingSpinner';
 import styles from "./styles.css";
 
-/*
-Redux
-------------------------------------------------------------
-*/
 function mapStateToProps(state) {
   return {
     searchResults: searchResultsSelector(state),
@@ -51,30 +47,6 @@ function mapDispatchToProps(dispatch) {
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 export default class SearchPage extends Component {
-  // static propTypes = {
-  //   searchResults: PropTypes.arrayOf(PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     firstName: PropTypes.string.isRequired,
-  //     lastName: PropTypes.string.isRequired,
-  //     avatar: PropTypes.string,
-  //     rating: PropTypes.number,
-  //     type: PropTypes.string,
-  //     affordability: PropTypes.number,
-  //     planStartingCost: PropTypes.number,
-  //     dentistInfo: PropTypes.shape({
-  //       officeName: PropTypes.string,
-  //       url: PropTypes.string,
-  //       email: PropTypes.string,
-  //       address: PropTypes.string.isRequired,
-  //       city: PropTypes.string.isRequired,
-  //       state: PropTypes.string.isRequired,
-  //       zipCode: PropTypes.string.isRequired,
-  //       lat: PropTypes.number.isRequired,
-  //       lng: PropTypes.number.isRequired,
-  //     }).isRequired,
-  //   })).isRequired,
-  // };
-
   static propTypes = {
     searchRequest: React.PropTypes.func.isRequired,
     searchResults: React.PropTypes.array.isRequired,
@@ -98,13 +70,6 @@ export default class SearchPage extends Component {
 
   componentWillMount () {
     this.fireSearch(true);
-  }
-
-  componentWillReceiveProps (nextProps) {
-    // if (this.props.location.query.q !== nextProps.location.query.q) {
-    //   this.props.getSearch(nextProps.location.query.q);
-    // }
-    // console.log("cwrp",this.props, nextProps);
   }
 
   onSearch = query => {
@@ -138,6 +103,9 @@ export default class SearchPage extends Component {
   }
 
   onSelectSortType = sortType => {
+    if (sortType === 'score') {
+      return false;
+    }
     this.setState({
       sort: sortType
     }, this.fireSearch);
@@ -251,9 +219,7 @@ export default class SearchPage extends Component {
       return (
         <div styleName="container-wrapper">
           <PageHeader
-            children={
-              searchForm
-            }
+            children={searchForm}
             borderContent={borderContent}
           />
 
@@ -269,9 +235,7 @@ export default class SearchPage extends Component {
     return (
       <div styleName="container-wrapper">
         <PageHeader
-          children={
-            searchForm
-          }
+          children={searchForm}
           borderContent={borderContent}
         />
 

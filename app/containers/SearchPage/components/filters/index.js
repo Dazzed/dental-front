@@ -43,8 +43,7 @@ const Filters = (props) => {
           <DropdownButton
             styleName="filter-button"
             bsSize="large"
-            title="DISTANCE: "
-            noCaret
+            title="DISTANCE"
             id="dropdown-no-caret"
             onSelect={onSelectDistance}
           >
@@ -59,8 +58,7 @@ const Filters = (props) => {
           <DropdownButton
             styleName="filter-button"
             bsSize="large"
-            title="SORT: "
-            noCaret
+            title="SORT"
             id="dropdown-no-caret"
             onSelect={onSelectSortType}
           >
@@ -74,8 +72,7 @@ const Filters = (props) => {
           <DropdownButton
             styleName="filter-button"
             bsSize="large"
-            title="SPECIALTY: "
-            noCaret
+            title="SPECIALTY"
             id="dropdown-no-caret"
             onSelect={onSelectSpecialty}
           >

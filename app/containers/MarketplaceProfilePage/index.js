@@ -149,7 +149,7 @@ class MarketplaceProfilePage extends React.Component {
                       <h3 styleName="detail__title">Website</h3>
 
                       <p styleName="detail__content">
-                        <a href="https://example.com">https://example.com</a>
+                        <a target='blank' href={'https://www.'+dentistInfo.url.replace('https://www.', '')}>{dentistInfo.url}</a>
                       </p>
                     </div>
 
