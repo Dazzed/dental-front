@@ -57,7 +57,7 @@ export default class SearchForm extends Component {
 
   render () {
     const { header, shouldDisable } = this.props;
-
+    const { query } = this.state;
     return (
       <form noValidate onSubmit={this.performDentistSearch}>
         <input
@@ -70,7 +70,12 @@ export default class SearchForm extends Component {
           required
         />
         <br />
-        <input type="submit" styleName="button" value={header ? 'SEARCH' : "GET STARTED"} />
+        <input
+          type="submit"
+          styleName="button"
+          value={header ? 'SEARCH' : "GET STARTED"}
+          disabled={shouldDisable || !query}
+        />
       </form>
     );
   }
