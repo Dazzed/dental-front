@@ -175,6 +175,9 @@ class SignupForm extends React.Component {
     return new SegmentedDatePicker(props)
   }
 
+  componentWillUnmount = () => {
+    this.props.reset();
+  }
   /*
   Render
   ------------------------------------------------------------
