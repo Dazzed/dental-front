@@ -287,6 +287,10 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         ...state,
         patientCreated: true,
         accountInfo: action.payload,
+        user: initialState.user,
+        stages: initialState.stages,
+        editingActive: false,
+        editing: null,
       };
 
     case CLEAR_SIGNUP_STATUS:

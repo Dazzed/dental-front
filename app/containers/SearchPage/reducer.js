@@ -1,52 +1,48 @@
-/*
-Search Page Reducers
-================================================================================
-*/
+import { createReducer } from 'redux-act';
 
-/*
-Imports
-------------------------------------------------------------
-*/
-// local
 import {
-  // search
-  SEARCH_SUCCESS,
-} from './constants';
+  searchRequest,
+  searchSuccess,
+  searchError,
+  specialtiesSuccess,
+} from './actions';
 
-
-/*
-Reducers
-================================================================================
-*/
-
-/*
-Initial State
-------------------------------------------------------------
-*/
-const initialState = {
-  // search
+const defaultState = {
   searchResults: [],
+  filters: {
+    searchQuery: '',
+    distance: 5,
+    sort: 'price',
+    specialties: [],
+    coordinates: {
+      lat: 0,
+      lng: 0
+    },
+  },
+  specialtiesList: [],
+  loadingResults: true
 };
 
-
-export default function reducer (state = initialState, action) {
-  switch (action.type) {
-
-    /*
-    Search Reducers
-    ------------------------------------------------------------
-    */
-    case SEARCH_SUCCESS:
-      return {
-        ...state,
-        searchResults: action.payload,
-      };
-
-    /*
-    Default Reducer
-    ------------------------------------------------------------
-    */
-    default:
-      return state;
+const searchReducer = {
+  [searchRequest]: (state) => {
+    return {
+      ...state,
+      loadingResults: true
+    };
+  },
+  [searchSuccess]: (state, dentists) => {
+    return {
+      ...state,
+      searchResults: dentists,
+      loadingResults: false
+    };
+  },
+  [specialtiesSuccess]: (state, specialtiesList) => {
+    return {
+      ...state,
+      specialtiesList
+    };
   }
-}
+};
+
+export default createReducer(searchReducer, defaultState);

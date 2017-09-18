@@ -1,42 +1,41 @@
-/*
-Search Actions
-================================================================================
-*/
+import { createAction } from 'redux-act';
 
-/*
-Imports
-------------------------------------------------------------
-*/
-// local
-import {
-  // search
-  SEARCH_REQUEST,
-  SEARCH_SUCCESS,
-  SEARCH_ERROR,
-} from './constants';
-
-
-/*
-Search Actions
-================================================================================
-*/
-export function searchRequest (payload) {
+// SEARCH ACTIONS
+const searchRequest = createAction('SEARCH_PAGE_SEARCH_REQUEST', (filters, specialtiesRequired) => {
   return {
-    type: SEARCH_REQUEST,
-    payload
+    filters,
+    specialtiesRequired
   };
-}
+});
 
-export function searchSuccess (payload) {
-  return {
-    type: SEARCH_SUCCESS,
-    payload
-  };
-}
+const searchSuccess = createAction('SEARCH_PAGE_SEARCH_SUCCESS', dentists => {
+  return dentists;
+});
 
-export function searchError (payload) {
+const searchError = createAction('SEARCH_PAGE_SEARCH_ERROR', errors => {
   return {
-    type: SEARCH_ERROR,
-    payload
+    errors
   };
-}
+});
+
+// SPECIALTIES ACTIONS
+const specialtiesRequest = createAction('SEARCH_PAGE_SPECIALTIES_REQUEST');
+
+const specialtiesSuccess = createAction('SEARCH_PAGE_SPECIALTIES_SUCCESS', specialtiesList => {
+  return specialtiesList;
+});
+
+const specialtiesError = createAction('SEARCH_PAGE_SPECIALTIES_ERROR', errors => {
+  return {
+    errors
+  };
+});
+
+export {
+  searchRequest,
+  searchSuccess,
+  searchError,
+  specialtiesRequest,
+  specialtiesSuccess,
+  specialtiesError
+};
