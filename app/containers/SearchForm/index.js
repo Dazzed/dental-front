@@ -46,19 +46,22 @@ export default class SearchForm extends Component {
     this.setState({
       query: e.target.value,
     });
+    this.props.onSearch(e.target.value);
   }
 
   performDentistSearch = (e) => {
     e.preventDefault(); // default = form submission
-    this.props.changeRoute(`/search?q=${this.state.query}`);
+    this.props.onSubmit();
+    // this.props.changeRoute(`/search?q=${this.state.query}`);
   }
 
-  render() {
-    const { header } = this.props;
-
+  render () {
+    const { header, shouldDisable } = this.props;
+    const { query } = this.state;
     return (
       <form noValidate onSubmit={this.performDentistSearch}>
         <input
+          disabled={shouldDisable}
           type="text"
           styleName="search"
           placeholder="Enter your zip code to begin!"
@@ -67,7 +70,12 @@ export default class SearchForm extends Component {
           required
         />
         <br />
-        <input type="submit" styleName="button" value={header ? 'SEARCH' : "GET STARTED"} />
+        <input
+          type="submit"
+          styleName="button"
+          value={header ? 'SEARCH' : "GET STARTED"}
+          disabled={shouldDisable || !query}
+        />
       </form>
     );
   }
@@ -77,4 +85,7 @@ SearchForm.propTypes = {
   changeRoute: PropTypes.func,
   header: PropTypes.bool,
   query: PropTypes.string,
+  onSearch: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  shouldDisable: PropTypes.bool
 };

@@ -1,76 +1,86 @@
-/*
-Marketplace Profile Page
-================================================================================
-Route: `/marketplace/profile/:dentistId`
-*/
-
-/*
-Imports
-------------------------------------------------------------
-*/
-// lib
-import moment from 'moment';
-import React from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
-import CSSModules from 'react-css-modules';
-import FaUser from 'react-icons/lib/fa/user';
-import { connect } from 'react-redux';
-import { reset as resetForm } from 'redux-form';
-
+import moment from "moment";
+import React, { PropTypes } from "react";
+import Modal from "react-bootstrap/lib/Modal";
+import CSSModules from "react-css-modules";
+import FaUser from "react-icons/lib/fa/user";
+import { connect } from "react-redux";
+import { reset as resetForm } from "redux-form";
 // app
-import Avatar from 'components/Avatar';
-import LoadingSpinner from 'components/LoadingSpinner';
-import GoogleMaps from 'components/GoogleMaps';
-import MarketplaceTabs from 'components/MarketplaceTabs';
-import PageHeader from 'components/PageHeader';
-import ReviewFormModal from 'components/ReviewFormModal';
-import ReviewScore from 'components/ReviewScore';
-import { changePageTitle } from 'containers/App/actions';
+import Avatar from "components/Avatar";
+import LoadingSpinner from "components/LoadingSpinner";
+import GoogleMaps from "components/GoogleMaps";
+import MarketplaceTabs from "components/MarketplaceTabs";
+import PageHeader from "components/PageHeader";
+import ReviewFormModal from "components/ReviewFormModal";
+import ReviewScore from "components/ReviewScore";
+import { changePageTitle } from "containers/App/actions";
 
 // local
-import styles from './styles.css';
+import styles from "./styles.css";
 
-/*
-Redux
-------------------------------------------------------------
-*/
-function mapDispatchToProps (dispatch) {
+import { dentistProfileRequest } from "./actions";
+
+function mapStateToProps({ marketPlaceProfile }) {
+  const { dentist, isLoading, errorLoading } = marketPlaceProfile;
   return {
-    // app
-    changePageTitle: (title) => dispatch(changePageTitle(title)),
+    dentist,
+    isLoading,
+    errorLoading
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    // app
+    changePageTitle: title => dispatch(changePageTitle(title)),
+    dentistProfileRequest: officeId => dispatch(dentistProfileRequest(officeId))
+  };
+}
 
-/*
-Dentist
-================================================================================
-*/
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles)
 class MarketplaceProfilePage extends React.Component {
 
   static propTypes = {
-    // react
     location: React.PropTypes.object.isRequired,
-
-    // app - dispatch
     changePageTitle: React.PropTypes.func.isRequired,
+    params: PropTypes.object.isRequired,
+    dentistProfileRequest: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    errorLoading: PropTypes.bool.isRequired
+  };
+
+  componentWillMount() {
+    this.props.changePageTitle("Dental Marketplace");
+    const { params } = this.props;
+    const { dentistId } = params;
+    this.props.dentistProfileRequest(dentistId);
   }
 
-  componentDidMount () {
-    this.props.changePageTitle('Dental Marketplace');
-  }
+  // componentDidMount() {
+  //   this.props.changePageTitle("Dental Marketplace");
+  // }
 
-  /*
-  Render
-  ------------------------------------------------------------
-  */
-  render () {
+  render() {
     const {
-      // react
-      location,
+      dentist,
+      isLoading,
+      errorLoading
     } = this.props;
+
+    if (isLoading) {
+      return (
+        <div styleName="container-wrapper">
+          <PageHeader title="Dental Marketplace" />
+          <div className="container">
+            <LoadingSpinner />
+          </div>
+        </div>
+      );
+    }
+
+    const { dentistInfo } = dentist;
+    const { workingHours } = dentistInfo;
 
     return (
       <div styleName="container-wrapper">
@@ -79,35 +89,37 @@ class MarketplaceProfilePage extends React.Component {
         <div className="container">
           <div className="col-md-12">
             <div styleName="content-wrapper">
-
-              <MarketplaceTabs active="profile" dentistId={this.props.routeParams.dentistId} />
+              <MarketplaceTabs
+                active="profile"
+                dentistId={this.props.routeParams.dentistId}
+              />
 
               <div styleName="content">
-
                 <div className="row">
-
                   {/*
                   Dentist Profile
                   ------------------------------------------------------------
                   */}
-                  <div className="col-md-offset-3 col-md-8" styleName="profile-content-wrapper">
+                  <div
+                    className="col-md-offset-3 col-md-8"
+                    styleName="profile-content-wrapper"
+                  >
                     <div styleName="profile-content__avatar">
-                      <Avatar url="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg" size={"9rem"} />
+                      <Avatar
+                        url={dentist.avatar}
+                        size={"9rem"}
+                      />
                     </div>
 
                     <div styleName="profile-content__name-and-rating">
-                      <h2 styleName="large-title--short">
-                        Johnnys Dentistry
-                      </h2>
+                      <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
 
-                      <ReviewScore score={7} />
+                      <ReviewScore score={10} />
                     </div>
                   </div>
-
                 </div>
 
                 <div className="row">
-
                   {/*
                   Dentist Details
                   ------------------------------------------------------------
@@ -115,97 +127,61 @@ class MarketplaceProfilePage extends React.Component {
                   <div className="col-md-6">
                     <div styleName="detail">
                       <p styleName="detail__content" className="text-justify">
-                        This is a profile message: Nullam gravida, nisl eget dictum mattis, tellus purus posuere diam, at ornare justo felis sit amet ligula. Sed purus turpis, placerat a molestie vel, fermentum nec nisi. Nulla sed nibh non dolor dapibus molestie. In maximus, ligula id lobortis luctus, metus dolor tristique nisl, efficitur scelerisque ante enim malesuada ligula. Ut pellentesque ligula ut enim pellentesque, id posuere sem tincidunt.\n\nEtiam quis cursus mi: sed aliquam rhoncus ex nec fermentum!
+                        {dentistInfo.message}
                       </p>
                     </div>
 
                     <div styleName="detail">
-                      <h3 styleName="detail__title">
-                        Address
-                      </h3>
+                      <h3 styleName="detail__title">Address</h3>
 
                       <p styleName="detail__content">
-                        Johnnys Dentistry
+                        {dentistInfo.address}
                         <br />
-                        993 Tennessee St.
-                        <br />
-                        San Francisco, CA 94117
+                        {dentistInfo.city}, {dentistInfo.state} {dentistInfo.zipCode}
                       </p>
 
                       <p styleName="detail__content">
-                        <a href={"tel:" + "(123) 456-7891"}>(123) 456-7891</a>
+                        <a href={`tel:${dentistInfo.phone}`}>{dentistInfo.phone}</a>
                       </p>
                     </div>
 
                     <div styleName="detail">
-                      <h3 styleName="detail__title">
-                        Website
-                      </h3>
+                      <h3 styleName="detail__title">Website</h3>
 
                       <p styleName="detail__content">
-                        <a href="https://example.com">https://example.com</a>
+                        <a target='blank' href={'https://www.'+dentistInfo.url.replace('https://www.', '')}>{dentistInfo.url}</a>
                       </p>
                     </div>
 
                     <div styleName="detail">
-                      <h3 styleName="detail__title">
-                        Hours
-                      </h3>
+                      <h3 styleName="detail__title">Hours</h3>
 
                       <p styleName="detail__content">
-                        <span styleName="work-hours__day">Monday:</span>
-                        <span>
-                          <span styleName="work-hours__hour">9:00am</span>
-                          {' to '}
-                          <span styleName="work-hours__hour">5:00pm</span>
-                        </span>
-                        <br />
-
-                        <span styleName="work-hours__day">Tuesday:</span>
-                        <span>
-                          <span styleName="work-hours__hour">9:00am</span>
-                          {' to '}
-                          <span styleName="work-hours__hour">5:00pm</span>
-                        </span>
-                        <br />
-
-                        <span styleName="work-hours__day">Wednesday:</span>
-                        <span>
-                          <span styleName="work-hours__hour">9:00am</span>
-                          {' to '}
-                          <span styleName="work-hours__hour">5:00pm</span>
-                        </span>
-                        <br />
-
-                        <span styleName="work-hours__day">Thursday:</span>
-                        <span>
-                          <span styleName="work-hours__hour">9:00am</span>
-                          {' to '}
-                          <span styleName="work-hours__hour">5:00pm</span>
-                        </span>
-                        <br />
-
-                        <span styleName="work-hours__day">Friday:</span>
-                        <span>
-                          <span styleName="work-hours__hour">9:00am</span>
-                          {' to '}
-                          <span styleName="work-hours__hour">4:00pm</span>
-                        </span>
-                        <br />
-
-                        <span styleName="work-hours__day">Saturday:</span>
-                        <span styleName="work-hours__hour">Closed</span>
-                        <br />
-
-                        <span styleName="work-hours__day">Sunday:</span>
-                        <span styleName="work-hours__hour">Closed</span>
+                        {
+                          workingHours.map((w, i) => (
+                            <span key={i}>
+                              <span styleName="work-hours__day">{w.day.toUpperCase()}:</span>
+                              {w.isOpen &&
+                                <span>
+                                  <span styleName="work-hours__hour">{w.startAt.slice(0, 5)}</span>
+                                  {' to '}
+                                  <span styleName="work-hours__hour">{w.endAt.slice(0, 5)}</span>
+                                </span>
+                              }
+                              {!w.isOpen &&
+                                <span>
+                                  <span styleName="work-hours__hour" styleName="closed">CLOSED</span>
+                                </span>
+                              }
+                              { i !== workingHours.length - 1 && <br />}
+                            </span>
+                          ))
+                        }
                       </p>
                     </div>
-
                   </div>
 
                   <div className="col-md-6">
-
                     {/*
                     Dentist Office Photos
                     ------------------------------------------------------------
@@ -225,31 +201,26 @@ class MarketplaceProfilePage extends React.Component {
                       <GoogleMaps
                         markers={[
                           {
-                            id: 18,
+                            id: dentistInfo.id,
                             active: true,
-                            lat: 37.7597686,
-                            lng: -122.3889486,
+                            lat: dentistInfo.location.coordinates[0],
+                            lng: dentistInfo.location.coordinates[1]
                           }
                         ]}
-
                         updateActiveId={() => {}}
                       />
                     </div>
-
                   </div>
                 </div>
 
                 <div className="row">
-
                   {/*
                   Dentist Services
                   ------------------------------------------------------------
                   */}
                   <div className="col-md-12">
                     <div styleName="detail">
-                      <h3 styleName="detail__title">
-                        Services
-                      </h3>
+                      <h3 styleName="detail__title">Services</h3>
 
                       <div className="row" styleName="detail__content">
                         <div className="col-md-3">
@@ -301,21 +272,19 @@ class MarketplaceProfilePage extends React.Component {
                           <br />
                           Emergency Care
                         </div>
-
                       </div>
                     </div>
                   </div>
 
-                {/* End Last Row */}
+                  {/* End Last Row */}
                 </div>
 
-              {/* End Content */}
+                {/* End Content */}
               </div>
-
             </div>
           </div>
         </div>
-      {/* End Wrapper Div */}
+        {/* End Wrapper Div */}
       </div>
     );
   }

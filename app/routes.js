@@ -545,7 +545,7 @@ export default function createRoutes(store) {
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component,]) => {
+        importModules.then(([ reducer, sagas, component ]) => {
           injectReducer('learnMorePage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
@@ -557,11 +557,15 @@ export default function createRoutes(store) {
       onEnter: redirectToDashboard,
       path: '/marketplace/profile/:dentistId',
       name: 'marketplaceProfile',
-      getComponent(nextState, cb) {
+      getComponent (nextState, cb) {
         Promise.all([
+          System.import('containers/MarketplaceProfilePage/reducers'),
+          System.import('containers/MarketplaceProfilePage/sagas'),
           System.import('containers/MarketplaceProfilePage')
         ])
-          .then(([component]) => {
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('marketPlaceProfile', reducer.default);
+            injectSagas(sagas.default);
             loadModule(cb)(component);
           })
           .catch(errorLoading);
