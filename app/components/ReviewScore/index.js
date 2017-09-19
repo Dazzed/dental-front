@@ -1,4 +1,4 @@
-/*import React from 'react';
+import React from 'react';
 import CSSModules from 'react-css-modules';
 
 import toothRatingEmpty from 'assets/images/tooth-rating-empty.png';
@@ -68,4 +68,4 @@ class ReviewScore extends React.Component {
 
 }
 
-export default ReviewScore;*/
+export default ReviewScore;
