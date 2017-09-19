@@ -1,13 +1,3 @@
-/*
-Review Form Modal Component
-================================================================================
-*/
-
-/*
-Import
-------------------------------------------------------------
-*/
-// libs
 import React from 'react';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -21,28 +11,29 @@ import {
   submit as submitForm
 } from 'redux-form';
 
-// app
 import Input from 'components/Input';
 import LabeledInput from 'components/LabeledInput';
-import ReviewScore from 'components/ReviewScore';
+import ReviewScore from 'components/ReviewScore/clickAndRate';
 
-// local
 import styles from './styles.css';
 import ReviewValidator from './validator';
 
-/*
-Redux
-------------------------------------------------------------
-*/
-const valueSelector = formValueSelector('review');
-
 const mapStateToProps = (state) => {
-  const score = valueSelector(state, 'rating');
-
+  let rating, message = '', title = '', id = null;
+  const clientReviews = state.global.currentUser.clientReviews;
+  if (clientReviews.length > 0) {
+    rating = clientReviews[0].rating;
+    message = clientReviews[0].message;
+    title = clientReviews[0].title;
+    id = clientReviews[0].id;
+  }
   return {
-    score: score !== undefined
-             ? parseInt(score)
-             : 5, // default to 5 if score is undefined
+    initialValues: {
+      rating,
+      message,
+      title,
+      id
+    }
   };
 };
 
@@ -50,11 +41,6 @@ const mapDispatchToProps = (dispatch) => ({
   submit: () => dispatch(submitForm('review')),
 });
 
-
-/*
-Review Form Modal
-================================================================================
-*/
 @connect(mapStateToProps, mapDispatchToProps)
 @reduxForm({
   form: 'review',
@@ -71,9 +57,6 @@ export default class ReviewFormModal extends React.Component {
     submit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
 
-    // form value
-    score: React.PropTypes.number.isRequired,
-
     // modal related
     show: React.PropTypes.bool.isRequired,
     onCancel: React.PropTypes.func.isRequired,
@@ -87,6 +70,31 @@ export default class ReviewFormModal extends React.Component {
     return new LabeledInput(props);
   }
 
+  componentWillMount () {
+    const { rating, message } = this.props.initialValues;
+    this.state = {
+      rating,
+      message,
+    };
+  }
+
+  handleRatingChange = evt => {
+    let rating;
+    if (typeof evt === 'object') {
+      rating = evt.target.value;
+    } else {
+      rating = evt * 2;
+    }
+    const cb = () => this.props.change('rating', rating);
+    if (rating < 0) {
+      this.setState({ rating: 0 }, cb);
+    } else if (rating > 10) {
+      this.setState({ rating: 10 }, cb);
+    } else {
+      this.setState({ rating: Math.floor(rating) }, cb);
+    }
+  }
+
   render () {
     const {
       // form related
@@ -95,14 +103,14 @@ export default class ReviewFormModal extends React.Component {
       submit,
       submitting,
 
-      // form value
-      score,
-
       // modal related
       show,
       onCancel,
       valid,
+      pristine,
     } = this.props;
+
+    const { rating } = this.state;
 
     let title = "Edit Your Review";
     let saveText = "Save Changes";
@@ -137,7 +145,7 @@ export default class ReviewFormModal extends React.Component {
           >
             <FormGroup>
               <div className="col-sm-12">
-                <ControlLabel>Review Score:</ControlLabel>
+                <ControlLabel>Review Score (0 - 10):</ControlLabel>
               </div>
 
               <div className="col-sm-6 col-md-4">
@@ -147,15 +155,28 @@ export default class ReviewFormModal extends React.Component {
                     type="number"
                     component={this.getInput}
                     label="0 to 10"
+                    onChange={this.handleRatingChange}
                   />
                 </div>
               </div>
 
               <div className="col-sm-6 col-md-4">
-                <ReviewScore score={score} />
+                <ReviewScore
+                  rating={rating / 2}
+                  onRate={this.handleRatingChange}
+                />
               </div>
             </FormGroup>
-
+            <div className="row">
+              <Field
+                name="title"
+                type="text"
+                component={this.getLabeledInput}
+                label="Title"
+                placeholder="Title of your review"
+                className="col-sm-6"
+              />
+            </div>
             <div className="row">
               <Field
                 name="message"
@@ -179,7 +200,7 @@ export default class ReviewFormModal extends React.Component {
             <input
               type="button"
               className="modal-control"
-              disabled={submitting || !valid}
+              disabled={submitting || !valid || pristine}
               onClick={submit}
               value={saveText}
             />
