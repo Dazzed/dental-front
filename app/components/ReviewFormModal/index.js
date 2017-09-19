@@ -24,7 +24,7 @@ import {
 // app
 import Input from 'components/Input';
 import LabeledInput from 'components/LabeledInput';
-import ReviewScore from 'components/ReviewScore';
+import ReviewScore from 'components/ReviewScore/clickAndRate';
 
 // local
 import styles from './styles.css';
