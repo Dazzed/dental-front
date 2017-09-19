@@ -21,15 +21,16 @@ const emptyTooths = [
 class ReviewScore extends React.Component {
 
   componentWillMount () {
+    const { rating } = this.props;
     this.state = {
-      rating: 0
+      rating: rating ? rating : 0
     };
   }
 
   handleTeethClick = (index, pos) => {
     let { rating } = this.state;
     rating = pos <= 12 ? index - 0.5 : index;
-    this.setState({ rating });
+    this.setState({ rating }, () => this.props.onRate(rating));
   }
 
   componentDidMount = () => {
@@ -39,6 +40,14 @@ class ReviewScore extends React.Component {
       const relativeX = (e.pageX - offset.left);
       thiz.handleTeethClick($(this).data('index'), Math.floor(relativeX));
     });
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.rating !== newProps.rating && newProps.rating) {
+      this.setState({
+        rating: newProps.rating
+      });
+    }
   }
   
   renderTooths = () => {

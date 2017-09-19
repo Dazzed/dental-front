@@ -21,6 +21,8 @@ import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 import {
   // edit profile / security
   setUserData,
+  reviewAdded,
+  reviewEdited,
 } from 'containers/App/actions';
 import request from 'utils/request';
 
@@ -309,7 +311,7 @@ function* submitReviewFormWatcher() {
   while (true) {
     const { payload, dentistId } = yield take(SUBMIT_REVIEW_FORM);
 
-    if (payload.id === undefined) {
+    if (!payload.id) {
       yield submitAddReviewForm(payload, dentistId);
     }
     else {
@@ -326,11 +328,15 @@ function* submitAddReviewForm(payload, dentistId) {
       body: JSON.stringify(payload),
     };
 
-    const response = yield call(request, requestURL, params);
+    const { review } = yield call(request, requestURL, params);
     const message = "Your review has been submitted.";
     yield put(toastrActions.success('', message));
 
-    yield put(setAddedReview(response, dentistId));
+    if (review.rating) {
+      review.rating = Number.parseInt(review.rating);
+    }
+    // yield put(setAddedReview(review, dentistId));
+    yield put(reviewAdded(review));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
@@ -348,14 +354,15 @@ function* submitEditReviewForm(payload, dentistId) {
       body: JSON.stringify(payload),
     };
 
-    const response = yield call(request, requestURL, params);
+    const { review } = yield call(request, requestURL, params);
     const message = `Your review has been updated.`;
     yield put(toastrActions.success('', message));
 
-    if (payload.rating) {
-      payload.rating = Number.parseInt(payload.rating);
+    if (review.rating) {
+      review.rating = Number.parseInt(review.rating);
     }
-    yield put(setEditedReview(payload, dentistId));
+    // yield put(setEditedReview(payload, dentistId));
+    yield put(reviewEdited(review));
 
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
