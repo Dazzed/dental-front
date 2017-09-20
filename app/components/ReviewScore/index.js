@@ -1,29 +1,12 @@
-/*
-Review Score Component
-================================================================================
-*/
-
-/*
-Imports
-------------------------------------------------------------
-*/
-// lib
 import React from 'react';
 import CSSModules from 'react-css-modules';
 
-// app
 import toothRatingEmpty from 'assets/images/tooth-rating-empty.png';
 import toothRatingHalf from 'assets/images/tooth-rating-half.png';
 import toothRatingFull from 'assets/images/tooth-rating-full.png';
 
-// local
 import styles from './styles.css';
 
-
-/*
-Review Score
-================================================================================
-*/
 @CSSModules(styles)
 class ReviewScore extends React.Component {
 
