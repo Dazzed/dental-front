@@ -5,22 +5,6 @@ import Button from 'react-bootstrap/lib/Button';
 
 import styles from './styles.css';
 
-const dashboardPages = [
-  '/dentist/members',
-  '/dentist/new-members',
-  '/dentist/new-reviews',
-
-  '/patient/membership-info',
-  '/patient/profile',
-  '/patient/your-dentist',
-  '/patient/your-reviews',
-
-  '/admin/dentists',
-  '/admin/members',
-  '/admin/reviews',
-  '/admin/manage',
-];
-
 function MarketplaceHeader (props) {
   const {
     title,
