@@ -151,6 +151,8 @@ export default class CheckoutFormModal extends React.Component {
       maskChar = "9999999999999999";
     } else if (this.state.card_type === "American Express") {
       maskChar = "999999999999999";
+    } else if (this.state.card_type === "Discover") {
+      maskChar = "9999 9999 9999 9999";
     }
     
     return (
@@ -208,7 +210,7 @@ export default class CheckoutFormModal extends React.Component {
               >
                 <option value="">Select Card Type</option>
                 {
-                  ["VISA","Mastercard","American Express"].map((type,i) => {
+                  ["VISA","Mastercard","American Express", "Discover"].map((type,i) => {
                     return <option key={i} value={type}>{type}</option>
                   })
                 }
