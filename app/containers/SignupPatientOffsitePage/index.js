@@ -108,6 +108,7 @@ function mapStateToProps(state) {
     // signup
     accountInfo: accountInfoSelector(state),
     isSignedUp: isSignedUpSelector(state),
+    currentUser: state.global.currentUser
   };
 }
 
@@ -232,6 +233,16 @@ export default class PatientOffsiteSignupPage extends React.Component {
   }
 
   componentWillMount() {
+    const { location, currentUser } = this.props;
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
+
+    if (isFromMarketplace && currentUser.type === 'client') {
+      this.props.toastError('You will be logged out. Visit this page again.');
+      setTimeout(() => {
+        this.props.changeRoute('/accounts/logout');
+      }, 3000);
+    }
+
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
       this.props.toastError('There was an error embedding Stripe, please reload the page');
@@ -357,7 +368,6 @@ export default class PatientOffsiteSignupPage extends React.Component {
     } = this.props;
 
     const isFromMarketplace = location.query.frommarketplace ? true : false;
-
     const {
       soloAccountMemberConfirmation,
     } = this.state;
@@ -532,7 +542,10 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     return (
       <div styleName="container-wrapper">
-        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo || false} />
+        <NavBar
+          pathname={location.pathname}
+          logo={isFromMarketplace ? null : dentist.dentistInfo.logo || false}
+        />
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
           <div className="row">
 
