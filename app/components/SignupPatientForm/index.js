@@ -192,7 +192,8 @@ class SignupForm extends React.Component {
       // redux form
       error,
       handleSubmit,
-      submitting
+      submitting,
+      isFromMarketplace,
     } = this.props;
 
     let {
@@ -202,6 +203,9 @@ class SignupForm extends React.Component {
     } = this.props;
 
     memberships = memberships.filter(m => m.active);
+    if (isFromMarketplace) {
+      memberships = memberships.filter(m => m.type === 'month');
+    }
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
 
