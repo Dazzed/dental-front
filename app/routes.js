@@ -112,12 +112,18 @@ export default function createRoutes(store) {
         Promise.all([
           System.import('containers/App/sagas'),
 
+          System.import('containers/LearnMorePage/reducer'),
+          System.import('containers/LearnMorePage/sagas'),
+
           System.import('containers/DentistSignupPage/reducer'),
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([appSagas, reducer, sagas, component]) => {
+          .then(([appSagas, learnMoreReducers, learnMoreSagas, reducer, sagas, component]) => {
             injectSagas(appSagas.default);
+
+            injectReducer('learnMorePage', learnMoreReducers.default);
+            injectSagas(learnMoreSagas.default);
 
             injectReducer('dentistSignupPage', reducer.default);
             injectSagas(sagas.default);

@@ -76,9 +76,14 @@ Page Header
   a {
     color: #FFF;
 
-    &:focus,
+    &:focus {
+      color: #FFF;
+      text-decoration: none;
+    }
+
     &:hover {
       color: #FFF;
+      text-decoration: underline;
     }
   }
 }
