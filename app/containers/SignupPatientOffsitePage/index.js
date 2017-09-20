@@ -356,6 +356,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
       isSignedUp,
     } = this.props;
 
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
+
     const {
       soloAccountMemberConfirmation,
     } = this.state;
@@ -649,6 +651,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     dentist={dentist}
                     initialValues={user}
                     onSubmit={this.handleUserFormSubmit}
+                    isFromMarketplace={isFromMarketplace}
                   />
                 </div>
               )}

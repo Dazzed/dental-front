@@ -90,10 +90,8 @@ export default class SearchPage extends Component {
 
   onSelectSpecialty = specialty => {
     if (specialty) {
-      const { specialties } = this.state;
-      specialties.push(specialty);
       this.setState({
-        specialties
+        specialties: [ specialty ]
       }, this.fireSearch);
     } else {
       this.setState({
@@ -215,36 +213,29 @@ export default class SearchPage extends Component {
       />
     );
 
-    if (loadingResults) {
-      return (
-        <div styleName="container-wrapper">
-          <PageHeader
-            children={searchForm}
-            borderContent={borderContent}
-          />
-
-          <div className="container">
-            <div className="row">
-              <LoadingSpinner />
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div styleName="container-wrapper">
         <PageHeader
           children={searchForm}
           borderContent={borderContent}
         />
-
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">{this.renderResults()}</div>
-            <div className="col-md-6">{this.renderMap()}</div>
-          </div>
-        </div>
+        {
+          !loadingResults &&
+            <div className="container">
+              <div className="row">
+                <div className="col-md-6">{this.renderResults()}</div>
+                <div className="col-md-6">{this.renderMap()}</div>
+              </div>
+            </div>
+        }
+        {
+          loadingResults &&
+            <div className="container">
+              <div className="row">
+                <LoadingSpinner />
+              </div>
+            </div>
+        }
       </div>
     );
   }
