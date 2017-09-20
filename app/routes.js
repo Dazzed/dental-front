@@ -554,7 +554,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      onEnter: redirectToDashboard,
+      // onEnter: redirectToDashboard,
       path: '/marketplace/profile/:dentistId',
       name: 'marketplaceProfile',
       getComponent (nextState, cb) {
