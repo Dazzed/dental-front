@@ -30,7 +30,7 @@ class PriceScore extends React.Component {
     score: React.PropTypes.number,
   }
 
-  render () {
+  oldRender () {
     let {
       score,
     } = this.props;
@@ -66,6 +66,35 @@ class PriceScore extends React.Component {
     }
 
     // build the dollar rating <img>s
+    const dollarRatingImages = dollarRatingUrls.map((url, dollarIndex) => {
+      return (
+        <img src={url} alt="" key={dollarIndex} styleName="price-score__icon" />
+      );
+    });
+
+    return (
+      <div styleName="price-score">
+        {dollarRatingImages}
+      </div>
+    );
+  }
+
+  render () {
+    let {
+      affordabilityScore
+    } = this.props;
+    affordabilityScore = affordabilityScore || 0;
+    affordabilityScore = Number(affordabilityScore);
+    const dollarRatingUrls = [];
+
+    for (let i = 1; i <= 4; i++) {
+      if (i <= affordabilityScore) {
+        dollarRatingUrls.push(dollarRatingFull);
+      } else {
+        dollarRatingUrls.push(dollarRatingEmpty);
+      }
+    }
+
     const dollarRatingImages = dollarRatingUrls.map((url, dollarIndex) => {
       return (
         <img src={url} alt="" key={dollarIndex} styleName="price-score__icon" />
