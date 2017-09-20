@@ -820,7 +820,7 @@ class DentistEditProfileForm extends React.Component {
             </p>
 
             <p>
-              *Once your membership is set, a 30 day notice to your current members must be given prior to changing their monthly membership fee.
+              *Once your membership is set, existing members will be notified and given 90 days prior to any changes in their membership pricing.
             </p>
           </div>
 

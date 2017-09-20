@@ -17,8 +17,10 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
+import { reset as resetForm } from 'redux-form';
 
 // app
+import ContactUsFormModal from 'components/ContactUsFormModal';
 import DentistSignupForm from 'components/DentistSignupForm';
 import formatDentistSignupFormSubmissionData from 'components/DentistSignupForm/format-submission-data';
 import LoadingSpinner from 'components/LoadingSpinner';
@@ -29,6 +31,17 @@ import {
 import {
   selectServices,
 } from 'containers/App/selectors';
+import {
+  // send contact us message
+  setContactUsMessage,
+  clearContactUsMessage,
+  submitContactUsForm,
+} from 'containers/LearnMorePage/actions';
+import {
+  // send contact us message
+  editingContactUsMessageSelector,
+} from 'containers/LearnMorePage/selectors';
+
 
 // local
 import {
@@ -60,6 +73,9 @@ function mapStateToProps (state) {
     // signup
     accountInfo: accountInfoSelector(state),
     isSignedUp: isSignedUpSelector(state),
+
+    // send contact us message
+    editingContactUsMessage: editingContactUsMessageSelector(state),
   };
 }
 
@@ -77,6 +93,12 @@ function mapDispatchToProps (dispatch) {
     changeRoute: (url) => dispatch(push(url)),
     clearSignupStatus: () => dispatch(clearSignupStatus()),
     makeSignupRequest: (values) => dispatch(signupRequest(values)),
+
+    // send contact us message
+    resetContactUsMessageForm: () => dispatch(resetForm('contactUs')),
+    setContactUsMessage: (message) => dispatch(setContactUsMessage(message)),
+    clearContactUsMessage: () => dispatch(clearContactUsMessage()),
+    submitContactUsForm: (values) => dispatch(submitContactUsForm(values)),
   };
 }
 
@@ -180,6 +202,15 @@ export default class SignupPage extends Component {
     changeRoute: React.PropTypes.func.isRequired,
     clearSignupStatus: React.PropTypes.func.isRequired,
     makeSignupRequest: React.PropTypes.func.isRequired,
+
+    // send contact us message - state
+    editingContactUsMessage: React.PropTypes.object,
+
+    // send contact us message - dispatch
+    resetContactUsMessageForm: React.PropTypes.func.isRequired,
+    setContactUsMessage: React.PropTypes.func.isRequired,
+    clearContactUsMessage: React.PropTypes.func.isRequired,
+    submitContactUsForm: React.PropTypes.func.isRequired,
   };
 
   componentWillMount () {
@@ -195,6 +226,12 @@ export default class SignupPage extends Component {
   goToLoginPage = () => {
     this.props.clearSignupStatus();
     this.props.changeRoute('/accounts/login');
+  }
+
+  sendContactUsMessage = (e) => {
+    e.preventDefault();
+    this.props.resetContactUsMessageForm();
+    this.props.setContactUsMessage({});
   }
 
   /*
@@ -223,6 +260,14 @@ export default class SignupPage extends Component {
     this.props.makeSignupRequest(formattedData);
   }
 
+  handleContactUsFormSubmit = (values) => {
+    this.props.submitContactUsForm(values);
+  }
+
+  cancelContactUsFormAction = () => {
+    this.props.clearContactUsMessage();
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -237,12 +282,15 @@ export default class SignupPage extends Component {
       // signup
       accountInfo,
       isSignedUp,
+
+      // send contact us message
+      editingContactUsMessage,
     } = this.props;
 
     const borderContent = (
       <span className="text-uppercase">
         Please enter your office details here.  Questions?{' '}
-        <Link to="/dentist/contact-admin"><strong>Contact us here &gt;</strong></Link>
+        <a href="#" onClick={this.sendContactUsMessage}><strong>Contact us here &gt;</strong></a>
       </span>
     );
 
@@ -352,6 +400,14 @@ export default class SignupPage extends Component {
             </div>
           </Modal.Footer>
         </Modal>
+
+        <ContactUsFormModal
+          show={editingContactUsMessage !== null}
+          onCancel={this.cancelContactUsFormAction}
+
+          initialValues={editingContactUsMessage}
+          onSubmit={this.handleContactUsFormSubmit}
+        />
 
       </div>
     );
