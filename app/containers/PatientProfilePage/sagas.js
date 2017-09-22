@@ -258,7 +258,15 @@ function* removeMemberWatcher() {
 /*
 Edit Profile
 ------------------------------------------------------------
+NOTE: The edit profile UI functionality was removed in this card [1], and the
+      edit patient profile functionality on the dentist dashboard was changed
+      in this card [2].  So this code will no longer work correctly, and should
+      be removed.
+
+[1]: https://trello.com/c/pJLmS1mo/443-delete-edit-profile-modal-and-address-from-member-dashboard
+[2]: https://trello.com/c/wX3u9IIH/444-dentist-dashboard-edit-button-modal-needs-to-be-changed
 */
+/*
 function* submitProfileFormWatcher() {
   while (true) {
     const { payload, userId } = yield take(SUBMIT_PROFILE_FORM);
@@ -302,6 +310,7 @@ function* submitProfileFormWatcher() {
     }
   }
 }
+*/
 
 /*
 Add / Edit Review
