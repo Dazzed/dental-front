@@ -27,7 +27,6 @@ import MemberFormModal from 'components/MemberFormModal';
 import NavBar from 'components/NavBar';
 import PatientDashboardHeader from 'components/PatientDashboardHeader';
 import PatientDashboardTabs from 'components/PatientDashboardTabs';
-import PatientProfileFormModal from 'components/PatientProfileFormModal';
 import ConfirmModal from 'components/ConfirmModal';
 import ReviewFormModal from 'components/ReviewFormModal';
 import { changePageTitle } from 'containers/App/actions';
@@ -43,11 +42,6 @@ import {
   setEditingMember,
   clearEditingMember,
   submitMemberForm,
-
-  // edit profile
-  setEditingProfile,
-  clearEditingProfile,
-  submitProfileForm,
 
   // add / edit review
   setEditingReview,
@@ -75,9 +69,6 @@ import {
   // add / edit member
   editingMemberSelector,
 
-  // edit profile
-  editingProfileSelector,
-
   // add / edit review
   editingReviewSelector,
 
@@ -102,9 +93,6 @@ function mapStateToProps(state) {
 
     // add / edit member
     editingMember: editingMemberSelector(state),
-
-    // edit profile
-    editingProfile: editingProfileSelector(state),
 
     // add / edit review
     editingReview: editingReviewSelector(state),
@@ -131,12 +119,6 @@ function mapDispatchToProps(dispatch) {
     setEditingMember: (patient, member) => dispatch(setEditingMember(patient, member)),
     clearEditingMember: () => dispatch(clearEditingMember()),
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
-
-    // edit profile
-    resetProfileForm: () => dispatch(resetForm('patientProfile')),
-    setEditingProfile: (user) => dispatch(setEditingProfile(user)),
-    clearEditingProfile: () => dispatch(clearEditingProfile()),
-    submitProfileForm: (values, userId) => dispatch(submitProfileForm(values, userId)),
 
     // add / edit review
     resetReviewForm: () => dispatch(resetForm('review')),
@@ -199,15 +181,6 @@ class PatientProfilePage extends React.Component {
     setEditingMember: React.PropTypes.func.isRequired,
     clearEditingMember: React.PropTypes.func.isRequired,
     submitMemberForm: React.PropTypes.func.isRequired,
-
-    // edit profile - state
-    editingProfile: React.PropTypes.object,
-
-    // edit profile - dispatch
-    resetProfileForm: React.PropTypes.func.isRequired,
-    setEditingProfile: React.PropTypes.func.isRequired,
-    clearEditingProfile: React.PropTypes.func.isRequired,
-    submitProfileForm: React.PropTypes.func.isRequired,
 
     // add / edit review - state
     editingReview: React.PropTypes.object,
@@ -323,12 +296,6 @@ class PatientProfilePage extends React.Component {
     });
   }
 
-  // profile
-  updateProfile = (user = null) => {
-    this.props.resetProfileForm();
-    this.props.setEditingProfile(this.props.user);
-  }
-
   // reviews
   addReview = () => {
     this.props.resetReviewForm();
@@ -366,26 +333,6 @@ class PatientProfilePage extends React.Component {
     this.props.clearEditingMember();
   }
 
-
-  // profile
-  handleProfileFormSubmit = (values) => {
-    // Update the actual phone # / address objects, instead of just the
-    // shortcut property derived from them.
-    values.addresses[0].value = values.address;
-    values.phoneNumbers[0].number = values.phone;
-
-    this.props.submitProfileForm(values, this.props.user.id);
-  }
-
-  cancelProfileFormAction = () => {
-    this.props.clearEditingProfile();
-  }
-
-  goToProfileForm = () => {
-    this.cancelSecurityFormAction();
-    this.updateProfile();
-  }
-
   // reviews
   handleReviewFormSubmit = (values) => {
     this.props.submitReviewForm(values, this.props.dentist.id);
@@ -402,11 +349,6 @@ class PatientProfilePage extends React.Component {
 
   cancelSecurityFormAction = () => {
     this.props.clearEditingSecurity();
-  }
-
-  goToSecurityForm = () => {
-    this.cancelProfileFormAction();
-    this.updateSecuritySettings();
   }
 
   // payment
@@ -435,7 +377,6 @@ class PatientProfilePage extends React.Component {
 
       // add / edit
       editingMember,
-      editingProfile,
       editingReview,
       editingSecurity,
       editingPayment,
@@ -643,24 +584,12 @@ class PatientProfilePage extends React.Component {
 
               <div className="col-md-7">
                 <p>
-                  <span styleName="text--label">Address:</span>
-                  <br />
-                  {user.address}
-                  <br />
-                  {user.city}, {user.state} {user.zipCode}
-                </p>
-
-                <p>
                   <span styleName="text--label">Phone:</span>
                   <br />
                   {user.phone}
                 </p>
 
                 <p>
-                  <span styleName="personal-info__change-link" onClick={this.updateProfile}>
-                    Edit Profile
-                  </span>
-
                   <span styleName="personal-info__change-link" onClick={this.updateSecuritySettings}>
                     Login &amp; Security Settings
                   </span>
@@ -705,8 +634,6 @@ class PatientProfilePage extends React.Component {
         </div>
 
         <AccountSecurityFormModal
-          goToProfileForm={this.goToProfileForm}
-
           show={editingSecurity !== null}
           onCancel={this.cancelSecurityFormAction}
 
@@ -730,16 +657,6 @@ class PatientProfilePage extends React.Component {
 
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
-        />
-
-        <PatientProfileFormModal
-          goToSecurityForm={this.goToSecurityForm}
-
-          show={editingProfile !== null}
-          onCancel={this.cancelProfileFormAction}
-          dentist={dentist}
-          initialValues={editingProfile}
-          onSubmit={this.handleProfileFormSubmit}
         />
 
         <ConfirmModal

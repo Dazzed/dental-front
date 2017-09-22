@@ -51,7 +51,7 @@ function GoogleMaps(props) {
     <div styleName="map-wrapper">
       <GoogleMapReact
         center={getMapPos()}
-        defaultZoom={12}
+        defaultZoom={10}
         bootstrapURLKeys={{
           key: 'AIzaSyDVwZs96MdlR8UdGKAxf9ndeb4GxpVF1Ho',
         }}

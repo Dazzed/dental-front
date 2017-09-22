@@ -285,18 +285,10 @@ function* submitPatientProfileFormWatcher() {
     const allowedFields = pick(
       payload,
       'id',
-      'firstName',
       'email',
+      'firstName',
+      'middleName',
       'lastName',
-      'clientSubscription',
-      'sex',
-      'birthDate',
-      'address',
-      'city',
-      'state',
-      'zipCode',
-      'phone',
-      'contactMethod',
     );
 
     try {

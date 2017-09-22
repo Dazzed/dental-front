@@ -175,6 +175,9 @@ class SignupForm extends React.Component {
     return new SegmentedDatePicker(props)
   }
 
+  componentWillUnmount = () => {
+    this.props.reset();
+  }
   /*
   Render
   ------------------------------------------------------------
@@ -189,7 +192,8 @@ class SignupForm extends React.Component {
       // redux form
       error,
       handleSubmit,
-      submitting
+      submitting,
+      isFromMarketplace,
     } = this.props;
 
     let {
@@ -198,7 +202,16 @@ class SignupForm extends React.Component {
       }
     } = this.props;
 
-    memberships = memberships.filter(m => m.active);
+    memberships = memberships.filter((membership) => {
+      let includeMembership = membership.active && membership.subscription_age_group === 'adult';
+
+        if (isFromMarketplace) {
+          includeMembership = includeMembership && membership.type === 'month';
+        }
+
+        return includeMembership;
+    });
+
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
 
@@ -381,7 +394,6 @@ class SignupForm extends React.Component {
               <option value="-1">I will not be a member.</option>
               {
                 memberships
-                  .filter(m => m.subscription_age_group === 'adult' && m.active)
                   .map(membership =>
                     <option value={membership.id} key={membership.id} label={`${membership.name.ucFirst()} — $${membership.price}`}>{membership.id}</option>
                   )

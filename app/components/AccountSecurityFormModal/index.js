@@ -45,9 +45,6 @@ Member Form Modal
 export default class AccountSecurityFormModal extends React.Component {
 
   static propTypes = {
-    // event handlers - passed in
-    goToProfileForm: React.PropTypes.func,
-
     // form related - passed in
     initialValues: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
@@ -64,23 +61,11 @@ export default class AccountSecurityFormModal extends React.Component {
   }
 
   /*
-  Event Handlers
-  ------------------------------------------------------------
-  */
-  profileFormLinkClick = (e) => {
-    e.preventDefault();
-    this.props.goToProfileForm();
-  }
-
-  /*
   Render
   ------------------------------------------------------------
   */
   render () {
     const {
-      // event handlers
-      goToProfileForm,
-
       // form related
       initialValues,
       handleSubmit,
@@ -177,16 +162,6 @@ export default class AccountSecurityFormModal extends React.Component {
               For security, you must enter your current password to change your account's email and password.  You may leave both "New Password" fields blank if you only wish to change your email, or leave both email fields blank if you only wish to change your password.
             </p>
 
-            {goToProfileForm && (
-              <p styleName="field-instructions">
-                You can update your account address, phone number, and preferred contact method in the
-                {' '}
-                <a href="#" onClick={this.profileFormLinkClick}>Login and Security Settings</a>
-                {' '}
-                form.
-              </p>
-            )}
-
           </form>
         </Modal.Body>
 
@@ -201,7 +176,7 @@ export default class AccountSecurityFormModal extends React.Component {
               className="modal-control"
               disabled={submitting}
               onClick={submit}
-              value="Update Profile"
+              value="Update Security Settings"
             />
           </div>
         </Modal.Footer>

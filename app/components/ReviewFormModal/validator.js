@@ -16,7 +16,7 @@ Schema
 */
 const schema = {
   rating: {
-    // presence: true,
+    presence: true,
     numericality: {
       onlyInteger: true,
       greaterThanOrEqualTo: 0,
@@ -25,9 +25,12 @@ const schema = {
     },
   },
 
-  review: {
+  message: {
     presence: true,
   },
+  title: {
+    presence: true
+  }
 };
 
 export default validatorFactory(schema);

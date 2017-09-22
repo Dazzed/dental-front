@@ -52,8 +52,8 @@ class ConfirmModal extends Component {
         </Modal.Body>
         <Modal.Footer>
           <div className="text-center">
-            <input className="btn btn-primary" type="button" onClick={onConfirm} value="Confirm" />{' '}
-            <input className="btn btn-danger" type="button" onClick={onClose} value="Cancel" />
+            <input className="btn btn-primary" type="button" onClick={onConfirm} value="Yes" />{' '}
+            <input className="btn btn-danger" type="button" onClick={onClose} value="No" />
           </div>
         </Modal.Footer>
       </Modal>

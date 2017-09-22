@@ -28,6 +28,11 @@ Footer
 Footer Nav
 ------------------------------------------------------------
 */
+.powered-by {
+  position: absolute;
+  left: $font-size-base;
+}
+
 ul.footer__nav {
   display: block;
   margin: 0;
