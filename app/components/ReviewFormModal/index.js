@@ -19,7 +19,7 @@ import styles from './styles.css';
 import ReviewValidator from './validator';
 
 const mapStateToProps = (state) => {
-  let rating, message = '', title = '', id = null;
+  let rating = null, message = '', title = '', id = null;
   const clientReviews = state.global.currentUser.clientReviews;
   if (clientReviews.length > 0) {
     rating = clientReviews[0].rating;
@@ -71,10 +71,9 @@ export default class ReviewFormModal extends React.Component {
   }
 
   componentWillMount () {
-    const { rating, message } = this.props.initialValues;
+    const { rating } = this.props.initialValues;
     this.state = {
       rating,
-      message,
     };
   }
 
@@ -111,10 +110,9 @@ export default class ReviewFormModal extends React.Component {
     } = this.props;
 
     const { rating } = this.state;
-
     let title = "Edit Your Review";
     let saveText = "Save Changes";
-    if (initialValues === null || initialValues.id === undefined) {
+    if (initialValues === null || !initialValues.id) {
       title = "Review Your Dentist";
       saveText = "Add Review";
     }
@@ -145,27 +143,24 @@ export default class ReviewFormModal extends React.Component {
           >
             <FormGroup>
               <div className="col-sm-12">
-                <ControlLabel>Review Score (0 - 10):</ControlLabel>
+                <ControlLabel>Rate your dentist:</ControlLabel>
               </div>
 
               <div className="col-sm-6 col-md-4">
                 <div className="row">
-                  <Field
-                    name="rating"
-                    type="number"
-                    component={this.getInput}
-                    label="0 to 10"
-                    onChange={this.handleRatingChange}
+                  <ReviewScore
+                    rating={rating / 2}
+                    onRate={this.handleRatingChange}
                   />
                 </div>
               </div>
 
-              <div className="col-sm-6 col-md-4">
+              {/*<div className="col-sm-6 col-md-4">
                 <ReviewScore
                   rating={rating / 2}
                   onRate={this.handleRatingChange}
                 />
-              </div>
+              </div>*/}
             </FormGroup>
             <div className="row">
               <Field
