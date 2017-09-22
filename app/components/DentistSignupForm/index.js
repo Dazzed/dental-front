@@ -152,8 +152,8 @@ const mapStateToProps = (state) => {
         recommendedFees.monthly.adult = 19.99;
       }
 
-      recommendedFees.monthly.adult = recommendedFees.monthly.adult.toFixed(2);
-      recommendedFees.yearly.adult = recommendedFees.yearly.adult.toFixed(2);
+      recommendedFees.monthly.adult = Math.ceil(recommendedFees.monthly.adult);
+      recommendedFees.yearly.adult = Math.ceil(recommendedFees.yearly.adult);
     }
 
     if (isNaN(D0120) === false && isNaN(D0140) === false && isNaN(D0220) === false
@@ -169,8 +169,8 @@ const mapStateToProps = (state) => {
         recommendedFees.monthly.child = 14.99;
       }
 
-      recommendedFees.monthly.child = recommendedFees.monthly.child.toFixed(2);
-      recommendedFees.yearly.child = recommendedFees.yearly.child.toFixed(2);
+      recommendedFees.monthly.child = Math.ceil(recommendedFees.monthly.child);
+      recommendedFees.yearly.child = Math.ceil(recommendedFees.yearly.child);
     }
   }
 
