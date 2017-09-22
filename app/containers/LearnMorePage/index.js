@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
+import FaCheck from 'react-icons/lib/fa/check';
 
 // app
 import ContactUsFormModal from 'components/ContactUsFormModal';
@@ -143,7 +144,6 @@ export default class LearnMorePage extends React.Component {
               link below to learn more about us:
             </p>
 
-            {/* TODO: https://trello.com/c/f033SU5f/124-marketing-add-marketing-videos */}
             <input
               type="button"
               styleName="large-button__inverse"
@@ -158,15 +158,103 @@ export default class LearnMorePage extends React.Component {
         ------------------------------------------------------------
         */}
         <div styleName="second-block">
-          <h2 styleName="large-title">
-            Why DentalHQ.com?
-          </h2>
+          <div className="container">
 
-          <p styleName="large-text">
-            Cut out the middleman and attract new fee-for-service
-            <br />
-            patients without the hassle of dental insurance.
-          </p>
+            <div className="row">
+              <div className="col-md-10 col-md-offset-1">
+
+                <h2 styleName="large-title">
+                  Why DentalHQ.com?
+                </h2>
+
+                <div styleName="features">
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Automated software platform, with recurring billing for monthly or annual memberships.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Fully customizable plans.  YOU decide your pricing and benefits.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      No setup fee.  No monthly fees.  No contracts.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      White-labled with your office logo and easily integrated with your website.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      DentalHQ takes care of your in-office membership marketing materials.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Merchant service fees and placement in the DentalHQ marketplace also included!
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Monthly membership report and revenues sent directly to you.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Compliant with: HIPPA, PHI, and PCI.
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                      <FaCheck />
+                    </div>
+                    <div className="col-md-10" styleName="feature">
+                      Retain more uninsured patients and give them an affordable option for your dental care.  Unlike insurance, these plans are a direct relationship betweeen you and the patient.
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
         </div>
 
         {/*
@@ -211,6 +299,7 @@ export default class LearnMorePage extends React.Component {
               controls
               poster="https://s3.amazonaws.com/dentalhq-files/marketing/marketing-video-poster.png"
               ref="video"
+              style={{width: '100%', height: '100%'}}
             >
               <source src="https://s3.amazonaws.com/dentalman_uploads/Dental%20HQ.mp4" type="video/mp4" />
             </video>
