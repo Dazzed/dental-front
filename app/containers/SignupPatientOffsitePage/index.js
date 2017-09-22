@@ -233,15 +233,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
   }
 
   componentWillMount() {
-    const { location, currentUser } = this.props;
+    const { location, currentUser, isSignedUp } = this.props;
     const isFromMarketplace = location.query.frommarketplace ? true : false;
-
-    if (isFromMarketplace && currentUser.type === 'client') {
-      this.props.toastError('You will be logged out. Visit this page again.');
-      setTimeout(() => {
-        this.props.changeRoute('/accounts/logout');
-      }, 3000);
-    }
 
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
@@ -275,6 +268,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   checkout = () => {
+    const { location, currentUser, isSignedUp } = this.props;
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
+    if (currentUser.type === 'client') {
+      this.props.toastError('You can not try to signup when you are logged in. Visit this page again.');
+      setTimeout(() => {
+        this.props.changeRoute('/accounts/logout');
+      }, 3000);
+    }
     const {
       user
     } = this.props;
