@@ -17,6 +17,10 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
+import FaAmex from 'react-icons/lib/fa/cc-amex';
+import FaDiscover from 'react-icons/lib/fa/cc-discover';
+import FaMastercard from 'react-icons/lib/fa/cc-mastercard';
+import FaVisa from 'react-icons/lib/fa/cc-visa';
 import { connect } from 'react-redux';
 import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
@@ -215,6 +219,15 @@ export default class CheckoutFormModal extends React.Component {
                   })
                 }
               </Field>
+              <div className="col-sm-offset-2 col-sm-6" styleName="accepted-cards">
+                <span styleName="accepted-cards__title">We accept:</span>
+                <p styleName="accepted-cards__cards">
+                  <FaVisa />
+                  <FaMastercard />
+                  <FaAmex />
+                  <FaDiscover />
+                </p>
+              </div>
             </Row>
             { this.state.card_type &&
               <div className="sub-payment-details-container">
