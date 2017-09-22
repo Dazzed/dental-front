@@ -23,6 +23,10 @@ Footer
 function Footer () {
   return (
     <div styleName="footer">
+      <div styleName="powered-by">
+        Powered By DentalHQ
+      </div>
+
       <ul styleName="footer__nav">
         <li>
           <Link to="/faq">FAQ's</Link>
