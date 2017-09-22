@@ -51,9 +51,9 @@ Dentist Info
   margin-bottom: 1rem;
 
   > * {
-    padding-right: 2.5rem;
+    padding-right: 1rem;
     border-right: 0.25rem solid $color-primary-highlight;
-    margin-right: 2.5rem;
+    margin-right: 1rem;
 
     &:last-child {
       padding-right: 0;

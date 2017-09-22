@@ -1,20 +1,5 @@
-/*
-Marketplace Profile Page Styles
-================================================================================
-*/
+@import '../../../assets/styles/variables';
 
-/*
-Imports
-------------------------------------------------------------
-*/
-/* app */
-@import '../../assets/styles/variables';
-
-
-/*
-Page Wide
-================================================================================
-*/
 .container-wrapper {
   min-height: $body-height;
 }
@@ -174,4 +159,59 @@ Map
 .closed {
   color: red;
   text-align: center;
+}
+
+/*
+  Memberships component styles
+*/
+.membership {
+  /*color: $white;*/
+
+  font-size: 1.25rem;
+  text-align: left;
+}
+
+.membership__title {
+  margin: 0 0 1.5rem 0;
+
+  font-size: 1.85rem;
+
+  small {
+    /*color: $white;*/
+  }
+}
+
+.membership__includes-list__label {
+  font-weight: bold;
+}
+
+.membership__includes-list {
+  min-height: 200px;
+  margin-bottom: 0;
+  padding-left: 0;
+
+  line-height: 2rem;
+  list-style: none;
+}
+
+.membership__cost {
+  margin: 2rem 0 0 0;
+  color: #00A1DF;
+  font-size: 3rem;
+}
+
+.membership__savings {
+  margin-bottom: 1rem;
+
+  font-size: 1.5rem;
+}
+
+.membership__disclaimer {
+  margin-bottom: 0.25rem;
+
+  font-size: 0.75rem;
+}
+
+.membership__HQ_color {
+  color: #00A1DF;
 }

@@ -1,49 +1,50 @@
-/*
-Search Page Sagas
-================================================================================
-*/
-
-/*
-Imports
-------------------------------------------------------------
-*/
-// libs
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { take, call, put, race } from 'redux-saga/effects';
+import { take, call, put, race, fork, cancel } from 'redux-saga/effects';
+import { takeLatest } from 'redux-saga';
+import { actions as toastrActions } from 'react-redux-toastr';
 import request from 'utils/request';
 
-import data from './mockData'; // TODO: Remove this once API is hooked up
-
-// local
-import {
-  // search
-  SEARCH_REQUEST,
-} from './constants';
 import {
   // search
   searchSuccess,
+  specialtiesSuccess,
 } from './actions';
 
-export function* search() {
-  while (true) { // eslint-disable-line no-constant-condition
-    const watcher = yield race({
-      searchAction: take(SEARCH_REQUEST),
-      stop: take(LOCATION_CHANGE), // stop watching if user leaves page
+function* main() {
+  const watcherA = yield fork(searchWatcher);
+
+  yield take(LOCATION_CHANGE);
+
+  yield cancel(watcherA);
+}
+
+function* searchWatcher() {
+  while (true) {
+    yield takeLatest('SEARCH_PAGE_SEARCH_REQUEST', function* handler({payload}) { 
+      try {
+        const requestURL = '/api/v1/search/';
+        const { specialtiesRequired } = payload;
+        if (specialtiesRequired) {
+          payload.specialtiesRequired = true;
+        }
+        const body = JSON.stringify(payload);
+        const params = {
+          method: 'POST',
+          body
+        };
+        const { dentists, specialtiesList } = yield call(request, requestURL, params);
+        
+        yield put(searchSuccess(dentists));
+        if (specialtiesList) {
+          yield put(specialtiesSuccess(specialtiesList));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     });
-
-    if (watcher.stop) break;
-
-    // const response = yield call(request, `/api/v1/search?${watcher.searchAction.payload}`);
-    // TODO: call real API once it is hooked up. Then remove this following block.
-    const response = { data };
-
-    if (response.err) {
-    } else {
-      yield put(searchSuccess(response.data));
-    }
   }
 }
 
 export default [
-  search,
+  main
 ];

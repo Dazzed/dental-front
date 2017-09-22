@@ -115,6 +115,8 @@ class DentistDashboardHeader extends React.Component {
       city,
       state,
       zipCode,
+      officeSlug,
+      affordabilityScore,
     } = dentistInfo;
 
     const {
@@ -139,9 +141,6 @@ class DentistDashboardHeader extends React.Component {
         }
       })
     }
-
-    // TODO
-    const priceScore = 4.0;
 
     // TODO
     /*
@@ -176,18 +175,15 @@ class DentistDashboardHeader extends React.Component {
               </div>
 
               <div className="col-sm-9">
-                <h2 styleName="dentist__name">{firstName} {lastName}</h2>
+                <h2 styleName="dentist__name">{officeName}</h2>
 
                 <div styleName="dentist__scores">
                   <ReviewScore score={user.rating} />
-                  {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-                  {/*
-                  <PriceScore score={priceScore} />
-                  */}
+                  <PriceScore affordabilityScore={affordabilityScore} />
                 </div>
 
                 <p styleName="dentist__address">
-                  {officeName}
+                  {firstName} {lastName}
                   <br />
                   {address}
                   <br />

@@ -56,9 +56,9 @@ export default class PatientDashboardTabs extends React.Component {
         this.props.changeRoute('/patient/profile');
         break;
 
-      case 'reviews':
-        this.props.changeRoute('/patient/your-reviews');
-        break;
+      // case 'reviews':
+      //   this.props.changeRoute('/patient/your-reviews');
+      //   break;
 
       default:
         // Don't do anything... we should never actually reach here.
@@ -75,7 +75,7 @@ export default class PatientDashboardTabs extends React.Component {
       <Tabs activeKey={active} onSelect={this.selectTab} id="patient-dashboard-tabs" styleName="tabs">
         <Tab eventKey={'profile'} title="Profile"></Tab>
         <Tab eventKey={'memberships'} title="Membership Information"></Tab>
-        <Tab eventKey={'reviews'} title="Your Reviews"></Tab>
+        {/*<Tab eventKey={'reviews'} title="Your Reviews"></Tab>*/}
         <Tab eventKey={'dentist'} title="Your Dentist"></Tab>
       </Tabs>
     );

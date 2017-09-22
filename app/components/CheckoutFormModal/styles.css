@@ -76,3 +76,17 @@ Checkout Form Modal
     text-decoration: none;
   }
 }
+
+/* Accepted Credit Cards
+ * ------------------------------------------------------ */
+.accepted-cards {}
+
+.accepted-cards__title {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.accepted-cards__cards > * {
+  padding-right: 1rem;
+  font-size: 4.5rem;
+}

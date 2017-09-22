@@ -56,11 +56,7 @@ function* submitContactUsMessageFormWatcher () {
     const { payload, } = yield take(SUBMIT_CONTACT_US_MESSAGE_FORM);
 
     try {
-      // NOTE: The contact_support API Endpoint requires a `dentistId` path
-      // parameter, but the person submitting the contact form doesn't have to
-      // be a DentalHQ user.  So just fake the `dentistId` in the path.
-      const fakeDentistId = -1;
-      const requestURL = `/api/v1/dentists/${fakeDentistId}/contact_support`;
+      const requestURL = '/api/v1/dentists/contact_support';
 
       const params = {
         method: 'POST',

@@ -1,0 +1,12 @@
+.filter-button, .filter-button:hover, .filter-button:active, .filter-button:focus {
+  /*border: 0;
+  border-radius: 0;
+  background-color: #646569;
+  background: #646569;
+  color: white;*/
+  opacity: 0.85;
+}
+
+.pt-2 {
+  padding-top: 1.5%;
+}

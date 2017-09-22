@@ -10,6 +10,8 @@ import {
   SET_USER_DATA,
   SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
+  REVIEW_ADDED,
+  REVIEW_EDITED
 } from './constants';
 
 
@@ -78,7 +80,15 @@ export default function appReducer (state = initialState, action) {
         ...state,
         pageTitle: payload,
       };
-
+    case REVIEW_ADDED:
+    case REVIEW_EDITED:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          clientReviews: [ payload ]
+        }
+      };
     default:
       return state;
   }

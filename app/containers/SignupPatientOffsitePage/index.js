@@ -108,6 +108,7 @@ function mapStateToProps(state) {
     // signup
     accountInfo: accountInfoSelector(state),
     isSignedUp: isSignedUpSelector(state),
+    currentUser: state.global.currentUser
   };
 }
 
@@ -232,6 +233,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
   }
 
   componentWillMount() {
+    const { location, currentUser, isSignedUp } = this.props;
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
+
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
       this.props.toastError('There was an error embedding Stripe, please reload the page');
@@ -264,6 +268,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
   // checkout
   checkout = () => {
+    const { location, currentUser, isSignedUp } = this.props;
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
+    if (currentUser.type === 'client') {
+      this.props.toastError('You can not try to signup when you are logged in. Visit this page again.');
+      setTimeout(() => {
+        this.props.changeRoute('/accounts/logout');
+      }, 3000);
+    }
     const {
       user
     } = this.props;
@@ -356,6 +368,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
       isSignedUp,
     } = this.props;
 
+    const isFromMarketplace = location.query.frommarketplace ? true : false;
     const {
       soloAccountMemberConfirmation,
     } = this.state;
@@ -530,7 +543,10 @@ export default class PatientOffsiteSignupPage extends React.Component {
 
     return (
       <div styleName="container-wrapper">
-        <NavBar pathname={location.pathname} logo={dentist.dentistInfo.logo || false} />
+        <NavBar
+          pathname={location.pathname}
+          logo={isFromMarketplace ? null : dentist.dentistInfo.logo || false}
+        />
         <PageHeader title="Signup for a Patient Account" borderContent={borderContent} imgY={0}>
           <div className="row">
 
@@ -649,6 +665,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     dentist={dentist}
                     initialValues={user}
                     onSubmit={this.handleUserFormSubmit}
+                    isFromMarketplace={isFromMarketplace}
                   />
                 </div>
               )}

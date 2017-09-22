@@ -8,6 +8,8 @@ import {
   SERVICES_REQUEST_ERROR,
 
   CHANGE_PAGE_TITLE,
+  REVIEW_ADDED,
+  REVIEW_EDITED
 } from './constants';
 
 
@@ -66,5 +68,19 @@ export function changePageTitle (payload) {
   return {
     type: CHANGE_PAGE_TITLE,
     payload,
+  };
+}
+
+export function reviewAdded (payload) {
+  return {
+    type: REVIEW_ADDED,
+    payload
+  };
+}
+
+export function reviewEdited (payload) {
+  return {
+    type: REVIEW_EDITED,
+    payload
   };
 }
