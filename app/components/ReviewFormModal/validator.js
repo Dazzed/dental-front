@@ -25,7 +25,7 @@ const schema = {
     },
   },
 
-  review: {
+  message: {
     presence: true,
   },
   title: {
