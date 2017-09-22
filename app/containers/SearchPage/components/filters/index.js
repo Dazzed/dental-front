@@ -81,7 +81,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={`DISTANCE ${selectedDistance} MILES`}
+              title={`DISTANCE ${selectedDistance}`}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectDistance}
