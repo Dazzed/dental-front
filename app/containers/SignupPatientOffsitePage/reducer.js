@@ -92,13 +92,9 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     ------------------------------------------------------------
     */
     case DENTIST_SUCCESS:
-      const defaultAdultMembership = action.dentist.memberships.find((membership) => {
-        return membership.subscription_age_group === 'adult'
-            && membership.active
-            && membership.name === "default monthly membership";
-      });
-
-      const defaultAdultMembershipId = defaultAdultMembership !== undefined ? defaultAdultMembership.id : "-1";
+      const firstAdultMembership = action.dentist
+      .memberships
+      .filter(m => m.subscription_age_group === 'adult' && m.active)[0];
 
       return {
         ...state,
@@ -108,7 +104,7 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         },
         user: {
           ...state.user,
-          membershipId: defaultAdultMembershipId
+          membershipId: firstAdultMembership.id
         }
       };
 
@@ -278,8 +274,8 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     case SUBMIT_CHECKOUT_FORM:
       return {
         ...state,
-        editingActive: false,
-        editing: null,
+        // editingActive: false,
+        // editing: null,
       };
 
     /*
