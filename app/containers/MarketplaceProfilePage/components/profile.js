@@ -18,7 +18,22 @@ export default class Profile extends Component {
     } = this.props;
 
     const { services } = dentistInfo;
-
+    let markers = [{
+      id: dentistInfo.id,
+      active: false,
+      lat: null,
+      lng: null
+    }];
+    if (dentistInfo.location) {
+      if (dentistInfo.location.coordinates.length) {
+        markers = [{
+          id: dentistInfo.id,
+          active: true,
+          lat: dentistInfo.location.coordinates[0],
+          lng: dentistInfo.location.coordinates[1]
+        }];
+      }
+    }
     return (
       <div styleName="content">
         <div className="row">
@@ -121,14 +136,7 @@ export default class Profile extends Component {
             */}
             <div styleName="map-wrapper">
               <GoogleMaps
-                markers={[
-                  {
-                    id: dentistInfo.id,
-                    active: true,
-                    lat: dentistInfo.location.coordinates[0],
-                    lng: dentistInfo.location.coordinates[1]
-                  }
-                ]}
+                markers={markers}
                 updateActiveId={() => {}}
               />
             </div>
