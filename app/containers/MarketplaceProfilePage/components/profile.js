@@ -86,7 +86,7 @@ export default class Profile extends Component {
               <h3 styleName="detail__title">Website</h3>
 
               <p styleName="detail__content">
-                <a target='blank' href={'https://www.'+dentistInfo.url.replace('https://www.', '')}>{dentistInfo.url}</a>
+                <a target='blank' href={dentistInfo.url}>{dentistInfo.url}</a>
               </p>
             </div>
 
