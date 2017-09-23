@@ -166,12 +166,16 @@ export default class SearchPage extends Component {
 
     if (searchResults.length > 0) {
       for (let i = 0; i < searchResults.length; i++) {
-        markerArray.push({
-          id: searchResults[i].id,
-          active: searchResults[i].id === this.state.activeResultId,
-          lat: searchResults[i].location.coordinates[0],
-          lng: searchResults[i].location.coordinates[1]
-        });
+        if (searchResults[i].location) {
+          if (searchResults[i].location.coordinates.length) {
+            markerArray.push({
+              id: searchResults[i].id,
+              active: searchResults[i].id === this.state.activeResultId,
+              lat: searchResults[i].location.coordinates[0],
+              lng: searchResults[i].location.coordinates[1]
+            });
+          }
+        }
       }
 
       return (
