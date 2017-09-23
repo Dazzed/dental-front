@@ -274,8 +274,8 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
     case SUBMIT_CHECKOUT_FORM:
       return {
         ...state,
-        editingActive: false,
-        editing: null,
+        // editingActive: false,
+        // editing: null,
       };
 
     /*

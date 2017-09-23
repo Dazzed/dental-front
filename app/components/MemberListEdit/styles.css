@@ -129,6 +129,10 @@ Members
   display: inline;
 }
 
+.members__title--centered {
+  text-align: center;
+}
+
 /*
 Member
 ------------------------------------------------------------
@@ -144,6 +148,11 @@ Member
 
 .member__detail {
   margin-top: 24px;
+}
+
+.member__detail__centered {
+  margin-top: 24px;
+  text-align: center;
 }
 
 .subtotal {

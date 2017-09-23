@@ -43,22 +43,6 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
-      path: '/signup/:officeSlug',
-      name: 'signupOfficeSlugPage',
-      getComponent(nextState, cb) {
-        Promise.all([
-          System.import('containers/SignupPatientSlugPage/reducer'),
-          System.import('containers/SignupPatientSlugPage/sagas'),
-          System.import('containers/SignupPatientSlugPage'),
-        ])
-          .then(([ reducer, sagas, component ]) => {
-            injectReducer('signupOfficeSlugPage', reducer.default);
-            injectSagas(sagas.default);
-            loadModule(cb)(component);
-          })
-          .catch(errorLoading);
-      }
-    }, {
       onEnter: redirectToDashboard,
       path: '/accounts/activate/:activationKey',
       name: 'activationPage',
@@ -128,12 +112,18 @@ export default function createRoutes(store) {
         Promise.all([
           System.import('containers/App/sagas'),
 
+          System.import('containers/LearnMorePage/reducer'),
+          System.import('containers/LearnMorePage/sagas'),
+
           System.import('containers/DentistSignupPage/reducer'),
           System.import('containers/DentistSignupPage/sagas'),
           System.import('containers/DentistSignupPage')
         ])
-          .then(([appSagas, reducer, sagas, component]) => {
+          .then(([appSagas, learnMoreReducers, learnMoreSagas, reducer, sagas, component]) => {
             injectSagas(appSagas.default);
+
+            injectReducer('learnMorePage', learnMoreReducers.default);
+            injectSagas(learnMoreSagas.default);
 
             injectReducer('dentistSignupPage', reducer.default);
             injectSagas(sagas.default);
@@ -554,7 +544,7 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      onEnter: redirectToDashboard,
+      // onEnter: redirectToDashboard,
       path: '/marketplace/profile/:dentistId',
       name: 'marketplaceProfile',
       getComponent (nextState, cb) {

@@ -154,7 +154,7 @@ export default class MemberListEdit extends Component {
               be treated like any other member?
           */}
           {membership && showControlCol && (
-            <div styleName="member__detail">
+            <div styleName="member__detail__centered">
               {/* The actions for a member depend on their subscription status
                   and type:
                     - active monthly => Update & Remove
@@ -191,15 +191,19 @@ export default class MemberListEdit extends Component {
                 status === "active"
                   && membership.type === 'year'
                   && status === 'active'
-                  && moment(member.subscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
                   && (
                     <div>
-                      <input
-                        type="button"
-                        styleName="button--small"
-                        value="UPDATE"
-                        onClick={this.onUpdateClick.bind(this, patient, member)}
-                      />
+                      {
+                        moment(member.subscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
+                        && (
+                          <input
+                            type="button"
+                            styleName="button--small"
+                            value="UPDATE"
+                            onClick={this.onUpdateClick.bind(this, patient, member)}
+                          />
+                        )
+                      }
                       <input
                         type="button"
                         styleName="button--small"
@@ -216,7 +220,7 @@ export default class MemberListEdit extends Component {
                     type="button"
                     styleName="button--small"
                     style={{fontSize: '10px'}}
-                    value={`Expires ${moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY')}`}
+                    value={`Expires ${moment(member.subscription.cancelsAt).format('MMMM D, YYYY')}`}
                     disabled
                   />
                 )
@@ -250,10 +254,6 @@ export default class MemberListEdit extends Component {
         </div>
       </div>
     );
-  }
-
-  componentWillMount() {
-    console.log("MemberListEdit is mounted with ",this.props);
   }
 
   render () {
@@ -344,7 +344,7 @@ export default class MemberListEdit extends Component {
               </div>
             </div>
             {showControlCol && (
-              <div className="col-sm-3">
+              <div className="col-sm-3" styleName="members__title--centered">
                 <div styleName="members__title--first-only">
                   Actions
                 </div>

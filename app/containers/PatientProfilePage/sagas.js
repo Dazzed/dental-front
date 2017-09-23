@@ -101,7 +101,7 @@ function* main() {
   const watcherB = yield fork(familyMembersFetcher);
   const watcherC = yield fork(submitMemberFormWatcher);
   const watcherD = yield fork(removeMemberWatcher);
-  const watcherE = yield fork(submitProfileFormWatcher);
+//  const watcherE = yield fork(submitProfileFormWatcher);
   const watcherF = yield fork(submitReviewFormWatcher);
   const watcherG = yield fork(removeReviewWatcher);
   const watcherH = yield fork(submitAccountSecurityFormWatcher);
@@ -113,7 +113,7 @@ function* main() {
   yield cancel(watcherB);
   yield cancel(watcherC);
   yield cancel(watcherD);
-  yield cancel(watcherE);
+//  yield cancel(watcherE);
   yield cancel(watcherF);
   yield cancel(watcherG);
   yield cancel(watcherH);
@@ -341,7 +341,11 @@ function* submitAddReviewForm(payload, dentistId) {
   } catch (err) {
     const errors = mapValues(err.errors, (value) => value.msg);
 
-    yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    if (errors.rating) {
+      yield put(toastrActions.error('', 'Rating is required. Click on the teeth to rate.'));
+    } else {
+      yield put(toastrActions.error('', 'Please fix errors on the form!'));
+    }
     yield put(stopSubmit('review', errors));
   }
 }

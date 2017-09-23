@@ -204,6 +204,7 @@ export default class AdminDentistsPage extends React.Component {
 
   updateSearchTerm = (evt) => {
     this.setState({
+      ...this.state,
       searchTerm: evt.target.value,
     });
   }
@@ -212,22 +213,19 @@ export default class AdminDentistsPage extends React.Component {
   onEditDentist = () => {
     this.props.resetEditDentistForm();
     this.setState({
+      ...this.state,
       showEditDentistModal: true,
     });
   }
 
   onEditDentistCancel = () => {
     this.setState({
+      ...this.state,
       showEditDentistModal: false,
     });
   }
 
   onEditDentistSubmit = (values) => {
-    values = {
-      ...values,
-      links: this.props.selectedDentist.links,
-      alteredLinks: values.links.map(l => ({ id: l.value })),
-    };
     this.props.editDentist(this.props.selectedDentist, values);
   }
 
@@ -500,7 +498,7 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        { selectedDentist && this.state.showEditDentistModal &&
+        { selectedDentist && 
           <AdminEditDentistFormModal
             show={this.state.showEditDentistModal}
             onCancel={this.onEditDentistCancel}

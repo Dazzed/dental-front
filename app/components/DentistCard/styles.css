@@ -24,7 +24,7 @@ Dentist Card Component Styles
   .left {
     .avatar {
       height: 105px;
-      width: 105px;
+      width: 112px;
       border-radius: 50%;
       border: 4px solid #444;
       margin: -35px auto 20px;
@@ -48,22 +48,22 @@ Dentist Card Component Styles
 
     .name {
       color: #01A1DD;
-      font-size: 1.2rem;
+      font-size: 1.75rem;
     }
 
     .type {
       text-transform: uppercase;
-      font-size: .75rem;
+      font-size: 1rem;
     }
 
     .location {
-      font-size: .7rem;
+      font-size: 1rem;
       font-weight: 600;
       margin-top: 8px;
     }
 
     .affordability {
-      font-size: .7rem;
+      font-size: 1rem;
       font-weight: 600;
       color: #01A1DD;
     }
@@ -75,7 +75,7 @@ Dentist Card Component Styles
 
       .price {
         font-weight: 600;
-        font-size: 1.4em;
+        font-size: 1.6em;
         margin-left: 4px;
       }
     }

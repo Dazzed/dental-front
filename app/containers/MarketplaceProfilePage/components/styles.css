@@ -1,0 +1,217 @@
+@import '../../../assets/styles/variables';
+
+.container-wrapper {
+  min-height: $body-height;
+}
+
+.content-wrapper {
+  margin: 2rem 0;
+}
+
+.content {
+  padding: 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.button--full-width {
+  width: 100%;
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button--lowlight--full-width {
+  width: 100%;
+  border: 1px solid $color-primary-lowlight;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-lowlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-lowlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.large-title--short {
+  margin-bottom: 0.5rem;
+
+  font-size: 1.5rem;
+  text-transform: capitalize;
+}
+
+
+/*
+Marketplace Profile
+================================================================================
+*/
+.map-wrapper {
+  margin-top: -40px;
+}
+
+.profile-content-wrapper {
+  height: 200px;
+
+  .profile-content__avatar {
+    float: left;
+    position: relative;
+    top: calc(50% - 4.5rem); /* 4.5rem = 9rem/2 = height/2 */
+    margin-right: 2rem;
+  }
+
+  .profile-content__name-and-rating {
+    float: left;
+    position: relative;
+    top: calc(50% - 41px); /* 41 = 82px/2 = height/2 */
+
+    *:first-child {
+      margin-top: 0;
+    }
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .profile-content__user-action-buttons {
+    position: relative;
+    top: calc(50% - 41px); /* 41 = 82px/2 = height/2 */
+  }
+}
+
+.detail {
+  margin-bottom: 2rem;
+}
+
+.detail__title {
+  border-bottom: 1px solid $color-primary-lowlight;
+}
+
+.detail__content {
+  line-height: 1.75;
+}
+
+/* Work Hours
+ * ------------------------------------------------------ */
+.work-hours__day {
+  display: inline-block;
+  width: 90px;
+  margin-right: 10px;
+}
+
+.work-hours__hour {
+  display: inline-block;
+  width: 70px;
+  margin: 0 10px;
+}
+
+/*
+Photos
+------------------------------------------------------------
+*/
+.photos {
+  height: 300px;
+  margin-bottom: 3rem;
+  border-radius: 3rem;
+  padding: 2rem;
+
+  background-color: $color-secondary-lowlight;
+}
+
+/*
+Map
+------------------------------------------------------------
+*/
+.map {
+  height: 300px;
+  margin-bottom: 3rem;
+  border-radius: 3rem;
+  padding: 2rem;
+
+  background-color: $color-secondary-lowlight;
+}
+
+.closed {
+  color: red;
+  text-align: center;
+}
+
+/*
+  Memberships component styles
+*/
+.membership {
+  /*color: $white;*/
+
+  font-size: 1.25rem;
+  text-align: left;
+}
+
+.membership__title {
+  margin: 0 0 1.5rem 0;
+
+  font-size: 1.85rem;
+
+  small {
+    /*color: $white;*/
+  }
+}
+
+.membership__includes-list__label {
+  font-weight: bold;
+}
+
+.membership__includes-list {
+  min-height: 200px;
+  margin-bottom: 0;
+  padding-left: 0;
+
+  line-height: 2rem;
+  list-style: none;
+}
+
+.membership__cost {
+  margin: 2rem 0 0 0;
+  color: #00A1DF;
+  font-size: 3rem;
+}
+
+.membership__savings {
+  margin-bottom: 1rem;
+
+  font-size: 1.5rem;
+}
+
+.membership__disclaimer {
+  margin-bottom: 0.25rem;
+
+  font-size: 0.75rem;
+}
+
+.membership__HQ_color {
+  color: #00A1DF;
+}

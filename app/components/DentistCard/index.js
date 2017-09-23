@@ -8,18 +8,16 @@ import ReviewScore from 'components/ReviewScore';
 import styles from './styles.css';
 
 function DentistCard(dentist) {
-  // TODO rating
   const rating = 10;
   
   const {
     id,
     user: { firstName, lastName, id: userId },
-    user: { dentistSpecialty: { name: type } },
+    user: { avatar, dentistSpecialty: { name: type } },
     city,
     state,
     affordabilityScore: affordability,
     planStartingCost,
-    avatar,
     active,
     updateActiveId,
     handleClick
