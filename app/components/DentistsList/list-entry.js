@@ -63,7 +63,7 @@ export default class DentistsListEntry extends React.Component {
       renderListEntryBody,
     } = this.props;
 
-    const listNum = ("00" + position.toString()).substr(-3, 3); // guarantee a length 3 listNum
+    const listNum = ("00" + dentist.id.toString()).substr(-3, 3); // guarantee a length 3 listNum
 
     return (
       <div className="row" styleName="list-entry__wrapper">
