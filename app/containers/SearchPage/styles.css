@@ -34,3 +34,63 @@ Dentist List
 .dentist-list {
   margin-top: 40px;
 }
+
+/*
+Floating Menu
+================================================================================
+IE: Login links on the RHS.
+*/
+.floating-menu {
+  position: fixed;
+  transform: rotate(-90deg);
+  top: 200px;
+  right: -52px;
+  display: inline-block;
+
+  font-size: 0.875rem;
+}
+
+.floating-menu  ul.login-links {
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+
+  text-transform: uppercase;
+
+  & > li {
+    display: inline-block;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.5rem 2.5rem;
+
+    /* NOTE: Defaults to the .login-links__link--secondary color. */
+    background-color: $color-primary-lowlight;
+
+    text-align: center;
+
+    & > a {
+      color: $color-white;
+
+      cursor: pointer;
+    }
+
+    & > a:hover,
+    & > a:active,
+    & > a:focus {
+      color: $color-white;
+
+      text-decoration: none;
+    }
+  }
+
+  > li.login-links__link--primary {
+    background-color: $color-secondary-highlight;
+  }
+
+  > li.login-links__link--secondary {
+    background-color: $color-primary-lowlight;
+  }
+}
+
