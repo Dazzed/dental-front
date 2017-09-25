@@ -215,3 +215,19 @@ Map
 .membership__HQ_color {
   color: #00A1DF;
 }
+
+.dentist__scores {
+  margin-bottom: 1rem;
+
+  > * {
+    padding-right: 1rem;
+    border-right: 0.25rem solid $color-primary-highlight;
+    margin-right: 1rem;
+
+    &:last-child {
+      padding-right: 0;
+      border-right: none;
+      margin-right: 0;
+    }
+  }
+}
