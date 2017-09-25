@@ -59,7 +59,7 @@ export default class SearchPage extends Component {
     this.state = {
       searchQuery: '',
       specialties: [],
-      distance: '',
+      distance: '25',
       sort: '',
       coordinates: {
         lat: 34.1,
@@ -223,6 +223,13 @@ export default class SearchPage extends Component {
           children={searchForm}
           borderContent={borderContent}
         />
+        <div styleName="floating-menu">
+          <ul styleName="login-links">
+            <li styleName="login-links__link--secondary">
+              <Link to="/accounts/login">Login</Link>
+            </li>
+          </ul>
+        </div>
         {
           !loadingResults &&
             <div className="container">

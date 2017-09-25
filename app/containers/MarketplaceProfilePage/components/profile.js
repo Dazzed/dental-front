@@ -3,6 +3,7 @@ import CSSModules from "react-css-modules";
 import Avatar from "components/Avatar";
 import GoogleMaps from "components/GoogleMaps";
 import ReviewScore from "components/ReviewScore";
+import PriceScore from "components/PriceScore";
 
 import styles from "./styles.css";
 
