@@ -28,10 +28,14 @@ import {
 } from 'containers/App/selectors';
 import {
   // fetch
+  fetchDentistReports,
   fetchDentistInfo,
   fetchPatients,
   dentistSpecialtiesRequest,
   uploadImageRequest,
+
+  // download report
+  downloadReport,
 
   // submit
   signupRequest,
@@ -47,6 +51,7 @@ import {
 
 import {
   // fetch
+  selectDentistReports,
   selectDentistInfo,
   selectPatients,
   dentistSpecialtiesSelector,
@@ -61,6 +66,7 @@ Redux
 function mapStateToProps (state) {
   return {
     // fetch
+    reports: selectDentistReports(state),
     dentistInfo: selectDentistInfo(state),
     patients: selectPatients(state),
     dentistSpecialties: dentistSpecialtiesSelector(state),
@@ -76,6 +82,7 @@ function mapDispatchToProps (dispatch) {
     changePageTitle: (title) => dispatch(changePageTitle(title)),
 
     // fetch
+    fetchDentistReports: () => dispatch(fetchDentistReports()),
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
@@ -83,6 +90,9 @@ function mapDispatchToProps (dispatch) {
 
     // image upload
     uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
+
+    // download report
+    downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
 
     // signup
     makeSignupRequest: (values) => dispatch(signupRequest(values)),
@@ -108,6 +118,7 @@ export default class DentistEditProfilePage extends Component {
     changePageTitle: React.PropTypes.func.isRequired,
 
     // fetch - state
+    reports: React.PropTypes.arrayOf(React.PropTypes.object),
 
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
 
@@ -124,6 +135,7 @@ export default class DentistEditProfilePage extends Component {
     ]).isRequired,
 
     // fetch - dispatch
+    fetchDentistReports: React.PropTypes.func.isRequired,
     fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
     getDentistSpecialties: React.PropTypes.func.isRequired,
@@ -132,11 +144,15 @@ export default class DentistEditProfilePage extends Component {
     // image upload - dispatch
     uploadImage: React.PropTypes.func.isRequired,
 
+    // download report - dispatch
+    downloadReport: React.PropTypes.func.isRequired,
+
     // signup - dispatch
     makeSignupRequest: React.PropTypes.func.isRequired,
   };
 
   componentWillMount () {
+    this.props.fetchDentistReports();
     this.props.fetchDentistInfo();
     this.props.fetchPatients();
     this.props.getDentistSpecialties();
@@ -161,6 +177,16 @@ export default class DentistEditProfilePage extends Component {
     this.props.makeSignupRequest(formattedValues);
   }
 
+  // reports
+  onReportSelected = ({month, year, url}) => {
+    const {
+      user: { firstName, lastName },
+    } = this.props;
+
+    const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
+    this.props.downloadReport(reportName, url);
+  }
+
   updateServiceState(allServices, selectedServices) {
     for (let i = 0; i < allServices.length; i++) {
       const service = allServices[i];
@@ -176,6 +202,7 @@ export default class DentistEditProfilePage extends Component {
   render () {
     const {
       // fetch
+      reports,
       dentistInfo,
       patients,
       dentistSpecialties,
@@ -215,11 +242,13 @@ export default class DentistEditProfilePage extends Component {
 
     return (
       <div>
-        {/*<DentistDashboardHeader
+        <DentistDashboardHeader
           dentistInfo={dentistInfo}
           patients={patients}
+          reports={reports}
           user={user}
-        />*/}
+          onReportSelected={this.onReportSelected}
+        />
 
         <h1 styleName="large-title">Edit Profile</h1>
 
