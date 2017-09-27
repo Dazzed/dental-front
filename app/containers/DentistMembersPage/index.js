@@ -232,9 +232,11 @@ class DentistMembersPage extends React.Component {
   }
 
   componentWillMount() {
-    this.props.fetchDentistInfo();
-    this.props.fetchPatients();
-    this.props.fetchDentistReports();
+    if (this.props.user) {
+      this.props.fetchDentistInfo();
+      this.props.fetchPatients();
+      this.props.fetchDentistReports();
+    }
     this.state = { dialog: {} };
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
