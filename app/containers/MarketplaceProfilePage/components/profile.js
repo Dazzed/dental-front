@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import CSSModules from "react-css-modules";
+import moment from 'moment';
+
 import Avatar from "components/Avatar";
 import GoogleMaps from "components/GoogleMaps";
 import ReviewScore from "components/ReviewScore";
@@ -101,9 +103,13 @@ export default class Profile extends Component {
                       <span styleName="work-hours__day">{w.day.toUpperCase()}:</span>
                       {w.isOpen &&
                         <span>
-                          <span styleName="work-hours__hour">{w.startAt.slice(0, 5)}</span>
+                          <span styleName="work-hours__hour">
+                            {moment(w.startAt, ['h:m', 'H:m']).format('h A')}
+                          </span>
                           {' to '}
-                          <span styleName="work-hours__hour">{w.endAt.slice(0, 5)}</span>
+                          <span styleName="work-hours__hour">
+                            {moment(w.endAt, ['h:m', 'H:m']).format('h A')}
+                          </span>
                         </span>
                       }
                       {!w.isOpen &&
