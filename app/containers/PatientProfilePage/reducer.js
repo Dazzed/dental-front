@@ -136,12 +136,9 @@ function patientProfilePageReducer(state = initialState, action) {
     case ADD_MEMBER_SUCCESS:
       return {
         ...state,
-        familyMembers: [
-          ...state.familyMembers,
-          action.payload,
-        ],
+        familyMembers: state.familyMembers.concat(action.payload),
         editingActive: false,
-        editing: null,
+        editing: null
       };
 
     case EDIT_MEMBER_SUCCESS:
