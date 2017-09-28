@@ -168,7 +168,6 @@ function* dentistMembersFetcher (action) {
       const response = yield call(request, `/api/v1/dentists/${dentistId}/members`);
       yield put(fetchDentistMembersSuccess(response.data));
     } catch (error) {
-      console.log(error);
       yield put(fetchDentistMembersError(error));
     }
   });
@@ -245,7 +244,10 @@ function* editDentist () {
         const message = `The dentist has been updated.`;
         yield put(toastrActions.success('', message));
 
-        yield put(editDentistSuccess(response));
+        yield put(editDentistSuccess(response.updatedDentist));
+        if (response.refresh) {
+          setTimeout(() => window.location.reload(), 500);
+        }
       } catch (e) {
         if (typeof e.errors === 'string')
           yield put(toastrActions.error('', e.errors.toString()));

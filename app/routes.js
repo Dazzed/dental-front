@@ -43,6 +43,22 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/signup/:officeSlug',
+      name: 'signupOfficeSlugPage',
+      getComponent(nextState, cb) {
+        Promise.all([
+          System.import('containers/SignupPatientSlugPage/reducer'),
+          System.import('containers/SignupPatientSlugPage/sagas'),
+          System.import('containers/SignupPatientSlugPage'),
+        ])
+          .then(([ reducer, sagas, component ]) => {
+            injectReducer('signupOfficeSlugPage', reducer.default);
+            injectSagas(sagas.default);
+            loadModule(cb)(component);
+          })
+          .catch(errorLoading);
+      }
+    }, {
       onEnter: redirectToDashboard,
       path: '/accounts/activate/:activationKey',
       name: 'activationPage',
