@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 
+import { selectCurrentUser } from 'containers/App/selectors';
+
 import AdminManageTabs from 'components/AdminManageTabs';
 import ManagersList from 'components/ManagersList';
 
@@ -25,6 +27,7 @@ function mapStateToProps(state) {
     selectedManager: state.AdminManagePage.selectedManager,
     addingManager: state.AdminManagePage.addingManager,
     editingManager: state.AdminManagePage.editingManager,
+    user: selectCurrentUser(state),
   };
 }
 
@@ -56,6 +59,10 @@ export default class AdminManagePage extends React.Component {
     addManager: React.PropTypes.func.isRequired,
     toggleEditingManager: React.PropTypes.func.isRequired,
     editManager: React.PropTypes.func.isRequired,
+    user: React.PropTypes.oneOfType([
+      React.PropTypes.bool,
+      React.PropTypes.object,
+    ]).isRequired,
   };
 
   constructor(props) {
@@ -63,7 +70,9 @@ export default class AdminManagePage extends React.Component {
   }
 
   componentWillMount() {
-    this.props.fetchAccountManagers();
+    if (this.props.user) {
+      this.props.fetchAccountManagers();
+    }
   }
 
   componentDidMount() {
@@ -120,4 +129,4 @@ export default class AdminManagePage extends React.Component {
       </div>
     )
   }
-}   
+}
