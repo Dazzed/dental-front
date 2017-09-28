@@ -324,17 +324,22 @@ class DentistEditProfileForm extends React.Component {
     if (info.target.checked) {
       if (!this.state.currentServices.find(service => service.id === serviceId)) {
         // Turning on the value.
-        this.state.currentServices.push({
+        const { currentServices } = this.state;
+        currentServices.push({
           id: serviceId,
           name: serviceInfo.name
         });
+        this.setState({ currentServices },
+          () => this.props.change('officeInfo.services', currentServices));
       }
     } else {
       // Turning off the value.
-      this.state.currentServices = this.state.currentServices.filter(service => service.id !== serviceId);
+      const { currentServices } = this.state;
+      this.setState({ currentServices: currentServices.filter(service => service.id !== serviceId) },
+        () => this.props.change('officeInfo.services', currentServices.filter(service => service.id !== serviceId)));
+      // this.state.currentServices = this.state.currentServices.filter(service => service.id !== serviceId);
     }
-    this.props.change('officeInfo.services', this.state.currentServices);
-    this.forceUpdate();
+    // this.forceUpdate();
   }
 
   setAdultAnnualMembership = (info) => {

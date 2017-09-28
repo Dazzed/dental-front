@@ -137,10 +137,12 @@ export default class DentistEditProfilePage extends Component {
   };
 
   componentWillMount () {
-    this.props.fetchDentistInfo();
-    this.props.fetchPatients();
-    this.props.getDentistSpecialties();
-    this.props.requestServices();
+    if (this.props.user) {
+      this.props.fetchDentistInfo();
+      this.props.fetchPatients();
+      this.props.getDentistSpecialties();
+      this.props.requestServices();
+    }
   }
 
   componentDidMount() {
