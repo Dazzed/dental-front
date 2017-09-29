@@ -17,8 +17,8 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
+import AccountSecurityFormModal from 'components/AccountSecurityFormModal';
 import Avatar from 'components/Avatar';
-
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
 import DentistDashboardTabs from 'components/DentistDashboardTabs';
@@ -64,6 +64,11 @@ import {
 
   // download report
   downloadReport,
+
+  // edit security
+  setEditingSecurity,
+  clearEditingSecurity,
+  submitSecurityForm,
 } from './actions';
 import {
   // fetch
@@ -84,6 +89,9 @@ import {
 
   // edit patient payment info
   selectEditingPatientPayment,
+
+  // edit security
+  editingSecuritySelector,
 } from './selectors';
 import styles from './styles.css';
 
@@ -113,6 +121,9 @@ function mapStateToProps(state) {
 
     // edit patient payment info
     editingPatientPayment: selectEditingPatientPayment(state),
+
+    // edit security
+    editingSecurity: editingSecuritySelector(state),
   };
 }
 
@@ -156,6 +167,12 @@ function mapDispatchToProps(dispatch) {
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
+
+    // edit security
+    resetSecurityForm: () => dispatch(resetForm('accountSecurity')),
+    setEditingSecurity: (securityInfo) => dispatch(setEditingSecurity(securityInfo)),
+    clearEditingSecurity: () => dispatch(clearEditingSecurity()),
+    submitSecurityForm: (values, user) => dispatch(submitSecurityForm(values, user)),
   };
 }
 
@@ -229,6 +246,15 @@ class DentistMembersPage extends React.Component {
 
     // download report - dispatch
     downloadReport: React.PropTypes.func.isRequired,
+
+    // edit security - state
+    editingSecurity: React.PropTypes.object,
+
+    // edit security - dispatch
+    resetSecurityForm: React.PropTypes.func.isRequired,
+    setEditingSecurity: React.PropTypes.func.isRequired,
+    clearEditingSecurity: React.PropTypes.func.isRequired,
+    submitSecurityForm: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -370,6 +396,15 @@ class DentistMembersPage extends React.Component {
     this.props.setEditingPatientPayment(patient, {});
   }
 
+  // security
+  updateSecuritySettings = () => {
+    this.props.resetSecurityForm();
+    this.props.setEditingSecurity({
+      changeEmail: true,
+      changePassword: true,
+    });
+  }
+
   /*
   Events
   ------------------------------------------------------------
@@ -416,6 +451,15 @@ class DentistMembersPage extends React.Component {
     this.props.downloadReport(reportName, url);
   }
 
+  // secruity
+  handleSecurityFormSubmit = (values) => {
+    this.props.submitSecurityForm(values, this.props.user);
+  }
+
+  cancelSecurityFormAction = () => {
+    this.props.clearEditingSecurity();
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -441,6 +485,9 @@ class DentistMembersPage extends React.Component {
 
       // edit patient payment info
       editingPatientPayment,
+
+      // edit security
+      editingSecurity,
     } = this.props;
 
     const {
@@ -475,6 +522,7 @@ class DentistMembersPage extends React.Component {
             user={user}
             onMemberSearch={this.props.searchMembers}
             onReportSelected={this.onReportSelected}
+            onSecurityLinkClicked={this.updateSecuritySettings}
           />
           <DentistDashboardTabs active="members" />
 
@@ -483,6 +531,14 @@ class DentistMembersPage extends React.Component {
               It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before you can see them here in your dashboard.
             </p>
           </div>
+
+          <AccountSecurityFormModal
+            show={editingSecurity !== null}
+            onCancel={this.cancelSecurityFormAction}
+
+            initialValues={editingSecurity}
+            onSubmit={this.handleSecurityFormSubmit}
+          />
         </div>
       );
     }
@@ -501,6 +557,7 @@ class DentistMembersPage extends React.Component {
           user={user}
           onMemberSearch={this.props.searchMembers}
           onReportSelected={this.onReportSelected}
+          onSecurityLinkClicked={this.updateSecuritySettings}
         />
         <DentistDashboardTabs active="members" />
 
@@ -563,6 +620,15 @@ class DentistMembersPage extends React.Component {
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />
+
+        <AccountSecurityFormModal
+          show={editingSecurity !== null}
+          onCancel={this.cancelSecurityFormAction}
+
+          initialValues={editingSecurity}
+          onSubmit={this.handleSecurityFormSubmit}
+        />
+
       </div>
     );
   }

@@ -44,6 +44,10 @@ import {
 
   // waive patient fees
   TOGGLE_WAIVE_PATIENT_FEES_SUCCESS,
+
+  // edit security
+  SET_EDITING_SECURITY,
+  CLEAR_EDITING_SECURITY,
 } from './constants';
 
 /*
@@ -61,7 +65,6 @@ const initialState = {
   searchName: null,
   sortStatus: "active",
 
-  // add / edit member
   editingActive: false,
   editing: null,
 };
@@ -318,6 +321,26 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(patientIdx + 1),
         ],
       };
+
+    /*
+    Edit Security
+    ------------------------------------------------------------
+    */
+    case SET_EDITING_SECURITY:
+      return {
+        ...state,
+        editingActive: 'security',
+        editing: action.securityInfo,
+      };
+
+    case CLEAR_EDITING_SECURITY:
+      return {
+        ...state,
+        editingActive: false,
+        editing: null,
+      };
+
+    // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
 
     /*
     Default Reducer

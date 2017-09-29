@@ -388,6 +388,7 @@ class PatientProfilePage extends React.Component {
     const {
       dialog
     } = this.state;
+
     /*
     Precondition Renders
     ------------------------------------------------------------

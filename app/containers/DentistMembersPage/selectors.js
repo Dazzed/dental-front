@@ -195,6 +195,17 @@ const selectEditingPatientPayment = createSelector(
   }
 );
 
+const editingSecuritySelector = createSelector(
+  domainSelector,
+  (substate) => {
+    if (substate.editingActive === 'security') {
+      return substate.editing;
+    }
+
+    return null;
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -218,6 +229,7 @@ export {
   selectEditingMember,
   selectEditingPatientProfile,
   selectEditingPatientPayment,
+  editingSecuritySelector,
 };
 
 function replaceDefaultToStandard(memberships) {
