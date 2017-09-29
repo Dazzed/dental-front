@@ -434,6 +434,20 @@ function* submitAccountSecurityFormWatcher() {
   while (true) {
     const { payload, user } = yield take(SUBMIT_SECURITY_FORM);
 
+    let cleanedPayload = {
+      oldPassword: payload.oldPassword,
+    };
+
+    if (payload.changeEmail) {
+      cleanedPayload.newEmail = payload.newEmail;
+      cleanedPayload.confirmNewEmail = payload.confirmNewEmail;
+    }
+
+    if (payload.changePassword) {
+      cleanedPayload.newPassword = payload.newPassword;
+      cleanedPayload.confirmNewPassword = payload.confirmNewPassword;
+    }
+
     try {
       const requestURL = `/api/v1/users/${user.id}/account/change-auth`;
       const params = {

@@ -21,11 +21,11 @@ const schema = {
   newPassword: {
     format: {
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\$\/\*!]{8,}$/,
-      message: `^Password must be at least 8 characters and include one (1) capital letter.`,
+      message: `^Password must be at least 8 characters and include one (1) capital letter, one (1) number.`,
     },
     equality: {
       attribute: "oldPassword",
-      message: '^Your new password cannot be the same as your old password.  Leave the "Password" and "Confirm Password" fields blank if you only want to change your email address.',
+      message: '^Your new password cannot be the same as your old password.',
       comparator: function(pass1, pass2) {
         return pass1 !== pass2;
       }
@@ -47,9 +47,10 @@ const formValidator = (values) => {
     && values.confirmNewEmail === undefined
     && values.newPassword === undefined
     && values.confirmNewPassword === undefined
+    || (values.changeEmail === false && values.changePassword === false)
   ) {
-    errors.newEmail = 'You must update your email, password, or both.';
-    errors.newPassword = 'You must update your email, password, or both.';
+    errors.changeEmail = 'You must update your email, password, or both.';
+    errors.changePassword = 'You must update your email, password, or both.';
   }
 
   return errors;

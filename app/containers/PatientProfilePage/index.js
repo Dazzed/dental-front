@@ -311,7 +311,10 @@ class PatientProfilePage extends React.Component {
   // security
   updateSecuritySettings = () => {
     this.props.resetSecurityForm();
-    this.props.setEditingSecurity({});
+    this.props.setEditingSecurity({
+      changeEmail: true,
+      changePassword: true,
+    });
   }
 
   // payments
