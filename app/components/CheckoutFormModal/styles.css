@@ -64,10 +64,11 @@ Page Wide
 Checkout Form Modal
 ================================================================================
 */
-.info-trigger {
+.popover-trigger {
   color: $color-primary-transparent;
 
   cursor: pointer;
+  font-weight: normal;
   text-decoration: none;
 
   &:hover,
@@ -88,5 +89,7 @@ Checkout Form Modal
 
 .accepted-cards__cards > * {
   padding-right: 1rem;
+
+  color: $color-primary-highlight;
   font-size: 4.5rem;
 }
