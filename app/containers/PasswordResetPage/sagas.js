@@ -3,8 +3,6 @@ Login Page Sagas
 ================================================================================
 */
 
-/* eslint-disable no-constant-condition, consistent-return */
-
 /*
 Imports
 ------------------------------------------------------------
@@ -20,9 +18,6 @@ import { setItem, removeItem } from 'utils/localStorage';
 import request from 'utils/request';
 import { actions as toastrActions } from 'react-redux-toastr';
 
-// app
-// import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
-
 // local
 import {
   PASSWORD_RESET_REQUEST,
@@ -36,16 +31,19 @@ import { passwordResetError } from './actions';
  Main Saga
  ================================================================================
  */
+
 // Bootstrap sagas
 export default [
   main
 ];
 
 function* main() {
-  const watcherB = yield fork(forgotPaswordWatcher);
+  const watcherA = yield fork(passwordResetWatcher);
 
   yield take(LOCATION_CHANGE);
-  // yield cancel(watcherB);
+// NOTE: Can't cancel the watcher on page loads, otherwise the toastr message
+//       won't be shown.
+//  yield cancel(watcherA);
 }
 
 
@@ -53,50 +51,32 @@ function* main() {
 Login Sagas
 ================================================================================
 */
-function* forgotPaswordWatcher() {
+function* passwordResetWatcher() {
   while (true) {
-    // listen for the PASSWORD_RESET_REQUEST action dispatched on form submit
-    const { payload: { data, resolve, reject } } = yield take(PASSWORD_RESET_REQUEST);
+    const { payload } = yield take(PASSWORD_RESET_REQUEST);
 
-    // execute the passwordReset task asynchronously
-    const task = yield fork(passwordReset, data, resolve, reject);
-    if (task) {
-      yield put(push('/accounts/login'));
-    }
+    yield fork(passwordReset, payload);
+    yield put(push('/accounts/login'));
   }
 }
 
-function* passwordReset(data, resolve, reject) {
+function* passwordReset(payload) {
   try {
-    // send a post request with the login credentials
-    const response = yield call(request, '/api/v1/accounts/reset-password', {
+    const requestURL = `/api/v1/accounts/reset-password`;
+    const params = {
       method: 'POST',
-      body: JSON.stringify(data)
-    });
+      body: JSON.stringify(payload.data),
+    };
 
-    yield put(toastrActions.success(response.message ||
-      'New Password has been set, proceed to login'));
+    const response = yield call(request, requestURL, params);
+    if (response.success === true) {
+      yield put(toastrActions.success('New password has been set!'));
+    } else {
+      yield put(toastrActions.error('Your password could not be changed.  The password reset link may have already been used, or it may be expired.  Please try the password reset process again.'));
+    }
 
-    return response;
   } catch (err) {
-    // reject the onSubmit promise of redux-form
-    if (reject) {
-      reject(new SubmissionError({ _error: get(err, 'meta.message') }));
-    }
-
-    yield put(toastrActions.error('Your password change request could not be completed at this time'));
-    // dispatch PASSWORD_RESET_ERROR action
-    yield put(passwordResetError(err));
-  } finally {
-    // because this generator task is asyc, it is possible to
-    // send a logout action before the user gets logged in
-    // whenever all the above code finish without an error,
-    // check if this task got cancelled by the parent generator
-    // http://yelouafi.github.io/redux-saga/docs/advanced/NonBlockingCalls.html
-    if (yield cancelled()) {
-      // TODO: do i need something here?
-      // ... put special cancellation handling code here
-    }
+    yield put(toastrActions.error('Your password could not be changed.  The password reset link may have already been used, or it may be expired.  Please try the password reset process again.'));
   }
 }
 
