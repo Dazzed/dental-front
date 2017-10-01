@@ -1,0 +1,5 @@
+@import "../../../../assets/styles/variables";
+
+:global(.total-field) {
+  margin-left: 1%;
+}

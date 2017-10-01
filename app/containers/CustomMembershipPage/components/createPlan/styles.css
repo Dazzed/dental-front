@@ -1,0 +1,57 @@
+@import "../../../../assets/styles/variables";
+
+:global(.button--full-width) {
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+  margin-top: 2%;
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.create-plan-header {
+  color: #00a1df;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+:global(.select-field) {
+  padding-top: 2.5%;
+  padding-left: 2.5%;
+}
+
+:global(.Select-control) {
+  border-radius: 0;
+}
+
+:global(.Select-menu-outer) {
+  width: 92.5%;
+}
+
+:global(.remove-plan-icon) {
+  font-size: 40px;
+  color: #d9534f;
+  position: relative;
+  top: 5%;
+  cursor: pointer;
+}
+
+:global(.raw-height) {
+  padding-top: 8%;
+}
+
+:global(.save-plan-btn) {
+  margin-left: 1%;
+}

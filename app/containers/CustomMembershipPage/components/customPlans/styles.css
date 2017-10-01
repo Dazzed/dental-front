@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/variables";
+
+:global(.accordion-container) {
+  background: #f5f5f5;
+  padding: 5px;
+  margin: 5px;
+  margin-left: 2%;
+  cursor: pointer;
+}
+
+:global(.plan-name) {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+:global(.caret-icon) {
+  font-size: 32px;
+  padding-left: 70%;
+}
+
+:global(.edit-form-container) {
+  margin: 2%;
+}

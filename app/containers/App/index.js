@@ -24,6 +24,7 @@ import browserDetector from 'utils/browserDetector';
 
 import * as actions from './actions';
 import styles from './styles.css';
+import 'react-select/dist/react-select.css';
 
 const staticPages = [
   '/',
