@@ -52,6 +52,7 @@ class DentistDashboardHeader extends React.Component {
     // passed in - actions
     onMemberSearch: React.PropTypes.func,
     onReportSelected: React.PropTypes.func.isRequired,
+    onSecurityLinkClicked: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -99,6 +100,7 @@ class DentistDashboardHeader extends React.Component {
       user,
 
       onReportSelected,
+      onSecurityLinkClicked,
     } = this.props;
 
     const {
@@ -237,6 +239,11 @@ class DentistDashboardHeader extends React.Component {
                 <Link styleName="quick-links__link" to="#">
                   Marketing Materials
                 </Link>
+              </li>
+              <li>
+                <span styleName="quick-links__link" onClick={onSecurityLinkClicked}>
+                  Login &amp; Security Settings
+                </span>
               </li>
             </ul>
           </div>

@@ -72,6 +72,11 @@ import {
   DENTIST_SIGNUP_REQUEST,
   DENTIST_SIGNUP_SUCCESS,
   DENTIST_SIGNUP_ERROR,
+
+  // edit security
+  SET_EDITING_SECURITY,
+  CLEAR_EDITING_SECURITY,
+  SUBMIT_SECURITY_FORM,
 } from './constants';
 
 /*
@@ -400,3 +405,30 @@ export function signupError(payload) {
     payload
   };
 }
+
+/*
+Edit Security
+------------------------------------------------------------
+*/
+export function setEditingSecurity(securityInfo) {
+  return {
+    type: SET_EDITING_SECURITY,
+    securityInfo,
+  };
+}
+
+export function clearEditingSecurity() {
+  return {
+    type: CLEAR_EDITING_SECURITY,
+  };
+}
+
+export function submitSecurityForm(payload, user) {
+  return {
+    type: SUBMIT_SECURITY_FORM,
+    payload,
+    user,
+  };
+}
+
+// update user data at App level, see setUserData in `/app/containers/App/actions.js`

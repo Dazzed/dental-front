@@ -13,9 +13,15 @@ import Modal from 'react-bootstrap/lib/Modal';
 import Row from 'react-bootstrap/lib/Row';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
-import { Field, reduxForm, submit as submitForm } from 'redux-form';
+import {
+  Field,
+  formValueSelector,
+  reduxForm,
+  submit as submitForm
+} from 'redux-form';
 
 // app
+import Checkbox from 'components/Checkbox';
 import LabeledInput from 'components/LabeledInput';
 
 // local
@@ -26,16 +32,22 @@ import AccountSecurityFormValidator from './validator';
 Redux
 ------------------------------------------------------------
 */
+const valueSelector = formValueSelector('accountSecurity');
+
 const mapDispatchToProps = (dispatch) => ({
   submit: () => dispatch(submitForm('accountSecurity')),
 });
+
+const mapStateToProps = (state) => {
+  return valueSelector(state, 'changeEmail', 'changePassword');
+};
 
 
 /*
 Member Form Modal
 ================================================================================
 */
-@connect(null, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 @reduxForm({
   form: 'accountSecurity',
   enableReinitialize: true,
@@ -51,10 +63,18 @@ export default class AccountSecurityFormModal extends React.Component {
     submit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
 
+    // form values
+    changeEmail: React.PropTypes.bool,
+    changePassword: React.PropTypes.bool,
+
     // modal related - passed in
     show: React.PropTypes.bool.isRequired,
     onCancel: React.PropTypes.func.isRequired,
   };
+
+  getCheckbox(props) {
+    return new Checkbox(props);
+  }
 
   getLabeledInput(props) {
     return new LabeledInput(props);
@@ -71,6 +91,10 @@ export default class AccountSecurityFormModal extends React.Component {
       handleSubmit,
       submit,
       submitting,
+
+      // form values
+      changeEmail,
+      changePassword,
 
       // modal related
       show,
@@ -101,51 +125,73 @@ export default class AccountSecurityFormModal extends React.Component {
             onSubmit={handleSubmit}
             className="form-horizontal"
           >
-            <Row>
-              <Field
-                name="newEmail"
-                type="text"
-                component={this.getLabeledInput}
-                label="New Email Address"
-                placeholder=""
-                className="col-sm-6"
-              />
+            <Field
+              name="changeEmail"
+              component={this.getCheckbox}
+              value="changeEmail"
+              className="col-sm-2"
+            >
+              <strong>Change Email?</strong>
+            </Field>
 
-              <Field
-                name="confirmNewEmail"
-                type="text"
-                component={this.getLabeledInput}
-                label="Confirm New Email Address"
-                placeholder=""
-                className="col-sm-6"
-              />
-            </Row>
+            {changeEmail && (
+              <Row>
+                <Field
+                  name="newEmail"
+                  type="text"
+                  component={this.getLabeledInput}
+                  label="New Email Address"
+                  placeholder=""
+                  className="col-sm-6"
+                />
 
-            <Row>
-              <Field
-                name="newPassword"
-                type="password"
-                component={this.getLabeledInput}
-                label="New Password"
-                placeholder=""
-                className="col-sm-6"
-              />
+                <Field
+                  name="confirmNewEmail"
+                  type="text"
+                  component={this.getLabeledInput}
+                  label="Confirm New Email Address"
+                  placeholder=""
+                  className="col-sm-6"
+                />
+              </Row>
+            )}
 
-              <Field
-                name="confirmNewPassword"
-                type="password"
-                component={this.getLabeledInput}
-                label="Confirm New Password"
-                placeholder=""
-                className="col-sm-6"
-              />
+            <Field
+              name="changePassword"
+              component={this.getCheckbox}
+              value="changePassword"
+              className="col-sm-2"
+            >
+              <strong>Change Password?</strong>
+            </Field>
 
-              <div className="col-sm-12">
-                <h5 styleName="field-instructions">
-                  *Password must be at least 8 characters and include one (1) capital letter.
-                </h5>
-              </div>
-            </Row>
+            {changePassword && (
+              <Row>
+                <Field
+                  name="newPassword"
+                  type="password"
+                  component={this.getLabeledInput}
+                  label="New Password"
+                  placeholder=""
+                  className="col-sm-6"
+                />
+
+                <Field
+                  name="confirmNewPassword"
+                  type="password"
+                  component={this.getLabeledInput}
+                  label="Confirm New Password"
+                  placeholder=""
+                  className="col-sm-6"
+                />
+
+                <div className="col-sm-12">
+                  <h5 styleName="field-instructions">
+                    *Password must be at least 8 characters and include one (1) capital letter, one (1) number.
+                  </h5>
+                </div>
+              </Row>
+            )}
 
             <Row>
               <Field
@@ -159,7 +205,7 @@ export default class AccountSecurityFormModal extends React.Component {
             </Row>
 
             <p styleName="field-instructions">
-              For security, you must enter your current password to change your account's email and password.  You may leave both "New Password" fields blank if you only wish to change your email, or leave both email fields blank if you only wish to change your password.
+              For security, you must enter your current password.  If you have forgotten it, you may change it through the "forgot password" link on the login page, which will send a secure password-reset link to the email on file.
             </p>
 
           </form>
