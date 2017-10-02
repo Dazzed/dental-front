@@ -164,7 +164,7 @@ export default class FamilyMemberListEdit extends Component {
               */}
               {this.props.onUpdateMember
                 && (status === "active")
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (
                   <input
                     type="button"
@@ -176,7 +176,7 @@ export default class FamilyMemberListEdit extends Component {
               }
 
               {this.props.onRemoveMember
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (status === "active")
                 && (
                   <input

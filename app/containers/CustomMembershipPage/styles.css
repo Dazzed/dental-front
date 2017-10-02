@@ -1,0 +1,7 @@
+@import '../../assets/styles/variables';
+
+.plan-header {
+  color: #00A1DF;
+  font-size: 28px;
+  font-weight: 400;
+}
