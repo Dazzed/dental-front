@@ -476,6 +476,31 @@ export default function createRoutes(store) {
       },
     }, {
       onEnter: redirectToLogin,
+      path: '/dentist/custom-membership',
+      name: 'dentistCustomMembershipPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/CustomMembershipPage/reducers'),
+          System.import('containers/CustomMembershipPage/sagas'),
+          System.import('containers/CustomMembershipPage')
+        ]);
+
+        const renderRoute = loadModule(cb);
+        
+        importModules.then(([
+          customMembershipPageReducer,
+          customMembershipPageSagas,
+          component
+        ]) => {
+          injectReducer('dentistCustomMembershipPage', customMembershipPageReducer.default);
+          injectSagas(customMembershipPageSagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/dentist/new-reviews',
       name: 'dentistNewReviewsPage',
       getComponent(nextState, cb) {

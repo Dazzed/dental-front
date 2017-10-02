@@ -20,7 +20,6 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaSearch from 'react-icons/lib/fa/search';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
-import 'react-select/dist/react-select.css';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
@@ -268,7 +267,7 @@ export default class AdminDentistsPage extends React.Component {
 
     const activeSince = moment(createdAt).format("MMMM Do, YYYY");
 
-    const phone = selectedDentist.phoneNumbers[0].number;
+    const phone = selectedDentist.phoneNumbers.length ? selectedDentist.phoneNumbers[0].number : 'Phone: N/A';
 
     return (
       <div className={'row ' + styles['dentist-details']}>
