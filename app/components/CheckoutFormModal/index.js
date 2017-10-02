@@ -25,6 +25,9 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, submit as submitForm } from 'redux-form';
 
 // app
+import cvcVisa from 'assets/images/cvc-visa.png';
+import cvcAmex from 'assets/images/cvc-amex.png';
+
 import {
   US_STATES,
 } from 'common/constants';
@@ -147,6 +150,60 @@ export default class CheckoutFormModal extends React.Component {
       </Popover>
     );
 
+    const cvcPopover = (
+      <Popover
+        className="popover--large"
+        id="cvc-popover"
+        placement="bottom"
+      >
+        {this.state.card_type !== "American Express"
+          ? ( <div>
+                <p>
+                  The card security code is located on the back of MasterCard, Visa, and Discover cards and is typically a separate group of three digits to the right of the signature strip.
+                </p>
+
+                <p className="text-center">
+                  <img src={cvcVisa} alt="CVC Example: Visa" />
+                </p>
+
+                <p>
+                  Content by <a href="https://en.wikipedia.org/wiki/User:Airodyssey" class="extiw" title="en:User:Airodyssey">Airodyssey</a> at the <a href="https://en.wikipedia.org/wiki/" class="extiw" title="w:">English language Wikipedia</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=5002422">Link</a>
+                </p>
+              </div>
+            )
+          : ( <div>
+                <p>
+                  On American Express cards, the card security code is a printed, not embossed, group of four digits on the front towards the right.
+                </p>
+
+                <p className="text-center">
+                  <img src={cvcAmex} alt="CVC Example: American Express" />
+                </p>
+
+                <p>
+                  Content by <a href="https://en.wikipedia.org/wiki/User:Airodyssey" class="extiw" title="en:User:Airodyssey">Airodyssey</a> at the <a href="https://en.wikipedia.org/wiki/" class="extiw" title="w:">English language Wikipedia</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=1075661">Link</a>
+                </p>
+              </div>
+            )
+        }
+      </Popover>
+    );
+
+    const cvcPopoverTrigger = (
+      <span>
+        <OverlayTrigger
+          overlay={cvcPopover}
+          placement="bottom"
+          rootClose
+          trigger={['click', 'focus', 'hover']}
+        >
+          <span className={styles['popover-trigger']}>(?) </span>
+        </OverlayTrigger>
+
+        CVC
+      </span>
+    );
+
     let maskChar;
     if (this.state.card_type === "VISA") {
       maskChar = "9999 9999 9999 9999";
@@ -247,7 +304,7 @@ export default class CheckoutFormModal extends React.Component {
                     name="cvc"
                     type="text"
                     component={this.getLabeledInput}
-                    label="CVV2"
+                    label={cvcPopoverTrigger}
                     placeholder=""
                     className="col-sm-4"
                   />
@@ -347,7 +404,7 @@ export default class CheckoutFormModal extends React.Component {
                         rootClose
                         trigger={['click', 'focus', 'hover']}
                       >
-                        <span styleName="info-trigger">(?)</span>
+                        <span styleName="popover-trigger">(?)</span>
                       </OverlayTrigger>
                       {' '}
                       is present additional treatment may be necessary prior to my cleaning.
