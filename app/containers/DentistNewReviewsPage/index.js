@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
 
 // app
+import AccountSecurityFormModal from 'components/AccountSecurityFormModal';
 import Avatar from 'components/Avatar';
 import CheckoutFormModal from 'components/CheckoutFormModal';
 import DentistDashboardHeader from 'components/DentistDashboardHeader';
@@ -60,6 +61,11 @@ import {
 
   // download report
   downloadReport,
+
+  // edit security
+  setEditingSecurity,
+  clearEditingSecurity,
+  submitSecurityForm,
 } from 'containers/DentistMembersPage/actions';
 import {
   // fetch
@@ -78,6 +84,9 @@ import {
 
   // edit patient payment info
   selectEditingPatientPayment,
+
+  // edit security
+  editingSecuritySelector,
 } from 'containers/DentistMembersPage/selectors';
 
 import {
@@ -112,6 +121,9 @@ function mapStateToProps(state) {
 
     // edit patient payment info
     editingPatientPayment: selectEditingPatientPayment(state),
+
+    // edit security
+    editingSecurity: editingSecuritySelector(state),
   };
 }
 
@@ -154,6 +166,12 @@ function mapDispatchToProps(dispatch) {
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
+
+    // edit security
+    resetSecurityForm: () => dispatch(resetForm('accountSecurity')),
+    setEditingSecurity: (securityInfo) => dispatch(setEditingSecurity(securityInfo)),
+    clearEditingSecurity: () => dispatch(clearEditingSecurity()),
+    submitSecurityForm: (values, user) => dispatch(submitSecurityForm(values, user)),
   };
 }
 
@@ -226,6 +244,15 @@ class DentistNewReviewsPage extends React.Component {
 
     // download report - dispatch
     downloadReport: React.PropTypes.func.isRequired,
+
+    // edit security - state
+    editingSecurity: React.PropTypes.object,
+
+    // edit security - dispatch
+    resetSecurityForm: React.PropTypes.func.isRequired,
+    setEditingSecurity: React.PropTypes.func.isRequired,
+    clearEditingSecurity: React.PropTypes.func.isRequired,
+    submitSecurityForm: React.PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -285,6 +312,15 @@ class DentistNewReviewsPage extends React.Component {
     this.props.setEditingPatientPayment(patient, {});
   }
 
+  // security
+  updateSecuritySettings = () => {
+    this.props.resetSecurityForm();
+    this.props.setEditingSecurity({
+      changeEmail: true,
+      changePassword: true,
+    });
+  }
+
   /*
   Events
   ------------------------------------------------------------
@@ -324,6 +360,15 @@ class DentistNewReviewsPage extends React.Component {
 
     const reportName = `dentist_${lastName}_${firstName}_${year}_${month}.pdf`;
     this.props.downloadReport(reportName, url);
+  }
+
+  // secruity
+  handleSecurityFormSubmit = (values) => {
+    this.props.submitSecurityForm(values, this.props.user);
+  }
+
+  cancelSecurityFormAction = () => {
+    this.props.clearEditingSecurity();
   }
 
   /*
@@ -374,6 +419,9 @@ class DentistNewReviewsPage extends React.Component {
 
       // edit patient payment info
       editingPatientPayment,
+
+      // edit security
+      editingSecurity,
     } = this.props;
 
     /*
@@ -405,6 +453,7 @@ class DentistNewReviewsPage extends React.Component {
             user={user}
             onMemberSearch={this.props.searchMembers}
             onReportSelected={this.onReportSelected}
+            onSecurityLinkClicked={this.updateSecuritySettings}
           />
           <DentistDashboardTabs active="new-reviews" />
 
@@ -413,6 +462,14 @@ class DentistNewReviewsPage extends React.Component {
               It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before they can start leaving you five star reviews!
             </p>
           </div>
+
+          <AccountSecurityFormModal
+            show={editingSecurity !== null}
+            onCancel={this.cancelSecurityFormAction}
+
+            initialValues={editingSecurity}
+            onSubmit={this.handleSecurityFormSubmit}
+          />
         </div>
       );
     }
@@ -429,6 +486,7 @@ class DentistNewReviewsPage extends React.Component {
             user={user}
             onMemberSearch={this.props.searchMembers}
             onReportSelected={this.onReportSelected}
+            onSecurityLinkClicked={this.updateSecuritySettings}
           />
           <DentistDashboardTabs active="new-reviews" />
 
@@ -437,6 +495,14 @@ class DentistNewReviewsPage extends React.Component {
               No new reviews were posted by your patients in the past 7 days.  Great job keeping up with your patients!
             </p>
           </div>
+
+          <AccountSecurityFormModal
+            show={editingSecurity !== null}
+            onCancel={this.cancelSecurityFormAction}
+
+            initialValues={editingSecurity}
+            onSubmit={this.handleSecurityFormSubmit}
+          />
         </div>
       );
     }
@@ -475,6 +541,7 @@ class DentistNewReviewsPage extends React.Component {
           user={user}
           onMemberSearch={this.props.searchMembers}
           onReportSelected={this.onReportSelected}
+          onSecurityLinkClicked={this.updateSecuritySettings}
         />
         <DentistDashboardTabs active="new-reviews" />
 
@@ -518,6 +585,15 @@ class DentistNewReviewsPage extends React.Component {
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
         />
+
+        <AccountSecurityFormModal
+          show={editingSecurity !== null}
+          onCancel={this.cancelSecurityFormAction}
+
+          initialValues={editingSecurity}
+          onSubmit={this.handleSecurityFormSubmit}
+        />
+
       </div>
     );
   }

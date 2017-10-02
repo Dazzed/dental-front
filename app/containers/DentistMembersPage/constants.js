@@ -56,3 +56,9 @@ export const UPLOAD_IMAGE_SUCCESS   = 'app/DentistMembersPage/UPLOAD_IMAGE_SUCCE
 export const DENTIST_SIGNUP_REQUEST      = 'app/DentistMembersPage/DENTIST_SIGNUP_REQUEST';
 export const DENTIST_SIGNUP_SUCCESS      = 'app/DentistMembersPage/DENTIST_SIGNUP_SUCCESS';
 export const DENTIST_SIGNUP_ERROR        = 'app/DentistMembersPage/DENTIST_SIGNUP_ERROR';
+
+// edit security settings
+export const SET_EDITING_SECURITY = 'app/DentistMembersPage/SET_EDITING_SECURITY';
+export const CLEAR_EDITING_SECURITY = 'app/DentistMembersPage/CLEAR_EDITING_SECURITY';
+export const SUBMIT_SECURITY_FORM = 'app/DentistMembersPage/SUBMIT_SECURITY_FORM';
+// update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`

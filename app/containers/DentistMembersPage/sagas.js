@@ -18,6 +18,10 @@ import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
 // app
+import {
+  // edit security
+  setUserData,
+} from 'containers/App/actions';
 import request from 'utils/request';
 
 // local
@@ -49,6 +53,9 @@ import {
 
   // signup
   signupSuccess,
+
+  // edit security
+  clearEditingSecurity,
 } from './actions';
 import {
   FETCH_DENTIST_INFO_REQUEST,
@@ -70,6 +77,9 @@ import {
 
   // signup
   DENTIST_SIGNUP_REQUEST,
+
+  // edit security
+  SUBMIT_SECURITY_FORM,
 } from './constants';
 
 
@@ -95,6 +105,7 @@ function* main () {
   const watcherJ = yield fork(downloadReport);
   const watcherK = yield fork(uploadImageWatcher);
   const watcherL = yield fork(signupWatcher);
+  const watcherM = yield fork(submitAccountSecurityFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -109,6 +120,7 @@ function* main () {
   yield cancel(watcherJ);
   yield cancel(watcherK);
   yield cancel(watcherL);
+  yield cancel(watcherM);
 }
 
 /*
@@ -552,5 +564,65 @@ function* makeStripeCreateTokenRequest(cardDetails) {
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;
+  }
+}
+
+/*
+Edit Security
+------------------------------------------------------------
+*/
+function* submitAccountSecurityFormWatcher() {
+  while (true) {
+    const { payload, user } = yield take(SUBMIT_SECURITY_FORM);
+
+    let cleanedPayload = {
+      oldPassword: payload.oldPassword,
+    };
+
+    if (payload.changeEmail) {
+      cleanedPayload.newEmail = payload.newEmail;
+      cleanedPayload.confirmNewEmail = payload.confirmNewEmail;
+    }
+
+    if (payload.changePassword) {
+      cleanedPayload.newPassword = payload.newPassword;
+      cleanedPayload.confirmNewPassword = payload.confirmNewPassword;
+    }
+
+    try {
+      const requestURL = `/api/v1/users/${user.id}/account/change-auth`;
+      const params = {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      };
+
+      const response = yield call(request, requestURL, params);
+      const message = `Your account security information has been updated.`;
+      yield put(toastrActions.success('', message));
+
+      let updatedUser = {
+        ...user,
+      };
+      if (payload.newEmail) {
+        updatedUser.email = payload.newEmail;
+      }
+      yield put(setUserData(updatedUser));
+
+      yield put(clearEditingSecurity());
+
+    } catch (err) {
+      if (get(err, 'meta.code') === 401) {
+        const message = "Your 'Current Password' was incorrect.  Please re-enter it and submit the form again.";
+        yield put(toastrActions.error('', message));
+      }
+      else {
+        yield put(toastrActions.error('', "Please fix errors on the form and re-enter your 'Current Password'."));
+      }
+
+      const errors = mapValues(err.errors, (value) => value.msg);
+      yield put(stopSubmit('accountSecurity', errors));
+
+      yield put(change('accountSecurity', 'oldPassword', null));
+    }
   }
 }

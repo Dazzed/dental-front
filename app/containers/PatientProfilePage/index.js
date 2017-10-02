@@ -311,7 +311,10 @@ class PatientProfilePage extends React.Component {
   // security
   updateSecuritySettings = () => {
     this.props.resetSecurityForm();
-    this.props.setEditingSecurity({});
+    this.props.setEditingSecurity({
+      changeEmail: true,
+      changePassword: true,
+    });
   }
 
   // payments
@@ -385,6 +388,7 @@ class PatientProfilePage extends React.Component {
     const {
       dialog
     } = this.state;
+
     /*
     Precondition Renders
     ------------------------------------------------------------
