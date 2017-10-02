@@ -21,3 +21,9 @@
 :global(.edit-form-container) {
   margin: 2%;
 }
+
+:global(.delete-plan-button) {
+  margin-left: 2.5%;
+  border-radius: 0;
+  font-size: 18px;
+}

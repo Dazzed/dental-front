@@ -8,16 +8,22 @@ import {
   editMembership,
   editMembershipSuccess,
   editMembershipError,
-  setEditingMembershipId
+  setEditingMembershipId,
+  deleteMembership,
+  deleteMembershipSuccess,
+  deleteMembershipError,
+  setDeletingMembershipId
 } from './actions';
 
 const defaultState = {
   dentistInfo: false,
   loading: {
     creatingMembership: false,
-    editingMembership: false
+    editingMembership: false,
+    deletingMembership: false,
   },
-  editingMembershipId: null
+  editingMembershipId: null,
+  deletingMembershipId: null
 };
 
 const reducer = {
@@ -99,7 +105,49 @@ const reducer = {
       ...state,
       editingMembershipId
     };
-  }
+  },
+  [deleteMembership]: state => {
+    const { loading } = state;
+    return {
+      ...state,
+      loading: {
+        ...loading,
+        deletingMembership: true
+      }
+    };
+  },
+  [deleteMembershipSuccess]: (state, custom_memberships) => {
+    const { dentistInfo, loading } = state;
+    return {
+      ...state,
+      dentistInfo: {
+        ...dentistInfo,
+        custom_memberships
+      },
+      loading: {
+        ...loading,
+        deletingMembership: false
+      },
+      deletingMembershipId: null
+    };
+  },
+  [deleteMembershipError]: state => {
+    const { loading } = state;
+    return {
+      ...state,
+      loading: {
+        ...loading,
+        deletingMembership: false
+      },
+      deletingMembershipId: null
+    };
+  },
+  [setDeletingMembershipId]: (state, deletingMembershipId) => {
+    return {
+      ...state,
+      deletingMembershipId
+    };
+  },
 };
 
 export default createReducer(reducer, defaultState);

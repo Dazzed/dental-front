@@ -43,7 +43,10 @@ export function selectRecommendedFee (state) {
   try {
     const { codes } = state.form.editPlan.values;
     const { dentistInfo } = state.dentistCustomMembershipPage;
-    const { discount } = dentistInfo.custom_memberships[0];
+    let discount = 0;
+    if (dentistInfo.custom_memberships.length) {
+      discount = dentistInfo.custom_memberships[0].discount;
+    }
     return codes.reduce((acc, c) => {
       if (!c.price) {
         acc += 0;

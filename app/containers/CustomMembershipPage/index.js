@@ -12,7 +12,9 @@ import {
   fetchDentistInfo,
   createMembership,
   editMembership,
-  setEditingMembershipId
+  setEditingMembershipId,
+  deleteMembership,
+  setDeletingMembershipId
 } from './actions';
 import {
   selectActivePlans
@@ -26,6 +28,8 @@ class CustomMembershipPage extends Component {
     createMembership: PropTypes.func.isRequired,
     editMembership: PropTypes.func.isRequired,
     setEditingMembershipId: PropTypes.func.isRequired,
+    deleteMembership: PropTypes.func.isRequired,
+    setDeletingMembershipId: PropTypes.func.isRequired,
 
     user: PropTypes.oneOfType([
       PropTypes.bool,
@@ -64,7 +68,7 @@ class CustomMembershipPage extends Component {
     const {
       dentistInfo,
       loading,
-      setEditingMembershipId
+      deletingMembershipId
     } = this.props;
 
     if (!dentistInfo) {
@@ -82,7 +86,10 @@ class CustomMembershipPage extends Component {
           plans={dentistInfo.custom_memberships}
           onSubmit={this.editPlan}
           loading={loading.editingMembership}
-          setEditingMembershipId={setEditingMembershipId}
+          setEditingMembershipId={this.props.setEditingMembershipId}
+          setDeletingMembershipId={this.props.setDeletingMembershipId}
+          deleteMembership={this.props.deleteMembership}
+          deletingMembershipId={deletingMembershipId}
         />
         <CreatePlanForm
           priceCodes={dentistInfo.priceCodes}
@@ -98,13 +105,15 @@ function mapStateToProps (state) {
   const {
     dentistInfo,
     loading,
-    editingMembershipId
+    editingMembershipId,
+    deletingMembershipId
   } = state.dentistCustomMembershipPage;
   return {
     user: selectCurrentUser(state),
     dentistInfo: selectActivePlans(dentistInfo),
     loading,
-    editingMembershipId
+    editingMembershipId,
+    deletingMembershipId
   };
 }
 
@@ -116,6 +125,8 @@ function mapDispatchToProps (dispatch) {
     createMembership: values => dispatch(createMembership(values)),
     editMembership: (values, membershipId) => dispatch(editMembership(values, membershipId)),
     setEditingMembershipId: value => dispatch(setEditingMembershipId(value)),
+    setDeletingMembershipId: value => dispatch(setDeletingMembershipId(value)),
+    deleteMembership: id => dispatch(deleteMembership(id))
   };
 }
 

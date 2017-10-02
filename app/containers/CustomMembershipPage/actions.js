@@ -39,6 +39,23 @@ const setEditingMembershipId = createAction(
   id => id
 );
 
+const deleteMembership = createAction(
+  'CUSTOM_MEMBERSHIP_PAGE_DELETE_MEMBERSHIP',
+  id => id
+);
+const deleteMembershipSuccess = createAction(
+  'CUSTOM_MEMBERSHIP_PAGE_DELETE_MEMBERSHIP_SUCCESS',
+  (values) => values
+);
+const deleteMembershipError = createAction(
+  'CUSTOM_MEMBERSHIP_PAGE_DELETE_MEMBERSHIP_ERROR',
+  values => values
+);
+const setDeletingMembershipId = createAction(
+  'CUSTOM_MEMBERSHIP_PAGE_SET_DELETING_MEMBERSHIP',
+  id => id
+);
+
 export {
   fetchDentistInfo,
   fetchDentistInfoSuccess,
@@ -51,6 +68,11 @@ export {
   editMembership,
   editMembershipSuccess,
   editMembershipError,
-  setEditingMembershipId
+  setEditingMembershipId,
+
+  deleteMembership,
+  deleteMembershipSuccess,
+  deleteMembershipError,
+  setDeletingMembershipId
 };
 

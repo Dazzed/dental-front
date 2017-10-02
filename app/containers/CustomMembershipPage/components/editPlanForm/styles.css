@@ -3,3 +3,7 @@
 :global(.total-field) {
   margin-left: 1%;
 }
+
+:global(.raw-height) {
+  padding-top: 15%;
+}

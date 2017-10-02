@@ -12,18 +12,22 @@ import {
   createMembershipSuccess,
   createMembershipError,
   editMembershipSuccess,
-  editMembershipError
+  editMembershipError,
+  deleteMembershipSuccess,
+  deleteMembershipError,
 } from './actions';
 
 function* main () {
   const watcherA = yield fork(dentistInfoWatcher);
   const watcherB = yield fork(createMembershipWatcher);
   const watcherC = yield fork(editMembershipWatcher);
+  const watcherD = yield fork(deleteMembershipWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
   yield cancel(watcherC);
+  yield cancel(watcherD);
 }
 
 function* dentistInfoWatcher () {
@@ -78,6 +82,28 @@ function* editMembershipWatcher () {
       console.log(e);
       yield put(toastrActions.error('', 'There was an error please try again later'));
       yield put(editMembershipError());
+    }
+  });
+}
+
+function* deleteMembershipWatcher () {
+  yield takeLatest('CUSTOM_MEMBERSHIP_PAGE_DELETE_MEMBERSHIP', function* handler ({ payload }) {
+    try {
+      const requestURL = '/api/v1/dentists/me/custom-memberships';
+      const body = JSON.stringify({ membershipId: payload });
+      const params = {
+        method: 'DELETE',
+        body
+      };
+
+      const { memberships } = yield call(request, requestURL, params);
+      const message = 'Plan has been Deleted Successfully.';
+      yield put(toastrActions.success('', message));
+      yield put(deleteMembershipSuccess(memberships));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', 'There was an error please try again later'));
+      yield put(deleteMembershipError());
     }
   });
 }
