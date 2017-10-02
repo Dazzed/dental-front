@@ -151,6 +151,9 @@ const mapStateToProps = (state) => {
       if (recommendedFees.monthly.adult < 19.99) {
         recommendedFees.monthly.adult = 19.99;
       }
+      if (recommendedFees.yearly.adult < 199) {
+        recommendedFees.yearly.adult = 199;
+      }
 
       recommendedFees.monthly.adult = Math.ceil(recommendedFees.monthly.adult);
       recommendedFees.yearly.adult = Math.ceil(recommendedFees.yearly.adult);
@@ -167,6 +170,9 @@ const mapStateToProps = (state) => {
 
       if (recommendedFees.monthly.child < 14.99) {
         recommendedFees.monthly.child = 14.99;
+      }
+      if (recommendedFees.yearly.child < 149) {
+        recommendedFees.yearly.child = 149;
       }
 
       recommendedFees.monthly.child = Math.ceil(recommendedFees.monthly.child);
