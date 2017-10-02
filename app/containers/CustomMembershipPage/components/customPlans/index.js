@@ -59,7 +59,7 @@ export default class CustomPlans extends Component {
         title: 'Confirm Delete Plan',
         message: (
           <div>
-            Do you want to delete the {planName} plan?
+            Do you want to delete the <strong className="hq-color">{planName}</strong> plan?
           </div>
         ),
         confirm: () => deleteMembership(deletingPlan),

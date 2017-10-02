@@ -146,7 +146,7 @@ export default class MemberListEdit extends Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            ${amount}
+            {member.subscription.stripeSubscriptionId ? `$${amount}` : ''}
           </div>
         </div>
         <div className="col-sm-3">
@@ -163,7 +163,7 @@ export default class MemberListEdit extends Component {
               */}
               {this.props.onUpdateMember
                 && (status === "active")
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (
                   <input
                     type="button"
@@ -175,7 +175,7 @@ export default class MemberListEdit extends Component {
               }
 
               {this.props.onRemoveMember
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (status === "active")
                 && (
                   <input
@@ -244,7 +244,7 @@ export default class MemberListEdit extends Component {
                   <input
                     type="button"
                     styleName="button--small"
-                    value={member.subscription.stripeSubscriptionIdUpdatedAt ? "RE-ENROLL" : "ENROLL"}
+                    value={member.subscription.stripeSubscriptionId ? "RE-ENROLL" : "ENROLL"}
                     onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )
