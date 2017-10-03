@@ -1,5 +1,15 @@
 @import "../../../../assets/styles/variables";
 
+.create-plan-header {
+  color: #00a1df;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+:global(.recommended-fee) {
+  font-size: 1.45rem;
+}
+
 :global(.button--full-width) {
   border: 1px solid $color-primary-highlight;
   border-radius: 0.25rem;
@@ -19,12 +29,6 @@
   &:focus {
     outline: none;
   }
-}
-
-.create-plan-header {
-  color: #00a1df;
-  font-size: 28px;
-  font-weight: 400;
 }
 
 :global(.select-field) {

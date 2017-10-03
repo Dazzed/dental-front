@@ -104,6 +104,8 @@ export default class MemberListEdit extends Component {
 
     const membership = member.subscription ? member.subscription.membership : {};
     let status = member.subscription ? member.subscription.status : 'inactive';
+    const membershipType = member.subscription.membership.type;
+    const membershipName = member.subscription.membership.name;
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -141,7 +143,8 @@ export default class MemberListEdit extends Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {subscriptionType}
+            {membershipType === 'custom' ?
+              <span style={{ fontSize: '14px' }}>{membershipName}</span> : subscriptionType}
           </div>
         </div>
         <div className="col-sm-1">
