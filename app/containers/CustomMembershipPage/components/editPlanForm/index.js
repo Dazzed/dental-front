@@ -35,7 +35,7 @@ function mapStateToProps(state, componentProps) {
 
   return {
     updatedTotal: selectTotal(state, custom_items),
-    selectedCodes: selectPriceCodes(state, custom_items),
+    // selectedCodes: selectPriceCodes(state, custom_items),
     initialValues: {
       codes: custom_items,
       price
@@ -104,6 +104,14 @@ export default class EditPlanForm extends Component {
     return filteredOptions;
   }
 
+  renderRecommendedFee (fee) {
+    return (
+      <span>
+        Recommended Membership Fee <span className="recommended-fee">{fee}</span>$
+      </span>
+    )
+  }
+
   renderCodes = ({ fields }) => {
     const { selectedCodes, change } = this.props;
     if (!fields.length) {
@@ -114,7 +122,7 @@ export default class EditPlanForm extends Component {
         {fields.map((code, index) =>
           <Row key={index} className="col-sm-12">
             <br />
-            <Field
+            {/*<Field
               name={`${code}.priceCodeId`}
               component={this.getAutoSelect}
               options={this.filteredOptionsForSelect(index)}
@@ -123,6 +131,15 @@ export default class EditPlanForm extends Component {
               clearable={false}
               validate={validatePriceCode}
               input={{ value: String(selectedCodes[index].priceCodeId), onChange: c => change(`${code}.priceCodeId`, c.value) }}
+            />*/}
+            <Field
+              name={`${code}.priceCodeName`}
+              type="text"
+              component={this.getLabeledInput}
+              label="Enter Price Code Name"
+              placeholder=""
+              className="col-sm-6"
+              validate={validatePriceCode}
             />
             <Field
               name={`${code}.price`}
@@ -182,13 +199,12 @@ export default class EditPlanForm extends Component {
         </Row>
         <br />
         <br />
-        <br />
         <Row>
           <Field
             name="price"
             type="number"
             component={this.getLabeledInput}
-            label={`Recommended Membership Fee ${this.props.recommendedFee}$`}
+            label={this.renderRecommendedFee(this.props.recommendedFee)}
             placeholder=""
             width={10}
             className="col-sm-4"

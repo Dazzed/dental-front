@@ -182,7 +182,7 @@ export default class MemberFormModal extends React.Component {
     const adultMemberships =
         memberships.filter(m => m.subscription_age_group === 'adult');
     const childMemberships =
-        memberships.filter(m => m.subscription_age_group === 'child');
+        memberships.filter(m => m.subscription_age_group === 'child' || m.type === 'custom');
 
     let age = this.state.age;
     if (!age && this.props.initialValues && this.props.initialValues.birthDate) {
@@ -240,7 +240,6 @@ export default class MemberFormModal extends React.Component {
       childWarning,
     } = this.state;
 
-    console.log(initialValues, show, 'initialValues, show');
     let title = "Edit Member";
     let saveText = "Save Member";
     if (initialValues === null || initialValues.id === undefined) {
