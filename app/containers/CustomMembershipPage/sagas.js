@@ -58,7 +58,11 @@ function* createMembershipWatcher () {
       yield put(createMembershipSuccess(addedMembership));
     } catch (e) {
       console.log(e);
-      yield put(toastrActions.error('', 'There was an error please try again later'));
+      if (e.errors) {
+        yield put(toastrActions.error('', e.errors));
+      } else {
+        yield put(toastrActions.error('', 'There was an error please try again later'));
+      }
       yield put(createMembershipError());
     }
   });
@@ -80,7 +84,11 @@ function* editMembershipWatcher () {
       yield put(editMembershipSuccess(memberships));
     } catch (e) {
       console.log(e);
-      yield put(toastrActions.error('', 'There was an error please try again later'));
+      if (e.errors) {
+        yield put(toastrActions.error('', e.errors));
+      } else {
+        yield put(toastrActions.error('', 'There was an error please try again later'));
+      }
       yield put(editMembershipError());
     }
   });
@@ -102,7 +110,11 @@ function* deleteMembershipWatcher () {
       yield put(deleteMembershipSuccess(memberships));
     } catch (e) {
       console.log(e);
-      yield put(toastrActions.error('', 'There was an error please try again later'));
+      if (e.errors) {
+        yield put(toastrActions.error('', e.errors));
+      } else {
+        yield put(toastrActions.error('', 'There was an error please try again later'));
+      }
       yield put(deleteMembershipError());
     }
   });
