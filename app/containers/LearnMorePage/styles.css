@@ -65,7 +65,7 @@ First Block
   position: relative;
   z-index: 1;
 
-  background: url(/c3fcc18980ba7125b755083d9fd2dfee.jpg) center 70% / cover no-repeat;
+  background: url(assets/images/dentist-and-kid-flipped.jpg) center 70% / cover no-repeat;
 
   /* position the inline-block content relative to the center of the page */
   text-align: center;
