@@ -1,3 +1,13 @@
+// This component handle's the Four default custom plans,
+// Which can be saved or ignored by the dentist.
+
+/*
+  Trello:
+    The dentist should enter the membership price and press
+    Save/activate to make the preloaded plans active.
+    They need to individually activate the preloaded plans that they want to
+    offer their patients.
+*/
 import React, { Component } from 'react'
 import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
@@ -12,6 +22,7 @@ import FaTimesCircleO from 'react-icons/lib/fa/times-circle-o';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
+import LoadingSpinner from 'components/LoadingSpinner';
 import {
   validatePriceCode,
   validatePrice,
@@ -19,23 +30,19 @@ import {
 } from '../createPlan/customValidators';
 import {
   selectTotal,
-  selectPriceCodes,
   selectRecommendedFee
 } from './selectors';
-import LoadingSpinner from 'components/LoadingSpinner';
 
 import styles from './styles.css';
 import validate from './validator';
 
-function mapStateToProps(state, componentProps) {
-  const { plan: { custom_items, price } } = componentProps;
+function mapStateToProps (state, componentProps) {
+  const { plan: { codes } } = componentProps;
 
   return {
-    updatedTotal: selectTotal(state, custom_items),
-    // selectedCodes: selectPriceCodes(state, custom_items),
+    updatedTotal: selectTotal(state, codes),
     initialValues: {
-      codes: custom_items,
-      price
+      codes,
     },
     recommendedFee: selectRecommendedFee(state)
   };
@@ -43,12 +50,12 @@ function mapStateToProps(state, componentProps) {
 
 @connect(mapStateToProps, null)
 @reduxForm({
-  form: 'editPlan',
+  form: 'seedPlan',
   enableReinitialize: true,
   validate
 })
 @CSSModules(styles)
-export default class EditPlanForm extends Component {
+export default class SeedPlanForm extends Component {
   componentWillMount () {
     this.state = {
       didMount: false
@@ -58,12 +65,15 @@ export default class EditPlanForm extends Component {
   componentDidMount () {
     this.setState({ didMount: true });
   }
-  
 
-  componentWillUnmount () {
-    
+  componentWillReceiveProps (nextProps) {
+    if (!this.props.anyTouched && !nextProps.anyTouched) {
+      if (nextProps.recommendedFee && nextProps.recommendedFee !== '') {
+        this.props.change('fee', nextProps.recommendedFee);
+      }
+    }
   }
-  
+
   getInput (props) {
     return new Input(props);
   }
@@ -81,10 +91,6 @@ export default class EditPlanForm extends Component {
   }
 
   renderCodes = ({ fields }) => {
-    const { selectedCodes, change } = this.props;
-    if (!fields.length) {
-      fields.push({});
-    }
     return (
       <div>
         {fields.map((code, index) =>
@@ -159,7 +165,7 @@ export default class EditPlanForm extends Component {
         <br />
         <Row>
           <Field
-            name="price"
+            name="fee"
             type="number"
             component={this.getLabeledInput}
             label={this.renderRecommendedFee(this.props.recommendedFee)}
@@ -192,7 +198,7 @@ export default class EditPlanForm extends Component {
               type="button"
               className="modal-control save-plan-btn col-sm-2 col-sm-push-8"
               value="ACTIVATE PLAN"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               disabled={loading}
             />
           </div>
@@ -223,14 +229,3 @@ export default class EditPlanForm extends Component {
     return <LoadingSpinner showOnlyIcon={false} />;
   }
 }
-
-// This component handle's the Four default custom plans,
-// Which can be saved or ignored by the dentist.
-
-/*
-  Trello:
-    The dentist should enter the membership price and press
-    Save/activate to make the preloaded plans active.
-    They need to individually activate the preloaded plans that they want to
-    offer their patients.
-*/

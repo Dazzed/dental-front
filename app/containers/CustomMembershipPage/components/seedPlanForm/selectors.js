@@ -1,8 +1,8 @@
 // As the user enters the price for each Price codes, We sum the prices to populate the total field.
 export function selectTotal (state, initialValues) {
   if (state.form) {
-    if (state.form.editPlan) {
-      const form = state.form.editPlan;
+    if (state.form.seedPlan) {
+      const form = state.form.seedPlan;
       if (Object.keys(form).length) {
         if (form.values) {
           const { codes } = form.values;
@@ -24,8 +24,8 @@ export function selectTotal (state, initialValues) {
 // Get the form values of the selected price codes
 export function selectPriceCodes (state, initialValues) {
   if (state.form) {
-    if (state.form.editPlan) {
-      const form = state.form.editPlan;
+    if (state.form.seedPlan) {
+      const form = state.form.seedPlan;
       if (Object.keys(form).length) {
         if (form.values) {
           const { codes } = form.values;
@@ -41,7 +41,7 @@ export function selectPriceCodes (state, initialValues) {
 
 export function selectRecommendedFee (state) {
   try {
-    const { codes } = state.form.editPlan.values;
+    const { codes } = state.form.seedPlan.values;
     const { dentistInfo } = state.dentistCustomMembershipPage;
     let discount = 0;
     if (dentistInfo.custom_memberships.length) {

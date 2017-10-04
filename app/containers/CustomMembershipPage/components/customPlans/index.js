@@ -87,7 +87,7 @@ export default class CustomPlans extends Component {
             className="delete-plan-button"
             data-plan-id={plan.id}
             data-plan-name={plan.name}
-            onClick={this.renderCancelConfirmationDialog}
+            onClick={() => this.renderCancelConfirmationDialog()}
           >
             DELETE THIS PLAN
           </Button>

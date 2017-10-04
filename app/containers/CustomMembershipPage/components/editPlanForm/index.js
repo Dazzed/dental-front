@@ -114,9 +114,6 @@ export default class EditPlanForm extends Component {
 
   renderCodes = ({ fields }) => {
     const { selectedCodes, change } = this.props;
-    if (!fields.length) {
-      fields.push({});
-    }
     return (
       <div>
         {fields.map((code, index) =>
@@ -234,7 +231,7 @@ export default class EditPlanForm extends Component {
               type="button"
               className="modal-control save-plan-btn col-sm-2 col-sm-push-8"
               value="SAVE PLAN"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               disabled={loading}
             />
           </div>

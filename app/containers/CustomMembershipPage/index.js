@@ -9,6 +9,7 @@ import { selectCurrentUser } from 'containers/App/selectors';
 import styles from './styles.css';
 import CustomPlans from './components/customPlans';
 import CreatePlanForm from './components/createPlan';
+import SeedPlans from './components/seedPlans';
 
 import {
   fetchDentistInfo,
@@ -67,12 +68,34 @@ class CustomMembershipPage extends Component {
     this.props.editMembership({ ...values, membershipId });
   }
 
+  handleSeedFormSubmit = (planName, values) => {
+    const plan = {
+      planName,
+      ...values
+    };
+    this.props.createMembership(plan);
+  }
+
+  renderSeedPlans = () => {
+    // Only Render seed plans component if there are any seed plans left for the dentist to activate.
+    const { seedPlans, loading } = this.props;
+    if (seedPlans.length) {
+      return (
+        <SeedPlans
+          seedPlans={seedPlans}
+          onSubmit={this.handleSeedFormSubmit}
+          loading={loading.creatingMembership}
+        />
+      );
+    }
+    return '';
+  }
+
   render () {
     const {
       dentistInfo,
       loading,
       deletingMembershipId,
-      seedPlans
     } = this.props;
 
     if (!dentistInfo) {
@@ -86,6 +109,7 @@ class CustomMembershipPage extends Component {
     return (
       <div>
         <p styleName="plan-header">Custom Membership Plans</p>
+        {this.renderSeedPlans()}
         <CustomPlans
           plans={dentistInfo.custom_memberships}
           onSubmit={this.editPlan}
