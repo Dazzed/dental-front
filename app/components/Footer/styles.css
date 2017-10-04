@@ -16,6 +16,7 @@ Footer
 ================================================================================
 */
 .footer {
+  position: relative;
   padding: 3rem 0;
 
   color: $color-secondary-lowlight;
@@ -31,6 +32,14 @@ Footer Nav
 .powered-by {
   position: absolute;
   left: $font-size-base;
+  top: 12px;
+  width: 300px;
+
+  text-align: center;
+}
+
+.powered-by--logo {
+  width: 100%;
 }
 
 ul.footer__nav {
