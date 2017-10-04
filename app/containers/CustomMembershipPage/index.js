@@ -1,13 +1,16 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 
+import { changePageTitle } from 'containers/App/actions';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { selectCurrentUser } from 'containers/App/selectors';
 import styles from './styles.css';
 import CustomPlans from './components/customPlans';
 import CreatePlanForm from './components/createPlan';
-import { changePageTitle } from 'containers/App/actions';
+import SeedPlans from './components/seedPlans';
+
 import {
   fetchDentistInfo,
   createMembership,
@@ -17,7 +20,8 @@ import {
   setDeletingMembershipId
 } from './actions';
 import {
-  selectActivePlans
+  selectActivePlans,
+  selectSeedPlans
 } from './selectors';
 
 class CustomMembershipPage extends Component {
@@ -40,7 +44,7 @@ class CustomMembershipPage extends Component {
       PropTypes.bool,
       PropTypes.object,
     ]).isRequired,
-
+    seedPlans: PropTypes.array.isRequired,
     loading: PropTypes.object.isRequired
   }
 
@@ -64,11 +68,34 @@ class CustomMembershipPage extends Component {
     this.props.editMembership({ ...values, membershipId });
   }
 
+  handleSeedFormSubmit = (planName, values) => {
+    const plan = {
+      planName,
+      ...values
+    };
+    this.props.createMembership(plan);
+  }
+
+  renderSeedPlans = () => {
+    // Only Render seed plans component if there are any seed plans left for the dentist to activate.
+    const { seedPlans, loading } = this.props;
+    if (seedPlans.length) {
+      return (
+        <SeedPlans
+          seedPlans={seedPlans}
+          onSubmit={this.handleSeedFormSubmit}
+          loading={loading.creatingMembership}
+        />
+      );
+    }
+    return '';
+  }
+
   render () {
     const {
       dentistInfo,
       loading,
-      deletingMembershipId
+      deletingMembershipId,
     } = this.props;
 
     if (!dentistInfo) {
@@ -82,6 +109,7 @@ class CustomMembershipPage extends Component {
     return (
       <div>
         <p styleName="plan-header">Custom Membership Plans</p>
+        {this.renderSeedPlans()}
         <CustomPlans
           plans={dentistInfo.custom_memberships}
           onSubmit={this.editPlan}
@@ -113,21 +141,21 @@ function mapStateToProps (state) {
     dentistInfo: selectActivePlans(dentistInfo),
     loading,
     editingMembershipId,
-    deletingMembershipId
+    deletingMembershipId,
+    seedPlans: selectSeedPlans(state)
   };
 }
 
 function mapDispatchToProps (dispatch) {
-  return {
-    changePageTitle: (title) => dispatch(changePageTitle(title)),
-
-    fetchDentistInfo: () => dispatch(fetchDentistInfo()),
-    createMembership: values => dispatch(createMembership(values)),
-    editMembership: (values, membershipId) => dispatch(editMembership(values, membershipId)),
-    setEditingMembershipId: value => dispatch(setEditingMembershipId(value)),
-    setDeletingMembershipId: value => dispatch(setDeletingMembershipId(value)),
-    deleteMembership: id => dispatch(deleteMembership(id))
-  };
+  return bindActionCreators({
+    changePageTitle,
+    fetchDentistInfo,
+    createMembership,
+    editMembership,
+    setEditingMembershipId,
+    setDeletingMembershipId,
+    deleteMembership
+  }, dispatch);
 }
 
 export default connect(

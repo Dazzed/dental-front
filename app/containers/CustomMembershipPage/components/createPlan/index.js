@@ -32,7 +32,10 @@ function mapStateToProps (state) {
   return {
     updatedTotal: selectTotal(state),
     // selectedCodes: selectPriceCodes(state),
-    recommendedFee: selectRecommendedFee(state)
+    recommendedFee: selectRecommendedFee(state),
+    initialValues: {
+      codes: [ {} ]
+    }
   };
 }
 
@@ -92,9 +95,6 @@ export default class CreatePlanForm extends Component {
 
   renderCodes = ({ fields }) => {
     const { selectedCodes, change } = this.props;
-    if (!fields.length) {
-      fields.push({});
-    }
     return (
       <div>
         {fields.map((code, index) =>
@@ -229,7 +229,7 @@ export default class CreatePlanForm extends Component {
             type="button"
             className="modal-control save-plan-btn"
             value="SAVE PLAN"
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             disabled={loading}
           />
           {

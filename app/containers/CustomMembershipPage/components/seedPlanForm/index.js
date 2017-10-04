@@ -1,3 +1,13 @@
+// This component handle's the Four default custom plans,
+// Which can be saved or ignored by the dentist.
+
+/*
+  Trello:
+    The dentist should enter the membership price and press
+    Save/activate to make the preloaded plans active.
+    They need to individually activate the preloaded plans that they want to
+    offer their patients.
+*/
 import React, { Component } from 'react'
 import CSSModules from 'react-css-modules';
 import Row from 'react-bootstrap/lib/Row';
@@ -8,11 +18,11 @@ import {
   reduxForm,
   submit as submitForm
 } from 'redux-form';
-import Select from 'react-select/dist/react-select.min.js';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle-o';
 
 import LabeledInput from 'components/LabeledInput';
 import Input from 'components/Input';
+import LoadingSpinner from 'components/LoadingSpinner';
 import {
   validatePriceCode,
   validatePrice,
@@ -20,39 +30,32 @@ import {
 } from '../createPlan/customValidators';
 import {
   selectTotal,
-  selectPriceCodes,
   selectRecommendedFee
 } from './selectors';
-import LoadingSpinner from 'components/LoadingSpinner';
 
 import styles from './styles.css';
 import validate from './validator';
 
-function mapStateToProps(state, componentProps) {
-  const { plan: { custom_items, price } } = componentProps;
-  const priceCodes = state.dentistCustomMembershipPage.dentistInfo.priceCodes
-    .map(c => ({ label: c.code, value: String(c.id) }));
+function mapStateToProps (state, componentProps) {
+  const { plan: { codes } } = componentProps;
 
   return {
-    updatedTotal: selectTotal(state, custom_items),
-    // selectedCodes: selectPriceCodes(state, custom_items),
+    updatedTotal: selectTotal(state, codes),
     initialValues: {
-      codes: custom_items,
-      price
+      codes,
     },
-    priceCodes,
     recommendedFee: selectRecommendedFee(state)
   };
 }
 
 @connect(mapStateToProps, null)
 @reduxForm({
-  form: 'editPlan',
+  form: 'seedPlan',
   enableReinitialize: true,
   validate
 })
 @CSSModules(styles)
-export default class EditPlanForm extends Component {
+export default class SeedPlanForm extends Component {
   componentWillMount () {
     this.state = {
       didMount: false
@@ -62,46 +65,21 @@ export default class EditPlanForm extends Component {
   componentDidMount () {
     this.setState({ didMount: true });
   }
-  
 
-  componentWillUnmount () {
-    
+  componentWillReceiveProps (nextProps) {
+    if (!this.props.anyTouched && !nextProps.anyTouched) {
+      if (nextProps.recommendedFee && nextProps.recommendedFee !== '') {
+        this.props.change('fee', nextProps.recommendedFee);
+      }
+    }
   }
-  
+
   getInput (props) {
     return new Input(props);
   }
 
   getLabeledInput (props) {
     return new LabeledInput(props);
-  }
-
-  getAutoSelect (props) {
-    const { value, onChange } = props.input;
-    return (
-      <Select
-        {...props}
-        value={value}
-        onChange={onChange}
-      />
-    );
-  }
-
-  filteredOptionsForSelect = (index) => {
-    const { selectedCodes, priceCodes } = this.props;
-    // Do not display a price code if it's already selected in another form group.
-    const filteredOptions = priceCodes.filter(pc => {
-      if (!selectedCodes.map(sc => String(sc.priceCodeId)).includes(pc.value)) {
-        return true;
-      }
-
-      if (selectedCodes[index].priceCodeId) {
-        return true;
-      }
-
-      return false;
-    });
-    return filteredOptions;
   }
 
   renderRecommendedFee (fee) {
@@ -113,22 +91,11 @@ export default class EditPlanForm extends Component {
   }
 
   renderCodes = ({ fields }) => {
-    const { selectedCodes, change } = this.props;
     return (
       <div>
         {fields.map((code, index) =>
           <Row key={index} className="col-sm-12">
             <br />
-            {/*<Field
-              name={`${code}.priceCodeId`}
-              component={this.getAutoSelect}
-              options={this.filteredOptionsForSelect(index)}
-              placeholder="Enter Pricing Code"
-              className="col-sm-6 select-field"
-              clearable={false}
-              validate={validatePriceCode}
-              input={{ value: String(selectedCodes[index].priceCodeId), onChange: c => change(`${code}.priceCodeId`, c.value) }}
-            />*/}
             <Field
               name={`${code}.priceCodeName`}
               type="text"
@@ -198,7 +165,7 @@ export default class EditPlanForm extends Component {
         <br />
         <Row>
           <Field
-            name="price"
+            name="fee"
             type="number"
             component={this.getLabeledInput}
             label={this.renderRecommendedFee(this.props.recommendedFee)}
@@ -230,7 +197,7 @@ export default class EditPlanForm extends Component {
             <input
               type="button"
               className="modal-control save-plan-btn col-sm-2 col-sm-push-8"
-              value="SAVE PLAN"
+              value="ACTIVATE PLAN"
               onClick={() => handleSubmit()}
               disabled={loading}
             />
