@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 
+import { changePageTitle } from 'containers/App/actions';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { selectCurrentUser } from 'containers/App/selectors';
 import styles from './styles.css';
 import CustomPlans from './components/customPlans';
 import CreatePlanForm from './components/createPlan';
-import { changePageTitle } from 'containers/App/actions';
+
 import {
   fetchDentistInfo,
   createMembership,
@@ -17,7 +19,8 @@ import {
   setDeletingMembershipId
 } from './actions';
 import {
-  selectActivePlans
+  selectActivePlans,
+  selectSeedPlans
 } from './selectors';
 
 class CustomMembershipPage extends Component {
@@ -40,7 +43,7 @@ class CustomMembershipPage extends Component {
       PropTypes.bool,
       PropTypes.object,
     ]).isRequired,
-
+    seedPlans: PropTypes.array.isRequired,
     loading: PropTypes.object.isRequired
   }
 
@@ -68,7 +71,8 @@ class CustomMembershipPage extends Component {
     const {
       dentistInfo,
       loading,
-      deletingMembershipId
+      deletingMembershipId,
+      seedPlans
     } = this.props;
 
     if (!dentistInfo) {
@@ -113,21 +117,21 @@ function mapStateToProps (state) {
     dentistInfo: selectActivePlans(dentistInfo),
     loading,
     editingMembershipId,
-    deletingMembershipId
+    deletingMembershipId,
+    seedPlans: selectSeedPlans(state)
   };
 }
 
 function mapDispatchToProps (dispatch) {
-  return {
-    changePageTitle: (title) => dispatch(changePageTitle(title)),
-
-    fetchDentistInfo: () => dispatch(fetchDentistInfo()),
-    createMembership: values => dispatch(createMembership(values)),
-    editMembership: (values, membershipId) => dispatch(editMembership(values, membershipId)),
-    setEditingMembershipId: value => dispatch(setEditingMembershipId(value)),
-    setDeletingMembershipId: value => dispatch(setDeletingMembershipId(value)),
-    deleteMembership: id => dispatch(deleteMembership(id))
-  };
+  return bindActionCreators({
+    changePageTitle,
+    fetchDentistInfo,
+    createMembership,
+    editMembership,
+    setEditingMembershipId,
+    setDeletingMembershipId,
+    deleteMembership
+  }, dispatch);
 }
 
 export default connect(

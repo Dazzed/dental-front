@@ -1,0 +1,13 @@
+@import "../../../../assets/styles/variables";
+
+:global(.recommended-fee) {
+  font-size: 1.45rem;
+}
+
+:global(.total-field) {
+  margin-left: 1%;
+}
+
+:global(.raw-height) {
+  padding-top: 15%;
+}
