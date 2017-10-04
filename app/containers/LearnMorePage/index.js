@@ -133,15 +133,11 @@ export default class LearnMorePage extends React.Component {
         <div styleName="first-block">
           <div styleName="first-block__content">
             <p styleName="large-text">
-              DentalHQ.com was founded by Dentists to
+              DentalHQ was founded by dentists to connect over
               <br />
-              connect the over 100 million Americans without
+              100 million uninsured Americans with dentists
               <br />
-              dental insurance to practices offering
-              <br />
-              affordable monthly memberships. Click the
-              <br />
-              link below to learn more about us:
+              offering affordable monthly memberships.
             </p>
 
             <input
@@ -164,7 +160,7 @@ export default class LearnMorePage extends React.Component {
               <div className="col-md-10 col-md-offset-1">
 
                 <h2 styleName="large-title">
-                  Why DentalHQ.com?
+                  Why DentalHQ?
                 </h2>
 
                 <div styleName="features">
@@ -173,7 +169,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Automated software platform, with recurring billing for monthly or annual memberships.
+                      Completely automate your in-house memberships.
                     </div>
                   </div>
 
@@ -182,7 +178,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Fully customizable plans.  YOU decide your pricing and benefits.
+                      Attract new patients through the DentalHQ Marketplace.
                     </div>
                   </div>
 
@@ -191,7 +187,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      No setup fee.  No monthly fees.  No contracts.
+                      Offer both monthly and annual payment options.
                     </div>
                   </div>
 
@@ -200,7 +196,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      White-labled with your office logo and easily integrated with your website.
+                      It's risk-free - no setup fees, no monthly fees, cancel anytime.
                     </div>
                   </div>
 
@@ -209,7 +205,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      DentalHQ takes care of your in-office membership marketing materials.
+                      Get signed up and into your dashboard in under 10 minutes.
                     </div>
                   </div>
 
@@ -218,7 +214,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Merchant service fees and placement in the DentalHQ marketplace also included!
+                      Customize your memberships - you decide your pricing and benefits.
                     </div>
                   </div>
 
@@ -227,7 +223,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Monthly membership report and revenues sent directly to you.
+                      Fully compliant - HIPPA, PHI, PCI
                     </div>
                   </div>
 
@@ -236,7 +232,7 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Compliant with: HIPPA, PHI, and PCI.
+                      White-labeled with your logo, and easily integrated with your website.
                     </div>
                   </div>
 
@@ -245,9 +241,10 @@ export default class LearnMorePage extends React.Component {
                       <FaCheck />
                     </div>
                     <div className="col-md-10" styleName="feature">
-                      Retain more uninsured patients and give them an affordable option for your dental care.  Unlike insurance, these plans are a direct relationship betweeen you and the patient.
+                      Branded marketing materials provided at no cost to you.
                     </div>
                   </div>
+
 
                 </div>
 
@@ -264,13 +261,15 @@ export default class LearnMorePage extends React.Component {
         <div styleName="third-block">
           <div styleName="third-block__content">
             <p styleName="large-text">
-              With no signup fees or contracts
+              With no upfront or recurring fees, we've made
               <br />
-              we've made enrolling your practice easy.
+              enrolling your practice simple and risk-free.
+            </p>
+
+            <p styleName="large-text">
+              Still have questions? Get in touch.
               <br />
-              Questions? Just give us a call and we'll
-              <br />
-              walk you through the process!
+              We'll help you every step of the way!
             </p>
 
             <input
