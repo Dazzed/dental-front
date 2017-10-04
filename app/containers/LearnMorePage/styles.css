@@ -65,7 +65,7 @@ First Block
   position: relative;
   z-index: 1;
 
-  background: url(assets/images/dentist-and-kid-flipped.jpg) center / cover no-repeat;
+  background: url(/c3fcc18980ba7125b755083d9fd2dfee.jpg) center 70% / cover no-repeat;
 
   /* position the inline-block content relative to the center of the page */
   text-align: center;
@@ -74,7 +74,7 @@ First Block
     position: relative;
     left: 150px;
     display: inline-block;
-    margin: 300px 0 100px 0;
+    margin: 3.5rem 0;
     border: 2px solid $color-white;
     border-radius: 1rem;
     padding: 2rem;
@@ -130,16 +130,16 @@ Third Block
   position: relative;
   z-index: 1;
 
-  background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
+  background: url(assets/images/dentist-and-woman.jpg) center 70% / cover no-repeat;
 
   /* position the inline-block content relative to the center of the page */
   text-align: center;
 
   .third-block__content {
     position: relative;
-    right: 150px;
+    right: 200px;
     display: inline-block;
-    margin: 300px 0 100px 0;
+    margin: 3.5rem 0;
     border: 2px solid $color-white;
     border-radius: 1rem;
     padding: 2rem;
