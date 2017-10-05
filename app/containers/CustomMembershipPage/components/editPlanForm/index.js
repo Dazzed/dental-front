@@ -107,7 +107,7 @@ export default class EditPlanForm extends Component {
   renderRecommendedFee (fee) {
     return (
       <span>
-        Recommended Membership Fee <span className="recommended-fee">{fee}</span>$
+        Recommended Membership Fee $<span className="recommended-fee">{fee}</span>
       </span>
     )
   }
