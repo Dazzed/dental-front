@@ -43,6 +43,7 @@ import {
   EDIT_DENTIST_REQUEST,
   EDIT_DENTIST_SUCCESS,
   EDIT_DENTIST_ERROR,
+  SET_EDITING_DENTIST_ID,
 
   // download report
   DOWNLOAD_REPORT_REQUEST,
@@ -213,6 +214,13 @@ export function setSelectedDentist (dentist) {
   return {
     type: SET_SELECTED_DENTIST,
     dentist,
+  };
+}
+
+export function setEditingDentistId (dentistId) {
+  return {
+    type: SET_EDITING_DENTIST_ID,
+    dentistId,
   };
 }
 
