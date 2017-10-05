@@ -218,14 +218,12 @@ class PatientProfilePage extends React.Component {
   componentWillMount = () => {
     this.state = { dialog: {} };
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
-    if (!this.props.user) {
-      this.props.fetchDentist();
-      this.props.fetchFamilyMembers();
-    }
   };
 
   componentDidMount() {
     this.props.changePageTitle('Your Profile');
+    this.props.fetchDentist();
+    this.props.fetchFamilyMembers();
   }
 
   handleCloseDialog() {

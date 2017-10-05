@@ -109,12 +109,12 @@ class FamilyMembersList extends React.Component {
         0
       ),
 
-      dueDate: () => {
+      dueDate: (() => {
         if (!this.props.recurring_payment_date) {
           return 'N/A';
         }
         return moment.unix(this.props.recurring_payment_date).format('MMMM D, YYYY');
-      }
+      })()
     };
 
     let statusStyle;
@@ -167,7 +167,7 @@ class FamilyMembersList extends React.Component {
             <p>
               Recurring Payment Date:
               <br />
-              <span styleName="subscription-overview__info">{aggregateSubscription.dueDate()}</span>
+              <span styleName="subscription-overview__info">{aggregateSubscription.dueDate}</span>
             </p>
             <p>
               Total Monthly Payment:

@@ -300,12 +300,17 @@ export default class FamilyMemberListEdit extends Component {
       }
       memberRows.push(this.renderMember(primaryPatient, member, showControlCol, dentist.memberships));
       if (member.clientSubscription.membership.type == 'year') {
+        const subscriptionStatus = member.clientSubscription.status;
+        let expiresOrRenews = 'Renews At';
+        if (subscriptionStatus === 'cancellation_requested') {
+          expiresOrRenews = 'Expires At';
+        }
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
               <div styleName="member__detail" style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
-                Expires At: {moment(member.clientSubscription.membership.createdAt).add(1, 'year').format('MMMM D, YYYY')}
+                {expiresOrRenews}: {moment(member.clientSubscription.membership.createdAt).add(1, 'year').format('MMMM D, YYYY')}
               </div>
             </div>
           </div>
