@@ -105,10 +105,11 @@ export function fetchFamilyMembers() {
   };
 }
 
-export function setFamilyMembers(payload) {
+export function setFamilyMembers(familyMembers, recurring_payment_date) {
   return {
     type: FAMILY_MEMBERS_SUCCESS,
-    payload,
+    familyMembers,
+    recurring_payment_date
   };
 }
 

@@ -77,6 +77,7 @@ import {
 
   // edit payment info
   editingPaymentSelector,
+  recurringDateSelector
 } from './selectors';
 import styles from './styles.css';
 
@@ -102,6 +103,7 @@ function mapStateToProps(state) {
 
     // edit payment info
     editingPayment: editingPaymentSelector(state),
+    recurring_payment_date: recurringDateSelector(state)
   };
 }
 
@@ -216,12 +218,14 @@ class PatientProfilePage extends React.Component {
   componentWillMount = () => {
     this.state = { dialog: {} };
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    if (!this.props.user) {
+      this.props.fetchDentist();
+      this.props.fetchFamilyMembers();
+    }
   };
 
   componentDidMount() {
     this.props.changePageTitle('Your Profile');
-    this.props.fetchDentist();
-    this.props.fetchFamilyMembers();
   }
 
   handleCloseDialog() {
@@ -574,6 +578,7 @@ class PatientProfilePage extends React.Component {
                 onRemoveMember={this.removeMember}
                 onRenewMember={this.renewMember}
                 onUpdateMember={this.updateMember}
+                recurring_payment_date={this.props.recurring_payment_date}
               />
             </div>
 
