@@ -180,7 +180,7 @@ class DentistDashboardHeader extends React.Component {
               </div>
 
               <div className="col-sm-9">
-                <h2 styleName="dentist__name">{firstName} {lastName}</h2>
+                <h2 styleName="dentist__name">{officeName}</h2>
 
                 <div styleName="dentist__scores">
                   <ReviewScore score={user.rating} />
@@ -188,7 +188,7 @@ class DentistDashboardHeader extends React.Component {
                 </div>
 
                 <p styleName="dentist__address">
-                  {officeName}
+                  {firstName} {lastName}
                   <br />
                   {address}
                   <br />
