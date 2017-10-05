@@ -68,27 +68,27 @@ const seedPlansData = [
     ]
   },
   {
-    name: '4 Cleanings Plan',
+    name: 'Family 4 pack plan',
     codes: [
       {
         priceCodeName: 'D0120',
-        frequency: 2
+        frequency: 8
       },
       {
         priceCodeName: 'D0274',
-        frequency: 1
-      },
-      {
-        priceCodeName: 'D1110',
         frequency: 4
       },
       {
+        priceCodeName: 'D1110',
+        frequency: 8
+      },
+      {
         priceCodeName: 'D0140',
-        frequency: 1
+        frequency: 4
       },
       {
         priceCodeName: 'D0220',
-        frequency: 1
+        frequency: 4
       }
     ]
   },
