@@ -66,6 +66,11 @@ const selectSelectedDentist = createSelector(
   (substate) => substate.selectedDentist
 );
 
+const selectEditingDentistId = createSelector(
+  domainSelector,
+  (substate) => substate.editingDentistId
+);
+
 /*
 Search / Sort
 ------------------------------------------------------------
@@ -163,7 +168,7 @@ export {
 
   // getters
   selectSelectedDentist,
-
+  selectEditingDentistId,
   // search / sort dentists
   selectSearch,
   selectSort,

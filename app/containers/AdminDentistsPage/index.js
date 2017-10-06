@@ -39,6 +39,7 @@ import {
 
   // setters
   setSelectedDentist,
+  setEditingDentistId,
 
   // search / sort dentists
   search,
@@ -56,6 +57,7 @@ import {
 
   // getters
   selectSelectedDentist,
+  selectEditingDentistId,
 
   // search / sort patients
   selectSearch,
@@ -79,7 +81,7 @@ function mapStateToProps (state) {
 
     // getters
     selectedDentist: selectSelectedDentist(state),
-
+    editingDentistId: selectEditingDentistId(state),
     // search / sort patients
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
@@ -100,7 +102,7 @@ function mapDispatchToProps (dispatch) {
 
     // setters
     setSelectedDentist: (dentist) => dispatch(setSelectedDentist(dentist)),
-
+    setEditingDentistId: dentistId => dispatch(setEditingDentistId(dentistId)),
     // search / sort
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
@@ -141,7 +143,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // getters - state
     selectedDentist: React.PropTypes.object,
-
+    setEditingDentistId: React.PropTypes.func.isRequired,
     // setters - dispatch
     setSelectedDentist: React.PropTypes.func.isRequired,
 
@@ -165,7 +167,6 @@ export default class AdminDentistsPage extends React.Component {
       searchTerm: this.props.currentSearchTerm !== null
                   ? this.props.currentSearchTerm
                   : '',
-      showEditDentistModal: false,
     };
   }
 
@@ -212,15 +213,12 @@ export default class AdminDentistsPage extends React.Component {
   // edit dentist
   onEditDentist = () => {
     this.props.resetEditDentistForm();
-    this.setState({
-      showEditDentistModal: true,
-    });
+    const { selectedDentist } = this.props;
+    this.props.setEditingDentistId(selectedDentist.id);
   }
 
   onEditDentistCancel = () => {
-    this.setState({
-      showEditDentistModal: false,
-    });
+    this.props.setEditingDentistId(null);
   }
 
   onEditDentistSubmit = (values) => {
@@ -263,6 +261,7 @@ export default class AdminDentistsPage extends React.Component {
       marketplaceOptIn,
 
       priceCodes,
+      affordabilityScore,
     } = selectedDentist.dentistInfo;
 
     const activeSince = moment(createdAt).format("MMMM Do, YYYY");
@@ -332,20 +331,18 @@ export default class AdminDentistsPage extends React.Component {
             Marketplace:
             {' '}
             <span className={styles['dentist-details__value']}>
-              {marketplaceOptIn ? 'Active' : 'Inactive'}
+              {marketplaceOptIn ? 'Inactive' : 'Active'}
             </span>
           </p>
-
-          {/* TODO: enable */}
-          {/*
+          
           <p>
             Affordability Index:
             {' '}
             <span className={styles['dentist-details__value']}>
-              TODO
+              {affordabilityScore || 'NOT SET'}
             </span>
           </p>
-          */}
+          
         </div>
 
         <div className="col-md-6">
@@ -501,9 +498,9 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        { selectedDentist && this.state.showEditDentistModal &&
+        { selectedDentist && this.props.editingDentistId === selectedDentist.id &&
           <AdminEditDentistFormModal
-            show={this.state.showEditDentistModal}
+            show
             onCancel={this.onEditDentistCancel}
 
             initialValues={selectedDentist}

@@ -146,6 +146,7 @@ export default class AdminEditDentistFormModal extends React.Component {
       onCancel,
       valid,
       dirty,
+      pristine,
       managers,
       dentists,
       selectedDentist
@@ -173,7 +174,7 @@ export default class AdminEditDentistFormModal extends React.Component {
             <input
               type="button"
               className="modal-control"
-              disabled={submitting || !valid || !dirty}
+              disabled={submitting || !valid || !dirty || pristine}
               onClick={handleSubmit(this.handleFormSubmit)}
               value="Save"
             />

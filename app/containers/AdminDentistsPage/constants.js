@@ -37,6 +37,7 @@ export const SORT     = 'app/AdminDentistsPage/SORT';
 export const EDIT_DENTIST_REQUEST = 'app/AdminDentistPage/EDIT_DENTIST_REQUEST';
 export const EDIT_DENTIST_SUCCESS = 'app/AdminDentistPage/EDIT_DENTIST_SUCCESS';
 export const EDIT_DENTIST_ERROR   =  'app/AdminDentistPage/EDIT_DENTIST_ERROR';
+export const SET_EDITING_DENTIST_ID = 'app/AdminDentistPage/SET_EDITING_DENTIST_ID';
 
 export const DELETE_DENTIST_REVIEW_REQUEST = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_REQUEST';
 export const DELETE_DENTIST_REVIEW_SUCCESS = 'app/AdminDentistPage/DELETE_DENTIST_REVIEW_SUCCESS';
