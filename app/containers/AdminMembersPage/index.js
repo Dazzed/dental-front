@@ -285,7 +285,7 @@ export default class AdminDentistsPage extends React.Component {
         break;
 
       default:
-        // Status is unknown, so don't add anything;
+        statusStyle += "status--canceled";
         break;
     }
 
@@ -299,54 +299,58 @@ export default class AdminDentistsPage extends React.Component {
             {' '}
             - <span className={"status " + styles[statusStyle]}>{status}</span>
           </p>
+          {
+            members.length ?
+              <div>
+                <p>
+                  Family Members:
+                </p>
 
-          <p>
-            Family Members:
-          </p>
+                <ul>
+                  {members.map((member) => {
+                    const {
+                      firstName,
+                      lastName,
 
-          <ul>
-            {members.map((member) => {
-              const {
-                firstName,
-                lastName,
+                      subscription: { status },
+                    } = member;
 
-                subscription: { status },
-              } = member;
+                    const isAccountOwner = patient.id === member.id;
 
-              const isAccountOwner = patient.id === member.id;
+                    let statusStyle = "";
+                    switch(status) {
+                      case "active":
+                        statusStyle += "status--active";
+                        break;
 
-              let statusStyle = "";
-              switch(status) {
-                case "active":
-                  statusStyle += "status--active";
-                  break;
+                      case "past_due":
+                        statusStyle += "status--past-due";
+                        break;
 
-                case "past_due":
-                  statusStyle += "status--past-due";
-                  break;
+                      case "canceled":
+                        statusStyle += "status--canceled";
+                        break;
 
-                case "canceled":
-                  statusStyle += "status--canceled";
-                  break;
+                      case "inactive":
+                        statusStyle += "status--inactive";
+                        break;
 
-                case "inactive":
-                  statusStyle += "status--inactive";
-                  break;
+                      default:
+                        statusStyle += "status--canceled";
+                        break;
+                    }
 
-                default:
-                  // Status is unknown, so don't add anything;
-                  break;
-              }
-
-              return (
-                <li key={member.id}>
-                  {firstName} {lastName}
-                  {' '}
-                  - <span className={"status " + styles[statusStyle]}>{status}</span>
-                </li>
-              );
-            })}
-          </ul>
+                    return (
+                      <li key={member.id}>
+                        {firstName} {lastName}
+                        {' '}
+                        - <span className={"status " + styles[statusStyle]}>{status}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div> : <p>No Family Members..</p>
+          }
         </div>
 
         <div className="col-sm-6">
