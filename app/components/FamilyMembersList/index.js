@@ -109,18 +109,12 @@ class FamilyMembersList extends React.Component {
         0
       ),
 
-      dueDate: patient.members.reduce(
-        function (nearestPaymentDueDate, member) {
-          const memberDueDate = moment(member.subscription ? member.subscription.endAt : null);
-
-          if (memberDueDate.isBefore(nearestPaymentDueDate)) {
-            nearestPaymentDueDate = memberDueDate;
-          }
-
-          return nearestPaymentDueDate;
-        },
-        moment().add(100, 'years'), // obviously larger than any paid subscription period
-      ),
+      dueDate: (() => {
+        if (!this.props.recurring_payment_date) {
+          return 'N/A';
+        }
+        return moment.unix(this.props.recurring_payment_date).format('MMMM D, YYYY');
+      })()
     };
 
     let statusStyle;
@@ -137,7 +131,7 @@ class FamilyMembersList extends React.Component {
       statusStyle = 'status status--inactive';
     }
     aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
-    aggregateSubscription.dueDate = aggregateSubscription.dueDate.add(1,'month').format("MMMM D, YYYY");
+    
 
     return (
       <div className="row">
