@@ -58,6 +58,7 @@ const initialState = {
   familyMembers: null,
   editingActive: false,
   editing: null,
+  recurring_payment_date: null
 };
 
 /*
@@ -108,7 +109,8 @@ function patientProfilePageReducer(state = initialState, action) {
     case FAMILY_MEMBERS_SUCCESS:
       return {
         ...state,
-        familyMembers: action.payload,
+        familyMembers: action.familyMembers,
+        recurring_payment_date: action.recurring_payment_date
       };
 
     /*

@@ -140,6 +140,13 @@ const editingPaymentSelector = createSelector(
   }
 );
 
+const recurringDateSelector = createSelector(
+  domainSelector,
+  (substate) => {
+    return substate.recurring_payment_date;
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -160,6 +167,7 @@ export {
   editingReviewSelector,
   editingSecuritySelector,
   editingPaymentSelector,
+  recurringDateSelector,
 };
 
 function replaceDefaultToStandard(memberships) {

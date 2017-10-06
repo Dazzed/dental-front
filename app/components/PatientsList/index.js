@@ -212,11 +212,9 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
-      let paymentDueDate;
-      if (patient.recurring_payment_date) {
+      let paymentDueDate = 'N/A';
+      if (patient.recurring_payment_date && patient.recurring_payment_date !== 'N/A') {
         paymentDueDate = moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY');
-      } else {
-        paymentDueDate = 'N/A';
       }
 
       const waiveCancellationFee = !patient.cancellationFeeWaiver;

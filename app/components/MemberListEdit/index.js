@@ -300,11 +300,16 @@ export default class MemberListEdit extends Component {
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
       if (member.subscription !== undefined && member.subscription.membership.type == 'year') {
         annualSeparated = true;
+        const subscriptionStatus = member.subscription.status;
+        let expiresOrRenews = 'Renews At';
+        if (subscriptionStatus === 'cancellation_requested') {
+          expiresOrRenews = 'Expires At';
+        }
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
               <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
-                Expires At: {moment(member.subscription.stripeSubscriptionIdUpdatedAt).add(1,'year').format('MMMM D, YYYY')}
+                {expiresOrRenews}: {moment(member.subscription.stripeSubscriptionIdUpdatedAt).add(1,'year').format('MMMM D, YYYY')}
               </div>
             </div>
           </div>

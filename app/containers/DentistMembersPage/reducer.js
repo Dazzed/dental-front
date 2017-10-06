@@ -50,6 +50,7 @@ import {
   CLEAR_EDITING_SECURITY,
 } from './constants';
 
+import { setRecurringDate } from './helpers';
 /*
 Initial State
 ------------------------------------------------------------
@@ -197,7 +198,6 @@ function dentistMembersPageReducer(state = initialState, action) {
       memberId = action.memberId || action.payload.id;
       patientIdx = state.patients.findIndex(p => p.id === action.patient.id);
       prevStatePatient = state.patients[patientIdx];
-      // newMembershipPlan = state.dentistInfo.memberships.find(m => m.id === parseInt(action.payload.membershipId));
       // If we are editing Primary account holder.
       if (prevStatePatient.id === memberId) {
         prevStatePatient.subscription.status = 'active';
@@ -210,7 +210,7 @@ function dentistMembersPageReducer(state = initialState, action) {
         prevStatePatient.members[memberIdx].subscription.membershipId = action.payload.membershipId;
         prevStatePatient.members[memberIdx].subscription = action.subscription;
       }
-      newStatePatient = prevStatePatient;
+      newStatePatient = setRecurringDate(prevStatePatient);
       return {
           ...state,
         patients: [

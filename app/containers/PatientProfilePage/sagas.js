@@ -145,7 +145,7 @@ function* familyMembersFetcher() {
     try {
       const response = yield call(request, '/api/v1/users/me/members');
       Stripe.setPublishableKey(response.stripe_public_key || 'pk_test_6pRNASCoBOKtIshFeQd4XMUh');
-      yield put(setFamilyMembers(response.data));
+      yield put(setFamilyMembers(response.data, response.recurring_payment_date));
     } catch (err) {
       yield put(setFamilyMembersErrors(err));
     }
@@ -216,6 +216,9 @@ function* submitEditMemberForm(patient, payload) {
     yield put(toastrActions.success('', message));
 
     yield put(setEditedMember(patient, payload));
+    setTimeout(function() {
+      window.location.reload();
+    }, 750);
 
   } catch (err) {
     console.log(err);
