@@ -10,6 +10,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import CaretDown from 'react-icons/lib/fa/caret-down';
 import CaretRight from 'react-icons/lib/fa/caret-right';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 // local
 import styles from './list-entry.css';
@@ -52,6 +53,25 @@ export default class DentistsListEntry extends React.Component {
     selectDentist(dentist);
   }
 
+  
+
+  renderFullName = (listNum, dentist) => {
+    if (dentist.verified) {
+      return (
+        <span styleName={'list-entry__title'}>
+          {listNum}) {dentist.firstName} {dentist.lastName}
+        </span>
+      );
+    }
+    const tooltip = <Tooltip id="tooltip"><strong>Dentist is not activated.</strong></Tooltip>;
+    return (
+      <OverlayTrigger placement="top" overlay={tooltip}>
+        <span styleName={'list-entry__title list-entry__title_red'}>
+          {listNum}) {dentist.firstName} {dentist.lastName}
+        </span>
+      </OverlayTrigger>
+    );
+  }
   /* Render
    * ------------------------------------------------------ */
   render() {
@@ -71,9 +91,7 @@ export default class DentistsListEntry extends React.Component {
           <div styleName="list-entry">
 
             <div styleName="list-entry__header" onClick={this.onSelectDentist}>
-              <span styleName="list-entry__title">
-                {listNum}) {dentist.firstName} {dentist.lastName}
-              </span>
+              {this.renderFullName(listNum, dentist)}
 
               <span styleName="list-entry__toggle">
                 {selected ? (<CaretDown />) : (<CaretRight />)}

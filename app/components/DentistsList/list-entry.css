@@ -62,3 +62,7 @@ Page Wide
   border-top: 1px solid $color-secondary-lowlight;
   padding-top: 1rem;
 }
+
+.list-entry__title_red {
+  color: #801817 !important;
+}
