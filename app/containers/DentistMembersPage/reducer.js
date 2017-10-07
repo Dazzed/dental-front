@@ -48,6 +48,11 @@ import {
   // edit security
   SET_EDITING_SECURITY,
   CLEAR_EDITING_SECURITY,
+
+  // images deletion
+  DELETE_OFFICE_LOGO_SUCCESS,
+  DELETE_DENTIST_AVATAR_SUCCESS,
+  DELETE_DENTIST_OFFICE_IMAGE_SUCCESS,
 } from './constants';
 
 import { setRecurringDate } from './helpers';

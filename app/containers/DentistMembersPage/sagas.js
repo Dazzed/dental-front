@@ -80,6 +80,11 @@ import {
 
   // edit security
   SUBMIT_SECURITY_FORM,
+
+  // images deletion
+  DELETE_OFFICE_LOGO,
+  DELETE_DENTIST_AVATAR,
+  DELETE_DENTIST_OFFICE_IMAGE,
 } from './constants';
 
 
@@ -106,6 +111,9 @@ function* main () {
   const watcherK = yield fork(uploadImageWatcher);
   const watcherL = yield fork(signupWatcher);
   const watcherM = yield fork(submitAccountSecurityFormWatcher);
+  const watcherN = yield fork(deleteLogoWatcher);
+  const watcherO = yield fork(deleteAvatarWatcher);
+  const watcherP = yield fork(deleteOfficeImagesWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -485,6 +493,9 @@ function* signupWatcher () {
 
     if (isSuccess) {
       yield put(toastrActions.success('', "Your profile was updated successfully!"));
+      setTimeout(() => {
+        window.location.reload();
+      }, 350);
     }
   }
 }
@@ -496,9 +507,6 @@ function* signup (data) {
       method: 'POST',
       body: JSON.stringify(data)
     });
-    if (response.shouldRefresh) {
-      window.location.reload();
-    }
     return true;
 
   } catch (err) {
@@ -625,4 +633,52 @@ function* submitAccountSecurityFormWatcher() {
       yield put(change('accountSecurity', 'oldPassword', null));
     }
   }
+}
+
+function* deleteLogoWatcher () {
+  yield takeLatest(DELETE_OFFICE_LOGO, function* handler ({ dentistId, dentistInfoId }) {
+    try {
+      const requestURL = `/api/v1/users/${dentistId}/dentist-info/${dentistInfoId}/logo/`;
+      const params = {
+        method: 'DELETE'
+      };
+      yield call(request, requestURL, params);
+      const message = 'Your Logo was removed successfully!';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      yield put(toastrActions.error('', 'There was an error in removing the logo. Please try again.'));
+    }
+  });
+}
+
+function* deleteAvatarWatcher () {
+  yield takeLatest(DELETE_DENTIST_AVATAR, function* handler ({ dentistId }) {
+    try {
+      const requestURL = `/api/v1/users/${dentistId}/account/delete-avatar`;
+      const params = {
+        method: 'DELETE'
+      };
+      yield call(request, requestURL, params);
+      const message = 'Your Avatar was removed successfully!';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      yield put(toastrActions.error('', 'There was an error in removing the Avatar. Please try again.'));
+    }
+  });
+}
+
+function* deleteOfficeImagesWatcher () {
+  yield takeLatest(DELETE_DENTIST_OFFICE_IMAGE, function* handler ({ dentistId, dentistInfoId, dentistInfoPhotoId }) {
+    try {
+      const requestURL = `/api/v1/users/${dentistId}/dentist-info/${dentistInfoId}/photos/${dentistInfoPhotoId}`;
+      const params = {
+        method: 'DELETE'
+      };
+      yield call(request, requestURL, params);
+      const message = 'The Office Image was removed successfully!';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      yield put(toastrActions.error('', 'There was an error in removing the Office Image. Please try again.'));
+    }
+  });
 }

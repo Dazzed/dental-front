@@ -25,6 +25,7 @@ import {
   formValueSelector,
   reduxForm
 } from 'redux-form';
+import { bindActionCreators } from 'redux';
 
 // app
 import { US_STATES } from 'common/constants';
@@ -34,6 +35,13 @@ import Input from 'components/Input';
 import InputGroup from 'components/InputGroup';
 import InputTime from 'components/InputTime';
 import LabeledInput from 'components/LabeledInput';
+
+// images deletion actions
+import {
+  deleteOfficeLogo,
+  deleteDentistAvatar,
+  deleteDentistOfficeImage,
+} from 'containers/DentistMembersPage/actions';
 
 // local
 import styles from './styles.css';
@@ -63,6 +71,11 @@ Redux
 const valueSelector = formValueSelector('dentist-edit-profile');
 const mapDispatchToProps = (dispatch) => ({
   toastError: (message) => dispatch(toastrActions.error(message)),
+  ...bindActionCreators({
+    deleteOfficeLogo,
+    deleteDentistAvatar,
+    deleteDentistOfficeImage
+  }, dispatch)
 });
 const mapStateToProps = (state) => {
   const {
@@ -203,20 +216,6 @@ Edit Profile Form
 })
 @CSSModules(styles)
 class DentistEditProfileForm extends React.Component {
-  constructor(props) {
-    super(props);
-    const initialValues = this.props.initialValues;
-    this.state = {
-      currentServices: initialValues.officeInfo.services,
-      serviceList: this.props.allServices,
-      officeImage0: initialValues.officeInfo.officeImages0,
-      officeImage1: initialValues.officeInfo.officeImages1,
-      officeImage2: initialValues.officeInfo.officeImages2,
-      officeLogoUrl: initialValues.officeInfo.logo,
-      officeAvatarUrl: initialValues.user.avatar
-    };
-  }
-  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
@@ -253,7 +252,31 @@ class DentistEditProfileForm extends React.Component {
     error: React.PropTypes.object,
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
+
+    // iamge deleting funcs.
+    deleteOfficeLogo: React.PropTypes.func.isRequired,
+    deleteDentistAvatar: React.PropTypes.func.isRequired,
+    deleteDentistOfficeImage: React.PropTypes.func.isRequired,
   };
+
+  constructor (props) {
+    super(props);
+    const { initialValues } = this.props;
+    const { id: dentistInfoId } = initialValues.officeInfo;
+    const { id: dentistId } = initialValues.user;
+    this.state = {
+      currentServices: initialValues.officeInfo.services,
+      serviceList: this.props.allServices,
+      officeImage0: initialValues.officeInfo.officeImages0,
+      officeImage1: initialValues.officeInfo.officeImages1,
+      officeImage2: initialValues.officeInfo.officeImages2,
+      officeLogoUrl: initialValues.officeInfo.logo,
+      officeAvatarUrl: initialValues.user.avatar,
+      dentistId,
+      dentistInfoId
+    };
+  }
+  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
 
   /*
   Actions
@@ -268,6 +291,8 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeLogo = () => {
     this.setState({ officeLogoUrl: null });
     this.props.change('officeInfo.logo', null);
+    const { dentistId, dentistInfoId } = this.state;
+    this.props.deleteOfficeLogo(dentistId, dentistInfoId);
   }
 
   setProfilePicture = (info) => {
@@ -278,6 +303,8 @@ class DentistEditProfileForm extends React.Component {
   removeProfilePicture = () => {
     this.setState({ officeAvatarUrl: null });
     this.props.change('user.avatar', null);
+    const { dentistId } = this.state;
+    this.props.deleteDentistAvatar(dentistId);
   }
 
   // NOTE: You can't bind functions in render in highly rendered components
@@ -293,6 +320,10 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage0 = () => {
     this.setState({ officeImages0: null });
     this.props.change('officeInfo.officeImages0', null);
+    const { dentistId, dentistInfoId, officeImage0 } = this.state;
+    if ('id' in officeImage0) {
+      this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage0.id);
+    }
   }
 
   setOfficeImage1 = (info) => {
@@ -303,6 +334,10 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage1 = () => {
     this.setState({ officeImages1: null });
     this.props.change('officeInfo.officeImages1', null);
+    const { dentistId, dentistInfoId, officeImage1 } = this.state;
+    if ('id' in officeImage1) {
+      this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage1.id);
+    }
   }
 
   setOfficeImage2 = (info) => {
@@ -313,6 +348,10 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage2 = () => {
     this.setState({ officeImages2: null });
     this.props.change('officeInfo.officeImages2', null);
+    const { dentistId, dentistInfoId, officeImage2 } = this.state;
+    if ('id' in officeImage2) {
+      this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage2.id);
+    }
   }
 
   setServices = (info) => {
