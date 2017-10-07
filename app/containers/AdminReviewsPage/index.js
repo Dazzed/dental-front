@@ -173,6 +173,10 @@ export default class AdminDentistsPage extends React.Component {
     this.props.changePageTitle('Dentists');
   }
 
+  componentWillUnmount () {
+    this.props.setSelectedDentist(null);
+  }
+
   /*
   Events
   ------------------------------------------------------------
