@@ -9,9 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
-import moment from 'moment';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
@@ -66,6 +64,7 @@ import {
   selectManagers,
 } from './selectors';
 import styles from './styles.css';
+import DentistDetails from './components/DentistDetails';
 
 /*
 Redux
@@ -246,147 +245,16 @@ export default class AdminDentistsPage extends React.Component {
     if (!selectedDentist) {
       return (
         <div className="text-center">
-          <LoadingSpinner showOnlyIcon={true} />
+          <LoadingSpinner showOnlyIcon />
         </div>
       );
     }
 
-    const {
-      createdAt,
-      email,
-    } = selectedDentist;
-
-    const {
-      address,
-      city,
-      state,
-      zipCode,
-
-      activeMemberCount,
-      marketplaceOptIn,
-
-      priceCodes,
-      affordabilityScore,
-    } = selectedDentist.dentistInfo;
-
-    const activeSince = moment(createdAt).format("MMMM Do, YYYY");
-
-    const phone = selectedDentist.phoneNumbers.length ? selectedDentist.phoneNumbers[0].number : 'Phone: N/A';
-
     return (
-      <div className={'row ' + styles['dentist-details']}>
-        <div className="col-md-6">
-          <p>
-            <span className={styles['dentist-details__value']}>
-              {address}
-              <br />
-              {city}, {state} {zipCode}
-            </span>
-          </p>
-
-          <p>
-            Contact:
-            <br />
-            <span className={styles['dentist-details__value']}>
-              {email}
-              <br />
-              {phone}
-            </span>
-          </p>
-
-          <p>
-            Total Active Members:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {activeMemberCount}
-            </span>
-          </p>
-
-          <p>
-            Active Since:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {activeSince}
-            </span>
-          </p>
-
-          {/* TODO: enable */}
-          {/*
-          <p>
-            Account Manager:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              TODO
-            </span>
-          </p>
-          */}
-
-          {/* TODO: enable */}
-          {/*
-          <p>
-            Office Link:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              TODO
-            </span>
-          </p>
-          */}
-
-          <p>
-            Marketplace:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {marketplaceOptIn ? 'Inactive' : 'Active'}
-            </span>
-          </p>
-          
-          <p>
-            Affordability Index:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {affordabilityScore || 'NOT SET'}
-            </span>
-          </p>
-          
-        </div>
-
-        <div className="col-md-6">
-          <p className={styles['dentist-details__section-title']}>
-            Dental Code Fees:
-          </p>
-
-          {priceCodes.map(({ code, price }) => {
-            return (
-              <div key={code} className={'row ' + styles['dentist-details__price-code']}>
-                <div className="col-md-3 text-right">
-                  {code}:
-                </div>
-
-                <div className="col-md-3" className={styles['dentist-details__value']}>
-                  ${parseFloat(price).toFixed(2)}
-                </div>
-              </div>
-            );
-          })}
-
-          {/*<p>
-            Discount:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {discount}%
-            </span>
-          </p>*/}
-
-          <p className="text-right">
-            <input
-              type="button"
-              className={styles['button--short']}
-              value="EDIT"
-              onClick={this.onEditDentist.bind(this, dentist)}
-            />
-          </p>
-        </div>
-      </div>
+      <DentistDetails
+        selectedDentist={selectedDentist}
+        onEditDentist={() => this.onEditDentist.call(this, selectedDentist)}
+      />
     );
   }
 
