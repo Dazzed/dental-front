@@ -32,8 +32,7 @@ export default class UploadDisplay extends React.Component {
       uploadedFiles,
       actualValue,
     } = this.props;
-
-    if (!actualValue) {
+    if (!actualValue && !uploadedFiles.length) {
       return (
         <div styleName="dropzone-display dropzone-display--prompt">
           <span styleName="dropzone-display__icon">
