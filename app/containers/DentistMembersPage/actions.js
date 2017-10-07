@@ -77,6 +77,12 @@ import {
   SET_EDITING_SECURITY,
   CLEAR_EDITING_SECURITY,
   SUBMIT_SECURITY_FORM,
+
+  // images deletion.
+  DELETE_OFFICE_LOGO,
+  DELETE_DENTIST_AVATAR,
+  DELETE_DENTIST_OFFICE_IMAGE,
+
 } from './constants';
 
 /*
@@ -431,4 +437,29 @@ export function submitSecurityForm(payload, user) {
   };
 }
 
+// images.
+
+export function deleteOfficeLogo (dentistId, dentistInfoId) {
+  return {
+    type: DELETE_OFFICE_LOGO,
+    dentistId,
+    dentistInfoId
+  };
+}
+
+export function deleteDentistAvatar (dentistId) {
+  return {
+    type: DELETE_DENTIST_AVATAR,
+    dentistId
+  };
+}
+
+export function deleteDentistOfficeImage (dentistId, dentistInfoId, dentistInfoPhotoId) {
+  return {
+    type: DELETE_DENTIST_OFFICE_IMAGE,
+    dentistId,
+    dentistInfoId,
+    dentistInfoPhotoId
+  };
+}
 // update user data at App level, see setUserData in `/app/containers/App/actions.js`
