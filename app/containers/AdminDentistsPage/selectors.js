@@ -95,7 +95,7 @@ const selectMasterReportsDates = createSelector(
   (substate) => substate.masterReportsDates
 );
 
-const selectProcessedDentists = createSelector(
+const selectProcessedDentistsOld = createSelector(
   selectDentists,
   selectSearch,
   selectSort,
@@ -143,6 +143,43 @@ const selectProcessedDentists = createSelector(
       }
       return 0;
     });
+
+    return processedDentists;
+  }
+);
+
+const selectProcessedDentists = createSelector(
+  selectDentists,
+  selectSearch,
+  selectSort,
+  (dentists, searchName, sortMethod) => {
+    // precondition: haven't fetched the dentists yet
+    if (dentists === null) {
+      return dentists;
+    }
+
+    let processedDentists = dentists;
+
+    // search
+    if (searchName !== null) {
+      searchName = searchName.toLowerCase();
+
+      processedDentists = dentists.filter((dentist) => {
+        const dentistName = dentist.firstName + ' ' + dentist.lastName;
+        const matchesDentist = dentistName.toLowerCase().indexOf(searchName) > -1;
+
+        return matchesDentist;
+      });
+    }
+
+    // sort
+    if (sortMethod === 'unassigned') {
+      processedDentists = processedDentists
+        .filter(pd => !pd.dentistInfo.managerId);
+    } else {
+      processedDentists = processedDentists
+        .filter(pd => pd.dentistInfo.managerId === Number(sortMethod));
+    }
 
     return processedDentists;
   }

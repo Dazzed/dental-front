@@ -41,6 +41,7 @@ import {
   sort,
   toggleRefundingMember,
   initiateRefundingMember,
+  fetchManagers,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -56,6 +57,7 @@ import {
   selectSort,
   selectProcessedDentists,
   selectRefundingMember,
+  selectManagers,
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
@@ -82,6 +84,7 @@ function mapStateToProps (state) {
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
     refundingMember: selectRefundingMember(state),
+    managers: selectManagers(state),
   };
 }
 
@@ -103,6 +106,7 @@ function mapDispatchToProps (dispatch) {
     sortDentists: (status) => dispatch(sort(status)),
     toggleRefundingMember: (id) => dispatch(toggleRefundingMember(id)),
     initiateRefundingMember: (id, amount) => dispatch(initiateRefundingMember(id, amount)),
+    fetchManagers: () => dispatch(fetchManagers()),
   };
 }
 
@@ -160,9 +164,10 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   componentWillMount () {
-    if (this.props.user && !this.props.dentists) {
+    if (this.props.user && (!this.props.dentists || !this.props.managers)) {
       this.props.fetchDentists();
       this.props.fetchStats();
+      this.props.fetchManagers();
     }
   }
 
@@ -386,6 +391,25 @@ export default class AdminDentistsPage extends React.Component {
     this.props.toggleRefundingMember(null);
   };
 
+  renderSortOptions = () => {
+    const { currentSortTerm, managers } = this.props;
+    return (
+      <div className="col-sm-4" styleName="match-form-group-offset">
+        <span>Sort By: </span>
+        <select value={currentSortTerm} onChange={this.onSortSelect}>
+          <option value="unassigned">Unassigned</option>
+          {
+            managers.map(manager => (
+              <option key={manager.id} value={manager.id}>
+                {manager.firstName} {manager.lastName}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+    );
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -476,15 +500,7 @@ export default class AdminDentistsPage extends React.Component {
 
             </div>
 
-            <div className="col-sm-4" styleName="match-form-group-offset">
-              <span>Sort By: </span>
-              <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date Joined</option>
-                <option value="email">Email</option>
-                <option value="name">Name</option>
-                <option value="activated">Account Manager/Non Activated</option>
-              </select>
-            </div>
+            {this.renderSortOptions()}
 
           </div>
 
