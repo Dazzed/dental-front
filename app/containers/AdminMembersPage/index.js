@@ -248,7 +248,7 @@ export default class AdminDentistsPage extends React.Component {
         <p className="text-center">
           Patient Accounts ({dentistMembers.length})
           {' '}
-          ~ Total Members ({memberCount})
+          ~ Total Members ({memberCount + dentistMembers.length})
         </p>
 
         {dentistMembers.map((patient, index) => {
