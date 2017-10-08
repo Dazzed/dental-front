@@ -23,8 +23,14 @@ function formatPhoneNumber(s) {
 
 function mapStateToProps(state) {
   if (state.AdminManagePage.editingManager) {
-    const { firstName, lastName, email } = state.AdminManagePage.editingManager;
-    const phone = state.AdminManagePage.editingManager.phoneNumbers[0].number;
+    const { firstName, lastName, email, phoneNumbers } = state.AdminManagePage.editingManager;
+    let phone = '';
+    if (phoneNumbers.length) {
+      phone = phoneNumbers[0].number;
+    } else {
+      phone = null;
+    }
+    
     return {
       initialValues: {
         firstName,
