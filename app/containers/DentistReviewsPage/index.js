@@ -1,7 +1,7 @@
 /*
-Dentist New Members Page
+Dentist New Reviews Page
 ================================================================================
-Route: `/dentist/new-members`
+Route: `/dentist/new-reviews`
 */
 
 /*
@@ -25,8 +25,8 @@ import DentistDashboardTabs from 'components/DentistDashboardTabs';
 import LoadingSpinner from 'components/LoadingSpinner';
 import MemberFormModal from 'components/MemberFormModal';
 import PatientsList from 'components/PatientsList';
-import ConfirmModal from 'components/ConfirmModal';
 import PatientProfileFormModal from 'components/PatientProfileFormModal';
+import PatientReviews from 'components/PatientReviews';
 import { changePageTitle } from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import {
@@ -37,7 +37,6 @@ import {
 
   // search / sort patients
   searchMembers,
-  sortMembers,
 
   // add / edit member
   setEditingMember,
@@ -76,7 +75,6 @@ import {
 
   // search / sort patients
   selectMemberSearchTerm,
-  selectMemberSortTerm,
 
   // add / edit member
   selectEditingMember,
@@ -89,14 +87,12 @@ import {
 
   // edit security
   editingSecuritySelector,
-  dentistRatingSelector,
 } from 'containers/DentistMembersPage/selectors';
 
-// local
 import {
   // fetch
   selectDataLoaded,
-  selectPatientsWithNewMembers,
+  selectRecentReviewers,
 } from './selectors';
 import styles from './styles.css';
 
@@ -110,13 +106,12 @@ function mapStateToProps(state) {
     dataLoaded: selectDataLoaded(state),
     dentistInfo: selectDentistInfo(state),
     patients: selectProcessedPatients(state),
-    patientsWithNewMembers: selectPatientsWithNewMembers(state),
+    recentReviewers: selectRecentReviewers(state),
     reports: selectDentistReports(state),
     user: selectCurrentUser(state),
 
     // search / sort patients
     currentSearchTerm: selectMemberSearchTerm(state),
-    currentSortTerm: selectMemberSortTerm(state),
 
     // add / edit member
     editingMember: selectEditingMember(state),
@@ -129,7 +124,6 @@ function mapStateToProps(state) {
 
     // edit security
     editingSecurity: editingSecuritySelector(state),
-    dentistRating: dentistRatingSelector(state),
   };
 }
 
@@ -145,7 +139,6 @@ function mapDispatchToProps(dispatch) {
 
     // search / sort patients
     searchMembers: (name) => dispatch(searchMembers(name)),
-    sortMembers: (status) => dispatch(sortMembers(status)),
 
     // add / edit member
     resetMemberForm: () => dispatch(resetForm('familyMember')),
@@ -154,7 +147,7 @@ function mapDispatchToProps(dispatch) {
     submitMemberForm: (patient, values) => dispatch(submitMemberForm(patient, values)),
 
     // remove member
-    setRemovingMember: (patient, member, dentistId) => dispatch(setRemovingMember(patient, member, dentistId)),
+    setRemovingMember: (patient, member) => dispatch(setRemovingMember(patient, member)),
 
     // edit patient profile
     resetPatientProfileForm: () => dispatch(resetForm('patientProfile')),
@@ -169,7 +162,7 @@ function mapDispatchToProps(dispatch) {
     submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
 
     // toggle waive patient fees
-    setTogglingWaivePatientFees: (patient, updatedFees, toggleType) => dispatch(setTogglingWaivePatientFees(patient, updatedFees, toggleType)),
+    setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
@@ -184,12 +177,12 @@ function mapDispatchToProps(dispatch) {
 
 
 /*
-New Members
+New Reviews
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
 @CSSModules(styles, { allowMultiple: true })
-class DentistNewMembersPage extends React.Component {
+class DentistNewReviewsPage extends React.Component {
 
   static propTypes = {
     // app - dispatch
@@ -198,8 +191,8 @@ class DentistNewMembersPage extends React.Component {
     // fetch - state
     dataLoaded: React.PropTypes.bool.isRequired,
     patients: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until loaded
-    patientsWithNewMembers: React.PropTypes.arrayOf(React.PropTypes.object), // will be `null` until patients are loded, b/c they have the member lists
-    reports: React.PropTypes.object,
+    recentReviewers: React.PropTypes.object, // will be `null` until patients are loded, b/c they have the reviews
+    reports: React.PropTypes.arrayOf(React.PropTypes.object),
     user: React.PropTypes.oneOfType([
       React.PropTypes.bool,
       React.PropTypes.object,
@@ -212,11 +205,9 @@ class DentistNewMembersPage extends React.Component {
 
     // search / sort patients - state
     currentSearchTerm: React.PropTypes.string,
-    currentSortTerm: React.PropTypes.string,
 
     // search / sort patients - dispatch
     searchMembers: React.PropTypes.func.isRequired,
-    sortMembers: React.PropTypes.func.isRequired,
 
     // add / edit member - state
     editingMember: React.PropTypes.object,
@@ -254,7 +245,7 @@ class DentistNewMembersPage extends React.Component {
     // download report - dispatch
     downloadReport: React.PropTypes.func.isRequired,
 
-      // edit security - state
+    // edit security - state
     editingSecurity: React.PropTypes.object,
 
     // edit security - dispatch
@@ -265,21 +256,13 @@ class DentistNewMembersPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.user && (!this.props.dentistInfo || !this.props.patients)) {
-      this.props.fetchDentistInfo();
-      this.props.fetchPatients();
-      this.props.fetchDentistReports();
-    }
-    this.state = { dialog: {} };
-    this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    this.props.fetchDentistInfo();
+    this.props.fetchPatients();
+    this.props.fetchDentistReports();
   }
 
   componentDidMount() {
-    this.props.changePageTitle('New Members');
-  }
-
-  handleCloseDialog() {
-    this.setState({ dialog: {} });
+    this.props.changePageTitle('New Reviews');
   }
 
   /*
@@ -291,69 +274,13 @@ class DentistNewMembersPage extends React.Component {
     this.props.setEditingMember(patient, null);
   }
 
-  reEnrollMember = (patient, member, type) => {
-    let { user: { memberships } } = this.props;
-    memberships = memberships.filter(m => m && m.active);
-    const enrollmentDiv = patient.reEnrollmentFee && <div>
-      <h3>Membership Fees</h3>
-      {memberships.map(({ name, price, discount }, idx) => <p key={idx}>{name.ucFirst()} <b>${price}</b>, Discount: <b>{discount}%</b></p>)}
-    </div>;
-
-    let dialog;
-    if (member.subscription.stripeSubscriptionIdUpdatedAt) {
-      dialog = {
-        message: <div>If you are re-enrolling from a monthly membership into a monthly membership a $99 fee plus your membership payment will apply. Do you wish to continue?
-          {enrollmentDiv}</div>,
-        showDialog: true,
-        title: 'Re-enroll Member',
-        confirm: () => {
-          member.isEnrolling = true;
-          this.updateMember(patient, member);
-          this.handleCloseDialog();
-        }
-      };
-    } else {
-      dialog = {
-        message: <div>It seems like you are Enrolling for the first time. There will be no Re-enrollment penality applicable.
-          {enrollmentDiv}</div>,
-        showDialog: true,
-        title: 'Enroll Member',
-        confirm: () => {
-          member.isEnrolling = true;
-          this.updateMember(patient, member);
-          this.handleCloseDialog();
-        }
-      };
-    }
-
-    this.setState({ dialog });
+  reEnrollMember = (patient, member) => {
+    /* TODO, UNVERIFIED */
+    alert('TODO: re-enroll member');
   }
 
-  handleCloseDialog = () => {
-    let dialog = this.state.dialog;
-    dialog.showDialog = false;
-    this.setState({ dialog });
-  };
-
-
-  removeMember = (patient, member, dentistId) => {
-    let message;
-    if (member.subscription.membership.type == 'month') {
-      message = "We're sorry you have decided to cancel your membership. If you are cancelling prior to 3 payment a $20 cancellation fee will apply. Also should you chose to re-enroll into a monthly membership a $99 re-enrollment fee will apply. Are you sure you wish to proceed?";
-    } else {
-      message = "Were sorry you have decided to cancel your membership, your membership will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
-    }
-    const dialog = {
-      message: <div>{message}</div>,
-      showDialog: true,
-      title: 'Confirm Member Cancel',
-      confirm: () => {
-        this.props.setRemovingMember(patient, member, dentistId);
-        this.handleCloseDialog();
-      }
-    };
-
-    this.setState({ dialog });
+  removeMember = (patient, member) => {
+    this.props.setRemovingMember(patient, member);
   }
 
   renewMember = (patient, member) => {
@@ -362,42 +289,16 @@ class DentistNewMembersPage extends React.Component {
   }
 
   toggleCancelationFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'cancel');
+    this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
   toggleReEnrollmentFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'reenroll');
+    this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
-
-  confirmUpdateMember = (user, member, submit) => {
-    const { dentist: { dentistInfo: { membership: { yearly, monthly, discount } } } } = this.props;
-    const cost = { monthly, yearly, discount };
-    const enrollmentDiv = user.reEnrollmentFee && <div>
-      <h3>{cost.discount}% Discount</h3>
-      <p>Yearly: <b>${cost.yearly}</b>, Monthly: <b>${cost.monthly}</b></p>
-    </div>;
-
-    const dialog = {
-      message: <div>A re-enrollment fee will be charged in addition to the prorated membership fee.
-        {enrollmentDiv}</div>,
-      showDialog: true,
-      title: 'Confirm Member Update',
-      confirm: () => {
-        submit();
-        this.handleCloseDialog();
-      }
-    };
-
-    this.setState({ dialog });
-  };
 
   updateMember = (patient, member) => {
     this.props.resetMemberForm();
-    member.fromDentist = true;
-
-    this.props.setEditingMember(patient, member, (submit) => {
-      this.updateMemberConfirm(patient, member, submit);
-    });
+    this.props.setEditingMember(patient, member);
   }
 
   updatePatientProfile = (patient) => {
@@ -451,11 +352,6 @@ class DentistNewMembersPage extends React.Component {
     this.props.clearEditingPatientPayment();
   }
 
-  // sort
-  onSortSelect = (evt) => {
-    this.props.sortMembers(evt.target.value);
-  }
-
   // reports
   onReportSelected = ({ month, year, url }) => {
     const {
@@ -475,30 +371,25 @@ class DentistNewMembersPage extends React.Component {
     this.props.clearEditingSecurity();
   }
 
-  renderHeaderAndTabs = () => {
+  /*
+  UI Functions
+  ------------------------------------------------------------
+  */
+  getRecentPatientReviews = (patient) => {
     const {
-      currentSearchTerm,
-      dentistInfo,
-      patients,
-      reports,
+      recentReviewers,
       user,
-      dentistRating
     } = this.props;
+
+    // precondition: the patient is not a recent reviewer
+    if (recentReviewers.hasOwnProperty(patient.id) === false) {
+      return null;
+    }
+
+    const reviews = recentReviewers[patient.id].reviews;
+
     return (
-      <div>
-        <DentistDashboardHeader
-          currentSearchTerm={currentSearchTerm}
-          dentistInfo={dentistInfo}
-          patients={patients}
-          reports={reports}
-          user={user}
-          onMemberSearch={this.props.searchMembers}
-          onReportSelected={this.onReportSelected}
-          onSecurityLinkClicked={this.updateSecuritySettings}
-          dentistRating={dentistRating}
-        />
-        <DentistDashboardTabs active="new-members" />
-      </div>
+      <PatientReviews reviewer={patient} reviews={reviews} user={user} />
     );
   }
 
@@ -511,14 +402,14 @@ class DentistNewMembersPage extends React.Component {
       // fetch
       dataLoaded,
       dentistInfo,
+      dentist,
       patients,
-      patientsWithNewMembers,
+      recentReviewers,
       reports,
       user,
 
       // search / sort patients
       currentSearchTerm,
-      currentSortTerm,
 
       // add / edit member
       editingMember,
@@ -533,10 +424,6 @@ class DentistNewMembersPage extends React.Component {
       editingSecurity,
     } = this.props;
 
-    const {
-      dialog
-    } = this.state;
-
     /*
     Precondition Renders
     ------------------------------------------------------------
@@ -545,7 +432,7 @@ class DentistNewMembersPage extends React.Component {
     if (dataLoaded === false) {
       return (
         <div>
-          <DentistDashboardTabs active="new-members" />
+          <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
             <LoadingSpinner showOnlyIcon={false} />
@@ -554,15 +441,25 @@ class DentistNewMembersPage extends React.Component {
       );
     }
 
-    // precondition: there are no patients, thus there can be no new ones
+    // precondition: there are no patients, thus there can be no reviews
     if (patients.length === 0) {
       return (
         <div>
-          {this.renderHeaderAndTabs()}
+          <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
+            patients={patients}
+            reports={reports}
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
+            onSecurityLinkClicked={this.updateSecuritySettings}
+          />
+          <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
             <p>
-              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  You can now start signing up your patients to see them here!
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before they can start leaving you five star reviews!
             </p>
           </div>
 
@@ -577,15 +474,25 @@ class DentistNewMembersPage extends React.Component {
       );
     }
 
-    // precondition: there are no new members
-    if (patientsWithNewMembers.length === 0) {
+    // precondition: there are no recent reviewers
+    if (Object.keys(recentReviewers).length === 0) {
       return (
         <div>
-          {this.renderHeaderAndTabs()}
+          <DentistDashboardHeader
+            currentSearchTerm={currentSearchTerm}
+            dentistInfo={dentistInfo}
+            patients={patients}
+            reports={reports}
+            user={user}
+            onMemberSearch={this.props.searchMembers}
+            onReportSelected={this.onReportSelected}
+            onSecurityLinkClicked={this.updateSecuritySettings}
+          />
+          <DentistDashboardTabs active="new-reviews" />
 
           <div styleName="content content--filler">
             <p>
-              You haven't signed up any new members in the last 30 days.  Seems like your existing patients are giving you quite a handful!
+              No new reviews were posted by your patients in the past 7 days.  Great job keeping up with your patients!
             </p>
           </div>
 
@@ -604,41 +511,60 @@ class DentistNewMembersPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
+    const recentReviewerPatients = Object.keys(recentReviewers)
+      .map((reviewerId) => {
+        return recentReviewers[reviewerId].reviewer;
+      })
+      .sort((reviewerA, reviewerB) => {
+        // NOTE: Reviews are already sorted from most recent to least.
+        const mostRecentReviewA = recentReviewers[reviewerA.id].reviews[0];
+        const mostRecentReviewB = recentReviewers[reviewerB.id].reviews[0];
+
+        if (mostRecentReviewA.createdAt > mostRecentReviewB.createdAt) {
+          return -1;
+        }
+        else if (mostRecentReviewA.createdAt < mostRecentReviewB.createdAt) {
+          return 1;
+        }
+
+        return 0;
+      });
+
 
     return (
       <div>
-        {this.renderHeaderAndTabs()}
+        <DentistDashboardHeader
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+          onSecurityLinkClicked={this.updateSecuritySettings}
+        />
+        <DentistDashboardTabs active="new-reviews" />
 
         <div styleName="content">
-          <div styleName="patient-sort">
-            <span>Sort By: </span>
+          {/* TODO: onUpdateMember was removed so that the `update` action would
+              be hidden until the extra fields can be removed, and there are
+              multiple membership types for a dentist to choose from.
 
-            <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="late">Late</option>
-            </select>
-          </div>
+              onUpdateMember={this.updateMember}
 
+              https://trello.com/c/kPVhpLAB/98-dentist-limit-update-to-membership-type
+          */}
           <PatientsList
-            patients={patientsWithNewMembers}
+            patients={recentReviewerPatients}
             dentist={dentistInfo}
-            onAddMember={this.addMember}
-            onReEnrollMember={this.reEnrollMember}
-            onUpdateMember={this.updateMember}
-            onRemoveMember={this.removeMember}
-            onRenewMember={this.renewMember}
-            onToggleCancelationFee={this.toggleCancelationFee}
-            onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
-            onUpdatePatientProfile={this.updatePatientProfile}
-            onUpdatePatientPayment={this.updatePatientPaymentInfo}
+            getAdditionalMembershipContent={this.getRecentPatientReviews}
           />
         </div>
 
         <CheckoutFormModal
           show={editingPatientPayment !== null}
           onCancel={this.cancelPatientPaymentFormAction}
-          showWaiverCheckboxes={false}
+          showWaiverCheckboxes={true}
 
           initialValues={editingPatientPayment !== null ? editingPatientPayment.paymentInfo : null}
           onSubmit={this.handlePatientPaymentFormSubmit}
@@ -648,7 +574,6 @@ class DentistNewMembersPage extends React.Component {
           dentist={user}
           show={editingMember !== null}
           onCancel={this.cancelMemberFormAction}
-
           initialValues={editingMember !== null ? editingMember.member : null}
           onFormSubmit={this.handleMemberFormSubmit}
         />
@@ -659,14 +584,6 @@ class DentistNewMembersPage extends React.Component {
           dentist={user}
           initialValues={editingPatientProfile}
           onSubmit={this.handlePatientProfileFormSubmit}
-        />
-
-        <ConfirmModal
-          showModal={dialog.showDialog}
-          message={dialog.message}
-          onCancel={this.handleCloseDialog}
-          onConfirm={dialog.confirm}
-          title={dialog.title}
         />
 
         <AccountSecurityFormModal
@@ -682,4 +599,4 @@ class DentistNewMembersPage extends React.Component {
   }
 }
 
-export default DentistNewMembersPage;
+export default DentistNewReviewsPage;
