@@ -13,7 +13,7 @@ import {
 } from './constants';
 
 const initialState = {
-  managers: [],
+  managers: null,
   selectedManager: null,
   addingManager: false,
   editingManager: null,
