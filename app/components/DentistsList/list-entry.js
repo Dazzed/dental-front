@@ -56,14 +56,34 @@ export default class DentistsListEntry extends React.Component {
   
 
   renderFullName = (listNum, dentist) => {
+    let tooltip = '';
     if (dentist.verified) {
-      return (
-        <span styleName={'list-entry__title'}>
-          {listNum}) {dentist.firstName} {dentist.lastName}
-        </span>
+      if (!dentist.dentistInfo.managerId) {
+        tooltip = <Tooltip id="tooltip"><strong>Dentist is not assigned an account manager.</strong></Tooltip>;
+        return (
+          <OverlayTrigger placement="top" overlay={tooltip}>
+            <span styleName={'list-entry__title list-entry__title_red'}>
+              {listNum}) {dentist.firstName} {dentist.lastName}
+            </span>
+          </OverlayTrigger>
+        );
+      } else {
+        return (
+          <span styleName={'list-entry__title'}>
+            {listNum}) {dentist.firstName} {dentist.lastName}
+          </span>
+        );
+      }
+    }
+    if (dentist.dentistInfo.managerId) {
+      tooltip = <Tooltip id="tooltip"><strong>Dentist is not activated.</strong></Tooltip>;
+    } else {
+      tooltip = (
+        <Tooltip id="tooltip">
+          <strong>Dentist is not activated and not assigned an account manager.</strong>
+        </Tooltip>
       );
     }
-    const tooltip = <Tooltip id="tooltip"><strong>Dentist is not activated.</strong></Tooltip>;
     return (
       <OverlayTrigger placement="top" overlay={tooltip}>
         <span styleName={'list-entry__title list-entry__title_red'}>
@@ -74,7 +94,7 @@ export default class DentistsListEntry extends React.Component {
   }
   /* Render
    * ------------------------------------------------------ */
-  render() {
+  render () {
     const {
       dentist,
       position,

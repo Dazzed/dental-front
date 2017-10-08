@@ -159,14 +159,14 @@ export default class AdminDentistsPage extends React.Component {
     };
   }
 
-  componentWillMount() {
-    if (this.props.user) {
+  componentWillMount () {
+    if (this.props.user && !this.props.dentists) {
       this.props.fetchDentists();
       this.props.fetchStats();
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.changePageTitle('Dentists');
   }
 
@@ -476,12 +476,13 @@ export default class AdminDentistsPage extends React.Component {
 
             </div>
 
-            <div className="col-sm-3" styleName="match-form-group-offset">
+            <div className="col-sm-4" styleName="match-form-group-offset">
               <span>Sort By: </span>
               <select value={currentSortTerm} onChange={this.onSortSelect}>
                 <option value="date">Date Joined</option>
                 <option value="email">Email</option>
                 <option value="name">Name</option>
+                <option value="activated">Account Manager/Non Activated</option>
               </select>
             </div>
 
