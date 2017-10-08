@@ -6,7 +6,7 @@ import { selectCurrentUser } from 'containers/App/selectors';
 
 import AdminManageTabs from 'components/AdminManageTabs';
 import ManagersList from 'components/ManagersList';
-
+import LoadingSpinner from 'components/LoadingSpinner';
 import {
   changePageTitle,
   fetchAccountManagers,
@@ -99,33 +99,47 @@ export default class AdminManagePage extends React.Component {
     this.props.editManager({...values, id: this.props.editingManager.id});
   };
 
-  render() {
+  render () {
+    if (this.props.managers === null) {
+      return (
+        <div>
+          <AdminManageTabs active="managers" />
+
+          <div styleName="content content--filler">
+            <LoadingSpinner showOnlyIcon={false} />
+          </div>
+        </div>
+      );
+    }
     return (
       <div>
         <AdminManageTabs active='managers' />
-        <ManagersList
-          managers={this.props.managers}
-          selectManager={this.onSelectManager}
-          selectedManager={this.props.selectedManager}
-          onEditButtonClick={this.toggleEditManager}
-         />
-         <input
-          type="button"
-          className={styles['button--short']}
-          value="ADD ACCOUNT MANAGER"
-          onClick={() => this.toggleAddManager(true)}
-        />
-        <AddManagerForm
-          addingManager={this.props.addingManager}
-          onCancel={() => this.toggleAddManager(false)}
-          onSubmit={this.addManager}
-        />
+        <div styleName="content">
+          <ManagersList
+            managers={this.props.managers}
+            selectManager={this.onSelectManager}
+            selectedManager={this.props.selectedManager}
+            onEditButtonClick={this.toggleEditManager}
+          />
+          <br />
+          <input
+            type="button"
+            className={styles['button--short']}
+            value="ADD ACCOUNT MANAGER"
+            onClick={() => this.toggleAddManager(true)}
+          />
+          <AddManagerForm
+            addingManager={this.props.addingManager}
+            onCancel={() => this.toggleAddManager(false)}
+            onSubmit={this.addManager}
+          />
 
-        <EditManagerForm
-          editingManager={this.props.editingManager}
-          onCancel={() => this.toggleEditManager(null)}
-          onSubmit={this.editManager}
-        />
+          <EditManagerForm
+            editingManager={this.props.editingManager}
+            onCancel={() => this.toggleEditManager(null)}
+            onSubmit={this.editManager}
+          />
+        </div>
       </div>
     )
   }

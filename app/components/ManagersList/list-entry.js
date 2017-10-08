@@ -50,6 +50,21 @@ export default class DentistsListEntry extends React.Component {
     selectManager(manager);
   }
 
+  renderPhoneNumber = manager => {
+    if (manager.phoneNumbers.length) {
+      return (
+        <span className={styles['manager-details__value']}>
+          <p>Phone: {manager.phoneNumbers[0].number}</p>
+        </span>
+      );
+    }
+    return (
+      <span className={styles['manager-details__value']}>
+        <p>Phone: N/A</p>
+      </span>
+    );
+  }
+
   /* Render
    * ------------------------------------------------------ */
   render() {
@@ -87,9 +102,7 @@ export default class DentistsListEntry extends React.Component {
                   </div>
 
                   <div className='col-md-12'>
-                    <span className={styles['manager-details__value']}>
-                      <p>Phone: {manager.phoneNumbers[0].number}</p>
-                    </span>
+                    {this.renderPhoneNumber(manager)}
                   </div>
 
                   <div className='col-md-12'>
