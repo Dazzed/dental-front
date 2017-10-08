@@ -111,7 +111,7 @@ export default class ReviewFormModal extends React.Component {
 
     const { rating } = this.state;
     let title = "Edit Your Review";
-    let saveText = "Save Changes";
+    let saveText = "Edit Review";
     if (initialValues === null || !initialValues.id) {
       title = "Review Your Dentist";
       saveText = "Add Review";
