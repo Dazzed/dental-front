@@ -48,7 +48,7 @@ const initialState = {
 
   // search / sort patients
   searchName: null,
-  sortStatus: "date",
+  sortStatus: 'unassigned',
   refundingMember: null,
   masterReportsDates: {},
   editingDentistId: null
