@@ -21,7 +21,7 @@ const renderReview = review => {
           <ReviewScore score={review[0].rating} />
         </div>
         <div className="col-sm-6 text-right">
-          Review Date: <span styleName="member-overview__info">{moment(review[0].createdAt).format('MMM d, YYYY')}</span>
+          Review Date: <span styleName="member-overview__info">{moment(review[0].updatedAt).format('MMM D, YYYY')}</span>
         </div>
       </div>
       <br />
