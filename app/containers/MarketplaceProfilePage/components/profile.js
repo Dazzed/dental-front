@@ -9,6 +9,17 @@ import PriceScore from "components/PriceScore";
 
 import styles from "./styles.css";
 
+function calculateReviewScore (dentist) {
+  if (dentist.dentistReviews.length) {
+    const rating = dentist.dentistReviews.reduce((acc, r) => {
+      acc += r.rating;
+      return acc;
+    }, 0);
+    return Math.round(rating / dentist.dentistReviews.length);
+  }
+  return 0;
+}
+
 @CSSModules(styles)
 export default class Profile extends Component {
 
@@ -54,7 +65,7 @@ export default class Profile extends Component {
             <div styleName="profile-content__name-and-rating">
               <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
 
-              <ReviewScore score={10} />
+              <ReviewScore score={calculateReviewScore(dentist)} />
             </div>
           </div>
         </div>

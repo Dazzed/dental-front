@@ -206,6 +206,24 @@ const editingSecuritySelector = createSelector(
   }
 );
 
+const dentistRatingSelector = createSelector(
+  domainSelector,
+  substate => {
+    if (substate.patients) {
+      let iterations = 0;
+      const rating = substate.patients.reduce((acc, p) => {
+        if (p.clientReviews.length) {
+          iterations++;
+          acc += p.clientReviews[0].rating;
+        }
+        return acc;
+      }, 0);
+      return Math.round(rating / iterations);
+    }
+    return 0;
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -230,6 +248,7 @@ export {
   selectEditingPatientProfile,
   selectEditingPatientPayment,
   editingSecuritySelector,
+  dentistRatingSelector,
 };
 
 function replaceDefaultToStandard(memberships) {
