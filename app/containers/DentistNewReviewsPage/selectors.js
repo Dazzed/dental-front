@@ -135,6 +135,16 @@ const selectDataLoaded = createSelector(
   }
 );
 
+const selectProcessedReviews = createSelector(
+  selectProcessedPatients,
+  patients => {
+    if (patients === null) {
+      return [];
+    }
+    return patients.filter(p => p.clientReviews.length);
+  }
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -146,4 +156,5 @@ export {
   selectNewReviews,
   selectPatientReviews,
   selectRecentReviewers,
+  selectProcessedReviews
 };

@@ -104,6 +104,8 @@ export default class MemberListEdit extends Component {
 
     const membership = member.subscription ? member.subscription.membership : {};
     let status = member.subscription ? member.subscription.status : 'inactive';
+    const membershipType = member.subscription.membership.type;
+    const membershipName = member.subscription.membership.name;
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -141,12 +143,13 @@ export default class MemberListEdit extends Component {
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            {subscriptionType}
+            {membershipType === 'custom' ?
+              <span style={{ fontSize: '14px' }}>{membershipName}</span> : subscriptionType}
           </div>
         </div>
         <div className="col-sm-1">
           <div styleName="member__detail">
-            ${amount}
+            {member.subscription.stripeSubscriptionId ? `$${amount}` : ''}
           </div>
         </div>
         <div className="col-sm-3">
@@ -163,7 +166,7 @@ export default class MemberListEdit extends Component {
               */}
               {this.props.onUpdateMember
                 && (status === "active")
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (
                   <input
                     type="button"
@@ -175,7 +178,7 @@ export default class MemberListEdit extends Component {
               }
 
               {this.props.onRemoveMember
-                && membership.type === 'month'
+                && (membership.type === 'month' || membership.type === 'custom')
                 && (status === "active")
                 && (
                   <input
@@ -244,7 +247,7 @@ export default class MemberListEdit extends Component {
                   <input
                     type="button"
                     styleName="button--small"
-                    value={member.subscription.stripeSubscriptionIdUpdatedAt ? "RE-ENROLL" : "ENROLL"}
+                    value={member.subscription.stripeSubscriptionId ? "RE-ENROLL" : "ENROLL"}
                     onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
                   />
                 )
@@ -297,11 +300,16 @@ export default class MemberListEdit extends Component {
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
       if (member.subscription !== undefined && member.subscription.membership.type == 'year') {
         annualSeparated = true;
+        const subscriptionStatus = member.subscription.status;
+        let expiresOrRenews = 'Renews At';
+        if (subscriptionStatus === 'cancellation_requested') {
+          expiresOrRenews = 'Expires At';
+        }
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
             <div className="col-sm-6 col-md-6">
               <div styleName="member__detail" style={{fontWeight: 'bold', fontStyle: 'italic'}}>
-                Expires At: {moment(member.subscription.stripeSubscriptionIdUpdatedAt).add(1,'year').format('MMMM D, YYYY')}
+                {expiresOrRenews}: {moment(member.subscription.stripeSubscriptionIdUpdatedAt).add(1,'year').format('MMMM D, YYYY')}
               </div>
             </div>
           </div>

@@ -41,6 +41,7 @@ import {
   sort,
   toggleRefundingMember,
   initiateRefundingMember,
+  fetchManagers,
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -56,6 +57,7 @@ import {
   selectSort,
   selectProcessedDentists,
   selectRefundingMember,
+  selectManagers,
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
@@ -82,6 +84,7 @@ function mapStateToProps (state) {
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
     refundingMember: selectRefundingMember(state),
+    managers: selectManagers(state),
   };
 }
 
@@ -103,6 +106,7 @@ function mapDispatchToProps (dispatch) {
     sortDentists: (status) => dispatch(sort(status)),
     toggleRefundingMember: (id) => dispatch(toggleRefundingMember(id)),
     initiateRefundingMember: (id, amount) => dispatch(initiateRefundingMember(id, amount)),
+    fetchManagers: () => dispatch(fetchManagers()),
   };
 }
 
@@ -159,17 +163,21 @@ export default class AdminDentistsPage extends React.Component {
     };
   }
 
-  componentWillMount() {
-    if (this.props.user) {
+  componentWillMount () {
+    if (this.props.user && (!this.props.dentists || !this.props.managers)) {
       this.props.fetchDentists();
       this.props.fetchStats();
+      this.props.fetchManagers();
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.changePageTitle('Dentists');
   }
 
+  componentWillUnmount () {
+    this.props.setSelectedDentist(null);
+  }
   /*
   Events
   ------------------------------------------------------------
@@ -245,7 +253,7 @@ export default class AdminDentistsPage extends React.Component {
         <p className="text-center">
           Patient Accounts ({dentistMembers.length})
           {' '}
-          ~ Total Members ({memberCount})
+          ~ Total Members ({memberCount + dentistMembers.length})
         </p>
 
         {dentistMembers.map((patient, index) => {
@@ -285,7 +293,7 @@ export default class AdminDentistsPage extends React.Component {
         break;
 
       default:
-        // Status is unknown, so don't add anything;
+        statusStyle += "status--canceled";
         break;
     }
 
@@ -299,54 +307,58 @@ export default class AdminDentistsPage extends React.Component {
             {' '}
             - <span className={"status " + styles[statusStyle]}>{status}</span>
           </p>
+          {
+            members.length ?
+              <div>
+                <p>
+                  Family Members:
+                </p>
 
-          <p>
-            Family Members:
-          </p>
+                <ul>
+                  {members.map((member) => {
+                    const {
+                      firstName,
+                      lastName,
 
-          <ul>
-            {members.map((member) => {
-              const {
-                firstName,
-                lastName,
+                      subscription: { status },
+                    } = member;
 
-                subscription: { status },
-              } = member;
+                    const isAccountOwner = patient.id === member.id;
 
-              const isAccountOwner = patient.id === member.id;
+                    let statusStyle = "";
+                    switch(status) {
+                      case "active":
+                        statusStyle += "status--active";
+                        break;
 
-              let statusStyle = "";
-              switch(status) {
-                case "active":
-                  statusStyle += "status--active";
-                  break;
+                      case "past_due":
+                        statusStyle += "status--past-due";
+                        break;
 
-                case "past_due":
-                  statusStyle += "status--past-due";
-                  break;
+                      case "canceled":
+                        statusStyle += "status--canceled";
+                        break;
 
-                case "canceled":
-                  statusStyle += "status--canceled";
-                  break;
+                      case "inactive":
+                        statusStyle += "status--inactive";
+                        break;
 
-                case "inactive":
-                  statusStyle += "status--inactive";
-                  break;
+                      default:
+                        statusStyle += "status--canceled";
+                        break;
+                    }
 
-                default:
-                  // Status is unknown, so don't add anything;
-                  break;
-              }
-
-              return (
-                <li key={member.id}>
-                  {firstName} {lastName}
-                  {' '}
-                  - <span className={"status " + styles[statusStyle]}>{status}</span>
-                </li>
-              );
-            })}
-          </ul>
+                    return (
+                      <li key={member.id}>
+                        {firstName} {lastName}
+                        {' '}
+                        - <span className={"status " + styles[statusStyle]}>{status}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div> : <p>No Family Members..</p>
+          }
         </div>
 
         <div className="col-sm-6">
@@ -378,6 +390,25 @@ export default class AdminDentistsPage extends React.Component {
   cancelRefunding = () => {
     this.props.toggleRefundingMember(null);
   };
+
+  renderSortOptions = () => {
+    const { currentSortTerm, managers } = this.props;
+    return (
+      <div className="col-sm-4" styleName="match-form-group-offset">
+        <span>Sort By: </span>
+        <select value={currentSortTerm} onChange={this.onSortSelect}>
+          <option value="unassigned">Unassigned</option>
+          {
+            managers.map(manager => (
+              <option key={manager.id} value={manager.id}>
+                {manager.firstName} {manager.lastName}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+    );
+  }
 
   /*
   Render
@@ -469,14 +500,7 @@ export default class AdminDentistsPage extends React.Component {
 
             </div>
 
-            <div className="col-sm-3" styleName="match-form-group-offset">
-              <span>Sort By: </span>
-              <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date Joined</option>
-                <option value="email">Email</option>
-                <option value="name">Name</option>
-              </select>
-            </div>
+            {this.renderSortOptions()}
 
           </div>
 

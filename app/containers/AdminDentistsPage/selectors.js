@@ -66,6 +66,11 @@ const selectSelectedDentist = createSelector(
   (substate) => substate.selectedDentist
 );
 
+const selectEditingDentistId = createSelector(
+  domainSelector,
+  (substate) => substate.editingDentistId
+);
+
 /*
 Search / Sort
 ------------------------------------------------------------
@@ -90,7 +95,7 @@ const selectMasterReportsDates = createSelector(
   (substate) => substate.masterReportsDates
 );
 
-const selectProcessedDentists = createSelector(
+const selectProcessedDentistsOld = createSelector(
   selectDentists,
   selectSearch,
   selectSort,
@@ -125,22 +130,56 @@ const selectProcessedDentists = createSelector(
       if (sortMethod === "email") {
         stringA = (dentistA.email + ' ' + dentistA.email).toLowerCase();
         stringB = (dentistB.email + ' ' + dentistB.email).toLowerCase();
-      }
-      else {
-        // sortMethod === "name"
+      } else if (sortMethod === 'name') {
         stringA = (dentistA.firstName + ' ' + dentistA.lastName).toLowerCase();
         stringB = (dentistB.firstName + ' ' + dentistB.lastName).toLowerCase();
+      } else if (sortMethod === 'activated') {
+        return dentistA.dentistInfo.managerId ? 1 : -1;
       }
-
       if (stringA < stringB) {
-        return -1
-      }
-      else if (stringA > stringB) {
+        return -1;
+      } else if (stringA > stringB) {
         return 1;
       }
-
       return 0;
     });
+
+    return processedDentists;
+  }
+);
+
+const selectProcessedDentists = createSelector(
+  selectDentists,
+  selectSearch,
+  selectSort,
+  (dentists, searchName, sortMethod) => {
+    // precondition: haven't fetched the dentists yet
+    if (dentists === null) {
+      return dentists;
+    }
+
+    let processedDentists = dentists;
+
+    // search
+    if (searchName !== null) {
+      searchName = searchName.toLowerCase();
+
+      processedDentists = dentists.filter((dentist) => {
+        const dentistName = dentist.firstName + ' ' + dentist.lastName;
+        const matchesDentist = dentistName.toLowerCase().indexOf(searchName) > -1;
+
+        return matchesDentist;
+      });
+    }
+
+    // sort
+    if (sortMethod === 'unassigned') {
+      processedDentists = processedDentists
+        .filter(pd => !pd.dentistInfo.managerId);
+    } else {
+      processedDentists = processedDentists
+        .filter(pd => pd.dentistInfo.managerId === Number(sortMethod));
+    }
 
     return processedDentists;
   }
@@ -150,7 +189,7 @@ const selectProcessedDentists = createSelector(
 Export
 ------------------------------------------------------------
 */
- export default domainSelector;
+export default domainSelector;
 
 export {
   // fetch
@@ -163,7 +202,7 @@ export {
 
   // getters
   selectSelectedDentist,
-
+  selectEditingDentistId,
   // search / sort dentists
   selectSearch,
   selectSort,

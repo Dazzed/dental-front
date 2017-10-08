@@ -20,7 +20,7 @@ import CSSModules from 'react-css-modules';
 import FaClose from 'react-icons/lib/fa/close';
 import { Field, reduxForm, } from 'redux-form';
 import { connect } from 'react-redux';
-import Select from 'react-select';
+import Select from 'react-select/dist/react-select.js';
 
 // app
 import {
@@ -54,7 +54,10 @@ function mapStateToProps(state) {
       links,
     } = selectedDentist;
 
-    const phone = state.adminDentistsPage.selectedDentist.phoneNumbers[0].number;
+    let phone = '';
+    if (state.adminDentistsPage.selectedDentist.phoneNumbers.length) {
+      phone = state.adminDentistsPage.selectedDentist.phoneNumbers[0].number;
+    }
     const { affordabilityScore, marketplaceOptIn } = dentistInfo;
 
     const { dentists } = state.adminDentistsPage;
@@ -64,7 +67,7 @@ function mapStateToProps(state) {
         firstName,
         lastName,
         email,
-        phone: formatPhoneNumber(phone),
+        phone: phone ? formatPhoneNumber(phone) : phone,
         managerId: dentistInfo.managerId,
         verified,
         affordabilityScore: affordabilityScore ? String(affordabilityScore) : undefined,
@@ -143,6 +146,7 @@ export default class AdminEditDentistFormModal extends React.Component {
       onCancel,
       valid,
       dirty,
+      pristine,
       managers,
       dentists,
       selectedDentist
@@ -170,7 +174,7 @@ export default class AdminEditDentistFormModal extends React.Component {
             <input
               type="button"
               className="modal-control"
-              disabled={submitting || !valid || !dirty}
+              disabled={submitting || !valid || !dirty || pristine}
               onClick={handleSubmit(this.handleFormSubmit)}
               value="Save"
             />

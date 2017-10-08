@@ -1,16 +1,3 @@
-/*
-Admin Page Reducer
-================================================================================
-*/
-
-/*
-Imports
-------------------------------------------------------------
-*/
-// libs
-import findIndex from 'lodash/findIndex';
-
-// local
 import {
   // fetch
   FETCH_DENTISTS_SUCCESS,
@@ -26,6 +13,7 @@ import {
 
   // setters
   SET_SELECTED_DENTIST,
+  SET_EDITING_DENTIST_ID,
 
   // search / sort
   SEARCH,
@@ -60,9 +48,10 @@ const initialState = {
 
   // search / sort patients
   searchName: null,
-  sortStatus: "date",
+  sortStatus: 'unassigned',
   refundingMember: null,
   masterReportsDates: {},
+  editingDentistId: null
 };
 
 
@@ -146,10 +135,13 @@ export default function adminPageReducer (state = initialState, action) {
     case SET_SELECTED_DENTIST:
       return {
         ...state,
-
         selectedDentist: action.dentist,
       };
-
+    case SET_EDITING_DENTIST_ID:
+      return {
+        ...state,
+        editingDentistId: action.dentistId
+      };
     /*
     Search / Sort
     ------------------------------------------------------------
@@ -180,7 +172,9 @@ export default function adminPageReducer (state = initialState, action) {
           action.payload,
           ...state.dentists.slice(dentistIdx + 1),
         ],
-        selectedDentist: null,
+        // selectedDentist: null,
+        selectedDentist: action.payload,
+        editingDentistId: null,
       };
 
     case DELETE_DENTIST_REVIEW_SUCCESS:

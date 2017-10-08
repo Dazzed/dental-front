@@ -61,4 +61,12 @@ export const DENTIST_SIGNUP_ERROR        = 'app/DentistMembersPage/DENTIST_SIGNU
 export const SET_EDITING_SECURITY = 'app/DentistMembersPage/SET_EDITING_SECURITY';
 export const CLEAR_EDITING_SECURITY = 'app/DentistMembersPage/CLEAR_EDITING_SECURITY';
 export const SUBMIT_SECURITY_FORM = 'app/DentistMembersPage/SUBMIT_SECURITY_FORM';
+
+// images
+export const DELETE_OFFICE_LOGO = 'app/DentistMembersPage/DELETE_OFFICE_LOGO';
+export const DELETE_DENTIST_AVATAR = 'app/DentistMembersPage/DELETE_DENTIST_AVATAR';
+export const DELETE_DENTIST_OFFICE_IMAGE = 'app/DentistMembersPage/DELETE_DENTIST_OFFICE_IMAGE';
+export const DELETE_OFFICE_LOGO_SUCCESS = 'app/DentistMembersPage/DELETE_OFFICE_LOGO_SUCCESS';
+export const DELETE_DENTIST_AVATAR_SUCCESS = 'app/DentistMembersPage/DELETE_DENTIST_AVATAR_SUCCESS';
+export const DELETE_DENTIST_OFFICE_IMAGE_SUCCESS = 'app/DentistMembersPage/DELETE_DENTIST_AVATAR_SUCCESS';
 // update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`

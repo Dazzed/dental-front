@@ -74,3 +74,7 @@ Page Wide
 .dentist-details__value {
   color: $color-primary-highlight;
 }
+
+.margin-left-5 {
+  margin-left: 5%;
+}

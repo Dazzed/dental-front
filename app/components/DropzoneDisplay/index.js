@@ -31,16 +31,28 @@ export default class UploadDisplay extends React.Component {
       progress,
       uploadedFiles,
       actualValue,
+      freshSignup
     } = this.props;
-
-    if (!actualValue) {
-      return (
-        <div styleName="dropzone-display dropzone-display--prompt">
-          <span styleName="dropzone-display__icon">
-            <FaPlus size={48} />
-          </span>
-        </div>
-      );
+    if (!freshSignup) {
+      if (!actualValue && !uploadedFiles.length) {
+        return (
+          <div styleName="dropzone-display dropzone-display--prompt">
+            <span styleName="dropzone-display__icon">
+              <FaPlus size={48} />
+            </span>
+          </div>
+        );
+      }
+    } else {
+      if (!actualValue) {
+        return (
+          <div styleName="dropzone-display dropzone-display--prompt">
+            <span styleName="dropzone-display__icon">
+              <FaPlus size={48} />
+            </span>
+          </div>
+        );
+      }
     }
 
     /*

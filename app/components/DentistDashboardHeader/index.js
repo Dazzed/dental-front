@@ -101,6 +101,7 @@ class DentistDashboardHeader extends React.Component {
 
       onReportSelected,
       onSecurityLinkClicked,
+      dentistRating,
     } = this.props;
 
     const {
@@ -118,6 +119,7 @@ class DentistDashboardHeader extends React.Component {
       state,
       zipCode,
       officeSlug,
+      affordabilityScore,
     } = dentistInfo;
 
     const {
@@ -125,9 +127,6 @@ class DentistDashboardHeader extends React.Component {
       firstName,
       id,
       lastName,
-      //      metrics, // TODO: backend needs to provide this
-      //      priceScore, // TODO: backend needs to provide this
-      rating,
     } = user;
 
     let activeMemberCount = 0;
@@ -182,11 +181,8 @@ class DentistDashboardHeader extends React.Component {
                 <h2 styleName="dentist__name">{officeName}</h2>
 
                 <div styleName="dentist__scores">
-                  <ReviewScore score={user.rating} />
-                  {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-                  {/*
-                  <PriceScore score={priceScore} />
-                  */}
+                  <ReviewScore score={dentistRating} />
+                  <PriceScore affordabilityScore={affordabilityScore} />
                 </div>
 
                 <p styleName="dentist__address">
@@ -228,7 +224,7 @@ class DentistDashboardHeader extends React.Component {
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="#">
+                <Link styleName="quick-links__link" to="/dentist/custom-membership">
                   Custom Membership
                 </Link>
               </li>

@@ -89,6 +89,7 @@ import {
 
   // edit security
   editingSecuritySelector,
+  dentistRatingSelector,
 } from 'containers/DentistMembersPage/selectors';
 
 // local
@@ -128,6 +129,7 @@ function mapStateToProps(state) {
 
     // edit security
     editingSecurity: editingSecuritySelector(state),
+    dentistRating: dentistRatingSelector(state),
   };
 }
 
@@ -263,7 +265,7 @@ class DentistNewMembersPage extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.user) {
+    if (this.props.user && (!this.props.dentistInfo || !this.props.patients)) {
       this.props.fetchDentistInfo();
       this.props.fetchPatients();
       this.props.fetchDentistReports();
@@ -473,6 +475,33 @@ class DentistNewMembersPage extends React.Component {
     this.props.clearEditingSecurity();
   }
 
+  renderHeaderAndTabs = () => {
+    const {
+      currentSearchTerm,
+      dentistInfo,
+      patients,
+      reports,
+      user,
+      dentistRating
+    } = this.props;
+    return (
+      <div>
+        <DentistDashboardHeader
+          currentSearchTerm={currentSearchTerm}
+          dentistInfo={dentistInfo}
+          patients={patients}
+          reports={reports}
+          user={user}
+          onMemberSearch={this.props.searchMembers}
+          onReportSelected={this.onReportSelected}
+          onSecurityLinkClicked={this.updateSecuritySettings}
+          dentistRating={dentistRating}
+        />
+        <DentistDashboardTabs active="new-members" />
+      </div>
+    );
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -529,17 +558,7 @@ class DentistNewMembersPage extends React.Component {
     if (patients.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-            onSecurityLinkClicked={this.updateSecuritySettings}
-          />
-          <DentistDashboardTabs active="new-members" />
+          {this.renderHeaderAndTabs()}
 
           <div styleName="content content--filler">
             <p>
@@ -562,17 +581,7 @@ class DentistNewMembersPage extends React.Component {
     if (patientsWithNewMembers.length === 0) {
       return (
         <div>
-          <DentistDashboardHeader
-            currentSearchTerm={currentSearchTerm}
-            dentistInfo={dentistInfo}
-            patients={patients}
-            reports={reports}
-            user={user}
-            onMemberSearch={this.props.searchMembers}
-            onReportSelected={this.onReportSelected}
-            onSecurityLinkClicked={this.updateSecuritySettings}
-          />
-          <DentistDashboardTabs active="new-members" />
+          {this.renderHeaderAndTabs()}
 
           <div styleName="content content--filler">
             <p>
@@ -598,17 +607,7 @@ class DentistNewMembersPage extends React.Component {
 
     return (
       <div>
-        <DentistDashboardHeader
-          currentSearchTerm={currentSearchTerm}
-          dentistInfo={dentistInfo}
-          patients={patients}
-          reports={reports}
-          user={user}
-          onMemberSearch={this.props.searchMembers}
-          onReportSelected={this.onReportSelected}
-          onSecurityLinkClicked={this.updateSecuritySettings}
-        />
-        <DentistDashboardTabs active="new-members" />
+        {this.renderHeaderAndTabs()}
 
         <div styleName="content">
           <div styleName="patient-sort">

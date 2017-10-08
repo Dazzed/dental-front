@@ -9,9 +9,7 @@ Imports
 ------------------------------------------------------------
 */
 // lib
-import moment from 'moment';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import InputGroup from 'react-bootstrap/lib/InputGroup';
@@ -20,7 +18,6 @@ import FaUser from 'react-icons/lib/fa/user';
 import FaSearch from 'react-icons/lib/fa/search';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
-import 'react-select/dist/react-select.css';
 
 // app
 import AdminDashboardHeader from 'components/AdminDashboardHeader';
@@ -40,6 +37,7 @@ import {
 
   // setters
   setSelectedDentist,
+  setEditingDentistId,
 
   // search / sort dentists
   search,
@@ -57,6 +55,7 @@ import {
 
   // getters
   selectSelectedDentist,
+  selectEditingDentistId,
 
   // search / sort patients
   selectSearch,
@@ -65,6 +64,7 @@ import {
   selectManagers,
 } from './selectors';
 import styles from './styles.css';
+import DentistDetails from './components/DentistDetails';
 
 /*
 Redux
@@ -80,7 +80,7 @@ function mapStateToProps (state) {
 
     // getters
     selectedDentist: selectSelectedDentist(state),
-
+    editingDentistId: selectEditingDentistId(state),
     // search / sort patients
     currentSearchTerm: selectSearch(state),
     currentSortTerm: selectSort(state),
@@ -101,7 +101,7 @@ function mapDispatchToProps (dispatch) {
 
     // setters
     setSelectedDentist: (dentist) => dispatch(setSelectedDentist(dentist)),
-
+    setEditingDentistId: dentistId => dispatch(setEditingDentistId(dentistId)),
     // search / sort
     searchDentists: (name) => dispatch(search(name)),
     sortDentists: (status) => dispatch(sort(status)),
@@ -142,7 +142,7 @@ export default class AdminDentistsPage extends React.Component {
 
     // getters - state
     selectedDentist: React.PropTypes.object,
-
+    setEditingDentistId: React.PropTypes.func.isRequired,
     // setters - dispatch
     setSelectedDentist: React.PropTypes.func.isRequired,
 
@@ -166,12 +166,11 @@ export default class AdminDentistsPage extends React.Component {
       searchTerm: this.props.currentSearchTerm !== null
                   ? this.props.currentSearchTerm
                   : '',
-      showEditDentistModal: false,
     };
   }
 
   componentWillMount() {
-    if (this.props.user) {
+    if (this.props.user && (!this.props.dentists || !this.props.managers)) {
       this.props.fetchDentists();
       this.props.fetchStats();
       this.props.fetchManagers();
@@ -181,6 +180,11 @@ export default class AdminDentistsPage extends React.Component {
   componentDidMount() {
     this.props.changePageTitle('Dentists');
   }
+
+  componentWillUnmount () {
+    this.props.setSelectedDentist(null);
+  }
+  
 
   /*
   Events
@@ -213,15 +217,12 @@ export default class AdminDentistsPage extends React.Component {
   // edit dentist
   onEditDentist = () => {
     this.props.resetEditDentistForm();
-    this.setState({
-      showEditDentistModal: true,
-    });
+    const { selectedDentist } = this.props;
+    this.props.setEditingDentistId(selectedDentist.id);
   }
 
   onEditDentistCancel = () => {
-    this.setState({
-      showEditDentistModal: false,
-    });
+    this.props.setEditingDentistId(null);
   }
 
   onEditDentistSubmit = (values) => {
@@ -244,151 +245,37 @@ export default class AdminDentistsPage extends React.Component {
     if (!selectedDentist) {
       return (
         <div className="text-center">
-          <LoadingSpinner showOnlyIcon={true} />
+          <LoadingSpinner showOnlyIcon />
         </div>
       );
     }
 
-    const {
-      createdAt,
-      email,
-    } = selectedDentist;
-
-    const {
-      address,
-      city,
-      state,
-      zipCode,
-
-      activeMemberCount,
-      marketplaceOptIn,
-
-      priceCodes,
-    } = selectedDentist.dentistInfo;
-
-    const activeSince = moment(createdAt).format("MMMM Do, YYYY");
-
-    const phone = selectedDentist.phoneNumbers[0].number;
-
     return (
-      <div className={'row ' + styles['dentist-details']}>
-        <div className="col-md-6">
-          <p>
-            <span className={styles['dentist-details__value']}>
-              {address}
-              <br />
-              {city}, {state} {zipCode}
-            </span>
-          </p>
-
-          <p>
-            Contact:
-            <br />
-            <span className={styles['dentist-details__value']}>
-              {email}
-              <br />
-              {phone}
-            </span>
-          </p>
-
-          <p>
-            Total Active Members:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {activeMemberCount}
-            </span>
-          </p>
-
-          <p>
-            Active Since:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {activeSince}
-            </span>
-          </p>
-
-          {/* TODO: enable */}
-          {/*
-          <p>
-            Account Manager:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              TODO
-            </span>
-          </p>
-          */}
-
-          {/* TODO: enable */}
-          {/*
-          <p>
-            Office Link:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              TODO
-            </span>
-          </p>
-          */}
-
-          <p>
-            Marketplace:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {marketplaceOptIn ? 'Active' : 'Inactive'}
-            </span>
-          </p>
-
-          {/* TODO: enable */}
-          {/*
-          <p>
-            Affordability Index:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              TODO
-            </span>
-          </p>
-          */}
-        </div>
-
-        <div className="col-md-6">
-          <p className={styles['dentist-details__section-title']}>
-            Dental Code Fees:
-          </p>
-
-          {priceCodes.map(({ code, price }) => {
-            return (
-              <div key={code} className={'row ' + styles['dentist-details__price-code']}>
-                <div className="col-md-3 text-right">
-                  {code}:
-                </div>
-
-                <div className="col-md-3" className={styles['dentist-details__value']}>
-                  ${parseFloat(price).toFixed(2)}
-                </div>
-              </div>
-            );
-          })}
-
-          {/*<p>
-            Discount:
-            {' '}
-            <span className={styles['dentist-details__value']}>
-              {discount}%
-            </span>
-          </p>*/}
-
-          <p className="text-right">
-            <input
-              type="button"
-              className={styles['button--short']}
-              value="EDIT"
-              onClick={this.onEditDentist.bind(this, dentist)}
-            />
-          </p>
-        </div>
-      </div>
+      <DentistDetails
+        selectedDentist={selectedDentist}
+        onEditDentist={() => this.onEditDentist.call(this, selectedDentist)}
+      />
     );
   }
 
+  renderSortOptions = () => {
+    const { currentSortTerm, managers } = this.props;
+    return (
+      <div className="col-sm-4" styleName="match-form-group-offset">
+        <span>Sort By: </span>
+        <select value={currentSortTerm} onChange={this.onSortSelect}>
+          <option value="unassigned">Unassigned</option>
+          {
+            managers.map(manager => (
+              <option key={manager.id} value={manager.id}>
+                {manager.firstName} {manager.lastName}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+    );
+  }
   /*
   Render
   ------------------------------------------------------------
@@ -479,16 +366,7 @@ export default class AdminDentistsPage extends React.Component {
               </FormGroup>
 
             </div>
-
-            <div className="col-sm-3" styleName="match-form-group-offset">
-              <span>Sort By: </span>
-              <select value={currentSortTerm} onChange={this.onSortSelect}>
-                <option value="date">Date Joined</option>
-                <option value="email">Email</option>
-                <option value="name">Name</option>
-              </select>
-            </div>
-
+          {this.renderSortOptions()}
           </div>
 
           <DentistList
@@ -502,9 +380,9 @@ export default class AdminDentistsPage extends React.Component {
 
         {/* Modals
          * ------------------------------------------------------ */}
-        { selectedDentist && this.state.showEditDentistModal &&
+        { selectedDentist && this.props.editingDentistId === selectedDentist.id &&
           <AdminEditDentistFormModal
-            show={this.state.showEditDentistModal}
+            show
             onCancel={this.onEditDentistCancel}
 
             initialValues={selectedDentist}

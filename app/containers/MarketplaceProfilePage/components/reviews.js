@@ -12,14 +12,24 @@ export default class Reviews extends Component {
 
   renderReviews = () => {
     const { reviews } = this.props;
-    return reviews.map((review, i) => {
+    const filteredReviews = reviews
+      .filter(review => (
+        moment()
+          .isAfter(moment(review.updatedAt).add('7', 'days'))
+      )
+    );
+
+    if (!filteredReviews.length) {
+      return <h2>This dentist has no Reviews yet!</h2>;
+    }
+    return filteredReviews.map((review, i) => {
       const { firstName, lastName } = review.client;
       return (
         <Col xs={6} key={i}>
           <ReviewScore score={review.rating} />
           <p>"{review.message}"</p>
           <strong>{firstName} {lastName}</strong>
-          <p>{moment(review.createdAt).format('MMM YYYY')}</p>
+          <p>{moment(review.updatedAt).format('MMM YYYY')}</p>
         </Col>
       );
     });
