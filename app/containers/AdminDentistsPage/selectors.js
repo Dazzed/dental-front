@@ -130,20 +130,17 @@ const selectProcessedDentists = createSelector(
       if (sortMethod === "email") {
         stringA = (dentistA.email + ' ' + dentistA.email).toLowerCase();
         stringB = (dentistB.email + ' ' + dentistB.email).toLowerCase();
-      }
-      else {
-        // sortMethod === "name"
+      } else if (sortMethod === 'name') {
         stringA = (dentistA.firstName + ' ' + dentistA.lastName).toLowerCase();
         stringB = (dentistB.firstName + ' ' + dentistB.lastName).toLowerCase();
+      } else if (sortMethod === 'activated') {
+        return dentistA.dentistInfo.managerId ? 1 : -1;
       }
-
       if (stringA < stringB) {
-        return -1
-      }
-      else if (stringA > stringB) {
+        return -1;
+      } else if (stringA > stringB) {
         return 1;
       }
-
       return 0;
     });
 
@@ -155,7 +152,7 @@ const selectProcessedDentists = createSelector(
 Export
 ------------------------------------------------------------
 */
- export default domainSelector;
+export default domainSelector;
 
 export {
   // fetch
