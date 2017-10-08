@@ -619,7 +619,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay actualValue={this.props.officeLogo} />
+                    <DropzoneDisplay freshSignup actualValue={this.props.officeLogo} />
                   </DropzoneS3Uploader>
 
                 </div>
@@ -651,7 +651,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay actualValue={this.props.avatar} />
+                    <DropzoneDisplay freshSignup actualValue={this.props.avatar} />
                   </DropzoneS3Uploader>
 
                 </div>
@@ -692,7 +692,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay actualValue={this.props.officeImages0} />
+                    <DropzoneDisplay freshSignup actualValue={this.props.officeImages0} />
                   </DropzoneS3Uploader>
                 </div>
 
@@ -718,7 +718,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay actualValue={this.props.officeImages1} />
+                    <DropzoneDisplay freshSignup actualValue={this.props.officeImages1} />
                   </DropzoneS3Uploader>
                 </div>
 
@@ -744,7 +744,7 @@ class DentistSignupForm extends React.Component {
                       },
                     }}
                   >
-                    <DropzoneDisplay actualValue={this.props.officeImages2} />
+                    <DropzoneDisplay freshSignup actualValue={this.props.officeImages2} />
                   </DropzoneS3Uploader>
                 </div>
               </Row>
