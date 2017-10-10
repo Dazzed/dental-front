@@ -1,11 +1,48 @@
 import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import Col from 'react-bootstrap/lib/Col';
-import { US_STATES } from 'common/constants';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
+import FaQuestion from 'react-icons/lib/fa/question';
 
+import { US_STATES } from 'common/constants';
 import ReviewScore from 'components/ReviewScore';
+import PriceScore from 'components/PriceScore';
 
 import styles from './styles.css';
+
+const renderPopover = () => {
+  return (
+    <Popover
+      id="affordability-score-popover"
+      className="popover--large"
+      placement="bottom"
+    >
+    <p>
+      The affordability index rates each dentist treatment fees against other dentist in their zip code,
+      a lower score shows more affordable pricing while a higher score shows less affordable pricing
+    </p>
+    </Popover>
+  );
+};
+
+const renderAffordabilityScore = score => {
+  return (
+    <span>
+      <PriceScore affordabilityScore={score} />
+      <OverlayTrigger
+        overlay={renderPopover()}
+        placement="bottom"
+        rootClose
+        trigger={['click', 'focus', 'hover']}
+      >
+        <span className={styles['popover-trigger']}>
+          <span> (<FaQuestion />) </span>
+        </span>
+      </OverlayTrigger>
+    </span>
+  );
+};
 
 function DentistCard(dentist) {
   const rating = 10;
@@ -16,7 +53,7 @@ function DentistCard(dentist) {
     user: { avatar, dentistSpecialty: { name: type } },
     city,
     state,
-    affordabilityScore: affordability,
+    affordabilityScore,
     planStartingCost,
     active,
     updateActiveId,
@@ -40,8 +77,7 @@ function DentistCard(dentist) {
         <div styleName="type">{type}</div>
 
         <div styleName="location">{city}, {US_STATES[state]}</div>
-        <div styleName="affordability">Affordability {affordability}/5</div>
-
+        {renderAffordabilityScore(affordabilityScore)}
         <div styleName="plan-cost">Plans starting at: <span styleName="price">${planStartingCost}</span></div>
       </div>
     </li>
