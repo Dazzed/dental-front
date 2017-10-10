@@ -231,3 +231,21 @@ Map
     }
   }
 }
+
+.popover-trigger {
+  color: $color-primary-transparent;
+
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $color-primary-highlight;
+    text-decoration: none;
+  }
+}
+
+.ml-10 {
+  margin-left: 10%;
+}

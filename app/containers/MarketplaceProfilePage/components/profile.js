@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import CSSModules from "react-css-modules";
 import moment from 'moment';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Popover from 'react-bootstrap/lib/Popover';
+import FaQuestion from 'react-icons/lib/fa/question';
+
 
 import Avatar from "components/Avatar";
 import GoogleMaps from "components/GoogleMaps";
@@ -8,6 +12,39 @@ import ReviewScore from "components/ReviewScore";
 import PriceScore from "components/PriceScore";
 
 import styles from "./styles.css";
+
+const renderPopover = () => {
+  return (
+    <Popover
+      id="affordability-score-popover"
+      className="popover--large"
+      placement="bottom"
+    >
+    <p>
+      The affordability index rates each dentist treatment fees against other dentist in their zip code,
+      a lower score shows more affordable pricing while a higher score shows less affordable pricing
+    </p>
+    </Popover>
+  );
+};
+
+const renderAffordabilityScore = score => {
+  return (
+    <span className={styles['ml-10']}>
+      <PriceScore affordabilityScore={score} />
+      <OverlayTrigger
+        overlay={renderPopover()}
+        placement="bottom"
+        rootClose
+        trigger={['click', 'focus', 'hover']}
+      >
+        <span className={styles['popover-trigger']}>
+          <span> (<FaQuestion />) </span>
+        </span>
+      </OverlayTrigger>
+    </span>
+  );
+};
 
 function calculateReviewScore (dentist) {
   if (dentist.dentistReviews.length) {
@@ -28,7 +65,7 @@ export default class Profile extends Component {
     const {
       dentist,
       dentistInfo,
-      workingHours
+      workingHours,
     } = this.props;
 
     const { services } = dentistInfo;
@@ -52,7 +89,7 @@ export default class Profile extends Component {
       <div styleName="content">
         <div className="row">
           <div
-            className="col-md-offset-3 col-md-8"
+            className="col-md-offset-3 col-md-9"
             styleName="profile-content-wrapper"
           >
             <div styleName="profile-content__avatar">
@@ -66,6 +103,9 @@ export default class Profile extends Component {
               <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
 
               <ReviewScore score={calculateReviewScore(dentist)} />
+              <br />
+              <br />
+              {renderAffordabilityScore(dentistInfo.affordabilityScore)}
             </div>
           </div>
         </div>
