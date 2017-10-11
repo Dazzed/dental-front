@@ -320,7 +320,6 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           {
             ...prevStatePatient,
-            cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
             reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
           },
           ...state.patients.slice(patientIdx + 1),

@@ -118,6 +118,8 @@ export default class FamilyMemberListEdit extends Component {
       statusStyle += ' status status--inactive';
     }
 
+    const daysElapsed = moment().diff(moment(membership.createdAt), 'days');
+
     return (
       <div key={id} className="row" styleName="member">
         <div className="col-sm-2  status--active">
@@ -178,6 +180,7 @@ export default class FamilyMemberListEdit extends Component {
               {this.props.onRemoveMember
                 && (membership.type === 'month' || membership.type === 'custom')
                 && (status === "active")
+                && (daysElapsed >= 90)
                 && (
                   <input
                     type="button"

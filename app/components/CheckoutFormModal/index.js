@@ -417,7 +417,7 @@ export default class CheckoutFormModal extends React.Component {
                       component={this.getCheckbox}
                       validate={[feeWaiverValidator]}
                     >
-                      I understand that a $20 cancellation fee will be charged if I cancel a recurring monthly membership in the first 3 months, and that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
+                      I understand that a $99 re-enrollment fee will be charged anytime a canceled member is re-enrolled.
                     </Field>
                   </div>
 

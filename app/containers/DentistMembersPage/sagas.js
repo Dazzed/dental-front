@@ -377,14 +377,10 @@ Toggle Waive Patient Fees
 */
 function* toggleWaivePatientFeesWatcher () {
   while (true) {
-    const { patient, payload, toggleType } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
+    const { patient, payload } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
     try {
       let requestURL;
-      if (toggleType === 'cancel') {
-        requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-cancellation-waiver`;
-      } else {
         requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-reenrollment-waiver`;
-      }
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),
