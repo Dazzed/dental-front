@@ -1,8 +1,8 @@
 import { createReducer } from 'redux-act';
 import {
-  dentistProfileRequest,
   dentistProfileSuccess,
-  dentistProfileError
+  dentistProfileError,
+  resetDentist
 } from './actions';
 
 const initialState = {
@@ -25,7 +25,12 @@ const dentistProfileReducer = {
       isLoading: false,
       errorLoading: true
     };
-  }
+  },
+  [resetDentist]: state => {
+    return {
+      ...initialState
+    };
+  },
 };
 
 export default createReducer(dentistProfileReducer, initialState);

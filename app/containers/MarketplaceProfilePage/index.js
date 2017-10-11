@@ -12,7 +12,7 @@ import { changePageTitle } from "containers/App/actions";
 // local
 import styles from "./styles.css";
 
-import { dentistProfileRequest } from "./actions";
+import { dentistProfileRequest, resetDentist } from "./actions";
 
 import Profile from './components/profile';
 import Plans from './components/plans';
@@ -32,7 +32,8 @@ function mapDispatchToProps (dispatch) {
   return {
     // app
     changePageTitle: title => dispatch(changePageTitle(title)),
-    dentistProfileRequest: officeId => dispatch(dentistProfileRequest(officeId))
+    dentistProfileRequest: officeId => dispatch(dentistProfileRequest(officeId)),
+    resetDentist: () => dispatch(resetDentist())
   };
 }
 
@@ -46,7 +47,8 @@ class MarketplaceProfilePage extends React.Component {
     params: PropTypes.object.isRequired,
     dentistProfileRequest: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    errorLoading: PropTypes.bool.isRequired
+    errorLoading: PropTypes.bool.isRequired,
+    resetDentist: PropTypes.func.isRequired
   };
 
   componentWillMount () {
@@ -61,6 +63,44 @@ class MarketplaceProfilePage extends React.Component {
 
   onTabChange = key => {
     this.setState({ activeTab: key });
+  }
+
+  renderTabs = () => {
+    const { activeTab } = this.state;
+    const {
+      dentist,
+    } = this.props;
+    const { dentistInfo } = dentist;
+    const { workingHours } = dentistInfo;
+    if (activeTab === 'profile') {
+      return (
+        <Profile
+          dentist={dentist}
+          dentistInfo={dentistInfo}
+          workingHours={workingHours}
+          history={this.props.history}
+          id={dentist.id}
+        />
+      );
+    } else if (activeTab === 'plans') {
+      return (
+        <Plans
+          dentist={dentist}
+          history={this.props.history}
+          id={dentist.id}
+        />
+      );
+    } else {
+      return (
+        <Reviews
+          reviews={dentist.dentistReviews}
+        />
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.resetDentist();
   }
 
   render () {
@@ -104,32 +144,7 @@ class MarketplaceProfilePage extends React.Component {
                 onTabChange={this.onTabChange}
               />
 
-              {
-                activeTab === 'profile' &&
-                  <Profile
-                    dentist={dentist}
-                    dentistInfo={dentistInfo}
-                    workingHours={workingHours}
-                    history={this.props.history}
-                    id={dentist.id}
-                  />
-              }
-
-              {
-                activeTab === 'plans' &&
-                  <Plans
-                    dentist={dentist}
-                    history={this.props.history}
-                    id={dentist.id}
-                  />
-              }
-
-              {
-                activeTab === 'reviews' &&
-                  <Reviews
-                    reviews={dentist.dentistReviews}
-                  />
-              }
+              {this.renderTabs()}
               
             </div>
           </div>
