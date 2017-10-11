@@ -4,7 +4,9 @@ import moment from 'moment';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import FaQuestion from 'react-icons/lib/fa/question';
-
+import FaChevronLeft from 'react-icons/lib/fa/chevron-left';
+import FaChevronRight from 'react-icons/lib/fa/chevron-right';
+import Button from 'react-bootstrap/lib/Button';
 
 import Avatar from "components/Avatar";
 import GoogleMaps from "components/GoogleMaps";
@@ -30,7 +32,7 @@ const renderPopover = () => {
 
 const renderAffordabilityScore = score => {
   return (
-    <span className={styles['ml-10']}>
+    <span className={styles['margin-0']}>
       <PriceScore affordabilityScore={score} />
       <OverlayTrigger
         overlay={renderPopover()}
@@ -60,8 +62,63 @@ function calculateReviewScore (dentist) {
 @CSSModules(styles)
 export default class Profile extends Component {
 
-  render () {
+  componentWillMount () {
+    const { officeImages } = this.props.dentistInfo;
+    if (officeImages.length) {
+      this.state = {
+        officeImagesPresent: true,
+        officeImages,
+        activeIndex: 0
+      };
+    } else {
+      this.state = {
+        officeImagesPresent: false
+      };
+    }
+  }
 
+  togglePrevImage = () => {
+    const { activeIndex, officeImages } = this.state;
+    if (activeIndex === 0) {
+      return this.setState({ activeIndex: officeImages.length - 1 });
+    }
+    return this.setState({ activeIndex: activeIndex - 1 });
+  }
+
+  toggleNextImage = () => {
+    const { activeIndex, officeImages } = this.state;
+    if (activeIndex === officeImages.length - 1) {
+      return this.setState({ activeIndex: 0 });
+    }
+    return this.setState({ activeIndex: activeIndex + 1 });
+  }
+
+  renderPhotos = () => {
+    const {
+      officeImagesPresent,
+      officeImages,
+      activeIndex
+    } = this.state;
+    if (this.props.dentistInfo.officeImages.length) {
+      return (
+        <span>
+          <span className={styles['chevron-left']} onClick={this.togglePrevImage}>
+            <FaChevronLeft />
+          </span>
+          <span>
+            <img src={officeImages[activeIndex].url} className={styles['office-image']} />
+          </span>
+          <span className={styles['chevron-right']} onClick={this.toggleNextImage}>
+            <FaChevronRight />
+          </span>
+        </span>
+      );
+    } else {
+      return '';
+    }
+  }
+
+  render () {
     const {
       dentist,
       dentistInfo,
@@ -75,6 +132,7 @@ export default class Profile extends Component {
       lat: null,
       lng: null
     }];
+
     if (dentistInfo.location) {
       if (dentistInfo.location.coordinates.length) {
         markers = [{
@@ -102,7 +160,10 @@ export default class Profile extends Component {
             <div styleName="profile-content__name-and-rating">
               <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
 
-              <ReviewScore score={calculateReviewScore(dentist)} />
+              <ReviewScore
+                score={calculateReviewScore(dentist)}
+                noPadding
+              />
               <br />
               <br />
               {renderAffordabilityScore(dentistInfo.affordabilityScore)}
@@ -182,11 +243,11 @@ export default class Profile extends Component {
             ------------------------------------------------------------
             */}
             {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
-            {/*
+            
             <div styleName="photos">
-              TODO: Photos goes here...
+              {this.renderPhotos()}
             </div>
-            */}
+           
 
             {/*
             Dentist Map
@@ -267,6 +328,18 @@ export default class Profile extends Component {
           {/* End Last Row */}
         </div>
 
+        <div className={`row ${styles['membership-page-signup-button-container']}`}>
+          <br />
+          <div className="col-sm-4 col-sm-push-8">
+            <Button
+              styleName="signup--button"
+              className="btn-lg"
+              bsStyle="success"
+              onClick={() => this.props.history.push(`/accounts/signup/my-dentist/${this.props.id}?frommarketplace=true`)}>
+              SIGN UP
+            </Button>
+          </div>
+        </div>
         {/* End Content */}
       </div>
     );

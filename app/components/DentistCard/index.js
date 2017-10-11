@@ -26,6 +26,10 @@ const renderPopover = () => {
   );
 };
 
+const renderReviewScore = score => {
+  return <ReviewScore score={score} />;
+};
+
 const renderAffordabilityScore = score => {
   return (
     <span>
@@ -45,7 +49,8 @@ const renderAffordabilityScore = score => {
 };
 
 function DentistCard(dentist) {
-  const rating = 10;
+  let rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
+  rating /= dentist.user.dentistReviews.length;
   
   const {
     id,
@@ -69,7 +74,7 @@ function DentistCard(dentist) {
       <div styleName="left">
         <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
         <div styleName="rating">
-          <ReviewScore score={rating} />
+          {renderReviewScore(rating)}
         </div>
       </div>
       <div styleName="right">
