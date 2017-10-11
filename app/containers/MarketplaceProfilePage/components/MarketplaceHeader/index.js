@@ -43,11 +43,13 @@ function MarketplaceHeader (props) {
       <div styleName="page-header">
         <div styleName="page-header__overlay">
           <div className="container">
-            <span>
-              <h2 styleName="large-title">{title}</h2>
+            <span styleName="large-title">
+              {title}
             </span>
-            <span styleName="signup--button">
+            <span styleName="signup--button-container">
               <Button
+                styleName="signup--button"
+                className="btn-lg"
                 bsStyle="success"
                 onClick={() => history.push(`/accounts/signup/my-dentist/${id}?frommarketplace=true`)}>
                 SIGN UP

@@ -59,7 +59,7 @@ export default class SearchPage extends Component {
     this.state = {
       searchQuery: '',
       specialties: [],
-      distance: '25',
+      distance: null,
       sort: '',
       coordinates: {
         lat: 34.1,

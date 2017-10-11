@@ -11,7 +11,7 @@ const defaultState = {
   searchResults: [],
   filters: {
     searchQuery: '',
-    distance: 5,
+    distance: null,
     sort: 'price',
     specialties: [],
     coordinates: {

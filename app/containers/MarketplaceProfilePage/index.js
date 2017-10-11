@@ -110,6 +110,8 @@ class MarketplaceProfilePage extends React.Component {
                     dentist={dentist}
                     dentistInfo={dentistInfo}
                     workingHours={workingHours}
+                    history={this.props.history}
+                    id={dentist.id}
                   />
               }
 
@@ -117,6 +119,8 @@ class MarketplaceProfilePage extends React.Component {
                 activeTab === 'plans' &&
                   <Plans
                     dentist={dentist}
+                    history={this.props.history}
+                    id={dentist.id}
                   />
               }
 
