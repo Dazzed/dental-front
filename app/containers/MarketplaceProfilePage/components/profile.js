@@ -8,6 +8,7 @@ import FaChevronLeft from 'react-icons/lib/fa/chevron-left';
 import FaChevronRight from 'react-icons/lib/fa/chevron-right';
 import Button from 'react-bootstrap/lib/Button';
 
+import LoadingSpinner from "components/LoadingSpinner";
 import Avatar from "components/Avatar";
 import GoogleMaps from "components/GoogleMaps";
 import ReviewScore from "components/ReviewScore";
@@ -66,19 +67,30 @@ export default class Profile extends Component {
     const { officeImages } = this.props.dentistInfo;
     if (officeImages.length) {
       this.state = {
-        officeImagesPresent: true,
-        officeImages,
-        activeIndex: 0
+        activeIndex: 0,
+        didMount: false
       };
     } else {
       this.state = {
-        officeImagesPresent: false
+        didMount: false,
+        activeIndex: 0,
       };
     }
   }
 
+  componentDidMount () {
+    this.setState({ didMount: true });
+  }
+
+  componentWillUnmount () {
+    this.setState({ didMount: false });
+  }
+
   togglePrevImage = () => {
-    const { activeIndex, officeImages } = this.state;
+    const { activeIndex } = this.state;
+    const {
+      officeImages
+    } = this.props.dentistInfo;
     if (activeIndex === 0) {
       return this.setState({ activeIndex: officeImages.length - 1 });
     }
@@ -86,32 +98,40 @@ export default class Profile extends Component {
   }
 
   toggleNextImage = () => {
-    const { activeIndex, officeImages } = this.state;
+    const { activeIndex } = this.state;
+    const {
+      officeImages
+    } = this.props.dentistInfo;
     if (activeIndex === officeImages.length - 1) {
-      return this.setState({ activeIndex: 0 });
+      this.setState({ activeIndex: 0 });
+    } else {
+      this.setState({ activeIndex: activeIndex + 1 });
     }
-    return this.setState({ activeIndex: activeIndex + 1 });
   }
 
   renderPhotos = () => {
     const {
-      officeImagesPresent,
-      officeImages,
       activeIndex
     } = this.state;
-    if (this.props.dentistInfo.officeImages.length) {
+
+    const {
+      officeImages
+    } = this.props.dentistInfo;
+
+    if (officeImages.length) {
+      const moreThanOneImage = officeImages.length > 1;
       return (
-        <span>
+        <div styleName="photos">
           <span className={styles['chevron-left']} onClick={this.togglePrevImage}>
-            <FaChevronLeft />
+            {moreThanOneImage ? <FaChevronLeft /> : ''}
           </span>
           <span>
             <img src={officeImages[activeIndex].url} className={styles['office-image']} />
           </span>
           <span className={styles['chevron-right']} onClick={this.toggleNextImage}>
-            <FaChevronRight />
+            {moreThanOneImage ? <FaChevronRight /> : ''}
           </span>
-        </span>
+        </div>
       );
     } else {
       return '';
@@ -119,6 +139,18 @@ export default class Profile extends Component {
   }
 
   render () {
+    const { didMount } = this.state;
+    if (!didMount) {
+      return (
+        <div styleName="content">
+          <div className="row">
+            <div className="text-center col-sm-12">
+              <LoadingSpinner />
+            </div>
+          </div>
+        </div>
+      );
+    }
     const {
       dentist,
       dentistInfo,
@@ -244,9 +276,7 @@ export default class Profile extends Component {
             */}
             {/* Hiding mocked-up portions of the UI.  Just uncomment to enable. */}
             
-            <div styleName="photos">
               {this.renderPhotos()}
-            </div>
            
 
             {/*
