@@ -129,7 +129,7 @@ class MarketplaceProfilePage extends React.Component {
     return (
       <div styleName="container-wrapper">
         <MarketplaceHeader
-          title={`Dr. ${dentist.firstName} ${dentist.lastName}`}
+          title={`${dentistInfo.officeName}`}
           specialty={dentistSpecialty.name}
           startingPrice={dentist.planStartingCost}
           history={this.props.history}
