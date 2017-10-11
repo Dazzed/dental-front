@@ -12,8 +12,11 @@ const dentistProfileError = createAction('MARKETPLACE_DENTIST_PROFILE_ERROR', ()
   return '';
 });
 
+const resetDentist = createAction('MARKETPLACE_DENTIST_PROFILE_RESET');
+
 export {
   dentistProfileRequest,
   dentistProfileSuccess,
-  dentistProfileError
+  dentistProfileError,
+  resetDentist
 };
