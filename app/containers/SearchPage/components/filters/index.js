@@ -16,8 +16,8 @@ import {
 export default class Filters extends React.Component {
   componentWillMount () {
     this.state = {
-      selectedDistance: '25',
-      selectedSpecialty: '',
+      selectedDistance: '',
+      selectedSpecialty: 'ALL',
       selectedSortType: ''
     };
   }

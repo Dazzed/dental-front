@@ -17,6 +17,7 @@ class ReviewScore extends React.Component {
   render () {
     let {
       score,
+      noPadding
     } = this.props;
 
     const teethRatingUrls = [
@@ -60,7 +61,7 @@ class ReviewScore extends React.Component {
     });
 
     return (
-      <div styleName="review-score">
+      <div styleName="review-score" className={noPadding ? '' : styles['padding-left']}>
         {teethRatingImages}
       </div>
     );
