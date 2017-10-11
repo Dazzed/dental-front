@@ -121,9 +121,6 @@ export default class HomePage extends React.Component {
           </header>
 
           {/*<SearchForm />*/}
-          <div className="coming-soon-header">
-            <h1 style={{color: '#446C7A',fontSize: '90px'}}>Coming Soon...</h1>
-          </div>
           <div styleName="next-section-cover">
             <h3>
               Find affordable monthly service plans from the best dentists in your area!
