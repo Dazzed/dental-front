@@ -269,9 +269,9 @@ class PatientProfilePage extends React.Component {
   removeMember = (patient, member, dentistId) => {
     let message;
     if (member.clientSubscription.membership.type == 'month') {
-      message = "We're sorry you have decided to cancel your membership. If you are cancelling prior to 3 payment a $20 cancellation fee will apply. Also should you chose to re-enroll into a monthly membership a $99 re-enrollment fee will apply. Are you sure you wish to proceed?";
+      message = "We're sorry you have decided to cancel your monthly membership. There is no penalty to cancel your membership, however should you chose to re-enroll, a $99 re-enrollment fee will apply.  Are you sure you wish to cancel?";
     } else {
-      message = "Were sorry you have decided to cancel your membership, your membership will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
+      message = "Were sorry you have decided to cancel your annual membership. It will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
     }
     const dialog = {
       message: <div>{message}</div>,

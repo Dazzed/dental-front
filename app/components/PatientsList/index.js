@@ -44,7 +44,6 @@ class PatientsList extends React.Component {
 
     // passed in - event handlers
     onAddMember: React.PropTypes.func.isRequired,
-    onToggleCancelationFee: React.PropTypes.func,
     onToggleReEnrollmentFee: React.PropTypes.func,
     onUpdatePatientPayment: React.PropTypes.func,
     onUpdatePatientProfile: React.PropTypes.func,
@@ -91,16 +90,8 @@ class PatientsList extends React.Component {
     this.props.onAddMember(patient);
   }
 
-  onCancelationFeeClick = (patient) => {
-    this.props.onToggleCancelationFee(patient, {
-      cancellationFeeWaiver: !patient.cancellationFeeWaiver,
-      reEnrollmentFeeWaiver: patient.reEnrollmentFeeWaiver,
-    });
-  }
-
   onReEnrollmentFeeClick = (patient) => {
     this.props.onToggleReEnrollmentFee(patient, {
-      cancellationFeeWaiver: patient.cancellationFeeWaiver,
       reEnrollmentFeeWaiver: !patient.reEnrollmentFeeWaiver,
     });
   }
@@ -217,7 +208,6 @@ class PatientsList extends React.Component {
         paymentDueDate = moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY');
       }
 
-      const waiveCancellationFee = !patient.cancellationFeeWaiver;
       const waiveReEnrollmentFee = !patient.reEnrollmentFeeWaiver;
 
       let additionalMembershipContent = null;
@@ -375,18 +365,6 @@ class PatientsList extends React.Component {
                               value="EDIT PAYMENT INFO"
                               onClick={this.onUpdatePaymentClick.bind(this, patient)}
                             />
-                          </p>
-                        )}
-                        {this.props.onToggleCancelationFee && (
-                          <p>
-                            <label>
-                              <input
-                                type="checkbox"
-                                onChange={this.onCancelationFeeClick.bind(this, patient)}
-                                checked={waiveCancellationFee}
-                              />
-                              Waive Cancellation Fee
-                            </label>
                           </p>
                         )}
                         {this.props.onToggleReEnrollmentFee && (
