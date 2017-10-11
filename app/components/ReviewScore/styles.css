@@ -17,6 +17,9 @@ Review Score
 */
 .review-score {
   display: inline-block;
+}
+
+.padding-left {
   padding-left: 10%;
 }
 

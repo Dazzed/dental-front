@@ -71,7 +71,7 @@ function mapStateToProps(state) {
         managerId: dentistInfo.managerId,
         verified,
         affordabilityScore: affordabilityScore ? String(affordabilityScore) : undefined,
-        marketplaceOptIn,
+        marketplaceOptIn: !marketplaceOptIn,
         links: links.map(l => {
           const { dentistInfo: { address } } = dentists.find(d => d.dentistInfo.userId == l.id);
           return {

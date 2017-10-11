@@ -1,7 +1,6 @@
 // If no monthly memberships are enrolled the recurring payment date should be N/A.
 export function setRecurringDate(patient) {
   try {
-    console.log(4, patient)
     let anyMonthly = false;
     const { subscription, members } = patient;
     // If any active monthly subscription is present return the patient object.
@@ -17,8 +16,7 @@ export function setRecurringDate(patient) {
         const { type } = m.subscription.membership;
         return (type === 'month' || type === 'custom') && m.subscription.status === 'active';
       });
-    console.log(12, subscription, members);
-    console.log(13, anyMonthly, anyMonthlyMembers);
+
     if (anyMonthly || anyMonthlyMembers) {
       return patient;
     }

@@ -85,9 +85,11 @@ Marketplace Profile
   }
 
   .profile-content__name-and-rating {
-    float: left;
+    /* float: left;
     position: relative;
-    top: calc(50% - 41px); /* 41 = 82px/2 = height/2 */
+    top: calc(50% - 41px);  */
+    /* 41 = 82px/2 = height/2 */
+    padding-top: 5%;
 
     *:first-child {
       margin-top: 0;
@@ -139,7 +141,7 @@ Photos
   margin-bottom: 3rem;
   border-radius: 3rem;
   padding: 2rem;
-
+  text-align: center;
   background-color: $color-secondary-lowlight;
 }
 
@@ -230,4 +232,89 @@ Map
       margin-right: 0;
     }
   }
+}
+
+.popover-trigger {
+  color: $color-primary-transparent;
+
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $color-primary-highlight;
+    text-decoration: none;
+  }
+}
+
+.margin-0 {
+  margin: 0;
+}
+
+.office-image {
+  height: 100%;
+}
+
+.chevron-left {
+  float: left;
+  padding-top: 25%;
+  font-size: 2rem;
+  color: rgba(1,2,3,0.5);
+  transition: color 0.2s ease-out;
+}
+
+.chevron-right {
+  float: right;
+  padding-top: 25%;
+  font-size: 2rem;
+  color: rgba(1,2,3,0.5);
+  transition: color 0.2s ease-out;
+}
+
+.chevron-left:active,
+.chevron-left:focus,
+.chevron-left:hover {
+  color: #00A1DF;
+  cursor: pointer;
+  transition: color 0.2s ease-in;
+}
+
+.chevron-right:active,
+.chevron-right:focus,
+.chevron-right:hover {
+  color: #00A1DF;
+  cursor: pointer;
+  transition: color 0.2s ease-in;
+}
+
+.signup--button {
+  height: 100%;
+  padding: 2%;
+  font-size: 1.75rem;
+  margin-left: 5%;
+  width: 60%;
+}
+
+.membership-page-signup-button-container {
+  width: 90%;
+  margin-left: 5%;
+  border-top: 1px solid rgba(37,40,43,.25);
+  border-bottom: 1px solid rgba(37,40,43,.25);
+  padding-bottom: 2%;
+}
+
+.membership-page-disclaimer-container {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.custom-membership-header {
+  color: #00A1DF;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.custom-membership-disclaimer {
+  font-size: 12px;
 }

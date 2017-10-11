@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSSModules from "react-css-modules";
 import FaCheck from 'react-icons/lib/fa/check';
+import Button from 'react-bootstrap/lib/Button';
 
 import styles from "./styles.css";
 
@@ -129,8 +130,31 @@ export default class Plans extends Component {
                 </p>
             </div>
           </div>
-
-          {/* End Membership Info */}
+        </div>
+        <hr />
+        <div className={`row ${styles['membership-page-signup-button-container']}`}>
+          <div className="col-sm-4 col-sm-push-8">
+            <br />
+            <Button
+              styleName="signup--button"
+              className="btn-lg"
+              bsStyle="success"
+              onClick={() => this.props.history.push(`/accounts/signup/my-dentist/${this.props.id}?frommarketplace=true`)}>
+              SIGN UP
+            </Button>
+          </div>
+        </div>
+        <br />
+        <div className={`row ${styles['membership-page-disclaimer-container']}`}>
+          <p styleName="custom-membership-header">
+            Custom & Non-Recurring Annual Memberships also Available!
+          </p>
+          <p styleName="custom-membership-disclaimer">
+            *The Dental Membership Plan is NOT dental Insurance, It is a loyalty membership plan being offered by your dentist.
+            Cancellation: Cancel at any time, however a cancellation fee of $20 will be assessed if cancellation occurs prior to 3 months
+            payments. Re-enrollment: If you cancel your membership, should you choose to re-enroll, a 99$ re-enrollment fee will be
+            charged. Dental Codes: D1120, D0150, D0120, D0272, D0274, D0330, D0140, D0220, D1206
+          </p>
         </div>
       </div>
     );
