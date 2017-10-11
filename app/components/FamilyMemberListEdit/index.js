@@ -207,7 +207,6 @@ export default class FamilyMemberListEdit extends Component {
                 status === "active"
                   && membership.type === 'year'
                   && status === 'active'
-                  && moment(member.clientSubscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
                   && (
                     <div>
                       <input
