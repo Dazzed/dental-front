@@ -11,6 +11,9 @@ export default class Plans extends Component {
   render() {
 
     let { memberships } = this.props.dentist;
+    if (memberships.length === 0) {
+      return <h2>This dentist Doesn't have any membership plans.</h2>;
+    }
     memberships = memberships.filter(m => m.active);
     const adultMembership = (() => {
       let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
