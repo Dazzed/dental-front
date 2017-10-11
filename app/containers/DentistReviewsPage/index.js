@@ -288,10 +288,6 @@ class DentistNewReviewsPage extends React.Component {
     alert('TODO: renewMember');
   }
 
-  toggleCancelationFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees);
-  }
-
   toggleReEnrollmentFee = (patient, updatedFees) => {
     this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }

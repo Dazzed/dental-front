@@ -169,7 +169,7 @@ function mapDispatchToProps(dispatch) {
     submitPatientPaymentForm: (patient, values) => dispatch(submitPatientPaymentForm(patient, values)),
 
     // toggle waive patient fees
-    setTogglingWaivePatientFees: (patient, updatedFees, toggleType) => dispatch(setTogglingWaivePatientFees(patient, updatedFees, toggleType)),
+    setTogglingWaivePatientFees: (patient, updatedFees) => dispatch(setTogglingWaivePatientFees(patient, updatedFees)),
 
     // download report
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
@@ -339,9 +339,9 @@ class DentistNewMembersPage extends React.Component {
   removeMember = (patient, member, dentistId) => {
     let message;
     if (member.subscription.membership.type == 'month') {
-      message = "We're sorry you have decided to cancel your membership. If you are cancelling prior to 3 payment a $20 cancellation fee will apply. Also should you chose to re-enroll into a monthly membership a $99 re-enrollment fee will apply. Are you sure you wish to proceed?";
+      message = "We're sorry you have decided to cancel your monthly membership. There is no penalty to cancel your membership, however should you chose to re-enroll, a $99 re-enrollment fee will apply.  Are you sure you wish to cancel?";
     } else {
-      message = "Were sorry you have decided to cancel your membership, your membership will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
+      message = "Were sorry you have decided to cancel your annual membership. It will be active until your expiration date listed on your dashboard. Are you sure you wish to proceed?";
     }
     const dialog = {
       message: <div>{message}</div>,
@@ -361,12 +361,8 @@ class DentistNewMembersPage extends React.Component {
     alert('TODO: renewMember');
   }
 
-  toggleCancelationFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'cancel');
-  }
-
   toggleReEnrollmentFee = (patient, updatedFees) => {
-    this.props.setTogglingWaivePatientFees(patient, updatedFees, 'reenroll');
+    this.props.setTogglingWaivePatientFees(patient, updatedFees);
   }
 
   confirmUpdateMember = (user, member, submit) => {
@@ -628,7 +624,6 @@ class DentistNewMembersPage extends React.Component {
             onUpdateMember={this.updateMember}
             onRemoveMember={this.removeMember}
             onRenewMember={this.renewMember}
-            onToggleCancelationFee={this.toggleCancelationFee}
             onToggleReEnrollmentFee={this.toggleReEnrollmentFee}
             onUpdatePatientProfile={this.updatePatientProfile}
             onUpdatePatientPayment={this.updatePatientPaymentInfo}
