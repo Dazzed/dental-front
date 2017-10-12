@@ -62,9 +62,9 @@ function DentistCard(dentist) {
     planStartingCost,
     active,
     updateActiveId,
-    handleClick
+    handleClick,
+    officeName
   } = dentist;
-
   return (
     <li
       styleName={`dentist-list-item ${active ? 'active' : ''}`}
@@ -78,12 +78,14 @@ function DentistCard(dentist) {
         </div>
       </div>
       <div styleName="right">
-        <div styleName="name">{firstName} {lastName}</div>
+        <div styleName="name">{officeName}</div>
         <div styleName="type">{type}</div>
 
         <div styleName="location">{city}, {US_STATES[state]}</div>
         {renderAffordabilityScore(affordabilityScore)}
-        <div styleName="plan-cost">Plans starting at: <span styleName="price">${planStartingCost}</span></div>
+        <div styleName="plan-cost">
+          Plans starting at: <span styleName="price">${planStartingCost}</span>
+        </div>
       </div>
     </li>
   );

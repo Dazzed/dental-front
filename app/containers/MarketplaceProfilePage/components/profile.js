@@ -138,6 +138,14 @@ export default class Profile extends Component {
     }
   }
 
+  openDentistURL = (url) => {
+    if (url.includes('http') || url.includes('https')) {
+      window.open(url);
+    } else {
+      window.open(`http://${url}`);
+    }
+  }
+
   render () {
     const { didMount } = this.state;
     if (!didMount) {
@@ -232,8 +240,10 @@ export default class Profile extends Component {
             <div styleName="detail">
               <h3 styleName="detail__title">Website</h3>
 
-              <p styleName="detail__content">
-                <a target='blank' href={dentistInfo.url}>{dentistInfo.url}</a>
+              <p styleName="detail__content" className={styles['cursor-pointer']}>
+                <a onClick={() => this.openDentistURL(dentistInfo.url)}>
+                  {dentistInfo.url}
+                </a>
               </p>
             </div>
 
@@ -265,6 +275,17 @@ export default class Profile extends Component {
                     </span>
                   ))
                 }
+              </p>
+            </div>
+
+            <div styleName="detail">
+              <p styleName="detail__content">
+                <strong>
+                  Kids Starting At: {
+                    dentistInfo.childStartingAge ?
+                      `${dentistInfo.childStartingAge} years` : 'Any age'
+                  }
+                </strong>
               </p>
             </div>
           </div>
@@ -357,6 +378,7 @@ export default class Profile extends Component {
 
           {/* End Last Row */}
         </div>
+               
 
         <div className={`row ${styles['membership-page-signup-button-container']}`}>
           <br />

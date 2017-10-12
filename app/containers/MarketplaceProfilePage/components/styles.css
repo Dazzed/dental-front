@@ -319,3 +319,7 @@ Map
 .custom-membership-disclaimer {
   font-size: 12px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
