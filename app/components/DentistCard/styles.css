@@ -48,7 +48,7 @@ Dentist Card Component Styles
 
     .name {
       color: #01A1DD;
-      font-size: 1.75rem;
+      font-size: 1.50rem;
     }
 
     .type {
@@ -75,7 +75,7 @@ Dentist Card Component Styles
 
       .price {
         font-weight: 600;
-        font-size: 1.6em;
+        font-size: 1.78em;
         margin-left: 4px;
       }
     }
