@@ -37,8 +37,8 @@ export default class Filters extends React.Component {
   };
 
   selectDistance = key => {
-    const cb = this.props.onSelectDistance(key);
-    this.setState({ selectedDistance: `${key} MILES` }, cb);
+    const cb = this.props.onSelectDistance(key === 'any' ? null : key);
+    this.setState({ selectedDistance: key === 'any' ? 'ANY' : `${key} MILES` }, cb);
   }
 
   selectSpecialty = key => {
@@ -86,6 +86,7 @@ export default class Filters extends React.Component {
               noCaret
               onSelect={this.selectDistance}
             >
+              <MenuItem eventKey="any">ANY</MenuItem>
               <MenuItem eventKey="5">5 MILES</MenuItem>
               <MenuItem eventKey="10">10 MILES</MenuItem>
               <MenuItem eventKey="25">25 MILES</MenuItem>
