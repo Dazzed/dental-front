@@ -16,11 +16,11 @@ export default class MarketingMaterialList extends Component {
     };
   }
 
-  renderMaterials = (materials) => {
-    return materials.map(material => (
+  renderMaterials = (marketingMaterial) => {
+    return marketingMaterial.map(material => (
       <MarketingMaterial
         key={material.id}
-        material={material}
+        marketingMaterial={material}
       />
     ));
   }
