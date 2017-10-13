@@ -176,6 +176,7 @@ function patientProfilePageReducer(state = initialState, action) {
       memberIdx = state.familyMembers.findIndex(m => m.id === action.memberId);
       alteredFamilyMember = state.familyMembers[memberIdx];
       alteredFamilyMember.clientSubscription.status = 'cancellation_requested';
+      alteredFamilyMember.clientSubscription.cancelsAt = action.updatedSubscription.cancelsAt;
       
       return {
         ...state,
