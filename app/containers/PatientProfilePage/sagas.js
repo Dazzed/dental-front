@@ -243,13 +243,12 @@ function* removeMemberWatcher() {
         method: 'DELETE',
       };
 
-      yield call(request, requestURL, params);
+      const updatedSubscription = yield call(request, requestURL, params);
 
-      const message = `'${payload.firstName} ${payload.lastName}'
-        has been deleted.`;
+      const message = `${payload.firstName} ${payload.lastName}'s subscription has been canceled successfully.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setRemovedMember(patient, payload.id));
+      yield put(setRemovedMember(patient, payload.id, updatedSubscription));
     } catch (err) {
       console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
