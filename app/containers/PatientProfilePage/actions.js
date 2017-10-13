@@ -185,11 +185,12 @@ export function setRemovingMember(patient, payload, dentistId) {
   };
 }
 
-export function setRemovedMember(patient, memberId) {
+export function setRemovedMember(patient, memberId, updatedSubscription) {
   return {
     type: REMOVE_MEMBER_SUCCESS,
     patient,
     memberId,
+    updatedSubscription,
   }
 }
 

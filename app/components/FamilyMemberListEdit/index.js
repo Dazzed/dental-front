@@ -233,7 +233,7 @@ export default class FamilyMemberListEdit extends Component {
                       type="button"
                       styleName="button--small"
                       style={{fontSize: '10px'}}
-                      value={`Expires less than a month`}
+                      value={`Expires ${moment(member.clientSubscription.cancelsAt).format('MMMM D, YYYY')}`}
                       disabled
                     />
                   )
