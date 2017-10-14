@@ -7,6 +7,10 @@ Patient Profile Page Actions
 Imports
 ------------------------------------------------------------
 */
+
+// app
+import { setUserData } from 'containers/App/actions';
+
 // local
 import {
   // fetch dentist
@@ -186,11 +190,34 @@ export function setRemovingMember(patient, payload, dentistId) {
 }
 
 export function setRemovedMember(patient, memberId, updatedSubscription) {
-  return {
-    type: REMOVE_MEMBER_SUCCESS,
-    patient,
-    memberId,
-    updatedSubscription,
+  // canceling the primary account holder's membership
+  if (patient.id === memberId) {
+    const updatedPatient = {
+      ...patient,
+
+      clientSubscription: {
+        ...patient.clientSubscription,
+
+        cancelsAt: updatedSubscription.cancelsAt,
+        status: 'cancellation_requested',
+      },
+
+      // for some reason the clientReviews field is null which breaks the
+      // edit review modal on the render after the updated patient is set
+      clientReviews: patient.clientReviews || [],
+    };
+
+    return setUserData(updatedPatient);
+  }
+
+  else {
+    // canceling a family member's membership
+    return {
+      type: REMOVE_MEMBER_SUCCESS,
+      patient,
+      memberId,
+      updatedSubscription,
+    }
   }
 }
 
