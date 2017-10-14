@@ -1,0 +1,16 @@
+.material-list-container {
+  background: #F5F5F6;
+  padding-left: 5%;
+}
+
+.add-category-button {
+  margin: 2% 0% 2% 35%;
+  border: 1px solid #00A1DF;
+  border-radius: 0.25rem;
+  padding: 0.25rem 1.5rem;
+  color: #FFF;
+  background-color: #00A1DF;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: normal;
+}
