@@ -3,6 +3,9 @@ import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import {
+  changePageTitle,
+} from 'containers/App/actions';
 import { selectCurrentUser } from 'containers/App/selectors';
 import LoadingSpinner from 'components/LoadingSpinner';
 
@@ -51,6 +54,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators(
     {
+      changePageTitle,
       fetchMaterials,
       toggleAddCategoryModal,
       addCategory,
@@ -96,12 +100,15 @@ export default class MarketingMaterials extends Component {
 
     deletingMaterial: PropTypes.shape({}).isRequired,
     deletingCategory: PropTypes.shape({}).isRequired,
+
+    changePageTitle: React.PropTypes.func.isRequired,
   }
 
   componentWillMount () {
     if (this.props.user) {
       this.props.fetchMaterials();
     }
+    this.props.changePageTitle('Marketing Materials');
   }
 
   render () {
