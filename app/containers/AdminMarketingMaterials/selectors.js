@@ -13,9 +13,21 @@ const booleanFlagSelector = createSelector(
   (substate) => booleanName => get(substate, booleanName)
 );
 
+const deletingMaterialSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'deletingMaterial')
+);
+
+const deletingCategorySelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'deletingCategory')
+);
+
 export default domainSelector;
 
 export {
   marketingMaterialsSelector,
   booleanFlagSelector,
+  deletingMaterialSelector,
+  deletingCategorySelector
 };

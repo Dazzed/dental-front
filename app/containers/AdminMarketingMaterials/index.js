@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,12 +8,24 @@ import LoadingSpinner from 'components/LoadingSpinner';
 
 import styles from './styles.css';
 import {
-  fetchMaterials
+  fetchMaterials,
+  toggleAddCategoryModal,
+  addCategory,
+  toggleAddMaterialModal,
+  addMaterial,
+  setDeletingMaterial,
+  deleteMaterial,
+  setDeletingCategory,
+  deleteCategory,
 } from './actions';
 import {
   marketingMaterialsSelector,
   booleanFlagSelector,
+  deletingMaterialSelector,
+  deletingCategorySelector
 } from './selectors';
+
+import Modals from './components/modals';
 
 import MarketingMaterialList from './components/MarketingMaterialList';
 
@@ -21,6 +33,7 @@ function mapStateToProps (state) {
   return {
     user: selectCurrentUser(state),
     marketingMaterials: marketingMaterialsSelector(state),
+
     isFetchingData: booleanFlagSelector(state)('isFetchingData'),
     isAddingCategory: booleanFlagSelector(state)('isAddingCategory'),
     isAddingMaterial: booleanFlagSelector(state)('isAddingMaterial'),
@@ -28,13 +41,25 @@ function mapStateToProps (state) {
     isDeletingMaterial: booleanFlagSelector(state)('isDeletingMaterial'),
     addCategoryOpen: booleanFlagSelector(state)('addCategoryOpen'),
     addMaterialOpen: booleanFlagSelector(state)('addMaterialOpen'),
+    editingCategoryId: booleanFlagSelector(state)('editingCategoryId'),
+
+    deletingMaterial: deletingMaterialSelector(state),
+    deletingCategory: deletingCategorySelector(state),
   };
 }
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators(
     {
-      fetchMaterials
+      fetchMaterials,
+      toggleAddCategoryModal,
+      addCategory,
+      toggleAddMaterialModal,
+      addMaterial,
+      setDeletingMaterial,
+      deleteMaterial,
+      setDeletingCategory,
+      deleteCategory,
     }, dispatch);
 }
 
@@ -43,24 +68,34 @@ function mapDispatchToProps (dispatch) {
 export default class MarketingMaterials extends Component {
 
   static propTypes = {
-    user: React.PropTypes.oneOfType([
-      React.PropTypes.bool,
-      React.PropTypes.object,
+    user: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
     ]).isRequired,
     marketingMaterials: PropTypes.array.isRequired,
-
+  
     // ajax bools
     isFetchingData: PropTypes.bool.isRequired,
     isAddingCategory: PropTypes.bool.isRequired,
     isAddingMaterial: PropTypes.bool.isRequired,
     isDeletingCategory: PropTypes.bool.isRequired,
     isDeletingMaterial: PropTypes.bool.isRequired,
-
+  
     // modal bools
     addCategoryOpen: PropTypes.bool.isRequired,
     addMaterialOpen: PropTypes.bool.isRequired,
+  
+    fetchMaterials: PropTypes.func.isRequired,
+    toggleAddCategoryModal: PropTypes.func.isRequired,
+    addCategory: PropTypes.func.isRequired,
+    toggleAddMaterialModal: PropTypes.func.isRequired,
+    setDeletingMaterial: PropTypes.func.isRequired,
+    deleteMaterial: PropTypes.func.isRequired,
+    setDeletingCategory: PropTypes.func.isRequired,
+    deleteCategory: PropTypes.func.isRequired,
 
-    fetchMaterials: PropTypes.func.isRequired
+    deletingMaterial: PropTypes.shape({}).isRequired,
+    deletingCategory: PropTypes.shape({}).isRequired,
   }
 
   componentWillMount () {
@@ -72,7 +107,7 @@ export default class MarketingMaterials extends Component {
   render () {
     const {
       marketingMaterials,
-      isFetchingData
+      isFetchingData,
     } = this.props;
 
     if (isFetchingData) {
@@ -84,9 +119,21 @@ export default class MarketingMaterials extends Component {
     }
 
     return (
-      <MarketingMaterialList
-        marketingMaterials={marketingMaterials}
-      />
+      <div>
+        <h1 className={styles['marketing-materials-header']}>
+          Marketing Materials
+        </h1>
+        <hr />
+        <MarketingMaterialList
+          marketingMaterials={marketingMaterials}
+          toggleAddCategoryModal={this.props.toggleAddCategoryModal}
+          addCategory={this.props.addCategory}
+          toggleAddMaterialModal={this.props.toggleAddMaterialModal}
+          setDeletingMaterial={this.props.setDeletingMaterial}
+          setDeletingCategory={this.props.setDeletingCategory}
+        />
+        <Modals {...this.props} />
+      </div>
     );
   }
 }

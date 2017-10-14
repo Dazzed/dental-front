@@ -8,6 +8,10 @@ import MarketingMaterial from '../MarketingMaterial';
 export default class MarketingMaterialList extends Component {
   static propTypes = {
     marketingMaterials: PropTypes.array.isRequired,
+    toggleAddCategoryModal: PropTypes.func.isRequired,
+    toggleAddMaterialModal: PropTypes.func.isRequired,
+    setDeletingMaterial: PropTypes.func.isRequired,
+    setDeletingCategory: PropTypes.func.isRequired,
   }
 
   componentWillMount () {
@@ -17,19 +21,39 @@ export default class MarketingMaterialList extends Component {
   }
 
   renderMaterials = (marketingMaterial) => {
+    const {
+      toggleAddMaterialModal,
+      setDeletingMaterial,
+      setDeletingCategory
+    } = this.props;
     return marketingMaterial.map(material => (
       <MarketingMaterial
         key={material.id}
         marketingMaterial={material}
+        toggleAddMaterialModal={toggleAddMaterialModal}
+        setDeletingMaterial={setDeletingMaterial}
+        setDeletingCategory={setDeletingCategory}
       />
     ));
   }
 
+  renderAddCategoryButton = () => (
+    <div>
+      <input
+        type="button"
+        value="ADD CATEGORY"
+        styleName="add-category-button"
+        onClick={() => this.props.toggleAddCategoryModal(true)}
+      />
+    </div>
+  )
+
   render () {
     const { marketingMaterials } = this.props;
     return (
-      <div>
+      <div className={styles['material-list-container']}>
         {this.renderMaterials(marketingMaterials)}
+        {this.renderAddCategoryButton()}
       </div>
     );
   }
