@@ -21,7 +21,7 @@ import ReviewValidator from './validator';
 const mapStateToProps = (state) => {
   let rating = null, message = '', title = '', id = null;
   const clientReviews = state.global.currentUser.clientReviews;
-  if (clientReviews.length > 0) {
+  if (clientReviews && clientReviews.length > 0) {
     rating = clientReviews[0].rating;
     message = clientReviews[0].message;
     title = clientReviews[0].title;
