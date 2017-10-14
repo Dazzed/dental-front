@@ -1,0 +1,13 @@
+@import '../../../../../assets/styles/variables';
+
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
+.modal-section-title {
+  margin: 0 0 1rem 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 1.5rem;
+}
