@@ -136,7 +136,7 @@ export default class Plans extends Component {
         </div>
         <hr />
         <div className={`row ${styles['membership-page-signup-button-container']}`}>
-          <div className="col-sm-4 col-sm-push-8">
+          <div className="col-sm-4 col-sm-push-4">
             <br />
             <Button
               styleName="signup--button"
@@ -150,7 +150,7 @@ export default class Plans extends Component {
         <br />
         <div className={`row ${styles['membership-page-disclaimer-container']}`}>
           <p styleName="custom-membership-header">
-            Custom & Non-Recurring Annual Memberships also Available!
+            Custom & Annual Memberships Also Available!
           </p>
           <p styleName="custom-membership-disclaimer">
             *The Dental Membership Plan is NOT dental Insurance, It is a loyalty membership plan being offered by your dentist.

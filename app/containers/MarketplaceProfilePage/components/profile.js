@@ -204,6 +204,11 @@ export default class Profile extends Component {
                 score={calculateReviewScore(dentist)}
                 noPadding
               />
+              {dentist.dentistReviews.length === 0 && (
+                <div styleName="no-review-warning">
+                  *The dentist currently has no reviews.
+                </div>
+              )}
               <br />
               <br />
               {renderAffordabilityScore(dentistInfo.affordabilityScore)}
@@ -241,8 +246,8 @@ export default class Profile extends Component {
               <h3 styleName="detail__title">Website</h3>
 
               <p styleName="detail__content" className={styles['cursor-pointer']}>
-                <a onClick={() => this.openDentistURL(dentistInfo.url)}>
-                  {dentistInfo.url}
+                <a onClick={() => this.openDentistURL(dentistInfo.url.toLowerCase())}>
+                  {dentistInfo.url.toLowerCase()}
                 </a>
               </p>
             </div>
@@ -268,24 +273,13 @@ export default class Profile extends Component {
                       }
                       {!w.isOpen &&
                         <span>
-                          <span styleName="work-hours__hour" styleName="closed">CLOSED</span>
+                          <span styleName="work-hours__closed">CLOSED</span>
                         </span>
                       }
                       { i !== workingHours.length - 1 && <br />}
                     </span>
                   ))
                 }
-              </p>
-            </div>
-
-            <div styleName="detail">
-              <p styleName="detail__content">
-                <strong>
-                  Kids Starting At: {
-                    dentistInfo.childStartingAge ?
-                      `${dentistInfo.childStartingAge} years` : 'Any age'
-                  }
-                </strong>
               </p>
             </div>
           </div>
@@ -322,56 +316,23 @@ export default class Profile extends Component {
             <div styleName="detail">
               <h3 styleName="detail__title">Services</h3>
 
+              <p styleName="detail__content">
+                <strong>
+                  Kids Starting At: {
+                    dentistInfo.childStartingAge ?
+                      `${dentistInfo.childStartingAge} years` : 'Any age'
+                  }
+                </strong>
+              </p>
+
               <div className="row" styleName="detail__content">
-                <div className="col-md-3">
-                  {services[0] ? services[0].name : ''}
-                  <br />
-                  {services[1] ? services[1].name : ''}
-                  <br />
-                  {services[2] ? services[2].name : ''}
-                  <br />
-                  {services[3] ? services[3].name : ''}
-                  <br />
-                  {services[4] ? services[4].name : ''}
-                </div>
-
-                <div className="col-md-3">
-                  {services[5] ? services[5].name : ''}
-                  <br />
-                  {services[6] ? services[6].name : ''}
-                  <br />
-                  {services[7] ? services[7].name : ''}
-                  <br />
-                  {services[8] ? services[8].name : ''}
-                  <br />
-                  {services[9] ? services[9].name : ''}
-                </div>
-
-                <div className="col-md-3">
-                  {services[10] ? services[10].name : ''}
-                  <br />
-                  {services[11] ? services[11].name : ''}
-                  <br />
-                  {services[12] ? services[12].name : ''}
-                  <br />
-                  {services[13] ? services[13].name : ''}
-                  <br />
-                  {services[14] ? services[14].name : ''}
-                </div>
-
-                <div className="col-md-3">
-                  {services[15] ? services[15].name : ''}
-                  <br />
-                  {services[16] ? services[16].name : ''}
-                  <br />
-                  {services[17] ? services[17].name : ''}
-                  <br />
-                  {services[18] ? services[18].name : ''}
-                  <br />
-                  {services[19] ? services[19].name : ''}
-                  <br />
-                  {services[20] ? services[20].name : ''}
-                </div>
+                {services.map((service, i) => {
+                  return (
+                    <div key={i} className="col-sm-3">
+                      {service.name}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -382,7 +343,7 @@ export default class Profile extends Component {
 
         <div className={`row ${styles['membership-page-signup-button-container']}`}>
           <br />
-          <div className="col-sm-4 col-sm-push-8">
+          <div className="col-sm-push-4 col-sm-4">
             <Button
               styleName="signup--button"
               className="btn-lg"
