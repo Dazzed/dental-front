@@ -49,8 +49,11 @@ const renderAffordabilityScore = score => {
 };
 
 function DentistCard(dentist) {
-  let rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
-  rating /= dentist.user.dentistReviews.length;
+  let rating = null;
+  if (dentist.user.dentistReviews.length > 0) {
+    rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
+    rating /= dentist.user.dentistReviews.length;
+  }
   
   const {
     id,
@@ -72,9 +75,14 @@ function DentistCard(dentist) {
       onClick={() => handleClick(userId)}
     >
       <div styleName="left">
-        <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+        {avatar && (
+          <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+        )}
         <div styleName="rating">
           {renderReviewScore(rating)}
+        </div>
+        <div styleName="affordability">
+          {renderAffordabilityScore(affordabilityScore)}
         </div>
       </div>
       <div styleName="right">
@@ -82,11 +90,16 @@ function DentistCard(dentist) {
         <div styleName="type">{type}</div>
 
         <div styleName="location">{city}, {US_STATES[state]}</div>
-        {renderAffordabilityScore(affordabilityScore)}
         <div styleName="plan-cost">
           Plans starting at: <span styleName="price">${planStartingCost}</span>
         </div>
       </div>
+
+      {rating === null && (
+        <div styleName="no-review-warning">
+          *The dentist currently has no reviews.
+        </div>
+      )}
     </li>
   );
 }

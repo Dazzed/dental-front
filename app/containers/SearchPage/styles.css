@@ -26,6 +26,10 @@ Page-Wide
   text-transform: capitalize;
 }
 
+.content {
+  padding: 2rem;
+}
+
 
 /*
 Dentist List

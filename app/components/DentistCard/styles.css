@@ -22,12 +22,13 @@ Dentist Card Component Styles
   }
 
   .left {
+    width: 112px;
+
     .avatar {
       height: 105px;
-      width: 112px;
       border-radius: 50%;
       border: 4px solid #444;
-      margin: -35px auto 20px;
+      margin: -35px auto 1rem;
       background-size: cover;
       background-position: center;
     }
@@ -35,6 +36,19 @@ Dentist Card Component Styles
     .rating {
       img {
         height: 1.2rem;
+
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .affordability {
+      padding-top: 0.5rem;
+      padding-left: 10%;
+
+      img {
+        height: 1.8rem;
 
         &:not(:last-child) {
           margin-right: 5px;
@@ -62,16 +76,10 @@ Dentist Card Component Styles
       margin-top: 8px;
     }
 
-    .affordability {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #01A1DD;
-    }
-
     .plan-cost {
       text-transform: uppercase;
       color: #01A1DD;
-      margin-top: 4px;
+      margin-top: 16px;
 
       .price {
         font-weight: 600;
@@ -94,4 +102,8 @@ Dentist Card Component Styles
     color: $color-primary-highlight;
     text-decoration: none;
   }
+}
+
+.no-review-warning {
+  font-size: 0.75rem;
 }

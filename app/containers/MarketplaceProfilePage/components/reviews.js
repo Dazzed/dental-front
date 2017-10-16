@@ -20,7 +20,7 @@ export default class Reviews extends Component {
     );
 
     if (!filteredReviews.length) {
-      return <h2 className="text-center">Sorry, no reviews have been posted yet</h2>;
+      return <h2 className="text-center">Sorry, no reviews have been posted yet.</h2>;
     }
     return filteredReviews.map((review, i) => {
       const { firstName, lastName } = review.client;
