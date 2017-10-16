@@ -14,12 +14,19 @@ import {
 
 @CSSModules(styles)
 export default class Filters extends React.Component {
+
+  initialState = {
+    selectedDistance: 'ANY',
+    selectedSpecialty: 'ALL',
+    selectedSortType: 'MEMBERSHIP PRICING'
+  };
+
   componentWillMount () {
-    this.state = {
-      selectedDistance: '',
-      selectedSpecialty: 'ALL',
-      selectedSortType: ''
-    };
+    this.state = this.initialState;
+  }
+
+  resetFilters = () => {
+    this.setState({ ...this.initialState });
   }
 
   renderSpecialties = specialtiesList => {

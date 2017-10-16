@@ -63,7 +63,7 @@ export default class SearchForm extends Component {
           disabled={shouldDisable}
           type="text"
           styleName="search"
-          placeholder="Enter your zip code to begin!"
+          placeholder={shouldDisable ? 'Please wait...' : 'Enter your zip code to begin!'}
           value={this.state.query}
           onChange={this.handleSearchInputChange}
           required

@@ -5,6 +5,7 @@ import {
   searchSuccess,
   searchError,
   specialtiesSuccess,
+  countSuccess,
 } from './actions';
 
 const defaultState = {
@@ -20,21 +21,34 @@ const defaultState = {
     },
   },
   specialtiesList: [],
-  loadingResults: true
+  totalDentistCount: 0,
+  loadingResults: true,
+  errors: null
 };
 
 const searchReducer = {
-  [searchRequest]: (state) => {
+  [searchRequest]: (state, payload) => {
     return {
       ...state,
-      loadingResults: true
+      filters: payload.filters,
+      loadingResults: true,
+      errors: null
     };
   },
   [searchSuccess]: (state, dentists) => {
     return {
       ...state,
       searchResults: dentists,
-      loadingResults: false
+      loadingResults: false,
+      errors: null
+    };
+  },
+  [searchError]: (state, errors) => {
+    return {
+      ...state,
+      searchResults: [],
+      loadingResults: false,
+      errors
     };
   },
   [specialtiesSuccess]: (state, specialtiesList) => {
@@ -42,7 +56,11 @@ const searchReducer = {
       ...state,
       specialtiesList
     };
-  }
+  },
+  [countSuccess]: (state, totalDentistCount) => ({
+    ...state,
+    totalDentistCount
+  })
 };
 
 export default createReducer(searchReducer, defaultState);

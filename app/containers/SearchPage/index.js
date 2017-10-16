@@ -20,25 +20,31 @@ import { searchRequest } from "./actions";
 import {
   searchResultsSelector,
   specialtiesListSelector,
-  searchLoadingStatusSelector
+  searchLoadingStatusSelector,
+  dentistCountSelector,
+  errorsSelector,
+  activeFiltersSelector
 } from "./selectors";
 import LoadingSpinner from 'components/LoadingSpinner';
 import styles from "./styles.css";
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     searchResults: searchResultsSelector(state),
     specialtiesList: specialtiesListSelector(state),
     loadingResults: searchLoadingStatusSelector(state),
+    totalDentistCount: dentistCountSelector(state),
+    errors: errorsSelector(state),
+    activeFilters: activeFiltersSelector(state)
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     // app
     changeRoute: url => dispatch(push(url)),
 
-    // // search
+    // search
     searchRequest: (filters, specialtiesRequired) =>
       dispatch(searchRequest(filters, specialtiesRequired))
   };
@@ -50,22 +56,26 @@ export default class SearchPage extends Component {
   static propTypes = {
     searchRequest: React.PropTypes.func.isRequired,
     searchResults: React.PropTypes.array.isRequired,
-    specialtiesList: React.PropTypes.array.isRequired
+    specialtiesList: React.PropTypes.array.isRequired,
+    totalDentistCount: React.PropTypes.number.isRequired,
+    loadingResults: React.PropTypes.bool.isRequired
+  };
+
+  initialState = {
+    searchQuery: '',
+    specialties: [],
+    distance: null,
+    sort: 'price',
+    coordinates: {
+      lat: 34.1,
+      lng: -118.5
+    }
   };
 
   constructor (props) {
     super(props);
 
-    this.state = {
-      searchQuery: '',
-      specialties: [],
-      distance: null,
-      sort: '',
-      coordinates: {
-        lat: 34.1,
-        lng: -118.5
-      }
-    };
+    this.state = this.initialState;
   }
 
   componentWillMount () {
@@ -79,7 +89,13 @@ export default class SearchPage extends Component {
   }
 
   searchRequested = () => {
-    this.fireSearch();
+    this.setState({
+      ...this.initialState,
+      searchQuery: this.state.searchQuery
+    }, () => {
+      this.filterComponent.resetFilters();
+      this.fireSearch();
+    });
   }
 
   onSelectDistance = distance => {
@@ -133,7 +149,21 @@ export default class SearchPage extends Component {
     this.props.changeRoute(`/marketplace/profile/${officeId}`);
   };
 
-  renderResults () {
+  renderResultsCount () {
+    const { searchResults, totalDentistCount } = this.props;
+    if (searchResults.length > 0) {
+      return (
+        <div className="col-md-12 col-sm-12 text-center">
+          <h3>
+            Now viewing {searchResults.length} of {totalDentistCount} dentists
+          </h3>
+        </div>
+      );
+    }
+    return '';
+  }
+
+  renderDentists () {
     const { searchResults } = this.props;
 
     if (searchResults.length > 0) {
@@ -189,6 +219,38 @@ export default class SearchPage extends Component {
     return false;
   }
 
+  renderResults = () => {
+    const { loadingResults, errors } = this.props;
+    if (errors) {
+      return (
+        <div className="container">
+          <div className="row">
+            <h3>{errors}</h3>
+          </div>
+        </div>
+      );
+    }
+    if (loadingResults) {
+      return (
+        <div className="container">
+          <div className="row">
+            <LoadingSpinner />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="container">
+          <div className="row">
+            {this.renderResultsCount()}
+            <div className="col-md-6">{this.renderDentists()}</div>
+            <div className="col-md-6">{this.renderMap()}</div>
+          </div>
+        </div>
+      );
+    }
+  }
+
   render () {
     const {
       specialtiesList,
@@ -203,6 +265,7 @@ export default class SearchPage extends Component {
           onSelectDistance={this.onSelectDistance}
           onSelectSpecialty={this.onSelectSpecialty}
           onSelectSortType={this.onSelectSortType}
+          ref={filterComponent => { this.filterComponent = filterComponent; }}
         />
       </span>
     );
@@ -230,23 +293,7 @@ export default class SearchPage extends Component {
             </li>
           </ul>
         </div>
-        {
-          !loadingResults &&
-            <div className="container">
-              <div className="row">
-                <div className="col-md-6">{this.renderResults()}</div>
-                <div className="col-md-6">{this.renderMap()}</div>
-              </div>
-            </div>
-        }
-        {
-          loadingResults &&
-            <div className="container">
-              <div className="row">
-                <LoadingSpinner />
-              </div>
-            </div>
-        }
+        {this.renderResults()}
       </div>
     );
   }
