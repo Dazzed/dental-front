@@ -1,19 +1,15 @@
-import React, { Component, PropTypes } from "react";
-import Col from "react-bootstrap/lib/Col";
-import Image from "react-bootstrap/lib/Image";
-import Modal from "react-bootstrap/lib/Modal";
-import Row from "react-bootstrap/lib/Row";
-import CSSModules from "react-css-modules";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import { push } from "react-router-redux";
+import React, { Component, PropTypes } from 'react';
+import CSSModules from 'react-css-modules';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { push } from 'react-router-redux';
 
-import logo from "assets/images/wells-family-dentistry-logo.png";
-import PageHeader from "components/PageHeader";
-import DentistCard from "components/DentistCard";
-import GoogleMaps from "components/GoogleMaps";
-import SearchForm from "containers/SearchForm";
-import Filters from "./components/filters";
+import LoadingSpinner from 'components/LoadingSpinner';
+import PageHeader from 'components/PageHeader';
+import DentistCard from 'components/DentistCard';
+import GoogleMaps from 'components/GoogleMaps';
+import SearchForm from 'containers/SearchForm';
+import Filters from './components/filters';
 
 import { disambiguateInitialQueryParams } from './helpers';
 
@@ -21,7 +17,7 @@ import {
   searchRequest,
   updateFilter,
   resetFiltersAndUpdateSearch
-} from "./actions";
+} from './actions';
 
 import {
   searchResultsSelector,
@@ -30,9 +26,8 @@ import {
   dentistCountSelector,
   errorsSelector,
   activeFiltersSelector
-} from "./selectors";
-import LoadingSpinner from 'components/LoadingSpinner';
-import styles from "./styles.css";
+} from './selectors';
+import styles from './styles.css';
 
 function mapStateToProps (state) {
   return {
@@ -64,14 +59,14 @@ function mapDispatchToProps (dispatch) {
 @CSSModules(styles)
 export default class SearchPage extends Component {
   static propTypes = {
-    searchRequest: React.PropTypes.func.isRequired,
-    searchResults: React.PropTypes.array.isRequired,
-    specialtiesList: React.PropTypes.array.isRequired,
-    totalDentistCount: React.PropTypes.number.isRequired,
-    loadingResults: React.PropTypes.bool.isRequired,
-    activeFilters: React.PropTypes.shape({}).isRequired,
-    updateFilter: React.PropTypes.func.isRequired,
-    resetFiltersAndUpdateSearch: React.PropTypes.func.isRequired,
+    searchRequest: PropTypes.func.isRequired,
+    searchResults: PropTypes.array.isRequired,
+    specialtiesList: PropTypes.array.isRequired,
+    totalDentistCount: PropTypes.number.isRequired,
+    loadingResults: PropTypes.bool.isRequired,
+    activeFilters: PropTypes.shape({}).isRequired,
+    updateFilter: PropTypes.func.isRequired,
+    resetFiltersAndUpdateSearch: PropTypes.func.isRequired,
   };
 
   componentWillMount () {
@@ -187,35 +182,19 @@ export default class SearchPage extends Component {
 
   onSelectSortType = sortType => {
     const { filters } = this.state;
-    if (sortType === 'score') {
-      const cb = () => {
-        this.props.updateFilter({
-          name: 'sort',
-          value: sortType
-        });
-        this.fireSearch();
-      };
-      this.setState({
-        filters: {
-          ...filters,
-          sort: sortType
-        }
-      }, cb);
-    } else {
-      const cb = () => {
-        this.props.updateFilter({
-          name: 'sort',
-          value: sortType
-        });
-        this.fireSearch();
-      };
-      this.setState({
-        filters: {
-          ...filters,
-          sort: sortType
-        }
-      }, cb);
-    }
+    const cb = () => {
+      this.props.updateFilter({
+        name: 'sort',
+        value: sortType
+      });
+      this.fireSearch();
+    };
+    this.setState({
+      filters: {
+        ...filters,
+        sort: sortType
+      }
+    }, cb);
   }
 
   fireSearch = (specialtiesRequired = false) => {
