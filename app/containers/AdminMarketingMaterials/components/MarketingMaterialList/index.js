@@ -12,6 +12,10 @@ export default class MarketingMaterialList extends Component {
     toggleAddMaterialModal: PropTypes.func.isRequired,
     setDeletingMaterial: PropTypes.func.isRequired,
     setDeletingCategory: PropTypes.func.isRequired,
+    user: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
+    ]).isRequired,
   }
 
   componentWillMount () {
@@ -24,7 +28,8 @@ export default class MarketingMaterialList extends Component {
     const {
       toggleAddMaterialModal,
       setDeletingMaterial,
-      setDeletingCategory
+      setDeletingCategory,
+      user
     } = this.props;
     return marketingMaterial.map(material => (
       <MarketingMaterial
@@ -33,20 +38,27 @@ export default class MarketingMaterialList extends Component {
         toggleAddMaterialModal={toggleAddMaterialModal}
         setDeletingMaterial={setDeletingMaterial}
         setDeletingCategory={setDeletingCategory}
+        user={user}
       />
     ));
   }
 
-  renderAddCategoryButton = () => (
-    <div>
-      <input
-        type="button"
-        value="ADD CATEGORY"
-        styleName="add-category-button"
-        onClick={() => this.props.toggleAddCategoryModal(true)}
-      />
-    </div>
-  )
+  renderAddCategoryButton = () => {
+    const { user } = this.props;
+    if (user.type === 'admin') {
+      return (
+        <div>
+          <input
+            type="button"
+            value="ADD CATEGORY"
+            styleName="add-category-button"
+            onClick={() => this.props.toggleAddCategoryModal(true)}
+          />
+        </div>
+      );
+    }
+    return '';
+  }
 
   render () {
     const { marketingMaterials } = this.props;

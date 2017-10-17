@@ -12,6 +12,11 @@ export default class MarketingMaterial extends Component {
     marketingMaterial: PropTypes.shape({}).isRequired,
     setDeletingMaterial: PropTypes.func.isRequired,
     setDeletingCategory: PropTypes.func.isRequired,
+    toggleAddMaterialModal: PropTypes.func.isRequired,
+    user: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.object,
+    ]).isRequired,
   }
 
   componentWillMount () {
@@ -31,8 +36,56 @@ export default class MarketingMaterial extends Component {
 
   renderCaret = () => (this.state.isOpen ? <CaretDown /> : <CaretRight />)
 
+  renderAddMaterialButton = (category) => {
+    const { user, toggleAddMaterialModal } = this.props;
+    if (user.type === 'admin') {
+      return (
+        <input
+          type="button"
+          className={styles['button-short']}
+          value="ADD FILE"
+          onClick={() => toggleAddMaterialModal({ flag: true, categoryId: category.id })}
+        />
+      );
+    }
+  }
+
+  renderDeleteMaterialIcon = (material, materialName) => {
+    const { user } = this.props;
+    if (user.type === 'admin') {
+      return (
+        <span
+          className={styles['remove-material-icon']}
+          onClick={() => this.props.setDeletingMaterial({
+            id: material.id,
+            name: materialName
+          })}
+        >
+          <FaTimesCircleO />
+        </span>
+      );
+    }
+    return '';
+  }
+
+  renderDeleteCategoryButton = (category) => {
+    const { user } = this.props;
+    if (user.type === 'admin') {
+      return (
+        <div className="col-sm-2">
+          <div
+            className={styles['delete-category-icon']}
+            onClick={() => this.deleteCategory(category)}
+          >
+            <FaTimesCircleO />
+          </div>
+        </div>
+      );
+    }
+    return '';
+  }
+
   renderMaterials = category => {
-    const { toggleAddMaterialModal } = this.props;
     const { isOpen } = this.state;
     if (isOpen) {
       const materials = category.materials.map(material => {
@@ -42,15 +95,7 @@ export default class MarketingMaterial extends Component {
             <span>
               <a href={material.url} target="_blank">{materialName}</a>
             </span>
-            <span
-              className={styles['remove-material-icon']}
-              onClick={() => this.props.setDeletingMaterial({
-                id: material.id,
-                name: materialName
-              })}
-            >
-              <FaTimesCircleO />
-            </span>
+            {this.renderDeleteMaterialIcon(material, materialName)}
           </div>
         );
       });
@@ -59,12 +104,7 @@ export default class MarketingMaterial extends Component {
           {materials.length ? materials : <p>No Materials added.</p>}
           <br />
           <div className={styles['float-right']}>
-            <input
-              type="button"
-              className={styles['button-short']}
-              value="ADD FILE"
-              onClick={() => toggleAddMaterialModal({ flag: true, categoryId: category.id })}
-            />
+            {this.renderAddMaterialButton(category)}
           </div>
         </div>
       );
@@ -87,14 +127,7 @@ export default class MarketingMaterial extends Component {
             </div>
             {this.renderMaterials(category)}
           </div>
-          <div className="col-sm-2">
-            <div
-              className={styles['delete-category-icon']}
-              onClick={() => this.deleteCategory(category)}
-            >
-              <FaTimesCircleO />
-            </div>
-          </div>
+          {this.renderDeleteCategoryButton(category)}
         </div>
       </div>
     </div>

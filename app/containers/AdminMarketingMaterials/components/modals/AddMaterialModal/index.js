@@ -86,7 +86,9 @@ export default class AddMaterialModal extends React.Component {
     log('onUploadError');
     log(message);
     log('______________');
-    this.props.addMaterialError();
+    const { toastError } = this.props;
+    toastError('File format not supported .\nPlease upload a different file type.');
+    this.setState({ uploadInProgress: false }, this.props.addMaterialError);
   }
 
   onUploadFinish = (signResult) => {
@@ -113,7 +115,7 @@ export default class AddMaterialModal extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <ReactS3Uploader
-            signingUrl="/api/v1/admin/marketing_materials/s3/sign"
+            signingUrl="/api/v1/marketing_materials/s3/sign"
             signingUrlMethod="GET"
             accept="image/*"
             preprocess={this.onUploadStart}
