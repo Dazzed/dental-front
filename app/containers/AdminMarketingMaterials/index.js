@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { actions as toastrActions } from 'react-redux-toastr';
 
 import {
   changePageTitle,
@@ -16,6 +17,7 @@ import {
   addCategory,
   toggleAddMaterialModal,
   addMaterial,
+  addMaterialError,
   setDeletingMaterial,
   deleteMaterial,
   setDeletingCategory,
@@ -52,8 +54,8 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators(
-    {
+  return {
+    ...bindActionCreators({
       changePageTitle,
       fetchMaterials,
       toggleAddCategoryModal,
@@ -64,7 +66,10 @@ function mapDispatchToProps (dispatch) {
       deleteMaterial,
       setDeletingCategory,
       deleteCategory,
-    }, dispatch);
+      addMaterialError,
+    }, dispatch),
+    toastError: (message) => dispatch(toastrActions.error(message)),
+  };
 }
 
 @CSSModules(styles, { allowMultiple: true })
@@ -102,6 +107,7 @@ export default class MarketingMaterials extends Component {
     deletingCategory: PropTypes.shape({}).isRequired,
 
     changePageTitle: React.PropTypes.func.isRequired,
+    addMaterialError: React.PropTypes.func.isRequired,
   }
 
   componentWillMount () {
@@ -109,6 +115,14 @@ export default class MarketingMaterials extends Component {
       this.props.fetchMaterials();
     }
     this.props.changePageTitle('Marketing Materials');
+  }
+
+  renderModals = () => {
+    const { user } = this.props;
+    if (user.type === 'admin') {
+      return <Modals {...this.props} />;
+    }
+    return '';
   }
 
   render () {
@@ -138,8 +152,9 @@ export default class MarketingMaterials extends Component {
           toggleAddMaterialModal={this.props.toggleAddMaterialModal}
           setDeletingMaterial={this.props.setDeletingMaterial}
           setDeletingCategory={this.props.setDeletingCategory}
+          user={this.props.user}
         />
-        <Modals {...this.props} />
+        {this.renderModals()}
       </div>
     );
   }

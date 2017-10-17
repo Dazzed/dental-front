@@ -234,7 +234,7 @@ class DentistDashboardHeader extends React.Component {
                 </span>
               </li>
               <li>
-                <Link styleName="quick-links__link" to="#">
+                <Link styleName="quick-links__link" to="/admin/marketing_materials">
                   Marketing Materials
                 </Link>
               </li>
