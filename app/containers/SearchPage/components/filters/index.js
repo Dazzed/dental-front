@@ -14,13 +14,6 @@ import {
 
 @CSSModules(styles)
 export default class Filters extends React.Component {
-  componentWillMount () {
-    this.state = {
-      selectedDistance: '',
-      selectedSpecialty: 'ALL',
-      selectedSortType: ''
-    };
-  }
 
   renderSpecialties = specialtiesList => {
     const allSpecialty = [ (
@@ -37,39 +30,36 @@ export default class Filters extends React.Component {
   };
 
   selectDistance = key => {
-    const cb = this.props.onSelectDistance(key === 'any' ? null : key);
-    this.setState({ selectedDistance: key === 'any' ? 'ANY' : `${key} MILES` }, cb);
+    this.props.onSelectDistance(key === 'any' ? null : key);
+  }
+
+  getSpecialty = id => {
+    if (!id) return null;
+    const specialty = this.props.specialtiesList.find(s => s.id === Number(id));
+    if (specialty) return specialty.name.toUpperCase();
+    return null;
   }
 
   selectSpecialty = key => {
-    let cb;
-    let selectedSpecialty = this.props.specialtiesList.find(s => s.id === Number(key));
+    const selectedSpecialty = this.props.specialtiesList.find(s => s.id === Number(key));
     if (selectedSpecialty) {
-      selectedSpecialty = selectedSpecialty.name.toUpperCase();
-      cb = this.props.onSelectSpecialty(key);
+      this.props.onSelectSpecialty(key);
     } else {
-      selectedSpecialty = 'ALL';
       this.props.onSelectSpecialty(null);
     }
-    this.setState({ selectedSpecialty }, cb);
   }
 
   selectSortType = key => {
-    const cb = this.props.onSelectSortType(key);
-    const selectedSortType = key === 'price' ? 'MEMBERSHIP PRICING' : 'REVIEW SCORE';
-    this.setState({ selectedSortType }, cb);
+    this.props.onSelectSortType(key);
   }
 
   render () {
     const {
       specialtiesList,
+      activeDistance,
+      activeSort,
+      activeSpecialty
     } = this.props;
-
-    const {
-      selectedDistance,
-      selectedSortType,
-      selectedSpecialty
-    } = this.state;
 
     return (
       <Row>
@@ -81,7 +71,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={selectedDistance ? `DISTANCE - ${selectedDistance}` : 'DISTANCE'}
+              title={activeDistance ? `DISTANCE - ${activeDistance}` : 'DISTANCE'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectDistance}
@@ -98,7 +88,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={selectedSortType ? `SORT - ${selectedSortType}` : 'SORT'}
+              title={activeSort ? `SORT - ${activeSort.toUpperCase()}` : 'SORT'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectSortType}
@@ -113,7 +103,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={selectedSpecialty ? `SPECIALTY - ${selectedSpecialty}` : 'SPECIALTY'}
+              title={selectedSpecialty ? `SPECIALTY - ${this.getSpecialty(activeSpecialty)` : 'SPECIALTY'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectSpecialty}
