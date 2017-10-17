@@ -246,7 +246,7 @@ export default class SearchPage extends Component {
   }
 
   renderDentists () {
-    const { searchResults } = this.props;
+    const { searchResults, loadingResults } = this.props;
 
     if (searchResults.length > 0) {
       return (
@@ -264,6 +264,8 @@ export default class SearchPage extends Component {
           })}
         </ul>
       );
+    } else if (loadingResults) {
+      return '';
     }
 
     return (
@@ -316,8 +318,13 @@ export default class SearchPage extends Component {
     if (loadingResults) {
       return (
         <div className="container">
-          <div className="row">
+          <div className={`row text-center`}>
             <LoadingSpinner />
+          </div>
+          <div className="row">
+            {this.renderResultsCount()}
+            <div className="col-md-6">{this.renderDentists()}</div>
+            <div className="col-md-6">{this.renderMap()}</div>
           </div>
         </div>
       );
