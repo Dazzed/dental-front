@@ -26,6 +26,10 @@ Page-Wide
   text-transform: capitalize;
 }
 
+.content {
+  padding: 2rem;
+}
+
 
 /*
 Dentist List
@@ -33,6 +37,7 @@ Dentist List
 */
 .dentist-list {
   margin-top: 40px;
+  margin-left: 0;
 }
 
 /*

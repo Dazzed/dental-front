@@ -13,7 +13,6 @@ import {
   addMaterialError,
   deleteMaterialSuccess,
   deleteMaterialError,
-  deleteCategory,
   deleteCategorySuccess,
   deleteCategoryError,
 } from './actions';
@@ -33,7 +32,7 @@ function* main () {
 function* fetchMaterials () {
   yield takeLatest(`${PREFIX}_FETCH`, function* handler () {
     try {
-      const requestURL = '/api/v1/admin/marketing_materials/';
+      const requestURL = '/api/v1/marketing_materials/';
       const params = {
         method: 'GET',
       };
@@ -49,7 +48,7 @@ function* fetchMaterials () {
 function* addCategoryWatcher () {
   yield takeLatest(`${PREFIX}_ADD_CATEGORY`, function* handler ({ payload }) {
     try {
-      const requestURL = '/api/v1/admin/marketing_materials/category';
+      const requestURL = '/api/v1/marketing_materials/category';
       const body = {
         name: payload.name
       };
@@ -73,7 +72,7 @@ function* addMaterialWatcher () {
   yield takeLatest(`${PREFIX}_ADD_MATERIAL`, function* handler ({ payload }) {
     try {
       const { categoryId, fileKey } = payload;
-      const requestURL = `/api/v1/admin/marketing_materials/material/${categoryId}`;
+      const requestURL = `/api/v1/marketing_materials/material/${categoryId}`;
       const body = {
         fileKey
       };
@@ -96,7 +95,7 @@ function* addMaterialWatcher () {
 function* deleteMaterialWatcher () {
   yield takeLatest(`${PREFIX}_DELETE_MATERIAL`, function* handler ({ payload: materialId }) {
     try {
-      const requestURL = `/api/v1/admin/marketing_materials/material/${materialId}`;
+      const requestURL = `/api/v1/marketing_materials/material/${materialId}`;
       const params = {
         method: 'DELETE',
       };
@@ -115,7 +114,7 @@ function* deleteMaterialWatcher () {
 function* deleteCategoryWatcher () {
   yield takeLatest(`${PREFIX}_DELETE_CATEGORY`, function* handler ({ payload: categoryId }) {
     try {
-      const requestURL = `/api/v1/admin/marketing_materials/category/${categoryId}`;
+      const requestURL = `/api/v1/marketing_materials/category/${categoryId}`;
       const params = {
         method: 'DELETE',
       };

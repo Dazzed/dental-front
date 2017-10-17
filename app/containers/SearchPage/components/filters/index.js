@@ -71,7 +71,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={`DISTANCE ${activeDistance || 'ANY'} MILES`}
+              title={activeDistance ? `DISTANCE - ${activeDistance}` : 'DISTANCE'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectDistance}
@@ -88,7 +88,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={`SORT ${activeSort.toUpperCase()}`}
+              title={activeSort ? `SORT - ${activeSort.toUpperCase()}` : 'SORT'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectSortType}
@@ -103,7 +103,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={`SPECIALTY ${this.getSpecialty(activeSpecialty) || 'ALL'}`}
+              title={selectedSpecialty ? `SPECIALTY - ${this.getSpecialty(activeSpecialty)` : 'SPECIALTY'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectSpecialty}

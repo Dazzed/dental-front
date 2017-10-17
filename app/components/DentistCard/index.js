@@ -49,9 +49,13 @@ const renderAffordabilityScore = score => {
 };
 
 function DentistCard(dentist) {
-  let rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
-  rating /= dentist.user.dentistReviews.length;
-  
+  const numReviews = dentist.user.dentistReviews.length;
+  let rating = null;
+  if (dentist.user.dentistReviews.length > 0) {
+    rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
+    rating /= numReviews;
+  }
+
   const {
     id,
     user: { firstName, lastName, id: userId },
@@ -65,26 +69,37 @@ function DentistCard(dentist) {
     handleClick,
     officeName
   } = dentist;
+
   return (
     <li
       styleName={`dentist-list-item ${active ? 'active' : ''}`}
       onMouseEnter={() => updateActiveId(id)}
       onClick={() => handleClick(userId)}
     >
-      <div styleName="left">
-        <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
-        <div styleName="rating">
-          {renderReviewScore(rating)}
+      <div className="row">
+        <div className="col-sm-4">
+          {avatar && (
+            <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+          )}
+          <div styleName="rating">
+            {renderReviewScore(rating)}
+          </div>
+          <div styleName="review-count">
+            {numReviews > 0 ? numReviews : 'no'} reviews
+          </div>
+          <div styleName="affordability">
+            {renderAffordabilityScore(affordabilityScore)}
+          </div>
         </div>
-      </div>
-      <div styleName="right">
-        <div styleName="name">{officeName}</div>
-        <div styleName="type">{type}</div>
 
-        <div styleName="location">{city}, {US_STATES[state]}</div>
-        {renderAffordabilityScore(affordabilityScore)}
-        <div styleName="plan-cost">
-          Plans starting at: <span styleName="price">${planStartingCost}</span>
+        <div className="col-sm-8">
+          <div styleName="name">{officeName}</div>
+          <div styleName="type">{type}</div>
+          <div styleName="location">{city}, {US_STATES[state]}</div>
+          <div styleName="plan-cost-label">Plans starting at:</div>
+          <div styleName="plan-cost">
+            <span styleName="price">${planStartingCost}</span> / month
+          </div>
         </div>
       </div>
     </li>

@@ -267,8 +267,9 @@ export default class SearchPage extends Component {
     }
 
     return (
-      // TODO: Need no results design!
-      <div>No Dentists found mathching the search criteria.</div>
+      <div styleName="content">
+        No Dentists found matching the search criteria.
+      </div>
     );
   }
 
