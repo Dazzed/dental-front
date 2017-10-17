@@ -258,11 +258,12 @@ export function setRemovingMember(patient, payload, dentistId) {
   };
 }
 
-export function setRemovedMember(patient, memberId) {
+export function setRemovedMember(patient, memberId, updatedSubscription) {
   return {
     type: REMOVE_MEMBER_SUCCESS,
     patient,
     memberId,
+    updatedSubscription,
   }
 }
 
@@ -327,12 +328,11 @@ export function submitPatientPaymentForm(patient, payload) {
 Toggle Waive Patient Fees
 ------------------------------------------------------------
 */
-export function setTogglingWaivePatientFees(patient, payload, toggleType) {
+export function setTogglingWaivePatientFees(patient, payload) {
   return {
     type: TOGGLE_WAIVE_PATIENT_FEES_REQUEST,
     patient,
     payload,
-    toggleType,
   };
 }
 

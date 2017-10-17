@@ -8,14 +8,12 @@ import {
   // search
   searchSuccess,
   specialtiesSuccess,
+  countSuccess,
+  searchError
 } from './actions';
 
 function* main() {
-  const watcherA = yield fork(searchWatcher);
-
-  yield take(LOCATION_CHANGE);
-
-  yield cancel(watcherA);
+  yield fork(searchWatcher);
 }
 
 function* searchWatcher() {
@@ -26,20 +24,27 @@ function* searchWatcher() {
         const { specialtiesRequired } = payload;
         if (specialtiesRequired) {
           payload.specialtiesRequired = true;
+          payload.countRequired = true;
         }
         const body = JSON.stringify(payload);
         const params = {
           method: 'POST',
           body
         };
-        const { dentists, specialtiesList } = yield call(request, requestURL, params);
+        const { dentists, specialtiesList, totalDentistCount } = yield call(request, requestURL, params);
         
         yield put(searchSuccess(dentists));
         if (specialtiesList) {
           yield put(specialtiesSuccess(specialtiesList));
         }
+        if (payload.countRequired) {
+          yield put(countSuccess(totalDentistCount));
+        }
       } catch (e) {
         console.log(e);
+        if (e.errors) {
+          yield put(searchError(e.errors));
+        }
       }
     });
   }

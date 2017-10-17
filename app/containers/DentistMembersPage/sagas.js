@@ -279,13 +279,12 @@ function* removeMemberWatcher () {
         method: 'DELETE',
       };
 
-      yield call(request, requestURL, params);
+      const updatedSubscription = yield call(request, requestURL, params);
 
-      const message = `'${payload.firstName} ${payload.lastName}'
-        has been deleted.`;
+      const message = `${payload.firstName} ${payload.lastName}'s subscription has been canceled successfully.`;
       yield put(toastrActions.success('', message));
 
-      yield put(setRemovedMember(patient, payload.id));
+      yield put(setRemovedMember(patient, payload.id, updatedSubscription));
     } catch (err) {
       console.log(err);
       const errorMessage = get(err, 'message', 'Something went wrong!');
@@ -377,14 +376,10 @@ Toggle Waive Patient Fees
 */
 function* toggleWaivePatientFeesWatcher () {
   while (true) {
-    const { patient, payload, toggleType } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
+    const { patient, payload } = yield take(TOGGLE_WAIVE_PATIENT_FEES_REQUEST);
     try {
       let requestURL;
-      if (toggleType === 'cancel') {
-        requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-cancellation-waiver`;
-      } else {
         requestURL = `/api/v1/dentists/me/patients/${patient.id}/toggle-reenrollment-waiver`;
-      }
       const params = {
         method: 'PUT',
         body: JSON.stringify(payload),

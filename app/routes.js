@@ -323,7 +323,28 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    },{
+    }, {
+      onEnter: redirectToLogin,
+      path: '/admin/marketing_materials',
+      name: 'adminMarketingMaterialsPage',
+      getComponent (nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/AdminMarketingMaterials/reducers'),
+          System.import('containers/AdminMarketingMaterials/sagas'),
+          System.import('containers/AdminMarketingMaterials'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([ reducer, sagas, component ]) => {
+          injectReducer('AdminMarketingMaterialsPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       onEnter: redirectToLogin,
       path: '/admin/services',
       name: 'adminServicesPage',

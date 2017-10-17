@@ -236,11 +236,13 @@ function dentistMembersPageReducer(state = initialState, action) {
       prevStatePatient = state.patients[patientIdx];
       // If we are cancelling Primary account holder.
       if (prevStatePatient.id === action.memberId) {
-        prevStatePatient.subscription.status = 'cancellation_requested';
+        prevStatePatient.subscription.status = action.updatedSubscription.status;
+        prevStatePatient.subscription.cancelsAt = action.updatedSubscription.cancelsAt;
       } else {
         memberIdx = prevStatePatient.members.findIndex(m => m.id === action.memberId);
         member = prevStatePatient.members[memberIdx];
-        prevStatePatient.members[memberIdx].subscription.status = 'cancellation_requested';
+        prevStatePatient.members[memberIdx].subscription.status = action.updatedSubscription.status;
+        prevStatePatient.members[memberIdx].subscription.cancelsAt = action.updatedSubscription.cancelsAt;
       }
       newStatePatient = prevStatePatient;
       return {
@@ -320,7 +322,6 @@ function dentistMembersPageReducer(state = initialState, action) {
           ...state.patients.slice(0, patientIdx),
           {
             ...prevStatePatient,
-            cancellationFeeWaiver: action.payload.cancellationFeeWaiver,
             reEnrollmentFeeWaiver: action.payload.reEnrollmentFeeWaiver,
           },
           ...state.patients.slice(patientIdx + 1),

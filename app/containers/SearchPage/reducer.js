@@ -5,6 +5,9 @@ import {
   searchSuccess,
   searchError,
   specialtiesSuccess,
+  countSuccess,
+  updateFilter,
+  resetFiltersAndUpdateSearch
 } from './actions';
 
 const defaultState = {
@@ -13,28 +16,36 @@ const defaultState = {
     searchQuery: '',
     distance: null,
     sort: 'price',
-    specialties: [],
-    coordinates: {
-      lat: 0,
-      lng: 0
-    },
+    specialties: null,
   },
   specialtiesList: [],
-  loadingResults: true
+  totalDentistCount: 0,
+  loadingResults: true,
+  errors: null
 };
 
 const searchReducer = {
-  [searchRequest]: (state) => {
+  [searchRequest]: state => {
     return {
       ...state,
-      loadingResults: true
+      loadingResults: true,
+      errors: null
     };
   },
   [searchSuccess]: (state, dentists) => {
     return {
       ...state,
       searchResults: dentists,
-      loadingResults: false
+      loadingResults: false,
+      errors: null
+    };
+  },
+  [searchError]: (state, errors) => {
+    return {
+      ...state,
+      searchResults: [],
+      loadingResults: false,
+      errors
     };
   },
   [specialtiesSuccess]: (state, specialtiesList) => {
@@ -42,7 +53,25 @@ const searchReducer = {
       ...state,
       specialtiesList
     };
-  }
+  },
+  [countSuccess]: (state, totalDentistCount) => ({
+    ...state,
+    totalDentistCount
+  }),
+  [updateFilter]: (state, filter) => ({
+    ...state,
+    filters: {
+      ...state.filters,
+      [filter.name]: filter.value
+    }
+  }),
+  [resetFiltersAndUpdateSearch]: (state, searchQuery) => ({
+    ...state,
+    filters: {
+      ...defaultState.filters,
+      searchQuery
+    }
+  })
 };
 
 export default createReducer(searchReducer, defaultState);

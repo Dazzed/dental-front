@@ -13,6 +13,7 @@ const initialState = {
 
 const dentistProfileReducer = {
   [dentistProfileSuccess]: (state, dentist) => {
+    dentist.dentistInfo.workingHours = dentist.dentistInfo.workingHours.reverse();
     return {
       ...state,
       dentist,

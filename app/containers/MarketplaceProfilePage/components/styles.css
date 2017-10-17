@@ -104,6 +104,12 @@ Marketplace Profile
     position: relative;
     top: calc(50% - 41px); /* 41 = 82px/2 = height/2 */
   }
+
+  .no-review-warning {
+    display: inline-block;
+    margin-left: 1rem;
+    font-size: 0.75rem;
+  }
 }
 
 .detail {
@@ -128,8 +134,19 @@ Marketplace Profile
 
 .work-hours__hour {
   display: inline-block;
-  width: 45px;
+  width: 48px;
   margin: 0 10px;
+
+  text-align: right;
+}
+
+.work-hours__closed {
+  display: inline-block;
+  width: 140px;
+  margin: 0 10px;
+
+  color: red;
+  text-align: center;
 }
 
 /*
@@ -156,11 +173,6 @@ Map
   padding: 2rem;
 
   background-color: $color-secondary-lowlight;
-}
-
-.closed {
-  color: red;
-  text-align: center;
 }
 
 /*
@@ -254,6 +266,7 @@ Map
 
 .office-image {
   height: 100%;
+  width: 85%;
 }
 
 .chevron-left {
@@ -302,6 +315,7 @@ Map
   border-top: 1px solid rgba(37,40,43,.25);
   border-bottom: 1px solid rgba(37,40,43,.25);
   padding-bottom: 2%;
+  text-align: center;
 }
 
 .membership-page-disclaimer-container {
@@ -313,8 +327,14 @@ Map
   color: #00A1DF;
   font-size: 1.75rem;
   font-weight: bold;
+  text-align: center;
 }
 
-.custom-membership-disclaimer {
-  font-size: 12px;
+.custom-membership-subheader {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

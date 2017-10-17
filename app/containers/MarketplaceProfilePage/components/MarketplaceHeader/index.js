@@ -46,15 +46,13 @@ function MarketplaceHeader (props) {
             <span styleName="large-title">
               {title}
             </span>
-            <span styleName="signup--button-container">
-              <Button
-                styleName="signup--button"
-                className="btn-lg"
-                bsStyle="success"
-                onClick={() => history.push(`/accounts/signup/my-dentist/${id}?frommarketplace=true`)}>
-                SIGN UP
-              </Button>
-            </span>
+            <Button
+              styleName="signup--button"
+              className="btn-lg"
+              bsStyle="success"
+              onClick={() => history.push(`/accounts/signup/my-dentist/${id}?frommarketplace=true`)}>
+              SIGN UP
+            </Button>
           </div>
         </div>
       </div>

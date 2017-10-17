@@ -33,6 +33,14 @@ function GoogleMaps(props) {
   }
 
   function getMapPos() {
+    // precondition: must have markers
+    if (markers.length === 0) {
+      return {
+        lat: 34.1,
+        lng: -118.5
+      }
+    }
+
     let latSum = 0;
     let lngSum = 0;
 
@@ -51,7 +59,7 @@ function GoogleMaps(props) {
     <div styleName="map-wrapper">
       <GoogleMapReact
         center={getMapPos()}
-        defaultZoom={7}
+        defaultZoom={10}
         bootstrapURLKeys={{
           key: 'AIzaSyDVwZs96MdlR8UdGKAxf9ndeb4GxpVF1Ho',
         }}
