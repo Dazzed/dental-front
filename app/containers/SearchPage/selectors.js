@@ -31,6 +31,21 @@ const searchLoadingStatusSelector = createSelector(
   (substate) => get(substate, 'loadingResults')
 );
 
+const dentistCountSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'totalDentistCount')
+);
+
+const errorsSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'errors')
+);
+
+const activeFiltersSelector = createSelector(
+  domainSelector,
+  (substate) => get(substate, 'filters')
+);
+
 /*
 Exports
 ------------------------------------------------------------
@@ -41,5 +56,8 @@ export {
   // search
   searchResultsSelector,
   specialtiesListSelector,
-  searchLoadingStatusSelector
+  searchLoadingStatusSelector,
+  dentistCountSelector,
+  errorsSelector,
+  activeFiltersSelector
 };
