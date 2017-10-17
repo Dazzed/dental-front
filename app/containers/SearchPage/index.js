@@ -193,6 +193,7 @@ export default class SearchPage extends Component {
           name: 'sort',
           value: sortType
         });
+        this.fireSearch();
       };
       this.setState({
         filters: {
