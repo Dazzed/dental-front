@@ -103,7 +103,7 @@ export default class Filters extends React.Component {
             <DropdownButton
               styleName="filter-button"
               bsSize="large"
-              title={selectedSpecialty ? `SPECIALTY - ${this.getSpecialty(activeSpecialty)` : 'SPECIALTY'}
+              title={this.getSpecialty(activeSpecialty) ? `SPECIALTY - ${this.getSpecialty(activeSpecialty)}` : 'SPECIALTY'}
               id="dropdown-no-caret"
               noCaret
               onSelect={this.selectSpecialty}
