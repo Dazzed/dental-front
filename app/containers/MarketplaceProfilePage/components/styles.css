@@ -330,8 +330,9 @@ Map
   text-align: center;
 }
 
-.custom-membership-disclaimer {
-  font-size: 12px;
+.custom-membership-subheader {
+  font-size: 1.25rem;
+  text-align: center;
 }
 
 .cursor-pointer {
