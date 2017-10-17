@@ -15,6 +15,8 @@ import GoogleMaps from "components/GoogleMaps";
 import SearchForm from "containers/SearchForm";
 import Filters from "./components/filters";
 
+import { disambiguateInitialQueryParams } from './helpers';
+
 import {
   searchRequest,
   updateFilter,
@@ -73,11 +75,27 @@ export default class SearchPage extends Component {
   };
 
   componentWillMount () {
+    const queryFilters = disambiguateInitialQueryParams(this.props.location);
     this.state = {
       activeResultId: null,
-      filters: this.props.activeFilters
+      filters: {
+        ...this.props.activeFilters,
+        ...queryFilters
+      }
     };
-    this.fireSearch(true);
+    if (Object.keys(queryFilters).length === 1) {
+      this.props.resetFiltersAndUpdateSearch(queryFilters.searchQuery);
+    } else {
+      for (const key in queryFilters) {
+        this.props.updateFilter({
+          name: key,
+          value: queryFilters[key]
+        });
+      }
+    }
+    if (this.props.searchResults.length === 0) {
+      this.fireSearch(true);
+    }
   }
 
   updateQueryString = specialtiesRequired => {

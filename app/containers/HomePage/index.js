@@ -66,6 +66,7 @@ export default class HomePage extends React.Component {
 
     this.state = {
       showMarketingVideo: false,
+      searchQuery: ''
     };
   }
 
@@ -88,7 +89,19 @@ export default class HomePage extends React.Component {
     });
   }
 
-  render() {
+  onSearch = searchQuery => {
+    this.setState({ searchQuery });
+  }
+
+  searchRequested = () => {
+    const { searchQuery } = this.state;
+    if (searchQuery) {
+      this.props.changeRoute(`/search?searchQuery=${searchQuery}`);
+    }
+  }
+
+  render () {
+    const { searchQuery } = this.state;
     return (
       <div styleName="wrapper">
 
@@ -120,7 +133,12 @@ export default class HomePage extends React.Component {
             <h2>Quality, Affordable Membership Plans</h2>
           </header>
 
-          {/*<SearchForm />*/}
+          <SearchForm
+            header
+            query={searchQuery}
+            onSearch={this.onSearch}
+            onSubmit={this.searchRequested}
+          />
           <div styleName="next-section-cover">
             <h3>
               Find affordable monthly service plans from the best dentists in your area!
