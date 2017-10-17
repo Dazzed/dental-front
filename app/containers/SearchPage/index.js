@@ -15,7 +15,11 @@ import GoogleMaps from "components/GoogleMaps";
 import SearchForm from "containers/SearchForm";
 import Filters from "./components/filters";
 
-import { searchRequest } from "./actions";
+import {
+  searchRequest,
+  updateFilter,
+  resetFiltersAndUpdateSearch
+} from "./actions";
 
 import {
   searchResultsSelector,
@@ -46,7 +50,11 @@ function mapDispatchToProps (dispatch) {
 
     // search
     searchRequest: (filters, specialtiesRequired) =>
-      dispatch(searchRequest(filters, specialtiesRequired))
+      dispatch(searchRequest(filters, specialtiesRequired)),
+    updateFilter: filter =>
+      dispatch(updateFilter(filter)),
+    resetFiltersAndUpdateSearch: searchQuery =>
+      dispatch(resetFiltersAndUpdateSearch(searchQuery))
   };
 }
 
@@ -58,75 +66,39 @@ export default class SearchPage extends Component {
     searchResults: React.PropTypes.array.isRequired,
     specialtiesList: React.PropTypes.array.isRequired,
     totalDentistCount: React.PropTypes.number.isRequired,
-    loadingResults: React.PropTypes.bool.isRequired
+    loadingResults: React.PropTypes.bool.isRequired,
+    activeFilters: React.PropTypes.shape({}).isRequired,
+    updateFilter: React.PropTypes.func.isRequired,
+    resetFiltersAndUpdateSearch: React.PropTypes.func.isRequired,
   };
-
-  initialState = {
-    searchQuery: '',
-    specialties: [],
-    distance: null,
-    sort: 'price',
-    coordinates: {
-      lat: 34.1,
-      lng: -118.5
-    }
-  };
-
-  constructor (props) {
-    super(props);
-
-    this.state = this.initialState;
-  }
 
   componentWillMount () {
+    this.state = {
+      activeResultId: null,
+      filters: this.props.activeFilters
+    };
     this.fireSearch(true);
   }
 
-  onSearch = query => {
-    this.setState({
-      searchQuery: query
+  updateQueryString = specialtiesRequired => {
+    const { history, location } = this.props;
+    const { filters } = this.state;
+    history.push({
+      ...location,
+      query: {
+        ...location.query,
+        ...filters,
+        distance: filters.distance || 'any',
+        specialties: filters.specialties || 'any'
+      }
     });
-  }
-
-  searchRequested = () => {
-    this.setState({
-      ...this.initialState,
-      searchQuery: this.state.searchQuery
-    }, () => {
-      this.filterComponent.resetFilters();
-      this.fireSearch();
-    });
-  }
-
-  onSelectDistance = distance => {
-    this.setState({
-      distance
-    }, this.fireSearch);
-  }
-
-  onSelectSpecialty = specialty => {
-    if (specialty) {
-      this.setState({
-        specialties: [ specialty ]
-      }, this.fireSearch);
-    } else {
-      this.setState({
-        specialties: []
-      }, this.fireSearch);
-    }
-  }
-
-  onSelectSortType = sortType => {
-    if (sortType === 'score') {
-      return false;
-    }
-    this.setState({
-      sort: sortType
-    }, this.fireSearch);
-  }
-
-  fireSearch = (specialtiesRequired = false) => {
-    const { searchQuery, specialties, distance, sort, coordinates } = this.state;
+    const {
+      searchQuery,
+      distance,
+      sort,
+      specialties,
+      coordinates
+    } = this.state.filters;
     this.props.searchRequest(
       {
         searchQuery,
@@ -137,6 +109,98 @@ export default class SearchPage extends Component {
       },
       specialtiesRequired
     );
+  }
+
+  onSearch = query => {
+    const cb = () => this.props.updateFilter({
+      name: 'searchQuery',
+      value: query
+    });
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        searchQuery: query
+      }
+    }, cb);
+  }
+
+  searchRequested = () => {
+    const { activeFilters: {
+      searchQuery
+    } } = this.props;
+    this.props.resetFiltersAndUpdateSearch(searchQuery);
+    this.fireSearch();
+  }
+
+  onSelectDistance = distance => {
+    const cb = () => {
+      this.props.updateFilter({
+        name: 'distance',
+        value: distance
+      });
+      this.fireSearch();
+    };
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        distance
+      }
+    }, cb);
+  }
+
+  onSelectSpecialty = specialty => {
+    const cb = () => {
+      this.props.updateFilter({
+        name: 'specialties',
+        value: specialty
+      });
+      this.fireSearch();
+    };
+    const { filters } = this.state;
+    this.setState({
+      filters: {
+        ...filters,
+        specialties: specialty
+      }
+    }, cb);
+  }
+
+  onSelectSortType = sortType => {
+    const { filters } = this.state;
+    if (sortType === 'score') {
+      const cb = () => {
+        this.props.updateFilter({
+          name: 'sort',
+          value: sortType
+        });
+      };
+      this.setState({
+        filters: {
+          ...filters,
+          sort: sortType
+        }
+      }, cb);
+    } else {
+      const cb = () => {
+        this.props.updateFilter({
+          name: 'sort',
+          value: sortType
+        });
+        this.fireSearch();
+      };
+      this.setState({
+        filters: {
+          ...filters,
+          sort: sortType
+        }
+      }, cb);
+    }
+  }
+
+  fireSearch = (specialtiesRequired = false) => {
+    this.updateQueryString(specialtiesRequired);
   }
 
   updateActiveResultId = id => {
@@ -257,23 +321,37 @@ export default class SearchPage extends Component {
       loadingResults
     } = this.props;
 
-    
+    const {
+      activeFilters: {
+        distance,
+        sort,
+        specialties,
+      }
+    } = this.props;
     const borderContent = (
       <span className="text-uppercase">
         <Filters
           specialtiesList={specialtiesList}
+          activeDistance={distance}
+          activeSort={sort}
+          activeSpecialty={specialties}
           onSelectDistance={this.onSelectDistance}
           onSelectSpecialty={this.onSelectSpecialty}
           onSelectSortType={this.onSelectSortType}
-          ref={filterComponent => { this.filterComponent = filterComponent; }}
         />
       </span>
     );
 
+    const {
+      activeFilters: {
+        searchQuery
+      }
+    } = this.props;
+
     const searchForm = (
       <SearchForm
         header
-        query={this.props.location.query.q}
+        query={searchQuery}
         onSearch={this.onSearch}
         onSubmit={this.searchRequested}
         shouldDisable={loadingResults}

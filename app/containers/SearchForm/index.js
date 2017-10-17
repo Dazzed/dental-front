@@ -33,19 +33,7 @@ export default class SearchForm extends Component {
     changeRoute: React.PropTypes.func,
   };
 
-  constructor (props) {
-    super(props);
-
-    // Intentionally forking props here
-    this.state = {
-      query: this.props.query || '',
-    };
-  }
-
   handleSearchInputChange = (e) => {
-    this.setState({
-      query: e.target.value,
-    });
     this.props.onSearch(e.target.value);
   }
 
@@ -56,7 +44,7 @@ export default class SearchForm extends Component {
   }
 
   render () {
-    const { header, shouldDisable } = this.props;
+    const { header, shouldDisable, query } = this.props;
     return (
       <form noValidate onSubmit={this.performDentistSearch}>
         <input
@@ -64,7 +52,7 @@ export default class SearchForm extends Component {
           type="text"
           styleName="search"
           placeholder={shouldDisable ? 'Please wait...' : 'Enter your zip code to begin!'}
-          value={this.state.query}
+          value={query}
           onChange={this.handleSearchInputChange}
           required
         />

@@ -13,11 +13,7 @@ import {
 } from './actions';
 
 function* main() {
-  const watcherA = yield fork(searchWatcher);
-
-  yield take(LOCATION_CHANGE);
-
-  yield cancel(watcherA);
+  yield fork(searchWatcher);
 }
 
 function* searchWatcher() {

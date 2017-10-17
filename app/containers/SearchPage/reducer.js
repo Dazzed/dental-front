@@ -6,6 +6,8 @@ import {
   searchError,
   specialtiesSuccess,
   countSuccess,
+  updateFilter,
+  resetFiltersAndUpdateSearch
 } from './actions';
 
 const defaultState = {
@@ -14,11 +16,7 @@ const defaultState = {
     searchQuery: '',
     distance: null,
     sort: 'price',
-    specialties: [],
-    coordinates: {
-      lat: 0,
-      lng: 0
-    },
+    specialties: null,
   },
   specialtiesList: [],
   totalDentistCount: 0,
@@ -27,10 +25,9 @@ const defaultState = {
 };
 
 const searchReducer = {
-  [searchRequest]: (state, payload) => {
+  [searchRequest]: state => {
     return {
       ...state,
-      filters: payload.filters,
       loadingResults: true,
       errors: null
     };
@@ -60,6 +57,20 @@ const searchReducer = {
   [countSuccess]: (state, totalDentistCount) => ({
     ...state,
     totalDentistCount
+  }),
+  [updateFilter]: (state, filter) => ({
+    ...state,
+    filters: {
+      ...state.filters,
+      [filter.name]: filter.value
+    }
+  }),
+  [resetFiltersAndUpdateSearch]: (state, searchQuery) => ({
+    ...state,
+    filters: {
+      ...defaultState.filters,
+      searchQuery
+    }
   })
 };
 

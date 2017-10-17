@@ -32,6 +32,17 @@ const specialtiesError = createAction('SEARCH_PAGE_SPECIALTIES_ERROR', errors =>
   };
 });
 
+// FILTER ACTIONS
+const updateFilter = createAction(
+  'SEARCH_PAGE_UPDATE_FILTER',
+  filter => filter
+);
+
+const resetFiltersAndUpdateSearch = createAction(
+  'SEARCH_PAGE_RESET_FILTERS_AND_UPDATE_SEARCH',
+  searchQuery => searchQuery
+);
+
 export {
   searchRequest,
   searchSuccess,
@@ -39,5 +50,7 @@ export {
   specialtiesRequest,
   specialtiesSuccess,
   countSuccess,
-  specialtiesError
+  specialtiesError,
+  updateFilter,
+  resetFiltersAndUpdateSearch
 };
