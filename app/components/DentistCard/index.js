@@ -48,14 +48,8 @@ const renderAffordabilityScore = score => {
   );
 };
 
-function DentistCard(dentist) {
+function DentistCard (dentist) {
   const numReviews = dentist.user.dentistReviews.length;
-  let rating = null;
-  if (dentist.user.dentistReviews.length > 0) {
-    rating = dentist.user.dentistReviews.reduce((acc, r) => acc + r.rating, 0);
-    rating /= numReviews;
-  }
-
   const {
     id,
     user: { firstName, lastName, id: userId },
@@ -67,7 +61,8 @@ function DentistCard(dentist) {
     active,
     updateActiveId,
     handleClick,
-    officeName
+    officeName,
+    rating
   } = dentist;
 
   return (
