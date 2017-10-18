@@ -196,9 +196,7 @@ First Block
   background: url(assets/images/brushing-teeth.jpg) top center / cover no-repeat;
 
   header {
-    display: inline-block;
-    margin: 6rem auto 8rem auto;
-    padding: 2rem 4rem 4rem 4rem;
+    padding: 7rem 0 9rem 0;
     background: rgba(255, 255, 255, 0.15);
 
     h1 {
