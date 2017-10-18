@@ -18,10 +18,11 @@ const renderPopover = () => {
       className="popover--large"
       placement="bottom"
     >
-    <p>
-      The affordability index rates each dentist treatment fees against other dentist in their zip code,
-      a lower score shows more affordable pricing while a higher score shows less affordable pricing
-    </p>
+      <p>
+        The Affordability Index indicates how the dentist’s prices compare to
+        other dentists in the same zip code. A lower index indicates a lower
+        relative cost to other dentists in the same zip code.
+      </p>
     </Popover>
   );
 };
