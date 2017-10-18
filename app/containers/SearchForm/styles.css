@@ -35,7 +35,7 @@ Imports
 form {
   .search {
     width: 500px;
-    border: 1px solid $color-white;
+    border: 3px solid $color-white;
     border-radius: 0.5rem;
     padding: 1rem 2rem;
 
