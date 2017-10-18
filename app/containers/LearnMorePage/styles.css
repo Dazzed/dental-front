@@ -120,6 +120,11 @@ Second Block
     font-size: 2rem;
     text-align: right;
   }
+
+  .bullet-point {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /*
