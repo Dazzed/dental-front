@@ -11,9 +11,21 @@ const initialState = {
   errorLoading: false
 };
 
+const dayOrder = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+  saturday: 5,
+  sunday: 6,
+};
+
 const dentistProfileReducer = {
   [dentistProfileSuccess]: (state, dentist) => {
-    dentist.dentistInfo.workingHours = dentist.dentistInfo.workingHours.reverse();
+    dentist.dentistInfo.workingHours = dentist.dentistInfo.workingHours.sort((A, B) => {
+      return dayOrder[A.day] - dayOrder[B.day];
+    });
     return {
       ...state,
       dentist,
