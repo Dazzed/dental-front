@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import { reset as resetForm } from 'redux-form';
-import FaCheck from 'react-icons/lib/fa/check';
+import spyglass from 'assets/images/office-location.png';
 
 // app
 import ContactUsFormModal from 'components/ContactUsFormModal';
@@ -166,7 +166,7 @@ export default class LearnMorePage extends React.Component {
                 <div styleName="features">
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Completely automate your in-house memberships.
@@ -175,7 +175,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Attract new patients through the DentalHQ Marketplace.
@@ -184,7 +184,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Offer both monthly and annual payment options.
@@ -193,7 +193,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       It's risk-free - no setup fees, no monthly fees, cancel anytime.
@@ -202,7 +202,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Get signed up and into your dashboard in under 10 minutes.
@@ -211,7 +211,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Customize your memberships - you decide your pricing and benefits.
@@ -220,7 +220,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Fully compliant - HIPPA, PHI, PCI
@@ -229,7 +229,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       White-labeled with your logo, and easily integrated with your website.
@@ -238,7 +238,7 @@ export default class LearnMorePage extends React.Component {
 
                   <div className="row">
                     <div className="col-md-offset-1 col-md-1" styleName="feature__check">
-                      <FaCheck />
+                      <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
                     <div className="col-md-10" styleName="feature">
                       Branded marketing materials provided at no cost to you.

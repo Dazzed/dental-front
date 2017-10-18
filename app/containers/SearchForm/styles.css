@@ -34,19 +34,20 @@ Imports
 
 form {
   .search {
-    width: 34rem;
-    border: 1px solid $color-white;
+    width: 500px;
+    border: 2px solid $color-primary-highlight;
     border-radius: 0.5rem;
     padding: 1rem 2rem;
 
     color: $color-primary-lowlight;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
 
     &:hover,
     &:active,
     &:focus,
     &:valid {
-      background-color: rgba(255, 255, 255, 0.8);
+      outline: none;
+      background-color: rgba(255, 255, 255, 1);
     }
 
     &::-webkit-input-placeholder {
@@ -79,7 +80,7 @@ form {
   }
 
   .button {
-    margin-top: 1rem;
+    margin-left: 2rem;
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.8);

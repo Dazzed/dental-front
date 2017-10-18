@@ -26,7 +26,7 @@ import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
 // app
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/logo-and-slogan.png';
 import calendarIcon from 'assets/images/calendar-icon.png';
 import checkboardIcon from 'assets/images/checkboard-icon.png';
 // import marketingVideoPoster from 'assets/images/marketing-video-poster.png';
@@ -130,15 +130,14 @@ export default class HomePage extends React.Component {
             <h1>
               <img src={logo} alt="DentalHQ Logo" />
             </h1>
-            <h2>Quality, Affordable Membership Plans</h2>
+            <SearchForm
+              header
+              query={searchQuery}
+              onSearch={this.onSearch}
+              onSubmit={this.searchRequested}
+            />
           </header>
 
-          <SearchForm
-            header
-            query={searchQuery}
-            onSearch={this.onSearch}
-            onSubmit={this.searchRequested}
-          />
           <div styleName="next-section-cover">
             <h3>
               Find affordable monthly service plans from the best dentists in your area!

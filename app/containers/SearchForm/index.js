@@ -56,7 +56,6 @@ export default class SearchForm extends Component {
           onChange={this.handleSearchInputChange}
           required
         />
-        <br />
         <input
           type="submit"
           styleName="button"
