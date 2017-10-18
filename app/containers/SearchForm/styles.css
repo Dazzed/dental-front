@@ -35,7 +35,7 @@ Imports
 form {
   .search {
     width: 500px;
-    border: 3px solid $color-white;
+    border: 2px solid $color-primary-highlight;
     border-radius: 0.5rem;
     padding: 1rem 2rem;
 
@@ -46,6 +46,7 @@ form {
     &:active,
     &:focus,
     &:valid {
+      outline: none;
       background-color: rgba(255, 255, 255, 1);
     }
 
