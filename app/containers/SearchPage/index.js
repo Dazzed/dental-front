@@ -303,7 +303,9 @@ export default class SearchPage extends Component {
           </div>
           <div className="row">
             {this.renderResultsCount()}
-            <div className="col-md-6">{this.renderDentists()}</div>
+            <div className="col-md-6" styleName="scroll-dentists">
+              {this.renderDentists()}
+            </div>
             <div className="col-md-6">{this.renderMap()}</div>
           </div>
         </div>
@@ -313,7 +315,9 @@ export default class SearchPage extends Component {
         <div className="container">
           <div className="row">
             {this.renderResultsCount()}
-            <div className="col-md-6">{this.renderDentists()}</div>
+            <div className="col-md-6" styleName="scroll-dentists">
+              {this.renderDentists()}
+            </div>
             <div className="col-md-6">{this.renderMap()}</div>
           </div>
         </div>

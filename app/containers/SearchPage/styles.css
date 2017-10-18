@@ -35,6 +35,11 @@ Page-Wide
 Dentist List
 ================================================================================
 */
+.scroll-dentists {
+  height: 600px;
+  overflow: auto;
+}
+
 .dentist-list {
   margin-top: 40px;
   margin-left: 0;
