@@ -196,23 +196,17 @@ First Block
   background: url(assets/images/brushing-teeth.jpg) top center / cover no-repeat;
 
   header {
-    padding: 10rem 0 16rem 0;
+    display: inline-block;
+    margin: 6rem auto 8rem auto;
+    padding: 2rem 4rem 4rem 4rem;
+    background: rgba(255, 255, 255, 0.15);
 
     h1 {
-      margin: 0.5rem 0 0 0;
-    }
-
-    h2 {
-      margin: 0;
-
-      color: rgba(90, 162, 103, 0.8); /* NOTE: not one of the usual colors... */
-
-      font-size: 2rem;
+      margin: 0 0 2rem 0;
     }
   }
 
   .next-section-cover {
-    margin-top: 5rem;
     padding: 2rem 0 1rem 0;
 
     color: $color-white;
