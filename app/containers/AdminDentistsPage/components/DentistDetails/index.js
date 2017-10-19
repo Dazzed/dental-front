@@ -167,7 +167,7 @@ const DentistDetails = ({ selectedDentist, onEditDentist }) => {
           Marketplace:
           {' '}
           <span className={styles['dentist-details__value']}>
-            {marketplaceOptIn ? 'Inactive' : 'Active'}
+            {marketplaceOptIn ? 'Active' : 'InActive'}
           </span>
         </p>
         
