@@ -2,12 +2,14 @@
 Google Maps Component Styles
 ================================================================================
 */
+@import '../../assets/styles/variables';
 
 .map-wrapper {
   height: 600px;
   max-width: 400px;
   width: 100%;
   margin: 40px auto;
+  border: 2px solid $color-primary-lowlight;
   border-radius: 30px;
   overflow: hidden;
 }
