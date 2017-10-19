@@ -75,7 +75,7 @@ export default class ContactAdminPage extends Component {
     }
     else {
       const {
-        dentistInfo:{
+        dentistInfo: {
           manager
         }
       } = user;
@@ -96,7 +96,11 @@ export default class ContactAdminPage extends Component {
               </div>
             </div>
           </div>
-        )
+        );
+      }
+      let phoneNumber = 'N/A';
+      if (manager.phoneNumbers.length) {
+        phoneNumber = manager.phoneNumbers[0].number;
       }
       return (
         <div>
@@ -138,7 +142,7 @@ export default class ContactAdminPage extends Component {
                     <div styleName="divided-row">
                       <div className="row">
                         <div className="col-sm-3">
-                          <span styleName="admin-overview__info">{manager.phoneNumbers[0].number}</span>
+                          <span styleName="admin-overview__info">Phone: {phoneNumber}</span>
                         </div>
                         <div className="col-sm-6">
                           <a href="mailto:ashley@dentalhq.com" styleName="admin-overview__email">{manager.email}</a>
