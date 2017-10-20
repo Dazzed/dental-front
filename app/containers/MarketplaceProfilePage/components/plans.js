@@ -57,7 +57,7 @@ export default class Plans extends Component {
     return (
       <div styleName="content">
         <div className="row">
-          <div className="col-md-offset-1 col-md-4">
+          <div className="col-md-offset-1 col-md-5">
             <div styleName="membership">
               <h3 styleName="membership__title">Adult Membership</h3>
 
@@ -95,7 +95,7 @@ export default class Plans extends Component {
             Child Membership
             ------------------------------------------------------------
           */}
-          <div className="col-md-offset-1 col-md-5">
+          <div className="col-md-5">
             <div styleName="membership">
               <h3 styleName="membership__title">
                 Child Membership
@@ -133,6 +133,14 @@ export default class Plans extends Component {
                 </p>
             </div>
           </div>
+        </div>
+        <div styleName="refund">
+          <p styleName="refund__title">
+            Fully Refundable
+          </p>
+          <p styleName="refund__disclaimer">
+            **within 30 days if NO services are used**
+          </p>
         </div>
         <hr />
         <div className={`row ${styles['membership-page-signup-button-container']}`}>
