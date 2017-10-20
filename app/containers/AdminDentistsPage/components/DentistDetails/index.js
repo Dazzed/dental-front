@@ -103,6 +103,8 @@ const DentistDetails = ({ selectedDentist, onEditDentist }) => {
     memberships,
     dentistInfo,
     links,
+    firstName,
+    lastName,
   } = selectedDentist;
 
   const {
@@ -138,6 +140,8 @@ const DentistDetails = ({ selectedDentist, onEditDentist }) => {
           Contact:
           <br />
           <span className={styles['dentist-details__value']}>
+            {firstName} {lastName}
+            <br />
             {email}
             <br />
             {phone}
