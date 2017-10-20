@@ -24,3 +24,7 @@ pages.
 .content-wrapper {
   margin: 2rem 0;
 }
+
+.details {
+  font-style: italic;
+}

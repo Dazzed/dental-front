@@ -49,7 +49,7 @@ const QuestionAndAnswers = [
         <p>
           If you’re dentist determines that you have Periodontal Disease he will
           recommend a treatment known as Scaling and Root planning or commonly
-          referred to as a “Deep Cleaning”. This treatment involves
+          referred to as a "Deep Cleaning". This treatment involves
           anesthetizing your gums so that you are comfortable and then using
           instruments to remove the hardened tarter and bacteria from below your
           gum line. This treatment will need to be completed prior to your
@@ -99,7 +99,7 @@ const QuestionAndAnswers = [
     answer: (
       <div>
         <p>
-          FOR MONTHLY MEMBERSHIPS: You may cancel your membership after 90 days.
+          FOR MONTHLY MEMBERSHIPS: You may cancel your membership after <strong>90 days</strong>.
           After 90 days you may cancel directly through your dashboard or you
           may cancel your membership by contacting your dental office and asking
           them to cancel your membership. If you chose to cancel your membership
@@ -127,7 +127,7 @@ const QuestionAndAnswers = [
           dentist at their discretion.
         </p>
 
-        <ul>
+        <ul className={styles['details']}>
           <li>
             If you re-enroll into an annual membership from a monthly membership
             then NO re-enrollment fee will apply.
@@ -258,9 +258,12 @@ const QuestionAndAnswers = [
     no: 10,
     question: 'What if I move or decide to transfer dental offices?',
     answer: (
-      <p>
-        Memberships may be transferred to another office that also offers in
-        office memberships through DentalHQ. However the following applies:
+      <div>
+        <p>
+          Memberships may be transferred to another office that also offers in
+          office memberships through DentalHQ. However the following applies:
+        </p>
+
         <ul>
           <li>
             Memberships may be transferred at any time, however if less than 6
@@ -285,7 +288,7 @@ const QuestionAndAnswers = [
             {' '}for a list of participating dentist offices
           </li>
         </ul>
-      </p>
+      </div>
     )
   },
 
