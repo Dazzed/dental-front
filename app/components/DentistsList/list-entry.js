@@ -57,24 +57,31 @@ export default class DentistsListEntry extends React.Component {
 
   renderFullName = (listNum, dentist) => {
     let tooltip = '';
+
+    let officeName = dentist.dentistInfo.officeName;
+    if (officeName === '' || officeName === undefined) {
+      officeName = "[no office name]";
+    }
+
     if (dentist.verified) {
       if (!dentist.dentistInfo.managerId) {
         tooltip = <Tooltip id="tooltip"><strong>Dentist is not assigned an account manager.</strong></Tooltip>;
         return (
           <OverlayTrigger placement="top" overlay={tooltip}>
             <span styleName={'list-entry__title list-entry__title_red'}>
-              {listNum}) {dentist.firstName} {dentist.lastName}
+              {listNum}) {officeName} - {dentist.firstName} {dentist.lastName}
             </span>
           </OverlayTrigger>
         );
       } else {
         return (
           <span styleName={'list-entry__title'}>
-            {listNum}) {dentist.firstName} {dentist.lastName}
+            {listNum}) {officeName} - {dentist.firstName} {dentist.lastName}
           </span>
         );
       }
     }
+
     if (dentist.dentistInfo.managerId) {
       tooltip = <Tooltip id="tooltip"><strong>Dentist is not activated.</strong></Tooltip>;
     } else {
@@ -84,10 +91,11 @@ export default class DentistsListEntry extends React.Component {
         </Tooltip>
       );
     }
+
     return (
       <OverlayTrigger placement="top" overlay={tooltip}>
         <span styleName={'list-entry__title list-entry__title_red'}>
-          {listNum}) {dentist.firstName} {dentist.lastName}
+          {listNum}) {officeName} - {dentist.firstName} {dentist.lastName}
         </span>
       </OverlayTrigger>
     );
