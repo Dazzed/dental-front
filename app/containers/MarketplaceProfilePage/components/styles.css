@@ -338,3 +338,19 @@ Map
 .cursor-pointer {
   cursor: pointer;
 }
+
+.refund {
+  margin-top: 1rem;
+
+  text-align: center;
+}
+
+.refund__title {
+  font-size: 2rem;
+}
+
+.refund__disclaimer {
+  margin-bottom: 0;
+
+  font-size: 0.75rem;
+}
