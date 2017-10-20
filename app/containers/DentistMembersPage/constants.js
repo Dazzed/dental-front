@@ -70,3 +70,8 @@ export const DELETE_OFFICE_LOGO_SUCCESS = 'app/DentistMembersPage/DELETE_OFFICE_
 export const DELETE_DENTIST_AVATAR_SUCCESS = 'app/DentistMembersPage/DELETE_DENTIST_AVATAR_SUCCESS';
 export const DELETE_DENTIST_OFFICE_IMAGE_SUCCESS = 'app/DentistMembersPage/DELETE_DENTIST_AVATAR_SUCCESS';
 // update user data at App level, see SET_USER_DATA in `/app/containers/App/constants.js`
+
+// custom membership plan constants
+export const ADD_CUSTOM_MEMBERSHIP = 'app/DentistMembersPage/ADD_CUSTOM_MEMBERSHIP';
+export const EDIT_CUSTOM_MEMBERSHIP = 'app/DentistMembersPage/EDIT_CUSTOM_MEMBERSHIP';
+export const DELETE_CUSTOM_MEMBERSHIP = 'app/DentistMembersPage/DELETE_CUSTOM_MEMBERSHIP';
