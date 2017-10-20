@@ -11,7 +11,12 @@ import {
   SERVICES_REQUEST_SUCCESS,
   CHANGE_PAGE_TITLE,
   REVIEW_ADDED,
-  REVIEW_EDITED
+  REVIEW_EDITED,
+
+  // custom memberships
+  ADD_CUSTOM_MEMBERSHIP,
+  EDIT_CUSTOM_MEMBERSHIP,
+  DELETE_CUSTOM_MEMBERSHIP,
 } from './constants';
 
 
@@ -87,6 +92,26 @@ export default function appReducer (state = initialState, action) {
         currentUser: {
           ...state.currentUser,
           clientReviews: [ payload ]
+        }
+      };
+    // Custom membership actions
+    case ADD_CUSTOM_MEMBERSHIP:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          memberships: state.currentUser.memberships.concat(action.membershipPlan)
+        }
+      };
+    case EDIT_CUSTOM_MEMBERSHIP:
+    case DELETE_CUSTOM_MEMBERSHIP:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          memberships: state.currentUser.memberships
+            .filter(m => m.type !== 'custom')
+            .concat(action.customMemberships)
         }
       };
     default:

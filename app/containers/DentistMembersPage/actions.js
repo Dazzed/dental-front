@@ -83,6 +83,11 @@ import {
   DELETE_DENTIST_AVATAR,
   DELETE_DENTIST_OFFICE_IMAGE,
 
+  // custom memberships
+  ADD_CUSTOM_MEMBERSHIP,
+  EDIT_CUSTOM_MEMBERSHIP,
+  DELETE_CUSTOM_MEMBERSHIP
+
 } from './constants';
 
 /*
@@ -460,6 +465,27 @@ export function deleteDentistOfficeImage (dentistId, dentistInfoId, dentistInfoP
     dentistId,
     dentistInfoId,
     dentistInfoPhotoId
+  };
+}
+
+export function addCustomMembership (membershipPlan) {
+  return {
+    type: ADD_CUSTOM_MEMBERSHIP,
+    membershipPlan
+  };
+}
+
+export function editCustomMembership (customMemberships) {
+  return {
+    type: EDIT_CUSTOM_MEMBERSHIP,
+    customMemberships
+  };
+}
+
+export function deleteCustomMembership (customMemberships) {
+  return {
+    type: DELETE_CUSTOM_MEMBERSHIP,
+    customMemberships
   };
 }
 // update user data at App level, see setUserData in `/app/containers/App/actions.js`

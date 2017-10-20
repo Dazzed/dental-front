@@ -11,3 +11,8 @@ export const CHANGE_PAGE_TITLE = 'App/CHANGE_PAGE_TITLE';
 
 export const REVIEW_ADDED = 'App/REVIEW_ADDED';
 export const REVIEW_EDITED = 'App/REVIEW_EDITED';
+
+// custom membership plan constants
+export const ADD_CUSTOM_MEMBERSHIP = 'App/ADD_CUSTOM_MEMBERSHIP';
+export const EDIT_CUSTOM_MEMBERSHIP = 'App/EDIT_CUSTOM_MEMBERSHIP';
+export const DELETE_CUSTOM_MEMBERSHIP = 'App/DELETE_CUSTOM_MEMBERSHIP';
