@@ -9,7 +9,12 @@ import {
 
   CHANGE_PAGE_TITLE,
   REVIEW_ADDED,
-  REVIEW_EDITED
+  REVIEW_EDITED,
+
+  // custom memberships
+  ADD_CUSTOM_MEMBERSHIP,
+  EDIT_CUSTOM_MEMBERSHIP,
+  DELETE_CUSTOM_MEMBERSHIP
 } from './constants';
 
 
@@ -82,5 +87,26 @@ export function reviewEdited (payload) {
   return {
     type: REVIEW_EDITED,
     payload
+  };
+}
+
+export function addCustomMembership (membershipPlan) {
+  return {
+    type: ADD_CUSTOM_MEMBERSHIP,
+    membershipPlan
+  };
+}
+
+export function editCustomMembership (customMemberships) {
+  return {
+    type: EDIT_CUSTOM_MEMBERSHIP,
+    customMemberships
+  };
+}
+
+export function deleteCustomMembership (customMemberships) {
+  return {
+    type: DELETE_CUSTOM_MEMBERSHIP,
+    customMemberships
   };
 }

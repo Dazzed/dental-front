@@ -53,6 +53,11 @@ import {
   DELETE_OFFICE_LOGO_SUCCESS,
   DELETE_DENTIST_AVATAR_SUCCESS,
   DELETE_DENTIST_OFFICE_IMAGE_SUCCESS,
+
+  // custom memberships
+  ADD_CUSTOM_MEMBERSHIP,
+  EDIT_CUSTOM_MEMBERSHIP,
+  DELETE_CUSTOM_MEMBERSHIP,
 } from './constants';
 
 import { setRecurringDate } from './helpers';
@@ -345,7 +350,27 @@ function dentistMembersPageReducer(state = initialState, action) {
         editingActive: false,
         editing: null,
       };
-
+    // Custom membership actions
+    case ADD_CUSTOM_MEMBERSHIP:
+      return {
+        ...state,
+        dentistInfo: {
+          ...state.dentistInfo,
+          memberships: state.dentistInfo.memberships.concat(action.membershipPlan)
+        }
+      };
+    case EDIT_CUSTOM_MEMBERSHIP:
+    case DELETE_CUSTOM_MEMBERSHIP:
+      return {
+        ...state,
+        dentistInfo: {
+          ...state.dentistInfo,
+          memberships: state.dentistInfo.memberships
+            .filter(m => m.type !== 'custom')
+            .concat(action.customMemberships)
+        }
+      };
+      
     // update user data at App level, see SET_USER_DATA in `/app/containers/App/reducer.js`
 
     /*
@@ -353,7 +378,7 @@ function dentistMembersPageReducer(state = initialState, action) {
     ------------------------------------------------------------
     */
     default:
-return state;
+      return state;
 
   }
 }

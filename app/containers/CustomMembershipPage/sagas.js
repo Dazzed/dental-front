@@ -7,6 +7,18 @@ import { change, reset, stopSubmit } from 'redux-form';
 import request from 'utils/request';
 
 import {
+  addCustomMembership as globalAddCustomMembership,
+  editCustomMembership as globalEditCustomMembership,
+  deleteCustomMembership as globalDeleteCustomMembership
+} from 'containers/App/actions';
+
+import {
+  addCustomMembership,
+  editCustomMembership,
+  deleteCustomMembership
+} from 'containers/DentistMembersPage/actions';
+
+import {
   fetchDentistInfoSuccess,
   fetchDentistInfoError,
   createMembershipSuccess,
@@ -56,6 +68,9 @@ function* createMembershipWatcher () {
       const message = `Plan named '${payload.planName}' has been added.`;
       yield put(toastrActions.success('', message));
       yield put(createMembershipSuccess(addedMembership));
+      // convey to global and DentistMembersPage actions.
+      yield put(globalAddCustomMembership(addedMembership));
+      yield put(addCustomMembership(addedMembership));
     } catch (e) {
       console.log(e);
       if (e.errors) {
@@ -82,6 +97,9 @@ function* editMembershipWatcher () {
       const message = 'Plan has been Edited Successfully.';
       yield put(toastrActions.success('', message));
       yield put(editMembershipSuccess(memberships));
+      // convey to global and DentistMembersPage actions.
+      yield put(globalEditCustomMembership(memberships));
+      yield put(editCustomMembership(memberships));
     } catch (e) {
       console.log(e);
       if (e.errors) {
@@ -108,6 +126,9 @@ function* deleteMembershipWatcher () {
       const message = 'Plan has been Deleted Successfully.';
       yield put(toastrActions.success('', message));
       yield put(deleteMembershipSuccess(memberships));
+      // convey to global and DentistMembersPage actions.
+      yield put(globalDeleteCustomMembership(memberships));
+      yield put(deleteCustomMembership(memberships));
     } catch (e) {
       console.log(e);
       if (e.errors) {
