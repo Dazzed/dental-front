@@ -169,7 +169,7 @@ export default class AdminDentistsPage extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount () {
     if (this.props.user && (!this.props.dentists || !this.props.managers)) {
       this.props.fetchDentists();
       this.props.fetchStats();
@@ -177,7 +177,7 @@ export default class AdminDentistsPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.changePageTitle('Dentists');
   }
 
