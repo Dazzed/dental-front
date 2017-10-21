@@ -27,6 +27,11 @@ import {
   FAILED_REFUNDING_MEMBER,
   REFUNDING_MEMBER_SUCCESS,
   FETCH_MASTER_REPORTS_DATES_SUCCESS,
+
+  TOGGLE_TRANSFERRING_MEMBER,
+  TRANSFER_MEMBER,
+  TRANSFER_MEMBER_SUCCESS,
+  TRANSFER_MEMBER_FAILURE
 } from './constants';
 
 /*
@@ -50,6 +55,8 @@ const initialState = {
   searchName: null,
   sortStatus: 'unassigned',
   refundingMember: null,
+  transferringMember: null,
+  isTransferringMember: false,
   masterReportsDates: {},
   editingDentistId: null
 };
@@ -204,6 +211,29 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         masterReportsDates: action.payload,
+      };
+    case TOGGLE_TRANSFERRING_MEMBER:
+      return {
+        ...state,
+        transferringMember: action.memberId
+      };
+    case TRANSFER_MEMBER:
+      return {
+        ...state,
+        isTransferringMember: true
+      };
+    case TRANSFER_MEMBER_SUCCESS:
+      return {
+        ...state,
+        transferringMember: null,
+        isTransferringMember: false,
+        dentistMembers: state.dentistMembers
+          .filter(m => m.id !== action.memberId)
+      };
+    case TRANSFER_MEMBER_FAILURE:
+      return {
+        ...state,
+        isTransferringMember: false
       };
     /*
     Default Reducer

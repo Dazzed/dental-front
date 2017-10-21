@@ -42,6 +42,8 @@ import {
   toggleRefundingMember,
   initiateRefundingMember,
   fetchManagers,
+  toggleTransferringMember,
+  transferMember
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -58,12 +60,15 @@ import {
   selectProcessedDentists,
   selectRefundingMember,
   selectManagers,
+  transferringMemberSelector,
+  isTransferringMemberSelector
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
 import styles from './styles.css';
 
 import RefundMemberForm from './modals/refund';
+import TransferMemberModal from './modals/transferMember';
 /*
 Redux
 ------------------------------------------------------------
@@ -85,6 +90,8 @@ function mapStateToProps (state) {
     processedDentists: selectProcessedDentists(state),
     refundingMember: selectRefundingMember(state),
     managers: selectManagers(state),
+    transferringMember: transferringMemberSelector(state),
+    isTransferringMember: isTransferringMemberSelector(state)
   };
 }
 
@@ -107,6 +114,9 @@ function mapDispatchToProps (dispatch) {
     toggleRefundingMember: (id) => dispatch(toggleRefundingMember(id)),
     initiateRefundingMember: (id, amount) => dispatch(initiateRefundingMember(id, amount)),
     fetchManagers: () => dispatch(fetchManagers()),
+    toggleTransferringMember: (memberId) => dispatch(toggleTransferringMember(memberId)),
+    transferMember: (memberId, shouldChargeReEnrollmentFree) =>
+      dispatch(transferMember(memberId, shouldChargeReEnrollmentFree)),
   };
 }
 
@@ -151,6 +161,10 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
+
+    toggleTransferringMember: React.PropTypes.func.isRequired,
+    transferMember: React.PropTypes.func.isRequired,
+    isTransferringMember: React.PropTypes.bool.isRequired
   }
 
   constructor (props) {
@@ -213,7 +227,7 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   onTransfer = (dentist, patient) => {
-    alert('transfer "' + patient.firstName + ' ' + patient.lastName + '"');
+    this.props.toggleTransferringMember(patient.id);
   }
 
   /* Render Dentist Members
@@ -410,6 +424,25 @@ export default class AdminDentistsPage extends React.Component {
     );
   }
 
+  renderTransferMemberModal = () => {
+    const {
+      transferringMember,
+      isTransferringMember
+    } = this.props;
+    const onCancel = () => this.props.toggleTransferringMember(null);
+    if (transferringMember) {
+      return (
+        <TransferMemberModal
+          onCancel={onCancel}
+          transferringMember={transferringMember}
+          isTransferringMember={isTransferringMember}
+          transferMember={this.props.transferMember}
+        />
+      );
+    }
+    return null;
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -428,6 +461,7 @@ export default class AdminDentistsPage extends React.Component {
       // search / sort dentists
       currentSortTerm,
       processedDentists,
+      transferringMember
     } = this.props;
 
     const {
@@ -517,7 +551,9 @@ export default class AdminDentistsPage extends React.Component {
           refundingMember={this.props.refundingMember ? true : false}
           onSubmit={this.handleRefundSubmit}
           onCancel={this.cancelRefunding}
-         />
+        />
+
+        {this.renderTransferMemberModal()}
       </div>
     );
   }
