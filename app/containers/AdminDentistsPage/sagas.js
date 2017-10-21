@@ -77,9 +77,10 @@ import {
   REFUNDING_MEMBER_SUCCESS,
   FETCH_MASTER_REPORTS_DATES,
   FETCH_MASTER_REPORTS_DATES_SUCCESS,
+  TRANSFER_MEMBER,
+  TRANSFER_MEMBER_SUCCESS,
+  TRANSFER_MEMBER_FAILURE
 } from './constants';
-
-import superCompare from 'utils/superCompare';
 
 /*
 Sagas
@@ -104,6 +105,7 @@ function* main () {
   const watcherK = yield fork(managersFetcher);
   const watcherL = yield fork(refundSubmitWatcher);
   const watcherM = yield fork(masterReportsDatesFetcher);
+  const watcherN = yield fork(transferMemberWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -119,6 +121,7 @@ function* main () {
   yield cancel(watcherK);
   yield cancel(watcherL);
   yield cancel(watcherM);
+  yield cancel(watcherN);
 }
 
 
@@ -419,4 +422,31 @@ function* masterReportsDatesFetcher() {
       }
     });
   }
+}
+
+function* transferMemberWatcher () {
+  yield* takeLatest(TRANSFER_MEMBER, function* handler({ memberId, shouldChargeReEnrollmentFree }) {
+    try {
+      const body = {
+        memberId,
+        shouldChargeReEnrollmentFree
+      };
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(body)
+      };
+      const requestUrl = '/api/v1/admin/members/transfer/';
+      const { memberId: transferredMemberId } = yield call(request, requestUrl, params);
+      yield put({
+        type: TRANSFER_MEMBER_SUCCESS,
+        memberId: transferredMemberId
+      });
+      const message = 'Member has been successfully transferred.';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', e.errors));
+      yield put({ type: TRANSFER_MEMBER_FAILURE });
+    }
+  });
 }

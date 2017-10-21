@@ -1,0 +1,60 @@
+@import '../../../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+:global(.modal-body) {
+  padding-bottom: 1.5rem;
+}
+
+.field-instructions {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+
+  font-weight: 300;
+}
+
+  .personal-info__change-link {
+    display: block;
+    margin-top: 0.5rem;
+
+    color: $color-primary-transparent;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-primary-highlight;
+      text-decoration: none;
+    }
+  }
+
+.spacer {
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.spacer--members-list {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.modal-section-title {
+  margin: 0 0 1rem 0;
+
+  color: $color-primary-highlight;
+
+  font-size: 1.5rem;
+}
+
+.float-left {
+  float: left
+}
+
+.charge-text {
+  float: right;
+  padding-top: 3px;
+  padding-left: 6px;
+}
