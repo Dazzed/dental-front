@@ -95,9 +95,7 @@ export default class HomePage extends React.Component {
 
   searchRequested = () => {
     const { searchQuery } = this.state;
-    if (searchQuery) {
-      this.props.changeRoute(`/search?searchQuery=${searchQuery}`);
-    }
+    this.props.changeRoute(`/search?searchQuery=${searchQuery}`);
   }
 
   render () {
