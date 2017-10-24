@@ -161,7 +161,7 @@ class PatientsList extends React.Component {
       // (only members w/o a cancellation pending)
       const paymentDueAmount = activeMembers
         .reduce((paymentDueAccumulator, member) => {
-          if (member.subscription.membership.type === 'month') {
+          if (member.subscription.membership.type === 'month' || member.subscription.membership.type === 'custom') {
             paymentDueAccumulator += Number.parseFloat(member.subscription.membership.price);
           }
           return paymentDueAccumulator;
