@@ -17,12 +17,18 @@
 </head>
 
 <body>
+  <!-- begin olark code -->
+  <script type="text/javascript" async> ;(function(o,l,a,r,k,y){if(o.olark)return; r="script";y=l.createElement(r);r=l.getElementsByTagName(r)[0]; y.async=1;y.src="//"+a;r.parentNode.insertBefore(y,r); y=o.olark=function(){k.s.push(arguments);k.t.push(+new Date)}; y.extend=function(i,j){y("extend",i,j)}; y.identify=function(i){y("identify",k.i=i)}; y.configure=function(i,j){y("configure",i,j);k.c[i]=j}; k=y._={s:[],t:[+new Date],c:{},l:a}; })(window,document,"static.olark.com/jsclient/loader.js");
+  /* custom configuration goes here (www.olark.com/documentation) */
+  olark.identify('2251-427-10-6064');</script>
+  <!-- end olark code -->
+
+
   <!-- The app hooks into this div -->
   <div id="app"></div>
   <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
   <!-- <script src="https://core.spreedly.com/iframe/iframe-v1.min.js"></script> -->
-
 </body>
 
 </html>
