@@ -243,8 +243,8 @@ class PatientMembershipInfoPage extends React.Component {
                 <ul styleName="membership__includes-list">
                   <li><FaCheck /> 2 cleanings/year*</li>
                   <li><FaCheck /> 1-2 exams/year</li>
-                  <li><FaCheck /> Xrays as determined necessary</li>
-                  <li><FaCheck /> 1 emergency exam with xray/year</li>
+                  <li><FaCheck /> X-rays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with X-ray/year</li>
                   <li><FaCheck /> 10% off any needed treatment</li>
                 </ul>
 
@@ -285,8 +285,8 @@ class PatientMembershipInfoPage extends React.Component {
                 <ul styleName="membership__includes-list">
                   <li><FaCheck /> 2 cleanings/year*</li>
                   <li><FaCheck /> 1-2 exams/year</li>
-                  <li><FaCheck /> Xrays as determined necessary</li>
-                  <li><FaCheck /> 1 emergency exam with xray/year</li>
+                  <li><FaCheck /> X-rays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with X-ray/year</li>
                   <li><FaCheck /> 1 Fluoride treatment/year</li>
                   <li><FaCheck /> 10% off any needed treatment</li>
                 </ul>

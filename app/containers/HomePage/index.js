@@ -278,7 +278,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    Exams and Xrays as needed with cleanings
+                    Exams and X-rays as needed with cleanings
                   </div>
                 </div>
 
@@ -296,7 +296,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    1 emergency exam and Xrays per year
+                    1 emergency exam and X-rays per year
                   </div>
                 </div>
 
