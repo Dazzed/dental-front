@@ -52,6 +52,11 @@ const pagesWithSocialLinks = [
   // /marketplace/profile/123 handled separately since we need to account for the id at the end
 ];
 
+const pagesWithDisclaimer = [
+  '/search',
+  // /marketplace/profile/123 handled separately since we need to account for the id at the end
+];
+
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
 };
@@ -100,6 +105,9 @@ export default class App extends Component {
 
     const showSocialLinks = pagesWithSocialLinks.includes(pathname)
                          || pathname.substring(0, 21) === '/marketplace/profile/';
+
+    const showDisclaimer = pagesWithDisclaimer.includes(pathname)
+                        || pathname.substring(0, 21) === '/marketplace/profile/';
 
     let content = null;
     const childComponents = React.Children.toArray(this.props.children);
@@ -150,7 +158,7 @@ export default class App extends Component {
       <div styleName={wrapperStyle}>
         {navbar}
         {content}
-        <Footer showSocialLinks={showSocialLinks} />
+        <Footer showSocialLinks={showSocialLinks} showDisclaimer={showDisclaimer} />
       </div>
     );
   }

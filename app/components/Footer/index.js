@@ -51,6 +51,12 @@ function Footer (props) {
         </li>
       </ul>
 
+      {props.showDisclaimer && (
+        <p styleName="disclaimer">
+          DentalHQ is an innovative directory of dental offices offering In house Dental Membership Plans. Dental Membership plans ARE NOT DENTAL INSURANCE. The dental membership plan is a package of services that the dental offices have chosen to offer for the set prices listed. These plans are between you and your selected dentist and are active immediately upon payment with no waiting periods. Payments made through the DentalHQ signup process go directly to the dentist. You may cancel your membership for any reason after 90 days.
+        </p>
+      )}
+
       {props.showSocialLinks && (
         <ul styleName="social-links">
           <li>
