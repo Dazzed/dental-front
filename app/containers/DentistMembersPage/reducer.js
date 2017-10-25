@@ -20,9 +20,9 @@ import {
   FETCH_PATIENTS_REQUEST,
   FETCH_DENTIST_REPORTS_SUCCESS,
 
-  // search / sort patients
+  // search / filter patients
   SEARCH_MEMBERS,
-  SORT_MEMBERS,
+  FILTER_MEMBERS,
 
   // add / edit member
   SET_EDITING_MEMBER,
@@ -72,9 +72,9 @@ const initialState = {
   dentistReports: null,
   dentistSpecialties: [],
 
-  // search / sort patients
+  // search / filter patients
   searchName: null,
-  sortStatus: "active",
+  filterStatus: "all",
 
   editingActive: false,
   editing: null,
@@ -103,7 +103,7 @@ function dentistMembersPageReducer(state = initialState, action) {
     case DENTIST_SPECIALTIES_SUCCESS:
       return {
         ...state,
-        dentistSpecialties: action.payload.sort((specialtyA, specialtyB) => {
+        dentistSpecialties: action.payload.filter((specialtyA, specialtyB) => {
           const specialtyAName = specialtyA.name.toLowerCase();
           const specialtyBName = specialtyB.name.toLowerCase();
 
@@ -142,7 +142,7 @@ function dentistMembersPageReducer(state = initialState, action) {
       };
 
     /*
-    Search / Sort Patients
+    Search / Filter Patients
     ------------------------------------------------------------
     */
     case SEARCH_MEMBERS:
@@ -153,10 +153,10 @@ function dentistMembersPageReducer(state = initialState, action) {
           : null,
       };
 
-    case SORT_MEMBERS:
+    case FILTER_MEMBERS:
       return {
         ...state,
-        sortStatus: action.status,
+        filterStatus: action.status,
       };
 
     /*

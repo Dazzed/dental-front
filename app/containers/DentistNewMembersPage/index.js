@@ -35,9 +35,9 @@ import {
   fetchPatients,
   fetchDentistReports,
 
-  // search / sort patients
+  // search / filter patients
   searchMembers,
-  sortMembers,
+  filterMembers,
 
   // add / edit member
   setEditingMember,
@@ -74,9 +74,9 @@ import {
   selectProcessedPatients,
   selectDentistReports,
 
-  // search / sort patients
+  // search / filter patients
   selectMemberSearchTerm,
-  selectMemberSortTerm,
+  selectMemberFilterTerm,
 
   // add / edit member
   selectEditingMember,
@@ -114,9 +114,9 @@ function mapStateToProps(state) {
     reports: selectDentistReports(state),
     user: selectCurrentUser(state),
 
-    // search / sort patients
+    // search / filter patients
     currentSearchTerm: selectMemberSearchTerm(state),
-    currentSortTerm: selectMemberSortTerm(state),
+    currentFilterTerm: selectMemberFilterTerm(state),
 
     // add / edit member
     editingMember: selectEditingMember(state),
@@ -143,9 +143,9 @@ function mapDispatchToProps(dispatch) {
     fetchPatients: () => dispatch(fetchPatients()),
     fetchDentistReports: () => dispatch(fetchDentistReports()),
 
-    // search / sort patients
+    // search / filter patients
     searchMembers: (name) => dispatch(searchMembers(name)),
-    sortMembers: (status) => dispatch(sortMembers(status)),
+    filterMembers: (status) => dispatch(filterMembers(status)),
 
     // add / edit member
     resetMemberForm: () => dispatch(resetForm('familyMember')),
@@ -210,13 +210,13 @@ class DentistNewMembersPage extends React.Component {
     fetchPatients: React.PropTypes.func.isRequired,
     fetchDentistReports: React.PropTypes.func.isRequired,
 
-    // search / sort patients - state
+    // search / filter patients - state
     currentSearchTerm: React.PropTypes.string,
-    currentSortTerm: React.PropTypes.string,
+    currentFilterTerm: React.PropTypes.string,
 
-    // search / sort patients - dispatch
+    // search / filter patients - dispatch
     searchMembers: React.PropTypes.func.isRequired,
-    sortMembers: React.PropTypes.func.isRequired,
+    filterMembers: React.PropTypes.func.isRequired,
 
     // add / edit member - state
     editingMember: React.PropTypes.object,
@@ -447,9 +447,9 @@ class DentistNewMembersPage extends React.Component {
     this.props.clearEditingPatientPayment();
   }
 
-  // sort
-  onSortSelect = (evt) => {
-    this.props.sortMembers(evt.target.value);
+  // filter
+  onFilterSelect = (evt) => {
+    this.props.filterMembers(evt.target.value);
   }
 
   // reports
@@ -512,9 +512,9 @@ class DentistNewMembersPage extends React.Component {
       reports,
       user,
 
-      // search / sort patients
+      // search / filter patients
       currentSearchTerm,
-      currentSortTerm,
+      currentFilterTerm,
 
       // add / edit member
       editingMember,
@@ -550,15 +550,26 @@ class DentistNewMembersPage extends React.Component {
       );
     }
 
-    // precondition: there are no patients, thus there can be no new ones
-    if (patients.length === 0) {
+    // precondition: there are no patients to list
+    if (patients.length === 0 && currentSearchTerm === '' && currentFilterTerm === 'all') {
       return (
         <div>
           {this.renderHeaderAndTabs()}
 
           <div styleName="content content--filler">
+            <div styleName="patient-filter">
+              <span>Filter By Status: </span>
+
+              <select styleName="patient-filter__selector" value={currentFilterTerm} onChange={this.onFilterSelect}>
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="late">Late</option>
+              </select>
+            </div>
+
             <p>
-              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  You can now start signing up your patients to see them here!
+              It looks like you just got your DentalHQ account and haven't signed up any of your patients yet.  Of course you'll need to get them on one of your DentalHQ plans before you can see them here in your dashboard.
             </p>
           </div>
 
@@ -574,14 +585,59 @@ class DentistNewMembersPage extends React.Component {
     }
 
     // precondition: there are no new members
-    if (patientsWithNewMembers.length === 0) {
+    else if (patientsWithNewMembers.length === 0 && currentSearchTerm === '' && currentFilterTerm === 'all') {
       return (
         <div>
           {this.renderHeaderAndTabs()}
 
           <div styleName="content content--filler">
+            <div styleName="patient-filter">
+              <span>Filter By Status: </span>
+
+              <select styleName="patient-filter__selector" value={currentFilterTerm} onChange={this.onFilterSelect}>
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="late">Late</option>
+              </select>
+            </div>
+
             <p>
               You haven't signed up any new members in the last 30 days.  Seems like your existing patients are giving you quite a handful!
+            </p>
+          </div>
+
+          <AccountSecurityFormModal
+            show={editingSecurity !== null}
+            onCancel={this.cancelSecurityFormAction}
+
+            initialValues={editingSecurity}
+            onSubmit={this.handleSecurityFormSubmit}
+          />
+        </div>
+      );
+    }
+
+    // precondition: the search / filter is too restrictive
+    else if (patientsWithNewMembers.length === 0) {
+      return (
+        <div>
+          {this.renderHeaderAndTabs()}
+
+          <div styleName="content content--filler">
+            <div styleName="patient-filter">
+              <span>Filter By Status: </span>
+
+              <select styleName="patient-filter__selector" value={currentFilterTerm} onChange={this.onFilterSelect}>
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="late">Late</option>
+              </select>
+            </div>
+
+            <p>
+              We can't find any patients that match your search term and/or status filter.
             </p>
           </div>
 
@@ -606,10 +662,11 @@ class DentistNewMembersPage extends React.Component {
         {this.renderHeaderAndTabs()}
 
         <div styleName="content">
-          <div styleName="patient-sort">
-            <span>Sort By: </span>
+          <div styleName="patient-filter">
+            <span>Filter By Status: </span>
 
-            <select styleName="patient-sort__selector" value={currentSortTerm} onChange={this.onSortSelect}>
+            <select styleName="patient-filter__selector" value={currentFilterTerm} onChange={this.onFilterSelect}>
+              <option value="all">All</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
               <option value="late">Late</option>

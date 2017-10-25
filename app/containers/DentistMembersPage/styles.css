@@ -30,7 +30,7 @@ Page Wide
 Dentist Members
 ================================================================================
 */
-.patient-sort {
+.patient-filter {
   padding-bottom: 2rem;
 
   color: $color-primary-lowlight;
@@ -39,7 +39,7 @@ Dentist Members
   text-align: right;
 }
 
-.patient-sort__selector {
+.patient-filter__selector {
   color: $color-primary-highlight;
 
   outline: 0;

@@ -29,9 +29,9 @@ import {
   FETCH_DENTIST_REPORTS_SUCCESS,
   FETCH_DENTIST_REPORTS_ERROR,
 
-  // search / sort patients
+  // search / filter patients
   SEARCH_MEMBERS,
-  SORT_MEMBERS,
+  FILTER_MEMBERS,
 
   // add / edit member
   SET_EDITING_MEMBER,
@@ -184,7 +184,7 @@ export function fetchDentistReportsError(payload) {
 }
 
 /*
-Search / Sort Patients
+Search / Filter Patients
 ------------------------------------------------------------
 */
 export function searchMembers(name) {
@@ -194,9 +194,9 @@ export function searchMembers(name) {
   };
 }
 
-export function sortMembers(status) {
+export function filterMembers(status) {
   return {
-    type: SORT_MEMBERS,
+    type: FILTER_MEMBERS,
     status,
   };
 }
