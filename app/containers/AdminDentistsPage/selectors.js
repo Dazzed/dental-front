@@ -195,6 +195,16 @@ const isTransferringMemberSelector = createSelector(
   substate => substate.isTransferringMember
 );
 
+const termsUpdateModalOpenSelector = createSelector(
+  domainSelector,
+  substate => substate.termsUpdateModalOpen
+);
+
+const isUpdatingTermsSelector = createSelector(
+  domainSelector,
+  substate => substate.isUpdatingTerms
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -223,5 +233,7 @@ export {
   selectMasterReportsDates,
 
   transferringMemberSelector,
-  isTransferringMemberSelector
+  isTransferringMemberSelector,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 };

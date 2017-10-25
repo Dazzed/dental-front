@@ -31,7 +31,13 @@ import {
   TOGGLE_TRANSFERRING_MEMBER,
   TRANSFER_MEMBER,
   TRANSFER_MEMBER_SUCCESS,
-  TRANSFER_MEMBER_FAILURE
+  TRANSFER_MEMBER_FAILURE,
+
+  // terms and conditions
+  TOGGLE_TERMS_UPDATE,
+  TERMS_UPDATE_REQUEST,
+  TERMS_UPDATE_SUCCESS,
+  TERMS_UPDATE_ERROR
 } from './constants';
 
 /*
@@ -58,7 +64,10 @@ const initialState = {
   transferringMember: null,
   isTransferringMember: false,
   masterReportsDates: {},
-  editingDentistId: null
+  editingDentistId: null,
+
+  termsUpdateModalOpen: false,
+  isUpdatingTerms: false,
 };
 
 
@@ -234,6 +243,27 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         isTransferringMember: false
+      };
+    case TOGGLE_TERMS_UPDATE:
+      return {
+        ...state,
+        termsUpdateModalOpen: action.flag
+      };
+    case TERMS_UPDATE_REQUEST:
+      return {
+        ...state,
+        isUpdatingTerms: true
+      };
+    case TERMS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        termsUpdateModalOpen: false,
+        isUpdatingTerms: false
+      };
+    case TERMS_UPDATE_ERROR:
+      return {
+        ...state,
+        isUpdatingTerms: false
       };
     /*
     Default Reducer
