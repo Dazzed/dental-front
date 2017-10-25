@@ -45,6 +45,13 @@ const unThemedPages = [
   '/terms',
 ];
 
+const pagesWithSocialLinks = [
+  '/',
+  '/learn-more',
+  '/search',
+  // /marketplace/profile/123 handled separately since we need to account for the id at the end
+];
+
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
 };
@@ -90,6 +97,9 @@ export default class App extends Component {
     if (pathname === '/') {
       return this.props.children;
     }
+
+    const showSocialLinks = pagesWithSocialLinks.includes(pathname)
+                         || pathname.substring(0, 21) === '/marketplace/profile/';
 
     let content = null;
     const childComponents = React.Children.toArray(this.props.children);
@@ -140,7 +150,7 @@ export default class App extends Component {
       <div styleName={wrapperStyle}>
         {navbar}
         {content}
-        <Footer />
+        <Footer showSocialLinks={showSocialLinks} />
       </div>
     );
   }

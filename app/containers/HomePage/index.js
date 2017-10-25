@@ -364,7 +364,7 @@ export default class HomePage extends React.Component {
         Footer
         ------------------------------------------------------------
         */}
-        <Footer />
+        <Footer showSocialLinks={true} />
 
       </div>
     );
