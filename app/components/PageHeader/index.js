@@ -21,6 +21,7 @@ const dashboardPages = [
   '/dentist/new-members',
   '/dentist/new-reviews',
 
+  '/patient/accounting',
   '/patient/membership-info',
   '/patient/profile',
   '/patient/your-dentist',

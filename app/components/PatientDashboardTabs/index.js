@@ -38,7 +38,10 @@ Patient Dashboard Tabs
 export default class PatientDashboardTabs extends React.Component {
 
   static propTypes = {
-    active: React.PropTypes.string.isRequired,
+    active: React.PropTypes.oneOfType([
+      React.PropTypes.bool,
+      React.PropTypes.string,
+    ]).isRequired,
     changeRoute: React.PropTypes.func.isRequired,
   };
 

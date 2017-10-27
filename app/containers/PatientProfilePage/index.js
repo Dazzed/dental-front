@@ -15,6 +15,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CSSModules from 'react-css-modules';
 import FaUser from 'react-icons/lib/fa/user';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { reset as resetForm } from 'redux-form';
 
 // app
@@ -600,6 +601,9 @@ class PatientProfilePage extends React.Component {
                   <span styleName="personal-info__change-link" onClick={this.updateSecuritySettings}>
                     Login &amp; Security Settings
                   </span>
+                </p>
+                <p>
+                  <Link styleName="personal-info__accounting-link" to="/patient/accounting">Accounting</Link>
                 </p>
               </div>
 

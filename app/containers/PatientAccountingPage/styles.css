@@ -1,0 +1,79 @@
+/*
+Patients Accounting Page Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+
+/*
+Page Wide
+================================================================================
+*/
+.content {
+  padding: 2rem;
+
+  background-color: $color-secondary-background;
+}
+
+.button--full-width {
+  width: 100%;
+  border: 1px solid $color-primary-highlight;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button--lowlight--full-width {
+  width: 100%;
+  border: 1px solid $color-primary-lowlight;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-primary-lowlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-primary-lowlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.large-title--short {
+  margin-bottom: 0.5rem;
+
+  font-size: 3rem;
+  text-transform: capitalize;
+}
+
+
+/*
+Patient Accounting Page Specific
+================================================================================
+*/

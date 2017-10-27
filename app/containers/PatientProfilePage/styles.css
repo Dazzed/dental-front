@@ -85,7 +85,8 @@ Personal Info
     }
   }
 
-  .personal-info__change-link {
+  .personal-info__change-link,
+  .personal-info__accounting-link {
     display: block;
     margin-top: 0.5rem;
 

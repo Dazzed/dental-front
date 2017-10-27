@@ -624,6 +624,42 @@ export default function createRoutes(store) {
       },
     }, {
       onEnter: redirectToLogin,
+      path: '/patient/accounting',
+      name: 'patientAccountingPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/PatientProfilePage/reducer'),
+          System.import('containers/PatientProfilePage/sagas'),
+
+          System.import('containers/AccountingModule/reducer'),
+          System.import('containers/AccountingModule/sagas'),
+          System.import('containers/PatientAccountingPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([
+          patientDashboardReducer,
+          patientDashboardSagas,
+
+          accountingReducer,
+          accountingSagas,
+
+          component
+        ]) => {
+          injectReducer('patientProfilePage', patientDashboardReducer.default);
+          injectSagas(patientDashboardSagas.default);
+
+          injectReducer('accountingReducer', accountingReducer.default);
+          injectSagas(accountingSagas.default);
+
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      onEnter: redirectToLogin,
       path: '/patient/profile',
       name: 'patientProfilePage',
       getComponent(nextState, cb) {
