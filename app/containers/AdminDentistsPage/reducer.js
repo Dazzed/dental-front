@@ -37,7 +37,13 @@ import {
   TOGGLE_TERMS_UPDATE,
   TERMS_UPDATE_REQUEST,
   TERMS_UPDATE_SUCCESS,
-  TERMS_UPDATE_ERROR
+  TERMS_UPDATE_ERROR,
+
+  // security form
+  TOGGLE_SECURITY_FORM,
+  SECURITY_FORM_SUBMIT_REQUEST,
+  SECURITY_FORM_SUBMIT_SUCCESS,
+  SECURITY_FORM_SUBMIT_ERROR
 } from './constants';
 
 /*
@@ -68,6 +74,9 @@ const initialState = {
 
   termsUpdateModalOpen: false,
   isUpdatingTerms: false,
+
+  securityFormModalOpen: false,
+  isUpdatingSecuritySettings: false
 };
 
 
@@ -264,6 +273,27 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         isUpdatingTerms: false
+      };
+    case TOGGLE_SECURITY_FORM:
+      return {
+        ...state,
+        securityFormModalOpen: action.flag
+      };
+    case SECURITY_FORM_SUBMIT_REQUEST:
+      return {
+        ...state,
+        isUpdatingSecuritySettings: true
+      };
+    case SECURITY_FORM_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        securityFormModalOpen: false,
+        isUpdatingSecuritySettings: false
+      };
+    case SECURITY_FORM_SUBMIT_ERROR:
+      return {
+        ...state,
+        isUpdatingSecuritySettings: false
       };
     /*
     Default Reducer
