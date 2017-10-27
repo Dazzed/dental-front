@@ -15,7 +15,7 @@ import { Link } from 'react-router';
 
 // local
 import styles from './styles.css';
-
+import TermsUpdateModal from './components/termsUpdateModal';
 
 /*
 Admin Dashboard Header
@@ -26,6 +26,31 @@ export default class AdminDashboardHeader extends React.Component {
 
   static propTypes = {
     stats: React.PropTypes.object,
+    toggleTermsUpdate: React.PropTypes.func.isRequired
+  }
+
+  handleTermsUpdateClick = evt => {
+    evt.preventDefault();
+    this.props.toggleTermsUpdate(true);
+  }
+
+  renderTermsUpdateModal = () => {
+    const {
+      termsUpdateModalOpen,
+      isUpdatingTerms,
+      toggleTermsUpdate,
+      termsUpdateRequest
+    } = this.props;
+    if (termsUpdateModalOpen) {
+      return (
+        <TermsUpdateModal
+          isUpdatingTerms={isUpdatingTerms}
+          toggleTermsUpdate={toggleTermsUpdate}
+          termsUpdateRequest={termsUpdateRequest}
+        />
+      );
+    }
+    return null;
   }
 
   /*
@@ -92,12 +117,17 @@ export default class AdminDashboardHeader extends React.Component {
                 Security Settings
               </Link>
             </li>
+            <li>
+              <a styleName="quick-links__link" href="#" onClick={this.handleTermsUpdateClick}>
+                Update Terms and Conditions
+              </a>
+            </li>
           </ul>
         </div>
-
+        {this.renderTermsUpdateModal()}
       {/* End Wrapper */}
       </div>
     );
   }
 
-};
+}

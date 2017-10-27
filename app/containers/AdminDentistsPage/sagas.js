@@ -79,7 +79,10 @@ import {
   FETCH_MASTER_REPORTS_DATES_SUCCESS,
   TRANSFER_MEMBER,
   TRANSFER_MEMBER_SUCCESS,
-  TRANSFER_MEMBER_FAILURE
+  TRANSFER_MEMBER_FAILURE,
+  TERMS_UPDATE_REQUEST,
+  TERMS_UPDATE_SUCCESS,
+  TERMS_UPDATE_ERROR
 } from './constants';
 
 /*
@@ -106,6 +109,7 @@ function* main () {
   const watcherL = yield fork(refundSubmitWatcher);
   const watcherM = yield fork(masterReportsDatesFetcher);
   const watcherN = yield fork(transferMemberWatcher);
+  yield fork(termsUpdateWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -447,6 +451,27 @@ function* transferMemberWatcher () {
       console.log(e);
       yield put(toastrActions.error('', e.errors));
       yield put({ type: TRANSFER_MEMBER_FAILURE });
+    }
+  });
+}
+
+function* termsUpdateWatcher () {
+  yield* takeLatest(TERMS_UPDATE_REQUEST, function* handler () {
+    try {
+      const params = {
+        method: 'POST',
+      };
+      const requestUrl = '/api/v1/admin/managers/update_terms_and_conditions/';
+      yield call(request, requestUrl, params);
+      yield put({
+        type: TERMS_UPDATE_SUCCESS
+      });
+      const message = 'Email sent to all dentists and members successfully.';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', e.errors));
+      yield put({ type: TERMS_UPDATE_ERROR });
     }
   });
 }
