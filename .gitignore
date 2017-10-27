@@ -6,6 +6,8 @@ stats.json
 
 # Cruft
 .DS_Store
+package-lock.json
+yarn.lock
 npm-debug.log*
 .idea
 
