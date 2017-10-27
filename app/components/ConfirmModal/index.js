@@ -10,6 +10,7 @@ class ConfirmModal extends Component {
     message: PropTypes.any,
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,
+    canClose: PropTypes.bool
   };
 
   componentWillReceiveProps({ showModal }) {
@@ -33,8 +34,11 @@ class ConfirmModal extends Component {
     if (onCancel) {
       onCancel();
     }
-
-    this.setState({ showModal: false });
+    // We do not want to close the modal If the parent component
+    // controls the onCancel behaviour completely
+    if (this.props.canClose) {
+      this.setState({ showModal: false });
+    }
   };
 
   render() {

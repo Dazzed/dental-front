@@ -46,6 +46,8 @@ import {
   downloadReport,
   downloadMasterReport,
   fetchMasterReportsDates,
+  toggleTermsUpdate,
+  termsUpdateRequest
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -61,6 +63,8 @@ import {
   selectSort,
   selectProcessedDentists,
   selectMasterReportsDates,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 } from 'containers/AdminDentistsPage/selectors';
 
 import MasterReports from './components/masterReports';
@@ -89,6 +93,8 @@ function mapStateToProps (state) {
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
     masterReportsDates: selectMasterReportsDates(state),
+    termsUpdateModalOpen: termsUpdateModalOpenSelector(state),
+    isUpdatingTerms: isUpdatingTermsSelector(state),
   };
 }
 
@@ -113,6 +119,8 @@ function mapDispatchToProps (dispatch) {
     downloadReport: (reportName, reportUrl) => dispatch(downloadReport(reportName, reportUrl)),
     downloadMasterReport: (year, month) => dispatch(downloadMasterReport(year, month)),
     fetchMasterReportsDates: () => dispatch(fetchMasterReportsDates()),
+    toggleTermsUpdate: flag => dispatch(toggleTermsUpdate(flag)),
+    termsUpdateRequest: () => dispatch(termsUpdateRequest())
   };
 }
 
@@ -162,6 +170,8 @@ export default class AdminDentistsPage extends React.Component {
     downloadReport: React.PropTypes.func.isRequired,
     downloadMasterReport: React.PropTypes.func.isRequired,
     fetchMasterReportsDates: React.PropTypes.func.isRequired,
+    toggleTermsUpdate: React.PropTypes.func.isRequired,
+    termsUpdateRequest: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -307,7 +317,13 @@ export default class AdminDentistsPage extends React.Component {
     */
     return (
       <div>
-        <AdminDashboardHeader stats={stats} />
+        <AdminDashboardHeader
+          stats={stats}
+          termsUpdateModalOpen={this.props.termsUpdateModalOpen}
+          isUpdatingTerms={this.props.isUpdatingTerms}
+          toggleTermsUpdate={this.props.toggleTermsUpdate}
+          termsUpdateRequest={this.props.termsUpdateRequest}
+        />
         <h1 styleName="large-title">Reports</h1>
 
         <div styleName="content">

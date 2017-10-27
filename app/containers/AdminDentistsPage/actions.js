@@ -67,7 +67,11 @@ import {
   FETCH_MASTER_REPORTS_DATES,
 
   TOGGLE_TRANSFERRING_MEMBER,
-  TRANSFER_MEMBER
+  TRANSFER_MEMBER,
+
+  // terms and conditions update
+  TOGGLE_TERMS_UPDATE,
+  TERMS_UPDATE_REQUEST
 } from './constants';
 
 
@@ -385,3 +389,20 @@ export function transferMember (memberId, shouldChargeReEnrollmentFree) {
     shouldChargeReEnrollmentFree
   };
 }
+
+// Terms and conditions update actions
+
+export function toggleTermsUpdate (flag) {
+  return {
+    type: TOGGLE_TERMS_UPDATE,
+    flag
+  };
+}
+
+export function termsUpdateRequest () {
+  return {
+    type: TERMS_UPDATE_REQUEST
+  };
+}
+
+

@@ -44,6 +44,8 @@ import {
   // actions
   deleteDentistReview,
   fetchManagers,
+  toggleTermsUpdate,
+  termsUpdateRequest
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -59,6 +61,8 @@ import {
   selectSort,
   selectProcessedDentists,
   selectManagers,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
@@ -84,6 +88,8 @@ function mapStateToProps (state) {
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
     managers: selectManagers(state),
+    termsUpdateModalOpen: termsUpdateModalOpenSelector(state),
+    isUpdatingTerms: isUpdatingTermsSelector(state),
   };
 }
 
@@ -107,6 +113,8 @@ function mapDispatchToProps (dispatch) {
     // actions
     deleteDentistReview: (dentistId, reviewId) => dispatch(deleteDentistReview(dentistId, reviewId)),
     fetchManagers: () => dispatch(fetchManagers()),
+    toggleTermsUpdate: flag => dispatch(toggleTermsUpdate(flag)),
+    termsUpdateRequest: () => dispatch(termsUpdateRequest())
   };
 }
 
@@ -154,6 +162,8 @@ export default class AdminDentistsPage extends React.Component {
 
     // actions - dispatch
     deleteDentistReview: React.PropTypes.func.isRequired,
+    toggleTermsUpdate: React.PropTypes.func.isRequired,
+    termsUpdateRequest: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -377,7 +387,13 @@ export default class AdminDentistsPage extends React.Component {
     */
     return (
       <div>
-        <AdminDashboardHeader stats={stats} />
+        <AdminDashboardHeader
+          stats={stats}
+          termsUpdateModalOpen={this.props.termsUpdateModalOpen}
+          isUpdatingTerms={this.props.isUpdatingTerms}
+          toggleTermsUpdate={this.props.toggleTermsUpdate}
+          termsUpdateRequest={this.props.termsUpdateRequest}
+        />
         <AdminDashboardTabs active="reviews" />
 
         <div styleName="content">

@@ -43,7 +43,9 @@ import {
   initiateRefundingMember,
   fetchManagers,
   toggleTransferringMember,
-  transferMember
+  transferMember,
+  toggleTermsUpdate,
+  termsUpdateRequest
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -61,7 +63,9 @@ import {
   selectRefundingMember,
   selectManagers,
   transferringMemberSelector,
-  isTransferringMemberSelector
+  isTransferringMemberSelector,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
@@ -91,7 +95,9 @@ function mapStateToProps (state) {
     refundingMember: selectRefundingMember(state),
     managers: selectManagers(state),
     transferringMember: transferringMemberSelector(state),
-    isTransferringMember: isTransferringMemberSelector(state)
+    isTransferringMember: isTransferringMemberSelector(state),
+    termsUpdateModalOpen: termsUpdateModalOpenSelector(state),
+    isUpdatingTerms: isUpdatingTermsSelector(state),
   };
 }
 
@@ -117,6 +123,8 @@ function mapDispatchToProps (dispatch) {
     toggleTransferringMember: (memberId) => dispatch(toggleTransferringMember(memberId)),
     transferMember: (memberId, shouldChargeReEnrollmentFree) =>
       dispatch(transferMember(memberId, shouldChargeReEnrollmentFree)),
+    toggleTermsUpdate: flag => dispatch(toggleTermsUpdate(flag)),
+    termsUpdateRequest: () => dispatch(termsUpdateRequest())
   };
 }
 
@@ -164,7 +172,9 @@ export default class AdminDentistsPage extends React.Component {
 
     toggleTransferringMember: React.PropTypes.func.isRequired,
     transferMember: React.PropTypes.func.isRequired,
-    isTransferringMember: React.PropTypes.bool.isRequired
+    isTransferringMember: React.PropTypes.bool.isRequired,
+    toggleTermsUpdate: React.PropTypes.func.isRequired,
+    termsUpdateRequest: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -508,7 +518,13 @@ export default class AdminDentistsPage extends React.Component {
     */
     return (
       <div>
-        <AdminDashboardHeader stats={stats} />
+        <AdminDashboardHeader
+          stats={stats}
+          termsUpdateModalOpen={this.props.termsUpdateModalOpen}
+          isUpdatingTerms={this.props.isUpdatingTerms}
+          toggleTermsUpdate={this.props.toggleTermsUpdate}
+          termsUpdateRequest={this.props.termsUpdateRequest}
+        />
         <AdminDashboardTabs active="members" />
 
         <div styleName="content">

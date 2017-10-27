@@ -67,3 +67,9 @@ export const TOGGLE_TRANSFERRING_MEMBER = 'app/AdminDentistsPage/TOGGLE_TRANSFER
 export const TRANSFER_MEMBER = 'app/AdminDentistsPage/TRANSFER_MEMBER';
 export const TRANSFER_MEMBER_SUCCESS = 'app/AdminDentistsPage/TRANSFER_MEMBER_SUCCESS';
 export const TRANSFER_MEMBER_FAILURE = 'app/AdminDentistsPage/TRANSFER_MEMBER_FAILURE';
+
+export const TOGGLE_TERMS_UPDATE = 'app/AdminDentistsPage/TOGGLE_TERMS_UPDATE';
+export const TERMS_UPDATE_REQUEST = 'app/AdminDentistsPage/TERMS_UPDATE_REQUEST';
+export const TERMS_UPDATE_SUCCESS = 'app/AdminDentistsPage/TERMS_UPDATE_SUCCESS';
+export const TERMS_UPDATE_ERROR = 'app/AdminDentistsPage/TERMS_UPDATE_ERROR';
+
