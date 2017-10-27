@@ -71,7 +71,11 @@ import {
 
   // terms and conditions update
   TOGGLE_TERMS_UPDATE,
-  TERMS_UPDATE_REQUEST
+  TERMS_UPDATE_REQUEST,
+
+  // security form
+  TOGGLE_SECURITY_FORM,
+  SECURITY_FORM_SUBMIT_REQUEST
 } from './constants';
 
 
@@ -405,4 +409,17 @@ export function termsUpdateRequest () {
   };
 }
 
+// security form
+export function toggleSecurityForm (flag) {
+  return {
+    type: TOGGLE_SECURITY_FORM,
+    flag
+  };
+}
 
+export function securityFormSubmitRequest (values) {
+  return {
+    type: SECURITY_FORM_SUBMIT_REQUEST,
+    values
+  };
+}

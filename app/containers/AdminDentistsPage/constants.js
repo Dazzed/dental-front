@@ -73,3 +73,7 @@ export const TERMS_UPDATE_REQUEST = 'app/AdminDentistsPage/TERMS_UPDATE_REQUEST'
 export const TERMS_UPDATE_SUCCESS = 'app/AdminDentistsPage/TERMS_UPDATE_SUCCESS';
 export const TERMS_UPDATE_ERROR = 'app/AdminDentistsPage/TERMS_UPDATE_ERROR';
 
+export const TOGGLE_SECURITY_FORM = 'app/AdminDentistsPage/TOGGLE_SECURITY_FORM';
+export const SECURITY_FORM_SUBMIT_REQUEST = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_REQUEST';
+export const SECURITY_FORM_SUBMIT_SUCCESS = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_SUCCESS';
+export const SECURITY_FORM_SUBMIT_ERROR = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_ERROR';
