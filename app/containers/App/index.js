@@ -53,8 +53,10 @@ const pagesWithSocialLinks = [
 ];
 
 const pagesWithDisclaimer = [
+  '/learn-more',
   '/search',
-  // /marketplace/profile/123 handled separately since we need to account for the id at the end
+  // `/` (home page) handled separately since it includes the footer component directly
+  // `/marketplace/profile/123` handled separately since we need to account for the id at the end
 ];
 
 const mapDispatchToProps = {
