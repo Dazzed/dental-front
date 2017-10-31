@@ -238,6 +238,17 @@ export default class FamilyMemberListEdit extends Component {
                     />
                   )
               }
+
+              { status === 'inactive'
+                && (
+                  <input
+                    type="button"
+                    styleName="button--small"
+                    value={member.clientSubscription.stripeSubscriptionId ? "RE-ENROLL" : "ENROLL"}
+                    onClick={this.onReEnrollClick.bind(this, patient, member, subscriptionType)}
+                  />
+                )
+              }
             </div>
           )}
         </div>
