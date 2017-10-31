@@ -260,12 +260,14 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     console.info(formErrors)
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
+    } else if (formErrors.user.email || formErrors.user.number) {
+      yield put(toastrActions.error('', 'This email or phone number is already in use, please login to your account to make changes.'));
     }
-    else if (formErrors.user.email) {
-      yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
-    } else if (formErrors.user.number) {
-      yield put(toastrActions.error('', 'The entered phone number is already registered.  Please enter another phone number.'));
-    }
+    // else if (formErrors.user.email) {
+    //   yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
+    // } else if (formErrors.user.number) {
+    //   yield put(toastrActions.error('', 'The entered phone number is already registered.  Please enter another phone number.'));
+    // }
     else {
       yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
     }
