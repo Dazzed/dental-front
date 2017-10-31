@@ -188,7 +188,7 @@ function* signup(data) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
     else if (Object.keys(formErrors).length === 1 && formErrors.user.email) {
-      yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please use another.'));
+      yield put(toastrActions.error('', 'The email address you have entered is already in use, please login to your account to continue.'));
     }
     else {
       yield put(toastrActions.error('', 'Please fix errors on the form!'));
