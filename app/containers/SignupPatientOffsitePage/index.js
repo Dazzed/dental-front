@@ -61,7 +61,7 @@ import {
   // fetch dentist
   dentistSelector,
   dentistErrorSelector,
-
+  dentistSavingsSelector,
   // fetch stages
   stagesSelector,
 
@@ -84,7 +84,7 @@ import styles from './styles.css';
 Redux
 ------------------------------------------------------------
 */
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     // app
     isLoggedIn: selectAuthState(state),
@@ -92,6 +92,7 @@ function mapStateToProps(state) {
     // fetch dentist
     dentist: dentistSelector(state),
     dentistError: dentistErrorSelector(state),
+    savings: dentistSavingsSelector(state),
 
     // fetch stages
     stages: stagesSelector(state),
@@ -348,7 +349,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
   Render
   ------------------------------------------------------------
   */
-  render() {
+  render () {
     const {
       // react
       location,
@@ -366,6 +367,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
       // signup
       accountInfo,
       isSignedUp,
+      savings
     } = this.props;
 
     const isFromMarketplace = location.query.frommarketplace ? true : false;
@@ -451,37 +453,18 @@ export default class PatientOffsiteSignupPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
-    // OLD CODE
-    // const adultSavings = dentist.dentistInfo.membership.savings;
-    // const adultMembership = {
-    //   monthly: dentist.dentistInfo.membership.price.replace(".00", ""),
-    //   savings: String(dentist.dentistInfo.membership.savings).replace(".00", ""),
-    // };
-
-    // const childSavings = dentist.dentistInfo.childMembership.savings;
-    // const childMembership = {
-    //   monthly: dentist.dentistInfo.childMembership.price.replace(".00", ""),
-    //   savings: String(dentist.dentistInfo.childMembership.savings).replace(".00", ""),
-    // };
-
-    // NEW CODE
     let { memberships } = dentist;
     memberships = memberships.filter(m => m.active);
     const adultMembership = (() => {
       let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
-      // let adultAnnual = memberships.find(m => m.name === 'default annual membership');
       if (adultMonthly) {
-        let savings = Number(adultMonthly.price) * 4;
         return {
-          monthly: adultMonthly.price.replace('.00', ''),
-          savings: String(Math.floor(savings))
-        };
-      } else {
-        return {
-          monthly: '',
-          savings: '',
+          monthly: adultMonthly.price.replace('.00', '')
         };
       }
+      return {
+        monthly: '',
+      };
     })();
 
     const adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
@@ -490,17 +473,13 @@ export default class PatientOffsiteSignupPage extends React.Component {
     const childMembership = (() => {
       let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
       if (childMonthly) {
-        let savings = Number(childMonthly.price) * (36/7);
         return {
-          monthly: childMonthly.price.replace('.00', ''),
-          savings: String(Math.floor(savings))
+          monthly: childMonthly.price.replace('.00', '')
         };
-      } else {
-          return {
-            monthly: '',
-            savings: '',
-          };
       }
+      return {
+        monthly: '',
+      };
     })();
 
     const childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
@@ -577,7 +556,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${adultMembership.savings}**
+                  Total Annual Savings: ${savings.adult}**
                 </p>
 
                 <p styleName="membership__disclaimer">
@@ -620,7 +599,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                 </p>
 
                 <p styleName="membership__savings">
-                  Total Annual Savings: ${childMembership.savings}**
+                  Total Annual Savings: ${savings.child}**
                 </p>
 
                 <p styleName="membership__disclaimer">
