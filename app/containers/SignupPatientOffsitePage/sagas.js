@@ -252,15 +252,15 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
       };
     }
 
-    if (errors.number) {
+    if (errors.phone) {
       formErrors.user = {
-        number: errors.number
+        phone: errors.phone
       };
     }
-    console.info(formErrors)
+
     if (Object.keys(formErrors).length === 0) {
       yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
-    } else if (formErrors.user.email || formErrors.user.number) {
+    } else if (formErrors.user.email || formErrors.user.phone) {
       yield put(toastrActions.error('', 'This email or phone number is already in use, please login to your account to make changes.'));
     }
     // else if (formErrors.user.email) {
