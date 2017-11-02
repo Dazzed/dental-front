@@ -8,6 +8,12 @@ import styles from './styles.css';
 /* eslint-disable */
 @CSSModules(styles)
 class TermsPage extends React.Component {
+
+  printTerms = () => {
+    const pdf = window.open('/documents/dentalhq-terms-of-service.pdf');
+    pdf.print();
+  }
+
   render() {
     return (
       <div styleName="container-wrapper">
@@ -17,7 +23,8 @@ class TermsPage extends React.Component {
           <div styleName="term">
             <h4 styleName="term__title">EFFECTIVE DATE: NOVEMBER 1, 2017</h4>
             <p styleNmae="term__description">
-              <a href="/documents/dentalhq-terms-of-service.pdf" target="_blank">Download</a>
+              <a href="#" onClick={this.printTerms} styleName="action-link">Print</a>
+              {' '}<a href="/documents/dentalhq-terms-of-service.pdf" target="_blank" styleName="action-link">Download</a>
             </p>
           </div>
 
@@ -194,7 +201,7 @@ class TermsPage extends React.Component {
               Your Dentist may terminate your enrollment in the Dental Membership Plan at any time for any reason, including for the non-payment of your Membership Fee, or for no reason. If your Dentist terminates your enrollment for a reason other than the non-payment of your Membership Fee, then your Dentist will give you a pro-rated refund of your Membership Fee. For example, if your Dentist terminates an annual enrollment at the end of six months during an annual period—for any reason other than non-payment of the Membership Fee—the member would be entitled to receive a refund of one half of the member’s pre-paid Membership Fee for that one (1)-year period.
             </p>
             <p styleName="term__description">
-              If a payment is not received when due, your Account will be placed into "late" status for a period of thirty (30) days. If payment has not been received prior to the end of the thirty (30)-day period, your Account and your enrollment in the Dental Membership Plan will become "inactive" and you will no longer be provided with dental services under the Dental Membership Plan. Likewise, if you cancel your enrollment after the date ninety (90) days after your date of initial enrollment, your enrollment will become inactive. If your account is inactive, then to re-enroll in the Dental Membership Plan you will be charged a ninety-nine dollar ($99.00) re-enrollment fee in addition to any monthly or annual Membership Fees due.
+              If a payment is not received when due, your Account will be placed into "late" status for a period of thirty (21) days. If payment has not been received prior to the end of the thirty (21)-day period, your Account and your enrollment in the Dental Membership Plan will become "inactive" and you will no longer be provided with dental services under the Dental Membership Plan. Likewise, if you cancel your enrollment after the date ninety (90) days after your date of initial enrollment, your enrollment will become inactive. If your account is inactive, then to re-enroll in the Dental Membership Plan you will be charged a ninety-nine dollar ($99.00) re-enrollment fee in addition to any monthly or annual Membership Fees due.
             </p>
           </div>
 
