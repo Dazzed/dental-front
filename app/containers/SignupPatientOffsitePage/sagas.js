@@ -14,14 +14,14 @@ import pick from 'lodash/pick';
 import mapValues from 'lodash/mapValues';
 import _ from 'lodash';
 import { actions as toastrActions } from 'react-redux-toastr';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { change, reset, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 import { setItem, removeItem } from 'utils/localStorage';
 
 // app
-import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
+import { meFromToken, setAuthState } from 'containers/App/actions';
 import request from 'utils/request';
 
 // local
@@ -35,6 +35,7 @@ import {
 
   // signup
   signupSuccess,
+  clearSignupStatus,
 } from './actions';
 import {
   // fetch dentist
@@ -44,7 +45,8 @@ import {
   SIGNUP_REQUEST,
 
   //checkout
-  STRIPE_CREATE_TOKEN
+  STRIPE_CREATE_TOKEN,
+  GO_TO_DASHBOARD,
 } from './constants';
 
 
@@ -61,10 +63,12 @@ export default [
 function* main() {
   const watcherA = yield fork(dentistFetcher);
   const watcherB = yield fork(signupWatcher);
+  const watcherC = yield fork(goToDashboard);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
+  yield cancel(watcherC);
 }
 
 /*
@@ -305,9 +309,6 @@ function* makeLoginRequest(user, isLoggedIn) {
       // set auth token to localstorage
       yield call(setItem, 'auth_token', response.token);
 
-      // load details of authenticated user
-      yield put(meFromToken());
-
       // Post-processor is in common/sagas/index.js
 
       return true;
@@ -342,5 +343,21 @@ function* subscribe(stripeToken, userId) {
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;
+  }
+}
+
+/* Go To Dashboard
+ * ------------------------------------------------------ */
+function* goToDashboard() {
+  while (true) {
+    const { currentUser } = yield take(GO_TO_DASHBOARD);
+
+    if (!currentUser) {
+      // load details of authenticated user
+      yield put(meFromToken());
+    }
+
+    clearSignupStatus();
+    yield put(push('/accounts/login'));
   }
 }

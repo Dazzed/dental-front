@@ -53,9 +53,10 @@ import {
   setEditingCheckout,
   clearEditingCheckout,
   createStripeToken,
+
   // signup
   signupRequest,
-  clearSignupStatus,
+  goToDashboard,
 } from './actions';
 import {
   // fetch dentist
@@ -141,8 +142,8 @@ function mapDispatchToProps(dispatch) {
     createStripeToken: (cardDetails, user, paymentInfo, isLoggedIn) => dispatch(createStripeToken(cardDetails, user, paymentInfo, isLoggedIn)),
 
     // signup
-    clearSignupStatus: () => dispatch(clearSignupStatus()),
     makeSignupRequest: (user, paymentInfo) => dispatch(signupRequest(user, paymentInfo)),
+    goToDashboard: (currentUser) => dispatch(goToDashboard(currentUser)),
   };
 }
 
@@ -221,8 +222,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
     isSignedUp: React.PropTypes.bool,
 
     // signup - dispatch
-    clearSignupStatus: React.PropTypes.func,
     makeSignupRequest: React.PropTypes.func,
+    goToDashboard: React.PropTypes.func,
   };
 
   constructor(props) {
@@ -247,9 +248,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
   Actions
   ------------------------------------------------------------
   */
-  goToLoginPage = () => {
-    this.props.clearSignupStatus();
-    this.props.changeRoute('/accounts/login');
+  goToDashboard = () => {
+    this.props.goToDashboard(this.props.currentUser);
   };
 
   // members
@@ -740,7 +740,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
         <Modal
           backdrop={'static'}
           bsSize={'lg'}
-          onHide={this.goToLoginPage}
+          onHide={this.goToDashboard}
           show={isSignedUp}
         >
           <Modal.Header closeButton>
@@ -770,7 +770,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
               <input
                 type="button"
                 className="modal-control"
-                onClick={this.goToLoginPage}
+                onClick={this.goToDashboard}
                 value="Dashboard >"
               />
             </div>
