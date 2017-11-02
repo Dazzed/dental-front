@@ -23,6 +23,10 @@ Page-Wide
   margin: 2rem 0;
 }
 
+.action-link {
+  margin-right: 2rem;
+}
+
 .term {
   border-bottom: 1px solid $color-secondary-lowlight;
   padding: 3rem 0;
