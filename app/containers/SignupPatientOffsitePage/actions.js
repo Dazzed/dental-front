@@ -42,6 +42,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_ERROR,
   CLEAR_SIGNUP_STATUS,
+  GO_TO_DASHBOARD,
 } from './constants';
 
 /*
@@ -176,5 +177,12 @@ export function signupError(errors) {
 export function clearSignupStatus() {
   return {
     type: CLEAR_SIGNUP_STATUS,
+  };
+}
+
+export function goToDashboard(currentUser) {
+  return {
+    type: GO_TO_DASHBOARD,
+    currentUser,
   };
 }

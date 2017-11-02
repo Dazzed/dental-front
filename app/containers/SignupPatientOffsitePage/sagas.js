@@ -10,18 +10,19 @@ Imports
 // libs
 import get from 'lodash/get';
 import findIndex from 'lodash/findIndex';
-import pick from 'lodash/pick';
+import isPlainObject from 'lodash/isPlainObject';
+import isString from 'lodash/isString';
 import mapValues from 'lodash/mapValues';
-import _ from 'lodash';
+import pick from 'lodash/pick';
 import { actions as toastrActions } from 'react-redux-toastr';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { change, reset, stopSubmit } from 'redux-form';
 import { takeLatest } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 import { setItem, removeItem } from 'utils/localStorage';
 
 // app
-import { meFromToken, setAuthState, setUserData } from 'containers/App/actions';
+import { meFromToken, setAuthState } from 'containers/App/actions';
 import request from 'utils/request';
 
 // local
@@ -35,6 +36,7 @@ import {
 
   // signup
   signupSuccess,
+  clearSignupStatus,
 } from './actions';
 import {
   // fetch dentist
@@ -44,7 +46,8 @@ import {
   SIGNUP_REQUEST,
 
   //checkout
-  STRIPE_CREATE_TOKEN
+  STRIPE_CREATE_TOKEN,
+  GO_TO_DASHBOARD,
 } from './constants';
 
 
@@ -61,10 +64,12 @@ export default [
 function* main() {
   const watcherA = yield fork(dentistFetcher);
   const watcherB = yield fork(signupWatcher);
+  const watcherC = yield fork(goToDashboard);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
   yield cancel(watcherB);
+  yield cancel(watcherC);
 }
 
 /*
@@ -173,14 +178,18 @@ function* makeStripeCreateTokenRequest(cardDetails) {
   try {
     const token = yield call(createStripeToken, cardDetails);
     return token;
-  } catch (err) {
-    // console.log('Error in creating stripe token');
-    // console.log(err);
 
-    yield put(toastrActions.error('', err.message || 'Please Enter Valid Card details.'));
-    yield put(stopSubmit('checkout', null));
+  } catch (err) {
+    let patientFormErrors = {};
+    let checkoutFormErrors = {};
+
+    // 400 stripe card error
+    checkoutFormErrors[err.param] = err.message;
+    yield put(toastrActions.error('', err.message));
+
     yield put(change('checkout', 'cardCode', null));
-    yield put(stopSubmit('signupPatient', {}));
+    yield put(stopSubmit('checkout', checkoutFormErrors));
+    yield put(stopSubmit('signupPatient', patientFormErrors));
     return false;
   }
 }
@@ -231,50 +240,38 @@ function* makeSignupRequest(user, paymentInfo, stripeToken) {
     return response;
 
   } catch (err) {
-    // const errors = mapValues(err.errors, (value) => value.msg);
-    // We get err.errors as array if 500 or err.errors as object if 400.
-    let errors;
-    if (_.isArray(err.errors)) {
-      errors = err.errors.reduce((acc, error) => {
-        return {
-          ...acc,
-          [error.path]: error.value
-        }
-      },{});
-    } else {
-      errors = mapValues(err.errors, (value) => value.msg);
-    }
-    const formErrors = {};
+    let patientFormErrors = {};
+    let checkoutFormErrors = {};
 
-    if (errors.email) {
-      formErrors.user = {
-        email: errors.email
-      };
+    // 400 stripe card error
+    if (isString(err)) {
+      checkoutFormErrors.number = err;
+      yield put(toastrActions.error('', err));
     }
 
-    if (errors.phone) {
-      formErrors.user = {
-        phone: errors.phone
-      };
+    // 400 patient form error
+    else if (isPlainObject(err.errors)) {
+      patientFormErrors.user = mapValues(err.errors, (value) => value.msg);
+
+      if (err.errors.email && err.errors.phone) {
+        yield put(toastrActions.error('', 'This email AND phone number are already in use, please login to your account to make changes.'));
+      } else if (err.errors.email) {
+        yield put(toastrActions.error('', 'This email is already in use, please login to your account to make changes.'));
+      } else if (err.errors.phone) {
+        yield put(toastrActions.error('', 'This phone number is already in use, please login to your account to make changes.'));
+      } else {
+        yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
+      }
     }
 
-    if (Object.keys(formErrors).length === 0) {
-      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
-    } else if (formErrors.user.email || formErrors.user.phone) {
-      yield put(toastrActions.error('', 'This email or phone number is already in use, please login to your account to make changes.'));
-    }
-    // else if (formErrors.user.email) {
-    //   yield put(toastrActions.error('', 'The email address ' + err.errors.email.value + ' is already registered.  Please enter another email in Step 1.'));
-    // } else if (formErrors.user.number) {
-    //   yield put(toastrActions.error('', 'The entered phone number is already registered.  Please enter another phone number.'));
-    // }
+    // 500 or other unknown error
     else {
-      yield put(toastrActions.error('', 'Please fix the errors regarding your account information in Step 1!'));
+      yield put(toastrActions.error('', 'An unknown error occurred.  Please double check the information you entered to see if anything appears to be incorrect.'));
     }
 
-    yield put(stopSubmit('checkout', null));
     yield put(change('checkout', 'cardCode', null));
-    yield put(stopSubmit('signupPatient', formErrors));
+    yield put(stopSubmit('checkout', checkoutFormErrors));
+    yield put(stopSubmit('signupPatient', patientFormErrors));
     return false;
   }
 }
@@ -304,9 +301,6 @@ function* makeLoginRequest(user, isLoggedIn) {
 
       // set auth token to localstorage
       yield call(setItem, 'auth_token', response.token);
-
-      // load details of authenticated user
-      yield put(meFromToken());
 
       // Post-processor is in common/sagas/index.js
 
@@ -342,5 +336,21 @@ function* subscribe(stripeToken, userId) {
     yield put(stopSubmit('checkout', formErrors));
     yield put(change('checkout', 'cardCode', null));
     return false;
+  }
+}
+
+/* Go To Dashboard
+ * ------------------------------------------------------ */
+function* goToDashboard() {
+  while (true) {
+    const { currentUser } = yield take(GO_TO_DASHBOARD);
+
+    if (!currentUser) {
+      // load details of authenticated user
+      yield put(meFromToken());
+    }
+
+    clearSignupStatus();
+    yield put(push('/accounts/login'));
   }
 }
