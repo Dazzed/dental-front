@@ -13,6 +13,7 @@ import 'file?name=[name].[ext]!./.htaccess';
 import 'file?name=[name].[ext]!./assets/robots.txt';
 import 'file?name=[name].[ext]!./assets/favicon.ico';
 import '!file?name=hq-email-signature/[name].[ext]!./assets/images/hq-email-sig-logo.png';
+import '!file?name=documents/dentalhq-terms-of-service.pdf!./assets/documents/dentalhq-tos.pdf';
 /* eslint-enable import/no-unresolved */
 
 // Import all the third party stuff
