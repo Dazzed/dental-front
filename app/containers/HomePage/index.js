@@ -206,7 +206,7 @@ export default class HomePage extends React.Component {
                     Browse
                   </h3>
                   <p styleName="large-text">
-                    from our extensive
+                    our extensive
                     <br />
                     selection of quality
                     <br />
