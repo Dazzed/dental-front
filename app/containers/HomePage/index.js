@@ -260,7 +260,7 @@ export default class HomePage extends React.Component {
             <div className="container">
 
               <h2 styleName="large-title">
-                Membership Package Includes
+                Membership Plans Include
               </h2>
 
               <div styleName="features">
@@ -269,7 +269,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    Basic Dental cleaning every 6 months
+                    One basic cleaning every six months
                   </div>
                 </div>
 
@@ -278,7 +278,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    Exams and X-rays as needed with cleanings
+                    One fluoride treatment per year for Child members
                   </div>
                 </div>
 
@@ -287,7 +287,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    Fluoride treatment for kids once per year
+                    One emergency exam per year with x-rays
                   </div>
                 </div>
 
@@ -296,27 +296,13 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    1 emergency exam and X-rays per year
+                    Discount on any additional treatment
                   </div>
                 </div>
 
-                <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
-                    <FaCheck />
-                  </div>
-                  <div className="col-md-7" styleName="feature">
-                    Discount on any needed treatment
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
-                    <FaCheck />
-                  </div>
-                  <div className="col-md-7" styleName="feature">
-                    Affordable membership plans starting as low as $20/month
-                  </div>
-                </div>
+                <h3>
+                  Affordable membership plans starting as low as $20 / month!
+                </h3>
 
               </div>
 

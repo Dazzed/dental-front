@@ -279,6 +279,14 @@ Third Block
     color: $color-white;
   }
 
+  h3 {
+    margin: 2rem 0 0 0;
+
+    color: $color-white;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
   .features {
     color: $color-white;
 
