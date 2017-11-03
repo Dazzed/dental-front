@@ -255,12 +255,6 @@ Second Block
   }
 }
 
-:global(.col-md-4:first-child) {
-  .process {
-    background-color: $color-primary-background;
-  }
-}
-
 
 /*
 Third Block
