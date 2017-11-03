@@ -53,7 +53,7 @@ function Footer (props) {
 
       {props.showDisclaimer && (
         <p styleName="disclaimer">
-          DentalHQ is an innovative directory of dental offices offering In-House Dental Membership Plans. Dental Membership plans ARE NOT DENTAL INSURANCE. The dental membership plan is a package of services that the dental offices have chosen to offer for the set prices listed. These plans are between you and your selected dentist and are active immediately upon payment with no waiting periods. Payments made through the DentalHQ signup process go directly to the dentist. You may cancel your membership for any reason after 90 days. Cancellation for a full refund is allowed before 90 days by contacting your dentist. However payment in full directly to your dentist for any services utilized during this period will be required at the time of cancellation and refund.
+          DentalHQ is an innovative directory of participating dental offices that offer In-House Dental Membership Plans. Dental Membership Plans are NOT DENTAL INSURANCE. A Dental Membership Plan is a package of services that the dental office offers for the prices listed. The Dental Membership Plans on the DentalHQ directory are between you and your selected dentist, and are active immediately upon payment with no waiting period. Payments made using the DentalHQ platform go directly to the dental office. You may cancel your Dental Membership Plan for any reason after 90 days. You may cancel your Dental Membership Plan for a full refund before 90 days by contacting your dentist, however, payment in full for any services utilized must be made directly to your dentist before your Dental Membership Plan can be canceled.
         </p>
       )}
 
