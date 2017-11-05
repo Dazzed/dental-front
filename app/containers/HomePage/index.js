@@ -269,7 +269,7 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    One basic cleaning every six months
+                    One basic Cleaning every 6 months
                   </div>
                 </div>
 
@@ -278,7 +278,16 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    One fluoride treatment per year for Child members
+                    1-2 exams / year
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    X-rays as determined necessary by your dentist
                   </div>
                 </div>
 
@@ -296,12 +305,21 @@ export default class HomePage extends React.Component {
                     <FaCheck />
                   </div>
                   <div className="col-md-7" styleName="feature">
-                    Discount on any additional treatment
+                    One fluoride treatment per year for Child members
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                    <FaCheck />
+                  </div>
+                  <div className="col-md-7" styleName="feature">
+                    Discounts on any additional treatment
                   </div>
                 </div>
 
                 <h3>
-                  Affordable membership plans starting as low as $20 / month!
+                  Plans starting at $19.99 / month!
                 </h3>
 
               </div>
