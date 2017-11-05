@@ -144,11 +144,6 @@ export default class AdminDashboardHeader extends React.Component {
         <div className="col-sm-3">
           <ul styleName="quick-links">
             <li>
-              <Link styleName="quick-links__link" to="/admin/manage">
-                Account Managers
-              </Link>
-            </li>
-            <li>
               <Link styleName="quick-links__link" to="/admin/services">
                 Services
               </Link>
