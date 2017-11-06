@@ -88,9 +88,15 @@ const mapStateToProps = (state) => {
   ) {
     return {
       // pricing
-      yearlyFeeActivated: {
-        adult: false,
-        child: false,
+      feeActivated: {
+        monthly: {
+          adult: true,
+          child: true,
+        },
+        yearly: {
+          adult: true,
+          child: true,
+        },
       },
 
       recommendedFees: {
@@ -188,9 +194,15 @@ const mapStateToProps = (state) => {
 
   return {
     // pricing
-    yearlyFeeActivated: {
-      adult: pricing.adultYearlyFeeActivated === true,
-      child: pricing.childYearlyFeeActivated === true,
+    feeActivated: {
+      monthly: {
+        adult: pricing.adultMonthlyFeeActivated === true,
+        child: pricing.childMonthlyFeeActivated === true,
+      },
+      yearly: {
+        adult: pricing.adultYearlyFeeActivated === true,
+        child: pricing.childYearlyFeeActivated === true,
+      },
     },
 
     recommendedFees,
@@ -253,7 +265,7 @@ class DentistSignupForm extends React.Component {
     // mapped - state
     officeClosed: React.PropTypes.object.isRequired,
     recommendedFees: React.PropTypes.object.isRequired,
-    yearlyFeeActivated: React.PropTypes.object.isRequired,
+    feeActivated: React.PropTypes.object.isRequired,
 
     // redux form
     change: React.PropTypes.func.isRequired,
@@ -338,7 +350,7 @@ class DentistSignupForm extends React.Component {
       // mapped - state
       officeClosed,
       recommendedFees,
-      yearlyFeeActivated,
+      feeActivated,
 
       // redux form
       error,
@@ -830,6 +842,7 @@ class DentistSignupForm extends React.Component {
                   component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
+                  disabled={!feeActivated.monthly.adult}
                 />
               </Row>
             </div>
@@ -844,6 +857,15 @@ class DentistSignupForm extends React.Component {
                   </span>
                 </p>
               )}
+
+              <div styleName="fees__activation-checkbox">
+                <Field
+                  name="adultMonthlyFeeActivated"
+                  component={this.getCheckbox}
+                >
+                  Activate this offer.
+                </Field>
+              </div>
             </div>
           </FormGroup>
 
@@ -861,6 +883,7 @@ class DentistSignupForm extends React.Component {
                   component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
+                  disabled={!feeActivated.monthly.child}
                 />
               </Row>
             </div>
@@ -875,6 +898,15 @@ class DentistSignupForm extends React.Component {
                   </span>
                 </p>
               )}
+
+              <div styleName="fees__activation-checkbox">
+                <Field
+                  name="childMonthlyFeeActivated"
+                  component={this.getCheckbox}
+                >
+                  Activate this offer.
+                </Field>
+              </div>
             </div>
           </FormGroup>
 
@@ -892,7 +924,7 @@ class DentistSignupForm extends React.Component {
                   component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
-                  disabled={!yearlyFeeActivated.adult}
+                  disabled={!feeActivated.yearly.adult}
                 />
               </Row>
             </div>
@@ -929,7 +961,7 @@ class DentistSignupForm extends React.Component {
                   component={this.getInputGroup}
                   leftAddon="$"
                   width={8}
-                  disabled={!yearlyFeeActivated.child}
+                  disabled={!feeActivated.yearly.child}
                 />
               </Row>
             </div>
@@ -1278,6 +1310,10 @@ class DentistSignupForm extends React.Component {
               </Field>
             </div>
           </FormGroup>
+
+          <p styleName="field-instructions">
+            *Monthly memberships must be offered to be featured on the marketplace.
+          </p>
 
           <hr styleName="spacer" />
         </FormSection>

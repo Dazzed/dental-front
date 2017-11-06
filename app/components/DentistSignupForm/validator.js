@@ -115,14 +115,12 @@ const schema = {
   // section of DentistSignupForm/index.js for that validation.
 
   "pricing.adultMonthlyFee": {
-    presence: true,
     numericality: {
       greaterThanOrEqualTo: 19.99,
       strict: true,
     },
   },
   "pricing.childMonthlyFee": {
-    presence: true,
     numericality: {
       greaterThanOrEqualTo: 14.99,
       strict: true,

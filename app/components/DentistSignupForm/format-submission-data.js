@@ -75,21 +75,27 @@ const formatDentistSignupFormSubmissionData = (data) => {
       }),
 
       // ALTER the activated indicators to ensure each value is a boolean.
+      adultMonthlyFeeActivated: data.pricing.adultMonthlyFeeActivated === true,
+      childMonthlyFeeActivated: data.pricing.childMonthlyFeeActivated === true,
       adultYearlyFeeActivated: data.pricing.adultYearlyFeeActivated === true,
       childYearlyFeeActivated: data.pricing.childYearlyFeeActivated === true,
 
       // ALTER the fees: normalize the price values.
-      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee).toFixed(2),
-      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee).toFixed(2),
-      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2), // CONDITIONAL
-      childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2), // CONDITIONAL
+      adultMonthlyFee: parseFloat(data.pricing.adultMonthlyFee).toFixed(2), // CONDITIONAL
+      childMonthlyFee: parseFloat(data.pricing.childMonthlyFee).toFixed(2), // CONDITIONAL
+      adultYearlyFee: parseFloat(data.pricing.adultYearlyFee).toFixed(2),   // CONDITIONAL
+      childYearlyFee: parseFloat(data.pricing.childYearlyFee).toFixed(2),   // CONDITIONAL
     },
 
     marketplace: {
       ...data.marketplace,
 
       // ALTER the marketplace optIn to ensure the value is a boolean.
-      optIn: data.marketplace.optIn === true,
+      //       Also ensure that monthly memberships are offered if the dentist
+      //       opts in.
+      optIn: data.marketplace.optIn === true
+          && data.pricing.adultMonthlyFeeActivated === true
+          && data.pricing.childMonthlyFeeActivated === true,
     },
 
     // ALTER the services from an object with serviceKey => bool entries
@@ -161,6 +167,12 @@ const formatDentistSignupFormSubmissionData = (data) => {
     delete processedData.officeInfo.childStartingAge;
   }
 
+  if (processedData.pricing.adultMonthlyFeeActivated === false) {
+    delete processedData.pricing.adultMonthlyFee;
+  }
+  if (processedData.pricing.childMonthlyFeeActivated === false) {
+    delete processedData.pricing.childMonthlyFee;
+  }
   if (processedData.pricing.adultYearlyFeeActivated === false) {
     delete processedData.pricing.adultYearlyFee;
   }
