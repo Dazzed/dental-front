@@ -91,11 +91,11 @@ export default class NavBar extends React.Component {
     return (
       <Navbar fixedTop styleName="navbar">
         <div className="row" styleName="navbar__row">
-          <div className="col-md-4" styleName="navbar__col">
+          <div className="col-sm-3" styleName="navbar__col">
             {returnLink}
           </div>
           
-          <div className="col-md-4" styleName="navbar__col">
+          <div className="col-xs-12 col-sm-6" styleName="navbar__col">
             <div styleName="navbar__brand">
               {logoDisplay}
             </div>
