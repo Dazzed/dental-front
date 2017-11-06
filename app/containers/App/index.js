@@ -98,7 +98,22 @@ export default class App extends Component {
   }
 
   render () {
-    const { user, pageTitle, location: { pathname } } = this.props;
+    const { user, pageTitle, location: { pathname, search } } = this.props;
+
+    // show / hide olark
+    if ( pathname === '/'
+      || pathname === '/learn-more'
+      || pathname === '/search'
+      || pathname.substring(0, 21) === '/marketplace/profile/'
+      || ( pathname.substring(0, 28) === '/accounts/signup/my-dentist/'
+        && search === '?frommarketplace=true'
+      )
+    ) {
+      olark('api.box.show');
+    }
+    else {
+      olark('api.box.hide');
+    }
 
     // NOTE: Hardcoded here to avoid the common layout
     if (pathname === '/') {
