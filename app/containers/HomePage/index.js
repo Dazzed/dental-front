@@ -126,7 +126,7 @@ export default class HomePage extends React.Component {
         <div styleName="first-block">
           <header>
             <h1>
-              <img src={logo} alt="DentalHQ Logo" />
+              <img src={logo} alt="DentalHQ Logo" styleName="logo" />
             </h1>
             <SearchForm
               header
@@ -156,7 +156,7 @@ export default class HomePage extends React.Component {
           <div className="container">
 
             <div className="row">
-              <div className="col-md-10 col-md-offset-1">
+              <div className="col-sm-10 col-sm-offset-1">
 
                 {/* TODO: turn back on */}
 
@@ -199,7 +199,7 @@ export default class HomePage extends React.Component {
             </div>
 
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-sm-4">
                 <div styleName="process">
                   <img src={toothIcon} alt="Tooth Icon" />
                   <h3 styleName="large-title">
@@ -215,7 +215,7 @@ export default class HomePage extends React.Component {
                 </div>
               </div>
 
-              <div className="col-md-4">
+              <div className="col-sm-4">
                 <div styleName="process">
                   <img src={checkboardIcon} alt="Checkboard Icon" />
                   <h3 styleName="large-title">
@@ -231,7 +231,7 @@ export default class HomePage extends React.Component {
                 </div>
               </div>
 
-              <div className="col-md-4">
+              <div className="col-sm-4">
                 <div styleName="process">
                   <img src={calendarIcon} alt="Calendar Icon" />
                   <h3 styleName="large-title">
@@ -265,55 +265,55 @@ export default class HomePage extends React.Component {
 
               <div styleName="features">
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     One basic Cleaning every 6 months
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     1-2 exams / year
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     X-rays as determined necessary by your dentist
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     One emergency exam per year with x-rays
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     One fluoride treatment per year for Child members
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-offset-2 col-md-1" styleName="feature__check">
+                  <div className="col-sm-offset-2 col-sm-1 col-xs-2" styleName="feature__check">
                     <FaCheck />
                   </div>
-                  <div className="col-md-7" styleName="feature">
+                  <div className="col-sm-7 col-xs-10" styleName="feature">
                     Discounts on any additional treatment
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default class HomePage extends React.Component {
             <div className="container">
 
               <div className="row">
-                <div className="col-md-offset-1 col-md-10">
+                <div className="col-sm-offset-1 col-sm-10">
                   <h2 styleName="large-title">
                     Interested in Partnering with DentalHQ?
                   </h2>

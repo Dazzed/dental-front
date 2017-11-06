@@ -170,7 +170,8 @@ Marketing Video / Modal
 ================================================================================
 */
 .marketing-video-modal {
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
 
   :global(.modal-header) {
     /* NOTE: Has no content, just used to include the modal's .close button. */
@@ -198,7 +199,10 @@ First Block
   header {
     padding: 7rem 0 9rem 0;
 
-    h1 {
+    .logo {
+      width: 80%;
+      max-width: 800px;
+
       margin: 0 0 2rem 0;
     }
   }
@@ -214,6 +218,7 @@ First Block
     h3 {
       font-size: 1.75rem;
       font-weight: 600;
+      line-height: 2.25rem;
     }
 
     p {
@@ -317,6 +322,10 @@ Fourth Block
   background: url(assets/images/dentist-and-woman.jpg) center -200px / cover no-repeat;
 
   text-align: center;
+
+  @media (max-width: 991px) {
+    background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
+  }
 
   .fourth-block__overlay {
     display: block;

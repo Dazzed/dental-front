@@ -82,6 +82,11 @@ First Block
     background-color: rgba(255, 255, 255, 0.75);
 
     text-align: center;
+
+    @media (max-width: 991px) {
+      position: static;
+      left: 0;
+    }
   }
 }
 
@@ -152,6 +157,11 @@ Third Block
     background-color: rgba(255, 255, 255, 0.75);
 
     text-align: center;
+
+    @media (max-width: 991px) {
+      position: static;
+      right: 0;
+    }
   }
 }
 
@@ -161,7 +171,8 @@ Marketing Video / Modal
 ================================================================================
 */
 .marketing-video-modal {
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
 
   :global(.modal-header) {
     /* NOTE: Has no content, just used to include the modal's .close button. */
