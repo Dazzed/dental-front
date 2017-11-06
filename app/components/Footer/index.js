@@ -32,54 +32,52 @@ Footer
 function Footer (props) {
   return (
     <div styleName="footer">
-      <div className="row">
 
-        <div className="col-md-3">
-          <div styleName="powered-by">
-            Powered By
-            <img src={logo} alt="DentalHQ" styleName="powered-by--logo" />
-          </div>
+      <div className="col-md-3">
+        <div styleName="powered-by">
+          Powered By
+          <img src={logo} alt="DentalHQ" styleName="powered-by--logo" />
         </div>
+      </div>
 
-        <div className="col-md-6">
-          <ul styleName="footer__nav">
+      <div className="col-md-6">
+        <ul styleName="footer__nav">
+          <li>
+            <Link to="/faq">FAQ's</Link>
+          </li>
+
+          <li>
+            <Link to="/terms">Terms of Service</Link>
+          </li>
+
+          <li>
+            <Link to="/privacy">Privacy Policy</Link>
+          </li>
+        </ul>
+      </div>
+
+      <div className="col-md-3">
+        {props.showSocialLinks && (
+          <ul styleName="social-links">
             <li>
-              <Link to="/faq">FAQ's</Link>
+              <a href="https://www.facebook.com/dentalhq/" target="_blank"><FaFacebook /></a>
             </li>
-
             <li>
-              <Link to="/terms">Terms of Service</Link>
+              <a href="https://www.instagram.com/dentalhqofficial/" target="_blank"><FaInstagram /></a>
             </li>
-
             <li>
-              <Link to="/privacy">Privacy Policy</Link>
+              <a href="https://twitter.com/Dental_HQ" target="_blank"><FaTwitter /></a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/11333322/" target="_blank"><FaLinkedIn /></a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/channel/UCkY8VWfg9cSLap3hrG0Ccog" target="_blank"><FaYouTube /></a>
             </li>
           </ul>
-        </div>
-
-        <div className="col-md-3">
-          {props.showSocialLinks && (
-            <ul styleName="social-links">
-              <li>
-                <a href="https://www.facebook.com/dentalhq/" target="_blank"><FaFacebook /></a>
-              </li>
-              <li>
-                <a href="https://www.instagram.com/dentalhqofficial/" target="_blank"><FaInstagram /></a>
-              </li>
-              <li>
-                <a href="https://twitter.com/Dental_HQ" target="_blank"><FaTwitter /></a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/company/11333322/" target="_blank"><FaLinkedIn /></a>
-              </li>
-              <li>
-                <a href="https://www.youtube.com/channel/UCkY8VWfg9cSLap3hrG0Ccog" target="_blank"><FaYouTube /></a>
-              </li>
-            </ul>
-          )}
-        </div>
-
+        )}
       </div>
+
 
       {props.showDisclaimer && (
         <p styleName="disclaimer">
