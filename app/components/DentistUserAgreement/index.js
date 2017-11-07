@@ -25,7 +25,8 @@ const PDF_URL = '/documents/dentalhq-dentist-user-agreement.pdf';
 class DentistUserAgreement extends React.Component {
 
   static propTypes = {
-    showAcceptButton: React.PropTypes.bool.isRequired,
+    onAgreed: React.PropTypes.func,
+    showAcceptButton: React.PropTypes.bool,
   }
 
   componentWillMount() {
@@ -44,6 +45,7 @@ class DentistUserAgreement extends React.Component {
     const agreed = !this.state.agreed;
 
     this.setState({
+      ...this.state,
       agreed: agreed
     })
 
