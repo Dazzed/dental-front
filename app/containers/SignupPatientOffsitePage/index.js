@@ -453,40 +453,33 @@ export default class PatientOffsiteSignupPage extends React.Component {
     Main Render
     ------------------------------------------------------------
     */
-    let { memberships } = dentist;
-    memberships = memberships.filter(m => m.active);
+    const memberships = dentist.memberships.filter(m => m.active);
+
     const adultMembership = (() => {
-      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
-      if (adultMonthly) {
-        return {
-          monthly: adultMonthly.price.replace('.00', '')
-        };
-      }
+      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'month');
+      let adultYearly = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'year');
+
       return {
-        monthly: '',
+        monthly: adultMonthly ? adultMonthly.price.replace('.00', '') : null,
+        yearly: adultYearly ? adultYearly.price.replace('.00', '') : null,
+        discount: adultMonthly.discount,
       };
     })();
-
-    const adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
-    const adultDiscount = adultMonthly.discount;
 
     const childMembership = (() => {
-      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
-      if (childMonthly) {
-        return {
-          monthly: childMonthly.price.replace('.00', '')
-        };
-      }
+      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'month');
+      let childYearly = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'year');
+
       return {
-        monthly: '',
+        monthly: childMonthly ? childMonthly.price.replace('.00', '') : null,
+        yearly: childYearly ? childYearly.price.replace('.00', '') : null,
+        discount: childMonthly.discount,
       };
     })();
 
-    const childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
-    const childDiscount = childMonthly.discount;
-
-    dentist.dentistInfo.membership = adultMembership;
-    dentist.dentistInfo.childMembership = childMembership;
+// TODO: remove?
+//    dentist.dentistInfo.membership = adultMembership;
+//    dentist.dentistInfo.childMembership = childMembership;
 
     const soloAccountMemberConfirmationPopover = soloAccountMemberConfirmation === false
       ? null
@@ -548,16 +541,32 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> 1-2 exams/year</li>
                   <li><FaCheck /> X-rays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with X-ray/year</li>
-                  <li><FaCheck /> {adultDiscount}% off any needed treatment</li>
+                  <li><FaCheck /> {adultMembership.discount}% off any needed treatment</li>
                 </ul>
 
-                <p styleName="membership__cost">
-                  ${adultMembership.monthly} A Month
-                </p>
+                {savings.yearly.adult !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${adultMembership.yearly} A Year
+                    </p>
 
-                <p styleName="membership__savings">
-                  Total Annual Savings: ${savings.adult}**
-                </p>
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.yearly.adult}**
+                    </p>
+                  </div>
+                )}
+
+                {savings.monthly.adult !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${adultMembership.monthly} A Month
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.monthly.adult}**
+                    </p>
+                  </div>
+                )}
 
                 <p styleName="membership__disclaimer">
                   *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
@@ -591,16 +600,32 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   <li><FaCheck /> X-rays as determined necessary</li>
                   <li><FaCheck /> 1 emergency exam with X-ray/year</li>
                   <li><FaCheck /> 1 Fluoride treatment/year</li>
-                  <li><FaCheck /> {childDiscount}% off any needed treatment</li>
+                  <li><FaCheck /> {childMembership.discount}% off any needed treatment</li>
                 </ul>
 
-                <p styleName="membership__cost">
-                  ${childMembership.monthly} A Month
-                </p>
+                {savings.yearly.child !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${childMembership.yearly} A Year
+                    </p>
 
-                <p styleName="membership__savings">
-                  Total Annual Savings: ${savings.child}**
-                </p>
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.yearly.child}**
+                    </p>
+                  </div>
+                )}
+
+                {savings.monthly.child !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${childMembership.monthly} A Month
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.monthly.child}**
+                    </p>
+                  </div>
+                )}
 
                 <p styleName="membership__disclaimer">
                   *If periodontal disease is present additional treatment will be necessary prior to your cleaning.

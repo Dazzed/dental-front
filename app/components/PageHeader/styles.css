@@ -17,13 +17,9 @@ Page Header
 */
 .page-header {
   color: $color-white;
-  background: url(assets/images/dentist-and-woman.jpg) center -235px / cover no-repeat;
+  background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
 
   text-align: center;
-
-  @media (max-width: 767px) {
-    background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
-  }
 
   .page-header__overlay {
     display: block;
