@@ -29,27 +29,14 @@ class DentistUserAgreement extends React.Component {
     showAcceptButton: React.PropTypes.bool,
   }
 
-  componentWillMount() {
-    this.state = {
-      agreed: false,
-    };
-  }
-
   printTerms = () => {
     // TODO
     const pdf = window.open(PDF_URL);
     pdf.print();
   }
 
-  onAgreeToggle = () => {
-    const agreed = !this.state.agreed;
-
-    this.setState({
-      ...this.state,
-      agreed: agreed
-    })
-
-    if (this.props.onAgreed && agreed) {
+  onAgreeClick = () => {
+    if (this.props.onAgreed) {
       this.props.onAgreed();
     }
   }
@@ -225,21 +212,20 @@ class DentistUserAgreement extends React.Component {
             DENTALHQ, LLC
           </p>
 
-          <p styleName="term__description">
-            <label>
-              <input
-                type="checkbox"
-                onChange={this.onAgreeToggle}
-                checked={this.state.agreed}
-              />
-              {' '}I Agree
-            </label>
-          </p>
+          {showAcceptButton === true && (
+            <p styleName="term__description">
+              <label>
+                <input
+                  styleName="large-button--secondary"
+                  type="button"
+                  onClick={this.onAgreeClick}
+                  value="I Agree"
+                />
+              </label>
+            </p>
+          )}
         </div>
 
-        {showAcceptButton === true && (
-          <span></span>                    
-        )}
       </div>
     );
   }
