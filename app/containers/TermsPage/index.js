@@ -6,11 +6,13 @@ import PageHeader from 'components/PageHeader';
 import styles from './styles.css';
 
 /* eslint-disable */
+const PDF_URL = '/documents/dentalhq-terms-of-service.pdf';
+
 @CSSModules(styles)
 class TermsPage extends React.Component {
 
   printTerms = () => {
-    const pdf = window.open('/documents/dentalhq-terms-of-service.pdf');
+    const pdf = window.open(PDF_URL);
     pdf.print();
   }
 
@@ -24,7 +26,7 @@ class TermsPage extends React.Component {
             <h4 styleName="term__title">EFFECTIVE DATE: NOVEMBER 1, 2017</h4>
             <p styleNmae="term__description">
               <a href="#" onClick={this.printTerms} styleName="action-link">Print</a>
-              {' '}<a href="/documents/dentalhq-terms-of-service.pdf" target="_blank" styleName="action-link">Download</a>
+              {' '}<a href={PDF_URL} target="_blank" styleName="action-link">Download</a>
             </p>
           </div>
 
@@ -155,7 +157,7 @@ class TermsPage extends React.Component {
               In addition to and without limiting the other terms and conditions contained herein, the following terms and conditions also apply to your Dental Membership Plan: 
             </p>
 
-            <ul>
+            <ul styleName="term__description">
               <li>
                 You must be current on all Membership Fees for your Dental Membership Plan in order to receive any Covered Services or Additional Services;
               </li>
@@ -214,7 +216,7 @@ class TermsPage extends React.Component {
               We do not provide refunds to any payments made for the Dental Membership Plan except for the following three situations:
             </p>
 
-            <ol type="A">
+            <ol type="A" styleName="term__description">
               <li>
                 <u>Member Cancellation during the initial ninety (90) day period.</u> If you cancel your membership during the initial ninety days following your enrollment (whether such payment is a monthly payment or an annual payment) we will provide, on behalf of your Dental Membership Plan, a full refund of your paid Membership Fees. <strong>Notwithstanding the foregoing, if you have received any dental services under your Dental Membership Plan within the first ninety (90) and cancel your membership in the Dental Membership Plan after receiving those services, your Dentist will bill you for the services rendered to you at your Dentists’ then current rates. Payment in full for any services rendered by your Dentist during this period will be required prior to the issuance of a Refund.</strong>
               </li>
@@ -287,7 +289,7 @@ class TermsPage extends React.Component {
               At times, you may be allowed to post reviews of Dentists and other content on the Site (collectively, "Contributions"). You agree not to create any Contribution that:
             </p>
 
-            <ul>
+            <ul styleName="term__description">
               <li>
                 Contains vulgar, profane, abusive, hateful, or sexually explicit language, epithets or slurs, text in poor taste, inflammatory attacks of a personal, sexual, racial or religious nature, or expressions of bigotry, racism, discrimination or hate;
               </li>

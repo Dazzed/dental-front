@@ -23,6 +23,7 @@ import { reset as resetForm } from 'redux-form';
 import ContactUsFormModal from 'components/ContactUsFormModal';
 import DentistSignupForm from 'components/DentistSignupForm';
 import formatDentistSignupFormSubmissionData from 'components/DentistSignupForm/format-submission-data';
+import DentistUserAgreementModal from 'components/DentistUserAgreement/as-modal';
 import LoadingSpinner from 'components/LoadingSpinner';
 import PageHeader from 'components/PageHeader';
 import {
@@ -216,6 +217,11 @@ export default class SignupPage extends Component {
   };
 
   componentWillMount () {
+    this.state = {
+      showTermsModal: false,
+      formattedData: null,
+    };
+
     this.props.getDentistSpecialties();
     this.props.getPricingCodes();
     this.props.getServices();
@@ -234,6 +240,13 @@ export default class SignupPage extends Component {
     e.preventDefault();
     this.props.resetContactUsMessageForm();
     this.props.setContactUsMessage({});
+  }
+
+  toggleTermsModal = () => {
+    this.setState({
+      ...this.state,
+      showTermsModal: !this.state.showTermsModal,
+    });
   }
 
   /*
@@ -259,7 +272,20 @@ export default class SignupPage extends Component {
       }
     });
 
-    this.props.makeSignupRequest(formattedData);
+    this.setState({
+      ...this.state,
+      showTermsModal: true,
+      formattedData,
+    });
+  }
+
+  onAcceptTerms = () => {
+    this.props.makeSignupRequest(this.state.formattedData);
+    this.setState({
+      ...this.state,
+      showTermsModal: false,
+      formattedData: null,
+    });
   }
 
   handleContactUsFormSubmit = (values) => {
@@ -409,6 +435,14 @@ export default class SignupPage extends Component {
 
           initialValues={editingContactUsMessage}
           onSubmit={this.handleContactUsFormSubmit}
+        />
+
+        <DentistUserAgreementModal
+          show={this.state.showTermsModal}
+          onCancel={this.toggleTermsModal}
+
+          onAgreed={this.onAcceptTerms}
+          showAcceptButton={true}
         />
 
       </div>
