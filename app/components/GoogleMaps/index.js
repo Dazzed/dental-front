@@ -11,6 +11,15 @@ import MapMarker from './MapMarker';
 
 import styles from './styles.css';
 
+function createMapOptions(maps) {
+  return {
+    fullscreenControl: false,
+    zoomControlOptions: {
+      position: maps.ControlPosition.RIGHT_TOP,
+    },
+  };
+};
+
 function GoogleMaps(props) {
   const {
     markers,
@@ -63,6 +72,7 @@ function GoogleMaps(props) {
         bootstrapURLKeys={{
           key: 'AIzaSyDVwZs96MdlR8UdGKAxf9ndeb4GxpVF1Ho',
         }}
+        options={createMapOptions}
       >
         {renderMarkers()}
       </GoogleMapReact>
