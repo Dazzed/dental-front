@@ -118,6 +118,10 @@ IE: Login links on the RHS.
   display: inline-block;
 
   font-size: 0.875rem;
+
+  @media (max-width: 767px) {
+    top: 64px;
+  }
 }
 
 .floating-menu  ul.login-links {
