@@ -10,6 +10,7 @@ Import
 // libs
 import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
+import CSSModules from 'react-css-modules';
 
 // local
 import DentistUserAgreement from './index.js';
