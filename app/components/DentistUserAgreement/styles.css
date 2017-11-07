@@ -1,0 +1,61 @@
+/*
+Dentist User Agreement Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+/*
+Styles
+------------------------------------------------------
+*/
+.dentistUserAgreement {}
+
+.action-link {
+  margin-right: 2rem;
+}
+
+.term {
+  border-bottom: 1px solid $color-secondary-lowlight;
+  padding: 3rem 0;
+
+  color: $color-primary-lowlight;
+
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-align: justify;
+  word-spacing: 0.125em;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.term__title {
+  margin: 0 0 1rem 0;
+
+  font-weight: bold;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.term__subtitle {
+  margin-bottom: 1rem;
+
+  font-weight: bold;
+}
+
+.term__description {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

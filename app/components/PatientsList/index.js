@@ -375,6 +375,7 @@ class PatientsList extends React.Component {
                                 onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
                                 checked={waiveReEnrollmentFee}
                               />
+                              {' '}
                               Waive Re-enrollment Fee
                             </label>
                           </p>
