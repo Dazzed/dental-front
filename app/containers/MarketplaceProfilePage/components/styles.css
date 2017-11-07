@@ -75,20 +75,13 @@ Marketplace Profile
 }
 
 .profile-content-wrapper {
-  height: 200px;
+  margin-bottom: 1rem;
 
   .profile-content__avatar {
-    float: left;
-    position: relative;
-    top: calc(50% - 4.5rem); /* 4.5rem = 9rem/2 = height/2 */
-    margin-right: 2rem;
+    width: 100%;
   }
 
   .profile-content__name-and-rating {
-    /* float: left;
-    position: relative;
-    top: calc(50% - 41px);  */
-    /* 41 = 82px/2 = height/2 */
     padding-top: 5%;
 
     *:first-child {

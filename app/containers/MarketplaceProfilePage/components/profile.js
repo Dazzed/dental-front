@@ -191,28 +191,35 @@ export default class Profile extends Component {
             className="col-md-offset-3 col-md-9"
             styleName="profile-content-wrapper"
           >
-            <div styleName="profile-content__avatar">
-              <Avatar
-                url={dentist.avatar}
-                size={"9rem"}
-              />
-            </div>
-
-            <div styleName="profile-content__name-and-rating">
-              <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
-
-              <ReviewScore
-                score={calculateReviewScore(dentist)}
-                noPadding
-              />
-              {dentist.dentistReviews.length === 0 && (
-                <div styleName="no-review-warning">
-                  *The dentist currently has no reviews.
+            <div className="row">
+              <div className="col-md-3">
+                <div styleName="profile-content__avatar">
+                  <Avatar
+                    url={dentist.avatar}
+                    size={"100%"}
+                  />
                 </div>
-              )}
-              <br />
-              <br />
-              {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+              </div>
+
+              <div className="col-md-9">
+                <div styleName="profile-content__name-and-rating">
+                  <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
+
+                  <ReviewScore
+                    score={calculateReviewScore(dentist)}
+                    noPadding
+                  />
+                  {dentist.dentistReviews.length === 0 && (
+                    <div styleName="no-review-warning">
+                      *The dentist currently has no reviews.
+                    </div>
+                  )}
+                  <br />
+                  <br />
+                  {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
