@@ -109,8 +109,10 @@ Redux Form
 */
 const initialDentistSignupFormValues = {
   pricing: {
-    adultYearlyFeeActivated: false,
-    childYearlyFeeActivated: false,
+    adultMonthlyFeeActivated: true,
+    childMonthlyFeeActivated: true,
+    adultYearlyFeeActivated: true,
+    childYearlyFeeActivated: true,
   },
 
   workingHours: {
