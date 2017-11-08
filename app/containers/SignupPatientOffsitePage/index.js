@@ -483,7 +483,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
     if ( (adultMembership.monthly === null && adultMembership.yearly === null)
       || (childMembership.monthly === null && childMembership.yearly === null)
     ) {
-      marketingColOffset = '4'
+      marketingColOffset = '4';
     }
 
 // TODO: remove?

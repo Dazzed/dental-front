@@ -118,7 +118,9 @@ export default class FamilyMemberListEdit extends Component {
       statusStyle += ' status status--inactive';
     }
 
-    const daysElapsed = moment().diff(moment(membership.createdAt), 'days');
+    const daysElapsed = membership
+      ? moment().diff(moment(membership.createdAt), 'days')
+      : 0;
 
     return (
       <div key={id} className="row" styleName="member">
@@ -283,7 +285,7 @@ export default class FamilyMemberListEdit extends Component {
     patient.membershipId = patient.clientSubscription.membershipId;
     let members = [patient, ...patient.members]
       .filter(m => m.clientSubscription)
-      .sort(m => m.clientSubscription.membership.type == 'year' ? 1 : -1);
+      .sort(m => m.clientSubscription.membership && m.clientSubscription.membership.type == 'year' ? 1 : -1);
 
     // removes duplicate members in the members array.
     members = members.reduce((acc, m) => {
@@ -299,7 +301,7 @@ export default class FamilyMemberListEdit extends Component {
     let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      if (member.clientSubscription.membership.type == 'year' && !annualSeparated) {
+      if (member.clientSubscription.membership && member.clientSubscription.membership.type == 'year' && !annualSeparated) {
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
@@ -312,7 +314,7 @@ export default class FamilyMemberListEdit extends Component {
         );
       }
       memberRows.push(this.renderMember(primaryPatient, member, showControlCol, dentist.memberships));
-      if (member.clientSubscription.membership.type == 'year') {
+      if (member.clientSubscription.membership && member.clientSubscription.membership.type == 'year') {
         const subscriptionStatus = member.clientSubscription.status;
         let expiresOrRenews = 'Renews At';
         if (subscriptionStatus === 'cancellation_requested') {
