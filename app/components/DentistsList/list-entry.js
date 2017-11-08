@@ -10,6 +10,7 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import CaretDown from 'react-icons/lib/fa/caret-down';
 import CaretRight from 'react-icons/lib/fa/caret-right';
+import Warning from 'react-icons/lib/fa/exclamation-triangle';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 // local
@@ -111,6 +112,8 @@ export default class DentistsListEntry extends React.Component {
       renderListEntryBody,
     } = this.props;
 
+    const noActiveMemberships = dentist.memberships.find(m => m.active) === undefined;
+
     const listNum = ("00" + dentist.id.toString()).substr(-3, 3); // guarantee a length 3 listNum
 
     return (
@@ -120,6 +123,12 @@ export default class DentistsListEntry extends React.Component {
 
             <div styleName="list-entry__header" onClick={this.onSelectDentist}>
               {this.renderFullName(listNum, dentist)}
+              {noActiveMemberships && (
+                <span>
+                  {' '}
+                  <Warning />
+                </span>
+              )}
 
               <span styleName="list-entry__toggle">
                 {selected ? (<CaretDown />) : (<CaretRight />)}

@@ -462,7 +462,8 @@ export default class PatientOffsiteSignupPage extends React.Component {
       return {
         monthly: adultMonthly ? adultMonthly.price.replace('.00', '') : null,
         yearly: adultYearly ? adultYearly.price.replace('.00', '') : null,
-        discount: adultMonthly.discount,
+        discount: (adultMonthly ? adultMonthly.discount : null)
+               || (adultYearly ? adultYearly.discount : null),
       };
     })();
 
@@ -473,9 +474,17 @@ export default class PatientOffsiteSignupPage extends React.Component {
       return {
         monthly: childMonthly ? childMonthly.price.replace('.00', '') : null,
         yearly: childYearly ? childYearly.price.replace('.00', '') : null,
-        discount: childMonthly.discount,
+        discount: (childMonthly ? childMonthly.discount : null)
+               || (childYearly ? childYearly.discount : null),
       };
     })();
+
+    let marketingColOffset = '1';
+    if ( (adultMembership.monthly === null && adultMembership.yearly === null)
+      || (childMembership.monthly === null && childMembership.yearly === null)
+    ) {
+      marketingColOffset = '4';
+    }
 
 // TODO: remove?
 //    dentist.dentistInfo.membership = adultMembership;
@@ -529,7 +538,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                   It's also on the Patient Membership Info Page.
             */}
             {(savings.yearly.adult !== null || savings.monthly.adult !== null) && (
-              <div className="col-md-offset-1 col-md-4">
+              <div className={`col-md-offset-${marketingColOffset} col-md-4`}>
                 <div styleName="membership">
                   <h3 styleName="membership__title">Adult Membership</h3>
 
@@ -585,7 +594,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
             ------------------------------------------------------------
             */}
             {(savings.yearly.child !== null || savings.monthly.child !== null) && (
-              <div className="col-md-offset-1 col-md-5">
+              <div className={`col-md-offset-${marketingColOffset} col-md-4`}>
                 <div styleName="membership">
                   <h3 styleName="membership__title">
                     Child Membership
