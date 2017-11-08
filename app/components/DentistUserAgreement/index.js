@@ -24,28 +24,12 @@ const PDF_URL = '/documents/dentalhq-dentist-user-agreement.pdf';
 @CSSModules(styles)
 class DentistUserAgreement extends React.Component {
 
-  static propTypes = {
-    onAgreed: React.PropTypes.func,
-    showAcceptButton: React.PropTypes.bool,
-  }
-
   printTerms = () => {
-    // TODO
     const pdf = window.open(PDF_URL);
     pdf.print();
   }
 
-  onAgreeClick = () => {
-    if (this.props.onAgreed) {
-      this.props.onAgreed();
-    }
-  }
-
   render () {
-    const {
-      showAcceptButton,
-    } = this.props;
-
     return (
       <div styleName="dentistUserAgreement">
         <div styleName="term">
@@ -211,19 +195,6 @@ class DentistUserAgreement extends React.Component {
             <br />
             DENTALHQ, LLC
           </p>
-
-          {showAcceptButton === true && (
-            <p styleName="term__description">
-              <label>
-                <input
-                  styleName="large-button--secondary"
-                  type="button"
-                  onClick={this.onAgreeClick}
-                  value="I Agree"
-                />
-              </label>
-            </p>
-          )}
         </div>
 
       </div>
