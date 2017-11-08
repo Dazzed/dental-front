@@ -21,6 +21,8 @@ import styles from './styles.css';
 Modal
 ================================================================================
 */
+const PDF_URL = '/documents/dentalhq-dentist-user-agreement.pdf';
+
 @CSSModules(styles)
 export default class DentistUserAgreementModal extends React.Component {
 
@@ -33,6 +35,17 @@ export default class DentistUserAgreementModal extends React.Component {
     onAgreed: React.PropTypes.func,
     showAcceptButton: React.PropTypes.bool,
   };
+
+  printTerms = () => {
+    const pdf = window.open(PDF_URL);
+    pdf.print();
+  }
+
+  onAgreeClick = () => {
+    if (this.props.onAgreed) {
+      this.props.onAgreed();
+    }
+  }
 
   /*
   Render
@@ -70,10 +83,7 @@ export default class DentistUserAgreementModal extends React.Component {
         */}
         <Modal.Body>
           <div styleName="dentistUserAgreement__scrollWrapper">
-            <DentistUserAgreement
-              onAgreed={onAgreed}
-              showAcceptButton={showAcceptButton}
-            />
+            <DentistUserAgreement />
           </div>
         </Modal.Body> 
 
@@ -82,9 +92,29 @@ export default class DentistUserAgreementModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Footer>
-          <p>
-            Scroll down to the bottom of the terms and click "I Agree" to continue.
-          </p>
+          <div className="row">
+            <div className="col-sm-4">
+              <p styleName="action-link-container">
+                <a href="#" onClick={this.printTerms} styleName="action-link">Print</a>
+                {' '}<a href={PDF_URL} target="_blank" styleName="action-link">Download</a>
+              </p>
+            </div>
+
+            <div className="col-sm-4">
+              {showAcceptButton === true && (
+                <p styleName="accept-button-container">
+                  <label>
+                    <input
+                      styleName="large-button--secondary"
+                      type="button"
+                      onClick={this.onAgreeClick}
+                      value="I Agree"
+                    />
+                  </label>
+                </p>
+              )}
+            </div>
+          </div>
         </Modal.Footer>
 
       </Modal>
