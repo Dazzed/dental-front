@@ -123,7 +123,12 @@ const DentistDetails = ({ selectedDentist, onEditDentist }) => {
   const activeSince = moment(createdAt).format("MMMM Do, YYYY");
 
   const phone = selectedDentist.phoneNumbers.length ? selectedDentist.phoneNumbers[0].number : 'Phone: N/A';
-  const { discount } = memberships.find(m => m.active);
+
+  const activeMembership = memberships.find(m => m.active);
+  let discount = 'N/A';
+  if (memberships.find(m => m.active) !== undefined) {
+    discount = activeMembership.discount;
+  }
 
   return (
     <div className={'row ' + styles['dentist-details']}>
