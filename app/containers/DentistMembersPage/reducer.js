@@ -103,7 +103,7 @@ function dentistMembersPageReducer(state = initialState, action) {
     case DENTIST_SPECIALTIES_SUCCESS:
       return {
         ...state,
-        dentistSpecialties: action.payload.filter((specialtyA, specialtyB) => {
+        dentistSpecialties: action.payload.sort((specialtyA, specialtyB) => {
           const specialtyAName = specialtyA.name.toLowerCase();
           const specialtyBName = specialtyB.name.toLowerCase();
 
