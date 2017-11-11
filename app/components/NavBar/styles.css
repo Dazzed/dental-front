@@ -32,6 +32,10 @@ NavBar
 
     &:first-child {
       text-align: left;
+
+      @media (max-width: 767px) {
+        display: none;
+      }
     }
 
     &:not(:first-child):not(:last-child) {

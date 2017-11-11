@@ -42,6 +42,10 @@ import {
   toggleRefundingMember,
   initiateRefundingMember,
   fetchManagers,
+  toggleTransferringMember,
+  transferMember,
+  toggleTermsUpdate,
+  termsUpdateRequest
 } from 'containers/AdminDentistsPage/actions';
 import {
   // fetch
@@ -58,12 +62,17 @@ import {
   selectProcessedDentists,
   selectRefundingMember,
   selectManagers,
+  transferringMemberSelector,
+  isTransferringMemberSelector,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 } from 'containers/AdminDentistsPage/selectors';
 
 // local
 import styles from './styles.css';
 
 import RefundMemberForm from './modals/refund';
+import TransferMemberModal from './modals/transferMember';
 /*
 Redux
 ------------------------------------------------------------
@@ -85,6 +94,10 @@ function mapStateToProps (state) {
     processedDentists: selectProcessedDentists(state),
     refundingMember: selectRefundingMember(state),
     managers: selectManagers(state),
+    transferringMember: transferringMemberSelector(state),
+    isTransferringMember: isTransferringMemberSelector(state),
+    termsUpdateModalOpen: termsUpdateModalOpenSelector(state),
+    isUpdatingTerms: isUpdatingTermsSelector(state),
   };
 }
 
@@ -107,6 +120,11 @@ function mapDispatchToProps (dispatch) {
     toggleRefundingMember: (id) => dispatch(toggleRefundingMember(id)),
     initiateRefundingMember: (id, amount) => dispatch(initiateRefundingMember(id, amount)),
     fetchManagers: () => dispatch(fetchManagers()),
+    toggleTransferringMember: (memberId) => dispatch(toggleTransferringMember(memberId)),
+    transferMember: (memberId, shouldChargeReEnrollmentFree) =>
+      dispatch(transferMember(memberId, shouldChargeReEnrollmentFree)),
+    toggleTermsUpdate: flag => dispatch(toggleTermsUpdate(flag)),
+    termsUpdateRequest: () => dispatch(termsUpdateRequest())
   };
 }
 
@@ -151,6 +169,12 @@ export default class AdminDentistsPage extends React.Component {
     // search / sort - dispatch
     searchDentists: React.PropTypes.func.isRequired,
     sortDentists: React.PropTypes.func.isRequired,
+
+    toggleTransferringMember: React.PropTypes.func.isRequired,
+    transferMember: React.PropTypes.func.isRequired,
+    isTransferringMember: React.PropTypes.bool.isRequired,
+    toggleTermsUpdate: React.PropTypes.func.isRequired,
+    termsUpdateRequest: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -213,7 +237,7 @@ export default class AdminDentistsPage extends React.Component {
   }
 
   onTransfer = (dentist, patient) => {
-    alert('transfer "' + patient.firstName + ' ' + patient.lastName + '"');
+    this.props.toggleTransferringMember(patient.id);
   }
 
   /* Render Dentist Members
@@ -410,6 +434,25 @@ export default class AdminDentistsPage extends React.Component {
     );
   }
 
+  renderTransferMemberModal = () => {
+    const {
+      transferringMember,
+      isTransferringMember
+    } = this.props;
+    const onCancel = () => this.props.toggleTransferringMember(null);
+    if (transferringMember) {
+      return (
+        <TransferMemberModal
+          onCancel={onCancel}
+          transferringMember={transferringMember}
+          isTransferringMember={isTransferringMember}
+          transferMember={this.props.transferMember}
+        />
+      );
+    }
+    return null;
+  }
+
   /*
   Render
   ------------------------------------------------------------
@@ -428,6 +471,7 @@ export default class AdminDentistsPage extends React.Component {
       // search / sort dentists
       currentSortTerm,
       processedDentists,
+      transferringMember
     } = this.props;
 
     const {
@@ -474,7 +518,13 @@ export default class AdminDentistsPage extends React.Component {
     */
     return (
       <div>
-        <AdminDashboardHeader stats={stats} />
+        <AdminDashboardHeader
+          stats={stats}
+          termsUpdateModalOpen={this.props.termsUpdateModalOpen}
+          isUpdatingTerms={this.props.isUpdatingTerms}
+          toggleTermsUpdate={this.props.toggleTermsUpdate}
+          termsUpdateRequest={this.props.termsUpdateRequest}
+        />
         <AdminDashboardTabs active="members" />
 
         <div styleName="content">
@@ -517,7 +567,9 @@ export default class AdminDentistsPage extends React.Component {
           refundingMember={this.props.refundingMember ? true : false}
           onSubmit={this.handleRefundSubmit}
           onCancel={this.cancelRefunding}
-         />
+        />
+
+        {this.renderTransferMemberModal()}
       </div>
     );
   }

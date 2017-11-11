@@ -30,8 +30,7 @@ Footer Nav
 ------------------------------------------------------------
 */
 .powered-by {
-  position: absolute;
-  left: $font-size-base;
+  margin: 0 0 1rem 0;
 
   text-align: center;
 }
@@ -42,13 +41,52 @@ Footer Nav
 
 ul.footer__nav {
   display: block;
-  margin: 0;
+  margin: 0 0 1rem 0;
   padding: 0;
 
   list-style-type: none;
 
   text-align: center;
   text-transform: uppercase;
+
+  & > li {
+    display: inline-block;
+    margin: 0 0.625rem;
+
+    & > a {
+      color: $color-secondary-lowlight;
+
+      cursor: pointer;
+    }
+
+    & > a:hover,
+    & > a:active,
+    & > a:focus {
+      color: $color-white;
+
+      text-decoration: none;
+    }
+  }
+}
+
+.disclaimer {
+  width: 90%;
+  margin: 0 auto;
+
+  text-align: justify;
+}
+
+ul.social-links {
+  top: 2.75rem;
+
+  display: block;
+  margin: 0 0 1rem 0;
+  padding: 0;
+
+  list-style-type: none;
+
+  font-size: 1.5rem;
+  text-align: center;
 
   & > li {
     display: inline-block;

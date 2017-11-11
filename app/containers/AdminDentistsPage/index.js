@@ -46,6 +46,8 @@ import {
   // actions
   editDentist,
   fetchManagers,
+  toggleTermsUpdate,
+  termsUpdateRequest
 } from './actions';
 import {
   // fetch
@@ -62,6 +64,8 @@ import {
   selectSort,
   selectProcessedDentists,
   selectManagers,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 } from './selectors';
 import styles from './styles.css';
 import DentistDetails from './components/DentistDetails';
@@ -86,6 +90,8 @@ function mapStateToProps (state) {
     currentSortTerm: selectSort(state),
     processedDentists: selectProcessedDentists(state),
     managers: selectManagers(state),
+    termsUpdateModalOpen: termsUpdateModalOpenSelector(state),
+    isUpdatingTerms: isUpdatingTermsSelector(state),
   };
 }
 
@@ -110,6 +116,8 @@ function mapDispatchToProps (dispatch) {
     editDentist: (selectedDentist, values) => dispatch(editDentist(selectedDentist, values)),
     resetEditDentistForm: () => dispatch(resetForm('adminEditDentist')),
     fetchManagers: () => dispatch(fetchManagers()),
+    toggleTermsUpdate: flag => dispatch(toggleTermsUpdate(flag)),
+    termsUpdateRequest: () => dispatch(termsUpdateRequest())
   };
 }
 
@@ -157,6 +165,8 @@ export default class AdminDentistsPage extends React.Component {
 
     // actions - dispatch
     editDentist: React.PropTypes.func.isRequired,
+    toggleTermsUpdate: React.PropTypes.func.isRequired,
+    termsUpdateRequest: React.PropTypes.func.isRequired,
   }
 
   constructor (props) {
@@ -169,7 +179,7 @@ export default class AdminDentistsPage extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentWillMount () {
     if (this.props.user && (!this.props.dentists || !this.props.managers)) {
       this.props.fetchDentists();
       this.props.fetchStats();
@@ -177,7 +187,7 @@ export default class AdminDentistsPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.changePageTitle('Dentists');
   }
 
@@ -341,7 +351,13 @@ export default class AdminDentistsPage extends React.Component {
     */
     return (
       <div>
-        <AdminDashboardHeader stats={stats} />
+        <AdminDashboardHeader
+          stats={stats}
+          termsUpdateModalOpen={this.props.termsUpdateModalOpen}
+          isUpdatingTerms={this.props.isUpdatingTerms}
+          toggleTermsUpdate={this.props.toggleTermsUpdate}
+          termsUpdateRequest={this.props.termsUpdateRequest}
+        />
         <AdminDashboardTabs active="dentists" />
 
         <div styleName="content">

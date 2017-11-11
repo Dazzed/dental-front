@@ -77,6 +77,16 @@ function DentistCard (dentist) {
           {avatar && (
             <div styleName="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
           )}
+        </div>
+        <div className="col-sm-8">
+          <div styleName="name">{officeName}</div>
+          <div styleName="type">{type}</div>
+          <div styleName="location">{city}, {US_STATES[state]}</div>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-sm-6">
           <div styleName="rating">
             {renderReviewScore(rating)}
           </div>
@@ -88,10 +98,7 @@ function DentistCard (dentist) {
           </div>
         </div>
 
-        <div className="col-sm-8">
-          <div styleName="name">{officeName}</div>
-          <div styleName="type">{type}</div>
-          <div styleName="location">{city}, {US_STATES[state]}</div>
+        <div className="col-sm-6">
           <div styleName="plan-cost-label">Plans starting at:</div>
           <div styleName="plan-cost">
             <span styleName="price">${planStartingCost}</span> / month

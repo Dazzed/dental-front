@@ -14,7 +14,7 @@ import pick from 'lodash/pick';
 import { actions as toastrActions } from 'react-redux-toastr';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { change, stopSubmit } from 'redux-form';
-import { takeLatest } from 'redux-saga';
+import { takeLatest, takeEvery } from 'redux-saga';
 import { take, select, call, put, fork, cancel } from 'redux-saga/effects';
 
 // app
@@ -77,9 +77,16 @@ import {
   REFUNDING_MEMBER_SUCCESS,
   FETCH_MASTER_REPORTS_DATES,
   FETCH_MASTER_REPORTS_DATES_SUCCESS,
+  TRANSFER_MEMBER,
+  TRANSFER_MEMBER_SUCCESS,
+  TRANSFER_MEMBER_FAILURE,
+  TERMS_UPDATE_REQUEST,
+  TERMS_UPDATE_SUCCESS,
+  TERMS_UPDATE_ERROR,
+  SECURITY_FORM_SUBMIT_REQUEST,
+  SECURITY_FORM_SUBMIT_SUCCESS,
+  SECURITY_FORM_SUBMIT_ERROR
 } from './constants';
-
-import superCompare from 'utils/superCompare';
 
 /*
 Sagas
@@ -104,6 +111,9 @@ function* main () {
   const watcherK = yield fork(managersFetcher);
   const watcherL = yield fork(refundSubmitWatcher);
   const watcherM = yield fork(masterReportsDatesFetcher);
+  const watcherN = yield fork(transferMemberWatcher);
+  yield fork(termsUpdateWatcher);
+  yield fork(securityFormWatcher);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcherA);
@@ -119,6 +129,7 @@ function* main () {
   yield cancel(watcherK);
   yield cancel(watcherL);
   yield cancel(watcherM);
+  yield cancel(watcherN);
 }
 
 
@@ -419,4 +430,74 @@ function* masterReportsDatesFetcher() {
       }
     });
   }
+}
+
+function* transferMemberWatcher () {
+  yield* takeLatest(TRANSFER_MEMBER, function* handler({ memberId, shouldChargeReEnrollmentFree }) {
+    try {
+      const body = {
+        memberId,
+        shouldChargeReEnrollmentFree
+      };
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(body)
+      };
+      const requestUrl = '/api/v1/admin/members/transfer/';
+      const { memberId: transferredMemberId } = yield call(request, requestUrl, params);
+      yield put({
+        type: TRANSFER_MEMBER_SUCCESS,
+        memberId: transferredMemberId
+      });
+      const message = 'Member has been successfully transferred.';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', e.errors));
+      yield put({ type: TRANSFER_MEMBER_FAILURE });
+    }
+  });
+}
+
+function* termsUpdateWatcher () {
+  yield* takeLatest(TERMS_UPDATE_REQUEST, function* handler () {
+    try {
+      const params = {
+        method: 'POST',
+      };
+      const requestUrl = '/api/v1/admin/managers/update_terms_and_conditions/';
+      yield call(request, requestUrl, params);
+      yield put({
+        type: TERMS_UPDATE_SUCCESS
+      });
+      const message = 'Email sent to all dentists and members successfully.';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', e.errors));
+      yield put({ type: TERMS_UPDATE_ERROR });
+    }
+  });
+}
+
+function* securityFormWatcher () {
+  yield* takeEvery(SECURITY_FORM_SUBMIT_REQUEST, function* handler ({ values }) {
+    try {
+      const params = {
+        method: 'POST',
+        body: JSON.stringify(values)
+      };
+      const requestUrl = '/api/v1/admin/managers/change_password/';
+      yield call(request, requestUrl, params);
+      yield put({
+        type: SECURITY_FORM_SUBMIT_SUCCESS
+      });
+      const message = 'Password changed successfully!.';
+      yield put(toastrActions.success('', message));
+    } catch (e) {
+      console.log(e);
+      yield put(toastrActions.error('', e.errors));
+      yield put({ type: SECURITY_FORM_SUBMIT_ERROR });
+    }
+  });
 }

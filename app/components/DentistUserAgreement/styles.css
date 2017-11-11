@@ -1,0 +1,111 @@
+/*
+Dentist User Agreement Component Styles
+================================================================================
+*/
+
+/*
+Imports
+------------------------------------------------------------
+*/
+/* app */
+@import '../../assets/styles/variables';
+
+/*
+Styles
+------------------------------------------------------
+*/
+.large-button--secondary {
+  border: 1px solid $color-secondary-highlight;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+
+  color: $color-white;
+  background-color: $color-secondary-highlight;
+
+  font-weight: 600;
+  line-height: normal;
+
+  &:hover {
+    color: $color-secondary-highlight;
+    background-color: $color-white;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.dentistUserAgreement__scrollWrapper {
+  height: 300px;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0,0,0,.5);
+      box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
+}
+
+.dentistUserAgreement {}
+
+.action-link {
+  margin-right: 2rem;
+}
+
+.action-link-container {
+  text-align: left;
+}
+
+.accept-button-container {
+  text-align: center;
+}
+
+.term {
+  border-bottom: 1px solid $color-secondary-lowlight;
+  padding: 3rem 0;
+
+  color: $color-primary-lowlight;
+
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-align: justify;
+  word-spacing: 0.125em;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.term__title {
+  margin: 0 0 1rem 0;
+
+  font-weight: bold;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.term__subtitle {
+  margin-bottom: 1rem;
+
+  font-weight: bold;
+}
+
+.term__description {
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

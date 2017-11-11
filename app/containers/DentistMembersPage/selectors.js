@@ -21,7 +21,7 @@ Selectors
 const domainSelector = state => state.dentistMembersPage;
 
 /*
-Search / Sort Patients
+Search / Filter Patients
 ------------------------------------------------------------
 */
 const selectMemberSearchTerm = createSelector(
@@ -29,9 +29,9 @@ const selectMemberSearchTerm = createSelector(
   (substate) => substate.searchName
 );
 
-const selectMemberSortTerm = createSelector(
+const selectMemberFilterTerm = createSelector(
   domainSelector,
-  (substate) => substate.sortStatus
+  (substate) => substate.filterStatus
 );
 
 const selectDentistReports = createSelector(
@@ -67,8 +67,8 @@ const selectPatients = createSelector(
 const selectProcessedPatients = createSelector(
   selectPatients,
   selectMemberSearchTerm,
-  selectMemberSortTerm,
-  (patients, searchName, sortStatus) => {
+  selectMemberFilterTerm,
+  (patients, searchName, filterStatus) => {
     // precondition: patients are null
     if (patients === null) {
       return patients;
@@ -81,67 +81,66 @@ const selectProcessedPatients = createSelector(
       searchName = searchName.toLowerCase();
 
       processedPatients = patients.filter((patient) => {
-        const patientName = patient.firstName + ' ' + patient.lastName;
-        const matchesPatient = patientName.toLowerCase().indexOf(searchName) > -1;
-
-        const matchesAnyMember = patient.members.some((member) => {
-          const memberName = member.firstName + ' ' + member.lastName;
-          return memberName.toLowerCase().indexOf(searchName) > -1;
-        });
-
-        return matchesPatient || matchesAnyMember;
+        return [...patient.members, patient]
+          .map((member) => {
+            return (member.firstName + ' ' + member.lastName).toLowerCase();
+          })
+          .some((name) => {
+            return name.indexOf(searchName) > -1;
+          });
       });
     }
 
-    // sort
+    // filter
+    processedPatients = processedPatients.filter((patient) => {
+      // precondition: don't apply a filter
+      if (filterStatus === "all") {
+        return true;
+      }
+
+      const statuses = [...patient.members, patient]
+        .map((member) => {
+          let status = member.subscription
+            ? member.subscription.status
+            : 'inactive';
+
+          if (status === 'cancellation_requested') {
+            status = 'active';
+          }
+
+          if (status === 'canceled') {
+            status = 'inactive';
+          }
+
+          return status;
+        });
+
+        let matches;
+        if (filterStatus === 'inactive') {
+          matches = statuses.every((status) => {
+            return status === filterStatus;
+          });
+        }
+        else {
+          matches = statuses.some((status) => {
+            return status === filterStatus;
+          });
+        }
+
+        return matches;
+    });
+
+    // sort by name to organize the results
     processedPatients = processedPatients.sort((patientA, patientB) => {
-      // one matches w/ some members, the other doesn't
-      patientA.members = patientA.members || [];
-      patientB.members = patientB.members || [];
-      const matchA = patientA.members.some((member) => {
-        if (!member.subscription) return false;
-        return member.subscription.status === sortStatus;
-      });
-      const matchB = patientB.members.some((member) => {
-        if (!member.subscription) return false;
-        return member.subscription.status === sortStatus;
-      });
-
-      if (matchA === true && matchB === false) {
-        return -1;
-      }
-      else if (matchA === false && matchB === true) {
-        return 1;
-      }
-
-      // one matches w/ every member, the other doesn't
-      const matchAllA = patientA.members.every((member) => {
-        if (!member.subscription) return false;
-        return member.subscription.status === sortStatus;
-      });
-      const matchAllB = patientB.members.every((member) => {
-        if (!member.subscription) return false;
-        return member.subscription.status === sortStatus;
-      });
-
-      if (matchAllA === true && matchAllB === false) {
-        return -1;
-      }
-      else if (matchAllA === false && matchAllB === true) {
-        return 1;
-      }
-
-      // both match or both don't match
       const nameA = (patientA.firstName + ' ' + patientA.lastName).toLowerCase();
       const nameB = (patientB.firstName + ' ' + patientB.lastName).toLowerCase();
 
       if (nameA < nameB) {
-        return -1
+        return -1;
       }
       else if (nameA > nameB) {
         return 1;
       }
-
       return 0;
     });
 
@@ -231,9 +230,9 @@ Export
 export default domainSelector;
 
 export {
-  // search / sort patients
+  // search / filter patients
   selectMemberSearchTerm,
-  selectMemberSortTerm,
+  selectMemberFilterTerm,
   selectDentistReports,
 
   // fetch

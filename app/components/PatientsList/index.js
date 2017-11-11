@@ -161,7 +161,9 @@ class PatientsList extends React.Component {
       // (only members w/o a cancellation pending)
       const paymentDueAmount = activeMembers
         .reduce((paymentDueAccumulator, member) => {
-          if (member.subscription.membership.type === 'month') {
+          if ( member.subscription.membership
+            && (member.subscription.membership.type === 'month' || member.subscription.membership.type === 'custom')
+          ) {
             paymentDueAccumulator += Number.parseFloat(member.subscription.membership.price);
           }
           return paymentDueAccumulator;
@@ -203,8 +205,18 @@ class PatientsList extends React.Component {
 
       const memberSince = moment(createdAt).format('MMMM D, YYYY');
 
+      // TODO: patient.recurring_payment_date is null for patients that have
+      //       a child member but the account holder is not subscribed
+      //         - dentist only offered child plans
+      //         - could be due to recent change on server where patients
+      //           with inactive account holders have a `null` membership instead
+      //           of the default adult monthly membership
+      //         - recurring_payment_date is not set for other members on the account
       let paymentDueDate = 'N/A';
-      if (patient.recurring_payment_date && patient.recurring_payment_date !== 'N/A') {
+      if ( patient.recurring_payment_date
+        && patient.recurring_payment_date !== 'N/A'
+        && patient.recurring_payment_date !== null
+      ) {
         paymentDueDate = moment.unix(patient.recurring_payment_date).format('MMMM D, YYYY');
       }
 
@@ -375,6 +387,7 @@ class PatientsList extends React.Component {
                                 onChange={this.onReEnrollmentFeeClick.bind(this, patient)}
                                 checked={waiveReEnrollmentFee}
                               />
+                              {' '}
                               Waive Re-enrollment Fee
                             </label>
                           </p>

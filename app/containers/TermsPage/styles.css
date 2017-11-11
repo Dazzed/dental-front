@@ -23,6 +23,10 @@ Page-Wide
   margin: 2rem 0;
 }
 
+.action-link {
+  margin-right: 2rem;
+}
+
 .term {
   border-bottom: 1px solid $color-secondary-lowlight;
   padding: 3rem 0;
@@ -31,21 +35,34 @@ Page-Wide
 
   font-size: 1rem;
   line-height: 1.5rem;
+  text-align: justify;
+  word-spacing: 0.125em;
 
   &:last-child {
     border-bottom: none;
   }
+}
 
-  .term__title {
-    margin-top: 0;
+.term__title {
+  margin: 0 0 1rem 0;
 
-    font-weight: bold;
+  font-weight: bold;
+
+  &:last-child {
+    margin-bottom: 0;
   }
+}
 
-  p.term__description,
-  ul.term__description,
-  .term__description p:last-child,
-  .term__description ul:last-child {
+.term__subtitle {
+  margin-bottom: 1rem;
+
+  font-weight: bold;
+}
+
+.term__description {
+  margin-bottom: 1rem;
+
+  &:last-child {
     margin-bottom: 0;
   }
 }

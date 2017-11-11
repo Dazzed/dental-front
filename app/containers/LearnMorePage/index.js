@@ -157,7 +157,7 @@ export default class LearnMorePage extends React.Component {
           <div className="container">
 
             <div className="row">
-              <div className="col-md-10 col-md-offset-1">
+              <div className="col-sm-10 col-sm-offset-1">
 
                 <h2 styleName="large-title">
                   Why DentalHQ?
@@ -165,82 +165,82 @@ export default class LearnMorePage extends React.Component {
 
                 <div styleName="features">
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Completely automate your in-house memberships.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Attract new patients through the DentalHQ Marketplace.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Offer both monthly and annual payment options.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       It's risk-free - no setup fees, no monthly fees, cancel anytime.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Get signed up and into your dashboard in under 10 minutes.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Customize your memberships - you decide your pricing and benefits.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Fully compliant - HIPPA, PHI, PCI
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       White-labeled with your logo, and easily integrated with your website.
                     </div>
                   </div>
 
                   <div className="row">
-                    <div className="col-md-offset-1 col-md-1" styleName="feature__check">
+                    <div className="col-sm-offset-1 col-sm-1 col-xs-2" styleName="feature__check">
                       <img src={spyglass} alt="-" styleName="bullet-point" />
                     </div>
-                    <div className="col-md-10" styleName="feature">
+                    <div className="col-xs-10" styleName="feature">
                       Branded marketing materials provided at no cost to you.
                     </div>
                   </div>

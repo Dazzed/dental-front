@@ -59,15 +59,7 @@ export default class NavBar extends React.Component {
 
   returnLinks = {
     '/accounts/dentist-signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/accounts/login': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/accounts/logout': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/accounts/signup': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/error/404-not-found': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/faq': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/learn-more': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/privacy': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/subscribe': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
-    '/terms': (<Link to="/" styleName="navbar__text">&lt; Home</Link>),
+    '/accounts/logout': (<Link to="/accounts/login" styleName="navbar__text">&lt; Login</Link>),
   }
 
   render () {
@@ -99,11 +91,11 @@ export default class NavBar extends React.Component {
     return (
       <Navbar fixedTop styleName="navbar">
         <div className="row" styleName="navbar__row">
-          <div className="col-md-4" styleName="navbar__col">
+          <div className="col-sm-3" styleName="navbar__col">
             {returnLink}
           </div>
           
-          <div className="col-md-4" styleName="navbar__col">
+          <div className="col-xs-12 col-sm-6" styleName="navbar__col">
             <div styleName="navbar__brand">
               {logoDisplay}
             </div>

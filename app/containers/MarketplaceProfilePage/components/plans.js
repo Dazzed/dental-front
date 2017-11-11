@@ -68,8 +68,8 @@ export default class Plans extends Component {
               <ul styleName="membership__includes-list">
                 <li><FaCheck styleName="membership__HQ_color" /> 2 cleanings/year*</li>
                 <li><FaCheck styleName="membership__HQ_color" /> 1-2 exams/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> Xrays as determined necessary</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with xray/year</li>
+                <li><FaCheck styleName="membership__HQ_color" /> X-rays as determined necessary</li>
+                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with X-ray/year</li>
                 <li><FaCheck styleName="membership__HQ_color" /> {adultDiscount}% off any needed treatment</li>
               </ul>
 
@@ -110,8 +110,8 @@ export default class Plans extends Component {
               <ul styleName="membership__includes-list">
                 <li><FaCheck styleName="membership__HQ_color" /> 2 cleanings/year*</li>
                 <li><FaCheck styleName="membership__HQ_color" /> 1-2 exams/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> Xrays as determined necessary</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with xray/year</li>
+                <li><FaCheck styleName="membership__HQ_color" /> X-rays as determined necessary</li>
+                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with X-ray/year</li>
                 <li><FaCheck styleName="membership__HQ_color" /> 1 Fluoride treatment/year</li>
                 <li><FaCheck styleName="membership__HQ_color" /> {childDiscount}% off any needed treatment</li>
               </ul>

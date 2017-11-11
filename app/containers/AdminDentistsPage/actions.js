@@ -65,6 +65,17 @@ import {
   TOGGLE_REFUNDING_MEMBER,
   INITIATE_REFUNDING_MEMBER,
   FETCH_MASTER_REPORTS_DATES,
+
+  TOGGLE_TRANSFERRING_MEMBER,
+  TRANSFER_MEMBER,
+
+  // terms and conditions update
+  TOGGLE_TERMS_UPDATE,
+  TERMS_UPDATE_REQUEST,
+
+  // security form
+  TOGGLE_SECURITY_FORM,
+  SECURITY_FORM_SUBMIT_REQUEST
 } from './constants';
 
 
@@ -227,7 +238,7 @@ export function setEditingDentistId (dentistId) {
 
 /* Search / Sort
  * ========================================================================== */
- export function search (name) {
+export function search (name) {
   return {
     type: SEARCH,
     name,
@@ -341,20 +352,20 @@ export function deleteDentistReviewError (payload) {
 }
 
 // Managers
-export function fetchManagers() {
+export function fetchManagers () {
   return {
     type: FETCH_MANAGERS_REQUEST,
   };
 }
 
-export function toggleRefundingMember(value) {
+export function toggleRefundingMember (value) {
   return {
     type: TOGGLE_REFUNDING_MEMBER,
     payload: value
   };
 }
 
-export function initiateRefundingMember(id, amount) {
+export function initiateRefundingMember (id, amount) {
   return {
     type: INITIATE_REFUNDING_MEMBER,
     id,
@@ -362,9 +373,53 @@ export function initiateRefundingMember(id, amount) {
   };
 }
 
-export function fetchMasterReportsDates() {
+export function fetchMasterReportsDates () {
   return {
     type: FETCH_MASTER_REPORTS_DATES,
   };
 }
 
+export function toggleTransferringMember (memberId) {
+  return {
+    type: TOGGLE_TRANSFERRING_MEMBER,
+    memberId
+  };
+}
+
+export function transferMember (memberId, shouldChargeReEnrollmentFree) {
+  return {
+    type: TRANSFER_MEMBER,
+    memberId,
+    shouldChargeReEnrollmentFree
+  };
+}
+
+// Terms and conditions update actions
+
+export function toggleTermsUpdate (flag) {
+  return {
+    type: TOGGLE_TERMS_UPDATE,
+    flag
+  };
+}
+
+export function termsUpdateRequest () {
+  return {
+    type: TERMS_UPDATE_REQUEST
+  };
+}
+
+// security form
+export function toggleSecurityForm (flag) {
+  return {
+    type: TOGGLE_SECURITY_FORM,
+    flag
+  };
+}
+
+export function securityFormSubmitRequest (values) {
+  return {
+    type: SECURITY_FORM_SUBMIT_REQUEST,
+    values
+  };
+}

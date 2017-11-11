@@ -22,7 +22,7 @@ export const FETCH_DENTIST_REPORTS_SUCCESS = 'app/DentistMembersPage/FETCH_DENTI
 export const FETCH_DENTIST_REPORTS_ERROR   = 'app/DentistMembersPage/FETCH_DENTIST_REPORTS_ERROR';
 
 export const SEARCH_MEMBERS   = 'app/DentistMembersPage/SEARCH_MEMBERS';
-export const SORT_MEMBERS     = 'app/DentistMembersPage/SORT_MEMBERS';
+export const FILTER_MEMBERS     = 'app/DentistMembersPage/FILTER_MEMBERS';
 
 export const SET_EDITING_MEMBER   = 'app/DentistMembersPage/SET_EDITING_MEMBER';
 export const CLEAR_EDITING_MEMBER = 'app/DentistMembersPage/CLEAR_EDITING_MEMBER';

@@ -102,10 +102,10 @@ export default class MemberListEdit extends Component {
 
     amount = pluckMembershipfee(member, membershipPlans);
 
-    const membership = member.subscription ? member.subscription.membership : {};
+    const membership = (member.subscription && member.subscription.membership) ? member.subscription.membership : {};
     let status = member.subscription ? member.subscription.status : 'inactive';
-    const membershipType = member.subscription.membership.type;
-    const membershipName = member.subscription.membership.name;
+    const membershipType = member.subscription.membership ? member.subscription.membership.type : null;
+    const membershipName = member.subscription.membership ? member.subscription.membership.name : '';
 
     let statusStyle = 'member__detail'
     if (status === 'active') {
@@ -279,13 +279,13 @@ export default class MemberListEdit extends Component {
 
     patient.membershipId = patient.subscription.membershipId;
     const members = [patient, ...patient.members]
-      .sort(m => m.subscription !== undefined && m.subscription.membership.type === 'year' ? 1 : -1);
+      .sort(m => m.subscription !== undefined && m.subscription.membership !== null && m.subscription.membership.type === 'year' ? 1 : -1);
 
     const memberRows = [];
     let annualSeparated = false;
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
-      if (member.subscription !== undefined && member.subscription.membership.type == 'year' && !annualSeparated) {
+      if (member.subscription !== undefined && member.subscription.membership !== null && member.subscription.membership.type == 'year' && !annualSeparated) {
         annualSeparated = true;
         memberRows.push(
           <div key={Math.random()} className="row" styleName="member">
@@ -298,7 +298,7 @@ export default class MemberListEdit extends Component {
         );
       }
       memberRows.push(this.renderMember(patient, member, showControlCol, dentist.memberships));
-      if (member.subscription !== undefined && member.subscription.membership.type == 'year') {
+      if (member.subscription !== undefined && member.subscription.membership !== null && member.subscription.membership.type == 'year') {
         annualSeparated = true;
         const subscriptionStatus = member.subscription.status;
         let expiresOrRenews = 'Renews At';

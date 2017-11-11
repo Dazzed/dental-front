@@ -45,6 +45,20 @@ const unThemedPages = [
   '/terms',
 ];
 
+const pagesWithSocialLinks = [
+  '/',
+  '/learn-more',
+  '/search',
+  // /marketplace/profile/123 handled separately since we need to account for the id at the end
+];
+
+const pagesWithDisclaimer = [
+  '/learn-more',
+  '/search',
+  // `/` (home page) handled separately since it includes the footer component directly
+  // `/marketplace/profile/123` handled separately since we need to account for the id at the end
+];
+
 const mapDispatchToProps = {
   loadUserFromToken: actions.meFromToken
 };
@@ -84,12 +98,33 @@ export default class App extends Component {
   }
 
   render () {
-    const { user, pageTitle, location: { pathname } } = this.props;
+    const { user, pageTitle, location: { pathname, search } } = this.props;
+
+    // show / hide olark
+    if ( pathname === '/'
+      || pathname === '/learn-more'
+      || pathname === '/search'
+      || pathname.substring(0, 21) === '/marketplace/profile/'
+      || ( pathname.substring(0, 28) === '/accounts/signup/my-dentist/'
+        && search === '?frommarketplace=true'
+      )
+    ) {
+      olark('api.box.show');
+    }
+    else {
+      olark('api.box.hide');
+    }
 
     // NOTE: Hardcoded here to avoid the common layout
     if (pathname === '/') {
       return this.props.children;
     }
+
+    const showSocialLinks = pagesWithSocialLinks.includes(pathname)
+                         || pathname.substring(0, 21) === '/marketplace/profile/';
+
+    const showDisclaimer = pagesWithDisclaimer.includes(pathname)
+                        || pathname.substring(0, 21) === '/marketplace/profile/';
 
     let content = null;
     const childComponents = React.Children.toArray(this.props.children);
@@ -140,7 +175,7 @@ export default class App extends Component {
       <div styleName={wrapperStyle}>
         {navbar}
         {content}
-        <Footer />
+        <Footer showSocialLinks={showSocialLinks} showDisclaimer={showDisclaimer} />
       </div>
     );
   }

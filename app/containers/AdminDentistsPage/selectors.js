@@ -185,6 +185,26 @@ const selectProcessedDentists = createSelector(
   }
 );
 
+const transferringMemberSelector = createSelector(
+  domainSelector,
+  substate => substate.transferringMember
+);
+
+const isTransferringMemberSelector = createSelector(
+  domainSelector,
+  substate => substate.isTransferringMember
+);
+
+const termsUpdateModalOpenSelector = createSelector(
+  domainSelector,
+  substate => substate.termsUpdateModalOpen
+);
+
+const isUpdatingTermsSelector = createSelector(
+  domainSelector,
+  substate => substate.isUpdatingTerms
+);
+
 /*
 Export
 ------------------------------------------------------------
@@ -211,4 +231,9 @@ export {
   selectRefundingMember,
   // reports
   selectMasterReportsDates,
+
+  transferringMemberSelector,
+  isTransferringMemberSelector,
+  termsUpdateModalOpenSelector,
+  isUpdatingTermsSelector
 };

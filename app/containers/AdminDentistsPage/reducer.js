@@ -27,6 +27,23 @@ import {
   FAILED_REFUNDING_MEMBER,
   REFUNDING_MEMBER_SUCCESS,
   FETCH_MASTER_REPORTS_DATES_SUCCESS,
+
+  TOGGLE_TRANSFERRING_MEMBER,
+  TRANSFER_MEMBER,
+  TRANSFER_MEMBER_SUCCESS,
+  TRANSFER_MEMBER_FAILURE,
+
+  // terms and conditions
+  TOGGLE_TERMS_UPDATE,
+  TERMS_UPDATE_REQUEST,
+  TERMS_UPDATE_SUCCESS,
+  TERMS_UPDATE_ERROR,
+
+  // security form
+  TOGGLE_SECURITY_FORM,
+  SECURITY_FORM_SUBMIT_REQUEST,
+  SECURITY_FORM_SUBMIT_SUCCESS,
+  SECURITY_FORM_SUBMIT_ERROR
 } from './constants';
 
 /*
@@ -50,8 +67,16 @@ const initialState = {
   searchName: null,
   sortStatus: 'unassigned',
   refundingMember: null,
+  transferringMember: null,
+  isTransferringMember: false,
   masterReportsDates: {},
-  editingDentistId: null
+  editingDentistId: null,
+
+  termsUpdateModalOpen: false,
+  isUpdatingTerms: false,
+
+  securityFormModalOpen: false,
+  isUpdatingSecuritySettings: false
 };
 
 
@@ -204,6 +229,71 @@ export default function adminPageReducer (state = initialState, action) {
       return {
         ...state,
         masterReportsDates: action.payload,
+      };
+    case TOGGLE_TRANSFERRING_MEMBER:
+      return {
+        ...state,
+        transferringMember: action.memberId
+      };
+    case TRANSFER_MEMBER:
+      return {
+        ...state,
+        isTransferringMember: true
+      };
+    case TRANSFER_MEMBER_SUCCESS:
+      return {
+        ...state,
+        transferringMember: null,
+        isTransferringMember: false,
+        dentistMembers: state.dentistMembers
+          .filter(m => m.id !== action.memberId)
+      };
+    case TRANSFER_MEMBER_FAILURE:
+      return {
+        ...state,
+        isTransferringMember: false
+      };
+    case TOGGLE_TERMS_UPDATE:
+      return {
+        ...state,
+        termsUpdateModalOpen: action.flag
+      };
+    case TERMS_UPDATE_REQUEST:
+      return {
+        ...state,
+        isUpdatingTerms: true
+      };
+    case TERMS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        termsUpdateModalOpen: false,
+        isUpdatingTerms: false
+      };
+    case TERMS_UPDATE_ERROR:
+      return {
+        ...state,
+        isUpdatingTerms: false
+      };
+    case TOGGLE_SECURITY_FORM:
+      return {
+        ...state,
+        securityFormModalOpen: action.flag
+      };
+    case SECURITY_FORM_SUBMIT_REQUEST:
+      return {
+        ...state,
+        isUpdatingSecuritySettings: true
+      };
+    case SECURITY_FORM_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        securityFormModalOpen: false,
+        isUpdatingSecuritySettings: false
+      };
+    case SECURITY_FORM_SUBMIT_ERROR:
+      return {
+        ...state,
+        isUpdatingSecuritySettings: false
       };
     /*
     Default Reducer

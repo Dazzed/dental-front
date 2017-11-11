@@ -190,10 +190,10 @@ const QuestionAndAnswers = [
               One basic cleaning and exam every 6 months
             </li>
             <li>
-              Any necessary xrays associated with those exams per your dentist
+              Any necessary X-rays associated with those exams per your dentist
             </li>
             <li>
-              One emergency exam and xray per year
+              One emergency exam and X-ray per year
             </li>
             <li>
               Discount on treatment that is determined by your dentist
@@ -211,10 +211,10 @@ const QuestionAndAnswers = [
               One basic cleaning and exam every 6 months
             </li>
             <li>
-              Any necessary xrays associated with those exams per your dentist
+              Any necessary X-rays associated with those exams per your dentist
             </li>
             <li>
-              One emergency exam and xray per year
+              One emergency exam and X-ray per year
             </li>
             <li>
               One Fluoride treatment per year

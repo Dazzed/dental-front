@@ -62,3 +62,18 @@ export const FAILED_REFUNDING_MEMBER = 'app/AdminDentistsPage/FAILED_REFUNDING_M
 
 export const FETCH_MASTER_REPORTS_DATES = 'app/AdminDentistsPage/FETCH_MASTER_REPORTS_DATES';
 export const FETCH_MASTER_REPORTS_DATES_SUCCESS = 'app/AdminDentistsPage/FETCH_MASTER_REPORTS_DATES_SUCCESS';
+
+export const TOGGLE_TRANSFERRING_MEMBER = 'app/AdminDentistsPage/TOGGLE_TRANSFERRING_MEMBER';
+export const TRANSFER_MEMBER = 'app/AdminDentistsPage/TRANSFER_MEMBER';
+export const TRANSFER_MEMBER_SUCCESS = 'app/AdminDentistsPage/TRANSFER_MEMBER_SUCCESS';
+export const TRANSFER_MEMBER_FAILURE = 'app/AdminDentistsPage/TRANSFER_MEMBER_FAILURE';
+
+export const TOGGLE_TERMS_UPDATE = 'app/AdminDentistsPage/TOGGLE_TERMS_UPDATE';
+export const TERMS_UPDATE_REQUEST = 'app/AdminDentistsPage/TERMS_UPDATE_REQUEST';
+export const TERMS_UPDATE_SUCCESS = 'app/AdminDentistsPage/TERMS_UPDATE_SUCCESS';
+export const TERMS_UPDATE_ERROR = 'app/AdminDentistsPage/TERMS_UPDATE_ERROR';
+
+export const TOGGLE_SECURITY_FORM = 'app/AdminDentistsPage/TOGGLE_SECURITY_FORM';
+export const SECURITY_FORM_SUBMIT_REQUEST = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_REQUEST';
+export const SECURITY_FORM_SUBMIT_SUCCESS = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_SUCCESS';
+export const SECURITY_FORM_SUBMIT_ERROR = 'app/AdminDentistsPage/SECURITY_FORM_SUBMIT_ERROR';
