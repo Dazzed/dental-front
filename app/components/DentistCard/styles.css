@@ -15,6 +15,10 @@ Dentist Card Component Styles
   margin-bottom: 32px;
   cursor: pointer;
 
+  @media (max-width: 767px) {
+    text-align: center;
+  }
+
   &.active {
     background: #E6F2F8;
   }

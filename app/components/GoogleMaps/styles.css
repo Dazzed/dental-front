@@ -12,6 +12,10 @@ Google Maps Component Styles
   border: 6px solid $color-primary-highlight;
   border-radius: 30px;
   overflow: hidden;
+
+  @media (max-width: 767px) {
+    height: 400px;
+  }
 }
 
 .default-marker {

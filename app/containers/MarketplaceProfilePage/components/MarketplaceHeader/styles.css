@@ -6,6 +6,10 @@
 
   text-align: center;
 
+  @media (max-width: 767px) {
+    background: url(assets/images/dentist-and-woman.jpg) center / cover no-repeat;
+  }
+
   .page-header__overlay {
     display: block;
     margin: 0;
@@ -124,4 +128,8 @@
   height: 100%;
   padding: 2%;
   margin-left: 1rem;
+
+  @media (max-width: 767px) {
+    margin-top: 1rem;
+  }
 }

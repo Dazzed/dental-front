@@ -141,7 +141,7 @@ class MarketplaceProfilePage extends React.Component {
         />
 
         <div className="container">
-          <div className="col-md-12">
+          <div className="col-xs-12">
             <div styleName="content-wrapper">
               <MarketplaceTabs
                 active={activeTab}

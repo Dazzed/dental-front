@@ -25,7 +25,7 @@ export default class Reviews extends Component {
     return filteredReviews.map((review, i) => {
       const { firstName, lastName } = review.client;
       return (
-        <Col xs={6} key={i}>
+        <Col sm={6} key={i}>
           <ReviewScore score={review.rating} />
           <p>"{review.message}"</p>
           <strong>{firstName} {lastName}</strong>

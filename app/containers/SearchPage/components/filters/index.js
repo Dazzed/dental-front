@@ -63,10 +63,10 @@ export default class Filters extends React.Component {
 
     return (
       <Row>
-        <Col xs={3}>
+        <Col sm={3}>
           <h4>FILTER RESULTS BY:</h4>
         </Col>
-        <Col xs={3}>
+        <Col sm={3}>
           <ButtonToolbar styleName="pt-2">
             <DropdownButton
               styleName="filter-button"
@@ -83,7 +83,7 @@ export default class Filters extends React.Component {
             </DropdownButton>
           </ButtonToolbar>
         </Col>
-        <Col xs={3}>
+        <Col sm={3}>
           <ButtonToolbar styleName="pt-2">
             <DropdownButton
               styleName="filter-button"
@@ -98,7 +98,7 @@ export default class Filters extends React.Component {
             </DropdownButton>
           </ButtonToolbar>
         </Col>
-        <Col xs={3}>
+        <Col sm={3}>
           <ButtonToolbar styleName="pt-2">
             <DropdownButton
               styleName="filter-button"

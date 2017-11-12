@@ -72,6 +72,10 @@ Marketplace Profile
 */
 .map-wrapper {
   margin-top: -40px;
+
+  @media (max-width: 767px) {
+    margin-top: 0;
+  }
 }
 
 .profile-content-wrapper {
@@ -83,6 +87,11 @@ Marketplace Profile
 
   .profile-content__name-and-rating {
     padding-top: 5%;
+
+    @media (max-width: 767px) {
+      text-align: center;
+    }
+
 
     *:first-child {
       margin-top: 0;
@@ -131,6 +140,10 @@ Marketplace Profile
   margin: 0 10px;
 
   text-align: right;
+
+  @media (max-width: 767px) {
+    margin: 0 10px 0 0;
+  }
 }
 
 .work-hours__closed {
@@ -140,6 +153,10 @@ Marketplace Profile
 
   color: red;
   text-align: center;
+  
+  @media (max-width: 767px) {
+    width: auto;
+  }
 }
 
 /*
@@ -153,6 +170,10 @@ Photos
   padding: 2rem;
   text-align: center;
   background-color: $color-secondary-lowlight;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 /*
@@ -175,6 +196,10 @@ Membership Description
 .membership {
   font-size: 1.25rem;
   text-align: left;
+
+  @media (max-width: 767px) {
+    margin-bottom: 2rem;
+  }
 }
 
 .membership__title {
@@ -184,6 +209,11 @@ Membership Description
   color: $color-primary-highlight;
   font-size: 2.25rem;
   text-align: center;
+
+  @media (max-width: 767px) {
+    height: auto;
+    font-size: 1.5rem;
+  }
 
   small {
     color: $color-primary-highlight;
@@ -208,6 +238,10 @@ Membership Description
 
   color: $color-primary-highlight;
   font-size: 2rem;
+
+  @media (max-width: 767px) {
+    font-size: 1.5rem;
+  }
 }
 
 .membership__savings {
@@ -215,6 +249,10 @@ Membership Description
 
   color: $color-primary-highlight;
   font-size: 1.5rem;
+
+  @media (max-width: 767px) {
+    font-size: 1rem;
+  }
 }
 
 .membership__disclaimer {
@@ -305,7 +343,7 @@ Membership Description
   margin-left: 5%;
   border-top: 1px solid rgba(37,40,43,.25);
   border-bottom: 1px solid rgba(37,40,43,.25);
-  padding-bottom: 2%;
+  padding: 1rem 0;
   text-align: center;
 }
 
@@ -319,11 +357,19 @@ Membership Description
   font-size: 1.75rem;
   font-weight: bold;
   text-align: center;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
 }
 
 .custom-membership-subheader {
   font-size: 1.25rem;
   text-align: center;
+
+  @media (max-width: 767px) {
+    font-size: 1rem;
+  }
 }
 
 .cursor-pointer {

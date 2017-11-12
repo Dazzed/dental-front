@@ -9,4 +9,11 @@
 
 .pt-2 {
   padding-top: 1.5%;
+
+  :global .btn-group {
+    @media (max-width: 767px) {
+      float: none;
+    }
+  }
+
 }

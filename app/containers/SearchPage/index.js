@@ -274,10 +274,12 @@ export default class SearchPage extends Component {
       }
 
       return (
-        <GoogleMaps
-          markers={markerArray}
-          updateActiveId={this.updateActiveResultId}
-        />
+        <div styleName="search-map">
+          <GoogleMaps
+            markers={markerArray}
+            updateActiveId={this.updateActiveResultId}
+          />
+        </div>
       );
     }
 
@@ -338,6 +340,7 @@ export default class SearchPage extends Component {
         specialties,
       }
     } = this.props;
+
     const borderContent = (
       <span className="text-uppercase">
         <Filters

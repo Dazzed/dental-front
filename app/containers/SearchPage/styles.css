@@ -48,11 +48,26 @@ Dentist List
       background-color: rgba(0,0,0,.5);
       box-shadow: 0 0 1px rgba(255,255,255,.5);
   }
+
+  @media (max-width: 767px) {
+    height: auto;
+    overflow-y: visible;
+  }
 }
 
 .dentist-list {
   margin-top: 40px;
   margin-left: 0;
+
+  @media (max-width: 767px) {
+    padding-left: 0;
+  }
+}
+
+.search-map {
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 /*

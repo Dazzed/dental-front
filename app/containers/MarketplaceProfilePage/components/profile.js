@@ -188,11 +188,11 @@ export default class Profile extends Component {
       <div styleName="content">
         <div className="row">
           <div
-            className="col-md-offset-3 col-md-9"
+            className="col-sm-offset-3 col-sm-9"
             styleName="profile-content-wrapper"
           >
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-sm-3">
                 <div styleName="profile-content__avatar">
                   <Avatar
                     url={dentist.avatar}
@@ -201,7 +201,7 @@ export default class Profile extends Component {
                 </div>
               </div>
 
-              <div className="col-md-9">
+              <div className="col-sm-9">
                 <div styleName="profile-content__name-and-rating">
                   <h2 styleName="large-title--short">{dentistInfo.officeName}</h2>
 
@@ -229,7 +229,7 @@ export default class Profile extends Component {
           Dentist Details
           ------------------------------------------------------------
           */}
-          <div className="col-md-6">
+          <div className="col-sm-6">
             <div styleName="detail">
               <p styleName="detail__content" className="text-justify">
                 {dentistInfo.message}
@@ -292,7 +292,7 @@ export default class Profile extends Component {
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-sm-6">
             {/*
             Dentist Office Photos
             ------------------------------------------------------------
@@ -320,7 +320,7 @@ export default class Profile extends Component {
           Dentist Services
           ------------------------------------------------------------
           */}
-          <div className="col-md-12">
+          <div className="col-sm-12">
             <div styleName="detail">
               <h3 styleName="detail__title">Services</h3>
 
@@ -350,7 +350,6 @@ export default class Profile extends Component {
                
 
         <div className={`row ${styles['membership-page-signup-button-container']}`}>
-          <br />
           <div className="col-sm-push-4 col-sm-4">
             <Button
               styleName="signup--button"

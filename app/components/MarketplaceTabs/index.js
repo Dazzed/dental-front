@@ -16,8 +16,15 @@ export default class MarketplaceTabs extends React.Component {
   render () {
     const { active, onTabChange } = this.props;
 
+    let bsStyle = "tabs";
+    console.log(window);
+    console.log(window.innerWidth);
+    if (window.innerWidth < 768) {
+      bsStyle = "pills";
+    }
+
     return (
-      <Tabs activeKey={active} onSelect={onTabChange} id="dentist-dashboard-tabs" styleName="tabs">
+      <Tabs activeKey={active} onSelect={onTabChange} id="dentist-dashboard-tabs" styleName="tabs" bsStyle={bsStyle}>
         <Tab eventKey={'profile'} title="Profile" />
         <Tab eventKey={'plans'} title="Membership Plans" />
         <Tab eventKey={'reviews'} title="Reviews" />
