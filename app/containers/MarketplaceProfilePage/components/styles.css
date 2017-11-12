@@ -296,10 +296,8 @@ Map
 
 .signup--button {
   height: 100%;
-  padding: 2%;
-  font-size: 1.75rem;
-  margin-left: 5%;
-  width: 60%;
+  padding: 1rem;
+  font-size: 2.25rem;
 }
 
 .membership-page-signup-button-container {

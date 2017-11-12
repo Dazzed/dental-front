@@ -26,6 +26,10 @@
     }
   }
 
+  .small-title {
+    font-size: 1.5rem;    
+  }
+
   form {
     br {
       display: none;
@@ -91,10 +95,6 @@
   font-weight: bold;
 }
 
-.ml-40 {
-  margin-left: 40%;
-}
-
 .button--short {
   border: 1px solid $color-primary-highlight;
   border-radius: 0.25rem;
@@ -119,10 +119,9 @@
 
 .signup--button {
   position: relative;
-  top: -9px;
+  top: -3px;
 
   height: 100%;
   padding: 2%;
-  font-size: 1.75rem;
-  margin-left: 5%;
+  margin-left: 1rem;
 }

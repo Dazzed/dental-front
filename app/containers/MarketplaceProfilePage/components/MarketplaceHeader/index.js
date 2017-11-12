@@ -25,15 +25,17 @@ function MarketplaceHeader (props) {
 
   const borderContent = (
     <div styleName="border-content--user">
-      <div className="pull-left">
-        <span>
-          {specialty}
-        </span>
-      </div>
       <div>
-        <span styleName="ml-40">
+        <span>
           PLANS STARTING AT: {startingPrice}
         </span>
+        <Button
+          styleName="signup--button"
+          className="btn-lg"
+          bsStyle="success"
+          onClick={() => history.push(`/accounts/signup/my-dentist/${id}?frommarketplace=true`)}>
+          SIGN UP
+        </Button>
       </div>
     </div>
   );
@@ -46,13 +48,10 @@ function MarketplaceHeader (props) {
             <span styleName="large-title">
               {title}
             </span>
-            <Button
-              styleName="signup--button"
-              className="btn-lg"
-              bsStyle="success"
-              onClick={() => history.push(`/accounts/signup/my-dentist/${id}?frommarketplace=true`)}>
-              SIGN UP
-            </Button>
+            <br />
+            <span styleName="small-title">
+              {specialty}
+            </span>
           </div>
         </div>
       </div>
