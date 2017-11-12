@@ -219,9 +219,9 @@ class DentistDashboardHeader extends React.Component {
                 </Link>
               </li>
               <li>
-                <Link styleName="quick-links__link" to={`/accounts/signup/my-dentist/${id}`}>
+                <a href={`/accounts/signup/my-dentist/${id}`} target="_blank" styleName="quick-links__link">
                   Add New Member
-                </Link>
+                </a>
               </li>
               <li>
                 <Link styleName="quick-links__link" to="/dentist/custom-membership">

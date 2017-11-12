@@ -57,9 +57,11 @@ Patient Membership Info
 }
 
 .membership__title {
+  height: 78px; /* height of child section's title + subtitle */
   margin: 0 0 1.5rem 0;
 
-  font-size: 2rem;
+  font-size: 2.25rem;
+  text-align: center;
 
   small {
     color: $color-primary-highlight;
@@ -71,7 +73,7 @@ Patient Membership Info
 }
 
 .membership__includes-list {
-  min-height: 200px;
+  min-height: 225px;
   margin-bottom: 0;
   padding-left: 0;
 
@@ -82,7 +84,7 @@ Patient Membership Info
 .membership__cost {
   margin: 2rem 0 0 0;
 
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .membership__savings {

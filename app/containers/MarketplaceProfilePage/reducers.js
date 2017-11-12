@@ -6,7 +6,7 @@ import {
 } from './actions';
 
 const initialState = {
-  dentist: null,
+  dentist: false,
   isLoading: true,
   errorLoading: false
 };

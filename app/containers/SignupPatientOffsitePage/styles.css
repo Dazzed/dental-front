@@ -92,9 +92,11 @@ Membership Description
 }
 
 .membership__title {
+  height: 78px; /* height of child section's title + subtitle */
   margin: 0 0 1.5rem 0;
 
-  font-size: 2rem;
+  font-size: 2.25rem;
+  text-align: center;
 
   small {
     color: $white;
@@ -117,7 +119,7 @@ Membership Description
 .membership__cost {
   margin: 2rem 0 0 0;
 
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .membership__savings {

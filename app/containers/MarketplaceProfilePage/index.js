@@ -13,18 +13,20 @@ import { changePageTitle } from "containers/App/actions";
 import styles from "./styles.css";
 
 import { dentistProfileRequest, resetDentist } from "./actions";
+import { dentistSavingsSelector } from './selectors';
 
 import Profile from './components/profile';
 import Plans from './components/plans';
 import Reviews from './components/reviews';
 import MarketplaceHeader from './components/MarketplaceHeader';
 
-function mapStateToProps ({ marketPlaceProfile }) {
-  const { dentist, isLoading, errorLoading } = marketPlaceProfile;
+function mapStateToProps (state) {
+  const { dentist, isLoading, errorLoading } = state.marketPlaceProfile;
   return {
     dentist,
     isLoading,
-    errorLoading
+    errorLoading,
+    savings: dentistSavingsSelector(state),
   };
 }
 
@@ -69,6 +71,7 @@ class MarketplaceProfilePage extends React.Component {
     const { activeTab } = this.state;
     const {
       dentist,
+      savings,
     } = this.props;
     const { dentistInfo } = dentist;
     const { workingHours } = dentistInfo;
@@ -88,6 +91,7 @@ class MarketplaceProfilePage extends React.Component {
           dentist={dentist}
           history={this.props.history}
           id={dentist.id}
+          savings={savings}
         />
       );
     } else {
@@ -107,7 +111,7 @@ class MarketplaceProfilePage extends React.Component {
     const {
       dentist,
       isLoading,
-      errorLoading
+      errorLoading,
     } = this.props;
 
     const { activeTab } = this.state;

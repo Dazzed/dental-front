@@ -233,7 +233,7 @@ const QuestionAndAnswers = [
     question: 'Do you offer Refunds?',
     answer: (
       <p>
-        Refunds are available within 30 days as long as you haven’t received any
+        Refunds are available within 90 days as long as you haven’t received any
         services included with your package. Refund requests can be made by
         emailing <a href="mailto:info@dentalhq.com">info@dentalhq.com</a>.
         Please indicate the office of which you are a member so that we can

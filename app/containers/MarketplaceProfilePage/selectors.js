@@ -1,5 +1,5 @@
 /*
-Patient Membership Info Page Selectors
+Dentist Marketplace Profile Page Selectors
 ================================================================================
 */
 
@@ -8,36 +8,20 @@ Imports
 ------------------------------------------------------------
 */
 // lib
+import moment from 'moment';
 import { createSelector } from 'reselect';
 
-// app
-import { selectCurrentUser } from 'containers/App/selectors';
-import {
-  dentistSelector,
-  membersSelector,
-} from 'containers/PatientProfilePage/selectors';
 
 /*
 Selectors
-------------------------------------------------------------
+================================================================================
 */
-const domainSelector = state => state.patientProfilePage;
+const domainSelector = state => state.marketPlaceProfile;
 
 /*
-Data Loaded
+Savings
 ------------------------------------------------------------
 */
-const selectDataLoaded = createSelector(
-  selectCurrentUser,
-  dentistSelector,
-  membersSelector,
-  (user, dentist, members) => {
-    return user !== false && dentist !== false && members !== false;
-  }
-);
-
-/* Savings
- * ------------------------------------------------------ */
 const dentistSavingsSelector = createSelector(
   domainSelector,
   (substate) => {
@@ -119,13 +103,10 @@ Export
 export default domainSelector;
 
 export {
-  selectDataLoaded,
-  dentistSavingsSelector,
-};
+  dentistSavingsSelector
+}
 
-/* Helpers
- * ------------------------------------------------------ */
-function convertPriceCodeArrayToObject (priceCodes) {
+function convertPriceCodeArrayToObject(priceCodes) {
   return priceCodes
     .reduce((acc, priceCode) => {
       const { code, price } = priceCode;

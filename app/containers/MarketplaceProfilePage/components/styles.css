@@ -169,22 +169,24 @@ Map
 }
 
 /*
-  Memberships component styles
+Membership Description
+------------------------------------------------------------
 */
 .membership {
-  /*color: $white;*/
-
   font-size: 1.25rem;
   text-align: left;
 }
 
 .membership__title {
+  height: 78px; /* height of child section's title + subtitle */
   margin: 0 0 1.5rem 0;
 
-  font-size: 1.85rem;
+  color: $color-primary-highlight;
+  font-size: 2.25rem;
+  text-align: center;
 
   small {
-    /*color: $white;*/
+    color: $color-primary-highlight;
   }
 }
 
@@ -203,13 +205,15 @@ Map
 
 .membership__cost {
   margin: 2rem 0 0 0;
-  color: #00A1DF;
-  font-size: 3rem;
+
+  color: $color-primary-highlight;
+  font-size: 2rem;
 }
 
 .membership__savings {
   margin-bottom: 1rem;
 
+  color: $color-primary-highlight;
   font-size: 1.5rem;
 }
 
@@ -217,11 +221,7 @@ Map
   margin-bottom: 0.25rem;
 
   font-size: 0.75rem;
-}
-
-.membership__HQ_color {
-  color: #00A1DF;
-}
+} 
 
 .dentist__scores {
   margin-bottom: 1rem;
@@ -337,6 +337,7 @@ Map
 }
 
 .refund__title {
+  color: $color-primary-highlight;
   font-size: 2rem;
 }
 

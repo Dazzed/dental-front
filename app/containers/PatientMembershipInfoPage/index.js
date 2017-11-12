@@ -282,7 +282,7 @@ class PatientMembershipInfoPage extends React.Component {
                   {savings.yearly.adult !== null && (
                     <div>
                       <p styleName="membership__cost">
-                        ${adultMembership.yearly} A Year
+                        ${adultMembership.yearly} / Year
                       </p>
 
                       <p styleName="membership__savings">
@@ -294,7 +294,7 @@ class PatientMembershipInfoPage extends React.Component {
                   {savings.monthly.adult !== null && (
                     <div>
                       <p styleName="membership__cost">
-                        ${adultMembership.monthly} A Month
+                        ${adultMembership.monthly} / Month
                       </p>
 
                       <p styleName="membership__savings">
@@ -323,7 +323,7 @@ class PatientMembershipInfoPage extends React.Component {
                 <div styleName="membership">
                   <h3 styleName="membership__title">
                     Child Membership
-                    {' '}
+                    {' '}<br />
                     <small>(13 and under)</small>
                   </h3>
 
@@ -343,7 +343,7 @@ class PatientMembershipInfoPage extends React.Component {
                   {savings.yearly.child !== null && (
                     <div>
                       <p styleName="membership__cost">
-                        ${childMembership.yearly} A Year
+                        ${childMembership.yearly} / Year
                       </p>
 
                       <p styleName="membership__savings">
@@ -355,7 +355,7 @@ class PatientMembershipInfoPage extends React.Component {
                   {savings.monthly.child !== null && (
                     <div>
                       <p styleName="membership__cost">
-                        ${childMembership.monthly} A Month
+                        ${childMembership.monthly} / Month
                       </p>
 
                       <p styleName="membership__savings">

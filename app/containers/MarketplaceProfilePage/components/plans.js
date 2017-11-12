@@ -9,137 +9,179 @@ import styles from "./styles.css";
 export default class Plans extends Component {
 
   render() {
+    const {
+      savings,
+    } = this.props;
 
     let { memberships } = this.props.dentist;
     if (memberships.length === 0) {
       return <h2>This dentist Doesn't have any membership plans.</h2>;
     }
-    memberships = memberships.filter(m => m.active);
-    const adultMembership = (() => {
-      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
-      // let adultAnnual = memberships.find(m => m.name === 'default annual membership');
-      if (adultMonthly) {
-        let savings = Number(adultMonthly.price) * 4;
-        return {
-          monthly: adultMonthly.price.replace('.00', ''),
-          savings: String(Math.floor(savings))
-        };
-      } else {
-        return {
-          monthly: '',
-          savings: '',
-        };
-      }
-    })();
 
-    const adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.active && m.type === 'month');
-    const adultDiscount = adultMonthly.discount;
+    memberships = memberships.filter(m => m.active);
+
+    const adultMembership = (() => {
+      let adultMonthly = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'month');
+      let adultYearly = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'year');
+
+      return {
+        monthly: adultMonthly ? adultMonthly.price.replace('.00', '') : null,
+        yearly: adultYearly ? adultYearly.price.replace('.00', '') : null,
+        discount: (adultMonthly ? adultMonthly.discount : null)
+               || (adultYearly ? adultYearly.discount : null),
+      };
+    })();
 
     const childMembership = (() => {
-      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
-      if (childMonthly) {
-        let savings = Number(childMonthly.price) * (36 / 7);
-        return {
-          monthly: childMonthly.price.replace('.00', ''),
-          savings: String(Math.floor(savings))
-        };
-      } else {
-        return {
-          monthly: '',
-          savings: '',
-        };
-      }
+      let childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'month');
+      let childYearly = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'year');
+
+      return {
+        monthly: childMonthly ? childMonthly.price.replace('.00', '') : null,
+        yearly: childYearly ? childYearly.price.replace('.00', '') : null,
+        discount: (childMonthly ? childMonthly.discount : null)
+               || (childYearly ? childYearly.discount : null),
+      };
     })();
 
-    const childMonthly = memberships.find(m => m.subscription_age_group === 'child' && m.active && m.type === 'month');
-    const childDiscount = childMonthly.discount;
+    let marketingColOffset = '1';
+    if ( (adultMembership.monthly === null && adultMembership.yearly === null)
+      || (childMembership.monthly === null && childMembership.yearly === null)
+    ) {
+      marketingColOffset = '4';
+    }
 
     return (
       <div styleName="content">
+
         <div className="row">
-          <div className="col-md-offset-1 col-md-5">
-            <div styleName="membership">
-              <h3 styleName="membership__title">Adult Membership</h3>
+          {/*
+          Adult Membership
+          ------------------------------------------------------------
+          TODO: Pull this & the Child Membership out into their own component?
+                It's also on the Patient Membership Info Page.
+          */}
+          {(savings.yearly.adult !== null || savings.monthly.adult !== null) && (
+            <div className={`col-md-offset-${marketingColOffset} col-md-4`}>
+              <div styleName="membership">
+                <h3 styleName="membership__title">Adult Membership</h3>
 
-              <p styleName="membership__includes-list__label">
-                Includes:
+                <p styleName="membership__includes-list__label">
+                  Includes:
                 </p>
 
-              <ul styleName="membership__includes-list">
-                <li><FaCheck styleName="membership__HQ_color" /> 2 cleanings/year*</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1-2 exams/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> X-rays as determined necessary</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with X-ray/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> {adultDiscount}% off any needed treatment</li>
-              </ul>
+                <ul styleName="membership__includes-list">
+                  <li><FaCheck /> 2 cleanings/year*</li>
+                  <li><FaCheck /> 1-2 exams/year</li>
+                  <li><FaCheck /> X-rays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with X-ray/year</li>
+                  <li><FaCheck /> {adultMembership.discount}% off any needed treatment</li>
+                </ul>
 
-              <p styleName="membership__cost">
-                ${adultMembership.monthly} A Month
+                {savings.yearly.adult !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${adultMembership.yearly} / Year
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.yearly.adult}**
+                    </p>
+                  </div>
+                )}
+
+                {savings.monthly.adult !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${adultMembership.monthly} / Month
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.monthly.adult}**
+                    </p>
+                  </div>
+                )}
+
+                <p styleName="membership__disclaimer">
+                  *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
                 </p>
 
-              <p styleName="membership__savings">
-                Total Annual Savings: ${adultMembership.savings}**
+                <p styleName="membership__disclaimer">
+                  **Total annual savings if ALL services used.
                 </p>
-
-              <p styleName="membership__disclaimer">
-                *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
-                </p>
-
-              <p styleName="membership__disclaimer">
-                **Total annual savings if ALL services used.
-                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/*
-            Child Membership
-            ------------------------------------------------------------
+          Child Membership
+          ------------------------------------------------------------
           */}
-          <div className="col-md-5">
-            <div styleName="membership">
-              <h3 styleName="membership__title">
-                Child Membership
-                  {' '}
-                <small>(13 and under)</small>
-              </h3>
+          {(savings.yearly.child !== null || savings.monthly.child !== null) && (
+            <div className={`col-md-offset-${marketingColOffset} col-md-4`}>
+              <div styleName="membership">
+                <h3 styleName="membership__title">
+                  Child Membership
+                  {' '}<br />
+                  <small>(13 and under)</small>
+                </h3>
 
-              <p styleName="membership__includes-list__label">
-                Includes:
+                <p styleName="membership__includes-list__label">
+                  Includes:
                 </p>
 
-              <ul styleName="membership__includes-list">
-                <li><FaCheck styleName="membership__HQ_color" /> 2 cleanings/year*</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1-2 exams/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> X-rays as determined necessary</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1 emergency exam with X-ray/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> 1 Fluoride treatment/year</li>
-                <li><FaCheck styleName="membership__HQ_color" /> {childDiscount}% off any needed treatment</li>
-              </ul>
+                <ul styleName="membership__includes-list">
+                  <li><FaCheck /> 2 cleanings/year*</li>
+                  <li><FaCheck /> 1-2 exams/year</li>
+                  <li><FaCheck /> X-rays as determined necessary</li>
+                  <li><FaCheck /> 1 emergency exam with X-ray/year</li>
+                  <li><FaCheck /> 1 Fluoride treatment/year</li>
+                  <li><FaCheck /> {childMembership.discount}% off any needed treatment</li>
+                </ul>
 
-              <p styleName="membership__cost">
-                ${childMembership.monthly} A Month
+                {savings.yearly.child !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${childMembership.yearly} / Year
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.yearly.child}**
+                    </p>
+                  </div>
+                )}
+
+                {savings.monthly.child !== null && (
+                  <div>
+                    <p styleName="membership__cost">
+                      ${childMembership.monthly} / Month
+                    </p>
+
+                    <p styleName="membership__savings">
+                      Total Annual Savings: ${savings.monthly.child}**
+                    </p>
+                  </div>
+                )}
+
+                <p styleName="membership__disclaimer">
+                  *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
                 </p>
 
-              <p styleName="membership__savings">
-                Total Annual Savings: ${childMembership.savings}**
+                <p styleName="membership__disclaimer">
+                  **Total annual savings if ALL services used.
                 </p>
-
-              <p styleName="membership__disclaimer">
-                *If periodontal disease is present additional treatment will be necessary prior to your cleaning.
-                </p>
-
-              <p styleName="membership__disclaimer">
-                **Total annual savings if ALL services used.
-                </p>
+              </div>
             </div>
-          </div>
+          )}
+          {/* End Membership Info */}
         </div>
+
         <div styleName="refund">
           <p styleName="refund__title">
             Fully Refundable
           </p>
           <p styleName="refund__disclaimer">
-            **within 30 days if NO services are used**
+            **within 90 days if NO services are used**
           </p>
         </div>
         <hr />
