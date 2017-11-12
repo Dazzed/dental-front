@@ -189,7 +189,7 @@ export default class HomePage extends React.Component {
 
 
                 <h2 styleName="large-title">
-                  No insurance? No problem.
+                  No insurance? No worries.
                 </h2>
 
                 <p styleName="large-text">
