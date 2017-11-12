@@ -78,17 +78,19 @@ export default class Plans extends Component {
                   <li><FaCheck /> {adultMembership.discount}% off any needed treatment</li>
                 </ul>
 
-                {savings.yearly.adult !== null && (
-                  <div>
-                    <p styleName="membership__cost">
-                      ${adultMembership.yearly} / Year
-                    </p>
+                {/*
+                  {savings.yearly.adult !== null && (
+                    <div>
+                      <p styleName="membership__cost">
+                        ${adultMembership.yearly} / Year
+                      </p>
 
-                    <p styleName="membership__savings">
-                      Total Annual Savings: ${savings.yearly.adult}**
-                    </p>
-                  </div>
-                )}
+                      <p styleName="membership__savings">
+                        Total Annual Savings: ${savings.yearly.adult}**
+                      </p>
+                    </div>
+                  )}
+                */}
 
                 {savings.monthly.adult !== null && (
                   <div>
@@ -139,17 +141,19 @@ export default class Plans extends Component {
                   <li><FaCheck /> {childMembership.discount}% off any needed treatment</li>
                 </ul>
 
-                {savings.yearly.child !== null && (
-                  <div>
-                    <p styleName="membership__cost">
-                      ${childMembership.yearly} / Year
-                    </p>
+                {/*
+                  {savings.yearly.child !== null && (
+                    <div>
+                      <p styleName="membership__cost">
+                        ${childMembership.yearly} / Year
+                      </p>
 
-                    <p styleName="membership__savings">
-                      Total Annual Savings: ${savings.yearly.child}**
-                    </p>
-                  </div>
-                )}
+                      <p styleName="membership__savings">
+                        Total Annual Savings: ${savings.yearly.child}**
+                      </p>
+                    </div>
+                  )}
+                */}
 
                 {savings.monthly.child !== null && (
                   <div>

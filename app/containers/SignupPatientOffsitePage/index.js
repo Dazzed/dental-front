@@ -554,7 +554,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     <li><FaCheck /> {adultMembership.discount}% off any needed treatment</li>
                   </ul>
 
-                  {savings.yearly.adult !== null && (
+                  {savings.yearly.adult !== null && isFromMarketplace === false && (
                     <div>
                       <p styleName="membership__cost">
                         ${adultMembership.yearly} / Year
@@ -615,7 +615,7 @@ export default class PatientOffsiteSignupPage extends React.Component {
                     <li><FaCheck /> {childMembership.discount}% off any needed treatment</li>
                   </ul>
 
-                  {savings.yearly.child !== null && (
+                  {savings.yearly.child !== null && isFromMarketplace === false && (
                     <div>
                       <p styleName="membership__cost">
                         ${childMembership.yearly} / Year
