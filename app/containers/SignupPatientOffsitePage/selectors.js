@@ -221,7 +221,7 @@ const dentistSavingsSelector = createSelector(
 
     const standardMonthlyMembership = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'month');
     if (standardMonthlyMembership) {
-      savings.monthly.adult = adultSavings - parseFloat(standardMonthlyMembership.price * 12);
+      savings.monthly.adult = (adultSavings - parseFloat(standardMonthlyMembership.price * 12)).toFixed(2);
       if (savings.monthly.adult < 0) {
         savings.monthly.adult = 0;
       }
@@ -229,7 +229,7 @@ const dentistSavingsSelector = createSelector(
 
     const standardMonthlyChildMembership = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'month');
     if (standardMonthlyChildMembership) {
-      savings.monthly.child = childSavings - parseFloat(standardMonthlyChildMembership.price * 12);
+      savings.monthly.child = (childSavings - parseFloat(standardMonthlyChildMembership.price * 12)).toFixed(2);
       if (savings.monthly.child < 0) {
         savings.monthly.child = 0;
       }
@@ -237,7 +237,7 @@ const dentistSavingsSelector = createSelector(
 
     const standardAnnualMembership = memberships.find(m => m.subscription_age_group === 'adult' && m.type === 'year');
     if (standardAnnualMembership) {
-      savings.yearly.adult = adultSavings - parseFloat(standardAnnualMembership.price);
+      savings.yearly.adult = (adultSavings - parseFloat(standardAnnualMembership.price)).toFixed(2);
       if (savings.yearly.adult < 0) {
         savings.yearly.adult = 0;
       }
@@ -245,7 +245,7 @@ const dentistSavingsSelector = createSelector(
 
     const standardAnnualChildMembership = memberships.find(m => m.subscription_age_group === 'child' && m.type === 'year');
     if (standardAnnualChildMembership) {
-      savings.yearly.child = childSavings - parseFloat(standardAnnualChildMembership.price);
+      savings.yearly.child = (childSavings - parseFloat(standardAnnualChildMembership.price)).toFixed(2);
       if (savings.yearly.child < 0) {
         savings.yearly.child = 0;
       }
