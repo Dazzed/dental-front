@@ -91,9 +91,15 @@ const mapStateToProps = (state) => {
   ) {
     return {
       // pricing
-      yearlyFeeActivated: {
-        adult: false,
-        child: false,
+      feeActivated: {
+        monthly: {
+          adult: true,
+          child: true,
+        },
+        yearly: {
+          adult: true,
+          child: true,
+        },
       },
 
       recommendedFees: {
@@ -185,9 +191,15 @@ const mapStateToProps = (state) => {
 
   return {
     // pricing
-    yearlyFeeActivated: {
-      adult: !isEmpty(pricing.adultYearlyFee),
-      child: !isEmpty(pricing.childYearlyFee),
+    feeActivated: {
+      monthly: {
+        adult: !isEmpty(pricing.adultMonthlyFee),
+        child: !isEmpty(pricing.childMonthlyFee),
+      },
+      yearly: {
+        adult: !isEmpty(pricing.adultYearlyFee),
+        child: !isEmpty(pricing.childYearlyFee),
+      },
     },
 
     recommendedFees,
@@ -245,7 +257,7 @@ class DentistEditProfileForm extends React.Component {
     // mapped - state
     officeClosed: React.PropTypes.object.isRequired,
     recommendedFees: React.PropTypes.object.isRequired,
-    yearlyFeeActivated: React.PropTypes.object.isRequired,
+    feeActivated: React.PropTypes.object.isRequired,
 
     // redux form
     change: React.PropTypes.func.isRequired,
@@ -381,6 +393,14 @@ class DentistEditProfileForm extends React.Component {
     // this.forceUpdate();
   }
 
+  setAdultMonthlyMembership = (info) => {
+    this.setState({ adultMonthlyFeeActivated: info.target.checked, adultMonthlyFeeChecked: true });
+  }
+
+  setChildMonthlyMembership = (info) => {
+    this.setState({ childMonthlyFeeActivated: info.target.checked, adultMonthlyFeeChecked: true });
+  }
+
   setAdultAnnualMembership = (info) => {
     this.setState({ adultYearlyFeeActivated: info.target.checked, adultYearlyFeeChecked: true });
   }
@@ -446,7 +466,7 @@ class DentistEditProfileForm extends React.Component {
       // mapped - state
       officeClosed,
       recommendedFees,
-      yearlyFeeActivated,
+      feeActivated,
 
       // redux form
       error,
@@ -457,7 +477,9 @@ class DentistEditProfileForm extends React.Component {
     // const adultYearlyFeeActivated = this.state.adultYearlyFeeChecked ? this.state.adultYearlyFeeActivated : !!this.props.initialValues.pricing.adultYearlyFee;
     // const childYearlyFeeActivated = this.state.childYearlyFeeChecked ? this.state.childYearlyFeeActivated : !!this.props.initialValues.pricing.childYearlyFee;
 
-    // For now, it's not possible to deactivate an annual membership.
+    // For now, it's not possible to deactivate a membership.
+    const adultMonthlyFeeActivated = !!this.props.initialValues.pricing.adultMonthlyFee;
+    const childMonthlyFeeActivated = !!this.props.initialValues.pricing.childMonthlyFee;
     const adultYearlyFeeActivated = !!this.props.initialValues.pricing.adultYearlyFee;
     const childYearlyFeeActivated = !!this.props.initialValues.pricing.childYearlyFee;
 
@@ -879,6 +901,7 @@ class DentistEditProfileForm extends React.Component {
                     component={this.getInputGroup}
                     leftAddon="$"
                     width={8}
+                    disabled={!feeActivated.monthly.adult}
                   />
                 </Row>
               </div>
@@ -893,6 +916,17 @@ class DentistEditProfileForm extends React.Component {
                     </span>
                   </p>
                 )}
+
+                <div styleName="fees__activation-checkbox">
+                  <Field
+                    name="adultMonthlyFeeActivated"
+                    component={this.getCheckbox}
+                    adultYearlyFeeActivated={feeActivated.monthly.adult}
+                    onChange={this.setAdultMonthlyMembership}
+                  >
+                    Activate this offer.
+                  </Field>
+                </div>
               </div>
             </FormGroup>
           </FormSection>
@@ -911,6 +945,7 @@ class DentistEditProfileForm extends React.Component {
                     component={this.getInputGroup}
                     leftAddon="$"
                     width={8}
+                    disabled={!feeActivated.monthly.child}
                   />
                 </Row>
               </div>
@@ -925,6 +960,17 @@ class DentistEditProfileForm extends React.Component {
                     </span>
                   </p>
                 )}
+
+                <div styleName="fees__activation-checkbox">
+                  <Field
+                    name="childMonthlyFeeActivated"
+                    component={this.getCheckbox}
+                    adultYearlyFeeActivated={feeActivated.monthly.child}
+                    onChange={this.setChildMonthlyMembership}
+                  >
+                    Activate this offer.
+                  </Field>
+                </div>
               </div>
             </FormGroup>
           </FormSection>
@@ -944,7 +990,7 @@ class DentistEditProfileForm extends React.Component {
                     component={this.getInputGroup}
                     leftAddon="$"
                     width={8}
-                    disabled={!yearlyFeeActivated.adult}
+                    disabled={!feeActivated.yearly.adult}
                   />
                 </Row>
               </div>
@@ -964,7 +1010,7 @@ class DentistEditProfileForm extends React.Component {
                   <Field
                     name="adultYearlyFeeActivated"
                     component={this.getCheckbox}
-                    adultYearlyFeeActivated={adultYearlyFeeActivated}
+                    adultYearlyFeeActivated={feeActivated.yearly.adult}
                     onChange={this.setAdultAnnualMembership}
                   >
                     Activate this offer.
@@ -985,7 +1031,7 @@ class DentistEditProfileForm extends React.Component {
                     component={this.getInputGroup}
                     leftAddon="$"
                     width={8}
-                    disabled={!yearlyFeeActivated.child}
+                    disabled={!feeActivated.yearly.child}
                   />
                 </Row>
               </div>
@@ -1004,7 +1050,7 @@ class DentistEditProfileForm extends React.Component {
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="childYearlyFeeActivated"
-                    childYearlyFeeActivated={childYearlyFeeActivated}
+                    childYearlyFeeActivated={feeActivated.yearly.child}
                     component={this.getCheckbox}
                     onChange={this.setChildAnnualMembership}
                   >

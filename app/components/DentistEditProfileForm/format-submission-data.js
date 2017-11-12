@@ -124,18 +124,20 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       ...data.pricing,
 
       // ALTER the activated indicators to ensure each value is a boolean.
+      adultMonthlyFeeActivated: data.pricing.adultMonthlyFee ? data.pricing.adultMonthlyFeeActivated : false,
+      childMonthlyFeeActivated: data.pricing.childMonthlyFee ? data.pricing.childMonthlyFeeActivated : false,
       adultYearlyFeeActivated: data.pricing.adultYearlyFee ? data.pricing.adultYearlyFee.adultYearlyFeeActivated : false,
       childYearlyFeeActivated: data.pricing.childYearlyFee ? data.pricing.childYearlyFee.childYearlyFeeActivated : false,
 
       // ALTER the fees: normalize the price values.
       adultMonthlyFee: {
-        id: data.pricing.adultMonthlyFee.id,
+        id: data.pricing.adultMonthlyFee ? data.pricing.adultMonthlyFee.id : null,
         value: getFee(data.pricing.adultMonthlyFee)
-      },
+      }, // CONDITIONAL
       childMonthlyFee: {
-        id: data.pricing.childMonthlyFee.id,
+        id: data.pricing.childMonthlyFee ? data.pricing.childMonthlyFee.id : null,
         value: getFee(data.pricing.childMonthlyFee)
-      },
+      }, // CONDITIONAL
       adultYearlyFee: {
         id: data.pricing.adultYearlyFee ? data.pricing.adultYearlyFee.id : null,
         value: getFee(data.pricing.adultYearlyFee)
@@ -215,12 +217,6 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
     delete processedData.officeInfo.childStartingAge;
   }
 
-  // if (processedData.pricing.adultYearlyFeeActivated === false) {
-  //   delete processedData.pricing.adultYearlyFee;
-  // }
-  // if (processedData.pricing.childYearlyFeeActivated === false) {
-  //   delete processedData.pricing.childYearlyFee;
-  // }
   return processedData;
 };
 

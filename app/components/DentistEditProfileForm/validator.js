@@ -129,6 +129,8 @@ const schema = {
     },
   },
 
+  // "pricing.adultMonthlyFeeActivated" is optional
+  // "pricing.childMontlyFeeActivated" is optional
   // "pricing.adultYearlyFeeActivated" is optional
   // "pricing.childYearlyFeeActivated" is optional
 
