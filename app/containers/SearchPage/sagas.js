@@ -37,9 +37,7 @@ function* searchWatcher() {
         if (specialtiesList) {
           yield put(specialtiesSuccess(specialtiesList));
         }
-        if (payload.countRequired) {
-          yield put(countSuccess(totalDentistCount));
-        }
+        yield put(countSuccess(totalDentistCount));
       } catch (e) {
         console.log(e);
         if (e.errors) {
