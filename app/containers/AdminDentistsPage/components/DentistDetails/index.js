@@ -60,6 +60,7 @@ const renderLinkedOffices = links => {
 const renderPlans = plans => {
   const adultPlans = plans
     .filter(p => p.subscription_age_group === 'adult')
+    .filter(p => p.active)
     .map(p => (
       <div
         key={p.id}
@@ -73,6 +74,7 @@ const renderPlans = plans => {
 
   const childPlans = plans
   .filter(p => p.subscription_age_group === 'child')
+  .filter(p => p.active)
   .map(p => (
     <div
       key={p.id}
