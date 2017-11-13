@@ -66,14 +66,6 @@ export default class SeedPlanForm extends Component {
     this.setState({ didMount: true });
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (!this.props.anyTouched && !nextProps.anyTouched) {
-      if (nextProps.recommendedFee && nextProps.recommendedFee !== '') {
-        this.props.change('fee', nextProps.recommendedFee);
-      }
-    }
-  }
-
   getInput (props) {
     return new Input(props);
   }

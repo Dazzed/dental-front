@@ -73,10 +73,10 @@ export default class MemberFormModal extends React.Component {
   }
 
   onBirthdayChanged(birthDate) {
+    this.props.change('membershipId', null);
     const age = moment().diff(moment(birthDate, 'MM/DD/YYYY'), 'years');
     this.setState({
-      ...this.state,
-      age: age,
+      age
     });
   }
 
@@ -150,6 +150,13 @@ export default class MemberFormModal extends React.Component {
     return discount ? (Number(price) * (1 - (Number(discount) / 100))).toFixed(2) : price;
   }
 
+  validateMembershipId = value => {
+    if (!value || value === -1 || value === 0) {
+      return 'Membership type is required';
+    }
+    return null;
+  }
+
   renderMembershipType = () => {
     let { dentist: { memberships } } = this.props;
 
@@ -212,6 +219,7 @@ export default class MemberFormModal extends React.Component {
       component={this.getLabeledInput}
       label="Membership Type"
       className="col-md-6"
+      validate={this.validateMembershipId}
     >
       <option>Membership Type</option>
       {
