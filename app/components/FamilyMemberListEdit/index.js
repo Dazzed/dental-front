@@ -227,9 +227,7 @@ export default class FamilyMemberListEdit extends Component {
                   )
               }
 
-              {
-                membership.type === 'month'
-                  && status === 'Cancellation Requested'
+              { status === 'Cancellation Requested'
                   && (
                     <input 
                       type="button"

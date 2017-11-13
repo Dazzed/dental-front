@@ -48,8 +48,8 @@ export default class SignupPatientSlugPage extends Component {
           header={`${i + 1}.) ${office.officeName}`}
           key={office.userId} href={`/accounts/signup/my-dentist/${office.userId}`}
         >
-          <p>{office.address}, {office.city}</p>
-          <p>{office.zipCode}, {office.state}</p>
+          <p>{office.address}</p>
+          <p>{office.city}, {office.state}, {office.zipCode}</p>
           <strong>Phone:</strong> {office.phone}
         </ListGroupItem>
       );

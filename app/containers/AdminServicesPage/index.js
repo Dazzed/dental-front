@@ -109,7 +109,7 @@ export default class AdminServicesPage extends Component {
         {
           services.map((service, index) => {
             return (
-              <div className="row" styleName="list-entry__wrapper">
+              <div className="row" styleName="list-entry__wrapper" key={`service_${index}`}>
                 <div className="col-sm-12">
                   <div styleName="list-entry">
 
