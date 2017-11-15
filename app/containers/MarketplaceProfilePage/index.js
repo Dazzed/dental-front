@@ -121,7 +121,9 @@ class MarketplaceProfilePage extends React.Component {
         <div styleName="container-wrapper">
           <PageHeader title="Dental Marketplace" />
           <div className="container">
-            <LoadingSpinner />
+            <div className={`row text-center`}>
+              <LoadingSpinner />
+            </div>
           </div>
         </div>
       );
