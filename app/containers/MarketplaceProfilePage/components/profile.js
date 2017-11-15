@@ -214,9 +214,9 @@ export default class Profile extends Component {
                       *The dentist currently has no reviews.
                     </div>
                   )}
-                  <br />
-                  <br />
-                  {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+                  <div>
+                    {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+                  </div>
                 </div>
               </div>
 
@@ -308,6 +308,7 @@ export default class Profile extends Component {
             */}
             <div styleName="map-wrapper">
               <GoogleMaps
+                zoomLevel={12}
                 markers={markers}
                 updateActiveId={() => {}}
               />
