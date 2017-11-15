@@ -142,7 +142,7 @@ export default class CheckoutFormModal extends React.Component {
       showWaiverCheckboxes,
     } = this.props;
 
-    const dentistInfo = dentist.dentistInfo;
+    const dentistInfo = dentist ? dentist.dentistInfo : null;
 
     const infoPopover = (
       <Popover
