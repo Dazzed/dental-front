@@ -211,12 +211,17 @@ export default class FamilyMemberListEdit extends Component {
                   && status === 'active'
                   && (
                     <div>
-                      <input
-                        type="button"
-                        styleName="button--small"
-                        value="UPDATE"
-                        onClick={this.onUpdateClick.bind(this, patient, member)}
-                      />
+                      {
+                        moment(member.subscription.stripeSubscriptionIdUpdatedAt).add('1', 'year').diff(moment(), 'days') <= 30
+                        && (
+                          <input
+                            type="button"
+                            styleName="button--small"
+                            value="UPDATE"
+                            onClick={this.onUpdateClick.bind(this, patient, member)}
+                          />
+                        )
+                      }
                       <input
                         type="button"
                         styleName="button--small"
