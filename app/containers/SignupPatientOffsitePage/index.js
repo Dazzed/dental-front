@@ -763,13 +763,14 @@ export default class PatientOffsiteSignupPage extends React.Component {
         />
 
         <CheckoutFormModal
-          listMembers={true}
-          user={user}
-          show={editingCheckout !== null}
           dentist={dentist}
+          listMembers={true}
+          showDentistInfo={true}
+          user={user}
+
+          show={editingCheckout !== null}
           onCancel={this.cancelCheckoutFormAction}
           showWaiverCheckboxes={true}
-
 
           initialValues={editingCheckout}
           onSubmit={this.handleCheckoutFormSubmit}
