@@ -214,9 +214,9 @@ export default class Profile extends Component {
                       *The dentist currently has no reviews.
                     </div>
                   )}
-                  <br />
-                  <br />
-                  {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+                  <div>
+                    {renderAffordabilityScore(dentistInfo.affordabilityScore)}
+                  </div>
                 </div>
               </div>
 

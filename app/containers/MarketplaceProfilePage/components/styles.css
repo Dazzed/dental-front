@@ -79,10 +79,22 @@ Marketplace Profile
 }
 
 .profile-content-wrapper {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 767px) {
+    margin-bottom: 1rem;
+  }
 
   .profile-content__avatar {
     width: 100%;
+
+    @media (max-width: 767px) {
+      width: 50%;
+      min-width: 128px;
+      max-width: 256px;
+
+      margin: 0 auto;
+    }
   }
 
   .profile-content__name-and-rating {
@@ -336,6 +348,10 @@ Membership Description
   height: 100%;
   padding: 1rem;
   font-size: 2.25rem;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
 }
 
 .membership-page-signup-button-container {
