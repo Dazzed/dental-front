@@ -88,7 +88,9 @@ export default class CheckoutFormModal extends React.Component {
 
   static propTypes = {
     // settings - passed in
+    dentist: React.PropTypes.object,
     listMembers: React.PropTypes.bool,
+    showDentistInfo: React.PropTypes.bool,
     user: React.PropTypes.object,
 
     // form related - passed in
@@ -122,7 +124,9 @@ export default class CheckoutFormModal extends React.Component {
   render() {
     const {
       // settings
+      dentist,
       listMembers,
+      showDentistInfo,
       user,
 
       // form related
@@ -130,7 +134,6 @@ export default class CheckoutFormModal extends React.Component {
       handleSubmit,
       submit,
       submitting,
-      dentist,
 
       // modal related
       show,
@@ -138,6 +141,8 @@ export default class CheckoutFormModal extends React.Component {
       onCancel,
       showWaiverCheckboxes,
     } = this.props;
+
+    const dentistInfo = dentist ? dentist.dentistInfo : null;
 
     const infoPopover = (
       <Popover
@@ -236,7 +241,19 @@ export default class CheckoutFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Body>
-          {listMembers && user && (
+          {showDentistInfo && dentist && (
+            <div styleName="dentist-info">
+              <h5 styleName="modal-section-title">{dentistInfo.officeName}</h5>
+              <p styleName="dentist-info__address">
+                {dentistInfo.address}
+                <br />
+                {dentistInfo.city}, {dentistInfo.state} {dentistInfo.zipCode}
+              </p>
+              <hr styleName="spacer--members-list" />
+            </div>
+          )}
+
+          {listMembers && user && dentist && (
             <div>
               <h5 styleName="modal-section-title">Members:</h5>
 

@@ -26,6 +26,11 @@ function GoogleMaps(props) {
     updateActiveId,
   } = props;
 
+  let zoomLevel = props.zoomLevel;
+  if (zoomLevel === undefined) {
+    zoomLevel = 10;
+  }
+
   function renderMarkers() {
     return markers.map((marker, i) => {
       return (
@@ -68,7 +73,7 @@ function GoogleMaps(props) {
     <div styleName="map-wrapper">
       <GoogleMapReact
         center={getMapPos()}
-        defaultZoom={10}
+        defaultZoom={zoomLevel}
         bootstrapURLKeys={{
           key: 'AIzaSyDVwZs96MdlR8UdGKAxf9ndeb4GxpVF1Ho',
         }}

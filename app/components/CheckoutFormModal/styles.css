@@ -93,3 +93,11 @@ Checkout Form Modal
   color: $color-primary-highlight;
   font-size: 4.5rem;
 }
+
+/* Dentist Info
+ * ------------------------------------------------------ */
+.dentist-info {}
+
+.dentist-info__address {
+  margin-bottom: 0;
+}
