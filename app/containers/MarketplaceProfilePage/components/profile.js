@@ -308,6 +308,7 @@ export default class Profile extends Component {
             */}
             <div styleName="map-wrapper">
               <GoogleMaps
+                zoomLevel={12}
                 markers={markers}
                 updateActiveId={() => {}}
               />
