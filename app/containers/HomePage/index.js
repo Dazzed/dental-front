@@ -206,11 +206,7 @@ export default class HomePage extends React.Component {
                     Browse
                   </h3>
                   <p styleName="large-text">
-                    our extensive
-                    <br />
-                    selection of quality
-                    <br />
-                    dentists near you.
+                    our extensive selection of quality dentists near you.
                   </p>
                 </div>
               </div>
@@ -222,11 +218,7 @@ export default class HomePage extends React.Component {
                     Select
                   </h3>
                   <p styleName="large-text">
-                    the dentist with the
-                    <br />
-                    membership plan that
-                    <br />
-                    meets your needs.
+                    the dentist with the membership plan that meets your needs.
                   </p>
                 </div>
               </div>
@@ -235,14 +227,10 @@ export default class HomePage extends React.Component {
                 <div styleName="process">
                   <img src={calendarIcon} alt="Calendar Icon" />
                   <h3 styleName="large-title">
-                    Call
+                    Signup
                   </h3>
                   <p styleName="large-text">
-                    the dentist directly
-                    <br />
-                    to schedule an
-                    <br />
-                    appointment.
+                    and schedule your first appointment.
                   </p>
                 </div>
               </div>
