@@ -129,15 +129,24 @@ class MarketplaceProfilePage extends React.Component {
       );
     }
 
-    const { dentistInfo, dentistSpecialty } = dentist;
+    const { dentistInfo, dentistSpecialty, memberships, planStartingCost } = dentist;
     const { workingHours } = dentistInfo;
+
+    let startingAdultPrice = "$"
+      + memberships
+        .find(m => m.active && m.subscription_age_group === 'adult' && m.type === 'month')
+        .price
+        .replace('.00', '');
+    if (startingAdultPrice === undefined) {
+      startingAdultPrice = planStartingCost;
+    }
 
     return (
       <div styleName="container-wrapper">
         <MarketplaceHeader
           title={`${dentistInfo.officeName}`}
           specialty={dentistSpecialty.name}
-          startingPrice={dentist.planStartingCost}
+          startingPrice={startingAdultPrice}
           history={this.props.history}
           id={dentist.id}
         />
