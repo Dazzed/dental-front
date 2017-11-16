@@ -88,9 +88,8 @@ export default class CheckoutFormModal extends React.Component {
 
   static propTypes = {
     // settings - passed in
-    dentist: React.PropTypes.object,
+    dentist: React.PropTypes.object.isRequired,
     listMembers: React.PropTypes.bool,
-    showDentistInfo: React.PropTypes.bool,
     user: React.PropTypes.object,
 
     // form related - passed in
@@ -126,7 +125,6 @@ export default class CheckoutFormModal extends React.Component {
       // settings
       dentist,
       listMembers,
-      showDentistInfo,
       user,
 
       // form related
@@ -142,7 +140,7 @@ export default class CheckoutFormModal extends React.Component {
       showWaiverCheckboxes,
     } = this.props;
 
-    const dentistInfo = dentist ? dentist.dentistInfo : null;
+    const dentistInfo = dentist.dentistInfo;
 
     const infoPopover = (
       <Popover
@@ -241,17 +239,15 @@ export default class CheckoutFormModal extends React.Component {
         ------------------------------------------------------------
         */}
         <Modal.Body>
-          {showDentistInfo && dentist && (
-            <div styleName="dentist-info">
-              <h5 styleName="modal-section-title">{dentistInfo.officeName}</h5>
-              <p styleName="dentist-info__address">
-                {dentistInfo.address}
-                <br />
-                {dentistInfo.city}, {dentistInfo.state} {dentistInfo.zipCode}
-              </p>
-              <hr styleName="spacer--members-list" />
-            </div>
-          )}
+          <div styleName="dentist-info">
+            <h5 styleName="modal-section-title">{dentistInfo.officeName}</h5>
+            <p styleName="dentist-info__address">
+              {dentistInfo.address}
+              <br />
+              {dentistInfo.city}, {dentistInfo.state} {dentistInfo.zipCode}
+            </p>
+            <hr styleName="spacer--members-list" />
+          </div>
 
           {listMembers && user && dentist && (
             <div>
