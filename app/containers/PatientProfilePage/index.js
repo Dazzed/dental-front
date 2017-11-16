@@ -649,6 +649,8 @@ class PatientProfilePage extends React.Component {
         />
 
         <CheckoutFormModal
+          dentist={dentist}
+
           show={editingPayment !== null}
           onCancel={this.cancelPaymentFormAction}
           showWaiverCheckboxes={false}
