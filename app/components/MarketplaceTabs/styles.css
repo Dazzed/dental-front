@@ -67,6 +67,12 @@ Dentist Dashboard Tabs
     }
   }
 
+  :global .nav-pills {
+    @media (max-width: 767px) {
+      margin-bottom: 1rem;
+    }
+  }
+
   :global .nav-pills > li {
     @media (max-width: 767px) {
       width: 170px;
