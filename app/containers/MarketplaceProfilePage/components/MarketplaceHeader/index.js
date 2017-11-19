@@ -26,9 +26,11 @@ function MarketplaceHeader (props) {
   const borderContent = (
     <div styleName="border-content--user">
       <div>
-        <span>
-          PLANS STARTING AT: {startingPrice}
-        </span>
+        {startingPrice !== null && (
+          <span>
+            PLANS STARTING AT: ${startingPrice.toFixed(2).replace('.00', '')}
+          </span>
+        )}
         <Button
           styleName="signup--button"
           className="btn-lg"
