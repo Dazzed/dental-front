@@ -67,15 +67,6 @@ function DentistCard (dentist) {
     memberships,
   } = dentist;
 
-  let startingAdultPrice = "$"
-    + memberships
-      .find(m => m.active && m.subscription_age_group === 'adult' && m.type === 'month')
-      .price
-      .replace('.00', '');
-  if (startingAdultPrice === undefined) {
-    startingAdultPrice = planStartingCost;
-  }
-
   return (
     <li
       styleName={`dentist-list-item ${active ? 'active' : ''}`}
@@ -108,12 +99,14 @@ function DentistCard (dentist) {
           </div>
         </div>
 
-        <div className="col-sm-6">
-          <div styleName="plan-cost-label">Plans starting at:</div>
-          <div styleName="plan-cost">
-            <span styleName="price">${startingAdultPrice}</span> / month
+        {planStartingCost !== null && (
+          <div className="col-sm-6">
+            <div styleName="plan-cost-label">Plans starting at:</div>
+            <div styleName="plan-cost">
+              <span styleName="price">${planStartingCost.toFixed(2).replace('.00', '')}</span> / month
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </li>
   );
