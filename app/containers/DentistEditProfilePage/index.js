@@ -31,12 +31,15 @@ import {
   fetchDentistInfo,
   fetchPatients,
   dentistSpecialtiesRequest,
-  uploadImageRequest,
+// TODO: enable images
+//  uploadImageRequest,
 
   // submit
   signupRequest,
 } from 'containers/DentistMembersPage/actions';
 
+// TODO: enable services
+/*
 import {
   requestServices,
 } from 'containers/App/actions';
@@ -44,6 +47,7 @@ import {
 import {
   selectServices,
 } from 'containers/App/selectors';
+*/
 
 import {
   // fetch
@@ -65,7 +69,8 @@ function mapStateToProps (state) {
     patients: selectPatients(state),
     dentistSpecialties: dentistSpecialtiesSelector(state),
     user: selectCurrentUser(state),
-    allServices: selectServices(state),
+// TODO: enable services
+//    allServices: selectServices(state),
   };
 }
 
@@ -79,10 +84,12 @@ function mapDispatchToProps (dispatch) {
     fetchDentistInfo: () => dispatch(fetchDentistInfo()),
     fetchPatients: () => dispatch(fetchPatients()),
     getDentistSpecialties: () => dispatch(dentistSpecialtiesRequest()),
-    requestServices: () => dispatch(requestServices()),
+// TODO: enable services
+//    requestServices: () => dispatch(requestServices()),
 
     // image upload
-    uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
+// TODO: enable images
+//    uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
 
     // signup
     makeSignupRequest: (values) => dispatch(signupRequest(values)),
@@ -127,10 +134,13 @@ export default class DentistEditProfilePage extends Component {
     fetchDentistInfo: React.PropTypes.func.isRequired,
     fetchPatients: React.PropTypes.func.isRequired,
     getDentistSpecialties: React.PropTypes.func.isRequired,
-    requestServices: React.PropTypes.func.isRequired,
+
+// TODO: enable services
+//    requestServices: React.PropTypes.func.isRequired,
 
     // image upload - dispatch
-    uploadImage: React.PropTypes.func.isRequired,
+// TODO: enable images
+//    uploadImage: React.PropTypes.func.isRequired,
 
     // signup - dispatch
     makeSignupRequest: React.PropTypes.func.isRequired,
@@ -141,7 +151,8 @@ export default class DentistEditProfilePage extends Component {
       this.props.fetchDentistInfo();
       this.props.fetchPatients();
       this.props.getDentistSpecialties();
-      this.props.requestServices();
+// TODO: enable services
+//      this.props.requestServices();
     }
   }
 
@@ -154,15 +165,20 @@ export default class DentistEditProfilePage extends Component {
   ------------------------------------------------------------
   */
   // profile form
+// TODO: enable images
+/*
   onImageUpload = (field, file) => {
     this.props.uploadImage(field, file);
   }
+*/
 
   onSubmit = (values) => {
     const formattedValues = formatDentistProfileFormSubmissionData(values);
     this.props.makeSignupRequest(formattedValues);
   }
 
+// TODO: enable services
+/*
   updateServiceState(allServices, selectedServices) {
     for (let i = 0; i < allServices.length; i++) {
       const service = allServices[i];
@@ -170,6 +186,7 @@ export default class DentistEditProfilePage extends Component {
       allServices[i].enabled = !!matchingService;
     }
   }
+*/
 
   /*
   Render
@@ -181,7 +198,8 @@ export default class DentistEditProfilePage extends Component {
       dentistInfo,
       patients,
       dentistSpecialties,
-      allServices,
+// TODO: enable services
+//      allServices,
       user,
     } = this.props;
 
@@ -213,7 +231,8 @@ export default class DentistEditProfilePage extends Component {
     if (initialValues === null) {
       initialValues = formatDentistProfileFormInitialValues(user, dentistInfo);
     }
-    this.updateServiceState(allServices, initialValues.officeInfo.services);
+// TODO: enable services
+//    this.updateServiceState(allServices, initialValues.officeInfo.services);
 
     return (
       <div>
@@ -232,13 +251,14 @@ export default class DentistEditProfilePage extends Component {
               <DentistEditProfileForm
                 dentistSpecialties={dentistSpecialties}
 
-                allServices={allServices}
                 initialValues={initialValues}
                 onSubmit={this.onSubmit}
-
-                onImageUpload={this.onImageUpload}
               />
-
+                {/* // TODO: enable services */}
+                {/* allServices={allServices} */}
+                {/* // TODO: enable images */}
+                {/* onImageUpload={this.onImageUpload} */}
+  
             </div>
           </div>
         </div>
