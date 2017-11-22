@@ -59,7 +59,7 @@ This is used to format the form data before it is sent to the server.  It must
 be called by the `onSubmit` function passed to the `<DentistEditProfileForm>`
 component.
 */
-const formatDentistEditProfileFormSubmissionData = (data) => {
+const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
 
   const getFee = (feeInfo) => {
     if (!feeInfo || !feeInfo.price) {
@@ -127,6 +127,25 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
 
     pricing: {
       ...data.pricing,
+
+      // ALTER the pricing codes from an object with code => amount entries
+      // to an array of objects, one per price code.  Also normalize the code
+      // names and the price values, and add in data from the original price
+      // codes.
+      //
+      // { "D1234": 12.5, ... } => [{ id: 1, code: "1234", price: "12.50", description: "Periodic Exam" }, ...]
+      codes: priceCodes.reduce((updatedPriceCodes, priceCode) => {
+        const updatedPrice = data.pricing.codes["D" + priceCode.code];
+
+        updatedPriceCodes.push({
+          id: priceCode.id,
+          code: priceCode.code,
+          description: priceCode.description,
+          price: updatedPrice
+        });
+
+        return updatedPriceCodes;
+      }, []),
 
       // ALTER the activated indicators to ensure each value is a boolean.
 // TODO: enable membership activation / deactivation

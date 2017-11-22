@@ -24,15 +24,11 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
     },
 
     pricing: {
-      codes: dentistInfo.priceCodes,
-
-      /*
-      dentistInfo.priceCodes.reduce((priceCodesObj, priceCodeEntry) => {
+      codes: dentistInfo.priceCodes.reduce((priceCodesObj, priceCodeEntry) => {
         const key = "D" + priceCodeEntry.code;
         priceCodesObj[key] = priceCodeEntry.price;
         return priceCodesObj;
       }, {}),
-      */
 
       adultMonthlyFee: dentistInfo.memberships.find(
           sub => sub.type == 'month' && sub.subscription_age_group === 'adult' && sub.active),

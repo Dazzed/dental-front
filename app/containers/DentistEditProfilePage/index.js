@@ -54,7 +54,6 @@ import {
   selectDentistInfo,
   selectPatients,
   dentistSpecialtiesSelector,
-  pricingCodesSelector,
 } from 'containers/DentistMembersPage/selectors';
 import styles from './styles.css';
 
@@ -173,7 +172,7 @@ export default class DentistEditProfilePage extends Component {
 */
 
   onSubmit = (values) => {
-    const formattedValues = formatDentistProfileFormSubmissionData(values);
+    const formattedValues = formatDentistProfileFormSubmissionData(values, this.props.dentistInfo.priceCodes);
     this.props.makeSignupRequest(formattedValues);
   }
 
@@ -253,6 +252,8 @@ export default class DentistEditProfilePage extends Component {
 
                 initialValues={initialValues}
                 onSubmit={this.onSubmit}
+
+                pricingCodes={dentistInfo.priceCodes}
               />
                 {/* // TODO: enable services */}
                 {/* allServices={allServices} */}

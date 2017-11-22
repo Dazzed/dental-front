@@ -9,7 +9,7 @@ Imports
 */
 // libs
 import React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
@@ -251,9 +251,9 @@ class DentistEditProfileForm extends React.Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
-    /*
-    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
+    /*
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
@@ -493,7 +493,7 @@ class DentistEditProfileForm extends React.Component {
 // TODO: enable services
 //      allServices,
 
-      //      pricingCodes,
+      pricingCodes,
       //      services,
 
 
@@ -874,7 +874,9 @@ class DentistEditProfileForm extends React.Component {
         */}
         <FormSection name="pricing">
 
-          <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
+          <FormSection name="codes">
+            <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
+
             <div className="row" styleName="pricing-codes">
               <div className="col-sm-offset-2 col-sm-8">
 
@@ -886,22 +888,21 @@ class DentistEditProfileForm extends React.Component {
                     Price
                   </div>
                 </div>
-                <FieldArray name="codes" component={codes =>
-                  <div>
-                    {codes.fields.map((code, codeIndex) => {
-                      const rowStyle = `row ${styles['pricing-codes__entry']}`;
-                      const entryStyle = styles['pricing-codes__entry__code'];
-                      return (
-                    <div className={rowStyle} key={codeIndex}>
+
+                {sortBy(pricingCodes, 'code').map((pricingCode) => {
+                  const pricingCodeName = "D" + pricingCode.code;
+
+                  return (
+                    <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
                       <div className="col-sm-4">
-                        <div className={entryStyle}>
-                          { initialValues.pricing.codes[codeIndex].code }
+                        <div styleName="pricing-codes__entry__code">
+                          {pricingCodeName}
                         </div>
                       </div>
                       <div className="col-sm-8">
                         <Row>
                           <Field
-                            name={`${code}.price`}
+                            name={pricingCodeName}
                             type="number"
                             component={this.getInputGroup}
                             leftAddon="$"
@@ -912,17 +913,16 @@ class DentistEditProfileForm extends React.Component {
                           />
                         </Row>
                       </div>
-                    </div>);
-                  }
-                    )}
-                  </div>
-                }/>
+                    </div>
+                  );
+                })}
 
                 {/* End Pricing Codes Wrapper Column*/}
               </div>
               {/* End Pricing Codes Wrapper Row*/}
 
             </div>
+          </FormSection>
 
           <div styleName="field-instructions">
             <p>
