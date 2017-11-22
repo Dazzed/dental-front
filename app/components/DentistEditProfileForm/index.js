@@ -9,7 +9,7 @@ Imports
 */
 // libs
 import React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
@@ -36,12 +36,15 @@ import InputGroup from 'components/InputGroup';
 import InputTime from 'components/InputTime';
 import LabeledInput from 'components/LabeledInput';
 
+// TODO: enable images
 // images deletion actions
+/*
 import {
   deleteOfficeLogo,
   deleteDentistAvatar,
   deleteDentistOfficeImage,
 } from 'containers/DentistMembersPage/actions';
+*/
 
 // local
 import styles from './styles.css';
@@ -72,9 +75,13 @@ const valueSelector = formValueSelector('dentist-edit-profile');
 const mapDispatchToProps = (dispatch) => ({
   toastError: (message) => dispatch(toastrActions.error(message)),
   ...bindActionCreators({
+
+// TODO: enable images
+/*
     deleteOfficeLogo,
     deleteDentistAvatar,
     deleteDentistOfficeImage
+*/
   }, dispatch)
 });
 const mapStateToProps = (state) => {
@@ -183,11 +190,14 @@ const mapStateToProps = (state) => {
     }
   }
 
+// TODO: enable images
+/*
   const imageLocations = {
     logo: null,
     avatar: null,
     office: [],
   };
+*/
 
   return {
     // pricing
@@ -231,7 +241,8 @@ class DentistEditProfileForm extends React.Component {
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
-    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+// TODO: enable services
+//    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -240,9 +251,9 @@ class DentistEditProfileForm extends React.Component {
       updatedAt: React.PropTypes.date,
     })).isRequired,
 
-    /*
-    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    pricingCodes: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
+    /*
     services: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
@@ -252,7 +263,8 @@ class DentistEditProfileForm extends React.Component {
     */
 
     // passed in - events
-    onImageUpload: React.PropTypes.func.isRequired,
+// TODO: enable images
+//    onImageUpload: React.PropTypes.func.isRequired,
 
     // mapped - state
     officeClosed: React.PropTypes.object.isRequired,
@@ -265,10 +277,13 @@ class DentistEditProfileForm extends React.Component {
     handleSubmit: React.PropTypes.func.isRequired,
     submitting: React.PropTypes.bool.isRequired,
 
-    // iamge deleting funcs.
+    // image deleting funcs.
+// TODO: enable images
+/*
     deleteOfficeLogo: React.PropTypes.func.isRequired,
     deleteDentistAvatar: React.PropTypes.func.isRequired,
     deleteDentistOfficeImage: React.PropTypes.func.isRequired,
+*/
   };
 
   constructor (props) {
@@ -277,24 +292,31 @@ class DentistEditProfileForm extends React.Component {
     const { id: dentistInfoId } = initialValues.officeInfo;
     const { id: dentistId } = initialValues.user;
     this.state = {
-      currentServices: initialValues.officeInfo.services,
-      serviceList: this.props.allServices,
+// TODO: enable services
+//      currentServices: initialValues.officeInfo.services,
+//      serviceList: this.props.allServices,
+// TODO: enable images
+/*
       officeImage0: initialValues.officeInfo.officeImages0,
       officeImage1: initialValues.officeInfo.officeImages1,
       officeImage2: initialValues.officeInfo.officeImages2,
       officeLogoUrl: initialValues.officeInfo.logo,
       officeAvatarUrl: initialValues.user.avatar,
+*/
       dentistId,
       dentistInfoId
     };
   }
-  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
+// TODO: enable images
+//  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
 
   /*
   Actions
   ------------------------------------------------------------
   */
 
+// TODO: enable images
+/*
   setOfficeLogo = (info) => {
     this.setState({ officeLogoUrl: info.fileUrl });
     this.props.change('officeInfo.logo', info.fileUrl);
@@ -365,7 +387,10 @@ class DentistEditProfileForm extends React.Component {
       this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage2.id);
     }
   }
+*/
 
+// TODO: enable services
+/*
   setServices = (info) => {
     const serviceId = Number.parseInt(info.target.name.split(".")[1]);
 
@@ -392,7 +417,10 @@ class DentistEditProfileForm extends React.Component {
     }
     // this.forceUpdate();
   }
+  */
 
+// TODO: enable membership activation / deactivation
+/*
   setAdultMonthlyMembership = (info) => {
     this.setState({ adultMonthlyFeeActivated: info.target.checked, adultMonthlyFeeChecked: true });
   }
@@ -408,6 +436,7 @@ class DentistEditProfileForm extends React.Component {
   setChildAnnualMembership = (info) => {
     this.setState({ childYearlyFeeActivated: info.target.checked, childYearlyFeeChecked: true });
   }
+*/
 
   getInput(props) {
     return new Input(props);
@@ -429,6 +458,8 @@ class DentistEditProfileForm extends React.Component {
     return new InputTime(props);
   }
 
+// TODO: enable images
+/*
   onUploadStart = (file, next) => {
     const { toastError } = this.props;
     if (!/image\/png|image\/jpg|image\/jpeg|image\/gif/.test(file.type)) {
@@ -447,6 +478,7 @@ class DentistEditProfileForm extends React.Component {
     }
     return '';
   }
+*/
 
   /*
   Render
@@ -458,8 +490,10 @@ class DentistEditProfileForm extends React.Component {
       initialValues,
       dentistSpecialties,
       pricing,
-      allServices,
-      //      pricingCodes,
+// TODO: enable services
+//      allServices,
+
+      pricingCodes,
       //      services,
 
 
@@ -478,11 +512,16 @@ class DentistEditProfileForm extends React.Component {
     // const childYearlyFeeActivated = this.state.childYearlyFeeChecked ? this.state.childYearlyFeeActivated : !!this.props.initialValues.pricing.childYearlyFee;
 
     // For now, it's not possible to deactivate a membership.
+// TODO: enable membership activation / deactivation
+/*
     const adultMonthlyFeeActivated = !!this.props.initialValues.pricing.adultMonthlyFee;
     const childMonthlyFeeActivated = !!this.props.initialValues.pricing.childMonthlyFee;
     const adultYearlyFeeActivated = !!this.props.initialValues.pricing.adultYearlyFee;
     const childYearlyFeeActivated = !!this.props.initialValues.pricing.childYearlyFee;
+*/
 
+// TODO: enable images
+/*
     // Get office logo and profile picture names.
     const logoFilename = this.getS3FilenameFromURL(this.state.officeLogoUrl);
     const avatarFilename = this.getS3FilenameFromURL(this.state.officeAvatarUrl);
@@ -494,6 +533,7 @@ class DentistEditProfileForm extends React.Component {
     const office0Filename = this.getS3FilenameFromURL(officePicUrl0);
     const office1Filename = this.getS3FilenameFromURL(officePicUrl1);
     const office2Filename = this.getS3FilenameFromURL(officePicUrl2);
+*/
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -682,7 +722,10 @@ class DentistEditProfileForm extends React.Component {
         NOTE: The image uploaders don't need their own `images` <FormSection>,
               because their `onFinish` handlers manually set fields in other
               sections to the S3 url.
+
+        TODO: enable images
         */}
+        {/*
         <div>
           <Row>
             <div className="col-sm-4">
@@ -823,6 +866,7 @@ class DentistEditProfileForm extends React.Component {
 
           <hr styleName="spacer--after-form-group" />
         </div>
+        */}
 
         {/*
         Pricing
@@ -830,7 +874,9 @@ class DentistEditProfileForm extends React.Component {
         */}
         <FormSection name="pricing">
 
-          <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
+          <FormSection name="codes">
+            <ControlLabel>Membership Pricing / Affordability:</ControlLabel>
+
             <div className="row" styleName="pricing-codes">
               <div className="col-sm-offset-2 col-sm-8">
 
@@ -842,22 +888,21 @@ class DentistEditProfileForm extends React.Component {
                     Price
                   </div>
                 </div>
-                <FieldArray name="codes" component={codes =>
-                  <div>
-                    {codes.fields.map((code, codeIndex) => {
-                      const rowStyle = `row ${styles['pricing-codes__entry']}`;
-                      const entryStyle = styles['pricing-codes__entry__code'];
-                      return (
-                    <div className={rowStyle} key={codeIndex}>
+
+                {sortBy(pricingCodes, 'code').map((pricingCode) => {
+                  const pricingCodeName = "D" + pricingCode.code;
+
+                  return (
+                    <div className="row" styleName="pricing-codes__entry" key={pricingCodeName}>
                       <div className="col-sm-4">
-                        <div className={entryStyle}>
-                          { initialValues.pricing.codes[codeIndex].code }
+                        <div styleName="pricing-codes__entry__code">
+                          {pricingCodeName}
                         </div>
                       </div>
                       <div className="col-sm-8">
                         <Row>
                           <Field
-                            name={`${code}.price`}
+                            name={pricingCodeName}
                             type="number"
                             component={this.getInputGroup}
                             leftAddon="$"
@@ -868,17 +913,16 @@ class DentistEditProfileForm extends React.Component {
                           />
                         </Row>
                       </div>
-                    </div>);
-                  }
-                    )}
-                  </div>
-                }/>
+                    </div>
+                  );
+                })}
 
                 {/* End Pricing Codes Wrapper Column*/}
               </div>
               {/* End Pricing Codes Wrapper Row*/}
 
             </div>
+          </FormSection>
 
           <div styleName="field-instructions">
             <p>
@@ -893,7 +937,7 @@ class DentistEditProfileForm extends React.Component {
           <FormSection name="adultMonthlyFee">
             <FormGroup>
               <div className="col-sm-8">
-                <ControlLabel>Recommended Adult Monthly Membership Fee:</ControlLabel>
+                <ControlLabel>Recommended Adult Monthly Membership Fee:</ControlLabel>            
                 <Row>
                   <Field
                     name="price"
@@ -917,6 +961,8 @@ class DentistEditProfileForm extends React.Component {
                   </p>
                 )}
 
+{/* TODO: enable membership activation / deactivation */}
+{/*
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="adultMonthlyFeeActivated"
@@ -927,6 +973,7 @@ class DentistEditProfileForm extends React.Component {
                     Activate this offer.
                   </Field>
                 </div>
+*/}
               </div>
             </FormGroup>
           </FormSection>
@@ -961,6 +1008,8 @@ class DentistEditProfileForm extends React.Component {
                   </p>
                 )}
 
+{/* TODO: enable membership activation / deactivation */}
+{/*
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="childMonthlyFeeActivated"
@@ -971,6 +1020,7 @@ class DentistEditProfileForm extends React.Component {
                     Activate this offer.
                   </Field>
                 </div>
+*/}
               </div>
             </FormGroup>
           </FormSection>
@@ -1006,6 +1056,8 @@ class DentistEditProfileForm extends React.Component {
                   </p>
                 )}
 
+{/* TODO: enable membership activation / deactivation */}
+{/*
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="adultYearlyFeeActivated"
@@ -1016,6 +1068,7 @@ class DentistEditProfileForm extends React.Component {
                     Activate this offer.
                   </Field>
                 </div>
+*/}
               </div>
             </FormGroup>
           </FormSection>
@@ -1047,6 +1100,8 @@ class DentistEditProfileForm extends React.Component {
                   </p>
                 )}
 
+{/* TODO: enable membership activation / deactivation */}
+{/*
                 <div styleName="fees__activation-checkbox">
                   <Field
                     name="childYearlyFeeActivated"
@@ -1057,6 +1112,7 @@ class DentistEditProfileForm extends React.Component {
                     Activate this offer.
                   </Field>
                 </div>
+*/}
               </div>
             </FormGroup>
           </FormSection>
@@ -1086,7 +1142,9 @@ class DentistEditProfileForm extends React.Component {
         {/*
         Services
         ------------------------------------------------------------
+        TODO: enable services
         */}
+        {/*
         <FormSection name="services">
           <ControlLabel>Services Offered:</ControlLabel>
 
@@ -1097,7 +1155,7 @@ class DentistEditProfileForm extends React.Component {
               return (
                 <div className="col-sm-4" key={index}>
                   <Field
-                    name={service.id}
+                    name={`${service.id}`}
                     component={this.getCheckbox}
                     props={ {serviceEnabled: service.enabled }}
                     onChange={this.setServices}
@@ -1144,6 +1202,7 @@ class DentistEditProfileForm extends React.Component {
 
           <hr styleName="spacer" />
         </FormSection>
+        */}
 
         {/*
         Working Hours

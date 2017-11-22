@@ -151,6 +151,8 @@ const schema = {
   // services are optional
   // acceptsChildren is optional
 
+  // TODO: enable services
+  /*
   "services.childStartingAge": {
     numericality: {
       onlyInteger: true,
@@ -158,6 +160,7 @@ const schema = {
       strict: true,
     }
   },
+  */
 
   /*
   Working Hours

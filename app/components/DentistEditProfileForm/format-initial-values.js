@@ -15,21 +15,20 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
       ...dentistInfo,
 
       specialtyId: dentist.specialtyId,
+// TODO: enable images
+/*
       officeImages0: dentistInfo.officeImages[0],
       officeImages1: dentistInfo.officeImages[1],
       officeImages2: dentistInfo.officeImages[2],
+*/
     },
 
     pricing: {
-      codes: dentistInfo.priceCodes,
-
-      /*
-      dentistInfo.priceCodes.reduce((priceCodesObj, priceCodeEntry) => {
+      codes: dentistInfo.priceCodes.reduce((priceCodesObj, priceCodeEntry) => {
         const key = "D" + priceCodeEntry.code;
         priceCodesObj[key] = priceCodeEntry.price;
         return priceCodesObj;
       }, {}),
-      */
 
       adultMonthlyFee: dentistInfo.memberships.find(
           sub => sub.type == 'month' && sub.subscription_age_group === 'adult' && sub.active),
@@ -50,10 +49,14 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
     },
 
     // TODO: BE needs to send services, and then likely need to reverse the "format-submission-data" process
+
+    // TODO: enable services
+    /*
     services: {
       acceptsChildren: dentistInfo.acceptsChildren,
       childStartingAge: dentistInfo.childStartingAge,
     },
+    */
 
     workingHours: dentistInfo.workingHours.reduce((workingHoursObj, workingHoursEntry) => {
       workingHoursObj[workingHoursEntry.day] = {
@@ -66,9 +69,13 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
     }, {}),
   };
 
+  // TODO: enable services
+  /*
   if (initialValues.officeInfo.services) {
     initialValues.officeInfo.services = initialValues.officeInfo.services.filter(service => service != null);
   }
+  */
+
   return initialValues;
 };
 

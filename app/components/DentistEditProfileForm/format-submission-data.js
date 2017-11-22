@@ -59,7 +59,7 @@ This is used to format the form data before it is sent to the server.  It must
 be called by the `onSubmit` function passed to the `<DentistEditProfileForm>`
 component.
 */
-const formatDentistEditProfileFormSubmissionData = (data) => {
+const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
 
   const getFee = (feeInfo) => {
     if (!feeInfo || !feeInfo.price) {
@@ -73,6 +73,8 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
   ------------------------------------------------------------
   MOVE the office images into an array (part 1).
   */
+// TODO: enable images
+/*
   let officeImagesIdx = 0;
   const processedOfficeImages = [];
   if (data.officeInfo.officeImages0) {
@@ -87,6 +89,7 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
     processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages2.url;
     officeImagesIdx++;
   }
+*/
 
   /*
   Processing
@@ -113,21 +116,45 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
       marketplaceOptIn: data.marketplace.optIn === true,
 
       // MOVE the office images into an array (part 2).
-      officeImages: processedOfficeImages,
+// TODO: enable images
+//      officeImages: processedOfficeImages,
 
       // MOVE the fields about children from services to officeInfo.
-      acceptsChildren: data.services.acceptsChildren,
-      childStartingAge: data.services.childStartingAge, // CONDITIONAL
+      // TODO: enable services
+      // acceptsChildren: data.services.acceptsChildren,
+      // childStartingAge: data.services.childStartingAge, // CONDITIONAL
     },
 
     pricing: {
       ...data.pricing,
 
+      // ALTER the pricing codes from an object with code => amount entries
+      // to an array of objects, one per price code.  Also normalize the code
+      // names and the price values, and add in data from the original price
+      // codes.
+      //
+      // { "D1234": 12.5, ... } => [{ id: 1, code: "1234", price: "12.50", description: "Periodic Exam" }, ...]
+      codes: priceCodes.reduce((updatedPriceCodes, priceCode) => {
+        const updatedPrice = data.pricing.codes["D" + priceCode.code];
+
+        updatedPriceCodes.push({
+          id: priceCode.id,
+          code: priceCode.code,
+          description: priceCode.description,
+          price: updatedPrice
+        });
+
+        return updatedPriceCodes;
+      }, []),
+
       // ALTER the activated indicators to ensure each value is a boolean.
+// TODO: enable membership activation / deactivation
+/*
       adultMonthlyFeeActivated: data.pricing.adultMonthlyFee ? data.pricing.adultMonthlyFeeActivated : false,
       childMonthlyFeeActivated: data.pricing.childMonthlyFee ? data.pricing.childMonthlyFeeActivated : false,
       adultYearlyFeeActivated: data.pricing.adultYearlyFee ? data.pricing.adultYearlyFee.adultYearlyFeeActivated : false,
       childYearlyFeeActivated: data.pricing.childYearlyFee ? data.pricing.childYearlyFee.childYearlyFeeActivated : false,
+*/
 
       // ALTER the fees: normalize the price values.
       adultMonthlyFee: {
@@ -153,11 +180,15 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
     // checked Services, so no filtering is necessary.
     //
     // { "service-51": true, ... } => [ 51, ... ]
+
+    // TODO: enable services
+    /*
     services: Object.keys(data.services).map((serviceId) => {
       if (serviceId !== "acceptsChildren" && serviceId !== "childStartingAge") {
         return serviceId.substr(8); // "service-51" => "51"
       }
     }),
+    */
 
     // ALTER the workingHours from an object with dayName => dayWorkingHours
     // to an array of dayWorkingHours objects that include the dayName as the
@@ -194,9 +225,12 @@ const formatDentistEditProfileFormSubmissionData = (data) => {
   */
   delete processedData.officeInfo.specialtyId;
 
+// TODO: enable images
+/*
   delete processedData.officeInfo.officeImages0;
   delete processedData.officeInfo.officeImages1;
   delete processedData.officeInfo.officeImages2;
+*/
 
   // NOTE: `services` is ALTERED in the processedData, and the original object
   //       is replaced with an array.  Thus these fields will no longer exist
