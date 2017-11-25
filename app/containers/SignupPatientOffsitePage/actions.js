@@ -43,6 +43,7 @@ import {
   SIGNUP_ERROR,
   CLEAR_SIGNUP_STATUS,
   GO_TO_DASHBOARD,
+  SET_ORIGIN,
 } from './constants';
 
 /*
@@ -184,5 +185,14 @@ export function goToDashboard(currentUser) {
   return {
     type: GO_TO_DASHBOARD,
     currentUser,
+  };
+}
+
+// If the user is from marketplace, origin = external. Else, origin = internal.
+// This action creator creates the action to set the origin.
+export function setOrigin (origin) {
+  return {
+    type: SET_ORIGIN,
+    origin,
   };
 }

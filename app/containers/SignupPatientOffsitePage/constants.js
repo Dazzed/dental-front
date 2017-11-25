@@ -33,3 +33,5 @@ export const SIGNUP_SUCCESS      = 'app/SignupPatientOffsitePage/SIGNUP_SUCCESS'
 export const SIGNUP_ERROR        = 'app/SignupPatientOffsitePage/SIGNUP_ERROR';
 export const CLEAR_SIGNUP_STATUS = 'app/SignupPatientOffsitePage/CLEAR_SIGNUP_STATUS';
 export const GO_TO_DASHBOARD     = 'app/SignupPatientOffsitePage/GO_TO_DASHBOARD';
+
+export const SET_ORIGIN = 'app/SignupPatientOffsitePage/SET_ORIGIN';
