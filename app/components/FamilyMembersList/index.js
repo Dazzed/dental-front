@@ -101,8 +101,10 @@ class FamilyMembersList extends React.Component {
 
       total: patient.members.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription && member.subscription.status === 'active' && member.subscription.costs.type === 'monthly') {
-            aggregateTotal += parseFloat(member.subscription.costs.monthlyPrice);
+          const subscriptionType = member.clientSubscription.membership.type;
+          const subscriptionStatus = member.clientSubscription.status;
+          if (member.clientSubscription && subscriptionStatus === 'active' && [ 'month', 'custom' ].includes(subscriptionType)) {
+            aggregateTotal += parseFloat(member.clientSubscription.membership.price);
           }
           return aggregateTotal;
         },
