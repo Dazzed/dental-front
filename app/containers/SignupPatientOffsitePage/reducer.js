@@ -42,6 +42,7 @@ import {
   // signup
   SIGNUP_SUCCESS,
   CLEAR_SIGNUP_STATUS,
+  SET_ORIGIN,
 } from './constants';
 
 /*
@@ -54,8 +55,8 @@ const initialState = {
   user: {
     id: uniqueId(),
     members: [],
-    origin: "internal",
-    membershipId: "-1",
+    origin: null,
+    membershipId: '-1',
   },
 
   editingActive: false,
@@ -304,6 +305,14 @@ function patientOffsiteSignupPageReducer (state = initialState, action) {
         accountInfo: {
           fullName: '',
           loginEmail: '',
+        },
+      };
+    case SET_ORIGIN:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          origin: action.origin,
         },
       };
 

@@ -57,6 +57,7 @@ import {
   // signup
   signupRequest,
   goToDashboard,
+  setOrigin,
 } from './actions';
 import {
   // fetch dentist
@@ -144,6 +145,9 @@ function mapDispatchToProps(dispatch) {
     // signup
     makeSignupRequest: (user, paymentInfo) => dispatch(signupRequest(user, paymentInfo)),
     goToDashboard: (currentUser) => dispatch(goToDashboard(currentUser)),
+
+    // set origin
+    setPatientOrigin: origin => dispatch(setOrigin(origin)),
   };
 }
 
@@ -224,6 +228,9 @@ export default class PatientOffsiteSignupPage extends React.Component {
     // signup - dispatch
     makeSignupRequest: React.PropTypes.func,
     goToDashboard: React.PropTypes.func,
+
+    // origin
+    setPatientOrigin: React.PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -241,6 +248,12 @@ export default class PatientOffsiteSignupPage extends React.Component {
     this.props.fetchDentist(this.props.routeParams.dentistId);
     if (!window.Stripe) {
       this.props.toastError('There was an error embedding Stripe, please reload the page');
+    }
+    const { setPatientOrigin } = this.props;
+    if (isFromMarketplace) {
+      setPatientOrigin('external');
+    } else {
+      setPatientOrigin('internal');
     }
   }
 
