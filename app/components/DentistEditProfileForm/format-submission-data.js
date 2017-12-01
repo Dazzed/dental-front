@@ -116,9 +116,8 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
       officeImages: processedOfficeImages,
 
       // MOVE the fields about children from services to officeInfo.
-      // TODO: enable services
-      // acceptsChildren: data.services.acceptsChildren,
-      // childStartingAge: data.services.childStartingAge, // CONDITIONAL
+      acceptsChildren: data.services.acceptsChildren,
+      childStartingAge: data.services.childStartingAge, // CONDITIONAL
     },
 
     pricing: {
@@ -177,14 +176,14 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
     //
     // { "service-51": true, ... } => [ 51, ... ]
 
-    // TODO: enable services
-    /*
-    services: Object.keys(data.services).map((serviceId) => {
-      if (serviceId !== "acceptsChildren" && serviceId !== "childStartingAge") {
-        return serviceId.substr(8); // "service-51" => "51"
-      }
-    }),
-    */
+    services: Object.keys(data.services)
+      .filter((serviceKey) => {
+        const enabled = data.services[serviceKey];
+        return enabled && serviceKey !== "acceptsChildren" && serviceKey !== "childStartingAge";
+      })
+      .map((serviceKey) => {
+        return serviceKey.substr(8); // "service-51" => "51"
+      }),
 
     // ALTER the workingHours from an object with dayName => dayWorkingHours
     // to an array of dayWorkingHours objects that include the dayName as the

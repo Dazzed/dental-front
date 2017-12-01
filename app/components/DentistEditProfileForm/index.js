@@ -232,8 +232,7 @@ class DentistEditProfileForm extends React.Component {
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
-// TODO: enable services
-//    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -279,9 +278,8 @@ class DentistEditProfileForm extends React.Component {
     const { id: dentistInfoId } = initialValues.officeInfo;
     const { id: dentistId } = initialValues.user;
     this.state = {
-// TODO: enable services
-//      currentServices: initialValues.officeInfo.services,
-//      serviceList: this.props.allServices,
+      currentServices: initialValues.officeInfo.services,
+      serviceList: this.props.allServices,
       officeImage0: initialValues.officeInfo.officeImages0,
       officeImage1: initialValues.officeInfo.officeImages1,
       officeImage2: initialValues.officeInfo.officeImages2,
@@ -379,36 +377,6 @@ class DentistEditProfileForm extends React.Component {
     }
   }
 
-// TODO: enable services
-/*
-  setServices = (info) => {
-    const serviceId = Number.parseInt(info.target.name.split(".")[1]);
-
-    const allServices = this.state.serviceList;
-    const serviceInfo = allServices.find(service => service.id === serviceId);
-    serviceInfo.enabled = info.target.checked;
-    if (info.target.checked) {
-      if (!this.state.currentServices.find(service => service.id === serviceId)) {
-        // Turning on the value.
-        const { currentServices } = this.state;
-        currentServices.push({
-          id: serviceId,
-          name: serviceInfo.name
-        });
-        this.setState({ currentServices },
-          () => this.props.change('officeInfo.services', currentServices));
-      }
-    } else {
-      // Turning off the value.
-      const { currentServices } = this.state;
-      this.setState({ currentServices: currentServices.filter(service => service.id !== serviceId) },
-        () => this.props.change('officeInfo.services', currentServices.filter(service => service.id !== serviceId)));
-      // this.state.currentServices = this.state.currentServices.filter(service => service.id !== serviceId);
-    }
-    // this.forceUpdate();
-  }
-  */
-
 // TODO: enable membership activation / deactivation
 /*
   setAdultMonthlyMembership = (info) => {
@@ -477,8 +445,7 @@ class DentistEditProfileForm extends React.Component {
       initialValues,
       dentistSpecialties,
       pricing,
-// TODO: enable services
-//      allServices,
+      allServices,
 
       pricingCodes,
       //      services,
@@ -1122,23 +1089,20 @@ class DentistEditProfileForm extends React.Component {
         {/*
         Services
         ------------------------------------------------------------
-        TODO: enable services
         */}
-        {/*
         <FormSection name="services">
           <ControlLabel>Services Offered:</ControlLabel>
 
 
           <Row>
-            {allServices.map((service, index) => {
+            {allServices.map((service) => {
+              const serviceKey = "service-" + service.id;
 
               return (
-                <div className="col-sm-4" key={index}>
+                <div className="col-sm-4" key={serviceKey}>
                   <Field
-                    name={`${service.id}`}
+                    name={`${serviceKey}`}
                     component={this.getCheckbox}
-                    props={ {serviceEnabled: service.enabled }}
-                    onChange={this.setServices}
                   >
                     <span>{service.name}</span>
                   </Field>
@@ -1182,7 +1146,6 @@ class DentistEditProfileForm extends React.Component {
 
           <hr styleName="spacer" />
         </FormSection>
-        */}
 
         {/*
         Working Hours
