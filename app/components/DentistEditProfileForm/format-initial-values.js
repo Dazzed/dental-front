@@ -15,12 +15,9 @@ const formatDentistEditProfileFormSubmissionData = (dentist, dentistInfo) => {
       ...dentistInfo,
 
       specialtyId: dentist.specialtyId,
-// TODO: enable images
-/*
       officeImages0: dentistInfo.officeImages[0],
       officeImages1: dentistInfo.officeImages[1],
       officeImages2: dentistInfo.officeImages[2],
-*/
     },
 
     pricing: {

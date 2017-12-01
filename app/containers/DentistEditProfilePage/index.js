@@ -31,8 +31,7 @@ import {
   fetchDentistInfo,
   fetchPatients,
   dentistSpecialtiesRequest,
-// TODO: enable images
-//  uploadImageRequest,
+  uploadImageRequest,
 
   // submit
   signupRequest,
@@ -87,8 +86,7 @@ function mapDispatchToProps (dispatch) {
 //    requestServices: () => dispatch(requestServices()),
 
     // image upload
-// TODO: enable images
-//    uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
+    uploadImage: (field, file) => dispatch(uploadImageRequest(field, file)),
 
     // signup
     makeSignupRequest: (values) => dispatch(signupRequest(values)),
@@ -138,8 +136,7 @@ export default class DentistEditProfilePage extends Component {
 //    requestServices: React.PropTypes.func.isRequired,
 
     // image upload - dispatch
-// TODO: enable images
-//    uploadImage: React.PropTypes.func.isRequired,
+    uploadImage: React.PropTypes.func.isRequired,
 
     // signup - dispatch
     makeSignupRequest: React.PropTypes.func.isRequired,
@@ -164,12 +161,9 @@ export default class DentistEditProfilePage extends Component {
   ------------------------------------------------------------
   */
   // profile form
-// TODO: enable images
-/*
   onImageUpload = (field, file) => {
     this.props.uploadImage(field, file);
   }
-*/
 
   onSubmit = (values) => {
     const formattedValues = formatDentistProfileFormSubmissionData(values, this.props.dentistInfo.priceCodes);
@@ -253,12 +247,11 @@ export default class DentistEditProfilePage extends Component {
                 initialValues={initialValues}
                 onSubmit={this.onSubmit}
 
+                onImageUpload={this.onImageUpload}
                 pricingCodes={dentistInfo.priceCodes}
               />
                 {/* // TODO: enable services */}
                 {/* allServices={allServices} */}
-                {/* // TODO: enable images */}
-                {/* onImageUpload={this.onImageUpload} */}
   
             </div>
           </div>
