@@ -129,6 +129,9 @@ function* main () {
   yield cancel(watcherK);
   yield cancel(watcherL);
   yield cancel(watcherM);
+  yield cancel(watcherN);
+  yield cancel(watcherO);
+  yield cancel(watcherP);
 }
 
 /*
