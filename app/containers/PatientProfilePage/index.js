@@ -151,7 +151,7 @@ Profile
 ================================================================================
 */
 @connect(mapStateToProps, mapDispatchToProps)
-@CSSModules(styles)
+@CSSModules(styles, { allowMultiple: true })
 class PatientProfilePage extends React.Component {
 
   static propTypes = {
@@ -449,8 +449,10 @@ class PatientProfilePage extends React.Component {
 
       total: familyMembers.reduce(
         function (aggregateTotal, member) {
-          if (member.subscription && member.subscription.status === 'active' && member.subscription.monthly) {
-            aggregateTotal += parseFloat(member.subscription.monthly);
+          const subscriptionType = member.clientSubscription.membership.type;
+          const subscriptionStatus = member.clientSubscription.status;
+          if (member.clientSubscription && [ 'active', 'past_due' ].includes(subscriptionStatus) && [ 'month', 'custom' ].includes(subscriptionType)) {
+            aggregateTotal += parseFloat(member.clientSubscription.membership.price);
           }
           return aggregateTotal;
         },
@@ -470,16 +472,20 @@ class PatientProfilePage extends React.Component {
         moment().add(100, 'years'), // obviously larger than any paid subscription period
       ),
     };
-
+    let statusStyle = '';
     if (aggregateSubscription.status === 'active') {
       aggregateSubscription.status = 'Active';
+      statusStyle += ' status status--active';
     }
     else if (aggregateSubscription.status === 'past_due') {
       aggregateSubscription.status = 'Late';
+      statusStyle += ' status status--past-due';
     }
     else {
       aggregateSubscription.status = 'Inactive';
+      statusStyle += ' status status--inactive';
     }
+
     aggregateSubscription.total = aggregateSubscription.total.toFixed(2).replace(".00", "");
     aggregateSubscription.dueDate = aggregateSubscription.dueDate.format("MMMM D, YYYY");
 
@@ -505,11 +511,11 @@ class PatientProfilePage extends React.Component {
                   </p>
                   <p>
                     <span styleName="text--inline-label">Account Status:</span>
-                    <span styleName="text--primary--bold">{aggregateSubscription.status}</span>
+                    <span styleName={`text--primary--bold ${statusStyle}`}>{aggregateSubscription.status}</span>
                   </p>
                   <p>
                     <span styleName="text--inline-label">Current Balance:</span>
-                    <span styleName="text--bold">${user.subscription.balance || 0}</span>
+                    <span styleName="text--bold">${aggregateSubscription.total || 0}</span>
                   </p>
 
                   <p>
