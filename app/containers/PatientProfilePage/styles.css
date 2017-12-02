@@ -112,3 +112,37 @@ Family Members List
 .patients-list-wrapper {
   margin-top: 2.5rem;
 }
+
+.status {
+  color: $color-black;
+
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status--active {
+  color: $color-secondary-highlight;
+
+  text-align: center;
+}
+
+.status--past-due {
+  color: #c5bf66;
+
+  font-style: italic;
+  text-align: center;
+}
+
+.status--canceled {
+  color: $color-red;
+
+  font-style: italic;
+  text-align: center;
+}
+
+.status--inactive {
+  color: $color-red;
+
+  font-style: italic;
+  text-align: center;
+}
