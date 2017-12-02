@@ -57,7 +57,7 @@ Status
 }
 .status--past-due {
   /* TODO: choose a better yellow, see MembersList css */
-  color: yellow;
+  color: #c5bf66;
 }
 .status--canceled {
   color: $color-red;
