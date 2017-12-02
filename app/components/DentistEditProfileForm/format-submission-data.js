@@ -73,8 +73,6 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
   ------------------------------------------------------------
   MOVE the office images into an array (part 1).
   */
-// TODO: enable images
-/*
   let officeImagesIdx = 0;
   const processedOfficeImages = [];
   if (data.officeInfo.officeImages0) {
@@ -89,7 +87,6 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
     processedOfficeImages[officeImagesIdx] = data.officeInfo.officeImages2.url;
     officeImagesIdx++;
   }
-*/
 
   /*
   Processing
@@ -116,13 +113,11 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
       marketplaceOptIn: data.marketplace.optIn === true,
 
       // MOVE the office images into an array (part 2).
-// TODO: enable images
-//      officeImages: processedOfficeImages,
+      officeImages: processedOfficeImages,
 
       // MOVE the fields about children from services to officeInfo.
-      // TODO: enable services
-      // acceptsChildren: data.services.acceptsChildren,
-      // childStartingAge: data.services.childStartingAge, // CONDITIONAL
+      acceptsChildren: data.services.acceptsChildren,
+      childStartingAge: data.services.childStartingAge, // CONDITIONAL
     },
 
     pricing: {
@@ -181,14 +176,14 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
     //
     // { "service-51": true, ... } => [ 51, ... ]
 
-    // TODO: enable services
-    /*
-    services: Object.keys(data.services).map((serviceId) => {
-      if (serviceId !== "acceptsChildren" && serviceId !== "childStartingAge") {
-        return serviceId.substr(8); // "service-51" => "51"
-      }
-    }),
-    */
+    services: Object.keys(data.services)
+      .filter((serviceKey) => {
+        const enabled = data.services[serviceKey];
+        return enabled && serviceKey !== "acceptsChildren" && serviceKey !== "childStartingAge";
+      })
+      .map((serviceKey) => {
+        return serviceKey.substr(8); // "service-51" => "51"
+      }),
 
     // ALTER the workingHours from an object with dayName => dayWorkingHours
     // to an array of dayWorkingHours objects that include the dayName as the
@@ -225,12 +220,9 @@ const formatDentistEditProfileFormSubmissionData = (data, priceCodes) => {
   */
   delete processedData.officeInfo.specialtyId;
 
-// TODO: enable images
-/*
   delete processedData.officeInfo.officeImages0;
   delete processedData.officeInfo.officeImages1;
   delete processedData.officeInfo.officeImages2;
-*/
 
   // NOTE: `services` is ALTERED in the processedData, and the original object
   //       is replaced with an array.  Thus these fields will no longer exist

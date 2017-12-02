@@ -103,7 +103,7 @@ class FamilyMembersList extends React.Component {
         function (aggregateTotal, member) {
           const subscriptionType = member.clientSubscription.membership.type;
           const subscriptionStatus = member.clientSubscription.status;
-          if (member.clientSubscription && subscriptionStatus === 'active' && [ 'month', 'custom' ].includes(subscriptionType)) {
+          if (member.clientSubscription && [ 'active', 'past_due' ].includes(subscriptionStatus) && [ 'month', 'custom' ].includes(subscriptionType)) {
             aggregateTotal += parseFloat(member.clientSubscription.membership.price);
           }
           return aggregateTotal;

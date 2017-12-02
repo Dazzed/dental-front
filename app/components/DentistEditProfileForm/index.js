@@ -36,15 +36,12 @@ import InputGroup from 'components/InputGroup';
 import InputTime from 'components/InputTime';
 import LabeledInput from 'components/LabeledInput';
 
-// TODO: enable images
 // images deletion actions
-/*
 import {
   deleteOfficeLogo,
   deleteDentistAvatar,
   deleteDentistOfficeImage,
 } from 'containers/DentistMembersPage/actions';
-*/
 
 // local
 import styles from './styles.css';
@@ -76,12 +73,9 @@ const mapDispatchToProps = (dispatch) => ({
   toastError: (message) => dispatch(toastrActions.error(message)),
   ...bindActionCreators({
 
-// TODO: enable images
-/*
     deleteOfficeLogo,
     deleteDentistAvatar,
     deleteDentistOfficeImage
-*/
   }, dispatch)
 });
 const mapStateToProps = (state) => {
@@ -190,14 +184,11 @@ const mapStateToProps = (state) => {
     }
   }
 
-// TODO: enable images
-/*
   const imageLocations = {
     logo: null,
     avatar: null,
     office: [],
   };
-*/
 
   return {
     // pricing
@@ -241,8 +232,7 @@ class DentistEditProfileForm extends React.Component {
   static propTypes = {
     // passed in - state
     initialValues: React.PropTypes.object.isRequired,
-// TODO: enable services
-//    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+    allServices: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 
     dentistSpecialties: React.PropTypes.arrayOf(React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
@@ -263,8 +253,7 @@ class DentistEditProfileForm extends React.Component {
     */
 
     // passed in - events
-// TODO: enable images
-//    onImageUpload: React.PropTypes.func.isRequired,
+    onImageUpload: React.PropTypes.func.isRequired,
 
     // mapped - state
     officeClosed: React.PropTypes.object.isRequired,
@@ -278,12 +267,9 @@ class DentistEditProfileForm extends React.Component {
     submitting: React.PropTypes.bool.isRequired,
 
     // image deleting funcs.
-// TODO: enable images
-/*
     deleteOfficeLogo: React.PropTypes.func.isRequired,
     deleteDentistAvatar: React.PropTypes.func.isRequired,
     deleteDentistOfficeImage: React.PropTypes.func.isRequired,
-*/
   };
 
   constructor (props) {
@@ -292,31 +278,25 @@ class DentistEditProfileForm extends React.Component {
     const { id: dentistInfoId } = initialValues.officeInfo;
     const { id: dentistId } = initialValues.user;
     this.state = {
-// TODO: enable services
-//      currentServices: initialValues.officeInfo.services,
-//      serviceList: this.props.allServices,
-// TODO: enable images
-/*
+      currentServices: initialValues.officeInfo.services,
+      serviceList: this.props.allServices,
       officeImage0: initialValues.officeInfo.officeImages0,
       officeImage1: initialValues.officeInfo.officeImages1,
       officeImage2: initialValues.officeInfo.officeImages2,
       officeLogoUrl: initialValues.officeInfo.logo,
       officeAvatarUrl: initialValues.user.avatar,
-*/
       dentistId,
       dentistInfoId
     };
   }
-// TODO: enable images
-//  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
+
+  acceptedFormats = 'image/jpg,image/jpeg,image/png,image/gif';
 
   /*
   Actions
   ------------------------------------------------------------
   */
 
-// TODO: enable images
-/*
   setOfficeLogo = (info) => {
     this.setState({ officeLogoUrl: info.fileUrl });
     this.props.change('officeInfo.logo', info.fileUrl);
@@ -325,8 +305,11 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeLogo = () => {
     this.setState({ officeLogoUrl: null });
     this.props.change('officeInfo.logo', null);
-    const { dentistId, dentistInfoId } = this.state;
-    this.props.deleteOfficeLogo(dentistId, dentistInfoId);
+
+    if (this.props.initialValues.officeInfo.logo !== null) {
+      const { dentistId, dentistInfoId } = this.state;
+      this.props.deleteOfficeLogo(dentistId, dentistInfoId);
+    }
   }
 
   setProfilePicture = (info) => {
@@ -337,8 +320,11 @@ class DentistEditProfileForm extends React.Component {
   removeProfilePicture = () => {
     this.setState({ officeAvatarUrl: null });
     this.props.change('user.avatar', null);
-    const { dentistId } = this.state;
-    this.props.deleteDentistAvatar(dentistId);
+
+    if (this.props.initialValues.user.avatar !== null) {
+      const { dentistId } = this.state;
+      this.props.deleteDentistAvatar(dentistId);
+    }
   }
 
   // NOTE: You can't bind functions in render in highly rendered components
@@ -354,8 +340,9 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage0 = () => {
     this.setState({ officeImages0: null });
     this.props.change('officeInfo.officeImages0', null);
+
     const { dentistId, dentistInfoId, officeImage0 } = this.state;
-    if ('id' in officeImage0) {
+    if (officeImage0 !== undefined && 'id' in officeImage0 && this.props.initialValues.officeInfo.officeImages0 !== null) {
       this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage0.id);
     }
   }
@@ -368,8 +355,9 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage1 = () => {
     this.setState({ officeImages1: null });
     this.props.change('officeInfo.officeImages1', null);
+
     const { dentistId, dentistInfoId, officeImage1 } = this.state;
-    if ('id' in officeImage1) {
+    if (officeImage1 !== undefined && 'id' in officeImage1 && this.props.initialValues.officeInfo.officeImages1 !== null) {
       this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage1.id);
     }
   }
@@ -382,42 +370,12 @@ class DentistEditProfileForm extends React.Component {
   removeOfficeImage2 = () => {
     this.setState({ officeImages2: null });
     this.props.change('officeInfo.officeImages2', null);
+
     const { dentistId, dentistInfoId, officeImage2 } = this.state;
-    if ('id' in officeImage2) {
+    if (officeImage2 !== undefined && 'id' in officeImage2 && this.props.initialValues.officeInfo.officeImages2 !== null) {
       this.props.deleteDentistOfficeImage(dentistId, dentistInfoId, officeImage2.id);
     }
   }
-*/
-
-// TODO: enable services
-/*
-  setServices = (info) => {
-    const serviceId = Number.parseInt(info.target.name.split(".")[1]);
-
-    const allServices = this.state.serviceList;
-    const serviceInfo = allServices.find(service => service.id === serviceId);
-    serviceInfo.enabled = info.target.checked;
-    if (info.target.checked) {
-      if (!this.state.currentServices.find(service => service.id === serviceId)) {
-        // Turning on the value.
-        const { currentServices } = this.state;
-        currentServices.push({
-          id: serviceId,
-          name: serviceInfo.name
-        });
-        this.setState({ currentServices },
-          () => this.props.change('officeInfo.services', currentServices));
-      }
-    } else {
-      // Turning off the value.
-      const { currentServices } = this.state;
-      this.setState({ currentServices: currentServices.filter(service => service.id !== serviceId) },
-        () => this.props.change('officeInfo.services', currentServices.filter(service => service.id !== serviceId)));
-      // this.state.currentServices = this.state.currentServices.filter(service => service.id !== serviceId);
-    }
-    // this.forceUpdate();
-  }
-  */
 
 // TODO: enable membership activation / deactivation
 /*
@@ -458,8 +416,6 @@ class DentistEditProfileForm extends React.Component {
     return new InputTime(props);
   }
 
-// TODO: enable images
-/*
   onUploadStart = (file, next) => {
     const { toastError } = this.props;
     if (!/image\/png|image\/jpg|image\/jpeg|image\/gif/.test(file.type)) {
@@ -478,7 +434,6 @@ class DentistEditProfileForm extends React.Component {
     }
     return '';
   }
-*/
 
   /*
   Render
@@ -490,8 +445,7 @@ class DentistEditProfileForm extends React.Component {
       initialValues,
       dentistSpecialties,
       pricing,
-// TODO: enable services
-//      allServices,
+      allServices,
 
       pricingCodes,
       //      services,
@@ -520,8 +474,6 @@ class DentistEditProfileForm extends React.Component {
     const childYearlyFeeActivated = !!this.props.initialValues.pricing.childYearlyFee;
 */
 
-// TODO: enable images
-/*
     // Get office logo and profile picture names.
     const logoFilename = this.getS3FilenameFromURL(this.state.officeLogoUrl);
     const avatarFilename = this.getS3FilenameFromURL(this.state.officeAvatarUrl);
@@ -533,7 +485,6 @@ class DentistEditProfileForm extends React.Component {
     const office0Filename = this.getS3FilenameFromURL(officePicUrl0);
     const office1Filename = this.getS3FilenameFromURL(officePicUrl1);
     const office2Filename = this.getS3FilenameFromURL(officePicUrl2);
-*/
 
     return (
       <form onSubmit={handleSubmit} className="form-horizontal">
@@ -722,10 +673,7 @@ class DentistEditProfileForm extends React.Component {
         NOTE: The image uploaders don't need their own `images` <FormSection>,
               because their `onFinish` handlers manually set fields in other
               sections to the S3 url.
-
-        TODO: enable images
         */}
-        {/*
         <div>
           <Row>
             <div className="col-sm-4">
@@ -866,7 +814,6 @@ class DentistEditProfileForm extends React.Component {
 
           <hr styleName="spacer--after-form-group" />
         </div>
-        */}
 
         {/*
         Pricing
@@ -1142,23 +1089,20 @@ class DentistEditProfileForm extends React.Component {
         {/*
         Services
         ------------------------------------------------------------
-        TODO: enable services
         */}
-        {/*
         <FormSection name="services">
           <ControlLabel>Services Offered:</ControlLabel>
 
 
           <Row>
-            {allServices.map((service, index) => {
+            {allServices.map((service) => {
+              const serviceKey = "service-" + service.id;
 
               return (
-                <div className="col-sm-4" key={index}>
+                <div className="col-sm-4" key={serviceKey}>
                   <Field
-                    name={`${service.id}`}
+                    name={`${serviceKey}`}
                     component={this.getCheckbox}
-                    props={ {serviceEnabled: service.enabled }}
-                    onChange={this.setServices}
                   >
                     <span>{service.name}</span>
                   </Field>
@@ -1202,7 +1146,6 @@ class DentistEditProfileForm extends React.Component {
 
           <hr styleName="spacer" />
         </FormSection>
-        */}
 
         {/*
         Working Hours
