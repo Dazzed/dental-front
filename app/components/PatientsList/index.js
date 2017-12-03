@@ -205,6 +205,8 @@ class PatientsList extends React.Component {
           if (isAllPatientsDue) {
             summaryStatus = 'late';
           }
+        } else if (lateMembers.length) {
+          summaryStatus = 'late';
         }
       }
       let statusStyle = "status";
