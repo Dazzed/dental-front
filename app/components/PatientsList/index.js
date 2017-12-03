@@ -142,15 +142,25 @@ class PatientsList extends React.Component {
       } = patient;
 
       // find active members w/o a cancellation pending
-      let activeMembers = members.filter((member) => {
+      const activeMembers = members.filter((member) => {
         return member.subscription !== undefined && member.subscription.status === 'active';
       });
+
+      const lateMembers = members
+        .filter((member) => {
+          return member.subscription !== undefined && member.subscription.status === 'past_due';
+        });
+
       if (patient.subscription !== undefined && patient.subscription.status === 'active') {
         activeMembers.push(patient);
       }
 
+      if (patient.subscription !== undefined && patient.subscription.status === 'past_due') {
+        lateMembers.push(patient);
+      }
+
       // find active members w/ a cancellation pending
-      let cancellingMembers = members.filter((member) => {
+      const cancellingMembers = members.filter((member) => {
         return member.subscription !== undefined && member.subscription.status === 'cancellation_requested';
       });
       if (patient.subscription !== undefined && patient.subscription.status === 'cancellation_requested') {
@@ -159,16 +169,27 @@ class PatientsList extends React.Component {
 
       // calculate the next month's subscription price
       // (only members w/o a cancellation pending)
-      const paymentDueAmount = activeMembers
+      const activeMembersSum = activeMembers
         .reduce((paymentDueAccumulator, member) => {
           if ( member.subscription.membership
             && (member.subscription.membership.type === 'month' || member.subscription.membership.type === 'custom')
           ) {
-            paymentDueAccumulator += Number.parseFloat(member.subscription.membership.price);
+            return paymentDueAccumulator + Number.parseFloat(member.subscription.membership.price);
           }
           return paymentDueAccumulator;
-        }, 0)
-        .toFixed(2);
+        }, 0);
+
+      const lateMembersSum = lateMembers
+      .reduce((paymentDueAccumulator, member) => {
+        if ( member.subscription.membership
+          && (member.subscription.membership.type === 'month' || member.subscription.membership.type === 'custom')
+        ) {
+          return paymentDueAccumulator + Number.parseFloat(member.subscription.membership.price);
+        }
+        return paymentDueAccumulator;
+      }, 0);
+
+      const paymentDueAmount = (activeMembersSum + lateMembersSum).toFixed(2);
 
       // calculate the total number of active subscriptions
       // (including currently active members w/ a cancellation pending)
@@ -176,8 +197,14 @@ class PatientsList extends React.Component {
 
       // determine how to style the account's summary status
       // TODO: need to include other statuses beyond 'active' and 'inactive'
-      const summaryStatus = activeMembersCount > 0 ? 'active' : 'inactive';
+      let summaryStatus = activeMembersCount > 0 ? 'active' : 'inactive';
 
+      if (summaryStatus === 'inactive') {
+        const isAllPatientsDue = members.every(m => m.subscription.status === 'past_due');
+        if (isAllPatientsDue) {
+          summaryStatus = 'late';
+        }
+      }
       let statusStyle = "status";
       switch (summaryStatus) {
         case 'active':
