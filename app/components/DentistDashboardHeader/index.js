@@ -132,11 +132,11 @@ class DentistDashboardHeader extends React.Component {
     let activeMemberCount = 0;
     for (let i = 0; i < patients.length; i++) {
       const patient = patients[i];
-      if (patient && patient.subscription !== undefined && patient.subscription.status === 'active') {
+      if (patient && patient.subscription !== undefined && [ 'active', 'cancellation_requested' ].includes(patient.subscription.status)) {
         activeMemberCount++;
       }
       patient.members.forEach(m => {
-        if (m.subscription !== undefined && m.subscription.status === 'active') {
+        if (m.subscription !== undefined && [ 'active', 'cancellation_requested' ].includes(m.subscription.status)) {
           activeMemberCount++;
         }
       })
