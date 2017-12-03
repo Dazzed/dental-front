@@ -200,9 +200,11 @@ class PatientsList extends React.Component {
       let summaryStatus = activeMembersCount > 0 ? 'active' : 'inactive';
 
       if (summaryStatus === 'inactive') {
-        const isAllPatientsDue = members.every(m => m.subscription.status === 'past_due');
-        if (isAllPatientsDue) {
-          summaryStatus = 'late';
+        if (members.length) {
+          const isAllPatientsDue = members.every(m => m.subscription.status === 'past_due');
+          if (isAllPatientsDue) {
+            summaryStatus = 'late';
+          }
         }
       }
       let statusStyle = "status";
