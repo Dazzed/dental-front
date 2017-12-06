@@ -471,6 +471,17 @@ class PatientProfilePage extends React.Component {
         },
         moment().add(100, 'years'), // obviously larger than any paid subscription period
       ),
+      balance: familyMembers.reduce(
+        function (aggregateTotal, member) {
+          const subscriptionType = member.clientSubscription.membership.type;
+          const subscriptionStatus = member.clientSubscription.status;
+          if (member.clientSubscription && [ 'past_due' ].includes(subscriptionStatus) && [ 'month', 'custom' ].includes(subscriptionType)) {
+            aggregateTotal += parseFloat(member.clientSubscription.membership.price);
+          }
+          return aggregateTotal;
+        },
+        0
+      )
     };
     let statusStyle = '';
     if (aggregateSubscription.status === 'active') {
@@ -515,7 +526,7 @@ class PatientProfilePage extends React.Component {
                   </p>
                   <p>
                     <span styleName="text--inline-label">Current Balance:</span>
-                    <span styleName="text--bold">${aggregateSubscription.total || 0}</span>
+                    <span styleName="text--bold">${aggregateSubscription.balance || 0}</span>
                   </p>
 
                   <p>
